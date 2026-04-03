@@ -2,12 +2,15 @@
 
 ## Project Overview
 
-Specs repo — OpenSpec plans + Beads task tracking for:
-- `ally-backend-platform/` — Shared backend (Python/FastAPI)
-- `ally-backend-tenant/` — Tenant backend (extends platform)
-- `ally-frontend-platform/` — Shared frontend (React/Vite library)
-- `ally-frontend-tenant/` — Tenant frontend (consumes platform package)
-- `ally-agent-room/` — Agent Room web app (FastAPI backend + React/Vite frontend monorepo)
+This is the **agentflow** repository — an AI agent orchestration system developed by Moso (dev@moso.com). It contains:
+
+- `agent-room/` — Agent Room web app (FastAPI backend + React/Vite frontend monorepo). The primary deliverable: a real-time multi-agent UI that bridges Claude CLI processes.
+- `lf-homepage/` — LoanFactory (LF) public marketing website (Next.js 14 + Mantine). Separate git repo, tracked here as an untracked directory.
+- `lf-borrower-portal/` — LoanFactory Borrower Portal (Next.js 15 + React 19 + Mantine 7). Separate git repo for the borrower-facing authenticated app.
+- `lo-homepage/` — Loan Officer (LO) Homepage (Next.js 14 + Mantine 7). Separate git repo for the LO-facing public site.
+- `lf-iq/` — LF-IQ platform (Next.js 14 + Mantine 7 + Jotai). Separate git repo; paired with `lfiq-backend` (Java/Spring Boot).
+
+> Note: CLAUDE.md previously referenced `ally-backend-platform/`, `ally-backend-tenant/`, `ally-frontend-platform/`, `ally-frontend-tenant/` sub-projects. These do **not** exist in this repo. The actual code repos are the `agent-room/` monorepo and the LoanFactory front-end sites listed above.
 
 ## Architecture
 
@@ -26,6 +29,144 @@ User: "I want feature X"
                                                                    ↓
                                                               Report to User
 ```
+
+## Tech Stack
+
+### agent-room/backend/
+
+| Item | Detail |
+|------|--------|
+| Language | Python 3.11+ |
+| Framework | FastAPI 0.100+ with async/await |
+| ASGI server | Uvicorn (with standard extras) |
+| Config | pydantic-settings 2.0+ |
+| WebSockets | websockets 11.0+ (native FastAPI WS) |
+| Architecture | In-memory only — no database, no persistence across restarts |
+| Key services | AgentManager, SessionManager, CLIBridge, ChatService, BeadsClient, CostTracker, DiffService, TimelineService, PermissionService |
+| Claude integration | Spawns `claude` CLI processes via stdin/stdout `--output-format stream-json --input-format stream-json` |
+| Beads integration | BeadsClient proxies `bd` CLI commands for task data |
+| API | REST endpoints under `/api/` + WebSocket at `/ws` |
+| CORS | Allows `http://localhost:5173` (Vite dev server) |
+| Entry point | `uvicorn app.main:app --reload` on port 8000 |
+
+### agent-room/frontend/
+
+| Item | Detail |
+|------|--------|
+| Language | TypeScript 5.5 |
+| Framework | React 18.3 |
+| Build tool | Vite 5.4 |
+| Styling | Tailwind CSS 3.4 |
+| State management | Zustand 4.5 (stores: agentStore, chatStore, logStore, sessionStore, uiStore) |
+| Charts | Recharts 2.12 |
+| Markdown | react-markdown 10 + remark-gfm |
+| Diff viewer | react-diff-viewer-continued 3.4 |
+| Icons | lucide-react 0.441 |
+| UI panels | Room (isometric 3D), Chat, Dashboard (Kanban), Cost tracker, Diff viewer, Timeline |
+| Entry point | `npm run dev` on port 5173 |
+| TypeScript check | `npx tsc --noEmit` must exit 0 |
+
+### lf-homepage/
+
+| Item | Detail |
+|------|--------|
+| Language | TypeScript 5 |
+| Framework | Next.js 14.2.13 (App Router, standalone output) |
+| React | React 18 |
+| UI Library | Mantine 7.13 (primary) + Tailwind CSS 3.4.13 (utility) |
+| i18n | next-intl 3.20 — 5 locales: en (default), es, vi, zh, he. No locale prefix in URLs. |
+| Server state | TanStack React Query 5.56 |
+| Client state | Recoil 0.7.7 |
+| Forms | react-hook-form 7.53 + joi 17.13 validation |
+| Rich text | Tiptap 2.9 (9 extensions) |
+| Tables | TanStack React Table 8.20 |
+| Charts | Mantine Charts + Recharts |
+| Icons | Tabler Icons React 3.17 |
+| Modals | @ebay/nice-modal-react 1.2 |
+| Maps | @vis.gl/react-google-maps 1.3 |
+| Flow diagrams | @xyflow/react 12.4 |
+| Payments | @paypal/react-paypal-js 8.7 |
+| Date utils | date-fns 4.1 + dayjs 1.11 |
+| Node requirement | Node 20.14.0, npm 10.7.0 |
+| Pre-commit hook | husky + lint-staged (ESLint fix → Prettier → stylelint) + `npm run build` |
+| Deployment | Docker (Dockerfile + Dockerfile.production), Next.js standalone |
+| Product | LoanFactory public marketing site (US fintech mortgage) |
+| Git repo | Separate repo: `github.com/mosoteam/lf-homepage` — branch FROM `production`, merge INTO `master` |
+
+### lf-borrower-portal/
+
+| Item | Detail |
+|------|--------|
+| Language | TypeScript 5 (strict mode) |
+| Framework | Next.js 15.3.0 (App Router, standalone output) |
+| React | React 19 |
+| UI Library | Mantine 7.13 (primary) + Tailwind CSS 3.4.13 (utility) |
+| i18n | next-intl 4.0 |
+| Client state | Jotai 2.12 |
+| Forms | react-hook-form 7.53 + joi 17.13 + @hookform/resolvers |
+| Rich text | Tiptap 2.9 (9 extensions) |
+| Charts | Mantine Charts + Recharts |
+| Icons | Tabler Icons React 3.17 |
+| Modals | @ebay/nice-modal-react 1.2 |
+| Maps | @vis.gl/react-google-maps 1.3 |
+| Payments | @paypal/react-paypal-js 8.7 |
+| Date utils | date-fns 4.1 + dayjs 1.11 |
+| Node requirement | Node 20.14.0 |
+| Pre-commit hook | husky + lint-staged (ESLint + Prettier + stylelint) |
+| Deployment | Docker (Dockerfile + Dockerfile.prod), Next.js standalone |
+| Product | LoanFactory Borrower Portal — authenticated borrower-facing app |
+| Git repo | Separate repo: `github.com/mosoteam/lf-borrower-portal` — branch workflow unknown (check repo) |
+| Route groups | `(private)/` — authenticated borrower routes; `(public)/` — login/auth |
+
+### lo-homepage/
+
+| Item | Detail |
+|------|--------|
+| Language | TypeScript 5 (strict: false) |
+| Framework | Next.js 14.2.13 (App Router, standalone output) |
+| React | React 18 |
+| UI Library | Mantine 7.13 (primary) + Tailwind CSS 3.4.13 (utility) |
+| i18n | next-intl 3.20 |
+| Client state | Recoil 0.7.7 |
+| Forms | react-hook-form 7.53 + joi 17.13 |
+| Rich text | Tiptap 2.9 (9 extensions) |
+| Charts | Mantine Charts + Recharts |
+| Icons | Tabler Icons React 3.17 |
+| Maps | @vis.gl/react-google-maps 1.3 |
+| Date utils | date-fns 4.1 + dayjs 1.11 |
+| Node requirement | Node 20.14.0, npm 10.7.0 |
+| Pre-commit hook | husky + lint-staged (ESLint + Prettier + stylelint) |
+| Deployment | Docker (Dockerfile + Dockerfile.production), Next.js standalone |
+| Product | Loan Officer (LO) Homepage — public LO-facing marketing site |
+| Git repo | Separate repo: `github.com/LoanFactory-Inc/lo-homepage` — branch workflow unknown (check repo) |
+| Route groups | `(private)/` — authenticated LO area; `(public)/` — public pages |
+
+### lf-iq/
+
+| Item | Detail |
+|------|--------|
+| Language | TypeScript 5 (strict mode) |
+| Framework | Next.js 14.2.13 (App Router, standalone output) |
+| Package name | `vn-ui-homepage` |
+| React | React 18 |
+| UI Library | Mantine 7.17 (primary) + Tailwind CSS 3.4.17 (utility) |
+| i18n | next-intl 3.20 (English + Vietnamese) |
+| Server state | TanStack React Query 5.90 |
+| Client state | Jotai 2.12 |
+| Forms | react-hook-form 7.53 + joi 17.13 |
+| Rich text | Tiptap 2.9 |
+| Charts | Recharts 2.15 + Mantine Charts |
+| Icons | Tabler Icons React 3.34 |
+| Tables | mantine-react-table 2.0-beta |
+| Testing | Jest 29 + ts-jest (run: `npm test`) |
+| Node requirement | Node 20.14.0, npm 10.7.0 |
+| Pre-commit hook | husky + lint-staged (ESLint + Prettier + stylelint) |
+| Deployment | Docker (Dockerfile + Dockerfile.production), Next.js standalone |
+| Product | LF-IQ platform (admin dashboard + loan officer / realtor / homeowner features) |
+| Backend | `lfiq-backend` (Java 21 / Spring Boot) on port 8080; env var: `NEXT_PUBLIC_API_URL` |
+| API contract | `ApiBaseResponse<T>` envelope, `PageableResponse<T>` pagination, IDs are UUIDs, JSON fields snake_case |
+| Git repo | Separate repo: `github.com/LoanFactory-Inc/lf-iq` — base branch appears to be `master`; `production` also exists |
+| Route groups | `(admin)/admin/` — admin-only; `(private)/` — authenticated users; `(public)/` — public pages |
 
 ## Quick Start
 
@@ -98,3 +239,51 @@ bd close <id> --reason "Done"     # Complete a task
 bd graph --all                    # Dependency graph
 bd list                           # All tasks
 ```
+
+
+<!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:ca08a54f -->
+## Beads Issue Tracker
+
+This project uses **bd (beads)** for issue tracking. Run `bd prime` to see full workflow context and commands.
+
+### Quick Reference
+
+```bash
+bd ready              # Find available work
+bd show <id>          # View issue details
+bd update <id> --claim  # Claim work
+bd close <id>         # Complete work
+```
+
+### Rules
+
+- Use `bd` for ALL task tracking — do NOT use TodoWrite, TaskCreate, or markdown TODO lists
+- Run `bd prime` for detailed command reference and session close protocol
+- Use `bd remember` for persistent knowledge — do NOT use MEMORY.md files
+
+## Session Completion
+
+**When ending a work session**, you MUST complete ALL steps below. Work is NOT complete until `git push` succeeds.
+
+**MANDATORY WORKFLOW:**
+
+1. **File issues for remaining work** - Create issues for anything that needs follow-up
+2. **Run quality gates** (if code changed) - Tests, linters, builds
+3. **Update issue status** - Close finished work, update in-progress items
+4. **PUSH TO REMOTE** - This is MANDATORY:
+   ```bash
+   git pull --rebase
+   bd dolt push
+   git push
+   git status  # MUST show "up to date with origin"
+   ```
+5. **Clean up** - Clear stashes, prune remote branches
+6. **Verify** - All changes committed AND pushed
+7. **Hand off** - Provide context for next session
+
+**CRITICAL RULES:**
+- Work is NOT complete until `git push` succeeds
+- NEVER stop before pushing - that leaves work stranded locally
+- NEVER say "ready to push when you are" - YOU must push
+- If push fails, resolve and retry until it succeeds
+<!-- END BEADS INTEGRATION -->
