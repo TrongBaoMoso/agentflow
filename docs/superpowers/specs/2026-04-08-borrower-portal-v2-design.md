@@ -15,7 +15,7 @@
 - State: Jotai atoms scattered, no persistence, no dirty form tracking
 - AI: document extraction exists but auto-fill UX is poor
 
-**tera-fe** is the sister project (LOS frontend for loan officers) with proven patterns: Zustand 5, Zod 4, Axios + TanStack Query, useServerForm, DirtyFormProvider, 27 reusable field components.
+**tera-fe** is the sister project (LOS frontend for loan officers) with proven patterns: Zustand 5, Zod 4, Axios + TanStack Query, useServerForm, DirtyFormProvider, 24 reusable field components.
 
 ## Decision: Approach B — "Tera-Fe Blueprint"
 
@@ -30,7 +30,7 @@ New project `lf-borrower-portal-v2` using tera-fe folder structure and patterns.
 | UI Library | Mantine 7.13 | Mantine 8.3 | Align with tera-fe |
 | State (global) | Jotai 2.12 | Zustand 5.0 | Persistence, simpler API, tera-fe aligned |
 | State (server) | Manual fetch + Jotai | TanStack Query 5.90 | Caching, invalidation, staleTime |
-| Forms | RHF 7.53 + Joi 17 | RHF 7.71 + Zod 4.3 | Tree-shakeable (13KB vs 170KB), z.infer |
+| Forms | RHF 7.53 + Joi 17 | RHF 7.71 + Zod 4.3 | Tree-shakeable (~25KB vs ~170KB gzipped), z.infer |
 | API client | Fetch + ApiConfig class | Axios 1.13 + interceptors | Auto token refresh, tera-fe pattern |
 | Styling | Mantine + Tailwind 3.4 | Mantine 8 + Tailwind 3.4 | Same split: Mantine for components, Tailwind for layout |
 | i18n | next-intl 4.0 (5 locales) | next-intl 4.8 (5 locales) | Same locales, latest version |
@@ -87,6 +87,7 @@ src/
           ApplicationStepper.tsx        # Horizontal stepper (top)
           AutoSaveIndicator.tsx
           AIFilledBadge.tsx
+          ESignModal.tsx                # Credit authorization + document signing
       documents/
         page.tsx
         _components/
@@ -129,25 +130,28 @@ src/
 
   apis/
     apiClient.ts                        # Axios singleton (from tera-fe)
-    borrower-svc/
-      loan.api.ts
-      document.api.ts
-      workflow.api.ts
-      credit.api.ts
-      esign.api.ts
-      alert.api.ts
-      ai.api.ts
-      profile.api.ts
-    public-svc/
-      quote.api.ts
-      config.api.ts
-      geo.api.ts
-      company.api.ts
+    borrower-svc/                       # Port from v1 private-api.ts + otherApi.ts
+      loan.api.ts                       # CRUD loans, saveLoan, checkExistTransaction
+      document.api.ts                   # getSupportDocumentList, upload*, getBorrowerTodos
+      workflow.api.ts                   # getBorrowerLoanWorkflow, getBorrowerLoanHistory
+      credit.api.ts                     # getCreditData, pullCreditReport
+      esign.api.ts                      # checkAllowESign, getSigningSession, updateSigningHistory
+      alert.api.ts                      # getMyAlerts, createAlert, updateAlert, deleteAlert
+      ai.api.ts                         # uploadDocsFileToAIValidation, getResultAIValidation, getDataFromMosoAIOp
+      profile.api.ts                    # getUserInfo, updateBorrowerInfo, password, email, avatar
+      chat.api.ts                       # getUnreadConversationCount (messaging feature)
+    public-svc/                         # Port from v1 public-api.ts + otherApi.ts
+      quote.api.ts                      # getQMRates, getNonQMRates, shareQuote, generatePayment
+      config.api.ts                     # getQuoteConfiguration, getLoanTerms, getCountyLimit, getStatusModule
+      geo.api.ts                        # getZipCode, fetchLoanOfficers, searchPropertyAddress (from otherApi)
+      company.api.ts                    # fetchInfoCompany, getCompanyLoanStatistic
+      external.api.ts                   # getVisaTypes (CDN), getLoInfo (from otherApi.ts)
     react-query/
-      useApiQuery.ts
-      useApiMutation.ts
-      processStateInHook.ts
-      queryKeys.ts
+      useApiQuery.ts                    # From tera-fe
+      useApiMutation.ts                 # From tera-fe
+      useUploadMutation.ts              # NEW: Axios + progress + cancel for file uploads
+      processStateInHook.ts             # From tera-fe — API error surfacing strategy
+      # NOTE: No centralized queryKeys.ts — keys co-located in each domain .api.ts file (tera-fe pattern)
 
   store/
     useAuthStore.ts                     # Token, user profile (persisted)
@@ -175,26 +179,27 @@ src/
       types.ts
 
   shared/
-    types/                              # Port 100% from v1 (10 files)
-      response-types.ts
-      quote.ts
-      1003-form.ts
-      request-types.ts
-      user.ts
-      loan-officer.ts
-      common.ts
-      api-base.ts
-      field.ts
-      social.ts
-    constants/                          # Port from v1, consolidated
-      routes.ts
-      loan.ts
-      quote.ts
-      form-options.ts
-      notification.ts
-      date-time.ts
-      common.ts
-    fields/                             # Port from tera-fe (27 components)
+    types/                              # Port from v1 (11 files)
+      response-types.ts                 # Borrower, BorrowerLoan, Employment, CreditData
+      quote.ts                          # QuoteConfiguration, QMRequest, RateData
+      moso-types.ts                     # RateQuote, Company, ToDoItem, AlertItem, BorrowerAI, etc. (from v1 apis/moso-types.ts)
+      1003-form.ts                      # Form schema types
+      request-types.ts                  # Request payloads
+      user.ts                           # User, ILOInfo
+      loan-officer.ts                   # LO lookup types
+      common.ts                         # Option, ZipCode, LoanTerm
+      api-base.ts                       # TApiList, TErrorResp
+      field.ts                          # Form field types
+      social.ts                         # Social sharing types
+    constants/                          # Port from v1 (26 files consolidated to 7)
+      routes.ts                         # App routing constants
+      loan.ts                           # loan-types + loan-purposes + loan-programs-non-qm + loan-channel + loan-document-type-non-qm + tier-type
+      quote.ts                          # quote + quote-form-type + rate-quote + lender-rate-sheet
+      form-options.ts                   # citizenships + marital-statuses + property-types + credit-events + cash-reserves
+      notification.ts                   # notification-method + notification-email + lock-period
+      date-time.ts                      # date formats + time constants
+      common.ts                         # layout-size + image-url + local-storage-keys + common cache durations
+    fields/                             # Port from tera-fe (24 components)
       TextInputField/
       SelectField/
       NumberInputField/
@@ -206,7 +211,8 @@ src/
       DropZoneField/
       DurationField/
       useDirtyIndicatorStyle.ts
-      ... (17 more)
+      useFieldDefault.ts                # Required for clearable field defaults
+      ... (14 more from tera-fe)
     components/
       PrivateShell/                     # From tera-fe
       DataTable/                        # From tera-fe
@@ -217,14 +223,17 @@ src/
       UnsavedChangesDialog.tsx          # From tera-fe
       FormSaveFooter/                   # From tera-fe
       ErrorBoundary.tsx                 # From tera-fe
+      PublicLayout/                     # NEW: minimal layout for login/callback (no sidebar, no auth)
       TooltipLabel/                     # NEW: mortgage term glossary tooltips
       EmptyState.tsx                    # NEW: reusable empty state with CTA
       SkeletonPage.tsx                  # NEW: skeleton loading (replaces LoaderLF)
       NextActionCard.tsx                # NEW: action prompt card
       AIBadge.tsx                       # NEW: AI suggestion/status indicator
     providers/
+      MasterProvider/                   # Composes all providers (from tera-fe)
       AppProvider/                      # QueryClient + dayjs
       ThemeProvider/                    # Mantine 8 + custom theme
+      AuthTokenProvider/                # NEW: reads httpOnly cookie server-side, provides to Axios client-side
     utils/
       common.ts
       format.ts
@@ -324,7 +333,11 @@ Added value propositions before the login button. Context for what the portal of
 
 ### 1. Axios apiClient replaces fetch-based ApiConfig
 
-Port tera-fe's Axios singleton with interceptors. Token injection happens once in interceptor, not per-request. 401 handling auto-refreshes via interceptor chain. All 42 API functions wrapped in TanStack Query hooks with centralized query keys.
+Port tera-fe's Axios singleton with interceptors. Token injection happens once in interceptor, not per-request. 401 handling auto-refreshes via interceptor chain.
+
+**Query key strategy:** Follow tera-fe's co-located pattern — each API domain file exports its own query keys (e.g., `LOAN_QUERY_KEYS` in `loan.api.ts`, `DOCUMENT_QUERY_KEYS` in `document.api.ts`). No centralized `queryKeys.ts` file — this matches tera-fe exactly.
+
+**XHR upload migration:** Three v1 functions (`uploadSupportFile`, `uploadMultiLoansSupportFile`, `uploadDocsFileToAIValidation`) use raw XMLHttpRequest with `xhr.upload.onprogress` for real-time progress and `xhr.abort()` for cancellation. In v2, these use Axios `onUploadProgress` callback + `AbortController` for cancellation. The `uploadDocsFileToAIValidation` returns a `{ promise, cancel }` tuple — this pattern is preserved via a custom `useUploadMutation` hook that exposes both the mutation and an abort function. TanStack Mutation alone does not support progress tracking, so these upload hooks wrap Axios directly rather than going through `useApiMutation`.
 
 ### 2. Zustand stores replace Jotai atoms
 
@@ -340,30 +353,62 @@ Port tera-fe's Axios singleton with interceptors. Token injection happens once i
 
 Quote state simplified: atomFamily pattern replaced with Record<string, data> keyed by loan program. Derived computations (groupByLogo, groupByLender, bestPrice) become Zustand selectors instead of derived atoms.
 
-### 3. Zod replaces Joi for form validation
+### 3. Auth: Hybrid cookie + Zustand approach
 
-Schemas co-located with each form section (e.g., `PropertyInfo/schema.ts`). Uses `z.infer<typeof schema>` for type-safe form values. Zod helpers (`requiredString`, `optionalNumber`) ported from tera-fe's `schemaUtils.ts`. Bundle size reduction: 170KB (Joi) to 13KB (Zod).
+V1 stores tokens as httpOnly cookies via server actions. Tera-fe stores tokens in Zustand (localStorage). These approaches conflict.
 
-### 4. Skeleton screens replace full-page spinner
+**V2 decision: Keep v1's cookie-based tokens for security, use Zustand for user profile only.**
+- `actions/cookies.ts` and `actions/token.ts` are ported as-is — tokens stay in httpOnly cookies
+- `middleware.ts` handles token validation and refresh server-side (as v1 does)
+- `useAuthStore` stores user profile, role checks, and preferences (NOT tokens) — persisted to localStorage
+- `apiClient.ts` interceptor is adapted: instead of reading token from Zustand (tera-fe pattern), it reads from a cookie-forwarding mechanism. For client components, the access token is passed via a custom `AuthTokenProvider` that reads the cookie server-side and provides it to client-side Axios via React context.
+- This is more secure than tera-fe's approach (tokens not in localStorage) while still using Zustand for profile state.
+
+### 4. Zod replaces Joi for form validation
+
+Schemas co-located with each form section (e.g., `PropertyInfo/schema.ts`). Uses `z.infer<typeof schema>` for type-safe form values. Zod helpers (`requiredString`, `optionalNumber`) ported from tera-fe's `schemaUtils.ts`. Bundle size: ~25KB gzipped (Zod + resolvers) vs ~170KB (Joi).
+
+### 5. Skeleton screens replace full-page spinner
 
 `<SkeletonPage variant="dashboard|form|table|cards" />` replaces `<LoaderLF />`. Mantine Skeleton components show page layout immediately while data loads. Better perceived performance.
 
-### 5. Horizontal stepper replaces left sidebar stepper
+### 6. Horizontal stepper replaces left sidebar stepper
 
 Application form stepper moves from left sidebar (200px width, hidden on mobile) to horizontal top bar (always visible, responsive). Each step shows icon: checkmark (complete), warning (has errors), circle (pending).
 
-### 6. Locale-aware date format
+### 7. Locale-aware date format
 
 Replace hardcoded `DD/MM/YYYY` with locale map: en=`MM/DD/YYYY`, vi=`DD/MM/YYYY`, zh=`YYYY/MM/DD`, etc.
 
-### 7. DirtyFormProvider + useServerForm for all forms
+### 8. DirtyFormProvider + useServerForm for all forms
 
 Every form section in the application uses:
 - `useServerForm`: auto-syncs with server data, handles save lifecycle
 - `DirtyFormProvider`: registers with global dirty form registry, shows amber dirty indicators on changed fields, sticky save/undo bar, navigation guard on unsaved changes
-- `AutoSaveIndicator`: debounced save every 30 seconds
+- `AutoSaveIndicator`: debounced save (interval configurable via `AUTO_SAVE_INTERVAL_MS` constant, default 30000ms)
 
 This solves v1's biggest risk: form data loss on browser crash/token expiry.
+
+### 9. Error handling strategy
+
+Port tera-fe's `processStateInHook.ts` for uniform API error surfacing:
+
+| Error type | Handling |
+|-----------|----------|
+| Network error (offline) | Toast: "No network connection. Changes saved locally." + retry button |
+| 400 validation | Extract `error.messages[]` from `ApiBaseResponse.error` → show per-field or toast |
+| 401 token expired | Axios interceptor auto-refreshes. If refresh fails → clear auth, redirect to `/login` |
+| 403 forbidden | Toast: "You don't have permission for this action" |
+| 404 not found | Redirect to dashboard with toast |
+| 500 server error | Toast: "Something went wrong. Try again." + retry button. Log to console |
+
+For file uploads: XHR errors show inline error state on the UploadZone/DocumentCard with retry button — not just a toast.
+
+### 10. E-Sign and chat features
+
+**E-Sign:** Credit authorization and document signing flows are part of application step 4 (Finances). When user authorizes credit pull, the e-sign modal (`checkAllowESign` → `getSigningSession`) is triggered inline. Signing history updated via `updateSigningHistory`. UI components live in `application/_sections/AssetsLiabilities/_components/ESignModal.tsx`.
+
+**Chat/Messaging:** The v1 chat widget (bottom-right, polling `getUnreadConversationCount` every 2 minutes) is ported to v2 as-is for Phase 1. The chat widget remains in the PrivateShell layout. Phase 2 improvement: replace 2-minute polling with SSE (using `@microsoft/fetch-event-source` already in v1 dependencies). The Notifications tab in Settings controls chat notification preferences.
 
 ## AI-Ready Architecture
 
@@ -389,25 +434,26 @@ Natural language workflow status. Phase 1: template mapping from `workflow.task_
 ## Component Reuse Inventory
 
 ### From tera-fe (copy directly)
-- 27 field components (TextInputField, SelectField, NumberInputField, etc.)
+- 24 field components (TextInputField, SelectField, NumberInputField, InputMaskField, DateField, AddressAutocompleteField, AddressFieldGroup, BusinessAutocompleteField, AutoCompleteInputField, BooleanSelectField, CheckboxField, ColorInputField, DateInputField, DatePickerInputField, DateTimePickerField, DropZoneField, DurationField, MultiSelectField, OptionButtonField, PasswordInputField, RadioField, TagsInputField, TextareaField, YesNoButtonField) + useDirtyIndicatorStyle + useFieldDefault
 - PrivateShell (auth guard + AppShell layout)
 - DirtyFormProvider + AlertBar + FooterBar (dirty form system)
 - DataTable (paginated table)
 - CollapsibleFormSection, SectionCard, ConfirmationDialog
 - FormSaveFooter, ErrorBoundary, UnsavedChangesDialog
+- MasterProvider, AppProvider, ThemeProvider
 - useServerForm, useServerSync, useAutoSaveOnNavigate
 - useUnsavedChangesGuard, useGooglePlacesAutocomplete
-- apiClient.ts, useApiQuery.ts, useApiMutation.ts
+- apiClient.ts (adapted for cookie-based auth), useApiQuery.ts, useApiMutation.ts, processStateInHook.ts
 - schemaUtils.ts (Zod helpers)
 - themeConfigs.ts (Mantine 8 theme)
 
 ### From v1 (port as-is)
-- 10 type definition files (1,500+ lines)
-- 26 constant files (consolidated to 7)
+- 11 type definition files (~2,200 lines, including moso-types.ts)
+- 26 constant files (consolidated to 7 — see mapping in constants/ directory listing)
 - middleware.ts (auth + i18n)
 - actions/cookies.ts, actions/token.ts
 - 5 locale message files
-- 42 API function bodies (rewrapped in Axios + TanStack Query)
+- ~77 API exports across 3 files (private-api.ts, public-api.ts, otherApi.ts) — rewrapped in Axios + TanStack Query across 13 domain files. XHR upload functions use custom useUploadMutation wrapper.
 
 ### New components
 - SkeletonPage (skeleton loading variants)
@@ -422,6 +468,35 @@ Natural language workflow status. Phase 1: template mapping from `workflow.task_
 - StatusSummary (AI-ready workflow summary)
 - ApplicationStepper (horizontal top stepper)
 - PurposeSelector, MethodSelector (apply flow progressive disclosure)
+
+## Public Layout
+
+Public routes (`/login`, `/auth/callback`) use a minimal layout — no sidebar, no auth guard. This is a new `PublicLayout` component (not ported from v1's `PublicLayout/MantineAppShell.tsx` which includes the full header/footer/chat widget). The v2 public layout only renders: centered card container + LoanFactory logo + locale switcher. The v1 PublicLayout is NOT reused because it has tight coupling to company info fetching and LO profile state that is unnecessary on unauthenticated pages.
+
+## Testing Strategy
+
+### Coverage targets (minimum to ship)
+
+| Layer | Target | Tool |
+|-------|--------|------|
+| Zustand stores | 80% branch coverage | Jest |
+| Custom hooks (useServerForm, useActiveProspect, useZipCode) | 70% branch coverage | Jest + React Testing Library |
+| API hooks (useApiQuery, useApiMutation, useUploadMutation) | Integration tests for each | Jest |
+| Utility functions (common.ts, format.ts, schemaUtils.ts) | 90% branch coverage | Jest |
+| AI hooks | Interface contract tests (mock API responses) | Jest |
+| Field components | Snapshot + interaction tests for complex fields (AddressAutocomplete, DropZone, InputMask) | Jest + React Testing Library |
+
+### E2E critical flows (Playwright)
+
+1. Login → OAuth redirect → callback → dashboard
+2. Apply → select purpose → select method → start application
+3. Application form → fill step 1-5 → auto-save verification → submit
+4. Documents → upload file → see AI processing → see cleared status
+5. Rates → quick quote (3 fields) → view results → add to compare
+
+### Test file organization
+
+Follow tera-fe pattern: `__tests__/` folder alongside source code. Mocks in `src/__mocks__/`.
 
 ## Migration Guide: V1 to V2
 
