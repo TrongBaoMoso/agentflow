@@ -150,7 +150,7 @@ User: "I want feature X"
 | Package name | `vn-ui-homepage` |
 | React | React 18 |
 | UI Library | Mantine 7.17 (primary) + Tailwind CSS 3.4.17 (utility) |
-| i18n | next-intl 3.20 (English + Vietnamese) |
+| i18n | next-intl 3.20 — 7 locales: en (default), ko, vi, zh, he, es, ar (files in `src/messages/<locale>.json`) |
 | Server state | TanStack React Query 5.90 |
 | Client state | Jotai 2.12 |
 | Forms | react-hook-form 7.53 + joi 17.13 |
@@ -201,6 +201,68 @@ You can also invoke agents individually:
 - `@dev-be work on backend tasks`
 - `@dev-fe work on frontend tasks`
 - `@tester validate the completed branches`
+
+## External Service Access (Permanent)
+
+These integrations are **permanently configured** at user level. Don't say "I can only read" — write capability exists for all of them. Re-verify with the noted commands if unsure.
+
+### Jira — Full CRUD
+
+- Auth: `JIRA_URL`, `JIRA_EMAIL`, `JIRA_API_TOKEN` env vars in `~/.zshrc`
+- API: REST v3 (`$JIRA_URL/rest/api/3/...`) with HTTP Basic auth
+- Cloud project: `mosoteam.atlassian.net`, project key `LFIQ`
+- Bao Trinh accountId: `712020:48967791-066e-4dab-a7ec-4d5122d11093`
+- Issue types: Bug=10088, Story=10085, Task=10089, Epic=10086, Sub-task=10087
+- Story workflow transitions: New→In Progress (id=4) → Testing (id=6) → Done (id=5)
+- Epic workflow: only `New` and `DELETED` (id=7). Sprint epics like LFIQ-331 stay `New` forever.
+- Epic cannot have parent — use `issuelinks` (Relates) to link epics to other epics.
+- Verify: `curl -sS -u "$JIRA_EMAIL:$JIRA_API_TOKEN" "$JIRA_URL/rest/api/3/myself"`
+
+### Google Workspace (Sheets / Docs / Drive) — Full CRUD
+
+- Auth: Service Account at `GOOGLE_APPLICATION_CREDENTIALS=$HOME/.config/gcloud/lfiq-sa.json`
+- SA email: `lfiq-sync-bot@lfiq-automation.iam.gserviceaccount.com`
+- GCP project: `lfiq-automation` (under `loanfactory.com` org)
+- Helper script: **`python3 ~/.config/gcloud/gws.py <cmd>`** — covers everything
+- Drive MCP (`mcp__*__read_file_content` etc.) is **read-only** — bypass it for any write; use `gws.py` instead
+- Verify: `python3 ~/.config/gcloud/gws.py auth-test`
+
+#### `gws.py` reference
+
+```bash
+# Discovery
+python3 ~/.config/gcloud/gws.py auth-test
+python3 ~/.config/gcloud/gws.py meta <fileId>
+python3 ~/.config/gcloud/gws.py share-list <fileId>
+
+# Sheets
+python3 ~/.config/gcloud/gws.py sheet-tabs    <id>
+python3 ~/.config/gcloud/gws.py sheet-read    <id> "<a1Range>"
+python3 ~/.config/gcloud/gws.py sheet-write   <id> "<a1Range>" '<values-json>'
+python3 ~/.config/gcloud/gws.py sheet-append  <id> "<a1Range>" '<values-json>'
+python3 ~/.config/gcloud/gws.py sheet-clear   <id> "<a1Range>"
+python3 ~/.config/gcloud/gws.py sheet-add-tab <id> "<title>" [insertIndex]
+python3 ~/.config/gcloud/gws.py sheet-dup-tab <id> <sourceSheetId> "<newTitle>" [insertIndex]
+python3 ~/.config/gcloud/gws.py sheet-batch   <id> '<batchUpdate-json>'
+
+# Docs
+python3 ~/.config/gcloud/gws.py doc-read     <id>
+python3 ~/.config/gcloud/gws.py doc-append   <id> "<text>"
+python3 ~/.config/gcloud/gws.py doc-replace  <id> "<find>" "<replace>"
+python3 ~/.config/gcloud/gws.py doc-batch    <id> '<batchUpdate-json>'
+```
+
+A1 range examples: `'Sprint 4 (04/15 - 04/30)'!A9:P32` (note: tab title with special chars must be single-quoted in the range).
+
+#### Known LFIQ pipeline files (all shared with SA as Editor)
+
+| File | ID | Purpose |
+|---|---|---|
+| Doc "LF IQ Improvement Oct 2025" | `1vL0gQ1TLMBlXVfEgJkPaFoCWF1C9fjKhknIQl-HK-Xc` | BA spec — bug/task entries (post-line-821 = clean format `**NNN. [TAG]** Title` + bullets). Source for Doc→Jira pipeline. |
+| Sheet "LFIQ" | `1HZoQV1P3-IOZgxQpJ5kbFx8m2t5SEzUSbhBmdJqcP6A` | Sprint timesheet for lf-iq. One tab per sprint (Sprint 4 tab `gid=1205247696`). Issues table starts row 9, 16 cols. |
+| Sheet "Look & Feel" | `1pARXvSnci_97zjFH3gA9rB7UA7VclUnUv-cxXDUi7PU` | Time-log for lf-homepage / cross-product. Sprint numbering 177–181. |
+
+To onboard a new file: have the owner share with `lfiq-sync-bot@lfiq-automation.iam.gserviceaccount.com` (Editor). External-share warning is normal — click "Share anyway".
 
 ## Commands
 
