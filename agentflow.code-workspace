@@ -1,0 +1,21 @@
+{
+  "folders": [
+    { "path": "." },
+    { "path": "lf-homepage" },
+    { "path": "lf-iq" },
+    { "path": "lfiq-backend" },
+    { "path": "lo-homepage" },
+    { "path": "lf-borrower-portal" }
+  ],
+  "settings": {
+    "git.autoRepositoryDetection": "subFolders",
+    "git.repositoryScanMaxDepth": 10,
+    "eslint.workingDirectories": [
+      {
+        "directory": "lf-iq",
+        "changeProcessCWD": true
+      }
+    ]
+  }
+}
+

@@ -15,6 +15,37 @@ You have THREE modes: **INIT**, **CREATE-BRANCH**, and **FINALIZE**.
 
 ---
 
+## Per-repo workflow (READ FIRST)
+
+Each LF product repo has its own base branch and PR fanout. Pick the matching row before branching or PR'ing:
+
+| Repo | Base (branch FROM) | feature → master | feature → release | Final promote |
+|---|---|---|---|---|
+| `lf-homepage` | `production` | agent auto-merge | agent auto-merge | `release` → `production` (agent opens, user manual-merges) |
+| `lo-homepage` | `produciton-v2` (typo) | agent auto-merge | agent auto-merge | `release` → `produciton-v2` (agent opens, user manual-merges) |
+| `lf-iq` | `production` | agent auto-merge | — (no release branch) | `master` → `production` (agent auto-merge) |
+| `lf-borrower-portal` | unknown — ask user before branching | — | — | — |
+
+**Critical: "auto merge" definition** — agent creates the PR **AND** merges it immediately via `gh pr merge <num> --merge`. It does NOT mean "let GitHub's auto-merge handle it". An auto-merge PR left in OPEN state is a workflow failure.
+
+**Critical: "Final promote" definition** — agent **creates the PR but does NOT merge it**. User reviews and clicks merge manually. Agent does NOT ask permission to open the promote PR — just opens it (after release PR has been merged). If `gh pr create` returns "No commits between X and Y", the promote was already done — skip silently.
+
+**Recovery (rare):**
+- If user later says "don't release feature X yet" after agent already auto-merged it to release:
+  1. `git checkout release && git revert -m 1 <merge-sha> --no-edit && git push origin release`
+  2. Close any open `release → production-side` promote PR that would carry the reverted changes.
+  3. To un-revert later when the feature is ready: `git checkout release && git revert <revert-sha> --no-edit && git push origin release`, then re-open promote PR.
+
+**Rules:**
+- For `lf-homepage` and `lo-homepage`: (a) open + auto-merge feature → master, (b) open + auto-merge feature → release, (c) open release → production-side PR (no merge, user does it).
+- For `lf-iq`: open + auto-merge feature → master, then open + auto-merge master → production. No release branch.
+- Merge command: `gh pr merge <num> --repo LoanFactory-Inc/<repo> --merge` (use `--merge` flag, not `--squash` or `--rebase`).
+- Never branch from `master` even when `origin/HEAD` points there. Always use the table's base branch.
+- Before stashing or switching branches, check `git status` for other people's WIP and preserve it via per-file `git checkout HEAD -- <file>` or `git checkout stash@{N} -- <file>`.
+- After git operations that may switch branch (revert on detached HEAD, stash apply), always verify `git branch --show-current` before pushing — git can land you on unexpected branches.
+
+---
+
 ## Mode: CREATE-BRANCH (Called by BA after requirements gathered)
 
 Create a feature branch for a new change. BA will tell you the branch name and type.
@@ -23,22 +54,35 @@ Create a feature branch for a new change. BA will tell you the branch name and t
 | Type | When | Example |
 |------|------|---------|
 | `feature/` | New functionality | `feature/agent-room-web` |
-| `fixbug/` | Bug fix | `fixbug/api-url-mismatch` |
+| `fix/` or `fixbug/` | Bug fix | `fix/zipcode-clear-on-invalid` |
 | `refactor/` | Code restructuring | `refactor/backend-platform` |
+| `chore/` | Tooling, docs, config | `chore/update-deps` |
 
 ### Steps:
 
 1. **Identify target repo(s)** from BA's description
 
-2. **Create the branch from dev** in each target repo:
+2. **Look up the base branch** in the "Per-repo workflow" table above (NOT `dev` — that branch doesn't exist for these repos).
+
+3. **Create the branch from the per-repo base** in each target repo:
 
 ```bash
-cd /Users/vovuongthanhdat/Downloads/company/moso/ally-specs/<target-repo>
-git fetch origin
-git checkout dev
-git pull origin dev
-git checkout -b <type>/<branch-name> dev
+cd <repo-path>
+git fetch origin <base-branch>:<base-branch>
+git checkout <base-branch>
+git pull origin <base-branch> --ff-only
+git checkout -b <type>/<branch-name> <base-branch>
 git push -u origin <type>/<branch-name>
+```
+
+Example for lf-homepage:
+```bash
+cd /Users/apple/Projects/agentflow/lf-homepage
+git fetch origin production:production
+git checkout production
+git pull origin production --ff-only
+git checkout -b fix/<desc> production
+git push -u origin fix/<desc>
 ```
 
 If the work spans ally-specs itself (e.g., OpenSpec files, Beads):
@@ -228,14 +272,35 @@ Only push after user approves:
 git push origin <feature-branch>
 ```
 
-5. **Create PR: feature branch → dev**
+5. **Create AND merge PRs per the repo's fanout rule** (see "Per-repo workflow" table above)
+
+For `lf-homepage` and `lo-homepage` — open + auto-merge both fanout PRs, then open the promote PR (left OPEN):
 
 ```bash
-gh pr create \
-  --base dev \
-  --head <feature-branch> \
-  --title "<PR title>" \
-  --body "$(cat <<'EOF'
+PR1=$(gh pr create --repo LoanFactory-Inc/<repo> --base master --head <feature-branch> --title "<title>" --body "..." | tail -1 | sed 's|.*/pull/||')
+PR2=$(gh pr create --repo LoanFactory-Inc/<repo> --base release --head <feature-branch> --title "<title>" --body "..." | tail -1 | sed 's|.*/pull/||')
+gh pr merge "$PR1" --repo LoanFactory-Inc/<repo> --merge
+gh pr merge "$PR2" --repo LoanFactory-Inc/<repo> --merge
+
+# Open release → production-side promote PR (no merge — user manual)
+# lf-homepage: --base production
+# lo-homepage: --base produciton-v2 (sic typo)
+gh pr create --repo LoanFactory-Inc/<repo> --base <production-side> --head release \
+  --title "promote: release → <production-side>" --body "..." || \
+  echo "(promote already up-to-date — skipping)"
+```
+
+For `lf-iq` — open + merge master PR first, then open + merge master → production PR:
+```bash
+PR=$(gh pr create --repo LoanFactory-Inc/lf-iq --base master --head <feature-branch> --title "<title>" --body "..." | tail -1 | sed 's|.*/pull/||')
+gh pr merge "$PR" --repo LoanFactory-Inc/lf-iq --merge
+# After master PR merges, promote master → production:
+PR2=$(gh pr create --repo LoanFactory-Inc/lf-iq --base production --head master --title "promote: master → production" --body "..." | tail -1 | sed 's|.*/pull/||')
+gh pr merge "$PR2" --repo LoanFactory-Inc/lf-iq --merge
+```
+
+PR body template:
+```
 ## Summary
 <bullet points from task list>
 
@@ -244,13 +309,9 @@ gh pr create \
 
 ## Test Results
 <test pass count>
-
-🤖 Generated with Claude Code
-EOF
-)"
 ```
 
-Return ALL PR URLs to the user in the output summary. Never skip showing PR links.
+Return ALL PR URLs to the user in the output summary. Never skip showing PR links. Do NOT open the final `release → production` (lf-homepage / lo-homepage) PR yourself — ask user.
 
 6. **Export and push Beads state + memories**
 
