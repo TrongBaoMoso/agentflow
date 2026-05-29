@@ -256,9 +256,11 @@ A1 range examples: `'Sprint 4 (04/15 - 04/30)'!A9:P32` (note: tab title with spe
 
 #### Known LFIQ pipeline files (all shared with SA as Editor)
 
+> **⚠️ LFIQ Doc active tab = `t.g7m4plnlyqfn` ("Issue/Improve") ONLY.** Every read/write on the doc below MUST target this tab. The old tab `t.0` ("Pending Points") is **retired** — never read it and never turn its entries into Jira tickets (they're legacy/DONE and pollute the backlog). `gws.py doc-entry` defaults to the active tab and now hard-refuses `t.0`. Fingerprint of a bad t.0 ticket: bare `[N]` summary (no `I-` prefix), no parent epic, description link `?tab=t.0`.
+
 | File | ID | Purpose |
 |---|---|---|
-| Doc "LF IQ Improvement Oct 2025" | `1vL0gQ1TLMBlXVfEgJkPaFoCWF1C9fjKhknIQl-HK-Xc` | BA spec — bug/task entries (post-line-821 = clean format `**NNN. [TAG]** Title` + bullets). Source for Doc→Jira pipeline. |
+| Doc "LF IQ Improvement Oct 2025" | `1vL0gQ1TLMBlXVfEgJkPaFoCWF1C9fjKhknIQl-HK-Xc` | BA spec — bug/task entries on the **`t.g7m4plnlyqfn` "Issue/Improve" tab** (clean format `**NNN. [TAG]** Title` + bullets). Source for Doc→Jira pipeline. Never read the retired `t.0` tab. |
 | Sheet "LFIQ" | `1HZoQV1P3-IOZgxQpJ5kbFx8m2t5SEzUSbhBmdJqcP6A` | Sprint timesheet for lf-iq. One tab per sprint (Sprint 4 tab `gid=1205247696`). Issues table starts row 9, 16 cols. |
 | Sheet "Look & Feel" | `1pARXvSnci_97zjFH3gA9rB7UA7VclUnUv-cxXDUi7PU` | Time-log for lf-homepage / cross-product. Sprint numbering 177–181. |
 
