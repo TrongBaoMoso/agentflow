@@ -19,7 +19,7 @@ tags: [lfiq, jira, automation, autonomous]
 
 ## Constants you can rely on
 
-- LFIQ doc ID: `1vL0gQ1TLMBlXVfEgJkPaFoCWF1C9fjKhknIQl-HK-Xc`
+- LFIQ doc ID: `1vL0gQ1TLMBlXVfEgJkPaFoCWF1C9fjKhknIQl-HK-Xc` (active tab: `t.g7m4plnlyqfn` "Issue/Improve" — `gws.py doc-entry` auto-routes here via `DOC_TAB_DEFAULTS`; do NOT read the old `t.0` "Pending Points" tab anymore)
 - LFIQ Sheet ID (timesheet): `1HZoQV1P3-IOZgxQpJ5kbFx8m2t5SEzUSbhBmdJqcP6A`
 - Atlassian Cloud: `mosoteam.atlassian.net`
 - Bao Trinh accountId: `712020:48967791-066e-4dab-a7ec-4d5122d11093`
@@ -218,7 +218,20 @@ EOF
 ```
 
 **BE** (PR target: default branch — usually `main`):
-Same as above but `--base <default-branch>`.
+Same as the FE command but `--base <default-branch>` AND `--assignee taipham0901`
+(Tai reviews all lfiq-backend PRs):
+
+```bash
+gh pr create --base <default-branch> --assignee taipham0901 \
+  --title "LFIQ-<NNN>: <title>" --body "$(cat <<EOF
+... same body template as FE ...
+EOF
+)"
+```
+
+> The `--assignee taipham0901` flag is **mandatory** for lfiq-backend PRs — do
+> not skip it. FE PRs (lf-iq) stay unassigned (the FE CI merges them into
+> master automatically).
 
 Capture the PR URL from `gh pr create` output. Save as `PR_URL`.
 
@@ -321,3 +334,15 @@ What to do: <suggestion>
 - **If ticket description is unclear or entry not found** — stop and ask Bao
 - **Scope discipline**: only edit files relevant to the ticket
 - **Atomic commits**: one ticket = one branch = one PR
+- **All new Jira tickets MUST attach the active Sprint epic as parent.** If
+  during implementation you create any follow-up Jira ticket (e.g. a BE ticket
+  spun off from a FE PR), set `fields.parent.key` to the latest sprint epic.
+  Find it via this JQL:
+  ```
+  project = LFIQ AND issuetype = Epic AND summary ~ "Sprint"
+  AND statusCategory != Done ORDER BY created DESC
+  ```
+  Take the first result's key (currently `LFIQ-395` for Sprint 6). Never
+  create a ticket with `parent` unset.
+- **lfiq-backend PRs MUST be assigned to `taipham0901`** (`gh pr create --assignee taipham0901`).
+  Skipping this leaves the PR floating; Tai is the reviewer for all BE work.
