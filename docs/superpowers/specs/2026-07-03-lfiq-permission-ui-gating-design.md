@@ -104,14 +104,7 @@ export const PAGE_GATES: { route: string; api: ApiGate }[] = [
 ];
 ```
 
-**State** — `src/jotai/atom/permissionState.ts`
-
-```ts
-// null = not loaded yet OR old BE without expand support → every guard fails open
-export const userPermissionsState = atom<{ id: string; code: string; name: string }[] | null>(null);
-```
-
-Populated wherever `/users/me` is fetched today by adding `expand=permissions` (roles expand already used there). If the response has no `permissions` field (BE not yet deployed), the atom stays `null` and the feature is dormant — FE can ship before BE.
+**State** — no new atom. `/users/me` is fetched server-side in `AuthProvider` (via `getUserProfile`, which already sends `expand=profile…,userSettings`) and hydrated into the existing `userProfileState` atom; adding `,permissions` to that one expand string makes the effective set ride inside the `User` object (`User.permissions?: EffectivePermission[]`). The hook derives `permissions = userProfile?.permissions ?? null`. If the field is absent (BE not yet deployed), the value stays `null` and the feature is dormant — FE can ship before BE. *(Implementation detail updated 2026-07-03 after codebase verification; the original draft proposed a separate `userPermissionsState` atom, unnecessary given the hydration path.)*
 
 **Hook** — `src/hooks/usePermissions.ts`
 
@@ -220,9 +213,9 @@ Menu and page guard share `canAccessRoute`, so they can never disagree.
 
 - `matcher.ts`: ant semantics pinned against BE cases — `**` multi-segment, `*` single-segment, bare `*`, method `*`, case-insensitivity, trailing-slash tolerance.
 - `parseApiCode`: valid `PERM:` codes, non-`PERM:` codes rejected, paths containing `:`.
-- `usePermissions`: fail-open when atom is `null`; grant/deny resolution; `canAccessRoute` with gated/ungated routes.
-- `PermissionGuard`: renders children when allowed; `hide` → null; `disable` → disabled + tooltip.
-- Menu filtering: role pass + permission fail → hidden.
+- Gating logic (pure functions behind `usePermissions`): fail-open when permissions are `null`; grant/deny resolution; `canAccessRoute` with gated/ungated routes; wildcard methods and `PERM:*:*`; query-string tolerance.
+- `PermissionGuard`/`PagePermissionGuard` render behavior: covered by the pure-logic tests plus manual smoke — the repo tests pure functions only (no `@testing-library/react`; do not add it).
+- Menu filtering: role pass + permission fail → hidden (via `canAccessRoute` on `MenuItem.link`).
 
 **BE (JUnit):**
 
