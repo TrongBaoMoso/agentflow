@@ -66,21 +66,28 @@ it uses the arbitrary variant `max-[480px]:`.
 
 | Breakpoint | Layout | Position |
 |---|---|---|
-| `≥ xl` (1408px) | **Vertical card** (~206–220px wide) | Fixed flush to the **right edge** (`right-0`), vertically centered (`top-1/2 -translate-y-1/2`). Left corners rounded, right edge flat (docked-tab look) so it hugs the viewport edge and does not cover the centered main content. Shown with `hidden xl:flex`. |
-| `< xl` | **Horizontal bar** (avatar + name/NMLS + CTA + X), max-width ~510px | Fixed bottom-center (`left-1/2 -translate-x-1/2 bottom-4`). Shown with `flex xl:hidden`. |
-| `< 480px` (`max-[480px]:`) | Same bottom bar but **name/NMLS text block hidden** → avatar + CTA + X only | Fixed bottom-center. |
+| `≥ xl` (1408px) | **Vertical card** (~206px wide) with session-dismiss **X** | Fixed flush to the **right edge** (`right-0`), vertically centered (`top-1/2 -translate-y-1/2`). Left corners rounded, right edge flat (docked-tab look). Shown `hidden xl:block`. |
+| `< xl` (expanded) | **Two-row card**, bottom-center — row 1: avatar + name + `title · NMLS` + collapse **⌄**; row 2: full-width CTA | Fixed bottom-center (`left-1/2 -translate-x-1/2`), lifted above the cookie popup. Shown `xl:hidden`. |
+| `< xl` (collapsed) | **Floating button (FAB)**, same dark surface — avatar + "Your LO" + up-chevron | Fixed bottom-right (`right-3 bottom-3`). Shown `xl:hidden`. |
 
 Rationale for flush-right at `xl`: at ≥ 1408px the homepage main content is centered with side
 whitespace; docking the card to the right gutter keeps it off the Mortgage Rates form. Below `xl`
-that whitespace disappears, so the card moves to a bottom bar.
+that whitespace disappears, so the card moves to the bottom.
 
-## Close behavior
+## Mobile collapse behavior (`< xl`)
 
-- Clicking **X** hides the card.
-- Persistence: **session only** — store a flag in `sessionStorage` (e.g. `lo_card_dismissed`).
-  Card stays hidden for the rest of the browser session; a new tab / next visit shows it again.
-- On mount, read `sessionStorage` before first paint to avoid a flash of the card when already
-  dismissed.
+- Default = expanded two-row card. On scroll **down**, the card collapses into the FAB (returns
+  viewport height while reading). Scrolling back to the **top** (`scrollY <= 8`) auto-expands it.
+- Tap the FAB → expand; tap the **⌄** → collapse. The FAB reuses the dark card surface.
+- No session-dismiss X on mobile — collapse-to-FAB is the "put away" action.
+- New i18n keys (namespace `LoanOfficerCard`, all 5 locales): `your_lo`, `minimize`.
+
+## Close behavior (`≥ xl` only)
+
+- The session-dismiss **X** exists only on the desktop vertical card.
+- Persistence: **session only** — a flag in `sessionStorage` (`lo_card_dismissed`). Hidden for the
+  rest of the session; a new tab / next visit shows it again.
+- On mount, read `sessionStorage` before first paint to avoid a flash when already dismissed.
 
 ## Technical notes
 
