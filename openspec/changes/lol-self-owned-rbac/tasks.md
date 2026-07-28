@@ -76,10 +76,19 @@ Reference files (read before implementing):
 
 ## Phase 4 — Migration, cutover, cleanup
 
-- [ ] 4.1 (depends 1.4, all Phase 2/3) **Seed prod 12 users**, verify 1–2 accounts against
-  `/permissions/me` + Permissions tab with `LOL_RBAC_ENFORCE` **OFF**.
+- [ ] 4.1 (depends 1.4, all Phase 2/3) **Migrate 12 grants central → Mongo, then verify.** For
+  each of the 12 users, read their current LOL role(s) from central
+  (`GET /auth-svc/api/v1/rbac/users/{id}/permissions?app_code=LOL`) and write the equivalent grant
+  into `lifeofloan_rbac_user_grants` (ADMIN=thuan/jesica/katarina; EDITOR + `ADD LOL_TASK_DELETE`
+  for the other 9 — reconcile against what central holds). Idempotent. **Must run before 4.3
+  removal reaches prod**, or users lose access. Verify 1–2 accounts against `/permissions/me`
+  (served from Mongo) + Permissions tab with `LOL_RBAC_ENFORCE` **OFF**.
 - [ ] 4.2 (depends 4.1) **Flip `LOL_RBAC_ENFORCE` ON** in prod; monitor audit + 403 rate; verify
   the "Edit role → Access token is required" error is gone.
+- [ ] 4.2b (depends 4.2) **Promote to production branches** (removal already in Phase 2.5): ensure
+  the (a) code reaches each repo's prod branch — `moso-aid` master → `pro`; `life-of-a-loan`
+  main → master → `production`. Central code shipped to those branches this afternoon, so a
+  master-only merge is NOT enough.
 - [ ] 4.3 (depends 4.2) **Verify no central residue** (removal already done in Phase 2.5 —
   clean-cut): confirm `grep -r "rbac/validate\|admin/rbac\|LOL_RBAC_ADMIN_TOKEN" src` is empty on
   `master` after the feature merges; delete `src/controller/lol-permissions.js` if now unused.

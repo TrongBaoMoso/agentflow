@@ -158,14 +158,35 @@ central proxies in `lol-rbac.js`.
 
 ## 7. Cutover sequence (zero mid-flight lockout)
 
-1. Ship models + seed + `lol-authz` + reworked middleware + endpoints + FE, **flag OFF**.
-2. Run idempotent seed: create ADMIN/EDITOR/VIEWER roles; grant the **12 users** their role
-   (ADMIN for thuan/jesica/katarina per prior decision; role for the rest — confirm final map).
-3. Verify with 1–2 accounts against `/permissions/me` and the Permissions tab (flag still OFF).
+> **Deploy-target note:** the (b) central code already shipped **beyond master** this afternoon —
+> `moso-aid` `pro` (prod, merged 17:30) and `life-of-a-loan` `production` (merged 17:29 / 21:51).
+> Therefore the (a) work — including the Phase 2.5 central removal — must be promoted through
+> **each repo's full branch flow to the production branch**, not just merged to master:
+> `moso-aid`: master → `pro`; `life-of-a-loan`: main → master → `production`.
+> A removal that stops at master leaves central code live in prod.
+
+> **What is ALREADY central-dependent in prod right now** (verified 2026-07-28): `/permissions/me`
+> → central `rbac/users/{id}/permissions` runs **live, not flag-gated** (the deployed FE `ae19dec`
+> calls it on every `/config` load); the enforce path (`rbac/validate`) is dormant behind
+> `LOL_RBAC_ENFORCE` OFF; `token/validate` (identity) stays (IdP). The 12 role assignments live in
+> **central** and must be migrated to Mongo before the central read path is removed.
+
+1. Ship models + seed + `lol-authz` + reworked middleware + endpoints + FE, **flag OFF**, through
+   to the production branch of each repo.
+2. **Migrate the 12 grants central → Mongo** (Phase 4.1): read each of the 12 users' current LOL
+   role assignment(s) from central (`rbac/users/{id}/permissions?app_code=LOL`), write the
+   equivalent grant into `lifeofloan_rbac_user_grants` (ADMIN for thuan/jesica/katarina; EDITOR +
+   `ADD LOL_TASK_DELETE` for the other 9 — reconcile against what central actually holds). Seed is
+   idempotent. **This must happen before step 5**, or users lose access when the central read path
+   goes away.
+3. Verify with 1–2 accounts against `/permissions/me` (now served from Mongo) and the Permissions
+   tab (flag still OFF).
 4. Flip `LOL_RBAC_ENFORCE` **ON** in prod. Watch audit + 403 rate.
-5. Remove central proxy code (`rbac/validate`, `admin/rbac/*`, `rbac/users/*/permissions`) and
-   `LOL_RBAC_ADMIN_TOKEN`. Close/supersede `agentflow-lxst`.
-6. Rollback at any point = flip flag OFF.
+5. Central removal is **already done in Phase 2.5** (clean-cut, no coexistence). Here just
+   **verify no central authZ residue** reached prod (`rbac/validate`, `admin/rbac/*`,
+   `rbac/users/*/permissions`, `LOL_RBAC_ADMIN_TOKEN` all gone from the deployed branch);
+   `token/validate` identity call remains. Close/supersede `agentflow-lxst` / `agentflow-3ryp`.
+6. Rollback at any point = flip flag OFF (and, if pre-step-5, the central read path still exists).
 
 ## 8. Design decisions (CONFIRMED 2026-07-28)
 
