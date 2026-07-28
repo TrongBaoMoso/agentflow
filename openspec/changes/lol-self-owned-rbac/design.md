@@ -24,6 +24,26 @@
 **Rule:** `authorities` in the token is **ignored** for authorization. Central is IdP only.
 Exactly one authZ source of truth = Mongo (+ the static catalog).
 
+### 1a. Clean-cut principle (NO coexistence with the old central path)
+
+The (a) code MUST NOT depend on, import, or run alongside the abandoned (b) central-RBAC code.
+There is **no transition period where both enforcement paths exist**:
+
+- Phase 1 is **purely additive** (new files only: `lol-rbac.js` models, `lol-catalog.js`,
+  `lol-authz.js`, seed). It imports nothing from `src/services/lol-rbac.js` (the central proxy).
+- **Phase 2 is a REPLACEMENT, not a layer.** In the same change that wires local `evaluate()`
+  into `lol-config-auth.js`, it **deletes** the central-RBAC code paths that Phase 2a merged
+  (`src/services/lol-rbac.js` → `rbac/validate`, `rbac/users/*/permissions`, `admin/rbac/*`) and
+  removes the `LOL_RBAC_ADMIN_TOKEN` dependency. After Phase 2, `lol-config-auth.js` has exactly
+  two branches — flag OFF = legacy "any resolvable LOL identity" (no central call), flag ON =
+  local `evaluate()` — and **neither branch calls central for authorization**.
+- The admin Direct-Permissions endpoints are built **local-only** (Phase 2), never as central
+  proxies. The unmerged central-proxy PRs (moso-aid#84 BE / the central wiring in lol#42 FE) are
+  **not merged**; #84 is closed, and lol#42's UI is reused only after its API client is
+  re-pointed at the local endpoints.
+
+Net: at no commit on `master` do the central and local authorization paths both exist.
+
 ## 2. Data model (Mongo, mongoose — mirror `life-of-a-loan-audit.js`)
 
 New file `moso-aid/src/models/lol-rbac.js`.

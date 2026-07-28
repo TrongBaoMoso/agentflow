@@ -53,6 +53,13 @@ Reference files (read before implementing):
   (= `evaluate` on admin path). **Replaces** central proxies.
 - [ ] 2.4 (depends 2.3) **Validation** `src/validation/lol-rbac-admin.js` for the PUT grant body
   (`roles[]`, `overrides[{code,effect}]`).
+- [ ] 2.5 (depends 2.1, 2.3) **Remove the central-RBAC path IN THE SAME PHASE (clean-cut, no
+  coexistence — design §1a)**: delete the central calls in `src/services/lol-rbac.js`
+  (`rbac/validate`, `rbac/users/*/permissions`, `admin/rbac/*`) and any central-proxy
+  controller/validation from Phase 2a; drop the `LOL_RBAC_ADMIN_TOKEN` env dependency; remove the
+  central branch from `lol-config-auth.js` so it has exactly two branches (OFF=legacy identity,
+  ON=local `evaluate`). **AC**: `grep -r "rbac/validate\|admin/rbac\|LOL_RBAC_ADMIN_TOKEN" src`
+  returns nothing; no file under `src/` imports the old central-RBAC service; tests updated.
 
 ## Phase 3 — Frontend (`life-of-a-loan`)
 
@@ -73,11 +80,12 @@ Reference files (read before implementing):
   `/permissions/me` + Permissions tab with `LOL_RBAC_ENFORCE` **OFF**.
 - [ ] 4.2 (depends 4.1) **Flip `LOL_RBAC_ENFORCE` ON** in prod; monitor audit + 403 rate; verify
   the "Edit role → Access token is required" error is gone.
-- [ ] 4.3 (depends 4.2) **Remove central proxy**: delete `rbac/validate`, `admin/rbac/*`,
-  `rbac/users/*/permissions` calls in `src/services/lol-rbac.js` + `src/controller/lol-permissions.js`
-  + the `LOL_RBAC_ADMIN_TOKEN` env dependency. Update tests.
-- [ ] 4.4 (depends 4.3) **Supersede beads** `agentflow-lxst` (central enforcement) and the
-  central portions of `agentflow-akjk` / `agentflow-baxv`; update their status/notes.
+- [ ] 4.3 (depends 4.2) **Verify no central residue** (removal already done in Phase 2.5 —
+  clean-cut): confirm `grep -r "rbac/validate\|admin/rbac\|LOL_RBAC_ADMIN_TOKEN" src` is empty on
+  `master` after the feature merges; delete `src/controller/lol-permissions.js` if now unused.
+- [ ] 4.4 (depends 4.3) **Supersede/close beads** `agentflow-lxst` (central enforcement),
+  `agentflow-3ryp` (central admin proxy = moso-aid#84, closed), and the central portions of
+  `agentflow-akjk` / `agentflow-baxv` / `agentflow-ngli`; update their status/notes.
 
 ## Test plan
 
