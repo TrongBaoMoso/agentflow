@@ -147,14 +147,21 @@ central proxies in `lol-rbac.js`.
    `LOL_RBAC_ADMIN_TOKEN`. Close/supersede `agentflow-lxst`.
 6. Rollback at any point = flip flag OFF.
 
-## 8. Open questions (confirm before/with implementation)
+## 8. Design decisions (CONFIRMED 2026-07-28)
 
-1. **Default role**: should an authenticated LOL user with no grant get an implicit **VIEWER**
-   (read-only `/config`), or **no** `/config` access at all? (Recommendation: no access by
-   default; VIEWER only when explicitly granted — least privilege.)
-2. **Final 12-user role map**: ADMIN = thuan.nguyen, jesica.endo, katarina; the other 9 =
-   EDITOR (+ direct-grant delete-task if desired) vs VIEWER? Need the confirmed assignment.
-3. **`BLOCK` override**: keep it (stronger than LFIQ) or ship ADD-only first (simpler)?
-   (Recommendation: model supports both; UI can expose ADD-only in v1.)
-4. **Identity resolution source**: confirm the cheapest reliable token→userId path that does not
-   depend on the token's `authorities` (introspection endpoint vs verified JWT decode).
+1. **Default role — RESOLVED: no `/config` access without a grant** (least privilege). A user
+   with no `lifeofloan_rbac_user_grants` doc gets an empty effective set → `/config` denied.
+   VIEWER is granted only explicitly. (The public loan-timeline Viewer is unaffected — it is
+   unauthenticated.)
+2. **12-user role map — RESOLVED:**
+   - **ADMIN** (full incl. delete + Permissions tab): `thuan.nguyen`, `jesica.endo`, `katarina`.
+   - **EDITOR + direct-grant `LOL_TASK_DELETE`** for the other **9**: base EDITOR (create/update,
+     no delete) **plus** an `ADD` override on `LOL_TASK_DELETE` so they can delete tasks but not
+     roles. Each of the 9 remains individually tunable later via the Permissions tab.
+   - Seed encodes exactly this (roles + the 9 ADD overrides).
+3. **`BLOCK` override — RESOLVED: model supports ADD + BLOCK; v1 UI exposes ADD only.** Schema +
+   `getEffective` implement both effects now; the Permissions tab v1 renders ADD toggles only.
+   Enabling BLOCK later needs no schema change.
+4. **Identity resolution — implementer's call (not user-facing):** use the cheapest reliable
+   token→userId path that does **not** read the token's `authorities` claim (verified JWT decode
+   preferred; introspection fallback). Decide in Phase 2.1.
