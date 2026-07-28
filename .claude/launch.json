@@ -1,0 +1,149 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "lol-frontend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/life-of-a-loan",
+        "run",
+        "dev"
+      ],
+      "port": 3000
+    },
+    {
+      "name": "lf-iq-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "/Users/apple/Projects/agentflow/lf-iq", "run", "dev"],
+      "port": 3000,
+      "autoPort": true
+    },
+    {
+      "name": "lfiq-login-nav-tabs",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lfiq-login-nav-tabs",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3021"
+      ],
+      "port": 3021
+    },
+    {
+      "name": "lfh-loan-products",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-loan-products-followup",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3011"
+      ],
+      "port": 3011
+    },
+    {
+      "name": "lfh-best-price",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/lf-homepage",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3012"
+      ],
+      "port": 3012
+    },
+    {
+      "name": "lo-best-price",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lo-best-price",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3013"
+      ],
+      "port": 3013
+    },
+    {
+      "name": "lfh-reverse-equity",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-reverse-equity",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3014"
+      ],
+      "port": 3014
+    },
+    {
+      "name": "lo-reverse-equity",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lo-reverse-equity",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3015"
+      ],
+      "port": 3015
+    },
+    {
+      "name": "lfh-becoming-lo",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/lf-homepage",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3016"
+      ],
+      "port": 3016
+    },
+    {
+      "name": "lfh-after-party",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-after-party",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3017"
+      ],
+      "port": 3017
+    },
+    {
+      "name": "lfh-pasadena-img",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-pasadena-img",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3018"
+      ],
+      "port": 3018
+    }
+  ]
+}
