@@ -92,7 +92,15 @@ Reference files (read before implementing):
 - [ ] 4.3 (depends 4.2) **Verify no central residue** (removal already done in Phase 2.5 —
   clean-cut): confirm `grep -r "rbac/validate\|admin/rbac\|LOL_RBAC_ADMIN_TOKEN" src` is empty on
   `master` after the feature merges; delete `src/controller/lol-permissions.js` if now unused.
-- [ ] 4.4 (depends 4.3) **Supersede/close beads** `agentflow-lxst` (central enforcement),
+- [ ] 4.4 (depends 4.2b) **FINAL purity step — cut the `NO_LOL_ROLE` central gate** (design §8.5).
+  Only after flag ON + seed verified in prod: (a) audit that EVERY `lolConfigAuth`-protected route
+  is catalogued (has a permission code) — because once the gate is gone, `evaluate()` allows any
+  uncatalogued route to any authenticated user; add any missing catalog entries first. (b) Make
+  `resolveActor` identity-only (drop the `NO_LOL_ROLE` throw; membership = has a Mongo grant).
+  (c) Retire `src/scripts/lol-admin-seed.js` + `src/scripts/lol-rbac-setup.js` (central-push,
+  replaced by `lol-rbac-seed.js`); confirm `grep -rn "admin/rbac\|rbac/users" src` is fully empty.
+  Promote through to prod branches.
+- [ ] 4.5 (depends 4.4) **Supersede/close beads** `agentflow-lxst` (central enforcement),
   `agentflow-3ryp` (central admin proxy = moso-aid#84, closed), and the central portions of
   `agentflow-akjk` / `agentflow-baxv` / `agentflow-ngli`; update their status/notes.
 

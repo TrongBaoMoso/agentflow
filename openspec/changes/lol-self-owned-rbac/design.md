@@ -206,3 +206,15 @@ central proxies in `lol-rbac.js`.
 4. **Identity resolution — implementer's call (not user-facing):** use the cheapest reliable
    token→userId path that does **not** read the token's `authorities` claim (verified JWT decode
    preferred; introspection fallback). Decide in Phase 2.1.
+5. **Central membership gate `NO_LOL_ROLE` — RESOLVED: cut it fully (end-state).** Faithful
+   "central = IdP only": `resolveActor` becomes **identity-only** (drop the `NO_LOL_ROLE` throw);
+   LOL membership = "has a grant in `lifeofloan_rbac_user_grants`". The central-push provisioning
+   scripts (`lol-admin-seed.js`, `lol-rbac-setup.js`) are **retired** (replaced by the Mongo seed
+   `lol-rbac-seed.js`).
+   - **Sequencing (safety):** `NO_LOL_ROLE` is the ONLY access gate while `LOL_RBAC_ENFORCE` is
+     OFF, so it must be dropped **only as the FINAL cutover step, after flag ON + grants seeded**.
+     Phase 2 (PR #86) correctly KEEPS `NO_LOL_ROLE` for now.
+   - **Correctness precondition:** before dropping it, **every** `lolConfigAuth`-protected route
+     must be catalogued (have a permission code) — because with the gate gone, `evaluate()` returns
+     ALLOW for any uncatalogued route to any authenticated central user. Audit the route table vs
+     the catalog as part of that step.
