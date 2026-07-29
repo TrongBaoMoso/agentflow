@@ -32,44 +32,30 @@ File `lol-admin-batch.json` (flow cũ) gán **cả 12 = ADMIN**. Design mới đ
 
 Seed lúc flag OFF không ảnh hưởng gì (code prod chưa đọc collection này). Làm trước để data sẵn sàng.
 
-### 1a. Resolve 12 email → central userId (prod), xuất ra grants file mới
+### 1a. Resolve email → central userId (prod), xuất ra grants file mới
 
+Dùng script `src/scripts/lol-build-prod-grants.mjs` (đọc danh sách email từ file input **gitignored**, resolve từng `userId` qua central, ghi ra grants file). **Không nhúng email/PII vào repo.**
+
+**Input file** `src/data/lol-prod-users.json` (gitignored — chứa email thật). Shape:
+```json
+[
+  { "email": "a@example.com", "role": "ADMIN" },
+  { "email": "b@example.com", "role": "EDITOR", "overrides": [ { "code": "LOL_TASK_DELETE", "effect": "ADD" } ] }
+]
+```
+> Option (A) = tất cả `"role": "ADMIN"`. Option (B) = đổi 9 người sang `"EDITOR"` + thêm `overrides` như trên.
+
+**Chạy** (đặt 2 biến env với giá trị PROD thật rồi chạy 1 lệnh):
 ```bash
 cd /Users/apple/Projects/agentflow/moso-aid
-
-# Cần: PROD gateway URL + 1 central admin bearer token (token của bạn/Kat, quyền đọc user-svc)
-export PROD_GATEWAY='https://<PROD_GATEWAY_HOST>'        # vd gateway prod của LF
-export CENTRAL_TOKEN='<central-admin-bearer>'            # token đọc user-svc/by-email
-
-# Matrix: mặc định Option (A) = tất cả ADMIN. Muốn (B) thì sửa ROLE/OVERRIDE bên dưới.
-node --input-type=module <<'EOF'
-const base = process.env.PROD_GATEWAY, tok = process.env.CENTRAL_TOKEN
-// Option (A): all ADMIN. Đổi sang (B) bằng cách set EDITORS = [...emails] và gán overrides.
-const USERS = [
-  ['trongthuan@gmail.com','ADMIN'], ['jesicaendo@gmail.com','ADMIN'], ['han.pnk512@gmail.com','ADMIN'],
-  ['duy.huynh.vcr@gmail.com','ADMIN'], ['syleevn@gmail.com','ADMIN'], ['dangquynhnhu2511@gmail.com','ADMIN'],
-  ['lminhtu95@gmail.com','ADMIN'], ['isacasno@gmail.com','ADMIN'], ['truonghai.jr@gmail.com','ADMIN'],
-  ['hophuongbaongoc110@gmail.com','ADMIN'], ['thucduyen97@gmail.com','ADMIN'], ['7nguyenngochai@gmail.com','ADMIN'],
-]
-const out = []
-for (const [email, role] of USERS) {
-  const r = await fetch(`${base}/user-svc/api/v1/users/by-email?email=${encodeURIComponent(email)}`,
-    { headers: { Authorization: `Bearer ${tok}` } })
-  if (!r.ok) { console.error(`FAIL ${email}: ${r.status} ${await r.text()}`); process.exit(1) }
-  const p = (await r.json())?.payload ?? {}
-  const userId = p.user_id ?? p.id
-  if (!userId) { console.error(`FAIL ${email}: no userId`); process.exit(1) }
-  // Option (B): nếu role==='EDITOR' thêm overrides:[{code:'LOL_TASK_DELETE',effect:'ADD'}]
-  out.push({ userId: String(userId), email, roles: [role], overrides: [] })
-  console.error(`ok  ${email} -> ${userId} (${role})`)
-}
-const fs = await import('node:fs')
-fs.writeFileSync('src/data/lol-rbac-grants.prod.json', JSON.stringify(out, null, 2))
-console.error(`\nWrote src/data/lol-rbac-grants.prod.json (${out.length} users)`)
-EOF
+export PROD_GATEWAY='https://<PROD_GATEWAY_HOST>'    # origin gateway prod LF (KHÔNG có / ở cuối)
+export CENTRAL_TOKEN='<central-admin-bearer>'        # token có quyền đọc user-svc/by-email
+node src/scripts/lol-build-prod-grants.mjs
 ```
+- In ra từng dòng `ok <email> -> <userId> (ADMIN)`, cuối cùng `Wrote src/data/lol-rbac-grants.prod.json (12 users)`.
+- **Fail-fast:** nếu 1 email không resolve được → KHÔNG ghi file, liệt kê email lỗi để bạn sửa rồi chạy lại (tránh seed thiếu admin).
 
-> `*.prod.json` phải gitignored (PII). Kiểm tra: `git check-ignore src/data/lol-rbac-grants.prod.json` phải in ra path. Nếu chưa, thêm vào `.gitignore`.
+> Verify PII an toàn: `git check-ignore src/data/lol-rbac-grants.prod.json src/data/lol-prod-users.json` phải in ra cả 2 path (đều ignored).
 
 ### 1b. Seed vào Mongo PROD — **y hệt cách staging**
 
