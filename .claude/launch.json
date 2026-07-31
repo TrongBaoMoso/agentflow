@@ -190,6 +190,18 @@
       "port": 3031
     },
     {
+      "name": "mockup-static",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "3041",
+        "--directory",
+        "/Users/apple/Projects/agentflow/openspec/changes/lol-permissions-bulk-assign"
+      ],
+      "port": 3041
+    },
+    {
       "name": "lo-footer-contact",
       "runtimeExecutable": "npm",
       "runtimeArgs": [

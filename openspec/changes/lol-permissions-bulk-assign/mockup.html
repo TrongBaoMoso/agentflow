@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LOL Permissions — bulk assign / unassign (mockup)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  :root{
+    --bg:#FBF6EC; --ink:#161412; --ink2:#3A342C; --muted:#5A5142; --muted2:#8A7E6C;
+    --muted3:#9A8F7C; --faint:#B3A78F; --line:#EDE4D4; --line5:#F5EFE3; --band:#FCFAF5;
+    --accent:#F36F23; --accent-ink:#C2410C; --accent-tint:#FFF0E2; --accent-line:#F7D9BE;
+    --danger:#B91C1C; --danger-bg:#FEF2F2; --danger-line:#F6D5D5;
+    --mono:ui-monospace,Menlo,Consolas,monospace;
+  }
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  button{font-family:inherit}
+  .scroll::-webkit-scrollbar{width:10px}
+  .scroll::-webkit-scrollbar-thumb{background:#E3D7BF;border-radius:999px;border:3px solid #fff}
+
+  /* ── guide ─────────────────────────────────────────────── */
+  .guide{position:fixed;right:20px;bottom:20px;z-index:200;max-width:290px;background:var(--ink);color:#fff;
+    border-radius:14px;padding:14px 16px;box-shadow:0 18px 44px rgba(22,20,18,.3);font-size:12.5px;line-height:1.55}
+  .guide.hid{display:none}
+  .guide .gx{position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:50%;border:none;background:transparent;color:#8C8378;cursor:pointer;display:grid;place-items:center}
+  .guide .gx:hover{background:#2C2823;color:#fff}
+  .reopen{position:fixed;right:20px;bottom:20px;z-index:200;display:none;height:34px;padding:0 15px;border-radius:999px;border:none;
+    background:var(--ink);color:#fff;font-size:12.5px;font-weight:600;cursor:pointer;box-shadow:0 10px 26px rgba(22,20,18,.28)}
+  .reopen.show{display:block}
+  .guide b{display:block;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#F9A66C;margin-bottom:7px;font-family:var(--mono);padding-right:22px}
+  .guide ol{margin:0;padding-left:16px}
+  .guide li{margin-bottom:5px}
+  .guide li:last-child{margin-bottom:0}
+
+  /* ── chrome ────────────────────────────────────────────── */
+  header.top{position:sticky;top:0;z-index:30;background:rgba(251,246,236,.92);border-bottom:1px solid var(--line);backdrop-filter:blur(6px)}
+  .topin{max-width:1360px;margin:0 auto;padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between}
+  .mark{display:flex;align-items:center;gap:10px}
+  .mark span:first-child{width:26px;height:26px;border-radius:7px;background:var(--accent);display:grid;place-items:center;color:#fff;font-weight:800;font-size:13px}
+  .mark span:last-child{font-weight:800;letter-spacing:-.4px;font-size:15px}
+  nav.nv{display:flex;gap:26px;font-size:13.5px;font-weight:500;color:var(--ink2)}
+
+  main{max-width:1360px;margin:0 auto;padding:44px 40px 140px}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:1.4px;color:var(--muted2)}
+  .eyebrow i{width:18px;height:2px;background:var(--accent);display:inline-block}
+  h1{font-size:44px;font-weight:800;letter-spacing:-1.6px;line-height:1.06;margin:14px 0 0}
+  .sub{font-size:15px;color:var(--muted);margin:11px 0 0;max-width:620px;line-height:1.6}
+
+  .tabs{display:flex;gap:28px;margin-top:32px;border-bottom:1px solid #E9DFCC}
+  .tabs span{display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:600;padding:0 2px 14px;color:var(--muted2)}
+  .tabs .on{color:var(--accent-ink);border-bottom:2.5px solid var(--accent);margin-bottom:-1px}
+  .cnt{font-family:var(--mono);font-size:11px;border-radius:999px;padding:2px 9px;background:var(--line5);color:var(--muted2)}
+
+  /* ── toolbar ───────────────────────────────────────────── */
+  .toolbar{display:flex;align-items:center;gap:14px;margin-top:24px;flex-wrap:wrap}
+  .search{position:relative;flex:1;min-width:250px;max-width:390px}
+  .search svg{position:absolute;left:14px;top:50%;margin-top:-8px;width:16px;height:16px}
+  .search input{width:100%;height:42px;padding:0 14px 0 40px;border-radius:999px;border:1px solid #E3D7BF;background:#fff;font-size:14px;color:var(--ink);outline:none}
+  .search input:focus{border-color:var(--accent)}
+  .pills{display:flex;align-items:center;gap:6px;padding:4px;border-radius:999px;background:var(--line5);border:1px solid var(--line)}
+  .pills button{border:none;cursor:pointer;font-size:12.5px;font-weight:600;padding:7px 15px;border-radius:999px;background:transparent;color:var(--muted2);transition:.15s}
+  .pills button:hover{color:var(--ink2)}
+  .pills button.on{background:#fff;color:var(--accent-ink);box-shadow:0 1px 2px rgba(80,55,20,.06)}
+  .pills em{font-style:normal;font-variant-numeric:tabular-nums;opacity:.65}
+  .shown{margin-left:auto;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--muted2)}
+  .btn{height:42px;padding:0 20px;border-radius:999px;border:none;background:var(--accent);color:#fff;font-size:13.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:.15s}
+  .btn:hover{background:#C2591A}
+  .btn:disabled{background:#E8DCC6;color:#A99A82;cursor:not-allowed}
+  .btn.ghost{background:#fff;border:1px solid #E3D7BF;color:var(--ink2)}
+  .btn.ghost:hover{border-color:var(--accent);background:#fff}
+  .btn.sm{height:34px;padding:0 15px;font-size:12.5px}
+  .btn.danger{background:#fff;border:1px solid var(--danger-line);color:var(--danger)}
+  .btn.danger:hover{background:var(--danger-bg);border-color:var(--danger)}
+  .btn.dangerSolid{background:var(--danger);border:none;color:#fff}
+  .btn.dangerSolid:hover{background:#991B1B}
+
+  /* ── table ─────────────────────────────────────────────── */
+  .card{margin-top:16px;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .cols{display:grid;grid-template-columns:34px minmax(0,1.6fr) 112px minmax(0,152px) 92px 20px;align-items:center;gap:16px}
+  .thead{padding:12px 22px;background:var(--band);border-bottom:1px solid var(--line);font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.09em;color:var(--muted3)}
+  .row{padding:13px 22px;border-bottom:1px solid var(--line5);cursor:pointer;transition:background .12s}
+  .row:last-child{border-bottom:none}
+  .row:hover{background:#FFF6EC}
+  .row.sel{background:#FFF9F2}
+  .who{display:flex;align-items:center;gap:13px;min-width:0}
+  .av{width:38px;height:38px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:13px;font-weight:700;color:#fff}
+  .nm{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .em{display:block;font-size:12.5px;color:var(--muted2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rolechip{justify-self:start;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.06em;padding:4px 11px;border-radius:999px;border:1px solid}
+  .r-admin{background:#FFF0E2;color:#C2410C;border-color:#F7D9BE}
+  .r-editor{background:#EEF4FF;color:#2B4FA8;border-color:#D3E0FA}
+  .ovd{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .tag{font-size:11.5px;font-weight:600;border-radius:999px;padding:3px 9px;border:1px solid}
+  .t-add{color:#15803D;background:#EFFAF1;border-color:#CDEBD5}
+  .t-blk{color:var(--danger);background:var(--danger-bg);border-color:var(--danger-line)}
+  .none{font-size:12.5px;color:var(--faint)}
+  .eff{text-align:right;font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--ink2);font-variant-numeric:tabular-nums}
+  .eff i{font-style:normal;color:var(--faint)}
+  .chev{width:16px;height:16px;color:#C7BAA2}
+  .nmls{flex:none;font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent-ink);background:var(--accent-tint);border-radius:999px;padding:2px 8px}
+
+  /* checkbox */
+  .cb{width:19px;height:19px;border-radius:5px;border:1.5px solid #DDD1B9;background:#fff;display:grid;place-items:center;cursor:pointer;flex:none;transition:.12s}
+  .cb:hover{border-color:var(--accent)}
+  .cb.on{background:var(--accent);border-color:var(--accent)}
+  .cb.mid{background:var(--accent);border-color:var(--accent)}
+  .cb.off{opacity:.4;cursor:not-allowed;background:var(--line5)}
+  .cb svg{width:12px;height:12px;display:none}
+  .cb.on svg{display:block}
+  .cb i{display:none;width:9px;height:2.5px;border-radius:2px;background:#fff}
+  .cb.mid i{display:block}
+  .cb.mid svg{display:none}
+
+  /* bulk bar */
+  .bulk{display:flex;align-items:center;gap:12px;padding:10px 22px;background:#FFF3E4;border-bottom:1px solid var(--accent-line)}
+  .bulk .n{font-size:13px;font-weight:700;color:var(--accent-ink)}
+  .bulk .names{font-size:12.5px;color:var(--muted);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+  select.sel{height:34px;padding:0 10px;border-radius:8px;border:1px solid #E3D7BF;background:#fff;font-size:12.5px;font-weight:600;color:var(--ink);cursor:pointer;outline:none}
+  .x{width:30px;height:30px;border-radius:50%;border:none;background:transparent;color:var(--muted2);cursor:pointer;display:grid;place-items:center}
+  .x:hover{background:#F7E4CE;color:var(--ink)}
+
+  /* tooltip */
+  .tip{position:relative}
+  .tip:hover::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%);
+    background:var(--ink);color:#fff;font-size:11.5px;font-weight:500;padding:6px 10px;border-radius:7px;white-space:nowrap;z-index:60;box-shadow:0 6px 18px rgba(22,20,18,.24)}
+
+  /* ── modal ─────────────────────────────────────────────── */
+  .scrim{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:32px;background:rgba(22,20,18,.34)}
+  .scrim.open{display:flex}
+  .modal{width:760px;max-width:100%;background:#fff;border-radius:18px;box-shadow:0 30px 70px rgba(80,55,20,.24);display:flex;flex-direction:column;overflow:hidden}
+  .mhead{display:flex;align-items:flex-start;gap:16px;padding:22px 24px 18px;border-bottom:1px solid var(--line)}
+  .mtitle{font-size:18px;font-weight:700;letter-spacing:-.3px}
+  .mdesc{font-size:13px;color:var(--muted2);margin-top:3px}
+  .msearch{padding:16px 24px;background:var(--band);border-bottom:1px solid var(--line);position:relative}
+  .msearch svg{position:absolute;left:38px;top:50%;margin-top:-8px;width:16px;height:16px}
+  .msearch input{width:100%;height:42px;padding:0 14px 0 40px;border-radius:999px;border:1px solid #E3D7BF;background:#fff;font-size:14px;outline:none}
+  .msearch input:focus{border-color:var(--accent)}
+  .mlist{height:330px;overflow-y:auto}
+  .drow{display:grid;grid-template-columns:19px 38px minmax(0,1fr) auto;align-items:center;gap:14px;padding:11px 24px;border-bottom:1px solid var(--line5);cursor:pointer;transition:background .12s}
+  .drow:hover{background:#FFF6EC}
+  .drow.on{background:#FFF9F2}
+  .drow.dis{opacity:.55;cursor:not-allowed;background:#FCFAF5}
+  .drow.dis:hover{background:#FCFAF5}
+  .inlol{flex:none;font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.06em;color:var(--accent-ink);background:var(--accent-tint);border:1px solid var(--accent-line);border-radius:999px;padding:2px 8px}
+  .mpager{display:flex;align-items:center;gap:12px;padding:11px 24px;border-top:1px solid var(--line);background:var(--band);flex-wrap:wrap}
+  .mpager .rng{font-size:12.5px;color:var(--muted2);font-variant-numeric:tabular-nums}
+  .pg{min-width:30px;height:30px;padding:0 7px;border-radius:8px;font-family:var(--mono);font-size:12px;font-weight:600;border:1px solid #E3D7BF;background:#fff;color:var(--muted);cursor:pointer;font-variant-numeric:tabular-nums}
+  .pg:hover{border-color:var(--accent)}
+  .pg.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .mfoot{display:flex;align-items:center;gap:12px;padding:15px 24px;border-top:1px solid var(--line);background:#fff;flex-wrap:wrap}
+  .selsum{min-width:0;flex:1;font-size:12.5px;color:var(--muted2);line-height:1.45}
+  .selsum b{display:block;color:var(--ink);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lbl{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.09em;color:var(--muted3)}
+  select.role{height:38px;padding:0 12px;border-radius:8px;border:1px solid #E3D7BF;background:#fff;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;outline:none}
+  select.role.empty{color:var(--muted3);border-color:var(--accent);box-shadow:0 0 0 3px rgba(243,111,35,.12)}
+
+  /* confirm */
+  .confirm{width:520px;max-width:100%;background:#fff;border-radius:18px;box-shadow:0 30px 70px rgba(80,55,20,.24);padding:26px 26px 20px}
+  .cicon{width:44px;height:44px;border-radius:12px;background:var(--danger-bg);border:1px solid var(--danger-line);display:grid;place-items:center;color:var(--danger)}
+  .clist{margin:16px 0 0;padding:12px 14px;background:var(--band);border:1px solid var(--line);border-radius:10px;font-size:13px;color:var(--ink2);line-height:1.7}
+  .note{margin-top:14px;font-size:13px;color:var(--muted);line-height:1.6}
+  .note b{color:var(--ink)}
+
+  /* toast */
+  .toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(20px);z-index:150;display:flex;align-items:center;gap:10px;
+    padding:12px 20px;border-radius:999px;background:var(--ink);color:#fff;font-size:13.5px;font-weight:500;box-shadow:0 12px 32px rgba(22,20,18,.24);
+    opacity:0;pointer-events:none;transition:.22s}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="topin">
+    <div class="mark"><span>LF</span><span>Loan Factory</span></div>
+    <nav class="nv"><span>Life of a Loan</span><span>Academy</span><span style="color:var(--accent-ink);font-weight:600">Configuration</span></nav>
+  </div>
+</header>
+
+<main>
+  <span class="eyebrow"><i></i>ADMIN · CONFIGURATION</span>
+  <h1>Roles &amp; Tasks</h1>
+  <p class="sub">Set up the roles, stages, and tasks that power the Life of a Loan reference. Changes appear on the main page once saved.</p>
+
+  <div class="tabs">
+    <span>Tasks<span class="cnt">105</span></span>
+    <span>Roles<span class="cnt">11</span></span>
+    <span>Stages<span class="cnt">8</span></span>
+    <span>History</span>
+    <span class="on">Permissions</span>
+  </div>
+
+  <div class="toolbar">
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#9A8F7C" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input placeholder="Search by name, company email, or role…">
+    </div>
+    <div class="pills" id="pills"></div>
+    <span class="shown" id="shown"></span>
+    <button class="btn" onclick="openAdd()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px"><circle cx="9" cy="8" r="3.4"/><path d="M3.5 19c0-3 2.5-4.6 5.5-4.6 1 0 2 .2 2.8.5"/><path d="M17.5 14.5v6M14.5 17.5h6"/></svg>
+      Add user
+    </button>
+  </div>
+
+  <div class="card">
+    <div id="tableHead"></div>
+    <div id="rows"></div>
+  </div>
+</main>
+
+<!-- Add user modal -->
+<div class="scrim" id="addScrim" onclick="if(event.target===this)closeAdd()">
+  <div class="modal">
+    <div class="mhead">
+      <span style="flex:1;min-width:0">
+        <span class="mtitle" style="display:block">Add users</span>
+        <span class="mdesc" style="display:block">Grant Loan Factory users access to Life-of-a-Loan configuration.</span>
+      </span>
+      <button class="x" onclick="closeAdd()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="msearch">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#9A8F7C" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="dq" placeholder="Search by name, email, or NMLS…" oninput="renderDir()">
+    </div>
+    <div class="mlist scroll" id="dlist"></div>
+    <div class="mpager" id="dpager"></div>
+    <div class="mfoot">
+      <span class="selsum" id="selsum"></span>
+      <span style="display:flex;align-items:center;gap:8px">
+        <label class="lbl">ACCESS ROLE</label>
+        <select class="role" id="addRole" onchange="renderFoot()">
+          <option value="">Select role…</option>
+          <option value="ADMIN">Admin</option>
+          <option value="EDITOR">Editor</option>
+        </select>
+      </span>
+      <button class="btn ghost" onclick="closeAdd()">Cancel</button>
+      <button class="btn" id="addBtn" onclick="doAdd()">Add users</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm remove -->
+<div class="scrim" id="rmScrim" onclick="if(event.target===this)closeRm()">
+  <div class="confirm">
+    <div style="display:flex;gap:14px;align-items:flex-start">
+      <span class="cicon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 9v5M12 17.5v.5"/><path d="M10.3 3.9 2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg></span>
+      <span style="flex:1;min-width:0">
+        <span class="mtitle" style="display:block" id="rmTitle">Remove access</span>
+        <span class="mdesc" style="display:block">Hành động này thu hồi quyền Config của những người dưới đây.</span>
+      </span>
+    </div>
+    <div class="clist" id="rmList"></div>
+    <p class="note">Họ sẽ <b>quay về Viewer</b> — chỉ xem được homepage, không vào được <b>/config</b>. Có hiệu lực ngay ở request kế tiếp. Bạn có thể cấp lại bất cứ lúc nào.</p>
+    <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px">
+      <button class="btn ghost" onclick="closeRm()">Cancel</button>
+      <button class="btn dangerSolid" onclick="doRemove()">Remove access</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="m5 13 4 4L19 7"/></svg><span id="toastText"></span></div>
+
+<button class="reopen" id="reopen" onclick="document.getElementById('guide').classList.remove('hid');this.classList.remove('show')">? Hướng dẫn</button>
+<div class="guide" id="guide">
+  <button class="gx" onclick="document.getElementById('guide').classList.add('hid');document.getElementById('reopen').classList.add('show')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  <b>Thử mockup</b>
+  <ol>
+    <li>Tick vài dòng → <em>bulk bar</em> hiện, đổi role hoặc Remove access</li>
+    <li>Tick ô ở header → chọn tất cả (bỏ qua dòng của bạn)</li>
+    <li>Hover dòng <b>Bao Trinh (you)</b> → checkbox bị chặn</li>
+    <li>Bấm <b>Add user</b> → tick nhiều người, sang trang 2 tick thêm, chọn role rồi Add</li>
+  </ol>
+</div>
+
+<script>
+const AV = ['#B24E1E','#2B6CB0','#4338CA','#C53030','#3E6B48','#8A3FFC','#C05A17','#0E7490'];
+const TOTAL_PERMS = 24;
+const ME = 'u-me';
+
+let users = [
+  {id:'u-me',   name:'Bao Trinh',      email:'bao.trinh@loanfactory.com',   role:'ADMIN',  add:2, blk:0, eff:24, nmls:'', me:true},
+  {id:'u2', name:'Hien Nguyen',    email:'hien.nguyen@loanfactory.com', role:'ADMIN',  add:0, blk:0, eff:24, nmls:''},
+  {id:'u3', name:'Chau Tran',      email:'chau.tran@loanfactory.com',   role:'EDITOR', add:1, blk:0, eff:19, nmls:'1854221'},
+  {id:'u4', name:'Luis Pham',      email:'luis.pham@loanfactory.com',   role:'EDITOR', add:0, blk:2, eff:16, nmls:''},
+  {id:'u5', name:'Nicole Cao',     email:'nicole.cao@loanfactory.com',  role:'EDITOR', add:0, blk:0, eff:18, nmls:'2093117'},
+  {id:'u6', name:'Ken Do',         email:'ken.do@loanfactory.com',      role:'EDITOR', add:3, blk:0, eff:21, nmls:''},
+  {id:'u7', name:'Maria Lopez',    email:'maria.lopez@loanfactory.com', role:'ADMIN',  add:0, blk:1, eff:23, nmls:''},
+];
+
+const FIRST=['Thanh','Minh','Anh','Tuan','Linh','Duc','Quang','Trang','Khanh','Nam','Vy','Benjamin','Jennifer','Nocha'];
+const LAST=['Nguyen','Tran','Le','Pham','Hoang','Vu','Dang','Bui','Do','Ho','Ngo','Duong'];
+let directory = [];
+for (let i=0;i<26;i++){
+  const n = FIRST[i%FIRST.length]+' '+LAST[(i*7)%LAST.length];
+  directory.push({
+    id:'d'+i, name:n,
+    email:n.toLowerCase().replace(/\s+/g,'.')+(i+1)+'@loanfactory.com',
+    nmls: i%4===0 ? String(1500000+i*137) : ''
+  });
+}
+// seed a few already-granted rows into the directory
+directory[2] = {id:'u3', name:'Chau Tran',  email:'chau.tran@loanfactory.com',  nmls:'1854221', inLol:'Editor'};
+directory[5] = {id:'u2', name:'Hien Nguyen',email:'hien.nguyen@loanfactory.com',nmls:'',        inLol:'Admin'};
+
+let picked = new Set();       // table selection
+let dpicked = new Set();      // modal selection
+let dpage = 0;
+const DSIZE = 10;
+let rolePill = 'ALL';
+let rmTargets = [];
+
+const ini = n => n.trim().split(/\s+/).map(p=>p[0]).slice(0,2).join('').toUpperCase();
+const avbg = id => AV[[...id].reduce((a,c)=>a+c.charCodeAt(0),0)%AV.length];
+const check = `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg><i></i>`;
+
+/* ── pills ─────────────────────────────────────────────── */
+function renderPills(){
+  const counts = {ALL:users.length, ADMIN:users.filter(u=>u.role==='ADMIN').length, EDITOR:users.filter(u=>u.role==='EDITOR').length};
+  document.getElementById('pills').innerHTML = [['ALL','All'],['ADMIN','Admin'],['EDITOR','Editor']]
+    .map(([c,l])=>`<button class="${rolePill===c?'on':''}" onclick="setPill('${c}')">${l} <em>${counts[c]}</em></button>`).join('');
+}
+function setPill(c){ rolePill=c; picked.clear(); render(); }
+
+const visible = () => rolePill==='ALL' ? users : users.filter(u=>u.role===rolePill);
+
+/* ── table ─────────────────────────────────────────────── */
+function renderHead(){
+  const vis = visible().filter(u=>!u.me);
+  const all = vis.length>0 && vis.every(u=>picked.has(u.id));
+  const some = vis.some(u=>picked.has(u.id)) && !all;
+
+  if (picked.size > 0){
+    const names = users.filter(u=>picked.has(u.id)).map(u=>u.name);
+    document.getElementById('tableHead').innerHTML = `
+      <div class="bulk">
+        <span class="cb ${all?'on':'mid'}" onclick="toggleAll()">${check}</span>
+        <span class="n">${picked.size} selected</span>
+        <span class="names">${names.slice(0,3).join(', ')}${names.length>3?` +${names.length-3} nữa`:''}</span>
+        <span style="display:flex;align-items:center;gap:8px">
+          <label class="lbl">CHANGE ROLE TO</label>
+          <select class="sel" onchange="bulkRole(this.value);this.value=''">
+            <option value="">—</option><option value="ADMIN">Admin</option><option value="EDITOR">Editor</option>
+          </select>
+        </span>
+        <button class="btn sm danger" onclick="askRemove()">Remove access</button>
+        <button class="x" onclick="picked.clear();render()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>`;
+  } else {
+    document.getElementById('tableHead').innerHTML = `
+      <div class="cols thead">
+        <span class="cb ${all?'on':(some?'mid':'')}" onclick="toggleAll()">${check}</span>
+        <span>MEMBER</span><span>ACCESS ROLE</span><span>OVERRIDES</span>
+        <span style="text-align:right">EFFECTIVE</span><span></span>
+      </div>`;
+  }
+}
+
+function renderRows(){
+  const vis = visible();
+  document.getElementById('rows').innerHTML = vis.map(u=>{
+    const on = picked.has(u.id);
+    const ov = u.add===0 && u.blk===0
+      ? `<span class="none">No overrides</span>`
+      : `${u.add?`<span class="tag t-add">+${u.add} added</span>`:''}${u.blk?`<span class="tag t-blk">−${u.blk} blocked</span>`:''}`;
+    const cb = u.me
+      ? `<span class="tip" data-tip="Bạn không thể thay đổi quyền của chính mình"><span class="cb off">${check}</span></span>`
+      : `<span class="cb ${on?'on':''}" onclick="event.stopPropagation();toggle('${u.id}')">${check}</span>`;
+    return `<div class="cols row ${on?'sel':''}">
+      ${cb}
+      <div class="who">
+        <span class="av" style="background:${avbg(u.id)}">${ini(u.name)}</span>
+        <span style="min-width:0">
+          <span style="display:flex;align-items:center;gap:8px">
+            <span class="nm">${u.name}${u.me?' <span style="color:var(--muted2);font-weight:500">(you)</span>':''}</span>
+            ${u.nmls?`<span class="nmls">NMLS ${u.nmls}</span>`:''}
+          </span>
+          <span class="em">${u.email}</span>
+        </span>
+      </div>
+      <span class="rolechip ${u.role==='ADMIN'?'r-admin':'r-editor'}">${u.role}</span>
+      <span class="ovd">${ov}</span>
+      <span class="eff">${u.eff}<i>/${TOTAL_PERMS}</i></span>
+      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+    </div>`;
+  }).join('');
+}
+
+function toggle(id){ picked.has(id)?picked.delete(id):picked.add(id); render(); }
+function toggleAll(){
+  const vis = visible().filter(u=>!u.me);
+  const all = vis.length>0 && vis.every(u=>picked.has(u.id));
+  if (all) vis.forEach(u=>picked.delete(u.id)); else vis.forEach(u=>picked.add(u.id));
+  render();
+}
+function bulkRole(r){
+  if(!r) return;
+  const n = picked.size;
+  users = users.map(u => picked.has(u.id) ? {...u, role:r, eff: r==='ADMIN'?24:18, add:0, blk:0} : u);
+  picked.clear(); render();
+  toast(`Changed ${n} user${n>1?'s':''} to ${r[0]+r.slice(1).toLowerCase()}`);
+}
+function askRemove(){ rmTargets = users.filter(u=>picked.has(u.id)); openRm(); }
+function doRemove(){
+  const n = rmTargets.length;
+  const ids = new Set(rmTargets.map(u=>u.id));
+  users = users.filter(u=>!ids.has(u.id));
+  picked.clear(); closeRm(); render();
+  toast(`Removed access for ${n} user${n>1?'s':''} — back to Viewer`);
+}
+
+/* ── modal ─────────────────────────────────────────────── */
+function openAdd(){
+  dpicked.clear(); dpage=0;
+  document.getElementById('dq').value='';
+  document.getElementById('addRole').value = (rolePill==='ALL'?'':rolePill);
+  document.getElementById('addScrim').classList.add('open');
+  renderDir();
+}
+function closeAdd(){ document.getElementById('addScrim').classList.remove('open'); }
+
+const dfiltered = () => {
+  const q = document.getElementById('dq').value.trim().toLowerCase();
+  return q ? directory.filter(d=>(d.name+' '+d.email+' '+(d.nmls||'')).toLowerCase().includes(q)) : directory;
+};
+
+function renderDir(){
+  const f = dfiltered();
+  const pages = Math.max(1, Math.ceil(f.length/DSIZE));
+  if (dpage > pages-1) dpage = pages-1;
+  const start = dpage*DSIZE;
+  const slice = f.slice(start, start+DSIZE);
+
+  document.getElementById('dlist').innerHTML = slice.length ? slice.map(d=>{
+    const granted = !!d.inLol;
+    const on = dpicked.has(d.id);
+    return `<div class="drow ${granted?'dis':(on?'on':'')}" ${granted?'':`onclick="dtoggle('${d.id}')"`}>
+      <span class="cb ${granted?'off':(on?'on':'')}">${check}</span>
+      <span class="av" style="background:${avbg(d.id)}">${ini(d.name)}</span>
+      <span style="min-width:0">
+        <span style="display:flex;align-items:center;gap:8px;min-width:0">
+          <span class="nm">${d.name}</span>
+          ${d.nmls?`<span class="nmls" style="color:var(--muted2);background:var(--line5)">NMLS ${d.nmls}</span>`:''}
+          ${granted?`<span class="inlol">IN LOL · ${d.inLol}</span>`:''}
+        </span>
+        <span class="em" style="margin-top:2px">${d.email}</span>
+      </span>
+      <span style="font-size:11.5px;color:var(--faint)">${granted?'đã có quyền':''}</span>
+    </div>`;
+  }).join('') : `<div style="padding:120px 24px;text-align:center;font-size:13.5px;color:var(--muted2)">Không tìm thấy ai khớp.</div>`;
+
+  const nums=[]; for(let i=0;i<pages;i++) nums.push(i);
+  document.getElementById('dpager').innerHTML = `
+    <span style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--muted2)">Rows
+      <select class="sel" style="height:30px">
+        <option>10</option><option>25</option><option>50</option>
+      </select>
+    </span>
+    <span class="rng">${f.length?start+1:0}–${Math.min(start+DSIZE,f.length)} of ${f.length.toLocaleString()}</span>
+    <span style="margin-left:auto;display:flex;align-items:center;gap:4px">
+      <button class="pg" onclick="dgo(${dpage-1})" ${dpage===0?'disabled style="opacity:.4"':''}>‹</button>
+      ${nums.map(n=>`<button class="pg ${n===dpage?'on':''}" onclick="dgo(${n})">${n+1}</button>`).join('')}
+      <button class="pg" onclick="dgo(${dpage+1})" ${dpage>=pages-1?'disabled style="opacity:.4"':''}>›</button>
+    </span>`;
+  renderFoot();
+}
+function dgo(n){ const pages=Math.max(1,Math.ceil(dfiltered().length/DSIZE)); dpage=Math.min(Math.max(0,n),pages-1); renderDir(); }
+function dtoggle(id){ dpicked.has(id)?dpicked.delete(id):dpicked.add(id); renderDir(); }
+
+function renderFoot(){
+  const n = dpicked.size;
+  const role = document.getElementById('addRole').value;
+  const names = directory.filter(d=>dpicked.has(d.id)).map(d=>d.name);
+  document.getElementById('selsum').innerHTML = n
+    ? `<b>${n} selected</b>${names.slice(0,2).join(', ')}${names.length>2?` +${names.length-2} nữa`:''}`
+    : `<b>Chưa chọn ai</b>Tick người trong danh sách, chọn role, rồi Add.`;
+  const btn = document.getElementById('addBtn');
+  btn.textContent = n ? `Add ${n} user${n>1?'s':''}` : 'Add users';
+  btn.disabled = n===0 || !role;
+  document.getElementById('addRole').classList.toggle('empty', n>0 && !role);
+}
+
+function doAdd(){
+  const role = document.getElementById('addRole').value;
+  const added = directory.filter(d=>dpicked.has(d.id));
+  added.forEach(d=>{
+    users.push({id:d.id, name:d.name, email:d.email, role, add:0, blk:0, eff: role==='ADMIN'?24:18, nmls:d.nmls||''});
+    d.inLol = role[0]+role.slice(1).toLowerCase();
+  });
+  closeAdd(); render();
+  toast(`Added ${added.length} user${added.length>1?'s':''} as ${role[0]+role.slice(1).toLowerCase()}`);
+}
+
+/* ── confirm ───────────────────────────────────────────── */
+function openRm(){
+  document.getElementById('rmTitle').textContent = rmTargets.length>1 ? `Remove access — ${rmTargets.length} người` : 'Remove access';
+  document.getElementById('rmList').innerHTML = rmTargets.slice(0,5).map(u=>
+    `<div style="display:flex;align-items:center;gap:9px">
+      <span class="av" style="width:26px;height:26px;font-size:10px;background:${avbg(u.id)}">${ini(u.name)}</span>
+      <b style="font-weight:600">${u.name}</b>
+      <span style="color:var(--muted2);font-size:12px">${u.email}</span>
+      <span class="rolechip ${u.role==='ADMIN'?'r-admin':'r-editor'}" style="margin-left:auto">${u.role}</span>
+    </div>`).join('') + (rmTargets.length>5?`<div style="color:var(--muted2);font-size:12.5px;padding-top:4px">+${rmTargets.length-5} người nữa</div>`:'');
+  document.getElementById('rmScrim').classList.add('open');
+}
+function closeRm(){ document.getElementById('rmScrim').classList.remove('open'); }
+
+/* ── misc ──────────────────────────────────────────────── */
+let tt;
+function toast(msg){
+  document.getElementById('toastText').textContent = msg;
+  const el = document.getElementById('toast');
+  el.classList.add('show'); clearTimeout(tt);
+  tt = setTimeout(()=>el.classList.remove('show'), 2600);
+}
+function render(){
+  renderPills(); renderHead(); renderRows();
+  const vis = visible().length;
+  document.getElementById('shown').textContent = `SHOWING ${vis} OF ${users.length}`;
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeAdd(); closeRm(); } });
+render();
+</script>
+</body>
+</html>
