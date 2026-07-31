@@ -2,7 +2,7 @@
 
 > **Bối cảnh:** Yêu cầu làm mới hoàn toàn module LO Recruiting (new tech / new UI / new system) cho Tera+. Tài liệu này **chưa bàn technical stack** — chỉ trả lời: app hiện tại đau ở đâu, user gặp bất cập gì, và app mới nên đi theo hướng nào.
 >
-> **Căn cứ:** Khảo sát thực nghiệm 3 vòng trên staging viet18.com (bấm thật từng CTA, tạo record thật, chạy trọn flow tuyển 1 LO từ lead → 100% onboarded, login-as 6 role khác nhau). Chi tiết hiện trạng: [lo-recruiting-feature-review.md](lo-recruiting-feature-review.md).
+> **Căn cứ:** Khảo sát thực nghiệm 3 vòng trên staging viet18.com (bấm thật từng CTA, tạo record thật, chạy trọn flow tuyển 1 LO từ lead → 100% onboarded, login-as 6 role khác nhau) **+ 1 vòng đối chiếu read-only trên PRODUCTION www.loanfactory.com ngày 31/07/2026** (login-as 5 role thật, đo coverage trên dữ liệu thật, tra chéo tài khoản Modex Recruit thật). Chi tiết hiện trạng: [lo-recruiting-feature-review.md](lo-recruiting-feature-review.md).
 >
 > **Người thực hiện:** Bao Trinh — 07/2026
 
@@ -26,12 +26,13 @@ Mọi pain point bên dưới đều là biểu hiện của khoảng cách đó
 | Điểm chạm (clickable) trên **1 dòng** LO | **~20** | Không biết "giờ nên làm gì tiếp" |
 | Số cột bảng chính | **16–17** (phải cuộn ngang) | Thông tin quan trọng nằm ngoài viewport |
 | Role vào cùng 1 view ILO | **5** (Recruiter/HR/Onboarding/Accounting/Admin) | Không ai thấy đúng thứ mình cần |
-| Role mở được trang config công ty | **6/7** (chỉ Licensing bị chặn) | Phân quyền lỏng, gồm cả Calendly token |
+| Role mở được trang config công ty | staging **6/7** · **production 7/7** (cả Licensing) | Phân quyền lỏng, gồm cả Calendly token |
 | Độ lệch của stats panel | **~8 ngày** | Người dùng không tin số liệu |
 | Job ngầm không có thông báo hoàn thành | **~10 phút** (Modex merge, dashboard Run Update) | Làm xong không biết đã xong |
 | Nguồn lead phải hợp nhất | **6** (Modex/CSV/FB Ads/self-apply/webinar/referral) | Dedup và identity là bài toán lõi |
-| Record có dữ liệu experience/production (mẫu 100) | **2/100** — 98 record in chữ *"Check Modex"* | Quyết định offer nằm ngoài hệ thống (xem P0-17) |
-| Record trong tab "Obtained from Modex" | **9**, nhập 01/2024 | Không phải integration — là một lần import CSV cũ |
+| Record có dữ liệu experience/production (mẫu 100, RLO Company) | staging **2/100** · **production 1/100** — còn lại in chữ *"Check Modex"* | Quyết định offer nằm ngoài hệ thống (xem P0-17) |
+| Record trong tab "Obtained from Modex" | staging **9** · production **~100+** — tất cả nhập **24/01/2024** | Không phải integration — là một lần import CSV chết từ 01/2024 trên **cả hai môi trường** |
+| LO trong database Modex thật (portal LF đang trả tiền) | **1,647,676**, dữ liệu tươi đến **07/2026** | Dữ liệu để định giá offer TỒN TẠI — chỉ là app không lấy về |
 
 ---
 
@@ -83,6 +84,19 @@ Ký hiệu: **P0** = phải giải quyết ở kiến trúc app mới · **P1** 
 | Cột *NMLS* trên cùng 100 record đó | **82/100 có NMLS** → khoá tra cứu đã có sẵn, chỉ thiếu tự động hoá |
 | Nút **Sync Status** / **Update** | "Status is updating in background" / "~10 minutes" — **không báo cáo kết quả** (bao nhiêu khớp, bao nhiêu không tìm thấy NMLS) |
 
+**Kiểm chứng thêm trên PRODUCTION (www.loanfactory.com, 31/07/2026):**
+
+| Kiểm chứng | Kết quả trên production |
+|---|---|
+| Tab *Obtained from Modex* | "1-100 of over 100" record — **toàn bộ Received Date = 24/01/2024**, y hệt staging: bãi import chết ~2.5 năm. Đa số record "No email / No phone" |
+| Record `Pareetjot Thiara` (nằm trong tab Modex của LF) | tra trên Modex thật ra **"Inactive Loan Officer"** → bản import 2024 còn chứa người đã nghỉ |
+| RLO Company (filter Active), mẫu 100 dòng | **1/100 có dữ liệu experience** · 48/100 in chữ "Check Modex" · 48/100 có NMLS |
+| ILO Company, mẫu 100 dòng | 62/100 có experience **nhưng** giá trị dạng *"Experienced — Past 12 months: N, Since 2021: N"* — mốc **"Since 2021" hardcode**, đến 2026 vẫn đếm từ 2021; nguồn chủ yếu tự khai/import cũ, 52/100 có NMLS |
+| **Modex Recruit portal** (account LF đang có, do Victoria đứng tên) | **1,647,676 LO**; dữ liệu volume theo tháng **tươi đến July 2026**; quick-search **nhận NMLS** ra kết quả tức thì; profile mỗi LO có: Modex Score, số năm license, employment history 10 năm, current employer + tenure, Total Volume/Units 12 tháng, avg loan, mix VA/FHA/Conv, mix Refi/Purchase, property cities/types, transaction-level data, nút download |
+| Case study: **Roger Kube** — dòng ĐẦU TIÊN của RLO production, ô Experience in "Check Modex" | Tra NMLS `107621` trên Modex: **$103.85M volume / 138 units / 12 tháng, avg loan $752K, 15 năm license, Modex Score 100** — một high producer thứ thiệt mà hệ thống hiển thị như tờ giấy trắng |
+
+→ Kết luận chắc chắn sau khi xem cả hai môi trường: vấn đề **không phải "data Modex thiếu/sai"** như cảm nhận ban đầu — mà là **không tồn tại đường ống dữ liệu**. Dữ liệu chuẩn, tươi, đầy đủ nằm ngay sau login Modex mà công ty đang trả tiền; app chỉ giữ một bản CSV chết từ 01/2024 và in chữ "Check Modex" đẩy việc cho người.
+
 **Quy trình recruiter đang phải làm bằng tay (6 bước, ngoài hệ thống):**
 copy NMLS trong LF → mở tab Modex → **đăng nhập bằng credential riêng** → dán NMLS, search → đọc số liệu → quay lại LF *tự nhớ / tự nhập* (và thường không nhập → nên cột experience trống 98%).
 
@@ -90,7 +104,7 @@ copy NMLS trong LF → mở tab Modex → **đăng nhập bằng credential riê
 - Hệ thống **tự thừa nhận không có dữ liệu** bằng cách in chữ "Check Modex" vào ô đáng lẽ chứa dữ liệu → đẩy việc cho người, đúng nghĩa "database có UI".
 - Quyết định **tiền** (offer, comp band) đang dựa vào dữ liệu **không nằm trong hệ thống, không ai kiểm chứng lại được**: không biết ai đã tra, tra lúc nào, thấy số gì.
 - Tab Modex hiện tại **không phải integration** — nó là bãi chứa của một lần import CSV năm 2024. Gọi là "Modex integration" gây hiểu sai về năng lực hệ thống.
-- Ghi chú: trên staging, giá trị cột này ở vài record là dãy `301000 / 302000 / 305000 / 306000 / 307000` (tăng dần đều) — trông như dữ liệu seed, **không kết luận được về production**; cần Phuong xác nhận số liệu thật ngoài prod có lệch với Modex hay không.
+- Ghi chú: trên staging, giá trị cột này ở vài record là dãy `301000 / 302000 / 305000...` trông như seed data. **Đã đối chiếu production (bảng trên): production cũng đóng băng 24/01/2024** — vậy câu "data không đủ / không chính xác" của Phuong thực chất là: *toàn bộ* dữ liệu Modex trong app đã chết từ 01/2024, không phải sai lẻ tẻ.
 
 **Hướng app mới — biến "check tay" thành "verify một click":**
 1. **NMLS là first-class identifier**: validate định dạng, bắt buộc trước khi tiến sang stage Engaged, dùng làm khoá dedup và khoá tra cứu.
@@ -131,8 +145,13 @@ copy NMLS trong LF → mở tab Modex → **đăng nhập bằng credential riê
 
 ### 🟠 P1-10. Phân quyền lỏng: ai cũng vào được cấu hình công ty
 **Ai đau:** Admin, bộ phận bảo mật, và cả công ty (rủi ro).
-**Hiện tượng:** 6/7 role test được đều mở `/lo_recruiting_config` — gồm tab **Calendly (chứa personal access token)**, chuỗi email automation, Facebook Ads. HR và Accounting **xoá được** ILO toàn công ty. Recruiter chỉ-Inside không có tab Company nhưng recruiter có thêm role Outside thì lại có → ranh giới không nhất quán.
-**Hướng app mới:** RBAC theo **tác vụ** (không theo trang), tách hẳn *cấu hình hệ thống* khỏi *vận hành*; secret không hiển thị trong UI vận hành; mọi hành động phá huỷ đều có xác nhận + audit + khả năng hoàn tác.
+**Hiện tượng (staging):** 6/7 role test được đều mở `/lo_recruiting_config` — gồm tab **Calendly (chứa personal access token)**, chuỗi email automation, Facebook Ads. HR và Accounting **xoá được** ILO toàn công ty.
+**Kiểm chứng production (login-as 5 role thật, 31/07/2026):** còn tệ hơn staging —
+- **7/7 role mở được trang config** (kể cả **Licensing** — role duy nhất bị chặn trên staging), tab Calendly hiển thị đủ.
+- **Inside & Outside recruiter thấy nguyên toolbar admin trên kho RLO 106,145 record**: cả nút **Delete** lẫn **Assign recruiter** — staging thì recruiter bị ẩn các nút này.
+- Accounting & Licensing bị chặn RLO nhưng bằng **redirect im lặng** sang Marketplace/Applications (không có thông báo "bạn không có quyền").
+- **Cùng một role, quyền khác nhau giữa 2 môi trường / giữa 2 người** → bằng chứng phân quyền là **grant per-user thủ công** (menu Associates → Permissions) chồng lên role, không phải RBAC thật. Không audit được "ai có quyền gì, vì sao".
+**Hướng app mới:** RBAC theo **tác vụ** (không theo trang), tách hẳn *cấu hình hệ thống* khỏi *vận hành*; secret không hiển thị trong UI vận hành; quyền suy ra từ role — grant cá nhân là ngoại lệ có thời hạn và có audit; báo lỗi 403 trung thực thay vì redirect im lặng; mọi hành động phá huỷ đều có xác nhận + audit + khả năng hoàn tác.
 
 ### 🟠 P1-11. Impersonation một chiều
 **Ai đau:** Admin, support.

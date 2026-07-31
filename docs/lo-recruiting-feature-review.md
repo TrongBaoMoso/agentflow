@@ -235,3 +235,65 @@ Kho template **Email / SMS / Call script** theo từng status ILO (8 status), bi
 ## Phụ lục B — Tài khoản role đã dùng để test phân quyền
 
 HR: Ken Customer · Licensing: Chu Con Gi Nua Testcase · Outside+Inside Recruiter: Luis Testcase 635211 · Inside Recruiter: Nocha Hien · Onboarding Specialist: Maria Testcase · Accounting: Admin Request. (Impersonate qua Associates → Action → Login; chỉ admin có quyền này.)
+
+---
+
+## Phụ lục C — Đối chiếu PRODUCTION (www.loanfactory.com, 31/07/2026, read-only)
+
+> Vòng kiểm chứng bổ sung theo yêu cầu: login-as 5 role thật trên production, **không mutate bất kỳ record nào**. Version footer production: **3.61.0** (staging viet18.com: 3.45.0 — staging tụt ~16 version so với prod).
+
+### C.1. Quy mô dữ liệu thật
+
+| Kho | Production | Ghi chú |
+|---|---|---|
+| Recruited LO (Company) | **106,145** — Not claimed 102,715 · Claimed 11 · Archived-wrong-info 23,995 · Block display 6,267 | 97% kho chưa ai đụng tới |
+| Interested LO (Company) | **23,571** — 100% onboarded 2,596 · Onboarding 62 · Agreement signed 73 · Invited-not-onboarding 581 | |
+| Sổ "Mine" của 1 inside recruiter (Brayan) | **2,053 lead** | Không next-best-action → không thể làm xuể |
+| Sổ "Mine" của Miley (Onboarding+InsideRec) | **3,056 lead** | |
+| Tab Obtained from Modex | "1-100 of over 100", toàn bộ Received **24/01/2024** | Y hệt staging: import chết |
+
+### C.2. Ma trận phân quyền PRODUCTION (login-as thật)
+
+| Role (người thật) | ILO | RLO Company | Config (`/lo_recruiting_config`) | Modex tab |
+|---|---|---|---|---|
+| Admin (IT Team) | full | full | full | full |
+| Inside recruiter (Brayan Suarez) | Mine 2,053 + Company | **full 106K, có Delete + Assign recruiter** | **✅ mở được, đủ 5 tab kể cả Calendly** | ✅ |
+| Outside recruiter (Seth August — kiêm LO, Level 4) | Mine 0 + Company | **full 106K, có Delete + Assign recruiter** | **✅ mở được (Webinar/Calendly/FB Ads)** | — |
+| HR (Dave Hoàng) | full 23.5K + Delete + General Settings | full 106K + Delete/Assign | ✅ | ✅ (thấy cả nút Add/Update) |
+| Onboarding + InsideRec (Miley Dau) | Mine 3,056 + Company | full 106K + Delete/Assign | ✅ | — |
+| Accounting (Rosaline Pham) | full 23.5K + Delete + General Settings | ❌ **redirect im lặng** về Marketplace | ✅ | — |
+| Licensing (Dung Nguyễn) | **full 23.5K** (staging: bị chặn hoàn toàn) | ❌ redirect im lặng | **✅ (staging: bị chặn)** | ✅ |
+
+Kết luận: **7/7 role mở được config công ty trên production** (staging 6/7); recruiter trên prod nhiều quyền hơn staging (Delete/Assign trên kho 106K); Licensing trên prod nhiều quyền hơn staging. → Quyền không gắn với role mà là **grant per-user** (Associates → Permissions), drift tự do giữa người/môi trường.
+
+### C.3. Modex — kiểm chứng bằng account thật (Victoria Pham đăng nhập sẵn)
+
+- Portal **Modex Recruit**: 1,647,676 LO; filter theo transaction timeframe/địa lý/loan type/LTV...; view Volume / Monthly Avg / Avg Loan; Map view; Saved Filters; Add to List.
+- **Quick-search nhận NMLS** → ra đúng người kèm trạng thái (VD `2096661` → "Pareetjot Thiara — *Inactive Loan Officer*").
+- Profile 1 LO: NMLS, Modex Score, Attributes, employer hiện tại + địa chỉ, **Licensed Employment History (năm)**, 10-year licensing history (số company), tenure hiện tại, tab Licenses + Employment History, **Total Volume/Units 12 tháng + trend theo tháng (tươi đến 07/2026)**, avg loan, mix VA/FHA/Conventional, mix Refinance/Purchase, property cities/types, reverse-mortgage, transaction-level, nút download.
+- **Case study Roger Kube** — dòng đầu RLO production hiển thị "Check Modex": NMLS `107621` → $103.85M / 138 units / 12 tháng, avg $752K, 15 năm license, 3 company/10 năm, tenure 8 năm, Score 100.
+- URL profile Modex dạng UUID (`/recruit/loan-officers/{uuid}`) → **không deep-link được bằng NMLS** từ ngoài; muốn "1 click từ LF sang đúng profile" cần qua API/search của Modex, không ghép URL được.
+
+### C.4. Defect/quirk mới ghi nhận trên production
+
+1. **Deep-link `?labels=` + filter mặc định ẩn**: `/lo_recruiting/company?labels=test` trả **"1-1 of 0 · No results"** vì có chip filter mặc định "Recruitable" tự bật; bỏ chip mới thấy 33 record. Pagination "1-1 of 0" là chuỗi vô nghĩa.
+2. **Global search render HTML thô**: gõ "Associates" ở ô search header → dòng gợi ý hiển thị nguyên văn `<span><i class="material-icons unset-icons">help</i> How can I...</span>`.
+3. **Toast "We're experiencing technical difficulty"** bật khi mở trang Associates dù trang hoạt động bình thường (same noise như staging).
+4. **Login race**: bấm LOGIN rồi navigate ngay → login bị hủy im lặng, quay lại form (phải chờ ~10s). Người dùng bình thường sẽ tưởng sai mật khẩu.
+5. Redirect im lặng khi thiếu quyền (Accounting/Licensing mở RLO → về Marketplace/Applications, không thông báo).
+
+### C.5. Đánh giá "test account" trên production — dùng để test thật được không?
+
+Tìm thấy qua label `test`: RLO 4 record, ILO 33 record. Soi contact từng nhóm:
+
+| Nhóm | Record | Contact | Kết luận |
+|---|---|---|---|
+| ✅ An toàn để thao tác | Katie Test (RLO) · Test Check (ILO, referrer thuan@) · Test Adda ×2 · Test Testcase | `test@test.com`, `check@testcase.lo` (TLD không tồn tại), phone `(444) 433-3444`/`(540) 000-0000` | Email/SMS bắn vào hư không |
+| ⚠️ Thận trọng | RLO Test (`linh.rinnie1004+2@gmail.com`) · Brayan Test (`pajaritogrosero@gmail.com`) · Test ×2 Mortgage-Expo (`nghy2008@gmail.com`, phone thật) | Gmail cá nhân của người trong team | Gửi được mail thật — vào inbox đồng nghiệp |
+| ❌ Không đụng | Test Test (NY) — `sssseulgi309@gmail.com` · Jeffrey William Wiesman — danh tính LO THẬT (NMLS 181106, barrettfinancial.com) dù contact giả | Gmail lạ không rõ chủ / danh tính người thật | Rủi ro gửi nhầm người thật |
+
+**Khuyến nghị vận hành khi test trên production:**
+- Được: đổi status/priority, thêm note, thêm label, set follow-up **trên nhóm ✅** — side effect (email per-status template) bay vào địa chỉ chết.
+- Không bao giờ trên prod: **Call / Zoom SMS** (bắn SMS thật), **Delete**, **Assign recruiter/owner** (notify nhân sự thật), **Add and invite** (kích chuỗi 6 email webinar) trừ khi nhập email đội mình kiểm soát, mọi bulk Action, và Approve ở Pending approvals.
+- Lưu ý hệ quả gián tiếp: mọi mutation trên prod đều lọt vào **stats/dashboard thật** mà leadership nhìn (Total, funnel, Run Update) — test nhỏ thì nhiễu không đáng kể nhưng nên dọn (archive lại như cũ) sau khi test.
+- Kết luận: **prod chỉ nên dùng để verify luồng/quyền/read-only + smoke-test hẹp trên nhóm ✅**; test phá (CRUD toàn diện, automation chain, webinar flow) vẫn phải làm trên staging.
