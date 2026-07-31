@@ -97,6 +97,21 @@ Ký hiệu: **P0** = phải giải quyết ở kiến trúc app mới · **P1** 
 
 → Kết luận chắc chắn sau khi xem cả hai môi trường: vấn đề **không phải "data Modex thiếu/sai"** như cảm nhận ban đầu — mà là **không tồn tại đường ống dữ liệu**. Dữ liệu chuẩn, tươi, đầy đủ nằm ngay sau login Modex mà công ty đang trả tiền; app chỉ giữ một bản CSV chết từ 01/2024 và in chữ "Check Modex" đẩy việc cho người.
 
+**Tra cứu năng lực tích hợp của Modex (modex.com + support.modex.com + portal, 31/07/2026, read-only):**
+
+| Câu hỏi | Đáp án đã xác minh |
+|---|---|
+| Modex có bán API/integration không? | **CÓ.** 4 phương thức: **Webhook** (JSON push — phổ biến nhất), Direct CRM, **SFTP** (JSON/CSV), **AWS S3** (JSON/CSV). Cơ chế: **list-sync push một chiều** — thêm LO vào List → bấm Sync → Modex đẩy payload về endpoint gần-real-time; bật *monthly refresh* thì toàn bộ list được đẩy lại mỗi khi Modex nạp data tháng mới. Không phải API query on-demand tự do; **mọi connection do Modex team cấu hình** (liên hệ account executive), user không tự bật được. |
+| Payload có đủ dữ liệu P0-17 cần không? | **Đủ 100%**: NMLS, **Modex Score**, employment (tenure hiện tại, tổng năm trong nghề, số job 10 năm), state licenses, contact (nếu unlock), **production đầy đủ** — Volume/Units theo timeframe, avg loan, mix loan type / transaction type / property type, banked/brokered, reverse. Modex cung cấp sẵn data dictionary + sample JSON khi hỏi. |
+| Quan hệ Modex ↔ MOSO? | **Đã là integration partner công bố chính thức**: bài news trên modex.com ngày **07/02/2024** — "Modex and MOSO announce their integration partnership... bring Modex's robust mortgage data into MOSO's platform", quote cả **Thuan Nguyen (president & co-founder MOSO)** và Dale Larson III (CEO Modex). Ngày này chỉ **2 tuần sau** mốc import chết 24/01/2024 → tab Modex trong LF chính là dấu vết lần đổ data đầu của partnership; sau đó pipe không chạy nữa. |
+| Pipe có còn sống không? | **KHÔNG.** Trong portal, list detail (vd "TMC - Brayan list" 372 LO) **không có nút Sync** — theo docs Modex, nút này chỉ hiện khi account có ít nhất một export connection đang cấu hình → account Loan Factory hiện **không có connection nào active**. Khớp với data đóng băng 24/01/2024. |
+| Hợp đồng hiện tại (nhìn từ trong portal) | Subscription **"Loan Factory" — Active**, coverage **toàn quốc (mọi state)**. **Total Seats = 1 · Seats Used = 2 (cùng email victoria.pham 2 dòng) · Seats Available = −1** · 1 invitation treo. Cả công ty (Victoria/Leslie/Brayan — thấy qua tên các List) dùng chung 1 seat; ngay trong lúc khảo sát, session bị đá logout giữa chừng — đúng triệu chứng single-seat. |
+| Contact data (email/phone LO) | **Tính theo credit**: xem lần đầu = 1 credit/LO, xem lại miễn phí, credit **reset đầu mỗi tháng**; field contact trong payload chỉ đổ về nếu đã unlock. Quota credit của hợp đồng LF = chưa rõ, phải hỏi. |
+
+→ **Hệ quả cho thiết kế**: kiến trúc P0-17 không phải "gọi API theo NMLS" mà là **list-sync webhook**: nút *"Verify with Modex"* = thêm LO vào một synced list phía Modex → payload JSON đổ về endpoint của Tera+ → upsert + lưu snapshot; bật monthly refresh để cả kho tự tươi mỗi tháng. Mô hình này khớp luôn cách team đang làm việc thật (đã có sẵn các List: "TMC - Brayan list" 372, "Morty LOs 1/29/2026", "Top 1000 LOs by Production"...).
+
+→ **Câu hỏi còn lại cho Victoria / Modex AE thu hẹp còn 4 ý hợp đồng**: (1) kích hoạt lại export connection (webhook về hệ thống mới) — có sẵn trong gói hay phí thêm; (2) sync limit bao nhiêu record/tháng; (3) quota credit contact-data; (4) giá thêm seat (hiện đang −1 seat, dùng chồng).
+
 **Quy trình recruiter đang phải làm bằng tay (6 bước, ngoài hệ thống):**
 copy NMLS trong LF → mở tab Modex → **đăng nhập bằng credential riêng** → dán NMLS, search → đọc số liệu → quay lại LF *tự nhớ / tự nhập* (và thường không nhập → nên cột experience trống 98%).
 
@@ -108,7 +123,7 @@ copy NMLS trong LF → mở tab Modex → **đăng nhập bằng credential riê
 
 **Hướng app mới — biến "check tay" thành "verify một click":**
 1. **NMLS là first-class identifier**: validate định dạng, bắt buộc trước khi tiến sang stage Engaged, dùng làm khoá dedup và khoá tra cứu.
-2. **Nút "Verify with Modex" trên LO 360** → gọi API on-demand (cần xác nhận Modex có API cho enterprise; nếu không thì fallback: **NMLS Consumer Access** — dữ liệu license/employment history công khai và miễn phí — cộng bulk export định kỳ từ Modex).
+2. **Nút "Verify with Modex" trên LO 360** → cơ chế đã xác minh (bảng trên): **list-sync webhook** — thêm LO vào synced list phía Modex, payload JSON đổ về endpoint Tera+ gần-real-time, bật monthly refresh cho cả kho. Fallback nếu đàm phán connection thất bại: **NMLS Consumer Access** (license/employment công khai, miễn phí — nhưng không có volume/units) + CSV export tay định kỳ từ portal.
 3. **Lưu snapshot kết quả vào record**, kèm `nguồn + thời điểm + người chạy`. Hiển thị badge *"as of 12/07/2026"*, cảnh báo khi cũ hơn 90 ngày, cho phép re-verify.
 4. **Verification card** trong LO 360: số năm có license, nơi làm hiện tại + thời gian ở đó, các state có license, **loan count & volume 12 tháng**, mix purchase/refi.
 5. **Gợi ý comp band từ production tier** (Newly licensed / <10 loans / 10–50 / 50+ / high producer) → đây chính là thứ recruiter cần để "offer hợp lý", thay vì tự phán đoán.
@@ -263,7 +278,7 @@ Thoát phễu:  Nurture (chưa phải lúc)  ·  Disqualified (kèm lý do)  · 
 1. **Scope quan hệ với Tera+:** app riêng có SSO, hay module trong Tera+? (Ảnh hưởng trực tiếp tới identity, RBAC, và điểm bàn giao ở stage *Active LO*.)
 2. **Ai là chủ dữ liệu Associates/HR?** App mới tạo account nhân sự, hay đẩy request sang HR system hiện có?
 3. **Referral payout** còn đi qua Commission Team + cron thứ Bảy như cũ, hay tự động hoá trong app mới?
-4. **Integration nào bắt buộc ở v1?** (Zoom Phone, Calendly, Facebook Lead Ads, Modex, e-sign) — nên chọn 2–3 cho v1 thay vì port hết. **Modex nên nằm trong nhóm bắt buộc** (xem P0-17) — cần trả lời trước: *Modex có API cho enterprise không, hợp đồng hiện tại gồm những gì, bao nhiêu seat?* Nếu không có API thì chốt fallback (NMLS Consumer Access + bulk export định kỳ).
+4. **Integration nào bắt buộc ở v1?** (Zoom Phone, Calendly, Facebook Lead Ads, Modex, e-sign) — nên chọn 2–3 cho v1 thay vì port hết. **Modex nên nằm trong nhóm bắt buộc** (xem P0-17). Phần kỹ thuật đã tra xong 31/07/2026: Modex CÓ webhook/SFTP/S3 list-sync, MOSO từng là integration partner công bố 02/2024, account hiện **không còn connection active** và chỉ có **1 seat (đang dùng −1)**. Còn lại là 4 câu hỏi hợp đồng cho Victoria/Modex AE (kích hoạt lại connection, sync limit, credit contact-data, giá thêm seat).
 5. **Phần Trainings của Benjamin** nối vào đâu: milestone trong Onboarding, hay module tách riêng phát tín hiệu ngược lại?
 
 ---

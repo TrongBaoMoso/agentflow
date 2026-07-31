@@ -274,6 +274,16 @@ Kết luận: **7/7 role mở được config công ty trên production** (stagi
 - **Case study Roger Kube** — dòng đầu RLO production hiển thị "Check Modex": NMLS `107621` → $103.85M / 138 units / 12 tháng, avg $752K, 15 năm license, 3 company/10 năm, tenure 8 năm, Score 100.
 - URL profile Modex dạng UUID (`/recruit/loan-officers/{uuid}`) → **không deep-link được bằng NMLS** từ ngoài; muốn "1 click từ LF sang đúng profile" cần qua API/search của Modex, không ghép URL được.
 
+**Vòng 2 (31/07/2026 chiều) — năng lực tích hợp + hợp đồng, tra từ modex.com / support.modex.com / portal (read-only):**
+
+- **Modex CÓ bán integration**, cơ chế **list-sync push một chiều** (không phải query API tự do): List → Sync → Modex đẩy **webhook JSON** (hoặc SFTP/S3/direct CRM) về endpoint khách gần-real-time; tùy chọn *monthly refresh* đẩy lại toàn list mỗi khi Modex nạp data tháng mới. Mọi connection **do Modex team cấu hình** (qua account executive), user không tự bật.
+- **Payload LO đủ 100% nhu cầu P0-17**: NMLS, Modex Score, employment (tenure, tổng năm, jobs/10yr), licenses, contact (nếu unlock), Volume/Units theo timeframe, avg loan, mix loan/transaction/property type, banked/brokered, reverse. Có data dictionary + sample JSON khi yêu cầu.
+- **MOSO là integration partner công bố chính thức 07/02/2024** (news trên modex.com, quote Thuan Nguyen — president & co-founder MOSO, và Dale Larson III — CEO Modex). Mốc này chỉ 2 tuần sau ngày import chết 24/01/2024 → tab Modex trong LF là dấu vết lần đổ data đầu của partnership.
+- **Pipe hiện KHÔNG còn active**: list detail trong portal ("TMC - Brayan list" 372 LO) **không có nút Sync** — nút này chỉ hiện khi account có export connection đang cấu hình.
+- **Hợp đồng nhìn từ portal**: subscription "Loan Factory" Active, coverage toàn quốc; **Total Seats = 1, Seats Used = 2 (cùng victoria.pham 2 dòng), Seats Available = −1**, 1 invitation treo. Team dùng chung 1 seat (các List mang tên Brayan/Leslie); trong lúc khảo sát session bị đá logout — triệu chứng single-seat.
+- **Contact data theo credit**: 1 credit/LO lần xem đầu, reset đầu tháng; payload chỉ chứa contact đã unlock. Quota credit chưa rõ.
+- Lists đang được team dùng thật: "Morty LOs - 1_29_2026" (164), "TMC - Brayan list" (372), "Brayan List - newly licensed LOs" (254), "Top 1000 LOs (1Y - By Production)" (1,000), "Guaranteed Rate LOs - leslie" (2,170)...
+
 ### C.4. Defect/quirk mới ghi nhận trên production
 
 1. **Deep-link `?labels=` + filter mặc định ẩn**: `/lo_recruiting/company?labels=test` trả **"1-1 of 0 · No results"** vì có chip filter mặc định "Recruitable" tự bật; bỏ chip mới thấy 33 record. Pagination "1-1 of 0" là chuỗi vô nghĩa.
