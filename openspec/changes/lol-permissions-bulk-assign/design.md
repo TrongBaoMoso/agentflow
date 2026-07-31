@@ -2,6 +2,10 @@
 
 Bead `agentflow-pkyp` · decided in session 2026-07-31 · see `proposal.md` for the problem.
 
+**Approved mockup:** `life-of-a-loan/docs/mockups/config-permissions-bulk-assign.html` — it lives
+in the product repo, not here, so it stays next to the code and survives this change being
+archived (`docs/mockups/README.md` in that repo explains the convention).
+
 ## 1. Vocabulary
 
 Two unrelated things in this codebase are both called "role". This document only ever means the
@@ -325,7 +329,8 @@ All under `src/pages/config/_components/PermissionsTab/`.
 2. **Phase 1a** — `moso-aid`: schema fields, `lol-rbac-write.js`, bulk endpoint, validation,
    `listUsers` filter, guardrails, tests. Deploy before the FE.
 3. **Phase 1b** — `life-of-a-loan`: picker, table selection, bulk bar, drawer, confirm dialog,
-   i18n, tests. An HTML mockup is reviewed and approved before this step.
+   i18n, tests — built against the approved mockup
+   (`life-of-a-loan/docs/mockups/config-permissions-bulk-assign.html`).
 
 `lol-rbac-seed.js` overwrites `VIEWER.permissions` — intentional, but not automatically
 reversible; the previous value is one line in git if a rollback is ever needed.
