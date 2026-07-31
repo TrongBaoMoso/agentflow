@@ -93,16 +93,20 @@ correlation.
 POST /api/life-of-a-loan/admin/user-grants/bulk        (requireLolAdmin)
 
 {
-  "user_ids":  ["u1", "u2", "u3"],          // 1..50, deduped, non-empty
+  "userIds":   ["u1", "u2", "u3"],          // 1..50, deduped, non-empty
   "action":    "ASSIGN" | "REMOVE",
   "roles":     ["EDITOR"],                  // ASSIGN only, required, validated vs LOLRbacRole ids
   "overrides": [{ "code": "...", "effect": "ADD" | "BLOCK" }]   // optional
 }
 ```
 
+camelCase, matching every other LOL endpoint in `moso-aid` (`grantView` returns `userId` /
+`updatedAt`; `central-users` takes `currentPage` / `pageSize`) — not the snake_case used by
+`lfiq-backend`.
+
 Rules:
 
-- `overrides` is rejected `400` when `user_ids.length > 1` — an override is per-person by
+- `overrides` is rejected `400` when `userIds.length > 1` — an override is per-person by
   definition, so applying one batch-wide is always a mistake.
 - `roles` may not contain `VIEWER` (D1) → `400`.
 - `ASSIGN` **replaces** `roles` and `overrides`, matching the existing single `PUT` semantics.
@@ -112,10 +116,10 @@ Response:
 
 ```jsonc
 200 { "success": true,
-      "data": { "updated": [GrantView], "skipped": [{ "user_id", "reason" }] } }
+      "data": { "updated": [GrantView], "skipped": [{ "userId", "reason" }] } }
 
 409 { "success": false, "error": "SELF_MODIFY" | "LAST_ADMIN",
-      "details": { "user_ids": ["..."] } }
+      "details": { "userIds": ["..."] } }
 ```
 
 The existing `PUT /admin/users/:id/grant` **stays** (deployed FE depends on it, and it is the
@@ -157,8 +161,18 @@ LOLRbacUserGrant.updateMany(
 Why a tombstone rather than `deleteOne`:
 
 - The document still exists, so `reconcileGrant`'s own first guard —
-  `if (await exists({ _id: userId })) return null` — blocks resurrection **by construction**,
-  with no new condition added to that file.
+  `if (await exists({ _id: userId })) return null` — blocks resurrection for **that same id**.
+
+  > **Correction (found while implementing, Task 4's second regression test).** That guard alone
+  > is *not* enough, and the original claim here that the tombstone closes this "by construction
+  > with no new condition" was wrong. `reconcileGrant`'s candidate query filtered only on
+  > `supersededBy`, so when the person is later re-provisioned onto a **third** id, reconcile
+  > adopted the *tombstone itself* as its source and copied `roles: []` onto the new id. No
+  > permission was resurrected (the set is empty), but it produced a live, role-less grant
+  > document — exactly the ghost row this change exists to remove — and superseded the tombstone
+  > that was holding the door shut. The fix is one condition in `lol-grant-reconcile.js`:
+  > `revokedAt: null` alongside the `supersededBy` filter, so re-key only ever moves a LIVE
+  > grant. That file is therefore in scope for this change after all.
 - `roles: []` → zero codes → exactly "back to `VIEWER`" (D1).
 - The `updateMany` also closes the path where the person is later re-provisioned to a third id
   `U3`: no live same-email doc remains for reconcile to find.
