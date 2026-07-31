@@ -13,9 +13,39 @@
       "port": 3000
     },
     {
+      "name": "lol-frontend-3001",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/life-of-a-loan",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "3001"
+      ],
+      "port": 3001
+    },
+    {
+      "name": "loal-profile-launcher",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/loal-profile-launcher",
+        "run",
+        "dev"
+      ],
+      "port": 3000
+    },
+    {
       "name": "lf-iq-dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["--prefix", "/Users/apple/Projects/agentflow/lf-iq", "run", "dev"],
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/lf-iq",
+        "run",
+        "dev"
+      ],
       "port": 3000,
       "autoPort": true
     },
@@ -144,6 +174,34 @@
         "3018"
       ],
       "port": 3018
+    },
+    {
+      "name": "loal-header",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/loal-header",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "3031"
+      ],
+      "port": 3031
+    },
+    {
+      "name": "lo-footer-contact",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lo-footer-contact",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3021"
+      ],
+      "port": 3021
     }
   ]
 }
