@@ -30,6 +30,8 @@ Mọi pain point bên dưới đều là biểu hiện của khoảng cách đó
 | Độ lệch của stats panel | **~8 ngày** | Người dùng không tin số liệu |
 | Job ngầm không có thông báo hoàn thành | **~10 phút** (Modex merge, dashboard Run Update) | Làm xong không biết đã xong |
 | Nguồn lead phải hợp nhất | **6** (Modex/CSV/FB Ads/self-apply/webinar/referral) | Dedup và identity là bài toán lõi |
+| Record có dữ liệu experience/production (mẫu 100) | **2/100** — 98 record in chữ *"Check Modex"* | Quyết định offer nằm ngoài hệ thống (xem P0-17) |
+| Record trong tab "Obtained from Modex" | **9**, nhập 01/2024 | Không phải integration — là một lần import CSV cũ |
 
 ---
 
@@ -60,6 +62,44 @@ Ký hiệu: **P0** = phải giải quyết ở kiến trúc app mới · **P1** 
 **Hiện tượng:** 10 status ở Recruited + 8 ở Interested, nhiều nhãn nghĩa chồng nhau (*"Invited to join"* tồn tại ở cả hai kho). Trả phí thì status **tự nhảy** sang "Onboarding" mà không thông báo. Ngược lại, admin **set tay được "100% onboarded"** dù NMLS/HR chưa xong — vì gate cứng chỉ là Paid + Signed.
 **Hệ quả:** Cùng một status không đảm bảo cùng một thực tế → báo cáo funnel không đáng tin; người sau không biết vì sao record ở trạng thái này.
 **Hướng app mới:** Tách rạch ròi **stage (do người quyết, ít và rõ)** khỏi **milestone (do hệ thống ghi nhận: paid / signed / NMLS sponsored / HR completed / meeting done)**. Stage chỉ tiến khi milestone bắt buộc đã đủ; mọi lần tiến/thoái đều log kèm lý do.
+
+### 🔴 P0-17. Không có tra cứu LO theo NMLS — recruiter phải rời app để định giá offer
+> *Pain point do **Phuong Nguyen** nêu; đã kiểm chứng bằng thao tác thật ngày 31/07/2026.*
+
+**Ai đau:** Recruiter (nặng), Manager (không kiểm soát được offer), Onboarding.
+
+**Bối cảnh nghiệp vụ:** Sau khi LO đồng ý về LF, recruiter cần biết người này *mới vào nghề hay đã nhiều năm kinh nghiệm, làm bao nhiêu loan/volume* để đưa ra **offer hợp lý**. Đây là bước quyết định tiền — nhưng hệ thống không hỗ trợ.
+
+**Những gì đo được trên hệ thống:**
+
+| Kiểm chứng | Kết quả thực tế |
+|---|---|
+| Tổng số record trong tab *Loan Officers Obtained from Modex* | **9 record** |
+| Received Date của toàn bộ 9 record | **12–20/01/2024** → dữ liệu ~2.5 năm tuổi, chưa từng làm mới |
+| Chất lượng dữ liệu liên hệ trong đó | placeholder: `workemail1@moso.com`, phone `111111111` / `0000000000` |
+| Tra NMLS `684563834` (có thật trong pipeline) trong tab Modex | **"No results found"** — search chỉ tìm trong 9 record cũ, **không gọi Modex** |
+| Nút **Check Modex** trên từng record | mở tab mới tới `https://modex.com/login` — **không deep-link theo NMLS, không SSO** |
+| Cột *Experience/12-month loans* trên 100 record mẫu (Recruited LO → Company) | **chỉ 2/100 có dữ liệu**; **98/100 hiện đúng chữ "Check Modex"** |
+| Cột *NMLS* trên cùng 100 record đó | **82/100 có NMLS** → khoá tra cứu đã có sẵn, chỉ thiếu tự động hoá |
+| Nút **Sync Status** / **Update** | "Status is updating in background" / "~10 minutes" — **không báo cáo kết quả** (bao nhiêu khớp, bao nhiêu không tìm thấy NMLS) |
+
+**Quy trình recruiter đang phải làm bằng tay (6 bước, ngoài hệ thống):**
+copy NMLS trong LF → mở tab Modex → **đăng nhập bằng credential riêng** → dán NMLS, search → đọc số liệu → quay lại LF *tự nhớ / tự nhập* (và thường không nhập → nên cột experience trống 98%).
+
+**Vì sao đây là P0, không phải chuyện nhỏ:**
+- Hệ thống **tự thừa nhận không có dữ liệu** bằng cách in chữ "Check Modex" vào ô đáng lẽ chứa dữ liệu → đẩy việc cho người, đúng nghĩa "database có UI".
+- Quyết định **tiền** (offer, comp band) đang dựa vào dữ liệu **không nằm trong hệ thống, không ai kiểm chứng lại được**: không biết ai đã tra, tra lúc nào, thấy số gì.
+- Tab Modex hiện tại **không phải integration** — nó là bãi chứa của một lần import CSV năm 2024. Gọi là "Modex integration" gây hiểu sai về năng lực hệ thống.
+- Ghi chú: trên staging, giá trị cột này ở vài record là dãy `301000 / 302000 / 305000 / 306000 / 307000` (tăng dần đều) — trông như dữ liệu seed, **không kết luận được về production**; cần Phuong xác nhận số liệu thật ngoài prod có lệch với Modex hay không.
+
+**Hướng app mới — biến "check tay" thành "verify một click":**
+1. **NMLS là first-class identifier**: validate định dạng, bắt buộc trước khi tiến sang stage Engaged, dùng làm khoá dedup và khoá tra cứu.
+2. **Nút "Verify with Modex" trên LO 360** → gọi API on-demand (cần xác nhận Modex có API cho enterprise; nếu không thì fallback: **NMLS Consumer Access** — dữ liệu license/employment history công khai và miễn phí — cộng bulk export định kỳ từ Modex).
+3. **Lưu snapshot kết quả vào record**, kèm `nguồn + thời điểm + người chạy`. Hiển thị badge *"as of 12/07/2026"*, cảnh báo khi cũ hơn 90 ngày, cho phép re-verify.
+4. **Verification card** trong LO 360: số năm có license, nơi làm hiện tại + thời gian ở đó, các state có license, **loan count & volume 12 tháng**, mix purchase/refi.
+5. **Gợi ý comp band từ production tier** (Newly licensed / <10 loans / 10–50 / 50+ / high producer) → đây chính là thứ recruiter cần để "offer hợp lý", thay vì tự phán đoán.
+6. **Verification là milestone bắt buộc** trước khi ra offer (gate giữa *Engaged* → *Onboarding*), có audit: ai verify, thấy gì, offer dựa trên số nào.
+7. **Bulk enrich có báo cáo**: khi import list, chạy enrich hàng loạt rồi trả về *matched / unmatched / ambiguous* để người xử lý phần còn lại — không phải job im lặng 10 phút.
 
 ### 🟠 P1-5. Không có "việc của tôi hôm nay"
 **Ai đau:** Recruiter, Onboarding specialist.
@@ -168,7 +208,8 @@ Thoát phễu:  Nurture (chưa phải lúc)  ·  Disqualified (kèm lý do)  · 
 |---|---|---|
 | **Today / My Work** | Recruiter, Onboarding | "Hôm nay tôi phải làm gì?" — task đến hạn, lead mới, việc quá hạn, deal nguội |
 | **Pipeline** (Kanban + list toggle) | Recruiter, Manager | "Phễu đang ra sao? ai đang tắc ở đâu?" |
-| **LO 360 drawer** | mọi role | "Người này là ai, đã xảy ra gì, còn thiếu gì?" — hồ sơ + timeline + milestone + task + tài liệu |
+| **LO 360 drawer** | mọi role | "Người này là ai, đã xảy ra gì, còn thiếu gì?" — hồ sơ + timeline + milestone + task + tài liệu + **verification card (NMLS/production)** |
+| **Verify & Offer** (trong LO 360) | Recruiter, Manager | "Người này mới hay lâu năm, làm bao nhiêu loan — nên offer band nào?" — 1 click verify, snapshot có timestamp, gợi ý comp band |
 | **Call Queue** (mobile-first) | Recruiter | "Gọi ai tiếp theo?" — kèm script, log kết quả 1 chạm |
 | **Onboarding Board** | HR, Onboarding, Licensing | "Ai đang ở bước nào, ai đang chờ tôi?" — checklist theo cột milestone |
 | **Fees & Referrals** | Accounting | "Ai đã trả phí, ai chờ payout, đã đối soát chưa?" |
@@ -193,6 +234,8 @@ Thoát phễu:  Nurture (chưa phải lúc)  ·  Disqualified (kèm lý do)  · 
 | Độ trễ số liệu dashboard | tới ~8 ngày / phải bấm Run Update | near-realtime |
 | Tỉ lệ record trùng | có nhãn *(Duplicated)* rải rác, không kiểm soát | dedup tại nguồn + hàng chờ merge |
 | Conversion từng stage | không có (2 kho rời) | đo được xuyên suốt |
+| Record có dữ liệu production để định giá offer | **2%** (98% phải tra tay ngoài app) | > 90% tự động, có timestamp |
+| Số bước để biết 1 LO mới hay lâu năm | **6 bước, 2 hệ thống, 2 lần login** | 1 click trong LO 360 |
 
 ---
 
@@ -201,7 +244,7 @@ Thoát phễu:  Nurture (chưa phải lúc)  ·  Disqualified (kèm lý do)  · 
 1. **Scope quan hệ với Tera+:** app riêng có SSO, hay module trong Tera+? (Ảnh hưởng trực tiếp tới identity, RBAC, và điểm bàn giao ở stage *Active LO*.)
 2. **Ai là chủ dữ liệu Associates/HR?** App mới tạo account nhân sự, hay đẩy request sang HR system hiện có?
 3. **Referral payout** còn đi qua Commission Team + cron thứ Bảy như cũ, hay tự động hoá trong app mới?
-4. **Integration nào bắt buộc ở v1?** (Zoom Phone, Calendly, Facebook Lead Ads, Modex, e-sign) — nên chọn 2–3 cho v1 thay vì port hết.
+4. **Integration nào bắt buộc ở v1?** (Zoom Phone, Calendly, Facebook Lead Ads, Modex, e-sign) — nên chọn 2–3 cho v1 thay vì port hết. **Modex nên nằm trong nhóm bắt buộc** (xem P0-17) — cần trả lời trước: *Modex có API cho enterprise không, hợp đồng hiện tại gồm những gì, bao nhiêu seat?* Nếu không có API thì chốt fallback (NMLS Consumer Access + bulk export định kỳ).
 5. **Phần Trainings của Benjamin** nối vào đâu: milestone trong Onboarding, hay module tách riêng phát tín hiệu ngược lại?
 
 ---
