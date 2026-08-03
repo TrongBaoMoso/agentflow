@@ -28,7 +28,7 @@ node build-narration.mjs
 
 # 2) RECORD — Bao logs in when prompted; one browser context per act
 cd recorder
-npm run probe      # dry run: validate selectors against the live DOM first, fix, repeat
+npm run probe -- --act 1    # read-only selector probe (inspect.mjs). Do this per act, fix, repeat.
 npm run record
 
 # 3) ASSEMBLE — trim, concat, mix narration, burn subtitles, mux, verify

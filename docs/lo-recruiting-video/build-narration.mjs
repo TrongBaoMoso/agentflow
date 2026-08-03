@@ -264,9 +264,10 @@ let skipped = 0;
 
 for (const entry of entries) {
   if (ONLY && !ONLY.has(entry.id)) {
-    // Still need a duration for durations.json to stay complete.
+    // Still need a duration for durations.json to stay complete. Round exactly like the render
+    // path below, or --only would rewrite the file with different precision for the same wav.
     const wav = path.join(CLIP_DIR, `${entry.id}.wav`);
-    if (existsSync(wav)) durations[entry.id] = probeDuration(wav);
+    if (existsSync(wav)) durations[entry.id] = Number(probeDuration(wav).toFixed(3));
     continue;
   }
 

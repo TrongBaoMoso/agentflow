@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Playwright recorder + ffmpeg assembler for the LO Recruiting role-walkthrough video",
   "scripts": {
-    "probe": "node record.mjs --probe",
+    "probe": "node inspect.mjs",
     "record": "node record.mjs",
     "assemble": "node assemble.mjs"
   },

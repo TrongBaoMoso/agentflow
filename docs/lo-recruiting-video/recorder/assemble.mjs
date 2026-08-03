@@ -119,15 +119,14 @@ function readJson(file, label) {
 }
 
 /**
- * Escape a value going into a filtergraph. ffmpeg's parser treats "," and ";" as separators and
- * ":" as an option separator, so any of them INSIDE a value must be backslash-escaped. We spawn
- * ffmpeg with NO shell, so there is nothing else protecting them (playbook §6.2).
+ * enable=between(t\,START\,END)
+ *
+ * ffmpeg's filtergraph parser treats "," as a filter separator, so a comma INSIDE an option value
+ * must be backslash-escaped. We spawn ffmpeg with NO shell, so nothing else protects it, and the
+ * filtergraph goes through a script file where quoting would only add another escaping layer
+ * (playbook §6.2). Every value this file injects into the graph is numeric except these, so this
+ * is the only place escaping is needed — file paths travel in argv, chapter titles in ffmetadata.
  */
-function fgEscape(value) {
-  return String(value).replace(/[\\',;:[\]]/g, (c) => `\\${c}`);
-}
-
-/** enable=between(t\,START\,END) — the commas are filtergraph-escaped, per playbook §6.2. */
 function betweenExpr(start, end) {
   return `between(t\\,${start.toFixed(3)}\\,${end.toFixed(3)})`;
 }
