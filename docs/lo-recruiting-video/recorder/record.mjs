@@ -9,6 +9,21 @@
  * names, no React/Mantine. Every selector here is therefore TEXT-BASED (getByRole/getByText)
  * and every one of them is a CANDIDATE marked `// PROBE:` until `inspect.mjs` has confirmed it.
  *
+ * ⚠️ AUTH REALITY (verified 2026-08-04 — read before scheduling a shoot):
+ *   The session lives in a server-side session keyed by one cookie, and "Login as <user>"
+ *   RE-BINDS that cookie to the impersonated user. Consequences:
+ *     - Impersonating BURNS the admin storageState you impersonated from. The file stays
+ *       byte-identical (same sha256) but every context seeded from it is now that other user, and
+ *       there is no way back to admin without a fresh manual login.
+ *     - Therefore ONE admin login yields exactly ONE role switch.
+ *     - Per-role storageState files, however, keep working: .auth/viet18-<role>.json replays that
+ *       role indefinitely with no login at all.
+ *   So the intended workflow is a one-off PROVISIONING pass — for each role: fresh admin login ->
+ *   impersonate -> save role state (6 logins, off camera, once) — after which every act and every
+ *   re-record runs straight from the saved role states and needs no login whatsoever. Role state
+ *   is what this script prefers automatically; pass --force-login-as to impersonate instead (and
+ *   expect to be asked for a fresh admin login).
+ *
  * HARD RULES (do not "improve" these away):
  *   - This script NEVER types credentials and NEVER reads them from a file, env var or argv.
  *     The human logs in by hand in the visible window; we only wait and then persist the
@@ -32,8 +47,10 @@
  *   --markers <path>     markers.json path         (default <recorder>/markers.json)
  *   --durations <path>   narration durations       (default <videoRoot>/durations.json, then
  *                                                   <videoRoot>/audio/durations.json)
- *   --role-state         seed each act from .auth/viet18-<role>.json and SKIP the on-camera
- *                        login-as preamble (single-act re-records)
+ *   --role-state         (now the default when a role state exists) seed each act from
+ *                        .auth/viet18-<role>.json and SKIP the on-camera login-as preamble
+ *   --force-login-as     ignore saved role states and impersonate again — needs a FRESH admin
+ *                        login per role, because impersonating burns the admin state
  *   --trim <sec>         videoTrimSec written into markers.json (default 0 — auth is off camera)
  *   --modex              enable the external-Modex beat in scene 1.6 (opens a 2nd tab => 2nd webm)
  *   --modex-url <url>    where that tab goes (no default; the human logs into Modex himself)
@@ -263,14 +280,32 @@ export async function createContext(browser, { storageStatePath, recordDir } = {
   return context;
 }
 
-/** storageState -> does it still open the app? (off camera: no recordVideo here) */
-async function verifyState(browser, statePath) {
+/**
+ * storageState -> does it still open the app? (off camera: no recordVideo here)
+ *
+ * `requireAdmin` additionally proves the session is still ADMIN, which is NOT the same question.
+ * VERIFIED 2026-08-04 — the impersonation burn: viet18 keeps a server-side session keyed by the
+ * cookie, and "Login as <user>" RE-BINDS that same cookie to the impersonated user. So after any
+ * impersonation the saved admin storageState is byte-identical on disk (same sha256) yet a fresh
+ * context seeded from it comes up as the impersonated user and is bounced off /associates. Only an
+ * admin-only capability check can tell the difference — a login-screen check cannot.
+ */
+async function verifyState(browser, statePath, { requireAdmin = false } = {}) {
   const ctx = await createContext(browser, { storageStatePath: statePath });
   const page = await ctx.newPage();
   try {
     await page.goto(URLS.canary, { waitUntil: 'domcontentloaded', timeout: 60_000 });
     await sleep(2500); // GWT boots its shell after DOMContentLoaded
-    return !(await looksLikeLogin(page));
+    if (await looksLikeLogin(page)) return false;
+    if (!requireAdmin) return true;
+    // /associates is admin-only and silently redirects for everyone else.
+    await page.goto(URLS.associates, { waitUntil: 'domcontentloaded', timeout: 60_000 });
+    await sleep(6000);
+    const onAssociates = /\/associates/.test(page.url());
+    if (!onAssociates) {
+      console.warn(`[auth] state opens the app but is NOT admin (/associates -> ${page.url()})`);
+    }
+    return onAssociates && !(await looksLikeLogin(page));
   } catch (err) {
     console.warn(`[auth] state check failed: ${err.message}`);
     return false;
@@ -288,12 +323,21 @@ export async function ensureAdminState(browser, statePath) {
   fs.mkdirSync(path.dirname(statePath), { recursive: true });
 
   if (fs.existsSync(statePath)) {
-    console.log(`[auth] found saved admin state — verifying against ${URLS.canary}`);
-    if (await verifyState(browser, statePath)) {
-      console.log('[auth] saved admin state is VALID — no login needed.');
+    console.log('[auth] found saved admin state — verifying it is still ADMIN (not just logged in)');
+    if (await verifyState(browser, statePath, { requireAdmin: true })) {
+      console.log('[auth] saved admin state is VALID and still admin — no login needed.');
       return 'reused';
     }
-    console.warn('[auth] saved admin state is STALE (landed on the login screen).');
+    banner([
+      'SAVED ADMIN STATE IS NO LONGER ADMIN',
+      '',
+      'The file is intact, but its session was re-bound by an impersonation:',
+      '"Login as <user>" rebinds the SAME server-side session to that user, so',
+      'every context seeded from this file now IS that user. There is no way',
+      'back to admin without a fresh login.',
+      '',
+      'A fresh admin login is required to impersonate anybody new.',
+    ]);
   } else {
     console.log('[auth] no saved admin state yet.');
   }
@@ -1598,7 +1642,10 @@ export async function act2(page, h, cfg = {}) {
 
   await h.scene('s2_5', async () => {
     // Self-apply queue. "Check Modex" per row is the system admitting it needs another site.
-    await h.goto(URLS.rloPending);
+    // VERIFIED 2026-08-04: "Pending approvals" cannot be deep-linked (the space bounces to
+    // /Mine) — reach it by clicking the tab.
+    await h.goto(URLS.rloMine);
+    await h.clickTab(TABS.pendingApprovals);
     await h.optional('Check Modex link', () =>
       h.moveTo(() => page.getByText(/Check Modex/i).first(), { timeout: 8000 }));
     await h.hold(2);
@@ -2044,6 +2091,8 @@ export function parseArgs(argv = process.argv.slice(2)) {
     markers: path.join(HERE, 'markers.json'),
     durations: null,
     roleState: false,
+    forceLoginAs: false,
+    provision: false,
     trim: 0,
     modex: false,
     modexUrl: null,
@@ -2074,6 +2123,8 @@ export function parseArgs(argv = process.argv.slice(2)) {
       case '--markers': out.markers = path.resolve(next()); break;
       case '--durations': out.durations = path.resolve(next()); break;
       case '--role-state': out.roleState = true; break;
+      case '--force-login-as': out.forceLoginAs = true; break;
+      case '--provision': out.provision = true; break;
       case '--role': out.role = next(); break;
       case '--login-as': out.loginAs = true; break;
       case '--open-modals': out.openModals = true; break;
@@ -2124,13 +2175,26 @@ async function main() {
     fs.writeFileSync(args.markers, `${JSON.stringify(markers, null, 2)}\n`);
   };
 
+  const needsAdmin = selected.some((a) => a.role === 'admin'
+    || args.forceLoginAs
+    || !fs.existsSync(authPathFor(a.role)));
+
   try {
-    await ensureAdminState(browser, args.auth);
+    if (needsAdmin) {
+      await ensureAdminState(browser, args.auth);
+    } else {
+      console.log('[auth] every selected act has a saved role state — no admin session needed.');
+    }
 
     for (const act of selected) {
       const actLabel = `act${act.id}`;
       const roleStatePath = authPathFor(act.role);
-      const seedFromRole = args.roleState && act.role !== 'admin' && fs.existsSync(roleStatePath);
+      // Role state is the DEFAULT path when it exists. Impersonating instead would need a FRESH
+      // admin login every time (see the impersonation-burn note on verifyState), so never do it
+      // unless asked to.
+      const seedFromRole = act.role !== 'admin'
+        && fs.existsSync(roleStatePath)
+        && !args.forceLoginAs;
       const seed = seedFromRole ? roleStatePath : args.auth;
 
       console.log(`\n===== ${actLabel} — ${ACCOUNTS[act.role]?.role || act.role} (seed: ${seedFromRole ? `role state ${act.role}` : 'admin state'}) =====`);

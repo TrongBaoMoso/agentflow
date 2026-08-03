@@ -311,16 +311,17 @@ const PROBES = {
         url: URLS.rloMine,
         scenes: ['s2_3'],
         candidates: [
-          text(/^\s*Add\s*$/i, 'EXPECTED ABSENT on staging'),
-          text(/^\s*Delete/i, 'EXPECTED ABSENT on staging'),
-          text(/Assign recruiter/i, 'EXPECTED ABSENT on staging'),
-          role('button', /^\s*Action\s*$/i, 'bulk Action'),
-          text(/Pending approvals/i),
+          css('#gwt-debug-add', 'toolbar Add (EXPECTED ABSENT on staging)'),
+          css('#delete', 'toolbar Delete (EXPECTED ABSENT on staging)'),
+          css('#assign-recruiter', 'Assign recruiter (EXPECTED ABSENT on staging)'),
+          css('#gwt-debug-action', 'bulk Action dropdown (an <a>)'),
+          role('tab', /^Pending approvals$/i, 'tab Pending approvals'),
+          role('tab', /^company$/i, 'tab Company (EXPECTED ABSENT for inside-only)'),
         ],
         safeOpens: [
           {
             label: 'bulk Action menu (read-only dropdown)',
-            open: [role('button', /^\s*Action\s*$/i), text(/^\s*Action\s*$/i)],
+            open: [css('#gwt-debug-action')],
             probe: [
               text(/Update data using Modex/i),
               text(/Import \(csv\)/i),
@@ -334,14 +335,15 @@ const PROBES = {
       { name: 'config', url: URLS.config, scenes: ['s2_4'], candidates: [text(/1-1 Meeting using Calendly/i), text(/^\s*Webinar\s*$/i)] },
       {
         name: 'rlo-pending',
-        url: URLS.rloPending,
+        url: URLS.rloMine,
+        tab: 'Pending approvals',
         scenes: ['s2_5'],
-        note: 'URL contains a space; confirm the encoding actually lands on the tab.',
+        note: 'Reached by tab click: the tab name contains a space and cannot be deep-linked.',
         candidates: [
           ...COMMON_TABLE,
           text(/Check Modex/i),
           text(/Added by LO/i),
-          text(/^\s*Approve\s*$/i, 'NEVER clicked by this script'),
+          css('a.dropdown-item[data-name="Approve"]', 'Approve item (shut menu) — NEVER clicked here'),
         ],
       },
     ],
