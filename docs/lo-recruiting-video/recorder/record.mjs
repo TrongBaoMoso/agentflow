@@ -1076,10 +1076,13 @@ export async function performLoginAs(page, h, roleKey, { adminStatePath } = {}) 
 
 // ---------------------------------------------------------------------------
 // ACT 0 — Admin: the terrain (Chau Chau)
-// Storyboard rows 0.1 – 0.6
+// Storyboard rows 0.1 – 0.6, PLUS s1_4 (the Add-form beat) which is shot here because an Outside
+// Recruiter has no Add button on staging — see the note beside that scene. Shooting order:
+//   s0_1 s0_2 s0_3 s0_4 s0_5 s1_4 s0_6
+// markers.json records each scene's true on-camera offset, so the s1_4 cue lands on the form.
 // ---------------------------------------------------------------------------
 
-export async function act0(page, h) {
+export async function act0(page, h, cfg = {}) {
   await h.scene('s0_1', async () => {
     // VERIFIED 2026-08-03: the sidebar entry is <a id="gwt-debug-lo-recruiting"> — a stable GWT
     // debug id, immune to text drift. Text match kept as a fallback.
@@ -1197,6 +1200,121 @@ export async function act0(page, h) {
     await h.optional('Received column', () => h.moveTo(() => page.getByText(/Received/i).first(), { timeout: 4000 }));
   });
 
+  /**
+   * s1_4 IS SHOT HERE, in act 0's admin context — decided 2026-08-04.
+   *
+   * Why: probing as Luis proved an Outside Recruiter has no Add button on staging (audit §9), so
+   * the form cannot be opened in his session. The narration was re-pointed to say so out loud
+   * ("on this test environment it is hidden, so I am opening the same form from the admin
+   * account"), and the form pain — unmarked required fields, one new error per submit — is
+   * identical whoever opens it.
+   *
+   * Why HERE rather than mid-act-1: markers must carry the true on-camera offset of every scene,
+   * and each video's scene list stays monotonic this way. Shooting it inside act 1 would mean
+   * impersonating in the middle of that act, putting ~30s of unnarrated Associates navigation
+   * between s1_4 and s1_1 and leaving act 1's offsets interleaved with a session swap. Placing it
+   * as the last admin beat before the impersonation bridge (s0_6) keeps one video per session,
+   * one monotonic offset list per video, and the s1_4 narration lands on footage that genuinely
+   * shows the form. Trade-off: in the finished film the s1_4 line plays at the end of act 0
+   * rather than between s1_3 and s1_5.
+   *
+   * It also creates the candidate FOR REAL and hands him to Luis, so every later act has him.
+   */
+  await h.scene('s1_4', async () => {
+    const candidate = cfg.candidate || {};
+    const fullName = candidate.name || 'Marcus Reyes';
+    await h.goto(URLS.rloMine);
+    await h.click(['#gwt-debug-add', () => page.getByRole('button', { name: /^\s*Add\s*$/i })], { timeout: 15_000 });
+    await h.waitForAppIdle();
+    await h.hold(1.5);
+
+    // PROBE: the Add form's field markup is still unverified — it could only be opened from an
+    // admin session, and the stored admin state was burned by impersonation before this form was
+    // reached. Every field is optional() so a wrong guess costs one field, not the scene.
+    const field = (labelRe) => [
+      () => page.getByLabel(labelRe),
+      () => page.locator('tr', { has: page.getByText(labelRe) }).locator('input,textarea,select').first(),
+      () => page.locator('td', { has: page.getByText(labelRe) }).locator('input').first(),
+    ];
+    const submit = () => h.click([
+      () => page.locator('div.modal.show').getByRole('button', { name: /^\s*(Submit|Save)\s*$/i }).first(),
+      () => page.getByRole('button', { name: /^\s*(Submit|Save)\s*$/i }).first(),
+    ], { timeout: 8000 });
+
+    await h.optional('first name', () => h.typeInto(field(/First name/i), fullName.split(' ')[0]));
+    await h.optional('last name', () => h.typeInto(field(/Last name/i), fullName.split(' ').slice(1).join(' ')));
+
+    // Deliberate premature submit #1 — reveals exactly one error.
+    await h.optional('premature submit 1', async () => { await submit(); await h.hold(2.5); });
+
+    await h.optional('phone', () => h.typeInto(field(/Phone|Mobile/i), candidate.phone || '(444) 433-3444'));
+
+    // Deliberate premature submit #2 — reveals one NEW error.
+    await h.optional('premature submit 2', async () => { await submit(); await h.hold(2.5); });
+
+    await h.optional('NMLS', () => h.typeInto(field(/NMLS/i), candidate.nmls || '107621'));
+    await h.optional('channel', async () => {
+      // PROBE: native <select> vs GWT custom dropdown unknown for the Add form.
+      await h.click(field(/Loan officer channel|Channel/i), { timeout: 4000 });
+      await h.click(() => page.getByText(/^\s*Retail LO\s*$/i).first(), { timeout: 4000 });
+    });
+    await h.optional('experience', async () => {
+      await h.click(field(/Experience/i), { timeout: 4000 });
+      await h.click(() => page.getByText(/^\s*Experienced\s*$/i).first(), { timeout: 4000 });
+    });
+    await h.optional('priority', async () => {
+      await h.click(field(/Priority/i), { timeout: 4000 });
+      await h.click(() => page.getByText(/^\s*High\s*$/i).first(), { timeout: 4000 });
+    });
+    // Hand the record to Luis right in the form if the field is there — his board is "Mine",
+    // i.e. records he OWNS, so an admin-created record with no recruiter would never appear in it.
+    await h.optional('recruiter = Luis', async () => {
+      await h.click(field(/Recruiter/i), { timeout: 4000 });
+      await h.click(() => page.getByText(new RegExp(ACCOUNTS.luis.label, 'i')).first(), { timeout: 4000 });
+    });
+
+    // The email must be a temp-mail address created at shoot time. Never invent one and never
+    // use a real person's address — staging sends real mail (audit §10.4).
+    if (!candidate.email) {
+      console.error('[act0]   s1_4: NO --candidate-email GIVEN — demonstrating the form but NOT submitting.');
+      console.error('[act0]   s1_4: re-run with --candidate-email <temp-mail address> or no candidate exists');
+      console.error('[act0]   s1_4: for acts 1-7 to work on.');
+      await h.hold(2);
+      await h.dismiss();
+      return;
+    }
+
+    await h.typeInto(field(/Email/i), candidate.email);
+    await submit();
+    await h.hold(4); // new records index slowly (Datastore eventual consistency)
+    await h.dismiss();
+
+    // Verify he exists and belongs to Luis; fall back to the toolbar's Assign recruiter.
+    await h.optional('confirm the candidate is on the board', async () => {
+      await h.goto(URLS.rloMine);
+      await h.filterGrid(fullName);
+      const created = h.row(fullName);
+      if (!(await created.count())) throw new Error(`"${fullName}" not found after submit`);
+      const owned = new RegExp(ACCOUNTS.luis.label, 'i').test((await created.innerText()) || '');
+      if (owned) {
+        console.log(`[act0]   s1_4: ${fullName} created and already owned by ${ACCOUNTS.luis.label}`);
+        return;
+      }
+      await h.optional('assign the recruiter via the toolbar', async () => {
+        // PROBE: the Assign recruiter modal's internals are unverified.
+        await created.locator('input[type="checkbox"]').first().check({ timeout: 5000 });
+        await h.click(['#assign-recruiter'], { timeout: 8000 });
+        await h.hold(1.5);
+        await h.click(() => page.getByText(new RegExp(ACCOUNTS.luis.label, 'i')).first(), { timeout: 6000 });
+        await h.click([
+          () => page.locator('div.modal.show').getByRole('button', { name: /^\s*(Submit|Save|Assign)\s*$/i }).first(),
+        ], { timeout: 6000 });
+        await h.hold(2.5);
+        await h.dismiss();
+      });
+    });
+  });
+
   await h.scene('s0_6', async () => {
     // INTRODUCE ONLY. Clicking "Login" here would swap THIS context's session mid-act and
     // there is no way back to admin (audit §10.3) — act 1 does the real login-as in its own
@@ -1226,7 +1344,8 @@ export async function act0(page, h) {
 
 // ---------------------------------------------------------------------------
 // ACT 1 — Outside Recruiter (Luis): from cold lead to invitation
-// Storyboard rows 1.1 – 1.15  (longest, most important act)
+// Storyboard rows 1.1 – 1.15 MINUS 1.4 (filmed in act 0's admin context). Shooting order equals
+// the authored order: s1_1 s1_2 s1_3 s1_5 … s1_15.
 // ---------------------------------------------------------------------------
 
 export async function act1(page, h, cfg = {}) {
@@ -1304,67 +1423,10 @@ export async function act1(page, h, cfg = {}) {
     await h.hold(2);
   });
 
-  await h.scene('s1_4', async () => {
-    // Create the candidate by hand. Required fields are NOT marked and only ONE new error
-    // surfaces per submit — so submit early on purpose, twice, to show the tax.
-    // ⚠️ SHOOT BLOCKER — VERIFIED 2026-08-04 by probing as Luis on staging: an Outside Recruiter
-    // has NO Add button on this board (nor Delete, nor Assign recruiter). The audit predicted this
-    // (§9: "không Add/Delete/Assign"), so the storyboard's premise that Luis hand-creates Marcus
-    // cannot be filmed in Luis's session on staging. On production recruiters DO have Add, but we
-    // shoot staging. Options for Bao: (a) create the candidate in act 0 as admin and let Luis pick
-    // it up here, or (b) drop s1_4 and re-point its narration. Until that is decided the scene
-    // logs and no-ops so the narration still plays over the board.
-    if (!(await page.locator('#gwt-debug-add').count())) {
-      console.log('[act1]   s1_4: no Add button for this role (expected on staging) — see the SHOOT BLOCKER note');
-      await h.hold(2);
-      return;
-    }
-    await h.click(['#gwt-debug-add', () => page.getByRole('button', { name: /^\s*Add\s*$/i })], { timeout: 10_000 });
-    await h.hold(2);
-
-    const field = (labelRe) => [
-      () => page.getByLabel(labelRe),
-      () => page.locator('tr', { has: page.getByText(labelRe) }).locator('input,textarea,select').first(),
-      () => page.locator('td', { has: page.getByText(labelRe) }).locator('input').first(),
-    ];
-
-    await h.optional('first name', () => h.typeInto(field(/First name/i), (candidate.name || 'Marcus Reyes').split(' ')[0]));
-    await h.optional('last name', () => h.typeInto(field(/Last name/i), (candidate.name || 'Marcus Reyes').split(' ').slice(1).join(' ')));
-
-    // Deliberate premature submit #1.
-    await h.optional('premature submit 1', async () => {
-      await h.click([() => page.getByRole('button', { name: /^\s*(Submit|Save)\s*$/i })], { timeout: 6000 });
-      await h.hold(2.5);
-    });
-
-    await h.optional('email', () => h.typeInto(field(/Email/i), candidate.email || ''));
-    await h.optional('phone', () => h.typeInto(field(/Phone|Mobile/i), candidate.phone || '(444) 433-3444'));
-
-    // Deliberate premature submit #2 — a NEW single error appears.
-    await h.optional('premature submit 2', async () => {
-      await h.click([() => page.getByRole('button', { name: /^\s*(Submit|Save)\s*$/i })], { timeout: 6000 });
-      await h.hold(2.5);
-    });
-
-    await h.optional('NMLS', () => h.typeInto(field(/NMLS/i), candidate.nmls || '107621'));
-    await h.optional('channel', async () => {
-      // PROBE: native <select> vs GWT custom dropdown unknown.
-      await h.click(field(/Loan officer channel|Channel/i), { timeout: 4000 });
-      await h.click(() => page.getByText(/^\s*Retail LO\s*$/i).first(), { timeout: 4000 });
-    });
-    await h.optional('experience', async () => {
-      await h.click(field(/Experience/i), { timeout: 4000 });
-      await h.click(() => page.getByText(/^\s*Experienced\s*$/i).first(), { timeout: 4000 });
-    });
-    await h.optional('priority', async () => {
-      await h.click(field(/Priority/i), { timeout: 4000 });
-      await h.click(() => page.getByText(/^\s*High\s*$/i).first(), { timeout: 4000 });
-    });
-    await h.optional('final submit', async () => {
-      await h.click([() => page.getByRole('button', { name: /^\s*(Submit|Save)\s*$/i })], { timeout: 6000 });
-      await h.hold(4); // new records index slowly (Datastore eventual consistency)
-    });
-  });
+  // s1_4 IS NOT SHOT HERE — it is filmed in act 0's admin context (see the long note beside the
+  // s1_4 scene in act0). An Outside Recruiter has no Add button on staging, and the narration now
+  // says so on camera. Nothing is emitted for s1_4 in this act, so act 1's markers stay monotonic
+  // and its narration cue cannot land on the wrong footage.
 
   await h.scene('s1_5', async () => {
     // THE evidence button: "Copy Name And NMLS #" exists only so the recruiter can leave the app.
@@ -2182,18 +2244,17 @@ export async function launchBrowser({ slow = 0 } = {}) {
 async function provisionRoles(browser, acts, args) {
   const roles = [...new Set(acts.map((a) => a.role))].filter((r) => r !== 'admin');
   const todo = roles.filter((r) => args.forceLoginAs || !fs.existsSync(authPathFor(r)));
-  if (!todo.length) {
-    console.log(`[provision] nothing to do — role states already exist for: ${roles.join(', ')}`);
-    return;
-  }
+  const logins = [];
+
   banner([
     'ROLE PROVISIONING',
     '',
-    `Roles to capture: ${todo.join(', ')}`,
+    todo.length ? `Roles to capture: ${todo.join(', ')}` : 'All role states already present.',
     '',
     'Impersonation re-binds the session cookie, so it burns the admin state it',
-    'was launched from. That means ONE fresh admin login per role — you will be',
-    `asked to log in ${todo.length} time(s). Nothing is recorded.`,
+    'was launched from. That means ONE fresh admin login per role, plus a final',
+    `login to leave a working ADMIN state behind: ${todo.length + 1} login(s) total.`,
+    'Nothing is recorded.',
     '',
     'Afterwards every act replays from .auth/viet18-<role>.json with no login.',
   ]);
@@ -2207,6 +2268,7 @@ async function provisionRoles(browser, acts, args) {
       console.log('[provision] previous admin state was no longer admin — removed it');
     }
     await ensureAdminState(browser, args.auth);
+    logins.push(`admin login -> impersonate ${roleKey}`);
 
     const context = await createContext(browser, { storageStatePath: args.auth });
     const page = await context.newPage();
@@ -2222,8 +2284,34 @@ async function provisionRoles(browser, acts, args) {
       await context.close().catch(() => {});
     }
   }
-  console.log('\n[provision] done. Role states present:');
-  for (const r of roles) console.log(`  ${fs.existsSync(authPathFor(r)) ? 'OK  ' : 'MISS'} ${authPathFor(r)}`);
+
+  // FINAL STEP — leave a working ADMIN state behind.
+  // Every impersonation above burned the admin session it launched from, so without this the run
+  // would end with viet18-admin.json pointing at whichever role was captured last, and act 0
+  // (admin) plus the act-0-hosted s1_4 form beat would fail at the worst possible moment: mid-shoot.
+  console.log('\n[provision] === admin (final) ===');
+  if (fs.existsSync(args.auth)) {
+    fs.rmSync(args.auth, { force: true });
+    console.log('[provision] removed the burned admin state so a fresh login is forced');
+  }
+  await ensureAdminState(browser, args.auth);
+  logins.push('admin login -> saved as the shoot admin state');
+  const adminOk = await verifyState(browser, args.auth, { requireAdmin: true });
+  console.log(`[provision] final admin state verified as admin: ${adminOk ? 'YES' : 'NO'}`);
+
+  const rows = [['admin', args.auth], ...roles.map((r) => [r, authPathFor(r)])];
+  console.log('\n[provision] SUMMARY');
+  for (const [name, file] of rows) {
+    const ok = fs.existsSync(file) && (name !== 'admin' || adminOk);
+    console.log(`  ${ok ? 'OK  ' : 'MISS'} ${String(name).padEnd(11)} ${file}`);
+  }
+  console.log(`\n  logins needed: ${logins.length}`);
+  for (const l of logins) console.log(`    - ${l}`);
+  console.log('  the shoot itself needs NONE: record.mjs seeds every act from these files.');
+  if (!adminOk) {
+    console.log('\n  ⚠️ the admin state is NOT valid — act 0 (and the s1_4 form beat it hosts) will');
+    console.log('     fail. Re-run --provision before shooting.');
+  }
 }
 
 async function main() {
@@ -2239,6 +2327,12 @@ async function main() {
 
   if (args.provision) {
     try {
+      // Refuse a partial provisioning run: --acts is how you say which roles you mean, and
+      // silently provisioning only some of them is how a shoot discovers a missing state at 9am.
+      if (!args.acts) {
+        throw new Error('--provision requires --acts (e.g. --provision --acts 0,1,2,3,4,5,6,7) '
+          + 'so the set of roles to capture is explicit');
+      }
       await provisionRoles(browser, selected, args);
     } finally {
       await browser.close().catch(() => {});
@@ -2252,6 +2346,23 @@ async function main() {
   const writeMarkers = () => {
     fs.writeFileSync(args.markers, `${JSON.stringify(markers, null, 2)}\n`);
   };
+
+  // Preflight: act 0 hosts the s1_4 form beat, which creates the candidate every later act works
+  // on. The address must be a temp-mail one made at shoot time — staging really does send mail
+  // (audit §10.4) — so it is never hardcoded, and its absence must be loud, not discovered later.
+  if (selected.some((a) => a.id === 0) && !args.candidate.email) {
+    banner([
+      'NO --candidate-email GIVEN',
+      '',
+      `Act 0 will demonstrate the Add form for "${args.candidate.name}" but will NOT submit it,`,
+      'so no candidate record will exist and acts 1-7 will have nobody to work on.',
+      '',
+      'Open https://temp-mail.org/ , copy the address, and re-run with:',
+      '  --candidate-email <that address>',
+      '',
+      'Never use a real person\'s address: this staging environment sends real email.',
+    ]);
+  }
 
   const needsAdmin = selected.some((a) => a.role === 'admin'
     || args.forceLoginAs
