@@ -3,9 +3,9 @@
 Mục đích: quay video ghi lại **từng hành động của từng role** khi recruit 1 LO trên system cũ
 (`www.viet18.com`), để làm bằng chứng pain point cho bản rebuild trên Tera+.
 
-Lồng tiếng **tiếng Việt** (macOS `say -v Linh`), phụ đề **tiếng Anh** burned-in + `.srt` tiếng Anh.
-Sample giọng đã test 03/08/2026: Linh đọc được, thuật ngữ tiếng Anh cần phiên âm trong field `vi`
-(xem quy tắc `narration.json` bên dưới).
+Lồng tiếng **tiếng Anh** (macOS `say -v Samantha`) + phụ đề **tiếng Anh** burned-in + `.srt`.
+Giọng tiếng Việt `say -v Linh` đã test và **loại** ngày 03/08/2026 — chất giọng nghe không được,
+và đọc chậm hơn ~30% cho cùng nội dung (25s vs 19.4s). Không thử lại.
 
 Paste nguyên khối dưới đây vào một session mới.
 
@@ -32,31 +32,19 @@ CONTEXT DOCS — read these FIRST, the screens are already audited, don't re-der
 - docs/lo-recruiting-feature-review.md      → screen-by-screen audit of the old module
 - docs/lo-recruiting-redesign-direction.md  → 17 pain points (P0-1…P0-17); narration cites them by number
 
-=== AUDIO / SUBTITLE SPEC (this is the part that differs from the lf-chat-service tour) ===
-- Voiceover: VIETNAMESE, macOS `say -v Linh` (vi_VN, already installed and approved).
-- Subtitles: ENGLISH, burned-in, plus an English `.srt`. Also emit a Vietnamese `.vi.srt`
-  as a secondary track (not burned in).
-- `narration.json` carries TWO strings per segment:
-    { "id": "act1_s3",
-      "vi": "…Mô-đex… số En Em Eo Ét…",   // TTS INPUT — phonetically respelled so Linh reads it well
-      "en": "…Modex… the NMLS number…" }  // SUBTITLE TEXT — correct English spelling
-  Rules:
-  * Timings are derived from the VIETNAMESE audio (ffprobe each generated segment).
-    The English subtitle inherits its segment's start/end verbatim — never re-time from
-    English text length.
-  * One `vi` segment == one `en` segment. Never split or merge across the two tracks,
-    or the whole track drifts.
-  * `vi` may phonetically respell English product terms (Mô-đex, En Em Eo Ét, Cờ-ren-đờ-la)
-    so the Vietnamese voice is intelligible; `en` always keeps the real spelling
-    (Modex, NMLS, Calendly) so it matches the on-screen UI.
-  * English subtitle wrapping: max 2 lines, ~42 chars/line. If the English rendering of a
-    segment exceeds that, shorten the English (it's a subtitle, not a transcript) rather
-    than extending the segment.
+=== AUDIO / SUBTITLE SPEC ===
+- ALL ENGLISH, exactly like the lf-chat-service tour: US English voiceover
+  (macOS `say -v Samantha`) + burned-in English subtitles + an English `.srt`.
+  No Vietnamese anywhere in the deliverable. A Vietnamese voice (`say -v Linh`) was
+  tested and rejected on 03/08/2026 — do not revisit it.
+- `narration.json` keeps the lf-chat-service single-field shape: one English string per
+  segment, durations measured off the generated audio with ffprobe. No parallel tracks.
+- Subtitle wrapping: max 2 lines, ~42 chars/line. If a segment's text exceeds that,
+  shorten the line (it's a subtitle, not a transcript) rather than stretching the segment.
 - Reminder: local ffmpeg has NO libass. Subtitles are Playwright-rendered PNG overlays per
-  the playbook. Render the ENGLISH text; also verify Vietnamese diacritics render correctly
-  in the pain-point badges if any Vietnamese survives on screen.
-- On-screen pain badges: ENGLISH ("Pain #17 — recruiter copies NMLS into another site by hand")
-  so the burned-in layer is one language throughout.
+  the playbook.
+- On-screen pain badges in English too, e.g.
+  "Pain #17 — recruiter copies NMLS into another site by hand".
 
 === ENVIRONMENT & AUTH (staging — safe to touch) ===
 - Staging data: submit / change / create / update are ALLOWED. Still: don't delete records
@@ -109,14 +97,14 @@ it at storyboard review.
 === BEFORE RECORDING ===
 1. Read the 3 context docs, then explore the module LIVE per role (login-as each account,
    walk the menus) → complete per-role screen/action inventory + exact UI strings + selectors.
-2. Write a storyboard (act/scene: role, screen path, action, `vi` narration, `en` subtitle,
-   selector, pain-point refs) and let me review/add.
+2. Write a storyboard (act/scene: role, screen path, action, narration, selector,
+   pain-point refs) and let me review/add.
 3. Confirm with me: the login-as handoff schedule, and play me 2–3 assembled sample
-   segments (Vietnamese audio + English burned-in subtitle) before committing to the full run.
+   segments before committing to the full run.
 4. Pre-build narration + durations + record/assemble scripts offline, then run a live
    selector --probe against the real DOM and FIX selectors BEFORE the real recording.
 Then record act-by-act (per-act re-record is fine), verify by extracting frames per scene,
-assemble, and send me the final .mp4 + .srt (EN) + .vi.srt + a PAIN-POINT INDEX
+assemble, and send me the final .mp4 + .srt + a PAIN-POINT INDEX
 (markdown table: timestamp → role → screen → pain #).
 
 If anything is unclear or you get BLOCKED (permission wall, missing data, broken staging
