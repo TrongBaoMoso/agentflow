@@ -2,7 +2,77 @@
 
 > **Phạm vi:** hành trình hoàn chỉnh của MỘT ứng viên LO từ lúc là một dòng data đến lúc thành LO active — và công việc của TỪNG phòng ban trên hành trình đó.
 > **Căn cứ:** 17 pain points trong [lo-recruiting-redesign-direction.md](lo-recruiting-redesign-direction.md) + năng lực tích hợp Modex đã xác minh 31/07/2026 (webhook list-sync) + ma trận role đo thật trên production.
+> **Cách đọc ký hiệu:** các mã như **P0-17, P1-5, P1-10** là số hiệu pain point (điểm đau) trong doc direction — P0 = nghiêm trọng nhất, P1 = cao, P2 = trung bình. **S0 → S7** là 8 chặng của phễu trong doc này. Mọi từ viết tắt/chuyên ngành được giải thích ở **Bảng thuật ngữ** ngay dưới đây.
 > **Nhân vật minh hoạ:** ứng viên **Roger Kube** (NMLS 107621 — case study thật trong P0-17) và các role thật: Inside Recruiter (Brayan), Outside Recruiter (Seth), HR (Dave), Licensing (Dung), Onboard Specialist (Miley), Accounting (Rosaline), Recruiting Manager (Victoria).
+
+---
+
+## Bảng thuật ngữ — đọc trước khi đọc flow
+
+### Từ ngành mortgage & tuyển dụng
+
+| Từ | Nghĩa đời thường |
+|---|---|
+| **LO (Loan Officer)** | Chuyên viên tín dụng mua nhà — chính là "ứng viên" mà bộ phận recruiting đi tuyển về |
+| **NMLS / NMLS ID** | Hệ thống cấp phép hành nghề mortgage toàn nước Mỹ. Mỗi LO có một mã số NMLS duy nhất theo suốt sự nghiệp — coi như "số CMND nghề nghiệp", dùng để tra cứu và chống trùng hồ sơ |
+| **NMLS Consumer Access** | Trang tra cứu công khai, miễn phí của NMLS: xem được lịch sử giấy phép + nơi từng làm việc, nhưng **không có doanh số** |
+| **Sponsorship transfer** | Thủ tục chuyển "bảo trợ giấy phép" trên NMLS từ công ty cũ sang LF. LO chỉ được hành nghề dưới công ty đang bảo trợ mình → chưa xong bước này thì chưa làm việc được |
+| **Modex / Modex Score** | Nền tảng dữ liệu ngành mortgage mà LF đang trả phí (1,6 triệu hồ sơ LO). Modex Score = điểm 0–100 do Modex chấm, tóm tắt mức "đáng tuyển" của một LO |
+| **Lead** | Một đầu mối ứng viên tiềm năng — mới chỉ là cái tên + thông tin liên hệ, chưa chắc đã quan tâm |
+| **Record / hồ sơ** | Lead sau khi được lưu thành hồ sơ trong hệ thống |
+| **Pipeline (phễu)** | Chuỗi các chặng từ "mới biết tên" đến "vào làm chính thức". Càng về sau càng rơi rụng bớt người → hình cái phễu |
+| **Stage (chặng)** | Một bước trong phễu — doc này có 8 chặng, đánh số S0 → S7 |
+| **Nurture (nuôi)** | Ứng viên bảo "3 tháng nữa hãy gọi lại" → hồ sơ chuyển sang chế độ nuôi, hẹn ngày đánh thức (wake-date); đúng ngày đó việc tự nổi lên lại, không cần ai nhớ |
+| **Offer / comp band** | Offer = thư mời làm việc kèm gói đãi ngộ. Comp band = **khung đãi ngộ theo hạng năng suất** — LO doanh số cao được chào khung cao hơn; chào "ngoài khung" phải có sếp duyệt |
+| **Onboarding** | Giai đoạn "nhập môn" sau khi ký: giấy tờ, tạo tài khoản, chuyển giấy phép, training — đến khi LO làm việc được thật |
+| **LOS / CRM** | LOS = phần mềm xử lý hồ sơ vay LO dùng hằng ngày. CRM = phần mềm quản lý quan hệ khách hàng. (Nhắc đến ở bước tạo tài khoản cho người mới) |
+| **Retention / check-in 30-60-90** | Retention = giữ chân người mới. Check-in 30/60/90 = lịch hỏi thăm sau 30, 60, 90 ngày làm việc — vì mất một LO mới tuyển đắt hơn nhiều so với tuyển thêm |
+
+### Từ trong cách app vận hành
+
+| Từ | Nghĩa đời thường |
+|---|---|
+| **Intake** | "Cửa tiếp nhận" — nơi mọi lead từ mọi nguồn đổ vào hệ thống |
+| **Identity resolution / dedup (chống trùng)** | Máy tự nhận ra "người này đã có hồ sơ rồi" bằng cách so lần lượt NMLS → email → số điện thoại, để không bao giờ có 2 hồ sơ cho 1 người |
+| **Owner / claim** | Owner = recruiter chịu trách nhiệm chính hồ sơ đó. Claim = tự nhận một hồ sơ từ hàng chờ về tay mình |
+| **Auto-assign / round-robin** | Máy tự chia lead cho recruiter theo luật định sẵn (theo bang, theo nguồn) hoặc xoay vòng đều tay (round-robin) |
+| **First touch** | Lần liên hệ ĐẦU TIÊN với ứng viên (cuộc gọi/tin nhắn/email đầu) — chậm quá là nguội |
+| **SLA** | Cam kết thời hạn xử lý, vd "lead mới phải được liên hệ trong 24 giờ". Quá hạn → hệ thống tự nhắc người làm và báo lên quản lý (**escalate** = đẩy lên cấp trên) |
+| **Gate (chốt chặn)** | Điều kiện bắt buộc mới được qua chặng sau. Vd: chưa có số liệu xác minh → nút tạo offer bị khoá |
+| **Verification Card (thẻ xác minh)** | Khối thông tin trên hồ sơ LO hiển thị số liệu đã xác minh: doanh số 12 tháng, số khoản vay, số năm giữ license, nơi đang làm... kèm ghi chú "số này lấy từ đâu, lúc nào" |
+| **Zero-click** | "Không cần bấm gì" — dữ liệu tự chảy về hồ sơ TRƯỚC khi người dùng cần đến, thay vì phải bấm nút tra cứu |
+| **Today view** | Màn hình "việc của tôi hôm nay" — thứ đầu tiên hiện ra khi mở app, gom mọi việc đến hạn của đúng người đó |
+| **Queue (hàng chờ)** | Danh sách việc/hồ sơ đang chờ ai đó nhận xử lý — vd queue "Unassigned" = các lead chưa có người phụ trách |
+| **Timeline** | Dòng thời gian trên mỗi hồ sơ: ghi lại mọi hoạt động theo thứ tự (ai gọi, ai note, chuyển chặng lúc nào) — mở ra là thấy toàn bộ lịch sử |
+| **Snapshot** | "Ảnh chụp" số liệu tại một thời điểm, lưu cứng vào hồ sơ — để 6 tháng sau vẫn trả lời được "lúc duyệt offer, số liệu là bao nhiêu", dù data gốc đã thay đổi |
+| **Do-not-contact / reason code** | Do-not-contact = danh sách "không được liên hệ nữa" (người đã từ chối hẳn). Reason code = lý do chọn từ danh sách chuẩn thay vì gõ tự do — để sau này thống kê được "vì sao mất ứng viên" |
+| **E-sign** | Ký hợp đồng điện tử qua mạng (kiểu DocuSign) — hệ thống biết được thư đã gửi / đã mở xem / đã ký |
+| **Attribution (ghi công)** | Ghi vĩnh viễn vào hồ sơ: "ứng viên này đến từ nguồn nào, ai tuyển" — nền tảng để tính hiệu quả từng nguồn, từng người |
+| **RBAC (phân quyền theo vai trò)** | Quyền đi theo VAI TRÒ (Recruiter được gì, HR được gì...) thay vì cấp lẻ tẻ cho từng người — hệ thống cũ cấp lẻ tẻ nên mỗi người một kiểu quyền, không ai kiểm soát nổi |
+| **403** | Mã lỗi chuẩn nghĩa là "bạn không có quyền xem trang này". App mới sẽ NÓI THẲNG như vậy, thay vì âm thầm đá người dùng sang trang khác không một lời giải thích (silent-redirect) như hiện tại |
+
+### Từ kỹ thuật & tích hợp
+
+| Từ | Nghĩa đời thường |
+|---|---|
+| **Webhook** | Cơ chế "bên kia TỰ ĐẨY dữ liệu sang mình khi có cái mới" — Modex chủ động gửi dữ liệu về máy chủ Tera+ mỗi khi list thay đổi hoặc có data tháng mới; mình không phải đi hỏi từng lần |
+| **Payload** | "Gói hàng dữ liệu" trong mỗi lần đẩy — chứa doanh số, giấy phép, điểm số... của LO |
+| **Synced list** | Danh sách LO bên Modex được đánh dấu "đồng bộ" — ai nằm trong list này thì dữ liệu tự chảy về Tera+ |
+| **Upsert** | Thao tác máy "có hồ sơ rồi thì cập nhật, chưa có thì tạo mới" — gộp 2 việc làm 1, không sinh trùng |
+| **Diff** | So sánh bản dữ liệu mới với bản cũ để tìm ra CÁI GÌ VỪA THAY ĐỔI (vd: LO này vừa đổi công ty) |
+| **Signal** | Tín hiệu hệ thống bắn ra từ kết quả diff, kèm gợi ý hành động ("LO X vừa đổi công ty → nên gọi lại") |
+| **CSV / bulk** | CSV = file bảng tính dạng đơn giản (xuất từ Excel) để import danh sách. Bulk = làm hàng loạt |
+| **Health-check** | Kiểm tra định kỳ "kết nối này còn sống không" (Zoom Phone, Calendly, Modex...) — để biết hỏng TRƯỚC khi người dùng bấm vào và vỡ trận |
+
+### Từ đo lường
+
+| Từ | Nghĩa đời thường |
+|---|---|
+| **KPI** | Chỉ số đo hiệu quả công việc |
+| **Conversion (tỉ lệ chuyển đổi)** | Mỗi chặng phễu giữ lại được bao nhiêu % — vd 100 lead → 20 nói chuyện → 5 offer → 3 ký |
+| **Time-in-stage** | Hồ sơ nằm ở một chặng bao lâu — chỗ nào lâu bất thường là chỗ tắc |
+| **Source ROI** | Nguồn nào đáng đồng tiền: chi cho nguồn đó bao nhiêu, ra được mấy LO vào làm thật |
+| **Funnel analytics (phân tích phễu)** | Gộp các số trên lại thành bức tranh: rơi rụng ở đâu, tắc ở ai, nguồn nào tốt |
 
 ---
 
@@ -38,7 +108,7 @@
 
 **Hệ thống tự chạy khi một lead vào (bất kể nguồn):**
 
-1. **Identity resolution** theo thứ tự khoá: `NMLS → email → phone`.
+1. **Identity resolution (chống trùng người)** theo thứ tự khoá: `NMLS → email → phone` — so mã NMLS trước, không có thì so email, rồi tới số điện thoại.
    - Trùng record đang active → KHÔNG tạo mới; gắn activity "xuất hiện lại từ nguồn X" vào record cũ + notify owner.
    - Giống nhưng không chắc (tên giống, thiếu khoá) → cờ **Review Similar**, nằm ở queue riêng cho recruiter xử tay.
    - Mới hoàn toàn → tạo record, `source` + `entered_at` ghi vĩnh viễn (phục vụ funnel analytics).
@@ -67,7 +137,7 @@
 | | |
 |---|---|
 | **Ai làm** | Recruiter (owner) |
-| **Làm gì** | Chạy outreach: **click-to-call** (Zoom Phone — có health-check cấu hình, không còn hỏng ngầm), SMS, email template. Mỗi lần kết thúc activity, hệ thống **bắt buộc chọn next step**: gọi lại ngày N / chuyển Engaged / Not-now / Do-not-contact. |
+| **Làm gì** | Chạy outreach (chào mời chủ động): **click-to-call** — bấm vào số trong app là gọi luôn qua Zoom Phone (kết nối được health-check định kỳ, không còn kiểu bấm gọi mới biết hỏng), SMS, email theo mẫu. Mỗi lần kết thúc một lượt liên hệ, hệ thống **bắt buộc chọn bước kế tiếp**: gọi lại ngày N / chuyển Engaged / Not-now (nuôi) / Do-not-contact (ngừng liên hệ). |
 | **Hệ thống tự làm** | Log mọi activity vào timeline record (ai, kênh, lúc nào, note). Record không có next task = lỗi dữ liệu, nổi lên Today view. |
 | **Nhánh ra** | – LO trả lời & quan tâm → **S3 Engaged**. <br>– "Đang bận, 3 tháng nữa" → **Nurture**: đặt wake-date; ĐÚNG ngày đó việc nổi lên Today view như một task (không phải ẩn record đi như follow-up flag cũ). <br>– Từ chối hẳn / yêu cầu ngừng liên hệ → **Do-not-contact** + reason code (bắt buộc chọn, phục vụ phân tích). |
 
@@ -91,7 +161,7 @@
 |---|---|
 | **Ai làm** | Recruiter đề xuất, Manager duyệt |
 | **Điều kiện vào việc** | Verification Card **fresh** (≤90 ngày). Cũ hơn → nút "Re-verify" (đẩy lại vào list, chờ payload mới). |
-| **Làm gì** | Hệ thống hiện **gợi ý comp band theo production tier**: Newly licensed / <10 loans / 10–50 / 50+ / high producer. Roger = high producer tier. Brayan chọn package đề xuất trong band (hoặc ngoài band — phải ghi lý do) → gửi Manager. Victoria duyệt **trong app**: thấy đề xuất + đúng số liệu làm căn cứ trên cùng một màn hình. |
+| **Làm gì** | Hệ thống hiện **gợi ý khung đãi ngộ (comp band) theo hạng năng suất**: Mới có license / dưới 10 khoản vay/năm / 10–50 / trên 50 / siêu sao (high producer). Roger thuộc hạng siêu sao. Brayan chọn gói đề xuất trong khung (muốn chào vượt khung — phải ghi lý do) → gửi Manager. Victoria duyệt **ngay trong app**: nhìn thấy đề xuất + đúng số liệu làm căn cứ trên cùng một màn hình, không phải mở chỗ khác đối chiếu. |
 | **Audit ghi lại** | Ai verify, số liệu nào (snapshot đóng băng tại thời điểm duyệt), ai duyệt, lúc nào — trả lời được câu "offer này dựa trên cái gì" sau 6 tháng. |
 | **Gate cứng** | Không có verified data → **không tạo được offer**. Manager được override nhưng phải nhập lý do, log vĩnh viễn. |
 
@@ -113,9 +183,9 @@ Ký xong, hệ thống sinh checklist chia theo role — mỗi người thấy p
 | Role | Việc | Phụ thuộc |
 |---|---|---|
 | **Licensing (Dung)** | NMLS sponsorship transfer; kiểm tra state licenses khớp state sẽ làm việc; theo dõi trạng thái transfer trên NMLS | Chặn các việc "go-live"; các role khác vẫn chạy song song phần của mình |
-| **HR (Dave)** | I-9, background check, hồ sơ nhân sự, ngày bắt đầu | — |
+| **HR (Dave)** | I-9 (xác nhận quyền làm việc tại Mỹ — bắt buộc theo luật lao động), background check (xác minh lý lịch), hồ sơ nhân sự, chốt ngày bắt đầu | — |
 | **Onboard Specialist (Miley)** | Tạo account (email, LOS, CRM, phone), thiết bị, lịch training tuần đầu | Sau khi HR xác nhận ngày bắt đầu |
-| **Accounting (Rosaline)** | Comp plan setup (đúng package đã ký — chảy từ S5, không gõ lại), payroll, W-9/direct deposit | Sau khi HR có hồ sơ |
+| **Accounting (Rosaline)** | Cài đặt gói hoa hồng (đúng gói đã ký ở S5 — số tự chảy sang, không gõ lại), payroll (bảng lương), W-9 (khai thuế) + direct deposit (đăng ký nhận lương qua tài khoản ngân hàng) | Sau khi HR có hồ sơ |
 
 **Hệ thống tự làm:** progress % trên record (Roger: 7/12 việc xong); việc bị chặn hiện rõ *"chờ: NMLS transfer — Licensing"*; SLA từng task; task quá hạn nổi lên Today view của đúng người + Manager.
 
