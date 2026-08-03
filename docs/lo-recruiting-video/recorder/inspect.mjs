@@ -69,11 +69,22 @@ function locatorFor(page, c) {
 // probe tables — one entry per act, screens in the order the act visits them
 // ---------------------------------------------------------------------------
 
+/**
+ * VERIFIED 2026-08-03 — structural facts this app actually follows:
+ *  - Recruiting boards + /associates: real `table.table-sm.table-hover` (tbody/tr/td, th headers).
+ *    Each view ALSO contains a separate summary/stats <table> with no .table-hover class, so a
+ *    bare `table`/`tr` selector hits the stats block first. Always scope to `.table-hover`.
+ *  - /modex_data: the one div-grid — `div.table-row` / `div.table-cell`.
+ *  - Row menus (`a.dropdown-item`) are PRE-RENDERED while closed, one set per row: a non-zero
+ *    count proves nothing, only `vis` does.
+ *  - Toolbar Action is an <a id="gwt-debug-action">; toolbar Add is <button id="gwt-debug-add">.
+ */
 const COMMON_TABLE = [
-  css('table', 'any <table>'),
-  css('tr', 'any <tr>'),
-  role('button', /^\s*Action/i, 'toolbar/row Action'),
-  placeholder(/search/i, 'search box'),
+  css('table.table-hover', 'data grid (table.table-hover)'),
+  css('table.table-hover tbody tr', 'data rows'),
+  role('button', /^\s*Action\s*$/i, 'row Action <button>'),
+  css('#gwt-debug-action', 'toolbar Action (gwt id)'),
+  placeholder(/Name, ?Email/i, 'grid filter input'),
 ];
 
 const PROBES = {
@@ -85,8 +96,8 @@ const PROBES = {
         url: URLS.canary,
         scenes: ['s0_1'],
         candidates: [
+          css('#gwt-debug-lo-recruiting', 'LO RECRUITING nav (gwt id)'),
           role('link', /LO RECRUITING/i),
-          text(/^\s*LO RECRUITING\s*$/i),
           text(/My Loan Officer referrals/i),
           text(/Admin - Loan Officer referrals/i),
           text(/Interested Loan Officers/i),
@@ -97,18 +108,23 @@ const PROBES = {
       },
       {
         name: 'rlo-company',
-        url: URLS.rloCompany,
+        url: URLS.rloMine,
+        tab: 'Company', // reached by click, not by URL
         scenes: ['s0_2', 's0_3'],
         candidates: [
           ...COMMON_TABLE,
+          role('tab', /^Mine$/i, 'tab Mine'),
+          // aria-label is lowercase "company" and wins over the visible text — match case-insensitively
+          role('tab', /^company$/i, 'tab Company'),
+          role('tab', /^Pending approvals$/i, 'tab Pending approvals'),
+          css('table.table-hover th', 'column headers (th)'),
           text(/Started date/i),
           text(/Full name/i),
-          text(/Social media/i),
-          text(/Friendship/i),
-          text(/Recruiter/i),
-          text(/Not touched/i, 'stats tile / status label'),
-          role('link', /Not touched/i, 'stats drill-down link'),
-          css('[class*="material-icons"]', 'material icon buttons (view-mode toggles)'),
+          css('div[class*="col-md-2"]', 'stats tiles'),
+          // the drill-down is the NUMBER inside the tile, not the label
+          css('div[class*="col-md-2"] a.gwt-Anchor', 'stats drill-down links'),
+          css('#gwt-debug-add', 'toolbar Add (gwt id)'),
+          css('#gwt-debug-reset', 'Reset filters (gwt id)'),
         ],
       },
       {
@@ -128,18 +144,20 @@ const PROBES = {
         name: 'modex-data',
         url: URLS.modexData,
         scenes: ['s0_5'],
+        note: 'The one DIV-grid page: div.table-row/div.table-cell, buttons View + Update, no row Action.',
         candidates: [
-          ...COMMON_TABLE,
-          role('link', /^\s*View\s*$/i),
-          text(/^\s*View\s*$/i),
-          text(/Received/i),
+          css('div.table-row', 'div-grid rows'),
+          css('div.table-cell', 'div-grid cells'),
+          role('button', /^\s*View\s*$/i, 'View <button>'),
+          role('button', /^\s*Update\s*$/i, 'Update <button> (never clicked: starts a merge job)'),
+          text(/Received Date/i),
           text(/Synced/i),
           text(/Review Similar/i),
         ],
         safeOpens: [
           {
             label: 'MODEX INFORMATION modal (read-only)',
-            open: [role('link', /^\s*View\s*$/i), text(/^\s*View\s*$/i)],
+            open: [role('button', /^\s*View\s*$/i)],
             probe: [
               text(/MODEX INFORMATION/i),
               text(/PERFORMANCE/i),
@@ -154,11 +172,25 @@ const PROBES = {
         name: 'associates',
         url: URLS.associates,
         scenes: ['s0_6'],
-        note: 'Route is a guess. If it redirects, the nav link is the fallback in record.mjs.',
+        note: 'Grid needs ~11s. Row menus are pre-rendered: Login SHOULD read count=10 vis=0.',
         candidates: [
           ...COMMON_TABLE,
-          role('link', /^\s*Associates\s*$/i),
-          text(/^\s*Login\s*$/i, 'impersonation menu item — NEVER clicked by this script'),
+          // data-name resolves while the menu is SHUT; role/text locators do not (display:none
+          // keeps closed menus out of the accessibility tree). vis=0 here is correct.
+          css('a.dropdown-item[data-name="Login"]', 'impersonation item (shut menu) — NEVER clicked here'),
+          css('a.dropdown-item[data-name="Permissions"]', 'sibling item, proves the menu is populated'),
+          css('#gwt-debug-action', 'toolbar Action dropdown (an <a>, not a button)'),
+        ],
+        safeOpens: [
+          {
+            label: 'row Action menu (read-only dropdown; Login and Delete are NEVER clicked)',
+            open: [role('button', /^\s*Action\s*$/i)],
+            probe: [
+              css('a.dropdown-item[data-name="Login"]', 'Login (should now be vis=yes)'),
+              css('a.dropdown-item[data-name="Permissions"]', 'Permissions'),
+              css('a.dropdown-item[data-name="Delete"]', 'Delete — sits 2 items under Login; scope row clicks!'),
+            ],
+          },
         ],
       },
     ],
@@ -553,6 +585,30 @@ function printRows(rows) {
   }
 }
 
+/**
+ * VERIFIED 2026-08-03: this app finishes a grid 5–11s after DOMContentLoaded. The original fixed
+ * 2.8s settle measured a half-built DOM and reported live selectors as MISSING (that is where 5
+ * of act 0's 8 "misses" came from). Report the gwt-debug hooks too — they are the best selectors
+ * available and cost nothing to enumerate.
+ */
+async function reportGwtHooks(page) {
+  const hooks = await page.evaluate(() => {
+    const out = {};
+    for (const el of document.querySelectorAll('[id*="gwt-debug"]')) {
+      if (/^gwt-debug-__floating/.test(el.id)) continue; // dev-toolbar noise
+      const r = el.getBoundingClientRect();
+      const k = `${el.tagName.toLowerCase()}#${el.id}`;
+      out[k] = out[k] || { n: 0, vis: 0, txt: (el.innerText || '').replace(/\s+/g, ' ').trim().slice(0, 28) };
+      out[k].n += 1;
+      if (r.width > 2 && r.height > 2) out[k].vis += 1;
+    }
+    return Object.entries(out).sort();
+  }).catch(() => []);
+  if (!hooks.length) return;
+  console.log('    stable gwt-debug hooks on this screen:');
+  for (const [k, v] of hooks) console.log(`      ${k.padEnd(46)} x${String(v.n).padStart(3)} vis${String(v.vis).padStart(3)}  "${v.txt}"`);
+}
+
 async function shoot(page, name) {
   fs.mkdirSync(DEBUG_DIR, { recursive: true });
   const file = path.join(DEBUG_DIR, `${name}.png`);
@@ -615,10 +671,15 @@ async function main() {
     for (const screen of plan.screens) {
       console.log(`\n--- screen: ${screen.name}  (scenes ${screen.scenes.join(', ')})`);
       console.log(`    asked for: ${screen.url}`);
-      await page.goto(screen.url, { waitUntil: 'domcontentloaded', timeout: 60_000 }).catch((e) => {
+      // Use the recorder's own readiness wait so the probe measures exactly what the recorder
+      // will see (grid loaded, cold-load tab bounce already retried).
+      await h.goto(screen.url).catch((e) => {
         console.warn(`    goto failed: ${e.message}`);
       });
-      await sleep(2800); // GWT builds its shell after DOMContentLoaded
+      if (screen.tab) {
+        console.log(`    clicking tab: ${screen.tab}`);
+        await h.clickTab(screen.tab).catch((e) => console.warn(`    tab click failed: ${e.message}`));
+      }
       console.log(`    landed on: ${page.url()}${page.url() !== screen.url ? '   <-- REDIRECTED' : ''}`);
       if (await looksLikeLogin(page)) {
         console.warn('    !! this is the LOGIN screen — the session died, stopping.');
@@ -631,6 +692,7 @@ async function main() {
       printRows(rows);
       for (const r of rows) if (r.count === 0) missing.push(`act${actId}/${screen.name}: ${r.selector}`);
 
+      await reportGwtHooks(page);
       console.log(`    screenshot: ${await shoot(page, `act${actId}-${screen.name}`)}`);
 
       if (args.openModals && screen.safeOpens?.length) {

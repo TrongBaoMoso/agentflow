@@ -65,23 +65,47 @@ const DURATIONS_CANDIDATES = [
 
 export const BASE = 'https://www.viet18.com';
 
-/** Routes taken from docs/lo-recruiting-feature-review.md §1. */
+/**
+ * Routes. VERIFIED 2026-08-03 against staging unless marked otherwise.
+ *
+ * Route casing is NOT uniform and IS significant:
+ *   /lo_recruiting/company          works    (lowercase — matches the tab's data-name)
+ *   /lo_recruiting/Company          BOUNCES to /lo_recruiting/Mine
+ *   /recruited_loan_officers/Company works   (both casings work here)
+ * Tabs whose name contains a space cannot be deep-linked at all (%20 bounces to Mine), so reach
+ * every non-default tab with h.clickTab(name) instead of a URL.
+ */
 export const URLS = {
   login: `${BASE}/login`,
   // Post-login landing used as the "am I authenticated?" canary (verified 03/08/2026).
   canary: `${BASE}/prospects/Mine`,
   rloMine: `${BASE}/recruited_loan_officers/Mine`,
-  rloCompany: `${BASE}/recruited_loan_officers/Company`,
-  // PROBE: tab name contains a space; encoding unconfirmed.
-  rloPending: `${BASE}/recruited_loan_officers/Pending%20approvals`,
+  // VERIFIED 2026-08-03: lowercase matches the tab data-name and works on both pages.
+  rloCompany: `${BASE}/recruited_loan_officers/company`,
   iloMine: `${BASE}/lo_recruiting/Mine`,
   iloCompany: `${BASE}/lo_recruiting/company`,
+  // VERIFIED 2026-08-03: redirects to /lo_recruiting_config/Webinar (first tab).
   config: `${BASE}/lo_recruiting_config`,
   modexData: `${BASE}/modex_data`,
   referrals: `${BASE}/loan_officer_referrals`,
-  // PROBE: reached through the menu in the audit; direct route unconfirmed.
+  // VERIFIED 2026-08-03: direct route works, no redirect (view BrokerMembersView).
   associates: `${BASE}/associates`,
 };
+
+/** Tab labels reached by click, never by URL (see URLS note). */
+export const TABS = {
+  mine: 'Mine',
+  company: 'Company',
+  pendingApprovals: 'Pending approvals',
+};
+
+/**
+ * VERIFIED 2026-08-03: the app ships GWT debug ids — `#gwt-debug-<name>` — which are stable,
+ * semantic and immune to text/i18n drift. Prefer these over text where one exists.
+ * Confirmed present on the recruiting boards: lo-recruiting (nav), action (toolbar dropdown,
+ * an <a>), add (toolbar <button>), reset (Reset filters <button>), plus every sidebar section.
+ */
+export const gwt = (name) => `#gwt-debug-${name}`;
 
 /**
  * Staging test accounts (already committed in docs/lo-recruiting-video-prompt.md).
@@ -481,14 +505,152 @@ export function makeHelpers(page, { actLabel = 'act?', durations = {}, ctxStart 
 
   const hold = (seconds) => sleep(Math.max(0, seconds) * 1000);
 
-  async function goto(url, { settle = 2200 } = {}) {
+  const reEscape = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+  /**
+   * A row of the DATA grid containing `text`.
+   * VERIFIED 2026-08-03: recruiting boards + /associates render `table.table-sm.table-hover`
+   * with tbody/tr/td; /modex_data renders `div.table-row` / `div.table-cell`. Match either.
+   * Scoping to `.table-hover` matters: each view ALSO contains a separate summary/stats <table>
+   * (no .table-hover) whose rows would otherwise be selectable.
+   */
+  function row(text) {
+    const re = text instanceof RegExp ? text : new RegExp(reEscape(text), 'i');
+    return page.locator('table.table-hover tbody tr, div.table-row').filter({ hasText: re }).first();
+  }
+
+  /**
+   * A stats-panel drill-down link.
+   * VERIFIED 2026-08-03: each tile is `div.col-md-2` whose text reads "<Label> - <N>", and the
+   * clickable thing is the NUMBER: `<a class="gwt-Anchor" href="javascript:">`. Targeting the
+   * label by role=link matches nothing — that was the original act-0 miss.
+   */
+  function statLink(label) {
+    return page.locator('div[class*="col-md-2"]').filter({ hasText: label }).first().getByRole('link');
+  }
+
+  /**
+   * The `Select`-style dropdown in a row that owns `option`.
+   * VERIFIED 2026-08-03: a row has THREE buttons literally labelled "Select" (priority, channel,
+   * experience), so they can only be told apart by the options their dropdown holds. Items are
+   * `a.dropdown-item`, PRE-RENDERED in the DOM while closed (hidden) — so a non-zero count never
+   * proves a menu is open; only visibility does.
+   */
+  function dropdownWith(scope, option) {
+    return scope.locator('.btn-group, .dropdown').filter({ has: page.getByText(option) }).first();
+  }
+
+  /**
+   * A dropdown menu item, by the app's own `data-name` attribute.
+   * VERIFIED 2026-08-03: items render as
+   *   <a data-name="Login" class="dropdown-item" href="javascript:;"> Login</a>
+   * Two traps this avoids:
+   *  1. The label has a LEADING SPACE (" Login"), so `filter({hasText:/^Login$/})` fails.
+   *  2. While the menu is closed it is display:none, so it is NOT in the accessibility tree and
+   *     `getByRole('link', …)` returns 0 even though the node exists. `data-name` is a CSS match,
+   *     so it resolves whether the menu is open or shut — but still WAIT for visibility before
+   *     clicking, because clicking a hidden item is a no-op.
+   * Tabs expose the same `data-name` convention.
+   */
+  function dropdownItem(scope, name) {
+    const target = scope || page;
+    return target.locator(`a.dropdown-item[data-name="${name}"]`);
+  }
+
+  /**
+   * VERIFIED 2026-08-03: this GWT app finishes rendering a grid between 5s and 11s after
+   * DOMContentLoaded (measured: modex_data pager flips to "1-9 of 9" at ~5.1s; /associates at
+   * ~10.9s). A fixed settle therefore measures a half-built DOM and makes real selectors look
+   * missing. Wait for the DOM to stop growing instead, then for actual rows.
+   */
+  async function waitForAppIdle({ timeout = 30_000, quiet = 2, floor = 1200 } = {}) {
+    const deadline = Date.now() + timeout;
+    await sleep(floor);
+    let prev = -1;
+    let stable = 0;
+    while (Date.now() < deadline) {
+      const nodes = await page.evaluate(() => document.querySelectorAll('*').length).catch(() => -1);
+      stable = nodes === prev ? stable + 1 : 0;
+      prev = nodes;
+      if (stable >= quiet) return true;
+      await sleep(700);
+    }
+    console.warn(`[${actLabel}] waitForAppIdle timed out after ${timeout}ms (DOM still changing)`);
+    return false;
+  }
+
+  /**
+   * VERIFIED 2026-08-03: the recruiting boards are real <table> markup (tr/td); /modex_data is a
+   * div grid (div.table-row/div.table-cell). Treat either as "rows", and accept a genuine empty
+   * state so an empty list is not mistaken for a slow one.
+   */
+  async function waitForRows({ timeout = 30_000 } = {}) {
+    await waitForAppIdle({ timeout });
+    const deadline = Date.now() + 15_000;
+    let last = { rows: 0, empty: false, pager: '' };
+    while (Date.now() < deadline) {
+      last = await page.evaluate(() => {
+        const view = document.querySelector('[id^="com.lenderrate"]');
+        const scope = view || document;
+        // VERIFIED 2026-08-03: while a grid loads it renders a PLACEHOLDER <tr> holding just a
+        // spinner image — no text. Counting it as a row is what made /associates look like it had
+        // 1 row and no controls. Real rows always carry text, the placeholder never does.
+        const rows = [...scope.querySelectorAll('tbody tr, div.table-row')]
+          .filter((r) => (r.innerText || '').trim().length > 0).length;
+        const pager = (document.body.innerText.match(/\d+-\d+ of (over )?[\d,]+/) || [''])[0];
+        return {
+          rows,
+          pager,
+          // VERIFIED 2026-08-03: "1-1 of over 0" is the LOADING pager; a genuinely empty list
+          // reads "1-1 of 0" (no "over") next to "No results".
+          loadingPager: /^1-1 of over 0$/.test(pager),
+          empty: /No results/i.test(document.body.innerText),
+        };
+      }).catch(() => ({ rows: 0, empty: false, pager: '', loadingPager: false }));
+      if (!last.loadingPager && (last.rows > 0 || last.empty)) return last;
+      await sleep(500);
+    }
+    console.warn(`[${actLabel}] waitForRows gave up (rows=${last.rows} pager="${last.pager}")`);
+    return last;
+  }
+
+  /**
+   * VERIFIED 2026-08-03: on a COLD navigation the GWT router bounces a deep-linked tab back to
+   * the view's default tab (/recruited_loan_officers/Company -> /Mine on the first goto of a
+   * fresh context, but not on a warm second goto). So navigate, and if we got bounced, navigate
+   * once more now that the app shell is up.
+   */
+  async function goto(url, { rows = true, retryBounce = true } = {}) {
     const full = url.startsWith('http') ? url : `${BASE}${url}`;
     await page.goto(full, { waitUntil: 'domcontentloaded', timeout: 60_000 });
-    await sleep(settle); // GWT builds the shell after DOMContentLoaded
+    if (rows) await waitForRows(); else await waitForAppIdle();
     if (await looksLikeLogin(page)) {
       throw new Error(`session lost — ${full} rendered the login screen`);
     }
+    if (retryBounce && page.url() !== full && page.url().replace(/\/$/, '') !== full.replace(/\/$/, '')) {
+      console.log(`[${actLabel}] cold-load bounced ${full} -> ${page.url()}; retrying warm`);
+      await page.goto(full, { waitUntil: 'domcontentloaded', timeout: 60_000 });
+      if (rows) await waitForRows(); else await waitForAppIdle();
+    }
     return page.url();
+  }
+
+  /**
+   * VERIFIED 2026-08-03: tabs are <a role="tab" href="javascript:" aria-label="…" data-name="…">
+   * inside div.tab-container > nav[role=tablist]. Deep-linking a tab is unreliable (the
+   * "Pending approvals" segment contains a space and %20 bounces to Mine), so CLICK the tab.
+   * Bonus: the click is what a real user does, which is better footage.
+   *
+   * CASING TRAP: the Company tab is `aria-label="company"` while its visible text is "Company",
+   * and aria-label wins for the accessible name. Pass a STRING here (Playwright matches strings
+   * case-insensitively); a case-sensitive /^Company$/ regex matches nothing. Same reason the URL
+   * segment is lowercase `company`.
+   */
+  async function clickTab(name) {
+    const tab = page.getByRole('tab', { name });
+    await click(() => tab.first(), { timeout: 15_000 });
+    await waitForRows();
+    return tab.first();
   }
 
   /** Optional beat: logs and continues instead of failing the scene. */
@@ -533,6 +695,13 @@ export function makeHelpers(page, { actLabel = 'act?', durations = {}, ctxStart 
   /** Persist the CURRENT session as .auth/viet18-<name>.json (never prints the contents). */
   async function saveRoleState(name) {
     const target = authPathFor(name);
+    // HARD GUARD: an existing admin state is never overwritten. Losing it costs a manual
+    // login, and after an impersonation the live session is NOT admin any more — writing it
+    // over viet18-admin.json would silently downgrade the file to a role session.
+    if (name === 'admin' && fs.existsSync(target)) {
+      console.log(`[${actLabel}] admin state already on disk — refusing to overwrite ${target}`);
+      return target;
+    }
     fs.mkdirSync(path.dirname(target), { recursive: true });
     await page.context().storageState({ path: target });
     console.log(`[${actLabel}] session state saved to ${target}`);
@@ -559,6 +728,13 @@ export function makeHelpers(page, { actLabel = 'act?', durations = {}, ctxStart 
     smoothScroll,
     scrollableNear,
     goto,
+    clickTab,
+    waitForAppIdle,
+    waitForRows,
+    row,
+    statLink,
+    dropdownWith,
+    dropdownItem,
     optional,
     sleep,
     // session
@@ -607,41 +783,40 @@ export async function performLoginAs(page, h, roleKey, { adminStatePath } = {}) 
 
   const before = await currentUserLabel(page);
 
-  // 1) Associates screen. PROBE: direct route unconfirmed; nav link is the fallback.
-  try {
-    await h.goto(URLS.associates);
-  } catch {
-    await h.click([
-      () => page.getByRole('link', { name: /^\s*Associates\s*$/i }),
-      () => page.getByText(/^\s*Associates\s*$/i),
-    ], { timeout: 10_000 });
-    await h.hold(2);
-  }
+  // 1) Associates screen. VERIFIED 2026-08-03: /associates loads directly, no redirect
+  // (view root com.lenderrate.client.view.user.broker.BrokerMembersView). The grid needs
+  // ~11s, which h.goto() now waits for explicitly.
+  await h.goto(URLS.associates);
 
-  // 2) Find the account. PROBE: search input has no label/placeholder we know of.
+  // 2) Find the account.
+  // VERIFIED 2026-08-03: the grid filter input is placeholder "Name, Email, Address and Phone..".
   await h.typeInto([
+    () => page.getByPlaceholder(/Name, ?Email/i),
     () => page.getByPlaceholder(/search/i),
-    () => page.getByRole('textbox').first(),
-    'input[type="text"]',
   ], acct.search, { delay: 45 });
   await page.keyboard.press('Enter').catch(() => {});
-  await h.hold(3);
+  await h.waitForRows();
 
   // 3) Row Action menu on that account's row, then "Login".
-  // PROBE: rows are <tr> in a generated table; the Action cell is a link/button labelled "Action".
-  const row = page.locator('tr', { hasText: new RegExp(acct.search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i') }).first();
-  await h.click([
-    () => row.getByRole('button', { name: /^\s*Action/i }),
-    () => row.getByRole('link', { name: /^\s*Action/i }),
-    () => row.getByText(/^\s*Action\s*$/i),
-    () => page.getByText(/^\s*Action\s*$/i).first(),
-  ], { timeout: 12_000 });
+  //
+  // SAFETY (verified 2026-08-03): every row's Action dropdown is PRE-RENDERED in the DOM while
+  // closed, so `getByText(/^Login$/)` matches one hidden item PER ROW (10 on a default page) and
+  // an unscoped `.last()` would impersonate whichever account happens to sit last. Worse, that
+  // same dropdown contains `Delete` two items below `Login`. Both the Action button and the Login
+  // item are therefore scoped to the matched row, and the row itself is matched on the account's
+  // unique search key.
+  const target = h.row(acct.search);
+  if ((await target.count()) === 0) {
+    throw new Error(`no Associates row matched "${acct.search}" — refusing to guess which account to impersonate`);
+  }
+  await h.click(() => target.getByRole('button', { name: /^\s*Action\s*$/i }), { timeout: 15_000 });
   await h.hold(1);
-  await h.click([
-    () => page.getByRole('menuitem', { name: /^\s*Login\s*$/i }),
-    () => page.getByRole('link', { name: /^\s*Login\s*$/i }),
-    () => page.getByText(/^\s*Login\s*$/i).last(),
-  ], { timeout: 12_000 });
+  // VERIFIED 2026-08-03: the item is <a data-name="Login" class="dropdown-item"> — matched by
+  // data-name (see h.dropdownItem), because its text has a leading space and, while the menu is
+  // shut, it is display:none and thus invisible to role-based locators.
+  const loginItem = h.dropdownItem(target, 'Login').first();
+  await loginItem.waitFor({ state: 'visible', timeout: 10_000 });
+  await h.click(() => loginItem, { timeout: 10_000 });
 
   // 4) Wait for the session swap to settle.
   await page.waitForLoadState('domcontentloaded').catch(() => {});
@@ -662,11 +837,12 @@ export async function performLoginAs(page, h, roleKey, { adminStatePath } = {}) 
 
 export async function act0(page, h) {
   await h.scene('s0_1', async () => {
-    // PROBE: GWT sidebar/top menu entry, exact casing from the audit.
+    // VERIFIED 2026-08-03: the sidebar entry is <a id="gwt-debug-lo-recruiting"> — a stable GWT
+    // debug id, immune to text drift. Text match kept as a fallback.
     await h.goto(URLS.canary);
     await h.click([
+      gwt('lo-recruiting'),
       () => page.getByRole('link', { name: /LO RECRUITING/i }),
-      () => page.getByText(/^\s*LO RECRUITING\s*$/i),
     ], { timeout: 12_000 });
     await h.hold(1.5);
     // Read the 5 entries (§1 of the audit). PROBE: rendered as links in a fly-out.
@@ -683,12 +859,14 @@ export async function act0(page, h) {
   });
 
   await h.scene('s0_2', async () => {
-    await h.goto(URLS.rloCompany);
+    await h.goto(URLS.rloMine);
+    await h.clickTab(TABS.company); // VERIFIED: clicking beats deep-linking (see URLS note)
     // 16 columns: prove it by scrolling the table horizontally.
-    // PROBE: header text from audit §3; the scroll container is the table wrapper.
+    // VERIFIED 2026-08-03: the data grid is `table.table-sm.table-hover` with 17 <th>; the view
+    // also holds a separate summary <table>, so anchor on the data table, not `table` first().
     const header = [
-      () => page.getByText(/Started date/i).first(),
-      () => page.locator('table').first(),
+      () => page.locator('table.table-hover th').filter({ hasText: /Started date/i }).first(),
+      () => page.locator('table.table-hover').first(),
     ];
     await h.moveTo(header, { timeout: 10_000 });
     const scroller = await h.scrollableNear(header);
@@ -698,21 +876,31 @@ export async function act0(page, h) {
   });
 
   await h.scene('s0_3', async () => {
-    // Stats panel: one number is a drill-down link; 3 view modes (bar / text / hidden).
-    // PROBE: no stable hooks — anchor on the status labels the panel prints.
-    await h.click([
-      () => page.getByRole('link', { name: /Not touched/i }),
-      () => page.getByText(/Not touched/i).first(),
-    ], { timeout: 8000 });
+    // Stats panel: every number is a drill-down.
+    // VERIFIED 2026-08-03: tiles read "<Label> - <N>" inside div.col-md-2 and the link is the
+    // NUMBER (a.gwt-Anchor href="javascript:"), not the label — see h.statLink(). The labels
+    // present on this tab are Total / Initiate contact / Message sent / Dialogue / Invited to
+    // join / Interested but thinking / Want to join / Archived / Block display / Claimed /
+    // Not claimed. ("Not touched" is a per-ROW status value, not a tile.)
+    await h.moveTo(() => h.statLink(/^Total/).first(), { timeout: 10_000 });
+    await h.hold(1);
+    await h.click(() => h.statLink(/Initiate contact/).first(), { timeout: 10_000 });
+    await h.waitForRows();
     await h.hold(2.5);
     await page.goBack({ waitUntil: 'domcontentloaded' }).catch(() => {});
-    await h.hold(2);
-    await h.optional('stats view mode toggles', async () => {
-      // PROBE: GWT icon buttons (material-icons) with no accessible name.
-      const toggles = page.locator('[class*="material-icons"]');
-      const n = Math.min(3, await toggles.count());
+    await h.waitForRows();
+    // UNRESOLVED 2026-08-03: the panel's 3 view-mode icons (bar chart / text / hide) carry no
+    // accessible name, no title and no gwt-debug id, and they are NOT inside the
+    // com.lenderrate view root, so I could not pin them down without guessing. Kept optional and
+    // scoped to the icon strip so a miss costs nothing — the scene's real beat is the drill-down
+    // above, and the narration is about stale numbers, not the toggles.
+    await h.optional('stats view-mode toggles', async () => {
+      const strip = page.locator('div[class*="card"]').filter({ hasText: /Total - / }).first();
+      const icons = strip.locator('a:has(.material-icons), a[class*="material-icons"]');
+      const n = Math.min(2, await icons.count());
+      if (!n) throw new Error('view-mode icon strip not found');
       for (let i = 0; i < n; i += 1) {
-        await h.click(() => toggles.nth(i), { timeout: 3000 });
+        await h.click(() => icons.nth(i), { timeout: 3000 });
         await h.hold(1.2);
       }
     });
@@ -746,9 +934,12 @@ export async function act0(page, h) {
   await h.scene('s0_5', async () => {
     await h.goto(URLS.modexData);
     // Open one record's MODEX INFORMATION modal (read-only).
+    // VERIFIED 2026-08-03: this page is the ONE div-grid (div.table-row / div.table-cell, 9 rows)
+    // and "View" / "Update" are real <button class="btn btn-secondary">, so role=link matched
+    // nothing here. There is no per-row Action menu on this page — "Action" is only a column
+    // header, and the row's write control is "Update" (not clicked: it starts a merge job).
     await h.click([
-      () => page.getByRole('link', { name: /^\s*View\s*$/i }).first(),
-      () => page.getByText(/^\s*View\s*$/i).first(),
+      () => page.getByRole('button', { name: /^\s*View\s*$/i }).first(),
     ], { timeout: 10_000 });
     await h.hold(2);
     await h.optional('performance block', () => h.moveTo(() => page.getByText(/PERFORMANCE/i).first(), { timeout: 4000 }));
@@ -771,19 +962,21 @@ export async function act0(page, h) {
     await h.optional('associates screen', () => h.goto(URLS.associates));
     await h.optional('search an account', () =>
       h.typeInto([
+        () => page.getByPlaceholder(/Name, ?Email/i),
         () => page.getByPlaceholder(/search/i),
-        () => page.getByRole('textbox').first(),
       ], ACCOUNTS.luis.search, { delay: 45 }));
     await page.keyboard.press('Enter').catch(() => {});
-    await h.hold(2.5);
+    await h.waitForRows();
+    // VERIFIED 2026-08-03: per-row Action is <button>Action</button>; its menu holds
+    // Permissions / Login / Audit log / … / Delete. Scope BOTH to the matched row: every row's
+    // menu is pre-rendered, so an unscoped match would point at another account's Login — and
+    // Delete sits two items below it.
+    const target = h.row(ACCOUNTS.luis.search);
     await h.optional('open row Action menu', () =>
-      h.click([
-        () => page.getByRole('button', { name: /^\s*Action/i }).first(),
-        () => page.getByText(/^\s*Action\s*$/i).first(),
-      ], { timeout: 6000 }));
+      h.click(() => target.getByRole('button', { name: /^\s*Action\s*$/i }), { timeout: 8000 }));
     await h.hold(1);
-    await h.optional('hover Login (no click)', () =>
-      h.moveTo(() => page.getByText(/^\s*Login\s*$/i).last(), { timeout: 4000 }));
+    await h.optional('hover Login (NO click — that would swap this act\'s session)', () =>
+      h.moveTo(() => h.dropdownItem(target, 'Login').first(), { timeout: 5000 }));
     await h.hold(1.5);
     await page.keyboard.press('Escape').catch(() => {});
   });
