@@ -275,7 +275,7 @@ Thoát phễu:  Nurture (chưa phải lúc)  ·  Disqualified (kèm lý do)  · 
 
 ## 5. Câu hỏi cần chốt trước khi vào technical
 
-1. ~~**Scope quan hệ với Tera+:** app riêng có SSO, hay module trong Tera+?~~ → **ĐÃ CHỐT 03/08/2026: module trên Tera+** — xem §6 bên dưới.
+1. ~~**Scope quan hệ với Tera+:** app riêng có SSO, hay module trong Tera+?~~ → **ĐÃ CHỐT 03/08/2026: app riêng trong hệ sinh thái Tera+ (SSO central, tera-core, sau api-gateway)** — xem §6 bên dưới.
 2. **Ai là chủ dữ liệu Associates/HR?** App mới tạo account nhân sự, hay đẩy request sang HR system hiện có?
 3. **Referral payout** còn đi qua Commission Team + cron thứ Bảy như cũ, hay tự động hoá trong app mới? — *Logic bonus của hệ thống cũ (chín sau 60 ngày, chuỗi điều kiện eligibility 2 phía, cash Check tự tạo vs RSU toggle tay) đã được trích đầy đủ vào Phụ lục Business Rules của [lo-recruiting-e2e-flow.md](lo-recruiting-e2e-flow.md) — làm căn cứ để chốt câu này.*
 4. **Integration nào bắt buộc ở v1?** (Zoom Phone, Calendly, Facebook Lead Ads, Modex, e-sign) — nên chọn 2–3 cho v1 thay vì port hết. **Modex nên nằm trong nhóm bắt buộc** (xem P0-17). Phần kỹ thuật đã tra xong 31/07/2026: Modex CÓ webhook/SFTP/S3 list-sync, MOSO từng là integration partner công bố 02/2024, account hiện **không còn connection active** và chỉ có **1 seat (đang dùng −1)**. Còn lại là 4 câu hỏi hợp đồng cho Victoria/Modex AE (kích hoạt lại connection, sync limit, credit contact-data, giá thêm seat).
@@ -283,13 +283,21 @@ Thoát phễu:  Nurture (chưa phải lúc)  ·  Disqualified (kèm lý do)  · 
 
 ---
 
-## 6. Quyết định kiến trúc (chốt 03/08/2026): module trên Tera+, không phải app độc lập
+## 6. Quyết định kiến trúc (chốt 03/08/2026): app riêng TRONG hệ sinh thái Tera+, không phải app đứng ngoài
 
-**Quyết định:** LO Recruiting được build như một **module / bounded-context riêng bên trong nền tảng Tera+** (backend Java 21 / Spring Boot dùng tera-core, frontend một app-section trong tera-fe) — KHÔNG phải application độc lập, KHÔNG dùng ngôn ngữ/stack mới.
+**Quyết định:** LO Recruiting được build như **một app theo domain trong hệ sinh thái Tera+/LF** — theo đúng pattern công ty đã chọn (Account portal SSO + các app domain: HR, CRM, CAMS, Loan Life, LF IQ, Ally, Tera...; hạ tầng chung: account-fe, auth-service, user-service, api-gateway, tera-core):
+
+- **Backend:** `recruiting-service` riêng — Java 21 + Spring Boot + **tera-core** (chuẩn mọi microservice LF), PostgreSQL schema riêng, đứng sau api-gateway. Webhook receiver Modex là endpoint của service này.
+- **Frontend:** app FE riêng (Next.js + Mantine theo chuẩn hệ sinh thái), xuất hiện như một tile mới trong Account portal, SSO qua central account.
+- **Tích hợp:** đọc branch/licensing data của Tera qua API (phục vụ luật sponsorship theo bang); chặng Onboarded→Active gọi user-service tạo account + cấp quyền app — đúng cách các app khác trong hệ sinh thái đang làm.
+
+KHÔNG phải application đứng ngoài hệ sinh thái (tự lo identity, ngôn ngữ/stack mới), và cũng KHÔNG nhét vào repo tera-be/tera-fe làm lệch release cadence của LOS.
+
+> *Ghi chú tinh chỉnh 03/08/2026 (chiều):* bản đầu của quyết định này ghi "module bên trong tera-be/tera-fe". Sau khi đối chiếu cấu trúc thật của hệ sinh thái (Account portal 10 app + ~25 repo của LoanFactory-Inc), dạng đúng là **app riêng trên nền tảng chung** — Recruiting cùng nhóm people-domain với app HR (vốn cũng là app riêng: ai-hr-fe / ai-hr-be / ai-hr-service). Bốn lý do bên dưới giữ nguyên giá trị; chỉ "code nằm đâu" được tinh chỉnh.
 
 **Bốn lý do, theo thứ tự nặng ký:**
 
-1. **Đầu ra của recruiting là một LO active sống trong Tera+.** Chặng cuối của phễu (Onboarded → Active) trong hệ thống cũ là "ILO→Admin conversion" kèm migrate notes. Cùng platform thì đây là một status change nội bộ; app riêng thì nó thành một integration phải build và nuôi (mapping identity, sync 2 chiều, lệch data) — tự tạo lại đúng cái silo đang là pain.
+1. **Đầu ra của recruiting là một LO active sống trong hệ sinh thái.** Chặng cuối của phễu (Onboarded → Active) trong hệ thống cũ là "ILO→Admin conversion" kèm migrate notes. Trong hệ sinh thái, identity là central (user-service) → app recruiting tạo LO active bằng API call có sẵn, không có bài toán mapping identity. App đứng NGOÀI hệ sinh thái mới phải tự build integration identity/sync 2 chiều — tự tạo lại đúng cái silo đang là pain.
 2. **Business rules của recruiting phụ thuộc dữ liệu của LOS/org.** Luật sponsorship theo bang (SC cần Corporate branch có license trong 75 dặm, WI/WY 100 dặm, NJ trong 2.5 giờ lái xe, NE/RI cần branch trong bang) — validate được phải đọc dữ liệu branch/licensing, thứ nằm trong domain Tera+. App độc lập sẽ phải gọi chéo liên tục.
 3. **Stack reality:** toàn công ty đang là Java 21/Spring Boot (tera-be, lfiq-backend, tera-core) + Next.js/Mantine (tera-fe, lf-iq). Ngôn ngữ mới = chi phí tuyển/duy trì + một platform thứ ba — ngược mục tiêu hội tụ về Tera+ khỏi monolith cũ.
 4. **Pain hiện tại không phải do "chung app".** Nó do God-entity (LORecruiting gánh 2 flow bằng field `recruiting_type` + hàng chục mixin), không có pipeline, không có data pipe, permission cấp lẻ. App riêng tech mới không tự chữa được mấy cái đó — thiết kế module tốt mới chữa.
