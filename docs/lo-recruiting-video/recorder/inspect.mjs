@@ -394,34 +394,38 @@ const PROBES = {
           text(/Paid startup fee/i),
           text(/Agreement signed/i),
           text(/Startup fee/i),
-          text(/^\s*Onboarding\s*$/i),
           text(/NMLS status/i),
           text(/HR status/i),
           text(/1-1 Onboarding meeting/i),
-          text(/^\s*Delete/i, 'company-wide Delete — introduce-only in the video, never clicked'),
+          css('#delete', 'company-wide Delete — introduce-only in the video, never clicked'),
+          // ILO row-menu items, by their verified data-name (shut menu => vis 0)
+          css('a.dropdown-item[data-name^="Create new account"]', 'menu: Create new account'),
+          css('a.dropdown-item[data-name^="Invite 1-1 meeting"]', 'menu: Invite 1-1 meeting'),
+          css('a.dropdown-item[data-name^="Re-generate e-sign"]', 'menu: Re-generate e-sign docs'),
+          css('a.dropdown-item[data-name^="Assign owner"]', 'menu: Assign owner'),
         ],
         safeOpens: [
           {
-            label: 'row Action menu (read-only dropdown)',
-            open: [role('button', /^\s*Action/i), text(/^\s*Action\s*$/i)],
+            label: 'ILO row Action menu (read-only dropdown)',
+            open: [role('button', /^\s*Action\s*$/i)],
             probe: [
-              text(/Assign owner/i),
-              text(/^\s*Audit log\s*$/i),
-              text(/Invite 1-1 meeting/i),
-              text(/Create new account/i),
-              text(/Re-generate e-sign documents/i),
-              text(/Loan referral/i),
-              text(/Create an Incident/i),
+              css('a.dropdown-item[data-name^="Assign owner"]', 'Assign owner'),
+              css('a.dropdown-item[data-name="Audit log"]', 'Audit log'),
+              css('a.dropdown-item[data-name^="Invite 1-1 meeting"]', 'Invite 1-1 meeting'),
+              css('a.dropdown-item[data-name^="Create new account"]', 'Create new account'),
+              css('a.dropdown-item[data-name^="Re-generate e-sign"]', 'Re-generate e-sign docs'),
+              css('a.dropdown-item[data-name^="Loan referral"]', 'Loan referral'),
+              css('a.dropdown-item[data-name^="Create an Incident"]', 'Create an Incident'),
             ],
           },
           {
-            label: 'bulk Action menu (read-only dropdown)',
-            open: [role('button', /^\s*Action\s*$/i)],
+            label: 'ILO bulk Action menu (read-only dropdown)',
+            open: [css('#gwt-debug-action')],
             probe: [
-              text(/Template settings/i),
-              text(/Attendance tracking/i),
-              text(/Assign owners/i),
-              text(/Export \(csv\)/i, 'EXPECTED ABSENT for HR'),
+              css('a.dropdown-item[data-name^="Template settings"]', 'Template settings'),
+              css('a.dropdown-item[data-name*="Attendance"]', 'Import Attendance tracking'),
+              css('a.dropdown-item[data-name^="Assign owners"]', 'Assign owners'),
+              css('a.dropdown-item[data-name*="Export"]', 'Export (csv) — Accounting only'),
             ],
           },
         ],
@@ -445,19 +449,30 @@ const PROBES = {
           text(/HR status/i),
           text(/1-1 Onboarding meeting/i),
           text(/Attended/i),
-          text(/Save \+ Email/i),
+          css('i.material-icons', 'material icons incl. the nested Note pair'),
+        ],
+        safeOpens: [
+          {
+            label: 'Conversation history / note modal (read-only; never Save or Send)',
+            open: [css('i.material-icons:text-is("chat_bubble_outline")')],
+            probe: [
+              text(/Save \+ Email/i, 'Save + Email (NEVER clicked by the probe)'),
+              text(/Conversation history/i),
+            ],
+          },
         ],
       },
       {
         name: 'config-owner-assignment',
-        url: URLS.config,
+        // /lo_recruiting_config always redirects to the Webinar tab, so deep-link the tab by its
+        // data-name — otherwise this screen's toggles look missing when they are just not shown.
+        url: URLS.configOwnerAssignment,
         scenes: ['s5_2'],
         candidates: [
-          role('tab', /ILO Owner Assignment/i),
+          css('a.nav-link[role="tab"][data-name="ilo_assignment_owner"]', 'owner-assignment tab'),
           text(/ILO Owner Assignment/i),
-          text(/^\s*Recruiter\s*$/i),
-          text(/Onboarding specialist/i),
-          text(/^\s*Support\s*$/i),
+          text(/^\s*Recruiter\s*$/i, 'auto-assign toggle: Recruiter'),
+          text(/Onboarding specialist/i, 'auto-assign toggle: Onboarding specialist'),
         ],
       },
     ],
@@ -472,14 +487,18 @@ const PROBES = {
         scenes: ['s6_1'],
         candidates: [
           ...COMMON_TABLE,
-          role('button', /^\s*Action\s*$/i, 'bulk Action'),
-          text(/Export \(csv\)/i, 'EXPECTED PRESENT only for Accounting — never clicked here'),
+          css('#gwt-debug-action', 'bulk Action dropdown'),
+          css('a.dropdown-item[data-name*="Export"]', 'Export (csv) — Accounting only, NEVER clicked'),
         ],
         safeOpens: [
           {
             label: 'bulk Action menu (read-only dropdown; do NOT click Export)',
-            open: [role('button', /^\s*Action\s*$/i)],
-            probe: [text(/Export \(csv\)/i), text(/Email all/i), text(/Template settings/i)],
+            open: [css('#gwt-debug-action')],
+            probe: [
+              css('a.dropdown-item[data-name*="Export"]', 'Export (csv)'),
+              css('a.dropdown-item[data-name*="Email all"]', 'Email all'),
+              css('a.dropdown-item[data-name^="Template settings"]', 'Template settings'),
+            ],
           },
         ],
       },
@@ -613,7 +632,13 @@ async function main() {
   const roleStatePath = authPathFor(wantRole);
   const missing = [];
 
-  console.log(`\n=== PROBE act ${actId} — expected session: ${wantRole} (${ACCOUNTS[wantRole]?.role || '?'}) ===`);
+  console.log(`\n=== PROBE act ${actId} — session: ${wantRole} (${ACCOUNTS[wantRole]?.role || '?'}) ===`);
+  if (args.role && args.role !== plan.role) {
+    console.warn(`!! act ${actId} is written for "${plan.role}" but you are probing as "${args.role}".`);
+    console.warn('!! STRUCTURE (markup, data-name values, control types) is role-independent and');
+    console.warn('!! valid. PERMISSION results (which tabs/buttons/menu items exist) are NOT —');
+    console.warn(`!! re-probe as ${plan.role} before trusting any presence/absence finding.\n`);
+  }
   console.log('read-only: no submit / save / delete / export / send / Login is ever clicked');
   if (args.openModals) console.log('--open-modals: whitelisted read-only modals WILL be opened and closed with Escape');
 

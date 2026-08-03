@@ -51,6 +51,8 @@
  *                        .auth/viet18-<role>.json and SKIP the on-camera login-as preamble
  *   --force-login-as     ignore saved role states and impersonate again — needs a FRESH admin
  *                        login per role, because impersonating burns the admin state
+ *   --provision          capture .auth/viet18-<role>.json for the selected acts and exit
+ *                        (one admin login per role, off camera, records nothing)
  *   --trim <sec>         videoTrimSec written into markers.json (default 0 — auth is off camera)
  *   --modex              enable the external-Modex beat in scene 1.6 (opens a 2nd tab => 2nd webm)
  *   --modex-url <url>    where that tab goes (no default; the human logs into Modex himself)
@@ -103,6 +105,11 @@ export const URLS = {
   iloCompany: `${BASE}/lo_recruiting/company`,
   // VERIFIED 2026-08-03: redirects to /lo_recruiting_config/Webinar (first tab).
   config: `${BASE}/lo_recruiting_config`,
+  // VERIFIED 2026-08-04: config tabs are deep-linkable by their data-name —
+  // /lo_recruiting_config/<data-name>. Known: one_one_meeting (1-1 Meeting using Calendly),
+  // ilo_assignment_owner (ILO Owner Assignment Methods Settings), facebook_ads.
+  configOwnerAssignment: `${BASE}/lo_recruiting_config/ilo_assignment_owner`,
+  configCalendly: `${BASE}/lo_recruiting_config/one_one_meeting`,
   modexData: `${BASE}/modex_data`,
   referrals: `${BASE}/loan_officer_referrals`,
   // VERIFIED 2026-08-03: direct route works, no redirect (view BrokerMembersView).
@@ -855,14 +862,22 @@ export function makeHelpers(page, { actLabel = 'act?', durations = {}, ctxStart 
    * case-insensitively); a case-sensitive /^Company$/ regex matches nothing. Same reason the URL
    * segment is lowercase `company`.
    */
-  async function clickTab(name) {
+  async function clickTab(name, { grid = true } = {}) {
     // SAFETY (verified 2026-08-04): role=tab is NOT unique to the grid's tab strip — the app also
     // marks nav/sidebar entries as tabs, including "Log out". Always scope to the grid strip
     // (div.tab-container > nav[role=tablist]) so a name collision can never click something
     // destructive.
     const strip = page.locator('div.tab-container nav[role="tablist"]').first();
     const tab = strip.getByRole('tab', { name });
-    await withGridUpdate(() => click(() => tab.first(), { timeout: 15_000 }));
+    // VERIFIED 2026-08-04: the /lo_recruiting_config tabs live in the same div.tab-container
+    // strip (data-name: webinar-ish, one_one_meeting, ilo_assignment_owner, facebook_ads) but
+    // that page has no grid, so pass { grid: false } there or withGridUpdate burns its timeout.
+    if (grid) {
+      await withGridUpdate(() => click(() => tab.first(), { timeout: 15_000 }));
+    } else {
+      await click(() => tab.first(), { timeout: 15_000 });
+      await waitForAppIdle();
+    }
     return tab.first();
   }
 
@@ -972,7 +987,9 @@ export function makeHelpers(page, { actLabel = 'act?', durations = {}, ctxStart 
 /** Best-effort "who am I" label, only used for logging / verifying the swap. */
 async function currentUserLabel(page) {
   const cands = [
-    // PROBE: GWT header account element — unknown markup.
+    // PROBE: the header account element's markup is still unidentified. This is LOG-ONLY (it
+    // just labels the session in the console and gives loginAs a change signal), so a miss is
+    // harmless — never build a click on it.
     () => page.locator('[class*="user"], [class*="account"], header').first(),
   ];
   for (const c of cands) {
@@ -1072,7 +1089,8 @@ export async function act0(page, h) {
       () => page.getByRole('link', { name: /LO RECRUITING/i }),
     ], { timeout: 12_000 });
     await h.hold(1.5);
-    // Read the 5 entries (§1 of the audit). PROBE: rendered as links in a fly-out.
+    // VERIFIED 2026-08-03: all 5 entries exist as text in the fly-out; they read vis=0 until the
+    // menu is opened, which the click above does.
     for (const name of [
       /My Loan Officer referrals/i,
       /Admin - Loan Officer referrals/i,
@@ -1143,19 +1161,16 @@ export async function act0(page, h) {
       /Facebook Ads/i,
     ];
     for (const t of tabs) {
-      // PROBE: tabs render as GWT tab bar items, not role=tab, most likely plain text nodes.
+      // VERIFIED 2026-08-04: config tabs ARE <a class="nav-link" role="tab" data-name="…"> inside
+      // the same div.tab-container strip, so h.clickTab handles them — with { grid: false },
+      // since this page has no grid for withGridUpdate to observe.
       await h.optional(`config tab ${t}`, async () => {
-        await h.click([
-          () => page.getByRole('tab', { name: t }),
-          () => page.getByText(t).first(),
-        ], { timeout: 5000 });
+        await h.clickTab(t, { grid: false });
         await h.hold(1.6);
       });
     }
     // Land on Calendly (it holds a personal access token) and just look at it — never read it out.
-    await h.optional('stay on Calendly tab', async () => {
-      await h.click(() => page.getByText(/1-1 Meeting using Calendly/i).first(), { timeout: 4000 });
-    });
+    await h.optional('stay on Calendly tab', () => h.goto(URLS.configCalendly, { rows: false }));
   });
 
   await h.scene('s0_5', async () => {
@@ -1887,11 +1902,9 @@ export async function act5(page, h, cfg = {}) {
 
   await h.scene('s5_2', async () => {
     // Why a record already has an owner: an auto-assign toggle buried in settings.
-    await h.goto(URLS.config);
-    await h.click([
-      () => page.getByRole('tab', { name: /ILO Owner Assignment/i }),
-      () => page.getByText(/ILO Owner Assignment/i).first(),
-    ], { timeout: 8000 });
+    // VERIFIED 2026-08-04: deep-linkable by data-name; /lo_recruiting_config alone always
+    // redirects to the Webinar tab, which is why the toggles looked missing.
+    await h.goto(URLS.configOwnerAssignment, { rows: false });
     await h.hold(2.5);
     for (const t of [/Recruiter/i, /Onboarding specialist/i, /Support/i]) {
       await h.optional(`toggle ${t}`, () => h.moveTo(() => page.getByText(t).first(), { timeout: 3000 }));
@@ -2158,6 +2171,61 @@ export async function launchBrowser({ slow = 0 } = {}) {
   });
 }
 
+/**
+ * One-off provisioning: capture a per-role storageState for every selected act.
+ *
+ * Needed because impersonating burns the admin state it came from (see verifyState), so each role
+ * switch costs one fresh admin login. Doing it here, once and off camera, means the actual shoot
+ * (and every later re-record) runs entirely from saved role states with no login at all.
+ * Records nothing.
+ */
+async function provisionRoles(browser, acts, args) {
+  const roles = [...new Set(acts.map((a) => a.role))].filter((r) => r !== 'admin');
+  const todo = roles.filter((r) => args.forceLoginAs || !fs.existsSync(authPathFor(r)));
+  if (!todo.length) {
+    console.log(`[provision] nothing to do — role states already exist for: ${roles.join(', ')}`);
+    return;
+  }
+  banner([
+    'ROLE PROVISIONING',
+    '',
+    `Roles to capture: ${todo.join(', ')}`,
+    '',
+    'Impersonation re-binds the session cookie, so it burns the admin state it',
+    'was launched from. That means ONE fresh admin login per role — you will be',
+    `asked to log in ${todo.length} time(s). Nothing is recorded.`,
+    '',
+    'Afterwards every act replays from .auth/viet18-<role>.json with no login.',
+  ]);
+
+  for (const roleKey of todo) {
+    console.log(`\n[provision] === ${roleKey} (${ACCOUNTS[roleKey]?.role || '?'}) ===`);
+    // The stored admin state is very likely burned by the previous iteration; ensureAdminState
+    // detects that and asks for a fresh login.
+    if (fs.existsSync(args.auth) && !(await verifyState(browser, args.auth, { requireAdmin: true }))) {
+      fs.rmSync(args.auth, { force: true });
+      console.log('[provision] previous admin state was no longer admin — removed it');
+    }
+    await ensureAdminState(browser, args.auth);
+
+    const context = await createContext(browser, { storageStatePath: args.auth });
+    const page = await context.newPage();
+    const h = makeHelpers(page, { actLabel: `provision:${roleKey}` });
+    try {
+      await page.goto(URLS.canary, { waitUntil: 'domcontentloaded', timeout: 60_000 });
+      await h.waitForAppIdle();
+      await h.loginAs(roleKey, { adminStatePath: args.auth });
+      await h.saveRoleState(roleKey);
+    } catch (err) {
+      console.error(`[provision] ${roleKey} FAILED: ${err.message}`);
+    } finally {
+      await context.close().catch(() => {});
+    }
+  }
+  console.log('\n[provision] done. Role states present:');
+  for (const r of roles) console.log(`  ${fs.existsSync(authPathFor(r)) ? 'OK  ' : 'MISS'} ${authPathFor(r)}`);
+}
+
 async function main() {
   const args = parseArgs();
   const durations = loadDurations(args.durations);
@@ -2168,6 +2236,16 @@ async function main() {
   fs.mkdirSync(AUTH_DIR, { recursive: true });
 
   const browser = await launchBrowser({ slow: args.slow });
+
+  if (args.provision) {
+    try {
+      await provisionRoles(browser, selected, args);
+    } finally {
+      await browser.close().catch(() => {});
+    }
+    return;
+  }
+
   // Shape consumed by assemble.mjs: { videoTrimSec, videos: [{ act, videoPath, scenes }] }.
   // `trimSec` per video and `extraVideos` are additive; assemble.mjs already honours `trimSec`.
   const markers = { videoTrimSec: args.trim, recordedAt: new Date().toISOString(), videos: [], extraVideos: [] };
