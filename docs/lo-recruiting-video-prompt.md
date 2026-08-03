@@ -22,10 +22,14 @@ tab, every button, every filter, every form field — so we can SEE each role's 
 points in the old system. This video is evidence for the Tera+ rebuild, so the
 narration must call out pain points at the exact moment they appear on screen.
 
-Follow the playbook at /Users/apple/Projects/agentflow/docs/feature-tour-video-playbook.md
-and REUSE the proven scripts at /Users/apple/Projects/agentflow/lf-chat-service/docs/video/
-(copy them into /Users/apple/Projects/agentflow/docs/lo-recruiting-video/ and adapt only
-the scenes, narration.json, and URLs).
+Follow the playbook at /Users/apple/Projects/agentflow/docs/feature-tour-video-playbook.md.
+⚠️ The playbook's "reference implementation" at lf-chat-service/docs/video/ NO LONGER EXISTS —
+those scripts were never committed and are gone; only empty directories remain. Do not go
+looking for them. The pipeline was rebuilt from the playbook and now lives, committed, at
+/Users/apple/Projects/agentflow/docs/lo-recruiting-video/:
+  narration.json (51 scenes, done) · build-narration.mjs · recorder/record.mjs ·
+  recorder/inspect.mjs (selector probe) · recorder/assemble.mjs · storyboard.md
+Adapt those. Keep every script committed — that is the whole reason the last one was lost.
 
 CONTEXT DOCS — read these FIRST, the screens are already audited, don't re-derive:
 - docs/lo-recruiting-e2e-flow.md            → 8-stage flow + per-role swimlanes (acts follow this)
