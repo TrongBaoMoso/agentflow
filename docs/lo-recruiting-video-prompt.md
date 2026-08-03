@@ -87,9 +87,15 @@ CONTEXT DOCS — read these FIRST, the screens are already audited, don't re-der
 - Role switching costs no password: it happens INSIDE the app (admin → Associates → Login as).
   Snapshot storageState after each switch (one file per role) so any single act can be
   re-recorded on its own later without touching the others.
-- PRE-FLIGHT CHECK: verify the login-as ROUND-TRIP (role → back to admin) works without
-  re-entering credentials. If it doesn't, don't call me — restore the saved admin
-  storageState and enter each role from there instead.
+- ⚠️ Impersonation has NO way back: clicking "Login" swaps the session for the WHOLE browser
+  and there is no "Back to admin" — the only exit is logout + log in again (audit §10.3).
+  With 7 role switches that is the single biggest risk of the shoot. So the storageState
+  survival test above is not optional — it decides whether I log in once or seven times.
+  Save a storageState file per role right after each login-as, so a single act can be
+  re-recorded later without replaying the earlier acts.
+- The storyboard is already written: docs/lo-recruiting-video/storyboard.md — 8 acts, scene
+  tables with the narration intent per scene, plus the shoot-risk list. Read it and refine
+  it; do not start a new one from scratch.
 - If any flow needs a NEW email inbox (invite a candidate, verification email, e-sign…),
   use https://temp-mail.org/vi/ (click "Xoá" for a fresh address) and show the received
   email on camera as part of the scene.
@@ -117,6 +123,21 @@ it at storyboard review.
 - REAL interactions: type real values, apply real filters, submit real forms (staging
   allows it), open every tab/panel/modal each role uses. "Introduce only" anything that
   can't be completed safely.
+- NARRATION MUST EXPLAIN THE **WHY**, NOT DESCRIBE THE SCREEN. This is the single most
+  important quality bar of this video. For EVERY action — each button click, each status
+  change, each filter, each field typed — the narration answers: what is this person
+  trying to accomplish in their job, what happens downstream if they do it, and what
+  breaks if they skip it. Aim for a viewer who has never seen the system to finish an act
+  able to describe that role's actual daily job.
+  * BAD:  "Now we click Save, then change the status to Contacted."
+  * GOOD: "Luis changes the status to Contacted because that is the only signal the
+          inside recruiter has that this LO has already been called — there is no shared
+          activity log, so if he forgets this dropdown, Nocha will call the same person
+          tomorrow."
+  * State plainly when an action exists only to work around a system limitation
+    (re-typing data the system already holds, keeping a private spreadsheet, checking
+    another site) — those moments are the whole point of the video.
+  * Every act ends with one sentence naming that role's single worst friction.
 - PAIN-POINT CALLOUTS: when a scene shows a documented pain point, overlay the English
   badge synced with the narration, and log it for the index.
 - Length unconstrained.
