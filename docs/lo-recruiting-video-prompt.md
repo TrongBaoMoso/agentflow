@@ -49,17 +49,32 @@ CONTEXT DOCS — read these FIRST, the screens are already audited, don't re-der
 === ENVIRONMENT & AUTH (staging — safe to touch) ===
 - Staging data: submit / change / create / update are ALLOWED. Still: don't delete records
   you didn't create yourself, and never touch the Modex portal.
-- AUTH — ONE manual login, ONCE (not once per re-record):
-  * viet18.com keeps its session in an HttpOnly cookie. Verified 03/08/2026: a fresh tab
-    lands authenticated on /prospects/Mine while localStorage/sessionStorage hold NO token
-    and no JS-readable session cookie exists. So the session CANNOT be transplanted out of
-    my Chrome by script — don't waste time trying.
-  * Launch the recording Chromium with a Playwright storageState file, e.g.
-    docs/lo-recruiting-video/.auth/viet18-admin.json (gitignore it).
-  * If that file is missing or expired: open https://www.viet18.com/login, hand the window
-    to me, I type the admin ("Chau Chau") credentials MYSELF — you NEVER type credentials —
-    then immediately `context.storageState({ path: ... })` and reuse that file for every
-    later run and re-record.
+- AUTH — ONE manual login per recording run, in the Playwright window:
+  * viet18.com keeps its session in an HttpOnly cookie. Verified 03/08/2026: a fresh tab in
+    my Chrome lands authenticated on /prospects/Mine while localStorage/sessionStorage hold
+    NO token and no JS-readable session cookie exists.
+  * DEAD ENDS — all three were tested on 03/08/2026, do NOT retry them:
+    (a) Reading the session out of my Chrome by script — impossible, cookie is HttpOnly.
+    (b) Copying the Chrome profile's Cookies DB into a Playwright profile and launching
+        `channel:'chrome'` — cookie values are Keychain/app-bound encrypted; only 5 of
+        thousands of cookies survived and /prospects/Mine rendered the Login screen.
+    (c) `connectOverCDP` into my running Chrome — Chrome 151 (anything ≥136) refuses
+        --remote-debugging-port on the default profile unless --user-data-dir points
+        somewhere else, which is a blank profile with no session. Also `recordVideo` cannot
+        be set on a CDP default context, so it would leave the proven pipeline anyway.
+    (d) My Chrome autofills the login form, but that autofill lives in my real Chrome
+        profile only — a Playwright-launched browser sees an empty form. It does not help.
+  * SO: at the start of a recording run, open https://www.viet18.com/login in the Playwright
+    window and hand it to me. I type the admin ("Chau Chau") credentials MYSELF — you NEVER
+    type credentials, and you never read them from anywhere.
+  * IMMEDIATELY after I log in, save `context.storageState({ path:
+    docs/lo-recruiting-video/.auth/viet18-admin.json })` (gitignore that path) and then TEST
+    whether it survives a relaunch: kill the browser, launch a new context seeded with that
+    file, hit /prospects/Mine, and check the page is the app and not the Login screen.
+    - Survives → I never log in again until the cookie expires. Say so, and use it for every
+      later run and re-record.
+    - Doesn't survive → that's the known lf-chat-service behaviour (playbook gotcha #1).
+      Then plan for ONE login per run and record ALL acts inside that single session.
   * NEVER read, print, cat, or copy the contents of that file — it holds a live session cookie.
 - Role switching: as admin, search "Associates" → find the account → "Login as".
   Accounts (all staging test accounts):
