@@ -1,0 +1,264 @@
+[
+  {
+    "id": "s0_1",
+    "act": 0,
+    "text": "This is the Loan Officer Recruiting module our team uses today. Before we follow a single candidate through it, look at the menu. The funnel is split across two separate warehouses: Recruited Loan Officers, which is the cold list, and Interested Loan Officers, which is the live pipeline. Nobody joining this team can tell you which warehouse a given name lives in, and nothing stops the same person from sitting in both."
+  },
+  {
+    "id": "s0_2",
+    "act": 0,
+    "text": "This is the board every single role shares. Sixteen columns, and you have to scroll sideways to reach the end of it. None of the seven roles needs all sixteen, but none of them can remove a column either, so everyone learns to ignore most of the screen they are looking at. On production this warehouse holds one hundred six thousand records, and ninety-seven percent of them have never been touched by anyone."
+  },
+  {
+    "id": "s0_3",
+    "act": 0,
+    "text": "These counters are how leadership reads recruiting performance. Every number is clickable and opens the matching filtered list, and that part genuinely works well. But the numbers are cached: we measured them running as much as eight days behind, and the dashboard only recalculates when somebody clicks Run Update by hand. So when a recruiter says they added twenty leads this morning, this panel does not necessarily agree."
+  },
+  {
+    "id": "s0_4",
+    "act": 0,
+    "text": "This is company-wide configuration. It controls the six-email webinar sequence, the recruiting landing page, the rule that decides who owns a new record, and the Facebook Ads connection. The problem is not the page, it is who can open it. On production all seven roles can, including this tab, which stores one specific person's Calendly access token. A recruiter who switches the webinar toggle off stops the company's recruiting emails, and nobody gets notified."
+  },
+  {
+    "id": "s0_5",
+    "act": 0,
+    "text": "This is the Modex data, and it is exactly what a recruiter needs to price an offer: production volume, loan count, product mix. It clearly used to flow in automatically. Look at the received date on every record: January twenty-fourth, twenty twenty-four, and nothing newer. Two weeks after that date, Modex publicly announced our parent company as an integration partner. So this pipe was built, it delivered once, and then it died. Everything you are about to watch happens because of that."
+  },
+  {
+    "id": "s0_6",
+    "act": 0,
+    "text": "Six people work this module, and to show you each of their days I will borrow their sessions from the admin account. One thing worth knowing, because it shapes this whole recording: borrowing a session replaces the login for the entire browser, and there is no way back to admin. The only exit is to log out and sign in again."
+  },
+
+  {
+    "id": "s1_1",
+    "act": 1,
+    "text": "Luis is an outside recruiter. This list is his book of business: only the records he personally owns. Notice what is missing. There is no screen telling him what today's work is. His first job every morning is to decide, from memory and from reading, who is worth calling. On production a recruiter's book like this holds two thousand fifty-three leads."
+  },
+  {
+    "id": "s1_2",
+    "act": 1,
+    "text": "So he narrows it down by hand. Active, has social media, then seven more criteria behind the More button. The filters themselves are good. The problem is what they are standing in for: the system never remembers yesterday's filter set, there is no saved view, and nothing suggests who to call first. Filtering is doing the job that prioritisation should be doing."
+  },
+  {
+    "id": "s1_3",
+    "act": 1,
+    "text": "Here is a bug Luis hits constantly without knowing it is a bug. Picking a suggestion from the search box filters the page by label, and a default filter chip is already switched on, so the result comes back empty. He concludes the person is not in the system and creates a duplicate. Watch: no results. Remove the chip, and there are the records that were there all along."
+  },
+  {
+    "id": "s1_4",
+    "act": 1,
+    "text": "Luis creates records by hand when a lead arrives outside the automated sources, like a conference or a personal introduction. This form does not mark which fields are required, and each time he submits it reveals only one more error. So the real workflow is submit, read, fix, submit again, several rounds. For someone entering twenty leads a day, that is a tax on every single lead."
+  },
+  {
+    "id": "s1_5",
+    "act": 1,
+    "text": "This button is the clearest piece of evidence in the entire system. It exists for one purpose: to copy this person's name and licence number to the clipboard, so Luis can paste it into a different website. Facebook, LinkedIn, Zillow, and above all Modex. The system knows it is missing the data he needs, and its solution is to help him leave faster."
+  },
+  {
+    "id": "s1_6",
+    "act": 1,
+    "text": "And this is that step, the one the whole rebuild is aimed at. Luis pastes the licence number into Modex and reads back one hundred three million dollars of volume, one hundred thirty-eight loans, average loan size of seven hundred fifty-two thousand. Without those numbers he cannot make a sensible offer. He does this outside the system, once per candidate, and nothing in the record remembers that he did it, so the next person repeats it. The Modex profile address is a random identifier, so he cannot even paste a link back for next time."
+  },
+  {
+    "id": "s1_7",
+    "act": 1,
+    "text": "Back in the app, he marks the friend request. This is real recruiting work, not busywork: loan officers do not answer calls from unknown numbers, so recruiters befriend them on social media first. The friendship state is tracked by hand, and it is the reason he needed those social links a moment ago."
+  },
+  {
+    "id": "s1_8",
+    "act": 1,
+    "text": "The Call button does not place a call. It opens the sales script Luis is meant to read: two hundred fifty basis points, one hundred percent commission, the fee structure, the referral bonus. Then it hands off to the Zoom app. Here is the catch: the Call count is taken from the Zoom log, not from this click. So when Luis calls from his personal phone, which happens constantly, the system records that he called nobody, and the team's activity numbers read lower than reality."
+  },
+  {
+    "id": "s1_9",
+    "act": 1,
+    "text": "This is the default state for a new recruiter. Until somebody maps their Zoom phone account, this button simply fails, and the error does not say what to do or who to ask. So people stop using it and text from their own phone instead, and every one of those conversations disappears from the system."
+  },
+  {
+    "id": "s1_10",
+    "act": 1,
+    "text": "This note panel is labelled conversation history, but in practice it is the operating system of the whole module. Every hand-off between departments travels through here, as a note plus an email. There is no task, no assignee, no due date. Whether anyone read it or acted on it lives outside the system, in somebody's inbox."
+  },
+  {
+    "id": "s1_11",
+    "act": 1,
+    "text": "These ten statuses are the entire company's understanding of where things stand with a candidate. It is a manual label, it is not required, and nothing validates it. Luis can invite someone to join the company while the status still says Not touched, because the invite action is available at every status. Which means the funnel numbers leadership reviews depend on whether each recruiter remembered to change a dropdown."
+  },
+  {
+    "id": "s1_12",
+    "act": 1,
+    "text": "This is how Luis parks someone who is not ready yet. The mechanism is right: on the wake-up date the system notifies the owner. But the record is hidden from the pipeline until that date, so Luis's own future work is not visible anywhere, and if the notification lands in spam the lead goes quiet permanently."
+  },
+  {
+    "id": "s1_13",
+    "act": 1,
+    "text": "Credit where it is due. There is a real audit log here, field by field, old value to new value, with the user and the timestamp. That is genuinely good, and it should survive the rebuild untouched."
+  },
+  {
+    "id": "s1_14",
+    "act": 1,
+    "text": "This is the hand-off. Three decisions live in this one dialog: the referral source, which is mandatory because it drives a bonus payment months from now; whether to waive the one hundred dollar startup fee; and whether to send the invitation email. The dialog says the record moves to the Interested pipeline. What it does not say is that the Modex research Luis just did by hand does not travel with it. The next person starts from nothing."
+  },
+  {
+    "id": "s1_15",
+    "act": 1,
+    "text": "Same human being, now living in the second warehouse, with a different set of statuses, eight instead of ten, and a different set of columns. Anyone learning this job has to learn two vocabularies for one process."
+  },
+
+  {
+    "id": "s2_1",
+    "act": 2,
+    "text": "Nocha is an inside recruiter. This is the same page Luis just used, but she has no Company tab, while Luis, who also holds the outside recruiter role, does. That boundary between inside and outside is not defined anywhere. It is the accumulated result of granting permissions to individual people one at a time."
+  },
+  {
+    "id": "s2_2",
+    "act": 2,
+    "text": "This is the moment worth watching closely. Nocha is looking at exactly the person Luis spoke to, and she cannot see that it happened, unless Luis remembered to change the status and remembered to write a note. There is no shared activity feed. In real life, this is the point where the loan officer gets a second call from the same company."
+  },
+  {
+    "id": "s2_3",
+    "act": 2,
+    "text": "On the cold list she has her own records and the pending queue, but no Add, no Delete, no Assign. That model is sensible: a recruiter only touches their own leads. Except on production the same role has Delete and Assign across the full hundred-thousand-record warehouse. Same job title, two environments, two different sets of powers, because permissions are granted per person rather than per role."
+  },
+  {
+    "id": "s2_4",
+    "act": 2,
+    "text": "And she can still open the company-wide configuration, including the tab holding someone's personal Calendly token."
+  },
+  {
+    "id": "s2_5",
+    "act": 2,
+    "text": "This is the queue for people who applied to become loan officers themselves. Notice the Check Modex link sitting right on the row: the system openly admits you cannot evaluate this person without going to Modex, but it admits it in exactly this one place. Approving moves the record into the company list, and then nothing happens. No one is assigned to call them."
+  },
+
+  {
+    "id": "s3_1",
+    "act": 3,
+    "text": "Licensing handles the sponsorship of a loan officer's licence. Without that step, the person is not legally allowed to originate a loan. And on this environment, the role has no recruiting menu at all. Their work happens somewhere else entirely: in the associates records, in HR documents, and in email."
+  },
+  {
+    "id": "s3_2",
+    "act": 3,
+    "text": "Typing the address directly does not explain anything either. No message about permissions, just a silent redirect to a different page. The user assumes they clicked something wrong, tries again, and ends up asking the tech team."
+  },
+  {
+    "id": "s3_3",
+    "act": 3,
+    "text": "Now compare production. The same job title there sees the entire pipeline of twenty-three thousand records and can open the company configuration. Blocked in one environment, nearly unrestricted in the other. That is what happens when access is granted to individuals instead of derived from the work the role has to do."
+  },
+  {
+    "id": "s3_4",
+    "act": 3,
+    "text": "Here is licensing's own information: licence status, sponsorship status, states to sponsor. It lives as columns inside somebody else's table. There is no licensing screen, no queue of files waiting for sponsorship, and no support for the per-state rules this team actually has to follow. So they keep their own list outside the system, and that is why the real sponsorship state and what the app displays tend to drift apart."
+  },
+
+  {
+    "id": "s4_1",
+    "act": 4,
+    "text": "HR sees the whole pipeline. These eleven counters ask genuinely useful questions: paid but not signed, licence sponsored but HR not started, HR finished but licence not sponsored. Each one is a distinct way of being stuck. But they only count. Clicking gives you a list, not an assignment. No owner, no deadline, nobody accountable for clearing it."
+  },
+  {
+    "id": "s4_2",
+    "act": 4,
+    "text": "Watch the status field as I mark the startup fee as paid. It changed itself to Onboarding. This is the one automatic transition in the entire system, and it works correctly. But it is also the source of a real confusion: a few statuses are set by the machine, most are set by hand, and on screen the two look identical. Nobody can tell which is which."
+  },
+  {
+    "id": "s4_3",
+    "act": 4,
+    "text": "Signing is the second hard requirement. The regenerate option exists because document sets often have to be reissued: details change, links expire, people delete the email. The system tracks signed or not signed, but not sent, delivered, or opened. So when a candidate goes quiet, HR cannot tell whether the email never arrived or the person is hesitating, and the only way to find out is to phone them."
+  },
+  {
+    "id": "s4_4",
+    "act": 4,
+    "text": "This is the most important thing in this act. The gate that marks somebody as fully onboarded, the number every recruiting report counts, requires exactly two things: the fee is paid and the agreement is signed. Licence sponsorship, HR completion, and the one-on-one meeting only feed the automatic path. Which means a person can be counted as fully onboarded while not yet licensed to work in any state. The twenty-five hundred fully onboarded records on production should be read with that in mind."
+  },
+  {
+    "id": "s4_5",
+    "act": 4,
+    "text": "This is where the company's recruiting language is stored: an email, a text message, and a call script for every status, with variables for the company name, the candidate, and the sender. This is a genuine asset and it should be carried over as it is. The only issue is that it lives inside a settings page every role can open."
+  },
+  {
+    "id": "s4_6",
+    "act": 4,
+    "text": "The one-on-one meeting is where a human being assesses another human being. The scheduling lives in Calendly, the outcome lives in a checkbox in this app, and the two are not connected. Someone has to remember to tick the box after the meeting. If they forget, every statistic that depends on it is wrong."
+  },
+  {
+    "id": "s4_7",
+    "act": 4,
+    "text": "This is the moment a candidate becomes an employee: an account, a classification, a branch, a manager, a company email address. It is the border between this recruiting module and the rest of the company's systems. Worth noting, every operational role can press this button, not only HR."
+  },
+  {
+    "id": "s4_8",
+    "act": 4,
+    "text": "And HR, along with accounting, has a delete button that reaches across the entire pipeline of twenty-three thousand records. I am not going to press it."
+  },
+
+  {
+    "id": "s5_1",
+    "act": 5,
+    "text": "Maria is the onboarding specialist. She is the person who actually gets a new loan officer productive. She only sees records assigned to her, which means if ownership is set incorrectly, a candidate can sit in the pipeline while nobody considers them their problem."
+  },
+  {
+    "id": "s5_2",
+    "act": 5,
+    "text": "The reason records arrive with an owner already attached is a toggle in this settings page. It explains why a new record sometimes belongs to someone who did not create it, and why nobody is quite sure what the assignment rule is without coming in here to read it."
+  },
+  {
+    "id": "s5_3",
+    "act": 5,
+    "text": "This is the entire onboarding checklist: a row of columns in a table. They are not tasks, so there is no assignee, no due date, no ordering, and no way to see who is being waited on. Four departments work on the same row of data, and the only way to know whether someone else finished their part is to look at a column or go and ask."
+  },
+  {
+    "id": "s5_4",
+    "act": 5,
+    "text": "And this is asking: a note with an email attached. This is the real workflow engine of onboarding, and it is an inbox. Nothing in the system knows that Maria is blocked, how long she has been blocked, or who is holding the work."
+  },
+  {
+    "id": "s5_5",
+    "act": 5,
+    "text": "The webinar is the largest nurture channel in the funnel, and attendance is loaded afterwards from a spreadsheet file. So the attended flag is always behind reality, and it depends on somebody remembering to export from Zoom and import it here."
+  },
+
+  {
+    "id": "s6_1",
+    "act": 6,
+    "text": "Accounting is the only role with a CSV export, and that tells you something important: the company's real reporting does not live in this system, it lives in the spreadsheets people export out of it. Every serious piece of recruiting analysis begins by clicking this button."
+  },
+  {
+    "id": "s6_2",
+    "act": 6,
+    "text": "This is the referral programme, where existing loan officers refer new ones. The five disqualifying conditions sit in a wall of text: more than a hundred twenty days, already registered for a webinar before being referred, previously employed here, married to the referrer, tied to a non-exclusive broker. The system does not check any of them. It prints them, and the approver is expected to hold all five in their head, every time."
+  },
+  {
+    "id": "s6_3",
+    "act": 6,
+    "text": "Now the timeline. The bonus matures sixty days after the loan officer is fully onboarded. Then a scheduled job that runs on Saturdays creates the commission request. Then the commission team approves it. About seventy-five days in total, and roughly fifteen of those days come not from the policy but from the architecture: waiting for Saturday. The person who made the referral only experiences it as slow."
+  },
+  {
+    "id": "s6_4",
+    "act": 6,
+    "text": "And the payment method is a free-text field on a recruiting form, not connected to payroll. So the final step of recruiting somebody is still a person copying details into a different system."
+  },
+
+  {
+    "id": "s7_1",
+    "act": 7,
+    "text": "Let us retrace the whole path. Marcus entered as a line in a cold warehouse. One person researched him by hand on another website. He was moved to a second warehouse with a different vocabulary. He paid, he signed, and he was marked fully onboarded while his licence sponsorship was still unfinished. Six people touched him. Not one of those six could see the whole path."
+  },
+  {
+    "id": "s7_2",
+    "act": 7,
+    "text": "Every friction point you just watched, in the order it happened."
+  },
+  {
+    "id": "s7_3",
+    "act": 7,
+    "text": "And all of that was one of six intake sources. Modex, spreadsheet import, Facebook lead ads, self-application, the webinar funnel, and referrals. Each one enters through a different door, and no two of them share a definition of what contacted means."
+  },
+  {
+    "id": "s7_4",
+    "act": 7,
+    "text": "So the conclusion is not that this system lacks features. It has more features than most teams would build. What it lacks is an order of work, one identity per human being, and data that arrives at the person who needs it. That is what the rebuild is for."
+  }
+]

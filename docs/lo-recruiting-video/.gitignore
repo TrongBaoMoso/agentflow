@@ -1,0 +1,13 @@
+# Generated artifacts — regenerate with build-narration.mjs / record.mjs / assemble.mjs.
+# The SCRIPTS must stay committed: the previous pipeline (lf-chat-service/docs/video)
+# was never committed and was lost, which is why this one had to be rebuilt from the playbook.
+audio/clips/
+durations.json
+markers.json
+recorder/video/
+recorder/debug/
+recorder/node_modules/
+final/
+
+# NEVER commit — holds a live session cookie for www.viet18.com
+.auth/
