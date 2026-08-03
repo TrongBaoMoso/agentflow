@@ -109,16 +109,22 @@ export const gwt = (name) => `#gwt-debug-${name}`;
 
 /**
  * Staging test accounts (already committed in docs/lo-recruiting-video-prompt.md).
- * `search` is what gets typed into the Associates search box; nothing here is a credential.
+ * Nothing here is a credential — this script never authenticates as these users, it asks the
+ * app to impersonate them.
+ *
+ * VERIFIED 2026-08-03: the Associates filter is a select2 LABEL/TAG widget (see h.filterGrid).
+ * Committing the `email` as a token filters the grid to exactly one row ("1-1 of 1"), whereas the
+ * display name matches 15 accounts across pages. So `email` is what gets typed AND how the row is
+ * confirmed; `label` is only used for logging and as a fallback.
  */
 export const ACCOUNTS = {
-  admin: { label: 'Chau Chau', search: 'Chau Chau', role: 'Admin' },
-  luis: { label: 'Luis Testcase 635211', search: 'luis7522333@viet18.com', role: 'Outside Recruiter' },
-  nocha: { label: 'Nocha Hien', search: 'test4591872@test.com', role: 'Inside Recruiter' },
-  licensing: { label: 'Chu Con Gi Nua Testcase', search: 'chuconginua@viet18.com', role: 'Licensing' },
-  ken: { label: 'Ken Customer', search: 'test10990305@test.com', role: 'HR' },
-  maria: { label: 'Maria Testcase', search: 'm123123aria@test.com', role: 'Onboarding Specialist' },
-  accounting: { label: 'Admin Request', search: 'admingiftrequestor@viet18.com', role: 'Accounting' },
+  admin: { label: 'Chau Chau', email: '', role: 'Admin' },
+  luis: { label: 'Luis Testcase', email: 'luis7522333@viet18.com', role: 'Outside Recruiter' },
+  nocha: { label: 'Nocha Hien', email: 'test4591872@test.com', role: 'Inside Recruiter' },
+  licensing: { label: 'Chu Con Gi Nua Testcase', email: 'chuconginua@viet18.com', role: 'Licensing' },
+  ken: { label: 'Ken Customer', email: 'test10990305@test.com', role: 'HR' },
+  maria: { label: 'Maria Testcase', email: 'm123123aria@test.com', role: 'Onboarding Specialist' },
+  accounting: { label: 'Admin Request', email: 'admingiftrequestor@viet18.com', role: 'Accounting' },
 };
 
 const VIEWPORT = { width: 1920, height: 1080 };
@@ -371,8 +377,19 @@ export function makeHelpers(page, { actLabel = 'act?', durations = {}, ctxStart 
         } catch {
           continue;
         }
-        const first = loc.first();
-        if (await first.isVisible().catch(() => false)) return first;
+        // VERIFIED 2026-08-04: this app ships DUPLICATE ids — e.g. two #gwt-debug-reset nodes
+        // where the FIRST one is hidden. Taking .first() blindly would resolve to a hidden
+        // element and fail, so scan the first few matches for a visible one.
+        let n = 0;
+        try {
+          n = Math.min(await loc.count(), 5);
+        } catch {
+          continue;
+        }
+        for (let i = 0; i < n; i += 1) {
+          const nth = loc.nth(i);
+          if (await nth.isVisible().catch(() => false)) return nth;
+        }
       }
       await sleep(150);
     }
@@ -551,10 +568,30 @@ export function makeHelpers(page, { actLabel = 'act?', durations = {}, ctxStart 
    *     so it resolves whether the menu is open or shut — but still WAIT for visibility before
    *     clicking, because clicking a hidden item is a no-op.
    * Tabs expose the same `data-name` convention.
+   *
+   * CAUTION — data-name is the BACKEND ENUM for value dropdowns, not the label:
+   *   channel:    broker="Wholesale LO"  lender="Retail LO"  broker_owner="Broker/Owner"
+   *   experience: Newly_licensed / New="Inexperienced" / Experienced / Team_lead="High producer"
+   *   priority:   highest|high|medium|low|lowest
+   *   friendship: not_friend|friend_requested|cannot_make_friend_request|friend
+   * For ACTION menus data-name does equal the label ("Audit log", "Login", …), except where the
+   * company name is interpolated ("Invite Loan officer to join Chau Chau Inc") — use
+   * { prefix: true } for those.
    */
-  function dropdownItem(scope, name) {
+  function dropdownItem(scope, name, { prefix = false } = {}) {
     const target = scope || page;
-    return target.locator(`a.dropdown-item[data-name="${name}"]`);
+    return target.locator(`a.dropdown-item[data-name${prefix ? '^' : ''}="${name}"]`);
+  }
+
+  /**
+   * Click a menu item that lives in an ALREADY-OPEN dropdown, scoped to `scope` (normally a row).
+   * Waits for visibility first: the node exists while the menu is shut, and clicking a
+   * display:none item silently does nothing.
+   */
+  async function clickMenuItem(scope, name, opts = {}) {
+    const item = dropdownItem(scope, name, opts).first();
+    await item.waitFor({ state: 'visible', timeout: opts.timeout ?? 8000 });
+    return click(() => item, { timeout: opts.timeout ?? 8000 });
   }
 
   /**
@@ -636,6 +673,134 @@ export function makeHelpers(page, { actLabel = 'act?', durations = {}, ctxStart 
   }
 
   /**
+   * Type a term into the grid's search box and commit it.
+   *
+   * VERIFIED 2026-08-03 — this box is a select2 TOKEN/TAG field, not a text search, and it only
+   * commits when select2 has produced a suggestion to accept:
+   *   click -> keyboard.type (real key events) -> WAIT for li.select2-results__option (~2s,
+   *   fetched asynchronously) -> click that option
+   * The committed value becomes a chip ("×luis testcase", lower-cased) and the grid re-queries.
+   * What does NOT work: locator.fill() (text appears, but select2 never sees the keystrokes);
+   * typing then pressing Enter immediately (nothing is highlighted yet, so Enter is a no-op) —
+   * this is the single most confusing behaviour on the page. Do not clear with ControlOrMeta+A /
+   * Delete either; remove existing chips via their own × control.
+   * Chips AND together, which is how a unique row is obtained (a name alone matches many).
+   *
+   * The results container's id is `select2-labels-ue-results` — i.e. this widget filters by
+   * LABELS. That is exactly the documented `?labels=` defect behind scene s1_3: choosing a
+   * suggestion narrows by label instead of searching, which is why it can return "No results"
+   * for a record that plainly exists.
+   */
+  async function filterGrid(term, { clearTokens = true, timeout = 25_000 } = {}) {
+    if (clearTokens) {
+      const removers = page.locator('.select2-selection__choice__remove');
+      for (let i = await removers.count(); i > 0; i -= 1) {
+        const x = removers.first();
+        if (!(await x.isVisible().catch(() => false))) break;
+        await withGridUpdate(() => x.click({ timeout: 5000 })).catch(() => {});
+      }
+    }
+    // VERIFIED 2026-08-03: once a chip exists select2 REMOVES the placeholder attribute, so a
+    // placeholder locator only works for the first token. The labels widget is the only select2
+    // container that keeps an `input.select2-search__field` in the DOM while closed (the Branch /
+    // Roles / language single-selects create theirs on open), so anchor on that container —
+    // clicking it focuses the inner input, whose own box can be ~0px wide and thus "invisible".
+    await click([
+      () => page.locator('.select2-container:has(input.select2-search__field)').first(),
+      () => page.getByPlaceholder(/Name, ?Email|Type any text/i),
+    ], { timeout: 15_000, pause: 150 });
+    await page.keyboard.type(String(term), { delay: 60 });
+
+    // Not every grid uses the select2 label widget: the ILO page's box is a plain text search
+    // ("Type any text to search..."). Adapt — commit a suggestion when one is offered, otherwise
+    // fall back to a plain Enter.
+    const option = page.locator('li.select2-results__option')
+      .filter({ hasNotText: /^\s*(Searching|Loading|Please)/i }).first();
+    const gotSuggestion = await option.waitFor({ state: 'visible', timeout })
+      .then(() => true).catch(() => false);
+    if (gotSuggestion) {
+      await withGridUpdate(() => click(() => option, { timeout: 10_000 }));
+    } else {
+      console.log(`[${actLabel}] no select2 suggestion for "${term}" — committing with Enter (plain text search)`);
+      await withGridUpdate(() => page.keyboard.press('Enter'));
+    }
+    return page.locator('.select2-selection__choice').filter({ hasText: new RegExp(reEscape(term), 'i') });
+  }
+
+  /**
+   * Close whatever transient UI is open: modal first, then any open dropdown.
+   *
+   * VERIFIED 2026-08-04: pressing Escape does NOT close these modals — `div.modal.show` stays up
+   * and then swallows every subsequent click ("<div class='modal show'> intercepts pointer
+   * events"), so one un-closed modal would cascade into every later scene. The real control is
+   * `button.close[data-dismiss="modal"]` (label "×"). Bootstrap dropdowns, by contrast, do close
+   * on Escape.
+   */
+  async function dismiss({ timeout = 8000 } = {}) {
+    let closed = false;
+    for (let i = 0; i < 3; i += 1) {
+      const modals = page.locator('div.modal.show');
+      if (!(await modals.count())) break;
+      const modal = modals.last();
+      try {
+        await click([
+          () => modal.locator('button.close[data-dismiss="modal"]').first(),
+          () => modal.locator('button.close').first(),
+          () => modal.getByRole('button', { name: /^\s*(Cancel|Close)\s*$/i }).first(),
+        ], { timeout, pause: 200 });
+        closed = true;
+      } catch (err) {
+        console.warn(`[${actLabel}] could not close a modal: ${err.message}`);
+        break;
+      }
+      await page.locator('div.modal.show').last().waitFor({ state: 'hidden', timeout: 4000 }).catch(() => {});
+    }
+    // Dropdowns do respond to Escape.
+    if (await page.locator('.dropdown-menu.show').count()) {
+      await page.keyboard.press('Escape').catch(() => {});
+    }
+    return closed;
+  }
+
+  /** Cheap fingerprint of the current grid: pager + row count + first row's text. */
+  async function gridSignature() {
+    return page.evaluate(() => {
+      const view = document.querySelector('[id^="com.lenderrate"]') || document;
+      const rows = [...view.querySelectorAll('tbody tr, div.table-row')]
+        .filter((r) => (r.innerText || '').trim());
+      const pager = (document.body.innerText.match(/\d+-\d+ of (over )?[\d,]+/) || [''])[0];
+      return `${pager}|${rows.length}|${(rows[0]?.innerText || '').replace(/\s+/g, ' ').slice(0, 90)}`;
+    }).catch(() => '');
+  }
+
+  /**
+   * Run an action that refreshes the grid IN PLACE (filter, search, tab switch, page change) and
+   * wait for the grid to actually change.
+   *
+   * VERIFIED 2026-08-03 — why this exists: after such an action the PREVIOUS rows stay on screen
+   * with the previous pager while the request is in flight, so waitForRows() is satisfied
+   * immediately by stale content and the next step reads the old list. That is what made an
+   * Associates name filter look like it had not applied (still "1-10 of over 100", 11 rows) and
+   * it would have silently corrupted every filter-dependent scene.
+   */
+  async function withGridUpdate(action, { timeout = 25_000 } = {}) {
+    const before = await gridSignature();
+    await action();
+    const deadline = Date.now() + timeout;
+    while (Date.now() < deadline) {
+      await sleep(400);
+      const now = await gridSignature();
+      if (now && now !== before) {
+        await waitForRows();
+        return true;
+      }
+    }
+    console.warn(`[${actLabel}] grid did not change within ${timeout}ms — continuing with what is on screen`);
+    await waitForRows();
+    return false;
+  }
+
+  /**
    * VERIFIED 2026-08-03: tabs are <a role="tab" href="javascript:" aria-label="…" data-name="…">
    * inside div.tab-container > nav[role=tablist]. Deep-linking a tab is unreliable (the
    * "Pending approvals" segment contains a space and %20 bounces to Mine), so CLICK the tab.
@@ -647,9 +812,13 @@ export function makeHelpers(page, { actLabel = 'act?', durations = {}, ctxStart 
    * segment is lowercase `company`.
    */
   async function clickTab(name) {
-    const tab = page.getByRole('tab', { name });
-    await click(() => tab.first(), { timeout: 15_000 });
-    await waitForRows();
+    // SAFETY (verified 2026-08-04): role=tab is NOT unique to the grid's tab strip — the app also
+    // marks nav/sidebar entries as tabs, including "Log out". Always scope to the grid strip
+    // (div.tab-container > nav[role=tablist]) so a name collision can never click something
+    // destructive.
+    const strip = page.locator('div.tab-container nav[role="tablist"]').first();
+    const tab = strip.getByRole('tab', { name });
+    await withGridUpdate(() => click(() => tab.first(), { timeout: 15_000 }));
     return tab.first();
   }
 
@@ -731,10 +900,15 @@ export function makeHelpers(page, { actLabel = 'act?', durations = {}, ctxStart 
     clickTab,
     waitForAppIdle,
     waitForRows,
+    withGridUpdate,
+    gridSignature,
+    filterGrid,
+    dismiss,
     row,
     statLink,
     dropdownWith,
     dropdownItem,
+    clickMenuItem,
     optional,
     sleep,
     // session
@@ -788,14 +962,10 @@ export async function performLoginAs(page, h, roleKey, { adminStatePath } = {}) 
   // ~11s, which h.goto() now waits for explicitly.
   await h.goto(URLS.associates);
 
-  // 2) Find the account.
-  // VERIFIED 2026-08-03: the grid filter input is placeholder "Name, Email, Address and Phone..".
-  await h.typeInto([
-    () => page.getByPlaceholder(/Name, ?Email/i),
-    () => page.getByPlaceholder(/search/i),
-  ], acct.search, { delay: 45 });
-  await page.keyboard.press('Enter').catch(() => {});
-  await h.waitForRows();
+  // 2) Filter the grid by the DISPLAY NAME (see the ACCOUNTS note: an email does not filter).
+  // VERIFIED 2026-08-03: a single EMAIL token resolves to exactly one row ("1-1 of 1"), while a
+  // display-name token matches 15 accounts spread over pages. So filter by email and nothing else.
+  await h.filterGrid(acct.email || acct.label);
 
   // 3) Row Action menu on that account's row, then "Login".
   //
@@ -805,9 +975,22 @@ export async function performLoginAs(page, h, roleKey, { adminStatePath } = {}) 
   // same dropdown contains `Delete` two items below `Login`. Both the Action button and the Login
   // item are therefore scoped to the matched row, and the row itself is matched on the account's
   // unique search key.
-  const target = h.row(acct.search);
+  // Identify the row by EMAIL (unique, and present in the filtered row's text). If the email is
+  // not visible in the row, fall back to "the filter left exactly one data row" — but never pick
+  // arbitrarily out of several, because the item we are about to click swaps the whole session
+  // and sits next to Delete.
+  let target = h.row(acct.email);
   if ((await target.count()) === 0) {
-    throw new Error(`no Associates row matched "${acct.search}" — refusing to guess which account to impersonate`);
+    const dataRows = page.locator('table.table-hover tbody tr').filter({ hasText: /\S/ });
+    const n = await dataRows.count();
+    const named = dataRows.filter({ hasText: new RegExp(acct.label, 'i') });
+    if ((await named.count()) === 1) {
+      target = named.first();
+    } else if (n === 1) {
+      target = dataRows.first();
+    } else {
+      throw new Error(`could not identify a unique Associates row for ${acct.label} (${n} data rows after filtering) — refusing to guess which account to impersonate`);
+    }
   }
   await h.click(() => target.getByRole('button', { name: /^\s*Action\s*$/i }), { timeout: 15_000 });
   await h.hold(1);
@@ -889,18 +1072,18 @@ export async function act0(page, h) {
     await h.hold(2.5);
     await page.goBack({ waitUntil: 'domcontentloaded' }).catch(() => {});
     await h.waitForRows();
-    // UNRESOLVED 2026-08-03: the panel's 3 view-mode icons (bar chart / text / hide) carry no
-    // accessible name, no title and no gwt-debug id, and they are NOT inside the
-    // com.lenderrate view root, so I could not pin them down without guessing. Kept optional and
-    // scoped to the icon strip so a miss costs nothing — the scene's real beat is the drill-down
-    // above, and the narration is about stale numbers, not the toggles.
+    // VERIFIED 2026-08-03: the icon strip above the stats panel is 4 icon-only <button>s with
+    // EMPTY innerText (no title, no aria-label, no gwt-debug id) — refresh plus the 3 view modes
+    // (bar chart / text / hide). The refresh one does carry a generated id derived from its own
+    // markup, `button#i-classfas-fa-refreshi` (<i class="fas fa-refresh">), so use it as the
+    // anchor and take its siblings rather than guessing at classes.
     await h.optional('stats view-mode toggles', async () => {
-      const strip = page.locator('div[class*="card"]').filter({ hasText: /Total - / }).first();
-      const icons = strip.locator('a:has(.material-icons), a[class*="material-icons"]');
-      const n = Math.min(2, await icons.count());
+      const strip = page.locator('button#i-classfas-fa-refreshi').locator('xpath=..');
+      const toggles = strip.locator('button:not(#i-classfas-fa-refreshi)');
+      const n = Math.min(2, await toggles.count());
       if (!n) throw new Error('view-mode icon strip not found');
       for (let i = 0; i < n; i += 1) {
-        await h.click(() => icons.nth(i), { timeout: 3000 });
+        await h.click(() => toggles.nth(i), { timeout: 3000 });
         await h.hold(1.2);
       }
     });
@@ -949,7 +1132,7 @@ export async function act0(page, h) {
       await h.moveTo(() => page.getByText(/TRANSACTION SUMMARY/i).first(), { timeout: 4000 });
     });
     await h.hold(1);
-    await page.keyboard.press('Escape').catch(() => {});
+    await h.dismiss();
     await h.hold(1);
     // The whole point: every row was Received 24/01/2024 and nothing newer.
     await h.optional('Received column', () => h.moveTo(() => page.getByText(/Received/i).first(), { timeout: 4000 }));
@@ -964,21 +1147,21 @@ export async function act0(page, h) {
       h.typeInto([
         () => page.getByPlaceholder(/Name, ?Email/i),
         () => page.getByPlaceholder(/search/i),
-      ], ACCOUNTS.luis.search, { delay: 45 }));
+      ], ACCOUNTS.luis.label, { delay: 45 }));
     await page.keyboard.press('Enter').catch(() => {});
     await h.waitForRows();
     // VERIFIED 2026-08-03: per-row Action is <button>Action</button>; its menu holds
     // Permissions / Login / Audit log / … / Delete. Scope BOTH to the matched row: every row's
     // menu is pre-rendered, so an unscoped match would point at another account's Login — and
     // Delete sits two items below it.
-    const target = h.row(ACCOUNTS.luis.search);
+    const target = h.row(ACCOUNTS.luis.email);
     await h.optional('open row Action menu', () =>
       h.click(() => target.getByRole('button', { name: /^\s*Action\s*$/i }), { timeout: 8000 }));
     await h.hold(1);
     await h.optional('hover Login (NO click — that would swap this act\'s session)', () =>
       h.moveTo(() => h.dropdownItem(target, 'Login').first(), { timeout: 5000 }));
     await h.hold(1.5);
-    await page.keyboard.press('Escape').catch(() => {});
+    await h.dismiss();
   });
 }
 
@@ -993,9 +1176,8 @@ export async function act1(page, h, cfg = {}) {
     page.locator('tr', { hasText: new RegExp(candidate.name || 'Marcus Reyes', 'i') }).first();
 
   await h.scene('s1_1', async () => {
+    // VERIFIED 2026-08-03: Mine is the default tab; clickTab is a no-op verification here.
     await h.goto(URLS.rloMine);
-    // PROBE: tabs Mine / Company / Pending approvals are GWT tab-bar text nodes.
-    await h.optional('Mine tab', () => h.click(() => page.getByText(/^\s*Mine\s*$/i).first(), { timeout: 5000 }));
     await h.smoothScroll('window', 700, { steps: 14 });
     await h.hold(1);
     await h.smoothScroll('window', -700, { steps: 10 });
@@ -1003,46 +1185,62 @@ export async function act1(page, h, cfg = {}) {
 
   await h.scene('s1_2', async () => {
     // Filters: Active + Social media + the "More" additional-filters modal (7 filters).
-    await h.optional('Active filter', () => h.click(() => page.getByText(/^\s*Active\s*$/i).first(), { timeout: 5000 }));
-    await h.hold(1);
-    await h.optional('Social media filter', () =>
-      h.click(() => page.getByText(/^\s*Social media\s*$/i).first(), { timeout: 5000 }));
-    await h.hold(1);
-    await h.click([
-      () => page.getByRole('button', { name: /^\s*More\s*$/i }),
-      () => page.getByText(/^\s*More\s*$/i).first(),
-    ], { timeout: 8000 });
+    // VERIFIED 2026-08-03: both filters are select2 widgets wrapping a hidden
+    // `select.select2-hidden-accessible`. The visible control is `.select2-selection` (title
+    // holds the current value, e.g. title="Active"; an unset one shows a
+    // `.select2-selection__placeholder`). Options render in a container appended to <body>, i.e.
+    // OUTSIDE the view root, as `li.select2-results__option` — so they must be matched at page
+    // level, never inside the row/view scope.
+    await h.optional('open the Active filter', async () => {
+      await h.click(() => page.locator('.select2-selection').filter({ hasText: /Active/ }).first(), { timeout: 6000 });
+      await h.hold(1.2);
+      await h.dismiss();
+    });
+    await h.optional('open the Social media filter', async () => {
+      await h.click(() => page.locator('.select2-selection').filter({ hasText: /Social media/ }).first(), { timeout: 6000 });
+      await h.hold(1.2);
+      // Options are left unchanged on purpose: this beat is about showing the filter bar, and
+      // the real option labels for this dropdown were not verified.
+      await h.dismiss();
+    });
+    // VERIFIED 2026-08-03: the additional-filters opener is `button#more`.
+    await h.click(['#more', () => page.getByRole('button', { name: /^\s*More\s*$/i })], { timeout: 8000 });
     await h.hold(1.5);
     for (const f of [/Channel/i, /Licensed states/i, /Preferred language/i, /Friendship/i, /Profile/i, /Experience/i, /Personal address state/i]) {
       await h.optional(`filter ${f}`, () => h.moveTo(() => page.getByText(f).first(), { timeout: 2500 }));
       await h.hold(0.4);
     }
-    await page.keyboard.press('Escape').catch(() => {});
+    await h.dismiss();
   });
 
   await h.scene('s1_3', async () => {
     // The daily bug: picking a search suggestion filters by ?labels= on top of a default chip
     // => "1-1 of 0 · No results" until the chip is removed (audit §C.4.1).
+    // VERIFIED 2026-08-03: the search box is a select2 search field —
+    // `input.select2-search__field`, placeholder "Name, Email, Phone, Company...". Being select2
+    // is exactly WHY picking a suggestion turns the query into a `?labels=` filter instead of a
+    // full-text search: the widget commits a token, not the typed string.
     await h.typeInto([
-      () => page.getByPlaceholder(/search/i),
-      () => page.getByRole('textbox').first(),
+      'input.select2-search__field',
+      () => page.getByPlaceholder(/Name, ?Email, ?Phone/i),
     ], (candidate.name || 'Marcus Reyes').split(' ')[0], { delay: 90 });
     await h.hold(2);
     await h.optional('pick a suggestion', async () => {
-      // PROBE: suggestion list markup unknown; audit notes it can even render raw HTML.
-      await page.keyboard.press('ArrowDown');
-      await page.keyboard.press('Enter');
+      // Suggestions render at page level as li.select2-results__option (appended to <body>).
+      const opt = page.locator('li.select2-results__option').first();
+      await opt.waitFor({ state: 'visible', timeout: 5000 });
+      await h.click(() => opt, { timeout: 5000 });
+      await h.waitForRows();
     });
-    await h.hold(3);
-    await h.optional('point at "No results"', () =>
-      h.moveTo(() => page.getByText(/No results|1-1 of 0/i).first(), { timeout: 4000 }));
+    await h.hold(2);
+    await h.optional('point at the empty result', () =>
+      h.moveTo(() => page.getByText(/No results|of 0\b/i).first(), { timeout: 4000 }));
     await h.hold(1.5);
-    await h.optional('remove the default chip', async () => {
-      // PROBE: the chip is a filter pill with an x; audit calls it "Recruitable" on prod.
-      await h.click([
-        () => page.getByText(/Recruitable/i).first(),
-        () => page.locator('[class*="chip"], [class*="tag"]').first(),
-      ], { timeout: 4000 });
+    await h.optional('clear the filters to reveal the records', async () => {
+      // VERIFIED 2026-08-03: `button#gwt-debug-reset` ("Reset filters") is the control that drops
+      // the default chip. The prod-only "Recruitable" chip does not exist on staging.
+      await h.click(['#gwt-debug-reset'], { timeout: 5000 });
+      await h.waitForRows();
     });
     await h.hold(2);
   });
@@ -1050,10 +1248,19 @@ export async function act1(page, h, cfg = {}) {
   await h.scene('s1_4', async () => {
     // Create the candidate by hand. Required fields are NOT marked and only ONE new error
     // surfaces per submit — so submit early on purpose, twice, to show the tax.
-    await h.click([
-      () => page.getByRole('button', { name: /^\s*Add\s*$/i }),
-      () => page.getByText(/^\s*Add\s*$/i).first(),
-    ], { timeout: 10_000 });
+    // ⚠️ SHOOT BLOCKER — VERIFIED 2026-08-04 by probing as Luis on staging: an Outside Recruiter
+    // has NO Add button on this board (nor Delete, nor Assign recruiter). The audit predicted this
+    // (§9: "không Add/Delete/Assign"), so the storyboard's premise that Luis hand-creates Marcus
+    // cannot be filmed in Luis's session on staging. On production recruiters DO have Add, but we
+    // shoot staging. Options for Bao: (a) create the candidate in act 0 as admin and let Luis pick
+    // it up here, or (b) drop s1_4 and re-point its narration. Until that is decided the scene
+    // logs and no-ops so the narration still plays over the board.
+    if (!(await page.locator('#gwt-debug-add').count())) {
+      console.log('[act1]   s1_4: no Add button for this role (expected on staging) — see the SHOOT BLOCKER note');
+      await h.hold(2);
+      return;
+    }
+    await h.click(['#gwt-debug-add', () => page.getByRole('button', { name: /^\s*Add\s*$/i })], { timeout: 10_000 });
     await h.hold(2);
 
     const field = (labelRe) => [
@@ -1103,22 +1310,27 @@ export async function act1(page, h, cfg = {}) {
   await h.scene('s1_5', async () => {
     // THE evidence button: "Copy Name And NMLS #" exists only so the recruiter can leave the app.
     await h.goto(URLS.rloMine);
+    // VERIFIED 2026-08-03: the social-media cell holds a single
+    // `button` labelled "Not checked" (becomes "Checked and has social links" once filled).
     await h.click([
-      () => rowOfCandidate().getByText(/Social media|Has social media|Checked and has social links/i).first(),
-      () => page.getByText(/^\s*Social media\s*$/i).first(),
+      () => rowOfCandidate().getByRole('button', { name: /Not checked|Checked and has social links|Has social media/i }).first(),
     ], { timeout: 10_000 });
     await h.hold(2);
-    await h.moveTo([
-      () => page.getByRole('button', { name: /Copy Name And NMLS/i }),
-      () => page.getByText(/Copy Name And NMLS/i).first(),
-    ], { timeout: 6000 });
+    // VERIFIED 2026-08-04: this is an <a class="btn btn-xs btn-info" href="javascript:;"> styled
+    // as a button, so role=button never matches it — it is a role=link. It appears twice (modal
+    // title + card title). Its inline handler is literally
+    //   onclick="navigator.clipboard.writeText('<name> <nmls>')"
+    // i.e. the control exists for no purpose other than carrying data OUT of this app, which is
+    // the exact evidence pain P0-17 describes.
+    const copyBtn = [
+      () => page.locator('div.modal.show').getByRole('link', { name: /Copy Name And NMLS/i }),
+      () => page.getByRole('link', { name: /Copy Name And NMLS/i }),
+    ];
+    await h.moveTo(copyBtn, { timeout: 6000 });
     await h.hold(1);
-    await h.click([
-      () => page.getByRole('button', { name: /Copy Name And NMLS/i }),
-      () => page.getByText(/Copy Name And NMLS/i).first(),
-    ], { timeout: 6000 });
+    await h.click(copyBtn, { timeout: 6000 });
     await h.hold(2);
-    await page.keyboard.press('Escape').catch(() => {});
+    await h.dismiss();
   });
 
   await h.scene('s1_6', async () => {
@@ -1142,23 +1354,25 @@ export async function act1(page, h, cfg = {}) {
 
   await h.scene('s1_7', async () => {
     // Friendship tracking: Not friend / Friend requested / Cannot make friend request / Friend.
+    // VERIFIED 2026-08-03: friendship is a dropdown <button> whose label is the current value,
+    // with items data-name = not_friend | friend_requested | cannot_make_friend_request | friend.
     await h.click([
-      () => rowOfCandidate().getByText(/Not friend|Friend requested|Friend/i).first(),
-      () => page.getByText(/^\s*Not friend\s*$/i).first(),
+      () => rowOfCandidate().getByRole('button', { name: /Not friend|Friend requested|Cannot make friend|^Friend$/i }).first(),
     ], { timeout: 10_000 });
     await h.hold(1.2);
-    await h.optional('set Friend requested', () =>
-      h.click(() => page.getByText(/^\s*Friend requested\s*$/i).first(), { timeout: 5000 }));
+    await h.optional('set Friend requested', async () => {
+      const item = h.dropdownItem(rowOfCandidate(), 'friend_requested').first();
+      await item.waitFor({ state: 'visible', timeout: 5000 });
+      await h.click(() => item, { timeout: 5000 });
+    });
     await h.hold(1.5);
   });
 
   await h.scene('s1_8', async () => {
     // Call modal = a sales script + a Zoom deep-link. It does not place the call, and the
     // Call counter is fed by the Zoom log, not by this click.
-    await h.click([
-      () => rowOfCandidate().getByText(/^\s*Call\s*$/i).first(),
-      () => page.getByText(/^\s*Call\s*$/i).first(),
-    ], { timeout: 10_000 });
+    // VERIFIED 2026-08-03: per-row `button` labelled "Call".
+    await h.click([() => rowOfCandidate().getByRole('button', { name: /^\s*Call\s*$/i }).first()], { timeout: 10_000 });
     await h.hold(2);
     await h.optional('read the script', () => h.smoothScroll(() => page.getByText(/250\s*bps|commission/i).first(), 350, { steps: 10 }));
     await h.hold(1);
@@ -1166,16 +1380,14 @@ export async function act1(page, h, cfg = {}) {
     await h.optional('point at Call via my Zoom Phone', () =>
       h.moveTo(() => page.getByText(/Call via my Zoom Phone/i).first(), { timeout: 5000 }));
     await h.hold(1.5);
-    await page.keyboard.press('Escape').catch(() => {});
+    await h.dismiss();
   });
 
   await h.scene('s1_9', async () => {
     // Zoom SMS on an unmapped user => "Failed to send Zoom SMS: User not found".
     // Safe on staging with a dead phone number, and the error IS the beat.
-    await h.click([
-      () => rowOfCandidate().getByText(/Zoom SMS|^\s*Text\s*$/i).first(),
-      () => page.getByText(/Zoom SMS/i).first(),
-    ], { timeout: 10_000 });
+    // VERIFIED 2026-08-03: per-row `button` labelled "Zoom SMS" (column header is "Text").
+    await h.click([() => rowOfCandidate().getByRole('button', { name: /^\s*Zoom SMS\s*$/i }).first()], { timeout: 10_000 });
     await h.hold(2);
     await h.optional('send to surface the error', async () => {
       await h.click([() => page.getByRole('button', { name: /^\s*Send\s*$/i })], { timeout: 5000 });
@@ -1183,15 +1395,15 @@ export async function act1(page, h, cfg = {}) {
       await h.moveTo(() => page.getByText(/User not found|Failed to send/i).first(), { timeout: 6000 });
     });
     await h.hold(1.5);
-    await page.keyboard.press('Escape').catch(() => {});
+    await h.dismiss();
   });
 
   await h.scene('s1_10', async () => {
     // Conversation history = the real operating system of this module: a note + an email.
     await h.click([
-      () => rowOfCandidate().locator('[class*="material-icons"]').filter({ hasText: /comment|chat/i }).first(),
-      () => rowOfCandidate().getByText(/^\s*Note\s*$/i).first(),
-      () => page.getByText(/Conversation history/i).first(),
+      // VERIFIED 2026-08-03: the Note cell is a NESTED pair of identical
+      // <i class="material-icons">chat_bubble_outline</i> nodes, so this matches 2 — take first().
+      () => rowOfCandidate().locator('i.material-icons', { hasText: 'chat_bubble_outline' }).first(),
     ], { timeout: 10_000 });
     await h.hold(2);
     await h.optional('write a real note', () =>
@@ -1218,9 +1430,12 @@ export async function act1(page, h, cfg = {}) {
   await h.scene('s1_11', async () => {
     // CHANGE STATUS modal. Do NOT touch the page filters while it is open (audit §10.9:
     // the modal reports a bogus "technical difficulty" toast although the save went through).
+    // VERIFIED 2026-08-03: the status label is a DIV styled as a link —
+    // <div class="btn-link ...">Not touched</div> — not an <a> and not a <button>, so no
+    // role-based locator can reach it. (The generated GWT style hash beside `btn-link` changes
+    // between builds; never depend on it.)
     await h.click([
-      () => rowOfCandidate().getByText(/Not touched|Initiate contact|Message sent|Dialogue/i).first(),
-      () => page.getByText(/^\s*Not touched\s*$/i).first(),
+      () => rowOfCandidate().locator('div.btn-link').filter({ hasText: /Not touched|Initiate contact|Message sent|Dialogue|Invited to join/i }).first(),
     ], { timeout: 10_000 });
     await h.hold(1.5);
     await h.optional('open the dropdown', () =>
@@ -1239,13 +1454,12 @@ export async function act1(page, h, cfg = {}) {
   await h.scene('s1_12', async () => {
     // Follow-up flag = snooze + wake notification, and it HIDES the record from the pipeline.
     await h.click([
-      () => rowOfCandidate().getByRole('button', { name: /^\s*Action/i }),
-      () => rowOfCandidate().getByText(/^\s*Action\s*$/i).first(),
+      // VERIFIED 2026-08-03: per-row Action is <button>Action</button> (the toolbar one is an
+      // <a id="gwt-debug-action">). Items carry data-name; see h.dropdownItem.
+      () => rowOfCandidate().getByRole('button', { name: /^\s*Action\s*$/i }),
     ], { timeout: 10_000 });
     await h.hold(1);
-    await h.click([
-      () => page.getByText(/Add or remove a follow-up flag/i).first(),
-    ], { timeout: 6000 });
+    await h.clickMenuItem(rowOfCandidate(), 'Add or remove a follow-up flag');
     await h.hold(2);
     await h.optional('pick a wake-up date', async () => {
       // PROBE: date input markup unknown; must be a future date or it fails validation.
@@ -1257,34 +1471,35 @@ export async function act1(page, h, cfg = {}) {
     });
     await h.optional('flag history', () => h.moveTo(() => page.getByText(/Flag history/i).first(), { timeout: 4000 }));
     await h.hold(1.5);
-    await page.keyboard.press('Escape').catch(() => {});
+    await h.dismiss();
   });
 
   await h.scene('s1_13', async () => {
     // Genuine strength: field-level audit log (old -> new, user, timestamp). Keep on rebuild.
     await h.click([
-      () => rowOfCandidate().getByRole('button', { name: /^\s*Action/i }),
-      () => rowOfCandidate().getByText(/^\s*Action\s*$/i).first(),
+      // VERIFIED 2026-08-03: per-row Action is <button>Action</button> (the toolbar one is an
+      // <a id="gwt-debug-action">). Items carry data-name; see h.dropdownItem.
+      () => rowOfCandidate().getByRole('button', { name: /^\s*Action\s*$/i }),
     ], { timeout: 10_000 });
     await h.hold(1);
-    await h.click([() => page.getByText(/^\s*Audit log\s*$/i).first()], { timeout: 6000 });
+    await h.clickMenuItem(rowOfCandidate(), 'Audit log');
     await h.hold(2.5);
     await h.optional('scroll the log', () => h.smoothScroll(() => page.getByText(/Audit log/i).first(), 400, { steps: 12 }));
     await h.hold(1);
-    await page.keyboard.press('Escape').catch(() => {});
+    await h.dismiss();
   });
 
   await h.scene('s1_14', async () => {
     // The handoff: Invite -> record moves to the Interested LO pipeline. Referral source is
     // mandatory (it drives referral payout later); the $100 fee can be waived.
     await h.click([
-      () => rowOfCandidate().getByRole('button', { name: /^\s*Action/i }),
-      () => rowOfCandidate().getByText(/^\s*Action\s*$/i).first(),
+      // VERIFIED 2026-08-03: per-row Action is <button>Action</button> (the toolbar one is an
+      // <a id="gwt-debug-action">). Items carry data-name; see h.dropdownItem.
+      () => rowOfCandidate().getByRole('button', { name: /^\s*Action\s*$/i }),
     ], { timeout: 10_000 });
     await h.hold(1);
-    await h.click([
-      () => page.getByText(/Invite Loan officer to join/i).first(),
-    ], { timeout: 6000 });
+    // data-name interpolates the company ("…join Chau Chau Inc") -> prefix match
+    await h.clickMenuItem(rowOfCandidate(), 'Invite Loan officer to join', { prefix: true });
     await h.hold(2);
     await h.optional('referral source', async () => {
       await h.click([
@@ -1345,11 +1560,11 @@ export async function act2(page, h, cfg = {}) {
     await h.hold(1.5);
     await h.optional('only the note carries the call', async () => {
       await h.click([
-        () => rowOfCandidate().locator('[class*="material-icons"]').filter({ hasText: /comment|chat/i }).first(),
-        () => rowOfCandidate().getByText(/^\s*Note\s*$/i).first(),
+        // VERIFIED 2026-08-03: nested <i class="material-icons">chat_bubble_outline</i> pair.
+        () => rowOfCandidate().locator('i.material-icons', { hasText: 'chat_bubble_outline' }).first(),
       ], { timeout: 6000 });
       await h.hold(3);
-      await page.keyboard.press('Escape').catch(() => {});
+      await h.dismiss();
     });
   });
 
@@ -1368,7 +1583,7 @@ export async function act2(page, h, cfg = {}) {
     await h.optional('only Update data using Modex', () =>
       h.moveTo(() => page.getByText(/Update data using Modex/i).first(), { timeout: 5000 }));
     await h.hold(1.5);
-    await page.keyboard.press('Escape').catch(() => {});
+    await h.dismiss();
     await h.optional('Pending approvals tab', () =>
       h.moveTo(() => page.getByText(/Pending approvals/i).first(), { timeout: 5000 }));
   });
@@ -1499,11 +1714,12 @@ export async function act4(page, h, cfg = {}) {
     // Re-generate e-sign docs + send email. The system tracks signed / not signed, never
     // sent / opened / viewed.
     await h.click([
-      () => rowOfCandidate().getByRole('button', { name: /^\s*Action/i }),
-      () => rowOfCandidate().getByText(/^\s*Action\s*$/i).first(),
+      // VERIFIED 2026-08-03: per-row Action is <button>Action</button> (the toolbar one is an
+      // <a id="gwt-debug-action">). Items carry data-name; see h.dropdownItem.
+      () => rowOfCandidate().getByRole('button', { name: /^\s*Action\s*$/i }),
     ], { timeout: 10_000 });
     await h.hold(1);
-    await h.click([() => page.getByText(/Re-generate e-sign documents/i).first()], { timeout: 6000 });
+    await h.clickMenuItem(rowOfCandidate(), 'Re-generate e-sign documents and send email', { prefix: true });
     await h.hold(2);
     await h.optional('confirm', () => h.click(() => page.getByRole('button', { name: /^\s*(Yes|OK|Submit|Send)\s*$/i }).first(), { timeout: 5000 }));
     await h.hold(3);
@@ -1567,11 +1783,12 @@ export async function act4(page, h, cfg = {}) {
     // nothing connects the two.
     await h.goto(URLS.iloCompany);
     await h.click([
-      () => rowOfCandidate().getByRole('button', { name: /^\s*Action/i }),
-      () => rowOfCandidate().getByText(/^\s*Action\s*$/i).first(),
+      // VERIFIED 2026-08-03: per-row Action is <button>Action</button> (the toolbar one is an
+      // <a id="gwt-debug-action">). Items carry data-name; see h.dropdownItem.
+      () => rowOfCandidate().getByRole('button', { name: /^\s*Action\s*$/i }),
     ], { timeout: 10_000 });
     await h.hold(1);
-    await h.click([() => page.getByText(/Invite 1-1 meeting/i).first()], { timeout: 6000 });
+    await h.clickMenuItem(rowOfCandidate(), 'Invite 1-1 meeting', { prefix: true });
     await h.hold(2.5);
     await h.optional('send the invite', () => h.click(() => page.getByRole('button', { name: /^\s*(Send|Submit)\s*$/i }).first(), { timeout: 5000 }));
     await h.hold(2);
@@ -1581,18 +1798,19 @@ export async function act4(page, h, cfg = {}) {
     // Create new account: the boundary between recruiting and the rest of the company.
     // Open the form and walk it — do NOT submit (that would create a real associate).
     await h.click([
-      () => rowOfCandidate().getByRole('button', { name: /^\s*Action/i }),
-      () => rowOfCandidate().getByText(/^\s*Action\s*$/i).first(),
+      // VERIFIED 2026-08-03: per-row Action is <button>Action</button> (the toolbar one is an
+      // <a id="gwt-debug-action">). Items carry data-name; see h.dropdownItem.
+      () => rowOfCandidate().getByRole('button', { name: /^\s*Action\s*$/i }),
     ], { timeout: 10_000 });
     await h.hold(1);
-    await h.click([() => page.getByText(/Create new account/i).first()], { timeout: 6000 });
+    await h.clickMenuItem(rowOfCandidate(), 'Create new account', { prefix: true });
     await h.hold(2.5);
     for (const f of [/W-2|W-9|Outside Salesperson/i, /classification/i, /probation/i, /branch/i, /team/i, /manager/i, /company email/i]) {
       await h.optional(`field ${f}`, () => h.moveTo(() => page.getByText(f).first(), { timeout: 3000 }));
       await h.hold(0.7);
     }
     await h.hold(1);
-    await page.keyboard.press('Escape').catch(() => {}); // introduce only — never submit
+    await h.dismiss(); // introduce only — never submit
   });
 
   await h.scene('s4_8', async () => {
@@ -1673,13 +1891,14 @@ export async function act5(page, h, cfg = {}) {
   await h.scene('s5_5', async () => {
     // Webinar registration + attendance by CSV import: "attended" always lags reality.
     await h.click([
-      () => rowOfCandidate().getByRole('button', { name: /^\s*Action/i }),
-      () => rowOfCandidate().getByText(/^\s*Action\s*$/i).first(),
+      // VERIFIED 2026-08-03: per-row Action is <button>Action</button> (the toolbar one is an
+      // <a id="gwt-debug-action">). Items carry data-name; see h.dropdownItem.
+      () => rowOfCandidate().getByRole('button', { name: /^\s*Action\s*$/i }),
     ], { timeout: 10_000 });
     await h.hold(1);
-    await h.click([() => page.getByText(/Register for a webinar/i).first()], { timeout: 6000 });
+    await h.clickMenuItem(rowOfCandidate(), 'Register for a webinar');
     await h.hold(2.5);
-    await page.keyboard.press('Escape').catch(() => {});
+    await h.dismiss();
     await h.hold(1);
     await h.optional('bulk attendance import', async () => {
       await h.click([
@@ -1690,7 +1909,7 @@ export async function act5(page, h, cfg = {}) {
       await h.click(() => page.getByText(/Attendance tracking/i).first(), { timeout: 5000 });
       await h.hold(2.5);
       // Introduce only: no CSV is uploaded on camera.
-      await page.keyboard.press('Escape').catch(() => {});
+      await h.dismiss();
     });
   });
 }
@@ -1733,7 +1952,7 @@ export async function act6(page, h, cfg = {}) {
     await h.hold(2.5);
     await h.optional('read the exclusions', () => h.smoothScroll(() => page.getByText(/120 days|eligible/i).first(), 420, { steps: 12 }));
     await h.hold(1.5);
-    await page.keyboard.press('Escape').catch(() => {});
+    await h.dismiss();
   });
 
   await h.scene('s6_3', async () => {
@@ -1754,7 +1973,7 @@ export async function act6(page, h, cfg = {}) {
     await h.hold(2);
     await h.optional('Zelle option', () => h.moveTo(() => page.getByText(/Zelle/i).first(), { timeout: 5000 }));
     await h.hold(2);
-    await page.keyboard.press('Escape').catch(() => {});
+    await h.dismiss();
   });
 }
 

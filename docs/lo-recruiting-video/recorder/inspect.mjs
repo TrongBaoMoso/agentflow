@@ -84,7 +84,8 @@ const COMMON_TABLE = [
   css('table.table-hover tbody tr', 'data rows'),
   role('button', /^\s*Action\s*$/i, 'row Action <button>'),
   css('#gwt-debug-action', 'toolbar Action (gwt id)'),
-  placeholder(/Name, ?Email/i, 'grid filter input'),
+  // RLO/Associates: "Name, Email, …" (select2 label widget). ILO: "Type any text to search..."
+  placeholder(/Name, ?Email|Type any text/i, 'grid filter input'),
 ];
 
 const PROBES = {
@@ -203,34 +204,28 @@ const PROBES = {
         name: 'rlo-mine',
         url: URLS.rloMine,
         scenes: ['s1_1', 's1_2', 's1_3', 's1_4'],
+        note: 'Luis should have Mine + Pending approvals but NOT Company (audit §9).',
         candidates: [
           ...COMMON_TABLE,
-          text(/^\s*Mine\s*$/i),
-          text(/^\s*Company\s*$/i, 'should be ABSENT for inside-only roles'),
-          text(/Pending approvals/i),
-          text(/^\s*Active\s*$/i),
-          text(/^\s*Social media\s*$/i),
-          role('button', /^\s*More\s*$/i),
-          text(/^\s*More\s*$/i),
-          role('button', /^\s*Add\s*$/i),
-          text(/^\s*Add\s*$/i),
-          text(/^\s*Delete/i, 'should be ABSENT for recruiters on staging'),
-          text(/Assign recruiter/i, 'should be ABSENT for recruiters on staging'),
-          text(/Recruitable/i, 'the default filter chip that causes "No results"'),
-          text(/No results|1-1 of 0/i),
+          role('tab', /^Mine$/i, 'tab Mine'),
+          role('tab', /^company$/i, 'tab Company (EXPECTED ABSENT for a recruiter)'),
+          role('tab', /^Pending approvals$/i, 'tab Pending approvals'),
+          css('#gwt-debug-add', 'toolbar Add (EXPECTED ABSENT for a recruiter)'),
+          css('#delete', 'toolbar Delete (EXPECTED ABSENT for a recruiter)'),
+          css('#assign-recruiter', 'Assign recruiter (EXPECTED ABSENT for a recruiter)'),
+          css('#more', 'More / additional filters'),
+          css('#gwt-debug-reset', 'Reset filters'),
+          css('input.select2-search__field', 'select2 search field'),
+          css('.select2-selection', 'select2 filter widgets (Active / Social media)'),
+          css('div[class*="col-md-2"] a.gwt-Anchor', 'stats drill-down links'),
         ],
         safeOpens: [
           {
             label: 'More / additional filters modal (read-only)',
-            open: [role('button', /^\s*More\s*$/i), text(/^\s*More\s*$/i)],
+            open: [css('#more')],
             probe: [
-              text(/Channel/i),
-              text(/Licensed states/i),
-              text(/Preferred language/i),
-              text(/Friendship/i),
-              text(/^\s*Profile\s*$/i),
-              text(/Experience/i),
-              text(/Personal address state/i),
+              text(/Channel/i), text(/Licensed states/i), text(/Preferred language/i),
+              text(/Friendship/i), text(/Experience/i), text(/Personal address state/i),
             ],
           },
         ],
@@ -239,60 +234,45 @@ const PROBES = {
         name: 'rlo-row-controls',
         url: URLS.rloMine,
         scenes: ['s1_5', 's1_7', 's1_8', 's1_9', 's1_10', 's1_11', 's1_12', 's1_13', 's1_14'],
+        note: 'Row menus are pre-rendered while shut: data-name candidates should read vis=0 here.',
         candidates: [
-          text(/^\s*Call\s*$/i),
-          text(/Zoom SMS/i),
-          text(/^\s*Text\s*$/i),
-          css('[class*="material-icons"]', 'note / comment icons live here'),
-          text(/Not friend/i),
-          text(/Friend requested/i),
-          text(/Checked and has social links/i),
-          text(/Has social media/i),
-          text(/^\s*Not touched\s*$/i),
-          text(/^\s*Dialogue\s*$/i),
-          role('button', /^\s*Action/i, 'per-row Action'),
+          role('button', /^\s*Call\s*$/i, 'row Call <button>'),
+          role('button', /^\s*Zoom SMS\s*$/i, 'row Zoom SMS <button>'),
+          role('button', /Not checked|Checked and has social links/i, 'social-media <button>'),
+          role('button', /Not friend|Friend requested/i, 'friendship dropdown <button>'),
+          // div.btn-link is used for names too (59 matches) — record.mjs scopes it to the row and
+          // filters by the status text, so probe the status text itself.
+          text(/^\s*Not touched\s*$/i, 'status label text (rendered in a DIV, not a link/button)'),
+          css('i.material-icons', 'material icons incl. the nested Note pair'),
+          role('button', /^\s*Action\s*$/i, 'row Action <button>'),
+          css('a.dropdown-item[data-name="Audit log"]', 'menu: Audit log'),
+          css('a.dropdown-item[data-name="Conversation history"]', 'menu: Conversation history'),
+          css('a.dropdown-item[data-name="Add or remove a follow-up flag"]', 'menu: follow-up flag'),
+          css('a.dropdown-item[data-name^="Invite Loan officer to join"]', 'menu: Invite (company name interpolated)'),
+          css('a.dropdown-item[data-name="friend_requested"]', 'friendship value (enum, not label)'),
         ],
         safeOpens: [
           {
             label: 'row Action menu (read-only dropdown)',
-            open: [role('button', /^\s*Action/i), text(/^\s*Action\s*$/i)],
+            open: [role('button', /^\s*Action\s*$/i)],
             probe: [
-              text(/Assign recruiter/i),
-              text(/^\s*Audit log\s*$/i),
-              text(/Conversation history/i),
-              text(/Add or remove a follow-up flag/i),
-              text(/Register for a webinar/i),
-              text(/Invite Loan officer to join/i),
-              text(/Invite LO to join Marketplace/i),
-            ],
-          },
-          {
-            label: 'UPDATE SOCIAL LINKS modal (read-only; do not save)',
-            open: [text(/Checked and has social links/i), text(/^\s*Social media\s*$/i)],
-            probe: [
-              role('button', /Copy Name And NMLS/i),
-              text(/Copy Name And NMLS/i),
-              text(/Has social media/i),
+              css('a.dropdown-item[data-name="Audit log"]', 'Audit log (should be vis=yes now)'),
+              css('a.dropdown-item[data-name^="Invite Loan officer to join"]', 'Invite'),
+              css('a.dropdown-item[data-name="Register for a webinar"]', 'Register for a webinar'),
             ],
           },
           {
             label: 'CALL script modal (read-only; never click Call via my Zoom Phone)',
-            open: [text(/^\s*Call\s*$/i)],
-            probe: [
-              text(/Call via my Zoom Phone/i),
-              text(/250\s*bps/i),
-              text(/commission/i),
-            ],
+            open: [role('button', /^\s*Call\s*$/i)],
+            probe: [text(/Call via my Zoom Phone/i), text(/250\s*bps/i), text(/commission/i)],
           },
           {
-            label: 'CHANGE STATUS modal (read-only; do NOT submit, do NOT touch filters)',
-            open: [text(/^\s*Not touched\s*$/i)],
+            label: 'social links modal (read-only; do not save)',
+            open: [role('button', /Not checked|Checked and has social links/i)],
             probe: [
-              text(/CHANGE STATUS/i),
-              css('select', 'native select'),
-              role('combobox', /.*/, 'combobox'),
-              text(/^\s*Dialogue\s*$/i),
-              role('button', /^\s*Submit\s*$/i),
+              // it is an <a> styled as a button -> role=link, not role=button
+              role('link', /Copy Name And NMLS/i, 'Copy Name And NMLS # (an <a>, not a button)'),
+              text(/Has social media/i),
             ],
           },
         ],
@@ -303,9 +283,10 @@ const PROBES = {
         scenes: ['s1_15'],
         candidates: [
           ...COMMON_TABLE,
-          text(/Converted from recruited LO/i),
+          // EXPECTED ABSENT until the shoot converts a candidate — the badge only exists on a
+          // record that came through Invite.
+          text(/Converted from recruited LO/i, 'converted badge (EXPECTED ABSENT pre-shoot)'),
           text(/Invited to join/i),
-          text(/^\s*New\s*$/i),
         ],
       },
     ],
@@ -717,8 +698,10 @@ async function main() {
           printRows(modalRows);
           for (const r of modalRows) if (r.count === 0) missing.push(`act${actId}/${screen.name}/${so.label}: ${r.selector}`);
           console.log(`      screenshot: ${await shoot(page, `act${actId}-${screen.name}-${so.label.replace(/[^a-z0-9]+/gi, '-').slice(0, 40)}`)}`);
-          await page.keyboard.press('Escape').catch(() => {});
-          await sleep(1200);
+          // Escape does NOT close these modals (div.modal.show then swallows every later
+          // click) — use the recorder's verified dismiss(): button.close[data-dismiss=modal].
+          await h.dismiss().catch(() => {});
+          await sleep(1000);
         }
       }
     }
