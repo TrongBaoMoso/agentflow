@@ -1,0 +1,15 @@
+{
+  "name": "lo-recruiting-video-recorder",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Playwright recorder + ffmpeg assembler for the LO Recruiting role-walkthrough video",
+  "scripts": {
+    "probe": "node record.mjs --probe",
+    "record": "node record.mjs",
+    "assemble": "node assemble.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.60.0"
+  }
+}
