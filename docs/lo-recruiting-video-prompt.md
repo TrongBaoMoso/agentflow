@@ -49,9 +49,18 @@ CONTEXT DOCS — read these FIRST, the screens are already audited, don't re-der
 === ENVIRONMENT & AUTH (staging — safe to touch) ===
 - Staging data: submit / change / create / update are ALLOWED. Still: don't delete records
   you didn't create yourself, and never touch the Modex portal.
-- I will LOG IN MYSELF as admin "Chau Chau" at https://www.viet18.com/login inside the
-  recorded Chromium (single session — auth does not survive relaunch; expect me to
-  re-login on each re-record). You NEVER type credentials.
+- AUTH — ONE manual login, ONCE (not once per re-record):
+  * viet18.com keeps its session in an HttpOnly cookie. Verified 03/08/2026: a fresh tab
+    lands authenticated on /prospects/Mine while localStorage/sessionStorage hold NO token
+    and no JS-readable session cookie exists. So the session CANNOT be transplanted out of
+    my Chrome by script — don't waste time trying.
+  * Launch the recording Chromium with a Playwright storageState file, e.g.
+    docs/lo-recruiting-video/.auth/viet18-admin.json (gitignore it).
+  * If that file is missing or expired: open https://www.viet18.com/login, hand the window
+    to me, I type the admin ("Chau Chau") credentials MYSELF — you NEVER type credentials —
+    then immediately `context.storageState({ path: ... })` and reuse that file for every
+    later run and re-record.
+  * NEVER read, print, cat, or copy the contents of that file — it holds a live session cookie.
 - Role switching: as admin, search "Associates" → find the account → "Login as".
   Accounts (all staging test accounts):
   - HR:                  Ken Customer            — test10990305@test.com
@@ -60,9 +69,12 @@ CONTEXT DOCS — read these FIRST, the screens are already audited, don't re-der
   - Recruiter (Inside):  Nocha Hien              — test4591872@test.com
   - Onboard Specialist:  Maria Testcase          — m123123aria@test.com
   - Accounting:          Admin Request           — admingiftrequestor@viet18.com
+- Role switching costs no password: it happens INSIDE the app (admin → Associates → Login as).
+  Snapshot storageState after each switch (one file per role) so any single act can be
+  re-recorded on its own later without touching the others.
 - PRE-FLIGHT CHECK: verify the login-as ROUND-TRIP (role → back to admin) works without
-  re-entering credentials. If each switch needs a fresh admin login, plan the act order
-  accordingly and tell me the schedule so I stay nearby to re-login between acts.
+  re-entering credentials. If it doesn't, don't call me — restore the saved admin
+  storageState and enter each role from there instead.
 - If any flow needs a NEW email inbox (invite a candidate, verification email, e-sign…),
   use https://temp-mail.org/vi/ (click "Xoá" for a fresh address) and show the received
   email on camera as part of the scene.
