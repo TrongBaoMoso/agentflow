@@ -2319,6 +2319,13 @@ async function main() {
   const durations = loadDurations(args.durations);
   const selected = ACT_PLAN.filter((a) => !args.acts || args.acts.includes(a.id));
   if (!selected.length) throw new Error(`--acts matched nothing (have ${ACT_PLAN.map((a) => a.id).join(',')})`);
+  // Refuse a partial provisioning run: --acts is how you state which roles you mean, and silently
+  // provisioning only some of them is how a shoot discovers a missing state at 9am. Checked before
+  // anything is launched so it fails instantly.
+  if (args.provision && !args.acts) {
+    throw new Error('--provision requires --acts (e.g. --provision --acts 0,1,2,3,4,5,6,7) '
+      + 'so the set of roles to capture is explicit');
+  }
 
   fs.mkdirSync(args.outDir, { recursive: true });
   fs.mkdirSync(AUTH_DIR, { recursive: true });
@@ -2327,12 +2334,6 @@ async function main() {
 
   if (args.provision) {
     try {
-      // Refuse a partial provisioning run: --acts is how you say which roles you mean, and
-      // silently provisioning only some of them is how a shoot discovers a missing state at 9am.
-      if (!args.acts) {
-        throw new Error('--provision requires --acts (e.g. --provision --acts 0,1,2,3,4,5,6,7) '
-          + 'so the set of roles to capture is explicit');
-      }
       await provisionRoles(browser, selected, args);
     } finally {
       await browser.close().catch(() => {});
