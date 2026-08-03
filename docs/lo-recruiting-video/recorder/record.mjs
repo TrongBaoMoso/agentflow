@@ -2273,7 +2273,25 @@ async function provisionRoles(browser, acts, args) {
       fs.rmSync(args.auth, { force: true });
       console.log('[provision] previous admin state was no longer admin — removed it');
     }
-    await ensureAdminState(browser, args.auth);
+    try {
+      await ensureAdminState(browser, args.auth);
+    } catch (err) {
+      // Nobody was at the keyboard. Don't dump a stack trace over a human-scheduling problem:
+      // say what is still missing and how to pick up where this left off.
+      const missing = todo.filter((r) => !fs.existsSync(authPathFor(r)));
+      banner([
+        'PROVISIONING PAUSED — no login within the timeout',
+        '',
+        `Captured so far: ${todo.filter((r) => fs.existsSync(authPathFor(r))).join(', ') || 'none'}`,
+        `Still missing:   ${missing.join(', ')} + a final admin state`,
+        '',
+        'Nothing was lost. Re-run the SAME command when you can sit through',
+        `${missing.length + 1} logins back to back; it skips whatever is already captured.`,
+        '',
+        'Longer window: --login-timeout <minutes>',
+      ]);
+      return;
+    }
     logins.push(`admin login -> impersonate ${roleKey}`);
 
     const context = await createContext(browser, { storageStatePath: args.auth });
