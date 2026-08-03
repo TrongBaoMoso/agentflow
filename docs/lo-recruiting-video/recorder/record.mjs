@@ -58,6 +58,9 @@
  *   --modex-url <url>    where that tab goes (no default; the human logs into Modex himself)
  *   --mail-url <url>     temp-mail inbox URL for the e-sign beat in scene 4.3 (2nd tab)
  *   --slow <ms>          Playwright slowMo (default 0)
+ *   --login-timeout <m>  minutes to wait for each manual login (default 20). Provisioning needs
+ *                        6 logins back to back; a timeout aborts the queue, though re-running
+ *                        resumes and only asks for the states still missing.
  */
 
 import { chromium } from 'playwright';
@@ -154,7 +157,9 @@ export const ACCOUNTS = {
 const VIEWPORT = { width: 1920, height: 1080 };
 const SCENE_GAP_SEC = 0.6;          // playbook §5
 const DEFAULT_NARRATION_SEC = 6;    // used when durations.json has no entry for a scene
-const LOGIN_WAIT_MS = 5 * 60 * 1000;
+// Generous by design: a missed login window aborts the whole provisioning queue, and the human
+// is doing 6 of these back to back. Override with --login-timeout <minutes>.
+let LOGIN_WAIT_MS = 20 * 60 * 1000;
 
 export const authPathFor = (name) => path.join(AUTH_DIR, `viet18-${name}.json`);
 
@@ -2208,6 +2213,7 @@ export function parseArgs(argv = process.argv.slice(2)) {
       case '--modex-url': out.modexUrl = next(); out.modex = true; break;
       case '--mail-url': out.mailUrl = next(); break;
       case '--slow': out.slow = Number(next()); break;
+      case '--login-timeout': LOGIN_WAIT_MS = Math.max(1, Number(next())) * 60 * 1000; break;
       case '--candidate-name': out.candidate.name = next(); break;
       case '--candidate-email': out.candidate.email = next(); break;
       case '--candidate-phone': out.candidate.phone = next(); break;
