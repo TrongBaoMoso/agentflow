@@ -275,12 +275,33 @@ Thoát phễu:  Nurture (chưa phải lúc)  ·  Disqualified (kèm lý do)  · 
 
 ## 5. Câu hỏi cần chốt trước khi vào technical
 
-1. **Scope quan hệ với Tera+:** app riêng có SSO, hay module trong Tera+? (Ảnh hưởng trực tiếp tới identity, RBAC, và điểm bàn giao ở stage *Active LO*.)
+1. ~~**Scope quan hệ với Tera+:** app riêng có SSO, hay module trong Tera+?~~ → **ĐÃ CHỐT 03/08/2026: module trên Tera+** — xem §6 bên dưới.
 2. **Ai là chủ dữ liệu Associates/HR?** App mới tạo account nhân sự, hay đẩy request sang HR system hiện có?
-3. **Referral payout** còn đi qua Commission Team + cron thứ Bảy như cũ, hay tự động hoá trong app mới?
+3. **Referral payout** còn đi qua Commission Team + cron thứ Bảy như cũ, hay tự động hoá trong app mới? — *Logic bonus của hệ thống cũ (chín sau 60 ngày, chuỗi điều kiện eligibility 2 phía, cash Check tự tạo vs RSU toggle tay) đã được trích đầy đủ vào Phụ lục Business Rules của [lo-recruiting-e2e-flow.md](lo-recruiting-e2e-flow.md) — làm căn cứ để chốt câu này.*
 4. **Integration nào bắt buộc ở v1?** (Zoom Phone, Calendly, Facebook Lead Ads, Modex, e-sign) — nên chọn 2–3 cho v1 thay vì port hết. **Modex nên nằm trong nhóm bắt buộc** (xem P0-17). Phần kỹ thuật đã tra xong 31/07/2026: Modex CÓ webhook/SFTP/S3 list-sync, MOSO từng là integration partner công bố 02/2024, account hiện **không còn connection active** và chỉ có **1 seat (đang dùng −1)**. Còn lại là 4 câu hỏi hợp đồng cho Victoria/Modex AE (kích hoạt lại connection, sync limit, credit contact-data, giá thêm seat).
 5. **Phần Trainings của Benjamin** nối vào đâu: milestone trong Onboarding, hay module tách riêng phát tín hiệu ngược lại?
 
 ---
 
-*Tài liệu liên quan:* hiện trạng chi tiết CTA + ma trận phân quyền → [lo-recruiting-feature-review.md](lo-recruiting-feature-review.md) · [English](lo-recruiting-feature-review.en.md)
+## 6. Quyết định kiến trúc (chốt 03/08/2026): module trên Tera+, không phải app độc lập
+
+**Quyết định:** LO Recruiting được build như một **module / bounded-context riêng bên trong nền tảng Tera+** (backend Java 21 / Spring Boot dùng tera-core, frontend một app-section trong tera-fe) — KHÔNG phải application độc lập, KHÔNG dùng ngôn ngữ/stack mới.
+
+**Bốn lý do, theo thứ tự nặng ký:**
+
+1. **Đầu ra của recruiting là một LO active sống trong Tera+.** Chặng cuối của phễu (Onboarded → Active) trong hệ thống cũ là "ILO→Admin conversion" kèm migrate notes. Cùng platform thì đây là một status change nội bộ; app riêng thì nó thành một integration phải build và nuôi (mapping identity, sync 2 chiều, lệch data) — tự tạo lại đúng cái silo đang là pain.
+2. **Business rules của recruiting phụ thuộc dữ liệu của LOS/org.** Luật sponsorship theo bang (SC cần Corporate branch có license trong 75 dặm, WI/WY 100 dặm, NJ trong 2.5 giờ lái xe, NE/RI cần branch trong bang) — validate được phải đọc dữ liệu branch/licensing, thứ nằm trong domain Tera+. App độc lập sẽ phải gọi chéo liên tục.
+3. **Stack reality:** toàn công ty đang là Java 21/Spring Boot (tera-be, lfiq-backend, tera-core) + Next.js/Mantine (tera-fe, lf-iq). Ngôn ngữ mới = chi phí tuyển/duy trì + một platform thứ ba — ngược mục tiêu hội tụ về Tera+ khỏi monolith cũ.
+4. **Pain hiện tại không phải do "chung app".** Nó do God-entity (LORecruiting gánh 2 flow bằng field `recruiting_type` + hàng chục mixin), không có pipeline, không có data pipe, permission cấp lẻ. App riêng tech mới không tự chữa được mấy cái đó — thiết kế module tốt mới chữa.
+
+**Kỷ luật bounded-context đi kèm (điều kiện của quyết định):**
+- Schema recruiting **riêng** — bảng riêng, không dính bảng LOS core; giao tiếp với domain khác qua API/event, không join chéo DB.
+- API namespace riêng (`/recruiting/*`); webhook receiver Modex là endpoint của module này.
+- FE là một app-section riêng trong tera-fe, tái dùng design system.
+- Giữ được kỷ luật này thì sau này muốn tách thành service độc lập vẫn tách được — quyền chọn để mở, chi phí hôm nay thấp nhất.
+
+**Khi nào mới nên xét lại thành app độc lập:** user base khác hẳn (bên ngoài công ty), yêu cầu scale khác biệt lớn, hoặc chu kỳ release cần tách hoàn toàn — hiện tại không có yếu tố nào (user = nhân viên nội bộ, ~106K record, vài chục người dùng).
+
+---
+
+*Tài liệu liên quan:* hiện trạng chi tiết CTA + ma trận phân quyền → [lo-recruiting-feature-review.md](lo-recruiting-feature-review.md) · [English](lo-recruiting-feature-review.en.md) · flow end-to-end chi tiết → [lo-recruiting-e2e-flow.md](lo-recruiting-e2e-flow.md)

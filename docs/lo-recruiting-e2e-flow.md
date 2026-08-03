@@ -280,4 +280,75 @@ Ký xong, hệ thống sinh checklist chia theo role — mỗi người thấy p
 
 ---
 
-*Tài liệu cùng bộ:* [lo-recruiting-redesign-direction.md](lo-recruiting-redesign-direction.md) (17 pain points + hướng) · [lo-recruiting-feature-review.md](lo-recruiting-feature-review.md) (hiện trạng chi tiết + Phụ lục C production)
+## 8. Phụ lục — Business rules kế thừa từ hệ thống cũ
+
+> **Nguồn:** spec reverse-engineering code hệ thống hiện tại (`lo-recruiting-referrals-spec.docx`, đọc 03/08/2026 — entity LORecruiting/LORecruiter, các view GWT, server ops, cron). Đây là những luật nghiệp vụ đang **chôn trong code**, không có tài liệu — liệt kê ra để app mới hoặc GIỮ NGUYÊN, hoặc QUYẾT ĐỊNH LẠI một cách có ý thức, chứ không được để rơi mất trong lúc rebuild.
+
+### 8.1 Trạng thái & chốt chặn (map vào S4–S7)
+
+| Luật trong hệ thống cũ | Áp vào flow mới | Giữ / xét lại |
+|---|---|---|
+| Muốn `joined` phải **đã đóng startup fee + đã ký agreement** (chặn cả client lẫn server) | Gate S6→S7 | **GIỮ** |
+| Tự chuyển `joined` khi đủ 3 điều kiện: NMLS `sponsored` + HR `completed` + onboarding meeting `setup_done` | Checklist S6 đạt 100% → tự chuyển S7 | **GIỮ** (dạng checklist tường minh) |
+| Đóng fee HOẶC ký agreement HOẶC được cấp NMLS access → tự nhảy status `interviewed_and_accepted` | Tương đương vào S5/S6 | **XÉT LẠI** — flow mới dùng chuyển stage tường minh, không auto-flip ngầm khiến người dùng không hiểu vì sao status đổi |
+| Từ chối (denied) **bắt buộc chọn lý do** (+ mô tả chi tiết nếu chọn "Other"), lưu thành note | Reason code ở S2/S5 | **GIỮ** |
+
+### 8.2 Luật licensing theo bang (gate S4/S6 — lý do kiến trúc phải nằm trên Tera+)
+
+| Bang | Luật |
+|---|---|
+| SC / WI / WY | Phải có **Corporate branch** có license bang đó trong bán kính lái xe: SC = 75 dặm, WI = 100, WY = 100 |
+| NE / RI | Phải có Corporate branch **trong bang của ứng viên** có license bang sponsor |
+| NJ | Chỉ hợp lệ trong **2.5 giờ lái xe** từ branch có license NJ |
+| GA / MT / OH / OR / PA | Bắt buộc bước xác nhận sponsorship |
+| SC / AR / NE | Bắt buộc field confirm_sponsorship |
+| CA / IN | Luật DRE (CA) / SOS (IN): chưa có endorsement → tự set loại hình "corporate loan officer" |
+
+→ **GIỮ NGUYÊN toàn bộ** — và vì các luật này cần đọc dữ liệu branch/licensing của công ty, đây chính là lý do #2 của quyết định "module trên Tera+".
+
+### 8.3 Chống trùng & an toàn (map vào S0 + mọi lần sửa record)
+
+| Luật | Áp vào flow mới | Giữ / xét lại |
+|---|---|---|
+| Guard "Duplicated NMLS" — NMLS đã tồn tại ở record khác thì chặn lưu | Identity resolution S0 | **GIỮ**, nâng cấp: thay vì chặn cứng thì đề nghị merge / cờ Review Similar |
+| Check **blacklist** theo email/phone/NMLS khi tạo và khi đổi email/NMLS | S0 + mọi lần sửa | **GIỮ** |
+| Check **rehire**: trùng nhân sự cũ có cờ "not eligible for rehire" → gắn nhãn cảnh báo | Badge cảnh báo từ S1 | **GIỮ** |
+| LO nhắn **"STOP"/"Unsubscribe"** → tự archive record + note audit | Map vào Do-not-contact, chặn ở intake mọi nguồn | **GIỮ NGUYÊN — BẮT BUỘC** (tuân thủ TCPA, luật chống làm phiền qua điện thoại/tin nhắn ở Mỹ) |
+
+### 8.4 Referral & bonus (spec chi tiết cho payout ở S7)
+
+Đây là phần trước giờ mù mờ nhất ("cron thứ Bảy"), giờ đã rõ luật:
+
+- **Thời điểm chín:** bonus chỉ được xét sau **60 ngày** kể từ ngày LO được giới thiệu chính thức join.
+- **Chuỗi điều kiện 2 phía:** LO được giới thiệu phải *eligible + còn active + mức cash bonus > 0*; **người giới thiệu** phải *còn active + đạt chuẩn referral_qualified*. Trượt điều kiện nào → đánh dấu "không đủ điều kiện" kèm lý do (vd REFERRER_NOT_QUALIFIED), không âm thầm bỏ qua.
+- **Chống chi trùng (idempotency):** cờ `requested_last_12_months_refer_bonus` — cron chạy lại không tạo bonus lần hai.
+- **Hai hình thức thưởng:** Cash = hệ thống tự tạo phiếu chi (Check, trạng thái Requested) cho Accounting xử lý; RSU = bật tay, **chỉ người có quyền HR** được bật.
+- **Cấu hình:** các mức bonus là bảng cấu hình được, luôn có **đúng 1 chương trình default**.
+- **Phân loại nguồn 2 tầng** (section → source): Word of Mouth / Search & AI / Social Media / Events & Job Boards / Direct Invite / Other — kèm mapping các giá trị cũ (job_posting, postcard...) để data lịch sử không gãy.
+- **Referrer nội bộ vs bên ngoài:** nội bộ nhận diện qua company email của nhân viên đang active; bên ngoài lưu thông tin Zelle để chuyển tiền; bonus mặc định = cash khi nguồn không phải LO nội bộ.
+
+→ **GIỮ toàn bộ logic**, đổi cách chạy: thay cron ẩn thứ Bảy bằng **payout request có trạng thái nhìn thấy được** trong queue của Accounting (S7), có thể trace từng bước.
+
+### 8.5 Mapping field Modex → record (tái dùng cho webhook mapper mới)
+
+Hệ thống cũ đã có sẵn bảng map khi merge data Modex (hàm `setLOData`) — dùng lại làm khởi điểm cho mapper của webhook payload:
+
+`work_email→email · nmls_id→nmls · company_name→company_name · company_nmls_id→company_nmls · mobile_phone→phone · office_phone→office_phone · socials (facebook/linkedin/twitter/zillow) · performance_12_months_count→closed_loan_past_12_months · performance_12_months_sum→total_volume_past_12_months · transaction history (chỉ lấy dòng count>0 & sum>0)`
+
+Kèm cờ `is_synced_modex=true` trên record — flow mới thay bằng badge "Modex · as of {ngày}".
+
+### 8.6 Root-cause đã xác nhận từ code
+
+- Pain "stats panel lệch ~8 ngày" (đo được trên staging + production): spec chỉ ra statistic op **cache TTL = 691.200 giây = đúng 8 ngày**. Không phải cảm giác — là hằng số trong code. Flow mới: số liệu tính theo sự kiện (event-driven), không cache dài hạn.
+
+### 8.7 Anti-patterns KHÔNG mang theo
+
+1. **God-entity**: một entity LORecruiting gánh cả 2 flow (Interested + Recruited) bằng field phân loại `recruiting_type` + hàng chục mixin — app mới tách model theo domain.
+2. Job nền chạy im lặng không báo kết quả (import, merge, update Modex).
+3. Bug đã ghi nhận trong spec: import ILO **luôn báo "0 record"** dù tạo thành công (biến đếm truyền by-value) — minh chứng cho việc job im lặng + không ai test kết quả trả về.
+4. Nút Export bị **comment-out trong code** nhưng server op vẫn sống — chức năng "có mà không có", gây hiểu lầm về năng lực hệ thống.
+5. Status tự nhảy ngầm ở nhiều chỗ (beforeSave) khiến người dùng không giải thích được vì sao record đổi trạng thái — flow mới: mọi chuyển stage đều có actor hoặc rule hiển thị trong timeline.
+
+---
+
+*Tài liệu cùng bộ:* [lo-recruiting-redesign-direction.md](lo-recruiting-redesign-direction.md) (17 pain points + hướng + quyết định kiến trúc §6) · [lo-recruiting-feature-review.md](lo-recruiting-feature-review.md) (hiện trạng chi tiết + Phụ lục C production)
