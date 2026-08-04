@@ -430,6 +430,29 @@ function wrapLines(text, width = CUE_WRAP_CHARS) {
   return lines;
 }
 
+/**
+ * Balanced wrap, used for the Vietnamese line only.
+ *
+ * Greedy wrapping fills line 1 to the limit and leaves whatever is left on line 2, which orphaned
+ * one or two words on 20% of the translated cues ("…đang dùng hôm / nay.") and split UI labels that
+ * must read as a unit ("Recruited / Loan Officers"). Choosing the most even split instead fixes
+ * both. Only applied to VI: the English lines are part of the already-verified cut, and changing
+ * their wrapping would change cue segmentation and therefore every cue boundary.
+ */
+function wrapBalanced(text, width) {
+  const words = text.split(' ');
+  if (text.length <= width) return [text];
+  let best = null;
+  for (let i = 1; i < words.length; i += 1) {
+    const a = words.slice(0, i).join(' ');
+    const b = words.slice(i).join(' ');
+    if (a.length > width || b.length > width) continue;
+    const delta = Math.abs(a.length - b.length);
+    if (!best || delta < best.delta) best = { delta, lines: [a, b] };
+  }
+  return best ? best.lines : wrapLines(text, width);   // needs 3+ lines: fall back to greedy
+}
+
 /** Hard guarantee of ≤2 lines: if a cue needs 3, split it into two cues (never shrink the font). */
 function enforceMaxLines(cue) {
   if (wrapLines(cue).length <= CUE_MAX_LINES) return [cue];
@@ -468,11 +491,20 @@ function distributeCues(texts, start, dur) {
   return texts.map((text, i) => {
     const isLast = i === texts.length - 1;
     const end = isLast ? start + dur : acc + (weights[i] / totalWeight) * dur;
-    const cue = { text, lines: wrapLines(text), start: acc, end };
+    // wrapForRender only moves the line BREAK; cue boundaries come from segmentCues(), which calls
+    // wrapLines() itself for its ≤2-line checks. A balanced wrap is never wider than the greedy one
+    // (greedy fills line 1 to the limit), so this cannot push a caption past the frame edge.
+    const cue = { text, lines: wrapForRender(text, CUE_WRAP_CHARS), start: acc, end };
     acc = end;
     return cue;
   });
 }
+
+/**
+ * Greedy for the English-only cut so that file stays reproducible byte-for-byte; balanced for the
+ * bilingual cut, where 20% of cues otherwise orphaned one or two words on the second line.
+ */
+const wrapForRender = BILINGUAL ? wrapBalanced : wrapLines;
 
 function buildCues(scenes, total, viByScene = null) {
   const cues = [];
@@ -497,7 +529,7 @@ function buildCues(scenes, total, viByScene = null) {
         end: Math.min(cue.end, total),
         sceneId: scene.id,
         vi: viText,
-        viLines: viText ? wrapLines(viText, CUE_WRAP_CHARS_VI) : null,
+        viLines: viText ? wrapBalanced(viText, CUE_WRAP_CHARS_VI) : null,
       });
     });
   }
