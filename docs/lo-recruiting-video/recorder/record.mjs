@@ -45,6 +45,9 @@
  *   --auth <path>        admin storageState path (default <videoRoot>/.auth/viet18-admin.json)
  *   --out <dir>          recordVideo dir           (default <recorder>/video)
  *   --markers <path>     markers.json path         (default <recorder>/markers.json)
+ *   --fresh-markers      do NOT merge into an existing markers.json. By default a run MERGES by
+ *                        act number, so re-recording a subset with --acts keeps the other acts'
+ *                        entries instead of discarding them
  *   --durations <path>   narration durations       (default <videoRoot>/durations.json, then
  *                                                   <videoRoot>/audio/durations.json)
  *   --role-state         (now the default when a role state exists) seed each act from
@@ -115,6 +118,7 @@ export const URLS = {
   // ilo_assignment_owner (ILO Owner Assignment Methods Settings), facebook_ads.
   configOwnerAssignment: `${BASE}/lo_recruiting_config/ilo_assignment_owner`,
   configCalendly: `${BASE}/lo_recruiting_config/one_one_meeting`,
+  configWebinar: `${BASE}/lo_recruiting_config/Webinar`,
   modexData: `${BASE}/modex_data`,
   // VERIFIED 2026-08-04 from the LO RECRUITING menu hrefs: ##loan_officer_referrals is the
   // "Admin - Loan Officer referrals" page and it is ADMIN-ONLY (Accounting is silently redirected
@@ -123,6 +127,19 @@ export const URLS = {
   myReferrals: `${BASE}/my_loan_officer_referrals`,
   // VERIFIED 2026-08-03: direct route works, no redirect (view BrokerMembersView).
   associates: `${BASE}/associates`,
+};
+
+/**
+ * The /lo_recruiting_config tabs, VERIFIED 2026-08-04, addressable as
+ * /lo_recruiting_config/<data-name>. Deep-linking beats clicking: `a.nav-link[role=tab]` also
+ * matches dozens of sidebar entries, so a name lookup can land outside this page's own strip.
+ */
+export const CONFIG_TABS = {
+  'Webinar': 'Webinar',
+  "Landing Page's Settings": 'landing_page_setting',
+  '1-1 Meeting using Calendly': 'one_one_meeting',
+  'ILO Owner Assignment Methods Settings': 'ilo_assignment_owner',
+  'Facebook Ads': 'facebook_ads',
 };
 
 /** Tab labels reached by click, never by URL (see URLS note). */
@@ -567,7 +584,11 @@ export function makeHelpers(page, { actLabel = 'act?', durations = {}, ctxStart 
    */
   async function smoothScroll(target, delta, { axis = 'y', steps = 16, gap = 45 } = {}) {
     const chunk = delta / steps;
-    const useWindow = !target || target === 'window';
+    // Tolerate being handed the Page itself: `page` has .evaluate() so it used to be mistaken for
+    // an ElementHandle, and page.evaluate(fn, [chunk, axis]) then passed the array as the FIRST
+    // argument, leaving the destructured pair undefined ("undefined is not iterable").
+    const isPage = !!target && typeof target.mouse === 'object';
+    const useWindow = !target || target === 'window' || isPage;
     if (useWindow) {
       for (let i = 0; i < steps; i += 1) {
         await page.mouse.wheel(axis === 'x' ? chunk : 0, axis === 'x' ? 0 : chunk);
@@ -1128,8 +1149,13 @@ export async function act0(page, h, cfg = {}) {
       () => page.getByRole('link', { name: /LO RECRUITING/i }),
     ], { timeout: 12_000 });
     await h.hold(1.5);
-    // VERIFIED 2026-08-03: all 5 entries exist as text in the fly-out; they read vis=0 until the
-    // menu is opened, which the click above does.
+    // VERIFIED 2026-08-04: clicking the nav expands `li.has-sub` into `li.has-sub.expand` and all
+    // five entries become visible inside its nested <ul>. The first shoot still missed them because
+    // the candidate baked in `.first()`: "My Loan Officer referrals" exists TWICE (only one copy
+    // visible) and `.first()` resolved to the hidden duplicate, which also defeats resolve()'s
+    // scan for a visible match. Scope to this section's submenu and never narrow with .first().
+    const loSubmenu = page.locator('li.has-sub')
+      .filter({ has: page.locator(gwt('lo-recruiting')) }).locator('ul');
     for (const name of [
       /My Loan Officer referrals/i,
       /Admin - Loan Officer referrals/i,
@@ -1137,7 +1163,7 @@ export async function act0(page, h, cfg = {}) {
       /Recruited Loan Officers/i,
       /Loan Officers Obtained from Modex/i,
     ]) {
-      await h.optional(`menu ${name}`, () => h.moveTo(() => page.getByText(name).first(), { timeout: 2500 }));
+      await h.optional(`menu ${name}`, () => h.moveTo(() => loSubmenu.getByText(name), { timeout: 4000 }));
       await h.hold(0.5);
     }
   });
@@ -1192,19 +1218,14 @@ export async function act0(page, h, cfg = {}) {
 
   await h.scene('s0_4', async () => {
     await h.goto(URLS.config);
-    const tabs = [
-      /Webinar/i,
-      /Landing Page/i,
-      /1-1 Meeting using Calendly/i,
-      /ILO Owner Assignment/i,
-      /Facebook Ads/i,
-    ];
-    for (const t of tabs) {
-      // VERIFIED 2026-08-04: config tabs ARE <a class="nav-link" role="tab" data-name="…"> inside
-      // the same div.tab-container strip, so h.clickTab handles them — with { grid: false },
-      // since this page has no grid for withGridUpdate to observe.
-      await h.optional(`config tab ${t}`, async () => {
-        await h.clickTab(t, { grid: false });
+    // VERIFIED 2026-08-04: clicking this strip is unreliable — `a.nav-link[role=tab]` also matches
+    // dozens of SIDEBAR entries, so a name lookup can land outside the page's own strip (that is
+    // why four of these five tabs found nothing in the first shoot). Deep-link them instead: every
+    // tab is addressable as /lo_recruiting_config/<data-name>.
+    const tabs = Object.entries(CONFIG_TABS);
+    for (const [label, dn] of tabs) {
+      await h.optional(`config tab ${label}`, async () => {
+        await h.goto(`${BASE}/lo_recruiting_config/${dn}`, { rows: false });
         await h.hold(1.6);
       });
     }
@@ -1321,29 +1342,40 @@ export async function act0(page, h, cfg = {}) {
     await h.optional('premature submit 2', async () => { await submit(); await h.hold(3); });
 
     await h.optional('NMLS', () => h.typeInto(['#nmls'], candidate.nmls || '107621'));
-    await h.optional('channel = Retail LO', async () => {
-      // select2 over <select id="channel">: drive it visually, options render at page level.
-      await h.click(() => form.locator('.form-group').filter({ hasText: /Loan officer channel/i })
-        .locator('.select2-selection').first(), { timeout: 5000 });
+    // VERIFIED 2026-08-04 by dry-running the whole fill read-only (no submit) and reading every
+    // required field back. The form has 22 required groups — "(optional)" in the label is the ONLY
+    // marker — and the FIRST shoot's submit bounced because ten of them were still empty.
+    // Two traps found:
+    //  1. PER-STATE CASCADE. Choosing California pulls in a whole extra block of REQUIRED
+    //     questions (Indiana/California license type, CA-DRE license type, "do you also have a
+    //     California DRE Real Estate licence", "do you want to practice real estate with …").
+    //     Choosing TEXAS pulls in none of them, which collapses the required set from ten
+    //     outstanding to one. Hence Texas — the narration never names a state.
+    //  2. The mailing block collapses to a single visible field while "Same as personal address"
+    //     is checked (it is, by default): #mailing_city and #mailing_zip exist but stay HIDDEN, so
+    //     only "Mailing street address" has to be filled.
+    // Left empty deliberately: "Upload Agreement", a file input whose label merely lacks
+    // "(optional)" — a lead cannot require a signed agreement, and nothing else remains.
+    const group = (labelRe) => form.locator('.form-group').filter({ hasText: labelRe }).first();
+    const pickOption = async (labelRe, option) => {
+      await h.click(() => group(labelRe).locator('.select2-selection').first(), { timeout: 6000 });
       await h.click(() => page.locator('li.select2-results__option')
-        .filter({ hasText: /^\s*Retail LO\s*$/i }).first(), { timeout: 5000 });
-    });
-    await h.optional('experience = Experienced', () =>
-      h.click(() => form.locator('.form-group').filter({ hasText: /^\s*Experience/i })
-        .getByRole('button', { name: /^\s*Experienced\s*$/i }).first(), { timeout: 5000 }));
-
-    // Required fields, so the record can actually be created once the commit gesture is known.
-    await h.optional('career production', () => h.typeInto(['#closed_loan_since_2021'], '25000000'));
-    await h.optional('mailing address', () => h.typeInto(['#mailing_street'], '1 Market Street'));
-    const multi = async (labelRe, option) => {
-      await h.click(() => form.locator('.form-group').filter({ hasText: labelRe })
-        .locator('.select2-selection').first(), { timeout: 5000 });
-      await h.click(() => page.locator('li.select2-results__option')
-        .filter({ hasText: new RegExp(`^\\s*${option}\\s*$`, 'i') }).first(), { timeout: 6000 });
+        .filter({ hasText: new RegExp(`^\\s*${option}\\s*$`, 'i') }).first(), { timeout: 8000 });
     };
-    await h.optional('licensed states', () => multi(/Licensed states/i, 'California'));
-    await h.optional('states to sponsor', () => multi(/States that you want/i, 'California'));
-    await h.optional('preferred languages', () => multi(/Preferred languages/i, 'English'));
+    const pickButton = (labelRe, name) =>
+      h.click(() => group(labelRe).getByRole('button', { name: btnName(name) }).first(), { timeout: 6000 });
+
+    // btnName matters here: a plain /Experienced/i also matches "Inexperienced", which is the
+    // button sitting right beside it — the dry run picked the wrong one until this was fixed.
+    await h.optional('experience = Experienced', () => pickButton(/^\s*Experience/i, 'Experienced'));
+    await h.optional('career production', () => h.typeInto(['#closed_loan_since_2021'], '25000000'));
+    await h.optional('mailing street', () => h.typeInto(['#mailing_street'], '1 Market Street'));
+    await h.optional('licensed states = Texas', () => pickOption(/Licensed states/i, 'Texas'));
+    await h.optional('states to sponsor = Texas', () => pickOption(/States that you want/i, 'Texas'));
+    await h.optional('preferred languages', () => pickOption(/Preferred languages/i, 'English'));
+    await h.optional('preferred contact method', () => pickButton(/Preferred method of communication/i, 'Email'));
+    // Optional, but the storyboard specifies it: select2 over <select id="channel">.
+    await h.optional('channel = Retail LO', () => pickOption(/Loan officer channel/i, 'Retail LO'));
 
     // Hand the record to Luis here: his board is "Mine", i.e. records he OWNS, so an
     // admin-created record with no recruiter would never appear in it.
@@ -1356,17 +1388,36 @@ export async function act0(page, h, cfg = {}) {
       await h.click(() => suggestion, { timeout: 6000 });
     });
 
-    // Verify he exists and belongs to Luis; fall back to the toolbar's Assign recruiter.
-    await h.optional('confirm the candidate is on the board', async () => {
-      await h.goto(URLS.rloMine);
-      await h.filterGrid(fullName);
-      const created = h.row(fullName);
-      if (!(await created.count())) throw new Error(`"${fullName}" not found after submit`);
-      const owned = new RegExp(ACCOUNTS.luis.label, 'i').test((await created.innerText()) || '');
-      if (owned) {
-        console.log(`[act0]   s1_4: ${fullName} created and already owned by ${ACCOUNTS.luis.label}`);
-        return;
-      }
+    // VERIFY — deliberately NOT optional().
+    // In the first shoot this check WAS wrapped in optional(), so when the submit silently bounced
+    // the scene still logged "ok" and the run reported success while every downstream act that
+    // needed this record failed. A scene whose PURPOSE is creating the record must fail loudly.
+    // The board sorts by Created DESC by default (a#gwt-debug-sort-created---desc-default), so a
+    // new record lands on page 1 — check that first and only fall back to the search widget,
+    // because the label search cannot offer a suggestion for a name that does not exist yet
+    // (which is what made the original check throw a confusing "grid did not change" first).
+    await h.goto(URLS.rloMine);
+    let created = h.row(fullName);
+    if (!(await created.count())) {
+      await h.optional('search for the new record', async () => {
+        await h.filterGrid(candidate.email);
+        created = h.row(fullName);
+      });
+    }
+    if (!(await created.count())) {
+      throw new Error(`"${fullName}" was NOT created — the final submit was rejected. Check the `
+        + 'form for a required field that is still empty (22 are required; "(optional)" in the '
+        + 'label is the only marker) and re-record act 0 before anything else: every later act '
+        + 'operates on this record.');
+    }
+    console.log(`[act0]   s1_4: ${fullName} created`);
+
+    // Ownership: his board is "Mine", i.e. records he OWNS, so hand it over if the form field
+    // did not take.
+    const owned = new RegExp(ACCOUNTS.luis.label, 'i').test((await created.innerText()) || '');
+    if (owned) {
+      console.log(`[act0]   s1_4: already owned by ${ACCOUNTS.luis.label}`);
+    } else {
       await h.optional('assign the recruiter via the toolbar', async () => {
         // PROBE: the Assign recruiter modal's internals are unverified.
         await created.locator('input[type="checkbox"]').first().check({ timeout: 5000 });
@@ -1379,7 +1430,11 @@ export async function act0(page, h, cfg = {}) {
         await h.hold(2.5);
         await h.dismiss();
       });
-    });
+      if (!new RegExp(ACCOUNTS.luis.label, 'i').test((await h.row(fullName).innerText().catch(() => '')) || '')) {
+        console.error(`[act0]   s1_4: ${fullName} exists but is NOT owned by ${ACCOUNTS.luis.label} —`);
+        console.error('[act0]   s1_4: act 1 reads his "Mine" board, so it will not see the record.');
+      }
+    }
   });
 
   await h.scene('s0_6', async () => {
@@ -1387,13 +1442,10 @@ export async function act0(page, h, cfg = {}) {
     // there is no way back to admin (audit §10.3) — act 1 does the real login-as in its own
     // fresh context, so this scene only opens the menu and points at the item.
     await h.optional('associates screen', () => h.goto(URLS.associates));
-    await h.optional('search an account', () =>
-      h.typeInto([
-        () => page.getByPlaceholder(/Name, ?Email/i),
-        () => page.getByPlaceholder(/search/i),
-      ], ACCOUNTS.luis.label, { delay: 45 }));
-    await page.keyboard.press('Enter').catch(() => {});
-    await h.waitForRows();
+    // VERIFIED 2026-08-04: typing alone does NOT filter this grid — it is a select2 token widget
+    // (see h.filterGrid). The first shoot typed the name, never committed a token, so the grid was
+    // unfiltered and the row lookup below found nothing. Commit the unique EMAIL token.
+    await h.optional('search the account', () => h.filterGrid(ACCOUNTS.luis.email));
     // VERIFIED 2026-08-03: per-row Action is <button>Action</button>; its menu holds
     // Permissions / Login / Audit log / … / Delete. Scope BOTH to the matched row: every row's
     // menu is pre-rendered, so an unscoped match would point at another account's Login — and
@@ -1451,8 +1503,15 @@ export async function act1(page, h, cfg = {}) {
     // VERIFIED 2026-08-03: the additional-filters opener is `button#more`.
     await h.click(['#more', () => page.getByRole('button', { name: /^\s*More\s*$/i })], { timeout: 8000 });
     await h.hold(1.5);
-    for (const f of [/Channel/i, /Licensed states/i, /Preferred language/i, /Friendship/i, /Profile/i, /Experience/i, /Personal address state/i]) {
-      await h.optional(`filter ${f}`, () => h.moveTo(() => page.getByText(f).first(), { timeout: 2500 }));
+    // VERIFIED 2026-08-04: the modal's labels are "Loan officer channel (optional)", "Licensed
+    // states (optional)", "Preferred language (optional)", "Friendship (optional)", "Profile
+    // (optional)", "Experience (optional)", "Personal address state (optional)". They MUST be
+    // scoped to the modal: unscoped, /Profile/i also matches the sidebar's "My profile" and the
+    // board's "My profile" column, and the first shoot resolved to one of those instead.
+    const filters = page.locator('div.modal.show');
+    for (const f of [/Loan officer channel/i, /Licensed states/i, /Preferred language/i,
+      /Friendship/i, /^\s*Profile/i, /Experience/i, /Personal address state/i]) {
+      await h.optional(`filter ${f}`, () => h.moveTo(() => filters.getByText(f), { timeout: 3000 }));
       await h.hold(0.4);
     }
     await h.dismiss();
@@ -1748,10 +1807,17 @@ export async function act2(page, h, cfg = {}) {
     await h.optional('point at the empty grid', () =>
       h.moveTo(() => page.getByText(/No results/i).first(), { timeout: 8000 }));
     await h.hold(3);
-    await h.optional('point at the tab strip with no Company tab', () =>
-      h.moveTo(() => page.locator('div.tab-container nav[role=tablist]').first(), { timeout: 6000 }));
+    // VERIFIED 2026-08-04 (probed on the ILO board): when a role has only ONE tab the strip is not
+    // rendered visibly at all — the "Mine" tab exists but reads vis=false, and `div.tab-container
+    // nav[role=tablist]` is not present on this view (LORecruitingListView). So there is nothing to
+    // point at; the absence can only be stated in narration, which it is. Hold on the view heading
+    // instead, which is always there, and log the counts as evidence for the shoot log.
+    console.log(`[act2]   visible tabs on this ILO view: ${await page.locator('a[role="tab"]:visible').count()}`
+      + ` (Company present: ${(await page.getByRole('tab', { name: 'Company' }).count()) > 0})`);
+    await h.optional('hold on the view heading', () =>
+      h.moveTo(() => page.getByText(/INTERESTED LOAN OFFICERS/i), { timeout: 8000 }));
     await h.hold(2.5);
-    await h.optional('scan the whole empty board', () => h.smoothScroll(page, 220));
+    await h.optional('scan the whole empty board', () => h.smoothScroll('window', 220));
   });
 
   await h.scene('s2_3', async () => {
@@ -2026,8 +2092,15 @@ export async function act5(page, h, cfg = {}) {
 
   await h.scene('s5_1', async () => {
     await h.goto(URLS.iloMine);
-    await h.optional('tab strip (Mine only)', () => h.moveTo(() => page.getByText(/^\s*Mine\s*$/i).first(), { timeout: 8000 }));
-    console.log(`[act5]   Company tab visible: ${(await page.getByText(/^\s*Company\s*$/i).count()) > 0}`);
+    // VERIFIED 2026-08-04 (probed on the ILO board): when a role has only ONE tab the strip is not
+    // rendered visibly at all — the "Mine" tab exists but reads vis=false, and `div.tab-container
+    // nav[role=tablist]` is not present on this view (LORecruitingListView). So there is nothing to
+    // point at; the absence can only be stated in narration, which it is. Hold on the view heading
+    // instead, which is always there, and log the counts as evidence for the shoot log.
+    await h.optional('hold on the view heading', () =>
+      h.moveTo(() => page.getByText(/INTERESTED LOAN OFFICERS/i), { timeout: 8000 }));
+    console.log(`[act5]   visible tabs: ${await page.locator('a[role="tab"]:visible').count()}`
+      + ` (Company present: ${(await page.getByRole('tab', { name: 'Company' }).count()) > 0})`);
     await h.hold(2);
   });
 
@@ -2247,6 +2320,7 @@ export function parseArgs(argv = process.argv.slice(2)) {
     forceLoginAs: false,
     provision: false,
     checkStates: false,
+    freshMarkers: false,
     trim: 0,
     modex: false,
     modexUrl: null,
@@ -2280,6 +2354,7 @@ export function parseArgs(argv = process.argv.slice(2)) {
       case '--force-login-as': out.forceLoginAs = true; break;
       case '--provision': out.provision = true; break;
       case '--check-states': out.checkStates = true; break;
+      case '--fresh-markers': out.freshMarkers = true; break;
       case '--role': out.role = next(); break;
       case '--login-as': out.loginAs = true; break;
       case '--open-modals': out.openModals = true; break;
@@ -2312,6 +2387,25 @@ export async function launchBrowser({ slow = 0 } = {}) {
       '--hide-crash-restore-bubble',
     ],
   });
+}
+
+/**
+ * Decide what an existing markers.json contributes to this run.
+ * Pure and exported so the merge rule can be tested without recording anything.
+ *
+ * Entries whose `act` is being recorded now are dropped (they get replaced); everything else is
+ * carried over untouched. `extraVideos` follow the same rule.
+ */
+export function planMarkerMerge({ prev, recordingActIds }) {
+  const recording = new Set(recordingActIds);
+  const videos = Array.isArray(prev?.videos) ? prev.videos : [];
+  const extras = Array.isArray(prev?.extraVideos) ? prev.extraVideos : [];
+  return {
+    carried: videos.filter((v) => !recording.has(v.act)),
+    replaced: videos.filter((v) => recording.has(v.act)).map((v) => v.act),
+    carriedExtras: extras.filter((v) => !recording.has(v.act)),
+    videoTrimSec: prev?.videoTrimSec,
+  };
 }
 
 /**
@@ -2457,9 +2551,41 @@ async function main() {
 
   // Shape consumed by assemble.mjs: { videoTrimSec, videos: [{ act, videoPath, scenes }] }.
   // `trimSec` per video and `extraVideos` are additive; assemble.mjs already honours `trimSec`.
+  //
+  // MERGE, not overwrite. A run with --acts must preserve the acts it did NOT record: the first
+  // shoot's acts 3 and 7 were clean, and rebuilding markers from scratch would have silently
+  // dropped them, forcing a full eight-act re-record to get an assemblable file. Entries are keyed
+  // by `act` — the ones recorded now replace their previous entries, the rest are carried over.
+  // --fresh-markers opts out (full re-record, or a deliberately clean slate).
   const markers = { videoTrimSec: args.trim, recordedAt: new Date().toISOString(), videos: [], extraVideos: [] };
+  let carried = [];
+  if (!args.freshMarkers && fs.existsSync(args.markers)) {
+    try {
+      const prev = JSON.parse(fs.readFileSync(args.markers, 'utf8'));
+      const plan = planMarkerMerge({ prev, recordingActIds: selected.map((a) => a.id) });
+      carried = plan.carried;
+      markers.extraVideos.push(...plan.carriedExtras);
+      if (carried.length || plan.replaced.length) {
+        console.log(`[markers] merging into ${args.markers}: carrying over act(s) `
+          + `${carried.map((v) => v.act).join(', ') || '(none)'}; replacing `
+          + `${plan.replaced.join(', ') || '(none)'}`);
+      }
+      if (plan.videoTrimSec != null && !process.argv.includes('--trim')) {
+        markers.videoTrimSec = plan.videoTrimSec;
+      }
+    } catch (err) {
+      console.warn(`[markers] existing ${args.markers} is not readable JSON (${err.message}) — starting fresh`);
+      carried = [];
+    }
+  }
   const writeMarkers = () => {
-    fs.writeFileSync(args.markers, `${JSON.stringify(markers, null, 2)}\n`);
+    const byAct = (a, b) => (Number(a.act) || 0) - (Number(b.act) || 0);
+    const out = {
+      ...markers,
+      videos: [...carried, ...markers.videos].sort(byAct),
+      extraVideos: [...markers.extraVideos].sort(byAct),
+    };
+    fs.writeFileSync(args.markers, `${JSON.stringify(out, null, 2)}\n`);
   };
 
   // Preflight: act 0 hosts the s1_4 form beat, which creates the candidate every later act works
@@ -2563,6 +2689,10 @@ async function main() {
   }
 
   const failed = markers.videos.flatMap((v) => (v.sceneFailures || []).map((f) => `${v.act}/${f.id}: ${f.error}`));
+  if (carried.length) {
+    console.log(`markers merged: recorded act(s) ${markers.videos.map((v) => v.act).join(', ')}`
+      + `; carried over ${carried.map((v) => v.act).join(', ')}`);
+  }
   console.log(`\nmarkers written to ${args.markers}`);
   if (failed.length) {
     console.log(`\n${failed.length} scene(s) failed (narration still plays over them):`);

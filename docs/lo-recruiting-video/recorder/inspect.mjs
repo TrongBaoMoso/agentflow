@@ -35,6 +35,8 @@ import {
   authPathFor,
   createContext,
   verifyState,
+  CONFIG_TABS,
+  BASE,
   launchBrowser,
   looksLikeLogin,
   makeHelpers,
@@ -108,7 +110,31 @@ const PROBES = {
           text(/Loan Officers Obtained from Modex/i),
           css('nav', '<nav>'),
         ],
+        safeOpens: [
+          {
+            label: 'LO RECRUITING nav fly-out (read-only expand)',
+            open: [css('#gwt-debug-lo-recruiting')],
+            probe: [
+              // scoped to the expanded submenu: "My Loan Officer referrals" exists twice and only
+              // one copy is visible, so an unscoped/.first() lookup hits the hidden duplicate
+              css('li.has-sub.expand ul a', 'submenu links (should all be visible now)'),
+              text(/My Loan Officer referrals/i),
+              text(/Admin - Loan Officer referrals/i),
+              text(/Loan Officers Obtained from Modex/i),
+            ],
+          },
+        ],
       },
+      ...Object.entries(CONFIG_TABS).map(([label, dn]) => ({
+        name: `config-${dn}`,
+        url: `${BASE}/lo_recruiting_config/${dn}`,
+        scenes: ['s0_4'],
+        note: `deep-linked config tab "${label}" (clicking the strip is unreliable)`,
+        candidates: [
+          css(`a.nav-link[role="tab"][data-name="${dn}"]`, `tab ${label} present`),
+          css('div.tab-container', 'the page rendered its tab container'),
+        ],
+      })),
       {
         name: 'rlo-company',
         url: URLS.rloMine,
@@ -128,19 +154,6 @@ const PROBES = {
           css('div[class*="col-md-2"] a.gwt-Anchor', 'stats drill-down links'),
           css('#gwt-debug-add', 'toolbar Add (gwt id)'),
           css('#gwt-debug-reset', 'Reset filters (gwt id)'),
-        ],
-      },
-      {
-        name: 'config',
-        url: URLS.config,
-        scenes: ['s0_4'],
-        candidates: [
-          role('tab', /Webinar/i),
-          text(/^\s*Webinar\s*$/i),
-          text(/Landing Page/i),
-          text(/1-1 Meeting using Calendly/i),
-          text(/ILO Owner Assignment/i),
-          text(/Facebook Ads/i),
         ],
       },
       {
@@ -226,8 +239,10 @@ const PROBES = {
             label: 'More / additional filters modal (read-only)',
             open: [css('#more')],
             probe: [
-              text(/Channel/i), text(/Licensed states/i), text(/Preferred language/i),
-              text(/Friendship/i), text(/Experience/i), text(/Personal address state/i),
+              // VERIFIED 2026-08-04 (labels read off the open modal as admin)
+              text(/Loan officer channel/i), text(/Licensed states/i), text(/Preferred language/i),
+              text(/Friendship/i), text(/^\s*Profile/i), text(/Experience/i),
+              text(/Personal address state/i),
             ],
           },
         ],
