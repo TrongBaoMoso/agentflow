@@ -523,11 +523,37 @@ const PROBES = {
     role: 'admin',
     screens: [
       {
+        name: 'admin-referrals',
+        url: URLS.referrals,
+        scenes: ['s6_2', 's6_3', 's6_4'],
+        note: 'Moved here from act 6: this page is ADMIN-ONLY (Accounting is silently redirected).',
+        candidates: [
+          css('#loan-officer-referral-policy', 'policy modal opener (verified id)'),
+          css('table.table-hover', 'referrals grid'),
+          css('#gwt-debug-reset', 'Reset filters'),
+        ],
+        safeOpens: [
+          {
+            label: 'referral policy modal (read-only text)',
+            open: [css('#loan-officer-referral-policy')],
+            probe: [
+              text(/120 days/i, 'exclusion: 120 days'),
+              text(/eligible/i, 'eligibility wording'),
+            ],
+          },
+        ],
+      },
+      {
         name: 'ilo-company-final',
         url: URLS.iloCompany,
         scenes: ['s7_1', 's7_4'],
+        note: 'VERIFIED 2026-08-04: on admin\'s ILO board every row on page 1 renders a '
+          + '"No access right" button INSTEAD of Action (a per-record permission), so the row '
+          + 'Action candidate legitimately reads 0 here. s7_1/s7_4 only hover and scroll, so it '
+          + 'does not matter — but do not build a row-menu click into act 7.',
         candidates: [
           ...COMMON_TABLE,
+          role('button', /No access right/i, 'per-record permission button (replaces Action)'),
           text(/100% onboarded/i),
           text(/Agreement signed/i),
           text(/Paid/i),
