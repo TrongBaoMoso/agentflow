@@ -1848,6 +1848,45 @@ export function candidateRow(page, candidate = {}) {
   return loc.filter({ has: page.locator(`:text-is("${candidate.nmls}")`) }).first();
 }
 
+/**
+ * 🎥 FRAMING: make sure only ONE row bearing the candidate's name is on camera.
+ *
+ * Being present is not the same as being unambiguous on screen. VERIFIED FROM EXTRACTED FRAMES
+ * 2026-08-04 (act 4's own webm, not from DOM measurements): with the subject reset to "Invited to
+ * join" it returns to page one and sits there ALONGSIDE the older same-name record, so a beat that
+ * merely FINDS the row films two identical "Marcus Reyes" rows with contradictory statuses. Filtering
+ * on the NMLS reduces the board to the subject alone — s4_7's frame shows the chip "×1076215" and a
+ * pager reading "1-1 of 1".
+ *
+ * Call this from the `prepare` of ANY scene that brings a board up on camera, even one that does not
+ * otherwise need the row: s4_1 (funnel tiles) and s4_5/s4_8 (toolbar beats) had the duplicate rows
+ * sitting in the background of their frames. Board-wide stats tiles are unaffected by the filter —
+ * verified in the same frames ("Total - 2113" with one row shown).
+ *
+ * Returns true when the candidate's row is present after narrowing.
+ */
+export async function narrowToCandidate(page, h, candidate = {}) {
+  const cand = typeof candidate === 'string' ? { name: candidate } : (candidate || {});
+  const fullName = cand.name || 'Marcus Reyes';
+  const sharing = await countSameName(page, cand);
+  const here = async () => (await candidateRow(page, cand).count()) > 0;
+  if (sharing <= 1) return here();
+  if (!cand.nmls) {
+    console.warn(`[frame]  ${sharing} rows are named "${fullName}" and no --candidate-nmls was given, `
+      + 'so they cannot be told apart — the shot will show all of them');
+    return here();
+  }
+  console.log(`[frame]  ${sharing} rows named "${fullName}" are in frame — narrowing to NMLS `
+    + `${cand.nmls} so only the subject is on camera`);
+  await h.optional(`narrow the board to NMLS ${cand.nmls}`, () => h.filterGrid(cand.nmls));
+  const left = await countSameName(page, cand);
+  if (left > 1) {
+    console.warn(`[frame]  still ${left} same-name rows after narrowing — the shot will show more `
+      + `than one "${fullName}"`);
+  }
+  return here();
+}
+
 /** How many rows carry the candidate's NAME (ambiguity detector for the logs). */
 async function countSameName(page, candidate = {}) {
   return page.locator('table.table-hover tbody tr, div.table-row')
@@ -1902,26 +1941,7 @@ export async function ensureCandidateVisible(page, h, candidate = {}) {
   // so this returned "visible" without searching and the caller then read the wrong record. Ask for
   // the NMLS-matched row, so a same-name decoy cannot satisfy the check.
   if (await candidateRow(page, cand).count()) {
-    // 🎥 IT IS ON SCREEN — BUT IS IT ALONE IN FRAME?
-    // Being present is not the same as being unambiguous on camera. VERIFIED 2026-08-04: with the
-    // subject reset to "Invited to join" it returns to page one and sits there ALONGSIDE the older
-    // same-name record, so a beat that simply finds it films TWO identical "Marcus Reyes" rows with
-    // different statuses — the same defect that was fixed for s7_1, reached from the other direction
-    // (s7_1 hit it while filtering, act 4's early beats hit it while NOT needing to filter). So when
-    // a same-name row shares the board, narrow to the NMLS anyway.
-    const sharing = await countSameName(page, cand);
-    if (sharing <= 1 || !cand.nmls) return true;
-    console.log(`[find]   ${sharing} rows named "${fullName}" are in frame — narrowing to NMLS `
-      + `${cand.nmls} so only the subject is on camera`);
-    await h.optional(`narrow the board to NMLS ${cand.nmls}`, () => h.filterGrid(cand.nmls));
-    if (await candidateRow(page, cand).count()) {
-      const left = await countSameName(page, cand);
-      if (left > 1) {
-        console.warn(`[find]   still ${left} same-name rows in frame after narrowing — the shot will `
-          + 'show more than one "' + fullName + '"');
-      }
-      return true;
-    }
+    if (await narrowToCandidate(page, h, cand)) return true;
     console.warn(`[find]   narrowing to NMLS ${cand.nmls} lost the row; falling back to a name search`);
   }
   const sameName = await countSameName(page, cand);
@@ -3148,7 +3168,14 @@ export async function act4(page, h, cfg = {}) {
   // match would also reach into the stats table above the grid.
   const rowOfCandidate = () => candidateRow(page, candidate);
 
-  await h.scene('s4_1', { prepare: () => h.goto(URLS.iloCompany) }, async () => {
+  // The frame must not carry two identical "Marcus Reyes" rows in the background, even though this
+  // beat is about the funnel tiles — see narrowToCandidate. (Extracted frames showed both rows here.)
+  await h.scene('s4_1', {
+    prepare: async () => {
+      await h.goto(URLS.iloCompany);
+      await ensureCandidateVisible(page, h, candidate);
+    },
+  }, async () => {
     // 11 funnel tiles, each a drill-down that counts but assigns nothing.
     for (const s of [/Paid but not signed/i, /NMLS sponsored but HR onboarding/i, /HR completed but NMLS not sponsored/i, /100% onboarded/i]) {
       await h.optional(`stat ${s}`, () => h.moveTo(() => page.getByText(s).first(), { timeout: 3500 }));
@@ -3157,7 +3184,14 @@ export async function act4(page, h, cfg = {}) {
     await h.hold(1);
   });
 
-  await h.scene('s4_2', async () => {
+  // The initial state read is SETUP: it navigates, narrows the board to the subject and reads three
+  // values, none of which is narrated. Leaving it in the body stamped this scene's offset BEFORE its
+  // own navigation, so the published frame showed the PREVIOUS scene's post-mutation board — two
+  // identical rows and a clipped title. Confirmed by extracting the frames.
+  const s42 = {};
+  await h.scene('s4_2', {
+    prepare: async () => { s42.before = await readIloStateOrFail(page, h, candidate, 'act4]   s4_2'); },
+  }, async () => {
     // Startup fee = Paid is the only AUTO-TRANSITION in the system: setting it jumps the status to
     // "Onboarding" by itself. That is the finding, and it is what the three-way branch below protects
     // — an already-advanced record must not be filmed being "advanced" again, because the take would
@@ -3173,7 +3207,9 @@ export async function act4(page, h, cfg = {}) {
     // can simply be re-recorded. Setting the status back while the fee is still Paid sticks — the
     // auto-transition fires on the fee change, it is not continuously enforced.
     const fullName = candidate.name || 'Marcus Reyes';
-    const before = await readIloStateOrFail(page, h, candidate, 'act4]   s4_2');
+    const before = s42.before;
+    if (!before) throw new Error('s4_2 setup did not complete, so the record state is UNKNOWN — '
+      + 'refusing to touch the startup fee, which auto-advances the status.');
     console.log(`[act4]   s4_2: state = status "${before.status}" / fee "${before.fee}" / agreement "${before.agreement}"`);
 
     const isPaid = /^Paid$/i.test(before.fee);
@@ -3274,13 +3310,20 @@ export async function act4(page, h, cfg = {}) {
     }
   });
 
-  await h.scene('s4_4', async () => {
+  // Same reason as s4_2: this read is setup, and leaving it in the body pointed s4_4's offset at
+  // s4_3's post-mutation board (filter reset, both Marcus rows, title clipped under the rail).
+  const s44 = {};
+  await h.scene('s4_4', {
+    prepare: async () => { s44.before = await readIloStateOrFail(page, h, candidate, 'act4]   s4_4'); },
+  }, async () => {
     // THE FINDING OF THE ACT: the gate only checks Paid + Signed, so NMLS / HR / 1-1 can all be
     // outstanding and the record still counts as "100% onboarded". Same three-way branch as s4_2 —
     // not because the change is irreversible (it is not; see the correction there and the note at the
     // end of this scene) but because filming an already-crossed gate would film a no-op.
     const fullName = candidate.name || 'Marcus Reyes';
-    const before = await readIloStateOrFail(page, h, candidate, 'act4]   s4_4');
+    const before = s44.before;
+    if (!before) throw new Error('s4_4 setup did not complete, so the record state is UNKNOWN — '
+      + 'refusing to cross the gate.');
     console.log(`[act4]   s4_4: state = status "${before.status}" / fee "${before.fee}" / agreement "${before.agreement}"`);
 
     const showPrereqs = async () => {
@@ -3377,7 +3420,13 @@ export async function act4(page, h, cfg = {}) {
 
   // Template settings: real asset (per-status Email / SMS / Call script), on a settings page
   // every role can open.
-  await h.scene('s4_5', { prepare: () => h.goto(URLS.iloCompany) }, async () => {
+  await h.scene('s4_5', {
+    prepare: async () => {
+      await h.goto(URLS.iloCompany);
+      // Toolbar beat, but the rows are in frame behind it — keep it to the subject alone.
+      await ensureCandidateVisible(page, h, candidate);
+    },
+  }, async () => {
     // VERIFIED 2026-08-04: the TOOLBAR Action is <a id="gwt-debug-action">; getByRole('button')
     // grabbed a per-row Action button instead, which has no Template settings item — that is why
     // this scene failed. Anchor on the id.
@@ -3463,7 +3512,12 @@ export async function act4(page, h, cfg = {}) {
     console.log('[act4]   s4_7: account form introduced and confirmed closed — nothing was submitted.');
   });
 
-  await h.scene('s4_8', { prepare: () => h.goto(URLS.iloCompany) }, async () => {
+  await h.scene('s4_8', {
+    prepare: async () => {
+      await h.goto(URLS.iloCompany);
+      await ensureCandidateVisible(page, h, candidate);
+    },
+  }, async () => {
     // INTRODUCE ONLY: company-wide Delete over the whole 23.5K pipeline. Hover, never click.
     await h.optional('hover Delete', () => h.moveTo(() => page.getByText(/^\s*Delete/i).first(), { timeout: 6000 }));
     await h.hold(2.5);
