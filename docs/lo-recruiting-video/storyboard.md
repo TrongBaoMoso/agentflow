@@ -58,6 +58,30 @@ web khác, tự giữ file riêng) → nói thẳng ra, đó chính là điểm 
 
 Mỗi act **kết** bằng đúng một câu: friction tệ nhất của role đó.
 
+### Phụ đề song ngữ (`--bilingual`)
+
+Tiếng nói và `narration.json` **luôn là tiếng Anh** — giọng Việt (`say -v Linh`) đã test và bị
+loại 03/08/2026. Bản song ngữ chỉ thêm **phụ đề** tiếng Việt dưới dòng tiếng Anh, nhỏ hơn và
+đổi màu để người xem biết ngay dòng nào là bản gốc.
+
+Hợp đồng quan trọng: **cue được tách từ bản tiếng Anh, và chỉ từ bản tiếng Anh**. `narration.vi.json`
+map `sceneId → mảng chuỗi tiếng Việt`, **một chuỗi cho đúng một cue**. Lệch một cue là từ chỗ đó
+trở đi phụ đề Việt chú thích sai câu, nên `assemble.mjs` **fail cứng** khi số lượng không khớp
+thay vì cảnh báo. Cách viết bản dịch: chạy `node assemble.mjs --dump-cues` (in ra đúng 324 cue
+tiếng Anh do chính segmenter sinh), rồi dịch theo từng cue đó.
+
+Bản song ngữ ghi ra **file riêng** (`…-bilingual.mp4`, `subtitles.bilingual.srt`,
+`subtitles.vi.srt`, `verify-bilingual/`) — bản tiếng Anh đã kiểm không bao giờ bị ghi đè.
+
+### Cảnh Modex (scene 1.6) — cố ý KHÔNG có hình
+
+Narration đã kể đủ bước đó. Phần hình bị bỏ vì cả hai đường quay đều đóng: Playwright bị
+Cloudflare chặn bằng bot-detection (không lách), còn `screencapture -v` quay cả màn hình nên
+trên máy đang dùng thật nó ăn luôn cửa sổ riêng tư của người dùng — đã xảy ra 04/08/2026, file
+bị xoá ngay. macOS không có chế độ quay video theo từng cửa sổ. Chi tiết trong
+`docs/lo-recruiting-video-prompt.md` (dead end e, f). Bộ máy chèn clip ngoài thì đã dựng xong và
+còn đó (`expandSplicePlan` + `seq`/`durSec`), chỉ cần một file clip là ghép được.
+
 ---
 
 ## 2. Bản đồ act

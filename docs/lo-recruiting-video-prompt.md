@@ -68,6 +68,24 @@ CONTEXT DOCS — read these FIRST, the screens are already audited, don't re-der
         be set on a CDP default context, so it would leave the proven pipeline anyway.
     (d) My Chrome autofills the login form, but that autofill lives in my real Chrome
         profile only — a Playwright-launched browser sees an empty form. It does not help.
+- MODEX (the external site scene 1.6 needs) — TWO more dead ends, tested 04/08/2026:
+    (e) Signing in to modex.com from a Playwright window: Cloudflare serves a "Verify you are
+        human" interstitial and loops on it. Bot-detection is never to be worked around, so
+        this path is CLOSED — not slow, closed.
+    (f) Driving my REAL Chrome (Claude-in-Chrome) and filming the screen with
+        `screencapture -v`: the extension reaches Modex fine (no Cloudflare, my own profile,
+        autofilled — I click Login, never type a password). But `screencapture` records the
+        WHOLE DISPLAY, and on a machine in daily use another window owns the screen the moment
+        you look away: the 42-second take contained zero Modex frames and a full window of my
+        private chats instead. It was deleted immediately. macOS has no window-scoped VIDEO
+        capture (`-l` is stills only), so there is no way to make this safe. DO NOT retry it.
+        If the Modex screen is wanted, I record those ~40 seconds myself and hand over the file
+        — everything else about the splice is already built (see below).
+- Splicing an EXTERNAL clip into the middle of an act (built, unused): markers entries carry
+  `seq` and `durSec`, so one act can contribute several ordered segments — act 1 stops where
+  focus left the app, the external clip carries s1_6, act 1 resumes where focus came back.
+  See `expandSplicePlan` in record.mjs and the (act, seq) ordering in assemble.mjs. The final
+  cut ships WITHOUT the Modex screen by my decision; the narration already describes the step.
   * SO: at the start of a recording run, open https://www.viet18.com/login in the Playwright
     window and hand it to me. I type the admin ("Chau Chau") credentials MYSELF — you NEVER
     type credentials, and you never read them from anywhere.

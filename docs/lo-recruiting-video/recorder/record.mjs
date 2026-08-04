@@ -89,6 +89,17 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const HERE = path.dirname(fileURLToPath(import.meta.url));       // .../recorder
 const VIDEO_ROOT = path.resolve(HERE, '..');                     // .../lo-recruiting-video
 const AUTH_DIR = path.join(VIDEO_ROOT, '.auth');
+/** Modex is a different site with its own session; captured once by tools/capture-modex-state.mjs. */
+const MODEX_STATE = path.join(AUTH_DIR, 'modex.json');
+
+/** First candidate in a ladder that is actually present AND visible, or null. */
+async function firstVisible(builders) {
+  for (const build of builders) {
+    const loc = build();
+    if (await loc.count().catch(() => 0) && await loc.isVisible().catch(() => false)) return loc;
+  }
+  return null;
+}
 /**
  * Narration durations, in lookup order. build-narration.mjs currently writes
  * <videoRoot>/audio/durations.json; the playbook calls it <videoRoot>/durations.json.
@@ -371,9 +382,44 @@ async function waitForLogin(page, timeoutMs = LOGIN_WAIT_MS) {
 }
 
 /** Fresh context, optionally seeded + optionally recorded. Cursor is always injected. */
-export async function createContext(browser, { storageStatePath, recordDir } = {}) {
+/**
+ * Merge storageState files into one object Playwright can seed a context with.
+ *
+ * WHY: scene 1.6 films modex.com in a second TAB of the same context, so that context needs BOTH
+ * the viet18 role session and the Modex session. Cookies are keyed by domain and localStorage by
+ * origin, so the two never collide — but Playwright only accepts one `storageState`. Later files
+ * win on a genuine clash. Values are never logged.
+ */
+export function mergeStorageStates(paths) {
+  const cookies = new Map();
+  const origins = new Map();
+  for (const p of paths) {
+    if (!p || !fs.existsSync(p)) continue;
+    let state;
+    try {
+      state = JSON.parse(fs.readFileSync(p, 'utf8'));
+    } catch (err) {
+      throw new Error(`cannot parse storageState ${p}: ${err.message}`);
+    }
+    for (const c of state.cookies ?? []) cookies.set([c.name, c.domain, c.path].join('|'), c);
+    for (const o of state.origins ?? []) {
+      const prev = origins.get(o.origin) ?? { origin: o.origin, localStorage: [] };
+      const byName = new Map(prev.localStorage.map((e) => [e.name, e]));
+      for (const e of o.localStorage ?? []) byName.set(e.name, e);
+      origins.set(o.origin, { origin: o.origin, localStorage: [...byName.values()] });
+    }
+  }
+  return { cookies: [...cookies.values()], origins: [...origins.values()] };
+}
+
+export async function createContext(browser, { storageStatePath, extraStatePaths = [], recordDir } = {}) {
   const opts = { viewport: VIEWPORT, deviceScaleFactor: 1, acceptDownloads: true };
-  if (storageStatePath && fs.existsSync(storageStatePath)) opts.storageState = storageStatePath;
+  const extras = extraStatePaths.filter((p) => p && fs.existsSync(p));
+  if (extras.length) {
+    opts.storageState = mergeStorageStates([storageStatePath, ...extras]);
+  } else if (storageStatePath && fs.existsSync(storageStatePath)) {
+    opts.storageState = storageStatePath;
+  }
   if (recordDir) {
     fs.mkdirSync(recordDir, { recursive: true });
     opts.recordVideo = { dir: recordDir, size: { ...VIEWPORT } };
@@ -2632,24 +2678,103 @@ export async function act1(page, h, cfg = {}) {
     await h.dismiss();
   });
 
-  await h.scene('s1_6', async () => {
-    // The manual Modex lookup happens on a DIFFERENT site. Two constraints collide here:
-    // the storyboard wants it on camera, the shoot brief says never touch the Modex portal.
-    // Default = do not leave the app (log it, let narration play). Opt in with --modex.
-    if (!cfg.modex || !cfg.modexUrl) {
-      console.log('[act1]   s1_6: external-Modex beat SKIPPED (pass --modex --modex-url <url>); shoot as a separate take');
+  // ── scene 1.6 — the beat that happens on ANOTHER SITE ────────────────────────────────────────
+  // Playwright records one webm per PAGE, so the Modex tab is its own clip while act 1's clip keeps
+  // filming the (idle) app behind it. Concatenating acts therefore CANNOT show Modex — which is why
+  // the shipped 24:04 cut has s1_6's narration playing over the app. The fix is a SPLIT PLAN handed
+  // to assemble.mjs: act 1 up to the moment Luis leaves, then the Modex clip, then act 1 from the
+  // moment he returns. The dead app footage in between is dropped, and s1_6's cue moves onto the
+  // Modex clip so it can never again play over the wrong screen.
+  //
+  // READ-ONLY over there. Modex is a licensed third-party provider and the shoot brief allows
+  // exactly what a recruiter does: search a licence number, read the numbers. Never touch Sync
+  // toggles, Remove user or Invite Users. The session comes from tools/capture-modex-state.mjs, so
+  // no password is ever typed on camera or by this script.
+  if (!cfg.modex || !cfg.modexUrl) {
+    await h.scene('s1_6', async () => {
+      console.log('[act1]   s1_6: external-Modex beat SKIPPED (pass --modex --modex-url <url>); narration plays over the app');
       await h.optional('hold on the copied NMLS', () =>
         h.moveTo(() => page.getByText(new RegExp(candidate.nmls || '107621')).first(), { timeout: 4000 }));
-      return;
-    }
-    // NOTE: a 2nd tab produces a 2nd webm (playbook §6.3) — it is registered in markers.json.
-    const tab = await page.context().newPage();
-    cfg.extraPages?.push({ label: 'act1-modex', page: tab });
-    await tab.goto(cfg.modexUrl, { waitUntil: 'domcontentloaded' }).catch(() => {});
-    await tab.bringToFront();
-    await sleep(4000); // the human is expected to already be signed into Modex in this tab
+    });
+  } else {
+    // The subject is a fixture that exists only in viet18, so Modex cannot know it. This lookup
+    // names a REAL loan officer on purpose (approved: 107621 Roger Kube, already the worked example
+    // in the internal direction doc) — without a real licence number there are no numbers to read,
+    // and the scene has nothing to prove.
+    const lookupNmls = cfg.modexNmls || '107621';
+    const splitAtSec = round2((Date.now() - h.demoStart) / 1000);
+    let tabStart = null;
+    let clipTrimSec = 0;
+    let beat = 'the beat never ran';
+
+    await h.scene('s1_6', {
+      prepare: async () => {
+        tabStart = Date.now();
+        const tab = await page.context().newPage();
+        cfg.extraPages?.push({ label: 'act1-modex', page: tab });
+        await tab.goto(cfg.modexUrl, { waitUntil: 'domcontentloaded', timeout: 90_000 });
+        await tab.bringToFront();
+        await sleep(3500);
+        // A visible password field means the seeded Modex session is dead. Fail here rather than
+        // splice a login form — with somebody's email on it — into the film.
+        const pw = tab.locator('input[type="password"]');
+        if (await pw.count().catch(() => 0) && await pw.first().isVisible().catch(() => false)) {
+          throw new Error(`the Modex tab is showing a LOGIN FORM — re-run tools/capture-modex-state.mjs (${MODEX_STATE})`);
+        }
+        cfg.modexTab = tab;
+        // Everything up to here is arrival, not content: it becomes the clip's trim.
+        clipTrimSec = round2((Date.now() - tabStart) / 1000);
+      },
+    }, async () => {
+      const tab = cfg.modexTab;
+      const box = await firstVisible([
+        () => tab.getByPlaceholder(/search|nmls|licen|name/i).first(),
+        () => tab.getByRole('searchbox').first(),
+        () => tab.locator('input[type="search"]').first(),
+        () => tab.locator('input[name*="search" i]').first(),
+        () => tab.locator('input[aria-label*="search" i]').first(),
+      ]);
+      if (!box) throw new Error('no search box on the Modex screen — probe it with tools/capture-modex-state.mjs --probe-nmls');
+
+      // Drive the pointer so the injected cursor is visible on this tab too, then type at human
+      // speed: the manual-ness IS the evidence.
+      const bb = await box.boundingBox().catch(() => null);
+      if (bb) await tab.mouse.move(bb.x + bb.width / 2, bb.y + bb.height / 2, { steps: 22 });
+      await box.click();
+      if (typeof box.pressSequentially === 'function') await box.pressSequentially(lookupNmls, { delay: 95 });
+      else await box.type(lookupNmls, { delay: 95 });
+      await sleep(2200);
+      await tab.keyboard.press('Enter').catch(() => {});
+      await sleep(6000);
+
+      // A dollar figure must actually render. Without it there is nothing to read back, and
+      // splicing the clip would insert a blank screen under 35 seconds of narration.
+      const money = tab.getByText(/\$\s?[\d,]/).first();
+      await money.waitFor({ state: 'visible', timeout: 25_000 });
+      const mb = await money.boundingBox().catch(() => null);
+      if (mb) await tab.mouse.move(mb.x + Math.min(mb.width / 2, 220), mb.y + mb.height / 2, { steps: 26 });
+      beat = 'ok';
+    });
+
+    // scene() has already padded to the narration length WITH Modex still in front. Only now go back.
     await page.bringToFront();
-  });
+    const resumeAtSec = round2((Date.now() - h.demoStart) / 1000);
+    const clipDurSec = tabStart ? round2((Date.now() - tabStart) / 1000 - clipTrimSec) : 0;
+
+    if (beat === 'ok' && clipDurSec > 2 && resumeAtSec > splitAtSec) {
+      cfg.segmentPlan.splice = {
+        label: 'act1-modex', sceneId: 's1_6', splitAtSec, resumeAtSec, clipTrimSec, clipDurSec,
+      };
+      // s1_6's cue belongs to the Modex clip now, so drop it from act 1's own scene list.
+      const i = h.scenes.findIndex((s) => s.id === 's1_6');
+      if (i >= 0) h.scenes.splice(i, 1);
+      console.log(`[act1]   s1_6: Modex clip captured (trim ${clipTrimSec}s, ${clipDurSec}s on camera); `
+        + `act 1 splits at ${splitAtSec}s and resumes at ${resumeAtSec}s`);
+    } else {
+      console.warn(`[act1]   s1_6: NOT splicing the Modex clip — ${beat}. The narration stays over the `
+        + 'app screen, exactly as in the shipped cut; nothing is made worse.');
+    }
+  }
 
   await h.scene('s1_7', async () => {
     // Friendship tracking: Not friend / Friend requested / Cannot make friend request / Friend.
@@ -3826,6 +3951,7 @@ export function parseArgs(argv = process.argv.slice(2)) {
     trim: 0,
     modex: false,
     modexUrl: null,
+    modexNmls: null,
     mailUrl: null,
     // Name of a SAFE record to demonstrate row controls on when the candidate has already been
     // converted off the Recruited board. See the substitute picker in act1.
@@ -3867,6 +3993,7 @@ export function parseArgs(argv = process.argv.slice(2)) {
       case '--trim': out.trim = Number(next()); break;
       case '--modex': out.modex = true; break;
       case '--modex-url': out.modexUrl = next(); out.modex = true; break;
+      case '--modex-nmls': out.modexNmls = String(next() || '').trim(); break;
       case '--mail-url': out.mailUrl = next(); break;
       case '--slow': out.slow = Number(next()); break;
       case '--login-timeout': LOGIN_WAIT_MS = Math.max(1, Number(next())) * 60 * 1000; break;
@@ -3894,6 +4021,74 @@ export async function launchBrowser({ slow = 0 } = {}) {
       '--hide-crash-restore-bubble',
     ],
   });
+}
+
+/**
+ * One act -> several ordered timeline segments.
+ *
+ * Playwright records one webm per PAGE, so a beat that happens in a second tab (scene 1.6 on
+ * modex.com) lands in a clip of its own while the act's own clip keeps filming the idle app. To get
+ * that beat into the cut, the act declares a splice and this turns it into three segments:
+ *
+ *   #0  the act's webm, from its trim up to the moment the tab opened   (durSec caps it)
+ *   #1  the side-tab clip, trimmed past arrival                          (carries the moved scene)
+ *   #2  the act's webm again, from the moment focus came back
+ *
+ * assemble.mjs orders by (act, seq), so the clip lands INSIDE the act instead of after it, and the
+ * dead app footage recorded while the other tab was in front is dropped.
+ *
+ * Pure and exported so the layout can be checked without recording anything. Degrades to the
+ * known-good single-segment layout on any inconsistency — a shot take is never thrown away over a
+ * bookkeeping problem.
+ */
+export function expandSplicePlan(entry, splice, extraPaths = []) {
+  const single = [{ ...entry, seq: 0 }];
+  if (!splice || !entry.videoPath) return single;
+
+  const clip = extraPaths.find((e) => e.label === splice.label);
+  if (!clip) {
+    console.warn(`[markers] splice skipped: no side-tab clip labelled "${splice.label}" was handed back`);
+    return single;
+  }
+  const { splitAtSec, resumeAtSec, clipTrimSec, clipDurSec, sceneId } = splice;
+  if (!(resumeAtSec > splitAtSec) || !(clipDurSec > 0)) {
+    console.warn(`[markers] splice skipped: incoherent plan (split ${splitAtSec}s, resume ${resumeAtSec}s, clip ${clipDurSec}s)`);
+    return single;
+  }
+  const all = entry.scenes ?? [];
+  const before = all.filter((sc) => sc.offset < splitAtSec);
+  const after = all.filter((sc) => sc.offset >= resumeAtSec);
+  const stranded = all.filter((sc) => sc.offset >= splitAtSec && sc.offset < resumeAtSec);
+  if (stranded.length) {
+    // A cue sitting in the dropped window would silently lose its footage. Keep the whole act.
+    console.warn(`[markers] splice skipped: ${stranded.map((sc) => sc.id).join(', ')} would fall in the `
+      + 'dropped window — the act stays in one piece');
+    return single;
+  }
+
+  return [
+    { ...entry, seq: 0, durSec: splitAtSec, scenes: before },
+    {
+      act: entry.act,
+      seq: 1,
+      role: entry.role,
+      label: splice.label,
+      videoPath: clip.videoPath,
+      trimSec: clipTrimSec,
+      durSec: clipDurSec,
+      scenes: [{ id: sceneId, offset: 0 }],
+      sceneFailures: [],
+      actError: null,
+    },
+    {
+      ...entry,
+      seq: 2,
+      trimSec: round2((entry.trimSec ?? 0) + resumeAtSec),
+      scenes: after.map((sc) => ({ ...sc, offset: round2(sc.offset - resumeAtSec) })),
+      sceneFailures: [],
+      actError: null,
+    },
+  ];
 }
 
 /**
@@ -4159,10 +4354,22 @@ async function main() {
       console.log(`\n===== ${actLabel} — ${ACCOUNTS[act.role]?.role || act.role} (seed: ${seedFromRole ? `role state ${act.role}` : 'admin state'}) =====`);
 
       const ctxStart = Date.now();
-      const context = await createContext(browser, { storageStatePath: seed, recordDir: args.outDir });
+      // --modex films a second tab on modex.com, which needs ITS OWN session in this same
+      // context. Merged in, never logged: see tools/capture-modex-state.mjs.
+      const extraStatePaths = args.modex && fs.existsSync(MODEX_STATE) ? [MODEX_STATE] : [];
+      if (args.modex && !extraStatePaths.length) {
+        console.warn(`[${actLabel}] --modex is on but ${MODEX_STATE} is missing — the Modex tab will `
+          + 'hit a login form and the beat will refuse to splice. Run tools/capture-modex-state.mjs.');
+      }
+      const context = await createContext(browser, {
+        storageStatePath: seed, extraStatePaths, recordDir: args.outDir,
+      });
       const page = await context.newPage();
       const video = page.video();
       const extraPages = [];
+      // An act may hand back a SPLIT PLAN: one act, several timeline segments (act 1 does this
+      // when it films Modex in a second tab). See expandSplicePlan below.
+      const segmentPlan = {};
       const h = makeHelpers(page, { actLabel, durations, ctxStart });
 
       let actError = null;
@@ -4176,7 +4383,7 @@ async function main() {
         }
 
         h.startAct(); // everything before this point is preamble -> trimSec
-        await act.fn(page, h, { ...args, extraPages });
+        await act.fn(page, h, { ...args, extraPages, segmentPlan });
 
         // One file per role so any single act can be re-recorded later with --role-state.
         if (act.role !== 'admin') await h.saveRoleState(act.role);
@@ -4198,13 +4405,25 @@ async function main() {
       await context.close().catch(() => {});
       // §6.3: take the exact driven page's path — never glob for "the largest webm".
       entry.videoPath = video ? await video.path().catch(() => null) : null;
-      markers.videos.push(entry);
-      // Side-tab takes (external Modex, the mail inbox) are NOT part of the main timeline —
-      // assemble.mjs concatenates everything in `videos`, and these have no scenes. They are
-      // listed separately so they can be hand-cut into the final edit if wanted.
+
+      // Resolve the side-tab clips FIRST: a split plan needs the spliced clip's real path.
+      const extraPaths = [];
       for (const ev of extraVideos) {
         const p = ev.video ? await ev.video.path().catch(() => null) : null;
-        if (p) markers.extraVideos.push({ act: act.id, label: ev.label, role: act.role, videoPath: p });
+        if (p) extraPaths.push({ label: ev.label, videoPath: p });
+      }
+
+      const segments = expandSplicePlan(entry, segmentPlan.splice, extraPaths);
+      markers.videos.push(...segments);
+      if (segments.length > 1) {
+        console.log(`[${actLabel}] act ${act.id} laid out as ${segments.length} segments: `
+          + segments.map((sg) => `#${sg.seq}${sg.label ? ` ${sg.label}` : ''} `
+            + `(trim ${sg.trimSec}s${sg.durSec != null ? `, ${sg.durSec}s` : ''}, ${sg.scenes.length} scene(s))`).join(' + '));
+      }
+      // Every side-tab take stays listed here too (the mail inbox has no scenes and is never
+      // spliced; the Modex clip is listed as well as spliced, so a hand edit can still find it).
+      for (const ep of extraPaths) {
+        markers.extraVideos.push({ act: act.id, label: ep.label, role: act.role, videoPath: ep.videoPath });
       }
       writeMarkers(); // persist after every act so a crash cannot lose earlier takes
       console.log(`[${actLabel}] video: ${entry.videoPath} (trim ${entry.trimSec}s, ${entry.scenes.length} scenes)`);

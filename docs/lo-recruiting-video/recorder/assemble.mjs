@@ -28,10 +28,21 @@
  * Scene offsets are per-video (relative to that video's trim point), so every offset is shifted
  * by the cumulative duration of the preceding acts before it is used for audio, subs or verify.
  *
+ * SPLIT ACTS: an entry may also carry `seq` (order inside the act) and `durSec` (stop before the
+ * source ends). That is how one act contributes several segments — e.g. app footage, an external
+ * clip filmed on another site, then the app again — without disturbing any other act.
+ *
+ * BILINGUAL: --bilingual adds a Vietnamese line under each English one, read from
+ * ../narration.vi.json ({ sceneId: [one string per ENGLISH cue] }). Cue timing is derived from the
+ * English text only and is never re-derived per language, so a count mismatch is a hard failure.
+ * Author the translation against --dump-cues, which prints the exact cues the segmenter produced.
+ *
  * Usage
  *   node assemble.mjs
  *   node assemble.mjs --markers=/abs/path/markers.json
  *   node assemble.mjs --keep-work        # keep caption PNGs + filtergraph scripts for debugging
+ *   node assemble.mjs --dump-cues        # write final/work/cues.json and stop (no encoding)
+ *   node assemble.mjs --bilingual        # EN + VI burned in → …-bilingual.mp4 (EN cut untouched)
  */
 
 import { execFileSync, spawnSync } from 'node:child_process';
@@ -53,6 +64,15 @@ const FONT_SIZE = 40;
 const FONT_STACK = '"Helvetica Neue", Helvetica, Arial, sans-serif';
 const BOTTOM_MARGIN = 64;              // px from frame bottom to caption box bottom
 
+// Bilingual (--bilingual): the English line keeps its size and position because it is what the
+// voice is saying; the Vietnamese translation sits under it, smaller and tinted, so a reader can
+// tell at a glance which line is the original. Its wrap width is scaled by the font ratio so both
+// blocks come out about the same physical width. NOTE: the VI wrap width does NOT affect timing —
+// cues are segmented from the ENGLISH text only and the translation is authored one string per cue.
+const FONT_SIZE_VI = 32;
+const CUE_WRAP_CHARS_VI = Math.round(CUE_WRAP_CHARS * (FONT_SIZE / FONT_SIZE_VI));   // 52
+const VI_COLOR = '#ffdf8a';
+
 const AUDIO_RATE = 48_000;
 const CRF = 19;
 const PRESET = 'medium';
@@ -64,13 +84,19 @@ const ROOT = path.resolve(HERE, '..');                        // …/docs/lo-rec
 const FINAL_DIR = path.join(ROOT, 'final');
 const WORK_DIR = path.join(FINAL_DIR, 'work');
 const CUE_DIR = path.join(WORK_DIR, 'cues');
-const VERIFY_DIR = path.join(FINAL_DIR, 'verify');
-const OUT_MP4 = path.join(FINAL_DIR, 'lo-recruiting-role-walkthrough.mp4');
-const OUT_SRT = path.join(FINAL_DIR, 'subtitles.srt');
-
 const argv = process.argv.slice(2);
 const KEEP_WORK = argv.includes('--keep-work');
+const BILINGUAL = argv.includes('--bilingual');
 const markersArg = argv.find((a) => a.startsWith('--markers='));
+
+// The bilingual cut is a SEPARATE deliverable — the verified English-only file is never overwritten.
+const OUT_MP4 = path.join(FINAL_DIR, BILINGUAL
+  ? 'lo-recruiting-role-walkthrough-bilingual.mp4'
+  : 'lo-recruiting-role-walkthrough.mp4');
+const OUT_SRT = path.join(FINAL_DIR, BILINGUAL ? 'subtitles.bilingual.srt' : 'subtitles.srt');
+const OUT_SRT_VI = path.join(FINAL_DIR, 'subtitles.vi.srt');
+const VI_JSON = path.join(ROOT, 'narration.vi.json');
+const VERIFY_DIR = path.join(FINAL_DIR, BILINGUAL ? 'verify-bilingual' : 'verify');
 
 // ── Small helpers ─────────────────────────────────────────────────────────────────────────
 function fail(msg) {
@@ -216,7 +242,16 @@ function loadInputs() {
   console.log(`   durations  ${durationsPath}`);
   console.log(`   narration  ${narrationPath}`);
 
-  return { markers, durations, narration };
+  let viByScene = null;
+  if (BILINGUAL) {
+    if (!existsSync(VI_JSON)) {
+      fail(`--bilingual needs ${path.relative(ROOT, VI_JSON)} (sceneId -> array of Vietnamese cue strings).\n`
+        + '   Author it against `node assemble.mjs --dump-cues`, which prints the exact English cues.');
+    }
+    viByScene = readJson(VI_JSON, 'narration.vi.json');
+    console.log(`   vi         ${VI_JSON} (${Object.keys(viByScene).length} scenes)`);
+  }
+  return { markers, durations, narration, viByScene };
 }
 
 /**
@@ -228,7 +263,10 @@ function loadInputs() {
  */
 function buildTimeline({ markers, durations, narration }) {
   const textById = new Map(narration.map((n) => [n.id, n.text]));
-  const videos = [...markers.videos].sort((a, b) => (a.act ?? 0) - (b.act ?? 0));
+  // (act, seq): an act may contribute SEVERAL segments — act 1 splits around the Modex clip
+  // filmed on another site. seq orders them inside the act; absent seq means a single segment.
+  const videos = [...markers.videos]
+    .sort((a, b) => ((a.act ?? 0) - (b.act ?? 0)) || ((a.seq ?? 0) - (b.seq ?? 0)));
 
   const problems = [];
   const scenes = [];
@@ -255,7 +293,15 @@ function buildTimeline({ markers, durations, narration }) {
     const trim = Math.max(0, Number(rawTrim) || 0);
     if (trim >= srcDur) fail(`act ${v.act}: trim ${trim}s >= video length ${srcDur.toFixed(2)}s (${videoPath})`);
 
-    const effDur = srcDur - trim;
+    // durSec caps a segment that must END before its source does — how a split act stops at the
+    // moment focus left the app instead of running to the end of its own recording.
+    const cap = Number(v.durSec);
+    const available = srcDur - trim;
+    if (Number.isFinite(cap) && cap > available + 0.05) {
+      problems.push(`act ${v.act}${v.seq != null ? `#${v.seq}` : ''}: durSec ${cap}s exceeds the `
+        + `${available.toFixed(2)}s available after trim — using what exists`);
+    }
+    const effDur = Number.isFinite(cap) && cap > 0 ? Math.min(cap, available) : available;
     const base = cursor;
     cursor += effDur;
 
@@ -268,6 +314,10 @@ function buildTimeline({ markers, durations, narration }) {
       }
       if (!text) {
         problems.push(`no narration text for scene ${s.id} — it gets audio but no subtitle`);
+      }
+      if (Number(s.offset) > effDur + 0.05) {
+        problems.push(`scene ${s.id} starts ${Number(s.offset).toFixed(1)}s into a segment that is only `
+          + `${effDur.toFixed(1)}s long — its narration would play over the NEXT segment`);
       }
       scenes.push({
         id: s.id,
@@ -424,13 +474,36 @@ function distributeCues(texts, start, dur) {
   });
 }
 
-function buildCues(scenes, total) {
+function buildCues(scenes, total, viByScene = null) {
   const cues = [];
+  const missingVi = [];
   for (const scene of scenes) {
     if (!scene.text) continue;
-    for (const cue of distributeCues(segmentCues(scene.text), scene.adjOffset, scene.dur)) {
-      cues.push({ ...cue, end: Math.min(cue.end, total), sceneId: scene.id });
+    const texts = segmentCues(scene.text);
+    // A translation that is off by one cue would silently caption the WRONG sentence for the rest
+    // of the scene, so a count mismatch is a hard failure rather than a warning.
+    let vi = null;
+    if (viByScene) {
+      vi = viByScene[scene.id];
+      if (!vi) missingVi.push(`${scene.id}: no translation`);
+      else if (vi.length !== texts.length) {
+        missingVi.push(`${scene.id}: ${vi.length} Vietnamese strings for ${texts.length} English cues`);
+      }
     }
+    distributeCues(texts, scene.adjOffset, scene.dur).forEach((cue, i) => {
+      const viText = Array.isArray(vi) && vi.length === texts.length ? vi[i] : null;
+      cues.push({
+        ...cue,
+        end: Math.min(cue.end, total),
+        sceneId: scene.id,
+        vi: viText,
+        viLines: viText ? wrapLines(viText, CUE_WRAP_CHARS_VI) : null,
+      });
+    });
+  }
+  if (missingVi.length) {
+    fail(`the Vietnamese track does not line up with the English cues:\n   - ${missingVi.join('\n   - ')}\n`
+      + '   Re-run `node assemble.mjs --dump-cues` and match the arrays one string per cue.');
   }
   return cues.filter((c) => c.end > c.start + 0.05);
 }
@@ -444,12 +517,24 @@ function srtTime(sec) {
   return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')},${String(ms % 1000).padStart(3, '0')}`;
 }
 
-function writeSrt(cues) {
-  const body = cues
-    .map((c, i) => `${i + 1}\n${srtTime(c.start)} --> ${srtTime(c.end)}\n${c.lines.join('\n')}\n`)
+function srtBody(cues, pick) {
+  return cues
+    .map((c, i) => `${i + 1}\n${srtTime(c.start)} --> ${srtTime(c.end)}\n${pick(c).join('\n')}\n`)
     .join('\n');
-  writeFileSync(OUT_SRT, `${body}\n`, 'utf8');
-  console.log(`   subtitles.srt  ${cues.length} cues`);
+}
+
+function writeSrt(cues) {
+  // Bilingual: both languages in one cue block, the same order they appear on screen.
+  writeFileSync(OUT_SRT, `${srtBody(cues, (c) => (
+    BILINGUAL && c.viLines ? [...c.lines, ...c.viLines] : c.lines
+  ))}\n`, 'utf8');
+  console.log(`   ${path.basename(OUT_SRT)}  ${cues.length} cues`);
+
+  if (BILINGUAL) {
+    const translated = cues.filter((c) => c.viLines);
+    writeFileSync(OUT_SRT_VI, `${srtBody(translated, (c) => c.viLines)}\n`, 'utf8');
+    console.log(`   ${path.basename(OUT_SRT_VI)}  ${translated.length} cues (Vietnamese only)`);
+  }
 }
 
 // ── Caption PNGs (no libass → render each cue in Chromium, playbook §6.2) ─────────────────
@@ -477,11 +562,6 @@ async function renderCuePngs(cues) {
     margin: 8px;
     padding: 6px 14px;          /* room for the outline + shadow so the element shot won't clip */
     font-family: ${FONT_STACK};
-    font-size: ${FONT_SIZE}px;
-    font-weight: 600;
-    line-height: 1.28;
-    letter-spacing: 0.2px;
-    color: #fff;
     text-align: center;
     white-space: pre;           /* we pre-wrapped; keep those exact breaks */
     -webkit-font-smoothing: antialiased;
@@ -491,14 +571,40 @@ async function renderCuePngs(cues) {
       -2px  2px 0 #000, 0  2px 0 #000, 2px  2px 0 #000,
       0 3px 10px rgba(0, 0, 0, 0.85);
   }
+  #en {
+    display: block;
+    font-size: ${FONT_SIZE}px;
+    font-weight: 600;
+    line-height: 1.28;
+    letter-spacing: 0.2px;
+    color: #fff;
+  }
+  /* Hidden unless this run is bilingual, so the English-only layout is byte-for-byte unchanged. */
+  #vi {
+    display: none;
+    font-size: ${FONT_SIZE_VI}px;
+    font-weight: 500;
+    line-height: 1.26;
+    letter-spacing: 0.1px;
+    color: ${VI_COLOR};
+    margin-top: 6px;
+  }
+  #vi.on { display: block; }
 </style>
-<span id="cue"></span>`, { waitUntil: 'load' });
+<span id="cue"><span id="en"></span><span id="vi"></span></span>`, { waitUntil: 'load' });
 
     const locator = page.locator('#cue');
     const rendered = [];
     for (const [i, cue] of cues.entries()) {
       const file = path.join(CUE_DIR, `cue${String(i).padStart(4, '0')}.png`);
-      await locator.evaluate((el, txt) => { el.textContent = txt; }, cue.lines.join('\n'));
+      await locator.evaluate((el, payload) => {
+        const en = el.querySelector('#en');
+        const vi = el.querySelector('#vi');
+        en.textContent = payload.en;
+        // textContent, never innerHTML: cue text is data and must never be parsed as markup.
+        vi.textContent = payload.vi ?? '';
+        vi.classList.toggle('on', Boolean(payload.vi));
+      }, { en: cue.lines.join('\n'), vi: cue.viLines ? cue.viLines.join('\n') : null });
       const box = await locator.boundingBox();
       if (!box) fail(`could not measure caption box for cue ${i}`);
       await locator.screenshot({ path: file, omitBackground: true });
@@ -614,8 +720,12 @@ function buildVideo({ videos, cues, master, chaptersFile, filterFlag }) {
   videos.forEach((v, i) => {
     inputs.push('-i', v.videoPath);
     chains.push(
-      `[${i}:v]trim=start=${v.trim.toFixed(3)},setpts=PTS-STARTPTS,`
-      + `scale=${WIDTH}:${HEIGHT}:flags=lanczos,setsar=1,fps=${FPS},format=yuv420p[v${i}]`,
+      // force_original_aspect_ratio=increase + crop FILLS the frame instead of stretching it: the
+      // spliced screen-capture clip is 1920x968, and a plain scale would squash the numbers.
+      `[${i}:v]trim=start=${v.trim.toFixed(3)}`
+      + `${v.effDur ? `:duration=${v.effDur.toFixed(3)}` : ''},setpts=PTS-STARTPTS,`
+      + `scale=${WIDTH}:${HEIGHT}:force_original_aspect_ratio=increase:flags=lanczos,`
+      + `crop=${WIDTH}:${HEIGHT},setsar=1,fps=${FPS},format=yuv420p[v${i}]`,
     );
   });
 
@@ -751,10 +861,26 @@ if (problems.length) {
 if (!scenes.length) fail('no scenes could be placed — check that markers.json ids match durations.json');
 
 console.log('\nBuilding:');
-const cues = buildCues(scenes, total);
+const cues = buildCues(scenes, total, inputs.viByScene);
 const perScene = (cues.length / scenes.length).toFixed(1);
 console.log(`   cues           ${cues.length} (${perScene} per scene, ≤${CUE_MAX_LINES} lines × ${CUE_WRAP_CHARS} chars)`);
 writeSrt(cues);
+
+// --dump-cues: write the exact cue texts (grouped by scene) and stop before encoding. This is how
+// the Vietnamese track is authored: the VI strings must align ONE-TO-ONE with these cues, because
+// cue timing is derived from the ENGLISH segmentation and never re-derived per language.
+if (argv.includes('--dump-cues')) {
+  const grouped = new Map();
+  for (const c of cues) {
+    if (!grouped.has(c.sceneId)) grouped.set(c.sceneId, []);
+    grouped.get(c.sceneId).push(c.text);
+  }
+  const out = [...grouped.entries()].map(([id, texts]) => ({ id, count: texts.length, texts }));
+  const file = path.join(WORK_DIR, 'cues.json');
+  writeFileSync(file, `${JSON.stringify(out, null, 2)}\n`, 'utf8');
+  console.log(`   cues.json      ${cues.length} cues across ${out.length} scenes -> ${path.relative(ROOT, file)}`);
+  process.exit(0);
+}
 
 const master = buildMasterAudio(scenes, total, filterFlag);
 const chaptersFile = writeChapters(videos, total);
