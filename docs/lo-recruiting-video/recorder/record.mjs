@@ -231,6 +231,19 @@ export const ACCOUNTS = {
  */
 const DEFAULT_CANDIDATE_NMLS = '107621';
 
+/**
+ * The left sidebar (`div#sidebar`) is `position: fixed; z-index: 10` and OVERLAYS the page — the
+ * content starts at x=0 underneath it. Expanded it is 250px wide and eats the left ~250px of every
+ * screen; collapsed it is 60px, which is what the layout actually expects.
+ *
+ * VERIFIED 2026-08-04 (found in the assembled frames, not the log): left expanded, the s0_2 title
+ * renders as "RUITED LOAN OFFICERS" and its first stat as "al - 4298", and s0_5's title is clipped to
+ * "LOAN OFFICER OBTAINED FROM I…". Also verified: `#__sidebar_collapse_btn` is a TOGGLE, and EVERY
+ * page load resets the sidebar to expanded — so it has to be re-collapsed after each navigation,
+ * which is why h.goto() does it rather than any individual scene.
+ */
+const NAV_COLLAPSED_MAX_PX = 120;
+
 const VIEWPORT = { width: 1920, height: 1080 };
 const SCENE_GAP_SEC = 0.6;          // playbook §5
 const DEFAULT_NARRATION_SEC = 6;    // used when durations.json has no entry for a scene
@@ -794,7 +807,7 @@ export function makeHelpers(page, { actLabel = 'act?', durations = {}, ctxStart 
    * fresh context, but not on a warm second goto). So navigate, and if we got bounced, navigate
    * once more now that the app shell is up.
    */
-  async function goto(url, { rows = true, retryBounce = true } = {}) {
+  async function goto(url, { rows = true, retryBounce = true, collapseNav: doCollapse = true } = {}) {
     const full = url.startsWith('http') ? url : `${BASE}${url}`;
     await page.goto(full, { waitUntil: 'domcontentloaded', timeout: 60_000 });
     if (rows) await waitForRows(); else await waitForAppIdle();
@@ -806,7 +819,45 @@ export function makeHelpers(page, { actLabel = 'act?', durations = {}, ctxStart 
       await page.goto(full, { waitUntil: 'domcontentloaded', timeout: 60_000 });
       if (rows) await waitForRows(); else await waitForAppIdle();
     }
+    // Every page load re-expands the overlay sidebar, so collapse it here — AFTER the last
+    // navigation above. Opt out with { collapseNav: false } only where the MENU is the subject.
+    if (doCollapse) await collapseNav();
     return page.url();
+  }
+
+  /** Current width of div#sidebar in px, or -1 when this screen has no sidebar. */
+  async function navWidth() {
+    return page.evaluate(() => {
+      const s = document.querySelector('#sidebar');
+      return s ? Math.round(s.getBoundingClientRect().width) : -1;
+    }).catch(() => -1);
+  }
+
+  /**
+   * Collapse the overlay sidebar so it stops covering the left ~190px of the screen.
+   *
+   * IDEMPOTENT BY MEASUREMENT, which matters because `#__sidebar_collapse_btn` is a TOGGLE — clicking
+   * it blindly on an already-collapsed sidebar would RE-EXPAND it and silently reintroduce the very
+   * defect this exists to prevent. So the width is the oracle, before and after.
+   */
+  async function collapseNav({ timeout = 8000 } = {}) {
+    const before = await navWidth();
+    if (before < 0) return false;                       // no sidebar on this screen
+    if (before <= NAV_COLLAPSED_MAX_PX) return true;    // already collapsed — do NOT click
+    const btn = page.locator('#__sidebar_collapse_btn').first();
+    if (!(await btn.isVisible().catch(() => false))) {
+      console.warn(`[${actLabel}] sidebar is ${before}px wide but #__sidebar_collapse_btn is not `
+        + 'clickable — this screen will be filmed with the nav covering its left edge');
+      return false;
+    }
+    await btn.click({ timeout }).catch((err) => console.warn(`[${actLabel}] sidebar collapse click failed: ${err.message}`));
+    await sleep(700);
+    const after = await navWidth();
+    if (after > NAV_COLLAPSED_MAX_PX) {
+      console.warn(`[${actLabel}] sidebar did not collapse (still ${after}px) — the page title will be clipped`);
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -1096,6 +1147,8 @@ export function makeHelpers(page, { actLabel = 'act?', durations = {}, ctxStart 
     scrollableNear,
     goto,
     clickTab,
+    collapseNav,
+    navWidth,
     waitForAppIdle,
     waitForRows,
     withGridUpdate,
@@ -1740,9 +1793,112 @@ async function readIloState(page, fullName) {
 async function ensureCandidateVisible(page, h, fullName) {
   if (await h.row(fullName).count()) return true;
   await h.optional(`search the board for ${fullName}`, () => h.filterGrid(fullName.toLowerCase()));
-  const found = (await h.row(fullName).count()) > 0;
-  if (found) console.log(`[find]   ${fullName} was not on page one — found via search`);
-  return found;
+  if (await h.row(fullName).count()) {
+    console.log(`[find]   ${fullName} was not on page one — found via search`);
+    return true;
+  }
+  // THE SEARCH FOUND NOTHING, AND ITS CHIP IS STILL APPLIED — which now hides EVERY row from the
+  // scenes that follow. VERIFIED 2026-08-04 (shoot 5, act 5): the candidate is not on Maria's board
+  // at all, so this search committed a chip that matched nothing, the board went empty, and BOTH
+  // s5_4 and s5_5 then failed with "no visible candidate" on a row that could never resolve. A
+  // filter that matched nothing must never be left behind.
+  await h.optional('reset the filter after a search that found nothing', async () => {
+    await h.click(['#gwt-debug-reset'], { timeout: 6000 });
+    await h.waitForRows();
+  });
+  return false;
+}
+
+/**
+ * The grid's REAL data rows.
+ *
+ * VERIFIED 2026-08-04: an empty (or filtered-to-nothing) grid still renders a placeholder <tr>
+ * reading "No results. help Help" INSIDE table.table-hover, so `filter({hasText:/\S/})` counts it as
+ * a row and `.first()` can resolve to it — which is how act 5's substitute lookup picked a row made
+ * of the words "No results". Exclude it explicitly.
+ */
+function dataRows(page) {
+  return page.locator('table.table-hover tbody tr')
+    .filter({ hasText: /\S/ })
+    .filter({ hasNotText: /^\s*No results/i });
+}
+
+/**
+ * Choose a row to demonstrate row-level controls on when the candidate is not on THIS board.
+ *
+ * Shared by act 1 (he has been invited off the Recruited board) and act 5 (he was never on Maria's
+ * board — see the note there). The beats these rows serve are about what the controls DO, not about
+ * whose row it is, so a substitute is legitimate; picking the WRONG substitute is not.
+ *
+ * Chooses DELIBERATELY, never "first row": this footage is CEO-facing and every row on staging is a
+ * real loan officer imported via Modex. Order: an explicitly named --demo-record, then something
+ * that looks like a test fixture, then a loud complaint plus the first row.
+ */
+async function pickDemoRow(page, h, { actLabel, fullName, demoRecord, absentBecause, beats }) {
+  console.warn(`[${actLabel}]   ${fullName} is NOT on this board — ${absentBecause}`);
+  let substitute = null;
+  let how = '';
+  if (demoRecord) {
+    if (await h.row(demoRecord).count()) {
+      substitute = h.row(demoRecord);
+      how = `--demo-record "${demoRecord}"`;
+    } else {
+      console.error(`[${actLabel}]   --demo-record "${demoRecord}" is NOT on this board.`);
+    }
+  }
+  if (!substitute) {
+    const fixture = dataRows(page).filter({ hasText: /\b(test|demo|sample|dummy|qa)\b|mailinator/i }).first();
+    if (await fixture.count()) { substitute = fixture; how = 'auto-detected test fixture'; }
+  }
+  if (!substitute) {
+    const any = dataRows(page).first();
+    if (!(await any.count())) {
+      console.error(`[${actLabel}]   the board has NO data rows at all, so ${beats} cannot be filmed.`);
+      return null;
+    }
+    substitute = any;
+    how = 'FALLBACK: first row — NOT a fixture';
+    console.error(`[${actLabel}]   NO SAFE FIXTURE FOUND. ${beats} will film a REAL loan officer's`);
+    console.error(`[${actLabel}]   record — name, company, phone, NMLS — and this footage is CEO-facing.`);
+    console.error(`[${actLabel}]   Pass --demo-record <name> pointing at a record you are happy to show.`);
+  }
+  const who = ((await substitute.innerText().catch(() => '')) || '').replace(/\s+/g, ' ').slice(0, 44);
+  console.warn(`[${actLabel}]   substitute record (${how}): ${who}`);
+  return { row: substitute, how, who };
+}
+
+/**
+ * Set one of the three dropdowns in an ILO row's "Status / Startup fee / Agreement" cell.
+ *
+ * VERIFIED 2026-08-04 by dumping the cell's markup: it holds three `div[role="group"]`, each being a
+ * `button.dropdown-toggle` plus a SIBLING `div.dropdown-menu` of `a.dropdown-item[data-name]`:
+ *   status    : interested="New" invited_to_join hiatus no_response interviewed_and_rejected
+ *               denied_by_LO interviewed_and_accepted="Onboarding" joined="100% onboarded"
+ *   fee       : Paid | Unpaid | Waived
+ *   agreement : No="Not signed" | Yes="Signed"
+ * Three traps, all of which this avoids by addressing the item by data-name INSIDE its own group:
+ *  1. every item label carries a LEADING SPACE (" Signed"), so /^Signed$/ matches nothing;
+ *  2. the item matching the CURRENT value is rendered `text-muted` with `pointer-events: none`, so
+ *     clicking it is a silent no-op — hence the already-set check below;
+ *  3. a page-level text match would hit the SAME option in all ten other rows on the board.
+ */
+async function setIloCellValue(page, h, row, { dataName, what }) {
+  const group = row.locator('div[role="group"]')
+    .filter({ has: page.locator(`a.dropdown-item[data-name="${dataName}"]`) }).first();
+  if (!(await group.count())) throw new Error(`no dropdown group offers data-name="${dataName}" in this row`);
+  const item = group.locator(`a.dropdown-item[data-name="${dataName}"]`).first();
+  if (await item.evaluate((el) => getComputedStyle(el).pointerEvents === 'none').catch(() => false)) {
+    console.log(`[cell]   ${what} is already set to this value — not clicking a disabled item`);
+    return false;
+  }
+  await h.click(() => group.locator('button.dropdown-toggle').first(), { timeout: 8000 });
+  await h.hold(1);
+  await item.waitFor({ state: 'visible', timeout: 6000 });
+  await h.click(() => item, { timeout: 6000 });
+  await h.hold(1);
+  await h.optional(`confirm ${what}`, () => h.click(
+    () => page.getByRole('button', { name: btnName('Submit', 'Save', 'Yes', 'OK') }).first(), { timeout: 4500 }));
+  return true;
 }
 
 /** Read ILO state with retries; hard-fail rather than let a slow board look like an un-done transition. */
@@ -1785,7 +1941,11 @@ async function pickCellOption(page, h, labelRe, what) {
 // ---------------------------------------------------------------------------
 
 export async function act0(page, h, cfg = {}) {
-  await h.scene('s0_1', { prepare: () => h.goto(URLS.canary) }, async () => {
+  // collapseNav:false — THE MENU IS THIS SCENE'S SUBJECT. Every other scene collapses the overlay
+  // sidebar (see h.collapseNav); here the beat is expanding LO RECRUITING and reading its five
+  // entries, so it must stay at full width. s0_2 navigates afterwards, which resets and then
+  // collapses it, so the expansion cannot leak into the rest of the film.
+  await h.scene('s0_1', { prepare: () => h.goto(URLS.canary, { collapseNav: false }) }, async () => {
     // VERIFIED 2026-08-03: the sidebar entry is <a id="gwt-debug-lo-recruiting"> — a stable GWT
     // debug id, immune to text drift. Text match kept as a fallback.
     await h.click([
@@ -1848,6 +2008,9 @@ export async function act0(page, h, cfg = {}) {
     await h.hold(2.5);
     await page.goBack({ waitUntil: 'domcontentloaded' }).catch(() => {});
     await h.waitForRows();
+    // goBack is a real page load, which re-expands the overlay sidebar; h.goto is not involved here,
+    // so collapse it by hand or the rest of this scene is filmed with the title clipped.
+    await h.collapseNav();
     // VERIFIED 2026-08-03: the icon strip above the stats panel is 4 icon-only <button>s with
     // EMPTY innerText (no title, no aria-label, no gwt-debug id) — refresh plus the 3 view modes
     // (bar chart / text / hide). The refresh one does carry a generated id derived from its own
@@ -2145,40 +2308,14 @@ export async function act1(page, h, cfg = {}) {
   await h.goto(URLS.rloMine);
   let rowOfCandidate = () => h.row(fullName);
   if (!(await h.row(fullName).count())) {
-    console.warn(`[act1]   ${fullName} is NOT on the Recruited board — he has already been invited into`);
-    console.warn('[act1]   the ILO pipeline, which removes him from here, so the row-level beats need');
-    console.warn('[act1]   another record to demonstrate on.');
-    // Choose DELIBERATELY, not "first row". This footage goes to the CEO and every row on this
-    // staging board is a real loan officer imported via Modex (verified 2026-08-04: searching the
-    // board for "test" returns No results — there is no fixture here). Prefer an explicitly named
-    // safe record, then anything that looks like a test fixture, and be loud when neither exists.
-    let substitute = null;
-    let how = '';
-    if (cfg.demoRecord) {
-      if (await h.row(cfg.demoRecord).count()) {
-        substitute = h.row(cfg.demoRecord);
-        how = `--demo-record "${cfg.demoRecord}"`;
-      } else {
-        console.error(`[act1]   --demo-record "${cfg.demoRecord}" is NOT on this board.`);
-      }
-    }
-    if (!substitute) {
-      const fixture = page.locator('table.table-hover tbody tr')
-        .filter({ hasText: /\b(test|demo|sample|dummy|qa)\b|mailinator/i }).first();
-      if (await fixture.count()) { substitute = fixture; how = 'auto-detected test fixture'; }
-    }
-    if (!substitute) {
-      substitute = page.locator('table.table-hover tbody tr').filter({ hasText: /\S/ }).first();
-      how = 'FALLBACK: first row — NOT a fixture';
-      console.error('[act1]   NO SAFE FIXTURE FOUND on the Recruited board. The row beats (s1_5-s1_13)');
-      console.error('[act1]   will film a REAL loan officer\'s record — name, company, phone, NMLS — and');
-      console.error('[act1]   this footage is CEO-facing. Either pass --demo-record <name> pointing at a');
-      console.error('[act1]   record you are happy to show, or create a clearly-fake candidate on the');
-      console.error('[act1]   Recruited board first (act 0 does exactly that) and re-run act 1.');
-    }
-    const who = ((await substitute.innerText().catch(() => '')) || '').replace(/\s+/g, ' ').slice(0, 44);
-    console.warn(`[act1]   substitute record (${how}): ${who}`);
-    rowOfCandidate = () => substitute;
+    const sub = await pickDemoRow(page, h, {
+      actLabel: 'act1',
+      fullName,
+      demoRecord: cfg.demoRecord,
+      absentBecause: 'he has already been invited into the ILO pipeline, which removes him from here',
+      beats: 'the row-level beats (s1_5-s1_13)',
+    });
+    if (sub) rowOfCandidate = () => sub.row;
   }
 
   // VERIFIED 2026-08-03: Mine is the default tab; clickTab is a no-op verification here.
@@ -2603,14 +2740,18 @@ export async function act2(page, h, cfg = {}) {
     for (const t of [/^\s*Add\s*$/i, /^\s*Delete\s*$/i, /Assign recruiter/i]) {
       console.log(`[act2]   toolbar "${t}" present: ${(await page.getByText(t).count()) > 0}`);
     }
+    // The BULK Action is the toolbar <a id="gwt-debug-action">; the per-row ones are <button>s and
+    // there is one per row, so lead with the id (see s6_1). This beat passed in shoot 5 on the text
+    // fallback, so the fallbacks stay — the id just removes the coin-toss.
     await h.optional('open bulk Action', () =>
       h.click([
+        () => page.locator('#gwt-debug-action'),
         () => page.getByRole('button', { name: /^\s*Action\s*$/i }).first(),
         () => page.getByText(/^\s*Action\s*$/i).first(),
       ], { timeout: 8000 }));
     await h.hold(2);
     await h.optional('only Update data using Modex', () =>
-      h.moveTo(() => page.getByText(/Update data using Modex/i).first(), { timeout: 5000 }));
+      h.moveTo(() => h.dropdownItem(null, 'Update data using Modex').first(), { timeout: 5000 }));
     await h.hold(1.5);
     await h.dismiss();
     await h.optional('Pending approvals tab', () =>
@@ -2683,13 +2824,43 @@ export async function act2(page, h, cfg = {}) {
       return;
     }
 
-    const targetRow = page.locator('table.table-hover tbody tr').filter({ hasText: /\S/ }).first();
+    const targetRow = dataRows(page).first();
     const pendingTarget = ((await targetRow.innerText().catch(() => '')) || '').replace(/\s+/g, ' ').slice(0, 40);
     // A row we cannot name is a row we cannot verify afterwards.
     if (!pendingTarget) {
       throw new Error('CANNOT DETERMINE: the queue reports rows but the first row yielded no text, '
         + 'so the outcome of an Approve could not be verified. Refusing to mutate blind.');
     }
+
+    // CAN THIS ROLE APPROVE AT ALL? DETECT — NEVER ASSUME.
+    // PROBED 2026-08-04 on this very queue, reading the pre-rendered (closed) row menus:
+    //   admin  -> the row carries a checkbox AND its Action menu holds
+    //             <a class="dropdown-item" data-name="Approve">Approve</a>
+    //   nocha  -> NEITHER exists. The Inside Recruiter has no approve permission whatsoever; her row
+    //             menu offers only Assign recruiter / Audit log / Conversation history / follow-up
+    //             flag / Register for a webinar / the two Invite items.
+    // Shoot 5 assumed the item was there, resolved the row, then died on `getByText(/^Approve$/)` —
+    // which is why this scene failed while everything around it passed. The absence is the same shape
+    // as s2_3's finding (no Add / Delete / Assign recruiter for this role), so it is worth stating
+    // rather than hiding, and the narration's sentence about what approving DOES still plays fine
+    // over the queue itself.
+    const approveItem = h.dropdownItem(targetRow, 'Approve').first();
+    if (!(await approveItem.count())) {
+      console.warn('[act2]   s2_5: BRANCH = CANNOT PERFORM — this role has NO Approve control on the');
+      console.warn(`[act2]   s2_5: Pending approvals queue (${queue.rows} row(s) waiting). Verified by`);
+      console.warn('[act2]   s2_5: reading the row\'s own menu: no data-name="Approve" item, and the row');
+      console.warn('[act2]   s2_5: has no checkbox either. THIS TAKE CONTAINS NO MUTATION. The queue and');
+      console.warn('[act2]   s2_5: its Check Modex column are shown; nothing is approved.');
+      // Show the menu this role DOES get — the absence of Approve is itself the evidence.
+      await h.optional('open the row Action menu to show what this role can do', async () => {
+        await h.click([() => targetRow.getByRole('button', { name: /^\s*Action/i }).first()], { timeout: 6000 });
+        await h.hold(2.5);
+        await h.dismiss();
+      });
+      await h.hold(2);
+      return;
+    }
+
     console.log(`[act2]   s2_5: BRANCH = PERFORM — approving the top self-apply record: "${pendingTarget}"`);
     const fingerprint = pendingTarget.split(' ').slice(0, 3).join(' ');
 
@@ -2698,7 +2869,9 @@ export async function act2(page, h, cfg = {}) {
       () => page.getByRole('button', { name: /^\s*Action/i }).first(),
     ], { timeout: 6000 });
     await h.hold(1);
-    await h.click(() => page.getByText(/^\s*Approve\s*$/i).first(), { timeout: 5000 });
+    // By data-name, scoped to the row: the label carries a leading space and every other row's menu
+    // is pre-rendered in the DOM too, so a page-level text match could approve the WRONG record.
+    await h.clickMenuItem(targetRow, 'Approve', { timeout: 6000 });
     await h.hold(1.5);
     await h.optional('confirm the approval', () => h.click(
       () => page.getByRole('button', { name: btnName('Yes', 'OK', 'Confirm', 'Approve') }).first(), { timeout: 5000 }));
@@ -2724,7 +2897,9 @@ export async function act2(page, h, cfg = {}) {
 // ---------------------------------------------------------------------------
 
 export async function act3(page, h) {
-  await h.scene('s3_1', { prepare: () => h.goto(URLS.canary) }, async () => {
+  // collapseNav:false — like s0_1, the MENU is the subject: the evidence is that LO RECRUITING is
+  // absent from it for this role, which cannot be read from a 60px rail of icons.
+  await h.scene('s3_1', { prepare: () => h.goto(URLS.canary, { collapseNav: false }) }, async () => {
     // The evidence is an ABSENCE: no LO RECRUITING entry in this role's menu.
     const present = await page.getByText(/LO RECRUITING/i).count();
     console.log(`[act3]   "LO RECRUITING" menu entries visible: ${present}`);
@@ -2746,9 +2921,12 @@ export async function act3(page, h) {
     // Typing the route by hand: silent redirect, no 403, no message.
     const before = URLS.iloMine;
     await page.goto(before, { waitUntil: 'domcontentloaded' }).catch(() => {});
-    await h.hold(3);
+    // Wait for the GWT shell before collapsing: #__sidebar_collapse_btn does not exist yet at
+    // domcontentloaded, and collapseNav() correctly declines to click what it cannot measure.
+    await h.hold(2);
+    await h.collapseNav();
     console.log(`[act3]   asked for ${before} -> landed on ${page.url()}`);
-    await h.hold(1.5);
+    await h.hold(2.5);
   });
 
   await h.scene('s3_3', async () => {
@@ -2904,7 +3082,7 @@ export async function act4(page, h, cfg = {}) {
     // s4_2 — the status cannot be walked back.
     const fullName = candidate.name || 'Marcus Reyes';
     const before = await readIloStateOrFail(page, h, fullName, 'act4]   s4_4');
-    console.log(`[act4]   s4_4: state = status "${before.status}" / fee "${before.fee}"`);
+    console.log(`[act4]   s4_4: state = status "${before.status}" / fee "${before.fee}" / agreement "${before.agreement}"`);
 
     const showPrereqs = async () => {
       await h.optional('show the unfinished prerequisites', async () => {
@@ -2942,22 +3120,56 @@ export async function act4(page, h, cfg = {}) {
     }
 
     console.log(`[act4]   s4_4: BRANCH = PERFORM — status is "${before.status}"; crossing the gate on camera.`);
-    await h.click([
-      () => rowOfCandidate().getByRole('button', { name: new RegExp(`^\\s*${before.status.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*$`, 'i') }).first(),
-      () => rowOfCandidate().getByText(/Onboarding|Invited to join|New/i).first(),
-    ], { timeout: 10_000 });
-    await h.hold(1.5);
+
+    // THE AGREEMENT IS PART OF THE BEAT — NOT A PRECONDITION TO ARRANGE OFF CAMERA.
+    //
+    // The gate refuses "100% onboarded" while the agreement reads "Not signed", and it refuses
+    // SILENTLY: shoot 5 ran s4_3 (which re-generates the e-sign documents), nothing signed them, this
+    // scene set the status, the app accepted the click, changed nothing and said nothing, and the
+    // status stayed "Onboarding". Do NOT chase the e-sign email to fix that — the narration's whole
+    // point is the opposite:
+    //   "…requires exactly two things: the fee is Paid and the agreement is Signed. And Signed here
+    //    is a plain dropdown value. Nothing in the system requires an actual signature to set it."
+    // So SETTING IT FROM A DROPDOWN, ON CAMERA, IS THE EVIDENCE FOR THAT LINE. Filming it is the
+    // scene, not a workaround for it.
+    if (!/^Signed$/i.test(before.agreement)) {
+      await h.optional('point at the agreement field', () =>
+        h.moveTo(() => rowOfCandidate().getByText(/^\s*Not signed\s*$/i).first(), { timeout: 6000 }));
+      await h.hold(1.5);
+      // data-name="Yes" is the "Signed" option (label " Signed", leading space) — see setIloCellValue.
+      await setIloCellValue(page, h, rowOfCandidate(), { dataName: 'Yes', what: 'the agreement' });
+      await h.hold(2);
+      const mid = await readIloStateOrFail(page, h, fullName, 'act4]   s4_4 agreement');
+      if (!/^Signed$/i.test(mid.agreement)) {
+        throw new Error('could not set the agreement to "Signed", so the gate cannot be crossed. '
+          + `Stored values now: status "${mid.status}", startup fee "${mid.fee}", agreement `
+          + `"${mid.agreement}". This app refuses such changes silently, so check the row by hand.`);
+      }
+      console.log('[act4]   s4_4: agreement set to "Signed" from a dropdown, on camera — no signature');
+      console.log('[act4]   s4_4: was involved anywhere, which is precisely what the narration says.');
+    } else {
+      console.log(`[act4]   s4_4: agreement already reads "${before.agreement}" — nothing to set`);
+    }
+
+    // The outstanding prerequisites BEFORE opening the status menu: they are what the narration
+    // contrasts the gate against, and hovering them with a dropdown open risks dismissing it.
     await showPrereqs();
-    await pickCellOption(page, h, /^\s*100% onboarded\s*$/i, 'the status');
+    await setIloCellValue(page, h, rowOfCandidate(), { dataName: 'joined', what: 'the status' });
     await h.hold(3);
 
     // VERIFY — the gate is the whole finding of this act, so a silent no-op must not pass.
     const after = await readIloStateOrFail(page, h, fullName, 'act4]   s4_4 verify');
     if (!/^100% onboarded$/i.test(after.status)) {
-      throw new Error(`the record was NOT moved to "100% onboarded" — the status reads `
-        + `"${after.status}". That status is what act 7 and the wrap-up narration describe.`);
+      throw new Error('the gate REFUSED "100% onboarded" and said nothing on screen. Stored values: '
+        + `status "${after.status}", startup fee "${after.fee}", agreement "${after.agreement}". `
+        + (/^Signed$/i.test(after.agreement) && /^Paid$/i.test(after.fee)
+          ? 'Both documented prerequisites (Paid + Signed) ARE satisfied, so the gate has a third '
+            + 'condition this shoot does not know about — inspect the record by hand before re-recording.'
+          : 'The gate needs fee "Paid" AND agreement "Signed"; one of them is not set, so fix that first.')
+        + ' That status is what act 7 and the wrap-up narration describe.');
     }
-    console.log('[act4]   s4_4: verified — status is "100% onboarded" (NMLS/HR/1-1 still outstanding)');
+    console.log('[act4]   s4_4: verified — status is "100% onboarded" with the agreement Signed by');
+    console.log('[act4]   s4_4: dropdown and NMLS/HR/1-1 still outstanding — the finding of the act.');
   });
 
   // Template settings: real asset (per-status Email / SMS / Call script), on a settings page
@@ -3051,8 +3263,10 @@ export async function act4(page, h, cfg = {}) {
 
 export async function act5(page, h, cfg = {}) {
   const candidate = cfg.candidate || {};
-  const rowOfCandidate = () =>
-    page.locator('tr', { hasText: new RegExp(candidate.name || 'Marcus Reyes', 'i') }).first();
+  const fullName = candidate.name || 'Marcus Reyes';
+  // REASSIGNED in s5_3's prepare when the candidate is not on Maria's board — see the note there.
+  // s5_3, s5_4 and s5_5 all read it through this binding, so the substitution reaches all three.
+  let rowOfCandidate = () => h.row(fullName);
 
   await h.scene('s5_1', { prepare: () => h.goto(URLS.iloMine) }, async () => {
     // VERIFIED 2026-08-04 (probed on the ILO board): when a role has only ONE tab the strip is not
@@ -3086,10 +3300,30 @@ export async function act5(page, h, cfg = {}) {
     prepare: async () => {
       await h.goto(URLS.iloMine);
       // If act 4 already advanced the record to "100% onboarded" it is off page one here too.
-      await ensureCandidateVisible(page, h, candidate.name || 'Marcus Reyes');
+      if (await ensureCandidateVisible(page, h, fullName)) return;
+      // NOT A BUG TO FIX — THIS IS WHAT s5_1 NARRATES.
+      // PROBED 2026-08-04 as Maria: her ILO "Mine" holds 4 records and the candidate is not among
+      // them, and a search for him returns nothing. The ILO record's onboarding_specialist is a
+      // different account, and this role has NO Company tab (s5_1 logs Company present: false), so
+      // her board legitimately cannot show him. s5_1's line is literally "She only sees records
+      // assigned to her, which means if ownership is set incorrectly, a candidate can sit in the
+      // pipeline while nobody considers them their problem" — so his absence CONFIRMS the act
+      // instead of contradicting it. Do NOT reassign the record to Maria to make him appear: that
+      // would mutate the pipeline to hide the very finding being narrated.
+      // s5_3/s5_4/s5_5 are all about what the controls DO, not whose row they sit on, so demonstrate
+      // on a record she really owns. (Shoot 5 instead left a failed search applied, which emptied the
+      // board and took s5_4 and s5_5 down with it — ensureCandidateVisible now resets that filter.)
+      const sub = await pickDemoRow(page, h, {
+        actLabel: 'act5',
+        fullName,
+        demoRecord: cfg.demoRecord,
+        absentBecause: 'he is not assigned to this onboarding specialist, which is exactly what s5_1 narrates',
+        beats: 'the checklist, note-and-email and webinar beats (s5_3-s5_5)',
+      });
+      if (sub) rowOfCandidate = () => sub.row;
     },
   }, async () => {
-    await h.optional('find the candidate', () => h.moveTo(() => rowOfCandidate(), { timeout: 8000 }));
+    await h.optional('find the record', () => h.moveTo(() => rowOfCandidate(), { timeout: 8000 }));
     const header = [() => page.getByText(/NMLS status/i).first(), () => page.locator('table').first()];
     const scroller = await h.scrollableNear(header);
     for (const c of [/NMLS status/i, /License status/i, /HR status/i, /1-1 Onboarding meeting/i, /Attended/i]) {
@@ -3135,12 +3369,18 @@ export async function act5(page, h, cfg = {}) {
     await h.dismiss();
     await h.hold(1);
     await h.optional('bulk attendance import', async () => {
+      // TOOLBAR Action = <a id="gwt-debug-action">, not a button (the per-row ones are buttons, and
+      // there are ten of them) — same trap as s4_5 and s6_1. The item's data-name is verified to be
+      // exactly `Import "Attendance tracking"`, quotes included.
       await h.click([
-        () => page.getByRole('button', { name: /^\s*Action\s*$/i }).first(),
-        () => page.getByText(/^\s*Action\s*$/i).first(),
+        () => page.locator('#gwt-debug-action'),
+        () => page.locator('a', { hasText: /^\s*Action\s*$/i }).first(),
       ], { timeout: 6000 });
       await h.hold(1);
-      await h.click(() => page.getByText(/Attendance tracking/i).first(), { timeout: 5000 });
+      await h.click([
+        () => h.dropdownItem(null, 'Import "Attendance tracking"').first(),
+        () => page.getByText(/Attendance tracking/i).first(),
+      ], { timeout: 5000 });
       await h.hold(2.5);
       // Introduce only: no CSV is uploaded on camera.
       await h.dismiss();
@@ -3158,16 +3398,25 @@ export async function act6(page, h, cfg = {}) {
 
   await h.scene('s6_1', { prepare: () => h.goto(URLS.iloCompany) }, async () => {
     // Accounting is the ONLY role with Export (csv) — the real reporting lives in spreadsheets.
+    //
+    // THE TOOLBAR ACTION IS AN <a id="gwt-debug-action">, NOT A BUTTON — the same trap that broke
+    // s4_5. PROBED 2026-08-04 as Accounting on this board: 10 elements are <button>Action</button>
+    // (one per row) and exactly 1 is the toolbar <a>. So
+    // getByRole('button', {name:/^Action$/}).first() reliably grabs a ROW menu, which has no
+    // Export item — that is why shoot 5 failed here at 4s, on the Export moveTo rather than the
+    // click. Anchor on the id, and address the item by its data-name (verified exactly
+    // "Export (csv)"; the visible label carries a leading space).
     await h.click([
-      () => page.getByRole('button', { name: /^\s*Action\s*$/i }).first(),
-      () => page.getByText(/^\s*Action\s*$/i).first(),
+      () => page.locator('#gwt-debug-action'),
+      () => page.locator('a', { hasText: /^\s*Action\s*$/i }).first(),
     ], { timeout: 8000 });
     await h.hold(1.5);
-    await h.moveTo(() => page.getByText(/Export \(csv\)/i).first(), { timeout: 6000 });
+    const exportItem = () => h.dropdownItem(null, 'Export (csv)').first();
+    await h.moveTo(exportItem, { timeout: 6000 });
     await h.hold(1);
     await h.optional('run the export', async () => {
       const dl = page.waitForEvent('download', { timeout: 20_000 }).catch(() => null);
-      await h.click(() => page.getByText(/Export \(csv\)/i).first(), { timeout: 5000 });
+      await h.click(exportItem, { timeout: 5000 });
       const file = await dl;
       if (file) console.log(`[act6]   export produced: ${file.suggestedFilename()}`);
       await h.hold(2);
