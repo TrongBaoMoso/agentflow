@@ -1399,6 +1399,66 @@ export async function fillAddForm(page, h, candidate = {}, { prematureSubmits = 
   return { fullName, emailFilled: wantEmail };
 }
 
+/**
+ * Drive the "Invite Loan officer to join <company>" modal, which moves a Recruited-LO record into
+ * the Interested-LO pipeline.
+ *
+ * VERIFIED LIVE 2026-08-04 (modal driven end to end, SaveOp observed, record confirmed in ILO).
+ * The modal is titled "ADD AND INVITE LOAN OFFICER" and holds THREE select2 dropdowns, in DOM
+ * order: [0] "Are you referred to <company> by?", [1] "Detail source", [2] "Date & Time (webinar)".
+ * Four traps, all of which silently defeated the previous version:
+ *  1. DETAIL SOURCE IS A CASCADE. It is empty until [0] is chosen; picking "Direct Invite"
+ *     populates it with Email / Newsletter / I'm a returning LO. Both are required.
+ *  2. "Register for the weekly webinar?" DEFAULTS TO YES, which makes "Date & Time" required —
+ *     and that dropdown has ZERO options, so the form can never validate. It must be set to No.
+ *  3. The submit button is `#gwt-debug-submit` but its label is "check Email loan officer and
+ *     Save" — nothing matching /Submit|Invite/, which is why the old click was skipped.
+ *  4. The `.form-text.text-danger` messages are STALE: they persist after a field is filled and
+ *     only re-evaluate on submit, so never gate on them beforehand. (Note this modal DOES render
+ *     errors, unlike the Add form.)
+ * The ids inside this modal are unreliable (document.querySelector('#referred_section') returns
+ * null while select2 shows the picked value), hence the index-based scoping.
+ */
+export async function inviteToILO(page, h, row, { referralSource = 'Direct Invite' } = {}) {
+  await h.click(() => row.getByRole('button', { name: /^\s*Action\s*$/i }), { timeout: 15_000 });
+  await h.clickMenuItem(row, 'Invite Loan officer to join', { prefix: true });
+  const modal = page.locator('.modal.show');
+  await modal.first().waitFor({ state: 'visible', timeout: 20_000 });
+  await h.waitForAppIdle();
+
+  const pickNth = async (i, optRe, label) => {
+    await h.click(() => modal.locator('.select2-container').nth(i), { timeout: 9000 });
+    const opts = page.locator('li.select2-results__option');
+    await opts.first().waitFor({ state: 'visible', timeout: 9000 });
+    const first = ((await opts.first().innerText().catch(() => '')) || '').trim();
+    if (/^No results/i.test(first)) {
+      throw new Error(`the "${label}" dropdown offered nothing (${first}) — cannot complete the invite`);
+    }
+    const opt = opts.filter({ hasText: optRe }).first();
+    await opt.waitFor({ state: 'visible', timeout: 9000 });
+    await h.click(() => opt, { timeout: 9000 });
+    await h.hold(1);
+  };
+
+  await pickNth(0, new RegExp(`^\\s*${referralSource}\\s*$`, 'i'), 'Are you referred to … by?');
+  // The cascade's contents depend on the source above, so take whatever it now offers.
+  await pickNth(1, /\S/, 'Detail source');
+  await h.click(() => modal.locator('.form-group')
+    .filter({ hasText: /Register for the weekly webinar/i }).first()
+    .getByRole('button', { name: btnName('No') }).first(), { timeout: 9000 });
+  await h.hold(1);
+
+  await h.click(['#gwt-debug-submit'], { timeout: 10_000 });
+  const closed = await modal.first().waitFor({ state: 'detached', timeout: 25_000 })
+    .then(() => true).catch(() => false);
+  if (!closed) {
+    const errs = await page.evaluate(() => [...document.querySelectorAll('.modal.show .text-danger')]
+      .map((e) => (e.textContent || '').trim()).filter(Boolean));
+    throw new Error(`the invite modal did not close — the app reports: ${errs.join(' | ') || '(no message)'}`);
+  }
+  return true;
+}
+
 // ---------------------------------------------------------------------------
 // ACT 0 — Admin: the terrain (Chau Chau)
 // Storyboard rows 0.1 – 0.6, PLUS s1_4 (the Add-form beat) which is shot here because an Outside
@@ -1493,7 +1553,18 @@ export async function act0(page, h, cfg = {}) {
     const tabs = Object.entries(CONFIG_TABS);
     for (const [label, dn] of tabs) {
       await h.optional(`config tab ${label}`, async () => {
-        await h.goto(`${BASE}/lo_recruiting_config/${dn}`, { rows: false });
+        // Shoot 3 lost this whole scene to a single 60s goto timeout on a slow staging, so retry.
+        let ok = false;
+        for (let attempt = 1; attempt <= 2 && !ok; attempt += 1) {
+          try {
+            await h.goto(`${BASE}/lo_recruiting_config/${dn}`, { rows: false });
+            ok = true;
+          } catch (err) {
+            console.warn(`[act0]   config tab ${label} attempt ${attempt}/2 failed: ${err.message.split('\n')[0]}`);
+            if (attempt < 2) await h.hold(4);
+          }
+        }
+        if (!ok) throw new Error(`could not open the ${label} tab`);
         await h.hold(1.6);
       });
     }
@@ -1559,8 +1630,30 @@ export async function act0(page, h, cfg = {}) {
     // silent rejection, so it no longer depends on a successful save.
     // Look on COMPANY, not Mine: "Mine" means records the CURRENT user owns, and this record is
     // owned by a recruiter, so it is correctly absent from admin's Mine.
-    await h.goto(URLS.rloCompany);
+    // ABSENT vs COULD-NOT-DETERMINE. Shoot 3 taught this the expensive way: staging was slow, the
+    // board never loaded, the check read that as "the record is absent" and took the CREATION
+    // branch — the branch that MUTATES — on a record that already existed. A failed or empty load
+    // must therefore be retried and then hard-fail, never silently mean "absent".
+    let boardLoaded = false;
     let existing = h.row(fullName);
+    for (let attempt = 1; attempt <= 3 && !boardLoaded; attempt += 1) {
+      try {
+        await h.goto(URLS.rloCompany);
+        const state = await h.waitForRows();
+        // A board that reports neither rows nor an explicit empty state has not loaded.
+        boardLoaded = state.rows > 0 || state.empty;
+        if (!boardLoaded) throw new Error(`board did not populate (pager "${state.pager}")`);
+      } catch (err) {
+        console.warn(`[act0]   s1_4: existence check attempt ${attempt}/3 failed: ${err.message}`);
+        if (attempt < 3) await h.hold(5);
+      }
+    }
+    if (!boardLoaded) {
+      throw new Error('could not determine whether the candidate exists — the Recruited board never '
+        + 'loaded after 3 attempts. REFUSING to guess: the creation branch mutates, and treating a '
+        + 'slow page as "absent" is how a duplicate gets created. Re-run act 0 when staging responds.');
+    }
+    existing = h.row(fullName);
     if (!(await existing.count())) {
       await h.optional('search for the candidate', async () => {
         await h.filterGrid(fullName.toLowerCase());
@@ -1676,8 +1769,23 @@ export async function act0(page, h, cfg = {}) {
 
 export async function act1(page, h, cfg = {}) {
   const candidate = cfg.candidate || {};
-  const rowOfCandidate = () =>
-    page.locator('tr', { hasText: new RegExp(candidate.name || 'Marcus Reyes', 'i') }).first();
+  const fullName = candidate.name || 'Marcus Reyes';
+
+  // Decide ONCE which row the row-level beats (s1_5, s1_7…s1_13) act on.
+  // The invite in s1_14 MOVES the candidate off the Recruited board for good, so on any re-record
+  // after a successful invite he is simply not here. Rather than fail nine scenes, demonstrate the
+  // row controls on another record and say so loudly — the controls are identical, and the beats
+  // are about what the controls DO, not about whose row it is.
+  await h.goto(URLS.rloMine);
+  let rowOfCandidate = () => h.row(fullName);
+  if (!(await h.row(fullName).count())) {
+    const substitute = page.locator('table.table-hover tbody tr').filter({ hasText: /\S/ }).first();
+    const who = ((await substitute.innerText().catch(() => '')) || '').replace(/\s+/g, ' ').slice(0, 40);
+    console.warn(`[act1]   ${fullName} is NOT on the Recruited board — he has already been invited into`);
+    console.warn('[act1]   the ILO pipeline, which removes him from here. The row-level beats will be');
+    console.warn(`[act1]   demonstrated on the first available record instead: ${who}`);
+    rowOfCandidate = () => substitute;
+  }
 
   await h.scene('s1_1', async () => {
     // VERIFIED 2026-08-03: Mine is the default tab; clickTab is a no-op verification here.
@@ -1946,45 +2054,75 @@ export async function act1(page, h, cfg = {}) {
   });
 
   await h.scene('s1_14', async () => {
-    // The handoff: Invite -> record moves to the Interested LO pipeline. Referral source is
-    // mandatory (it drives referral payout later); the $100 fee can be waived.
-    await h.click([
-      // VERIFIED 2026-08-03: per-row Action is <button>Action</button> (the toolbar one is an
-      // <a id="gwt-debug-action">). Items carry data-name; see h.dropdownItem.
-      () => rowOfCandidate().getByRole('button', { name: /^\s*Action\s*$/i }),
-    ], { timeout: 10_000 });
-    await h.hold(1);
-    // data-name interpolates the company ("…join Chau Chau Inc") -> prefix match
-    await h.clickMenuItem(rowOfCandidate(), 'Invite Loan officer to join', { prefix: true });
+    // The handoff: Invite -> the record MOVES into the Interested-LO pipeline and LEAVES the
+    // Recruited board entirely (verified: after the invite the RLO board returns 0 rows for the
+    // candidate, even by search). So this transition can only happen once per candidate, and the
+    // scene has to be idempotent the same way s1_4 is.
+    const fullName = candidate.name || 'Marcus Reyes';
+    const alreadyInILO = async () => {
+      await h.goto(URLS.iloMine);
+      let r = h.row(fullName);
+      if (!(await r.count())) {
+        await h.optional('search ILO for the candidate', async () => {
+          await h.filterGrid(fullName.toLowerCase());
+          r = h.row(fullName);
+        });
+      }
+      if (!(await r.count())) return null;
+      return ((await r.innerText().catch(() => '')) || '');
+    };
+
+    const onRlo = await h.row(fullName).count() > 0;
+    if (!onRlo) {
+      // Either already converted (fine) or genuinely missing (a real problem) — tell them apart.
+      const iloText = await alreadyInILO();
+      if (iloText && /Invited to join/i.test(iloText)) {
+        console.log(`[act1]   s1_14: BRANCH = ALREADY CONVERTED — ${fullName} is in the ILO pipeline`
+          + ' with status "Invited to join"; the invite has already been performed, nothing to click.');
+        await h.hold(3);
+        return;
+      }
+      throw new Error(`${fullName} is on neither board: not on Recruited LO (so the invite cannot be `
+        + `performed) and not in ILO with "Invited to join" (so it was never converted). Re-record `
+        + 'act 0 to create the candidate first.');
+    }
+
+    console.log(`[act1]   s1_14: BRANCH = INVITE — ${fullName} is on the Recruited board; performing the transition.`);
+    await inviteToILO(page, h, h.row(fullName));
     await h.hold(2);
-    await h.optional('referral source', async () => {
-      await h.click([
-        () => page.getByRole('combobox').first(),
-        () => page.locator('select').first(),
-      ], { timeout: 4000 });
-      await h.hold(1);
-      await h.click(() => page.getByText(/Direct Invite|Word of Mouth/i).first(), { timeout: 4000 });
-    });
-    await h.optional('waive $100 toggle', () => h.moveTo(() => page.getByText(/Waive/i).first(), { timeout: 4000 }));
-    await h.hold(1);
-    await h.optional('send invitation email toggle', () => h.moveTo(() => page.getByText(/invitation email/i).first(), { timeout: 4000 }));
-    await h.hold(1);
-    await h.optional('submit the invite', async () => {
-      await h.click(() => page.getByRole('button', { name: btnName('Submit', 'Invite') }).first(), { timeout: 5000 });
-      await h.hold(4);
-    });
+
+    // VERIFY — deliberately NOT optional(). This scene's whole purpose is the state transition,
+    // and the previous version reported "ok" while every modal interaction had been skipped,
+    // which then sank act 4 and act 5.
+    const iloText = await alreadyInILO();
+    if (!iloText) {
+      throw new Error(`the invite was submitted but ${fullName} is NOT in the Interested-LO `
+        + 'pipeline (checked ILO/Mine directly and via the label search). Acts 4 and 5 operate on '
+        + 'that ILO record, so stop and fix this before recording them.');
+    }
+    if (!/Invited to join/i.test(iloText)) {
+      throw new Error(`${fullName} reached the ILO pipeline but its status is not "Invited to join" `
+        + `— the row reads: ${iloText.replace(/\s+/g, ' ').slice(0, 160)}`);
+    }
+    console.log(`[act1]   s1_14: verified in ILO with status "Invited to join"`);
   });
 
   await h.scene('s1_15', async () => {
     // Same human, second warehouse, different vocabulary (8 ILO statuses vs 10 RLO statuses).
+    // Scope the reveals to the candidate's ILO ROW: unscoped, /Invited to join/ also matches the
+    // stats tile above the board ("Invited but not onboarding"), which is hidden or elsewhere on the
+    // page — that is why this hover was skipped in shoots 2 and 3. Note rowOfCandidate() may point
+    // at a substitute on the RECRUITED board (see the top of act1), so name the candidate directly
+    // here: on the ILO board he is present by definition once s1_14 has verified him.
     await h.goto(URLS.iloMine);
-    await h.optional('find the candidate', () => h.moveTo(() => rowOfCandidate(), { timeout: 8000 }));
+    const iloRow = h.row(fullName);
+    await h.optional('find the candidate', () => h.moveTo(() => iloRow, { timeout: 10_000 }));
     await h.hold(1);
     await h.optional('converted badge', () =>
-      h.moveTo(() => page.getByText(/Converted from recruited LO/i).first(), { timeout: 5000 }));
+      h.moveTo(() => iloRow.getByText(/Converted from recruited LO/i), { timeout: 6000 }));
     await h.hold(1);
     await h.optional('invited-to-join status', () =>
-      h.moveTo(() => page.getByText(/Invited to join/i).first(), { timeout: 5000 }));
+      h.moveTo(() => iloRow.getByText(/Invited to join/i), { timeout: 6000 }));
   });
 }
 
@@ -2066,6 +2204,13 @@ export async function act2(page, h, cfg = {}) {
     await h.hold(2);
     // MUTATES STAGING: Approve moves the record into the Company tab. Storyboard row 2.5
     // asks for it explicitly; staging CRUD is allowed. Nothing is deleted.
+    // Capture which record we are about to approve, so the outcome can be verified.
+    let pendingTarget = '';
+    await h.optional('note the target record', async () => {
+      pendingTarget = ((await page.locator('table.table-hover tbody tr').filter({ hasText: /\S/ })
+        .first().innerText().catch(() => '')) || '').replace(/\s+/g, ' ').slice(0, 40);
+    });
+    let approveClicked = false;
     await h.optional('Approve one self-apply record', async () => {
       await h.click([
         () => page.getByRole('button', { name: /^\s*Action/i }).first(),
@@ -2076,8 +2221,24 @@ export async function act2(page, h, cfg = {}) {
       await h.hold(1.5);
       await h.click(() => page.getByRole('button', { name: btnName('Yes', 'OK', 'Confirm', 'Approve') }).first(), { timeout: 5000 });
       console.log('[act2]   Approve submitted (staging mutation, by design)');
+      approveClicked = true;
       await h.hold(3);
     });
+
+    // VERIFY — Approve moves the record out of Pending approvals and into Company. If the click
+    // silently did nothing, say so: this scene claims a state transition.
+    if (approveClicked && pendingTarget) {
+      await h.goto(URLS.rloMine);
+      await h.clickTab(TABS.pendingApprovals);
+      const stillPending = await page.locator('table.table-hover tbody tr')
+        .filter({ hasText: pendingTarget.split(' ').slice(0, 3).join(' ') }).count();
+      if (stillPending) {
+        console.error(`[act2]   s2_5: "${pendingTarget}" is STILL in Pending approvals — the Approve`);
+        console.error('[act2]   s2_5: did not take effect. The narration claims it moved to Company.');
+      } else {
+        console.log(`[act2]   s2_5: verified — "${pendingTarget}" left Pending approvals`);
+      }
+    }
   });
 }
 
@@ -2171,6 +2332,26 @@ export async function act4(page, h, cfg = {}) {
     await h.optional('watch the status flip', () =>
       h.moveTo(() => rowOfCandidate().getByText(/Onboarding/i).first(), { timeout: 8000 }));
     await h.hold(2);
+
+    // VERIFY — this scene's purpose is the state transition (fee -> Paid, and the ONE documented
+    // auto-transition in the whole system: status -> Onboarding). Not optional: a silent no-op here
+    // would leave s4_4 and act 5 operating on a record that never advanced.
+    await h.goto(URLS.iloCompany);
+    const feeRow = (await h.row(candidate.name || 'Marcus Reyes').innerText().catch(() => '')) || '';
+    if (!feeRow) {
+      throw new Error(`${candidate.name || 'Marcus Reyes'} is not on the ILO board — act 1's invite `
+        + 'must run before act 4.');
+    }
+    if (!/Paid/i.test(feeRow)) {
+      throw new Error('the startup fee was not recorded as Paid — the row still reads: '
+        + feeRow.replace(/\s+/g, ' ').slice(0, 160));
+    }
+    if (!/Onboarding/i.test(feeRow)) {
+      console.error('[act4]   s4_2: fee is Paid but the status did NOT auto-jump to "Onboarding".');
+      console.error('[act4]   s4_2: that auto-transition is the point of this scene — check the row.');
+    } else {
+      console.log('[act4]   s4_2: verified — fee Paid and status auto-jumped to Onboarding');
+    }
   });
 
   await h.scene('s4_3', async () => {
@@ -2185,6 +2366,11 @@ export async function act4(page, h, cfg = {}) {
     await h.clickMenuItem(rowOfCandidate(), 'Re-generate e-sign documents and send email', { prefix: true });
     await h.hold(2);
     await h.optional('confirm', () => h.click(() => page.getByRole('button', { name: btnName('Yes', 'OK', 'Submit', 'Send') }).first(), { timeout: 5000 }));
+    // NOT verifiable, and that is precisely the documented pain: the app tracks signed / not signed
+    // but never sent / opened / viewed, so there is NO state change to assert after re-generating.
+    // Deliberately not a hard failure — unlike s4_2/s4_4/s1_14, nothing here claims a transition.
+    console.log('[act4]   s4_3: e-sign documents re-generated; the app records nothing about "sent",');
+    console.log('[act4]   s4_3: so this beat cannot be verified — that gap is the point of the scene.');
     await h.hold(3);
     // The actual signing happens in the candidate's inbox: a human beat, opt-in via --mail-url.
     // Use a Mailinator PUBLIC inbox. NOT temp-mail.org: a temp-mail.org address is bound to the
@@ -2224,6 +2410,16 @@ export async function act4(page, h, cfg = {}) {
       await h.click(() => page.getByRole('button', { name: btnName('Submit') }).first(), { timeout: 4000 });
       await h.hold(3);
     });
+
+    // VERIFY — the gate is the whole finding of this act, so a silent no-op must not pass.
+    await h.goto(URLS.iloCompany);
+    const gateRow = (await h.row(candidate.name || 'Marcus Reyes').innerText().catch(() => '')) || '';
+    if (!/100% onboarded/i.test(gateRow)) {
+      throw new Error('the record was NOT moved to "100% onboarded" — the row reads: '
+        + gateRow.replace(/\s+/g, ' ').slice(0, 160)
+        + '. That status is what act 7 and the wrap-up narration describe, so fix it before moving on.');
+    }
+    console.log('[act4]   s4_4: verified — status is "100% onboarded" (with NMLS/HR/1-1 still outstanding)');
   });
 
   await h.scene('s4_5', async () => {
