@@ -59,6 +59,9 @@
  *   --trim <sec>         videoTrimSec written into markers.json (default 0 — auth is off camera)
  *   --modex              enable the external-Modex beat in scene 1.6 (opens a 2nd tab => 2nd webm)
  *   --modex-url <url>    where that tab goes (no default; the human logs into Modex himself)
+ *   --demo-record <name> a SAFE record for act 1's row beats when the candidate has already been
+ *                        converted off the Recruited board. Every row on staging is a real person
+ *                        imported via Modex, so name a fixture you are happy to show on camera.
  *   --mail-url <url>     inbox URL for the e-sign beat in s4_3 (2nd tab). Use the Mailinator
  *                        PUBLIC inbox — readable by URL with no session:
  *                        https://www.mailinator.com/v4/public/inboxes.jsp?to=mreyes-lo-q7w2m9
@@ -1400,6 +1403,99 @@ export async function fillAddForm(page, h, candidate = {}, { prematureSubmits = 
 }
 
 /**
+ * Show the Add-and-Invite dialog WITHOUT touching anybody's record, and leave via Cancel.
+ *
+ * Used by s1_14's DEMONSTRATION branch. The invite is the one transition with NO path back, so it
+ * can never be re-filmed on the real candidate — but the scene's narration is entirely about what is
+ * INSIDE this dialog, so the dialog has to appear.
+ *
+ * VERIFIED LIVE 2026-08-04: `button#add-and-invite-loan-officer` on the ILO board opens the SAME
+ * "ADD AND INVITE LOAN OFFICER" modal as the row action — same three select2s, same cascade
+ * (Direct Invite -> Email / Newsletter / I'm a returning LO), same two toggles, same webinar
+ * default of Yes — but with EMPTY fields and attached to no record at all. That makes it the only
+ * safe vehicle: every row on this staging board is a real person imported via Modex, and this
+ * footage goes to the CEO.
+ *
+ * ONE DIFFERENCE, deliberately surfaced: the standalone dialog does NOT carry the sentence "The
+ * recruited loan officer will be moved to the Interested Loan Officers pipeline" — that line only
+ * exists when the dialog is opened from a recruited record. The narration beat about it cannot be
+ * shown here, so this logs the fact rather than pretending otherwise.
+ *
+ * NEVER press Escape in this modal: Escape dismisses the whole dialog, not just an open dropdown
+ * (that is what made an earlier Cancel click find nothing). Close dropdowns by picking an option.
+ */
+export async function demonstrateInviteDialog(page, h, { referralSource = 'Direct Invite' } = {}) {
+  await h.goto(URLS.iloMine);
+  const before = await page.locator('table.table-hover tbody tr').count();
+  await h.click(['#add-and-invite-loan-officer'], { timeout: 12_000 });
+  const modal = page.locator('.modal.show');
+  await modal.first().waitFor({ state: 'visible', timeout: 20_000 });
+  await h.waitForAppIdle();
+  await h.hold(2);
+
+  // 1) Referral source — mandatory, and it drives a bonus payment months later.
+  await h.click(() => modal.locator('.select2-container').nth(0), { timeout: 9000 });
+  await h.hold(1.5);
+  const src = page.locator('li.select2-results__option')
+    .filter({ hasText: new RegExp(`^\\s*${referralSource}\\s*$`, 'i') }).first();
+  await src.waitFor({ state: 'visible', timeout: 9000 });
+  await h.click(() => src, { timeout: 9000 });
+  await h.hold(1.5);
+
+  // 2) The cascade appearing is the thing worth seeing — open it so the dependent options show,
+  //    then pick one (never Escape).
+  await h.click(() => modal.locator('.select2-container').nth(1), { timeout: 9000 });
+  await h.hold(2);
+  const opts = page.locator('li.select2-results__option');
+  const cascade = await page.evaluate(() => [...document.querySelectorAll('li.select2-results__option')]
+    .map((o) => (o.innerText || '').trim()));
+  console.log(`[act1]   s1_14: Detail source cascade offered ${JSON.stringify(cascade)}`);
+  await h.click(() => opts.filter({ hasText: /\S/ }).first(), { timeout: 9000 });
+  await h.hold(1.5);
+
+  // 3) The two toggles, pointed at but NOT flipped.
+  await h.optional('waive the $100 fee toggle', () =>
+    h.moveTo(() => modal.getByText(/Waive the \$100 fee/i).first(), { timeout: 6000 }));
+  await h.hold(1.5);
+  await h.optional('send invitation email toggle', () =>
+    h.moveTo(() => modal.getByText(/Send an invitation email/i).first(), { timeout: 6000 }));
+  await h.hold(1.5);
+
+  // 4) The pipeline sentence, only present when opened from a recruited record.
+  const hasPipelineLine = await modal.filter({ hasText: /moved to the Interested Loan Officers pipeline/i }).count();
+  if (hasPipelineLine) {
+    await h.optional('the pipeline sentence', () =>
+      h.moveTo(() => modal.getByText(/moved to the Interested Loan Officers pipeline/i).first(), { timeout: 6000 }));
+  } else {
+    console.warn('[act1]   s1_14: the standalone dialog does NOT contain the "moved to the Interested');
+    console.warn('[act1]   s1_14: Loan Officers pipeline" sentence — that line exists only when the');
+    console.warn('[act1]   s1_14: dialog is opened from a recruited record. Resting on the title instead;');
+    console.warn('[act1]   s1_14: the narration clause about that sentence has no footage to match it.');
+    await h.optional('the dialog title', () =>
+      h.moveTo(() => modal.getByText(/ADD AND INVITE LOAN OFFICER/i).first(), { timeout: 6000 }));
+  }
+  await h.hold(2);
+
+  // Leave via Cancel. Submitting would create a record; nothing here may be submitted.
+  await h.click(['#gwt-debug-cancel'], { timeout: 10_000 });
+  const closed = await modal.first().waitFor({ state: 'detached', timeout: 15_000 })
+    .then(() => true).catch(() => false);
+  if (!closed) {
+    throw new Error('the Add-and-Invite dialog did not close after Cancel. Refusing to continue with '
+      + 'an invite dialog open — a later stray click could submit it and convert a record.');
+  }
+  // Prove nothing was created.
+  await h.goto(URLS.iloMine);
+  const after = await page.locator('table.table-hover tbody tr').count();
+  if (after !== before) {
+    throw new Error(`the ILO board row count changed from ${before} to ${after} across a dialog that `
+      + 'was only ever cancelled — something was submitted. Investigate before shooting.');
+  }
+  console.log(`[act1]   s1_14: dialog cancelled; ILO row count unchanged (${before}) — nothing submitted.`);
+  return true;
+}
+
+/**
  * Drive the "Invite Loan officer to join <company>" modal, which moves a Recruited-LO record into
  * the Interested-LO pipeline.
  *
@@ -1851,11 +1947,39 @@ export async function act1(page, h, cfg = {}) {
   await h.goto(URLS.rloMine);
   let rowOfCandidate = () => h.row(fullName);
   if (!(await h.row(fullName).count())) {
-    const substitute = page.locator('table.table-hover tbody tr').filter({ hasText: /\S/ }).first();
-    const who = ((await substitute.innerText().catch(() => '')) || '').replace(/\s+/g, ' ').slice(0, 40);
     console.warn(`[act1]   ${fullName} is NOT on the Recruited board — he has already been invited into`);
-    console.warn('[act1]   the ILO pipeline, which removes him from here. The row-level beats will be');
-    console.warn(`[act1]   demonstrated on the first available record instead: ${who}`);
+    console.warn('[act1]   the ILO pipeline, which removes him from here, so the row-level beats need');
+    console.warn('[act1]   another record to demonstrate on.');
+    // Choose DELIBERATELY, not "first row". This footage goes to the CEO and every row on this
+    // staging board is a real loan officer imported via Modex (verified 2026-08-04: searching the
+    // board for "test" returns No results — there is no fixture here). Prefer an explicitly named
+    // safe record, then anything that looks like a test fixture, and be loud when neither exists.
+    let substitute = null;
+    let how = '';
+    if (cfg.demoRecord) {
+      if (await h.row(cfg.demoRecord).count()) {
+        substitute = h.row(cfg.demoRecord);
+        how = `--demo-record "${cfg.demoRecord}"`;
+      } else {
+        console.error(`[act1]   --demo-record "${cfg.demoRecord}" is NOT on this board.`);
+      }
+    }
+    if (!substitute) {
+      const fixture = page.locator('table.table-hover tbody tr')
+        .filter({ hasText: /\b(test|demo|sample|dummy|qa)\b|mailinator/i }).first();
+      if (await fixture.count()) { substitute = fixture; how = 'auto-detected test fixture'; }
+    }
+    if (!substitute) {
+      substitute = page.locator('table.table-hover tbody tr').filter({ hasText: /\S/ }).first();
+      how = 'FALLBACK: first row — NOT a fixture';
+      console.error('[act1]   NO SAFE FIXTURE FOUND on the Recruited board. The row beats (s1_5-s1_13)');
+      console.error('[act1]   will film a REAL loan officer\'s record — name, company, phone, NMLS — and');
+      console.error('[act1]   this footage is CEO-facing. Either pass --demo-record <name> pointing at a');
+      console.error('[act1]   record you are happy to show, or create a clearly-fake candidate on the');
+      console.error('[act1]   Recruited board first (act 0 does exactly that) and re-run act 1.');
+    }
+    const who = ((await substitute.innerText().catch(() => '')) || '').replace(/\s+/g, ' ').slice(0, 44);
+    console.warn(`[act1]   substitute record (${how}): ${who}`);
     rowOfCandidate = () => substitute;
   }
 
@@ -2149,9 +2273,25 @@ export async function act1(page, h, cfg = {}) {
       // Either already converted (fine) or genuinely missing (a real problem) — tell them apart.
       const iloText = await alreadyInILO();
       if (iloText && /Invited to join/i.test(iloText)) {
-        console.log(`[act1]   s1_14: BRANCH = ALREADY CONVERTED — ${fullName} is in the ILO pipeline`
-          + ' with status "Invited to join"; the invite has already been performed, nothing to click.');
-        await h.hold(3);
+        // ALREADY CONVERTED -> DEMONSTRATION. The invite cannot be re-performed on ${fullName} (it is
+        // the one transition with no path back), but this scene's narration is entirely about the
+        // three decisions INSIDE the dialog, so the dialog is shown on the standalone
+        // "Add and invite loan officer" entry point and cancelled. That touches no record at all —
+        // which matters because every other row on this staging board is a real person imported via
+        // Modex, and this footage goes to the CEO.
+        console.warn(`[act1]   s1_14: BRANCH = DEMONSTRATION (modal shown on the standalone`);
+        console.warn('[act1]   s1_14: "Add and invite loan officer" dialog, not submitted) —');
+        console.warn(`[act1]   s1_14: ${fullName} is already in the ILO pipeline with status "Invited to`);
+        console.warn('[act1]   s1_14: join", and that transition has no path back, so it cannot be re-filmed.');
+        console.warn('[act1]   s1_14: NO RECORD IS TOUCHED and nothing is submitted.');
+        await demonstrateInviteDialog(page, h);
+        // The claim the scene makes is still verified, just not performed here.
+        const stillThere = await alreadyInILO();
+        if (!stillThere || !/Invited to join/i.test(stillThere)) {
+          throw new Error(`${fullName} was in the ILO pipeline with "Invited to join" before the `
+            + 'demonstration but not after — the dialog was supposed to be cancelled. Investigate.');
+        }
+        console.log(`[act1]   s1_14: verified — ${fullName} still in ILO with status "Invited to join"`);
         return;
       }
       throw new Error(`${fullName} is on neither board: not on Recruited LO (so the invite cannot be `
@@ -2910,6 +3050,9 @@ export function parseArgs(argv = process.argv.slice(2)) {
     modex: false,
     modexUrl: null,
     mailUrl: null,
+    // Name of a SAFE record to demonstrate row controls on when the candidate has already been
+    // converted off the Recruited board. See the substitute picker in act1.
+    demoRecord: null,
     slow: 0,
     candidate: {
       name: 'Marcus Reyes',
@@ -2951,6 +3094,7 @@ export function parseArgs(argv = process.argv.slice(2)) {
       case '--login-timeout': LOGIN_WAIT_MS = Math.max(1, Number(next())) * 60 * 1000; break;
       case '--candidate-name': out.candidate.name = next(); break;
       case '--candidate-email': out.candidate.email = next(); break;
+      case '--demo-record': out.demoRecord = next(); break;
       case '--candidate-phone': out.candidate.phone = next(); break;
       case '--candidate-nmls': out.candidate.nmls = next(); break;
       default:
