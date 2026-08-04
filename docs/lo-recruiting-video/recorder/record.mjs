@@ -38,7 +38,13 @@
  *   node record.mjs --acts 0,1,2
  *   node record.mjs --acts 4 --role-state            # re-record one act from its saved role state
  *   node record.mjs --auth /abs/path/state.json --out /abs/path/video
- *   node record.mjs --candidate-email mreyes-lo-q7w2m9@mailinator.com --mail-url 'https://www.mailinator.com/v4/public/inboxes.jsp?to=mreyes-lo-q7w2m9'
+ *   node record.mjs --candidate-email mreyes-lo-q7w2m9b@mailinator.com --candidate-nmls 1076215 \
+ *                   --mail-url 'https://www.mailinator.com/v4/public/inboxes.jsp?to=mreyes-lo-q7w2m9b'
+ *
+ * ⚠️ EVERY SHOOT NEEDS A FRESH --candidate-email AND A FRESH --candidate-nmls. The app dedupes on
+ * BOTH, server-side, and refuses the save with NO on-screen error of any kind — the Add form simply
+ * never submits (see submitAddForm). Bumping only the email is not enough: that failure mode cost a
+ * whole diagnostic round, because a duplicate NMLS is indistinguishable from a dead Submit button.
  *
  * Flags:
  *   --acts 0,1,2         subset of acts to record (default: all)
@@ -120,6 +126,9 @@ export const URLS = {
   // /lo_recruiting_config/<data-name>. Known: one_one_meeting (1-1 Meeting using Calendly),
   // ilo_assignment_owner (ILO Owner Assignment Methods Settings), facebook_ads.
   configOwnerAssignment: `${BASE}/lo_recruiting_config/ilo_assignment_owner`,
+  // 🔒 NEVER NAVIGATE HERE IN A FILMED BEAT — this tab renders a live Calendly personal access
+  // token in clear text. See CONFIG_TABS_WITH_SECRETS. Kept only so the diagnostic in inspect.mjs
+  // (whose screenshots stay local and gitignored) can still reach it.
   configCalendly: `${BASE}/lo_recruiting_config/one_one_meeting`,
   configWebinar: `${BASE}/lo_recruiting_config/Webinar`,
   modexData: `${BASE}/modex_data`,
@@ -144,6 +153,30 @@ export const CONFIG_TABS = {
   'ILO Owner Assignment Methods Settings': 'ilo_assignment_owner',
   'Facebook Ads': 'facebook_ads',
 };
+
+/**
+ * 🔒 Config tabs that RENDER A LIVE SECRET. NEVER OPEN THESE ON CAMERA.
+ *
+ * VERIFIED 2026-08-04 by scanning all five tabs: exactly one does. The "1-1 Meeting using Calendly"
+ * tab (data-name `one_one_meeting`) prints a ~420-character Calendly PERSONAL ACCESS TOKEN into a
+ * plain, non-password `ilo_calendly_token` input — fully legible at 1080p — alongside the token
+ * owner's real name and email address. It is a real credential belonging to a real person, and this
+ * film is shown to company leadership. An earlier cut rested on this tab for seconds; that was
+ * caught in the assembled frames and withdrawn.
+ *
+ * The other four tabs (Webinar, landing_page_setting, ilo_assignment_owner, facebook_ads) scanned
+ * CLEAN — no tokens, keys or client ids rendered.
+ *
+ * Do NOT try to solve this by blurring, cropping or scrolling the value out of frame: simply never
+ * navigate to the tab. The narration already carries the point — it says the config "stores one
+ * specific person's Calendly access token" — and that lands perfectly well over the tab STRIP, whose
+ * labels are just text. Re-run the scan if this page ever gains a tab.
+ */
+export const CONFIG_TABS_WITH_SECRETS = new Set(['one_one_meeting']);
+
+/** The config tabs that are safe to put on camera, in authored order. */
+export const FILMABLE_CONFIG_TABS = Object.entries(CONFIG_TABS)
+  .filter(([, dn]) => !CONFIG_TABS_WITH_SECRETS.has(dn));
 
 /** Tab labels reached by click, never by URL (see URLS note). */
 export const TABS = {
@@ -190,6 +223,13 @@ export const ACCOUNTS = {
   maria: { label: 'Maria Testcase', email: 'm123123aria@test.com', role: 'Onboarding Specialist' },
   accounting: { label: 'Admin Request', email: 'admingiftrequestor@viet18.com', role: 'Accounting' },
 };
+
+/**
+ * The NMLS the FIRST take used. Kept as the default only so the flags stay self-documenting — it is
+ * ALREADY CONSUMED on staging, and this app refuses a duplicate NMLS silently (see submitAddForm).
+ * Every shoot must pass its own --candidate-nmls; main() warns when this value is still in place.
+ */
+const DEFAULT_CANDIDATE_NMLS = '107621';
 
 const VIEWPORT = { width: 1920, height: 1080 };
 const SCENE_GAP_SEC = 0.6;          // playbook §5
@@ -962,16 +1002,55 @@ export function makeHelpers(page, { actLabel = 'act?', durations = {}, ctxStart 
     return DEFAULT_NARRATION_SEC;
   }
 
-  /** playbook §5 pacing: log offset, run, then hold to max(action, narration) + gap. */
-  async function scene(id, fn) {
+  /**
+   * playbook §5 pacing: run the SETUP phase, log the offset, run the narrated beats, then hold to
+   * max(action, narration) + gap.
+   *
+   *   h.scene(id, fn)                      — no setup; the whole body is narrated
+   *   h.scene(id, { prepare }, fn)          — `prepare` runs BEFORE the clock starts
+   *
+   * ⚠️ WHY `prepare` EXISTS — the worst defect the first assembly had. The offset pushed here is
+   * what markers.json hands to assemble.mjs, i.e. the timestamp the narration is cut in at. This app
+   * takes 5–11 SECONDS to render a board (see waitForAppIdle), which is most of a short scene. So a
+   * scene that opened with its own `h.goto(...)` published an offset that pointed at the moment
+   * navigation STARTED — while the previous scene's screen was still up — and the audience heard
+   * scene N describing a screen it would not see until scene N was nearly over. Observed in the
+   * assembled cut: s0_2 said "the board every single role shares, sixteen columns…" over the
+   * APPLICATIONS page, and s0_5 said "this is the Modex data" over the previous scene's config tab.
+   * A viewer concludes the narration is simply wrong.
+   *
+   * So: everything that only gets the intended screen on screen — goto, clickTab, filterGrid,
+   * waitForRows, existence probes — belongs in `prepare`. The offset is then taken AFTER it, so it
+   * marks the moment the right screen is genuinely up and settled. Keep in the body only what the
+   * narration actually describes.
+   *
+   * COUNTER-EXAMPLE, do not "fix" it: s3_2's beat IS the navigation (typing a forbidden route by
+   * hand and being silently redirected). That goto must stay in the body, because it is the content.
+   *
+   * A failing `prepare` is recorded like a failing body — it must never be silently skipped, since
+   * the whole point is that the screen is correct before the clock starts.
+   */
+  async function scene(id, a, b) {
+    const fn = typeof a === 'function' ? a : b;
+    const opts = typeof a === 'function' ? {} : (a || {});
+    let status = 'ok';
+    if (opts.prepare) {
+      try {
+        await opts.prepare();
+      } catch (err) {
+        status = `SETUP FAILED (${err.message})`;
+        failures.push({ id, error: `prepare: ${err.message}` });
+        console.warn(`[${actLabel}] ${id} setup failed — the narration will play over whatever is `
+          + `on screen: ${err.message}`);
+      }
+    }
     const offset = round2((Date.now() - demoStart) / 1000);
     scenes.push({ id, offset });
     const t0 = Date.now();
-    let status = 'ok';
     try {
       await fn();
     } catch (err) {
-      status = `FAILED (${err.message})`;
+      status = status === 'ok' ? `FAILED (${err.message})` : `${status} + FAILED (${err.message})`;
       failures.push({ id, error: err.message });
     }
     const spent = (Date.now() - t0) / 1000;
@@ -1176,31 +1255,65 @@ export async function openAddForm(page, h) {
  * That silent first click is what made two shoots look like a rejected submit. The oracle is the
  * form unmounting, so click until #gwt-debug-submit detaches.
  *
- * ⚠️ This form NEVER renders a validation message. Verified after a genuinely rejected submit:
- * no .invalid-feedback, no .alert, no toast, no red borders, nothing focused — the only reliable
- * signal that anything worked is whether the record exists afterwards. Do not add error-text
- * parsing here expecting it to fire.
+ * ⚠️ This form NEVER renders a validation message — but THE SERVER DOES, on the wire.
+ * VERIFIED 2026-08-04: a refused save answers HTTP 200 with a JSON body carrying the reason and no
+ * saved entity, e.g.
+ *     {"_ger":0,"message":"Duplicated NMLS"}
+ * and the UI drops it on the floor: no .invalid-feedback, no .alert, no toast, no red border,
+ * nothing focused. Every further click just re-POSTs SaveOp and collects the same refusal, which is
+ * indistinguishable on screen from a dead button — that is what made two shoots look like a broken
+ * form. So this reads the SaveOp RESPONSE and returns it: that body is the ONLY validation oracle
+ * this form has. Do not add DOM error-text parsing; there is nothing in the DOM to parse.
+ *
+ * DEDUPED SERVER-SIDE ON BOTH email AND nmls. Re-shooting with a fresh --candidate-email but the
+ * same --candidate-nmls fails with "Duplicated NMLS", because the previous take's record still
+ * holds that number (it lives on the Interested board once it has been invited). Bump BOTH per
+ * shoot.
+ *
+ * @returns {Promise<{saved: boolean, serverMessage: string|null}>}
  */
 export async function submitAddForm(page, h, { confirm = false, attempts = 3 } = {}) {
   const submitBtn = ['#gwt-debug-submit',
     () => page.locator(ADD_FORM_ROOT).getByRole('button', { name: btnName('Submit') }).first()];
-  for (let i = 1; i <= attempts; i += 1) {
-    await h.click(submitBtn, { timeout: 10_000 });
-    if (confirm) {
-      await h.optional('confirm the submission', async () => {
-        const btn = page.getByRole('button', { name: btnName('Confirm') }).first();
-        await btn.waitFor({ state: 'visible', timeout: 4000 });
-        await h.click(() => btn, { timeout: 6000 });
-      });
+  let serverMessage = null;
+  const onResponse = async (res) => {
+    if (res.request().method() !== 'POST' || !/\/exec\/SaveOp/.test(res.url())) return;
+    const body = await res.text().catch(() => '');
+    // A SUCCESSFUL save echoes the stored entity (which carries a "key"); a REFUSAL carries only
+    // {"_ger":<n>,"message":"<why>"}. Requiring the key to be absent keeps a saved record whose own
+    // data happens to contain a "message" field from being reported as a rejection.
+    const m = /"message"\s*:\s*"([^"]+)"/.exec(body);
+    if (m && !/"key"\s*:\s*"/.test(body)) serverMessage = m[1];
+  };
+  page.on('response', onResponse);
+  try {
+    for (let i = 1; i <= attempts; i += 1) {
+      await h.click(submitBtn, { timeout: 10_000 });
+      if (confirm) {
+        await h.optional('confirm the submission', async () => {
+          const btn = page.getByRole('button', { name: btnName('Confirm') }).first();
+          await btn.waitFor({ state: 'visible', timeout: 4000 });
+          await h.click(() => btn, { timeout: 6000 });
+        });
+      }
+      const gone = await page.locator('#gwt-debug-submit')
+        .waitFor({ state: 'detached', timeout: 12_000 }).then(() => true).catch(() => false);
+      if (gone) return { saved: true, serverMessage: null };
+      // A server refusal is FINAL: the payload will not change between clicks, so retrying only
+      // repeats it. Stop and say what the app refused to say.
+      if (serverMessage) {
+        console.error(`[add-form] the server REFUSED this save: "${serverMessage}". The form shows `
+          + 'nothing at all, so clicking Submit again cannot help — fix the payload and re-run.');
+        return { saved: false, serverMessage };
+      }
+      if (i < attempts) {
+        console.log(`[add-form] submit ${i} did not save (click 1 only runs the duplicate check) — clicking again`);
+      }
     }
-    const gone = await page.locator('#gwt-debug-submit')
-      .waitFor({ state: 'detached', timeout: 12_000 }).then(() => true).catch(() => false);
-    if (gone) return true;
-    if (i < attempts) {
-      console.log(`[add-form] submit ${i} did not save (click 1 only runs the duplicate check) — clicking again`);
-    }
+    return { saved: false, serverMessage };
+  } finally {
+    page.off('response', onResponse);
   }
-  return false;
 }
 
 /**
@@ -1379,6 +1492,24 @@ export async function fillAddForm(page, h, candidate = {}, { prematureSubmits = 
   await h.optional('career production', () => h.typeInto(['#closed_loan_since_2021'], '25000000'));
   await h.optional('mailing street', () => h.typeInto(['#mailing_street'], '1 Market Street'));
   await h.optional('licensed states = Texas', () => pickOption(/Licensed states/i, 'Texas'));
+  // ⚠️ KNOWN APP BUG, BENIGN — DO NOT "FIX" THIS BY REORDERING OR ADDING WAITS.
+  // Picking anything in "States that you want <Company> to sponsor" makes the app throw inside its
+  // own change handler and POST a crash report to /exec/LogOp:
+  //     com.google.gwt.core.client.JavaScriptException: (TypeError)
+  //     : Cannot read properties of null (reading 'I')   at Unknown.dw/Dmj/Wk/…
+  // BISECTED 2026-08-04, all on a virgin form, one interaction each:
+  //   • fires for EVERY state (Texas, Nevada, California) — not a per-state cascade;
+  //   • fires whether the option is CLICKED or committed with type-then-Enter — so it is the app's
+  //     own handler, not a synthetic-event or typing-speed artifact;
+  //   • fires when this is the FIRST thing touched on the form — so it is not a stale-listener or
+  //     not-yet-rendered-dependent-block problem, and no reordering or settle avoids it;
+  //   • the sibling widget "Licensed states" (same markup, same 52 options) does NOT fire it, so it
+  //     is specific to THIS widget's handler.
+  // It is UNAVOIDABLE and it does not matter: the value still lands (the chip renders, and a saved
+  // record comes back with sponsor_states:["TX"]), and the Submit handler stays alive — the two-phase
+  // FindOp → SaveOp flow runs normally afterwards. GWT catches it in its own uncaught-exception
+  // handler, which is why it never reaches page.on('pageerror') and is only visible as that LogOp.
+  // If a submit ever looks dead again, it is NOT this: read the SaveOp response (see submitAddForm).
   await h.optional('states to sponsor = Texas', () => pickOption(/States that you want/i, 'Texas'));
   await h.optional('preferred languages', () => pickOption(/Preferred languages/i, 'English'));
   await h.optional('preferred contact method', () => pickButton(/Preferred method of communication/i, 'Email'));
@@ -1654,10 +1785,9 @@ async function pickCellOption(page, h, labelRe, what) {
 // ---------------------------------------------------------------------------
 
 export async function act0(page, h, cfg = {}) {
-  await h.scene('s0_1', async () => {
+  await h.scene('s0_1', { prepare: () => h.goto(URLS.canary) }, async () => {
     // VERIFIED 2026-08-03: the sidebar entry is <a id="gwt-debug-lo-recruiting"> — a stable GWT
     // debug id, immune to text drift. Text match kept as a fallback.
-    await h.goto(URLS.canary);
     await h.click([
       gwt('lo-recruiting'),
       () => page.getByRole('link', { name: /LO RECRUITING/i }),
@@ -1682,9 +1812,14 @@ export async function act0(page, h, cfg = {}) {
     }
   });
 
-  await h.scene('s0_2', async () => {
-    await h.goto(URLS.rloMine);
-    await h.clickTab(TABS.company); // VERIFIED: clicking beats deep-linking (see URLS note)
+  // The narration opens with "this is the board every single role shares, sixteen columns…", so the
+  // board — not the previous scene's page — has to be up before the clock starts.
+  await h.scene('s0_2', {
+    prepare: async () => {
+      await h.goto(URLS.rloMine);
+      await h.clickTab(TABS.company); // VERIFIED: clicking beats deep-linking (see URLS note)
+    },
+  }, async () => {
     // 16 columns: prove it by scrolling the table horizontally.
     // VERIFIED 2026-08-03: the data grid is `table.table-sm.table-hover` with 17 <th>; the view
     // also holds a separate summary <table>, so anchor on the data table, not `table` first().
@@ -1730,14 +1865,17 @@ export async function act0(page, h, cfg = {}) {
     });
   });
 
-  await h.scene('s0_4', async () => {
-    await h.goto(URLS.config);
+  await h.scene('s0_4', { prepare: () => h.goto(URLS.config, { rows: false }) }, async () => {
+    // 🔒 The Calendly tab is DELIBERATELY NOT OPENED — it renders a live personal access token in
+    // clear text. See CONFIG_TABS_WITH_SECRETS for the full reasoning. Do not re-add it, and do not
+    // "solve" it with a blur: the tab STRIP below shows the audience that all five tabs exist, and
+    // the narration's line about the stored Calendly token lands fine without the token on screen.
+    //
     // VERIFIED 2026-08-04: clicking this strip is unreliable — `a.nav-link[role=tab]` also matches
     // dozens of SIDEBAR entries, so a name lookup can land outside the page's own strip (that is
     // why four of these five tabs found nothing in the first shoot). Deep-link them instead: every
     // tab is addressable as /lo_recruiting_config/<data-name>.
-    const tabs = Object.entries(CONFIG_TABS);
-    for (const [label, dn] of tabs) {
+    for (const [label, dn] of FILMABLE_CONFIG_TABS) {
       await h.optional(`config tab ${label}`, async () => {
         // Shoot 3 lost this whole scene to a single 60s goto timeout on a slow staging, so retry.
         let ok = false;
@@ -1754,12 +1892,23 @@ export async function act0(page, h, cfg = {}) {
         await h.hold(1.6);
       });
     }
-    // Land on Calendly (it holds a personal access token) and just look at it — never read it out.
-    await h.optional('stay on Calendly tab', () => h.goto(URLS.configCalendly, { rows: false }));
+    // Land on Webinar — a clean tab — and trace the tab strip so all five labels are on camera.
+    // Hovering the Calendly LABEL is safe and is the point of the beat; OPENING it is not.
+    await h.optional('land on a tab that renders no secret', () =>
+      h.goto(URLS.configWebinar, { rows: false }));
+    await h.optional('trace the five config tabs', async () => {
+      const strip = page.locator('div.tab-container nav[role="tablist"]').first();
+      for (const label of Object.keys(CONFIG_TABS)) {
+        await h.optional(`tab label ${label}`, () =>
+          h.moveTo(() => strip.getByText(label, { exact: false }).first(), { timeout: 3000 }));
+        await h.hold(0.6);
+      }
+    });
   });
 
-  await h.scene('s0_5', async () => {
-    await h.goto(URLS.modexData);
+  // The narration opens with "this is the Modex data", so the Modex page — not the config tab this
+  // scene follows — must be up before the clock starts.
+  await h.scene('s0_5', { prepare: () => h.goto(URLS.modexData) }, async () => {
     // Open one record's MODEX INFORMATION modal (read-only).
     // VERIFIED 2026-08-03: this page is the ONE div-grid (div.table-row / div.table-cell, 9 rows)
     // and "View" / "Update" are real <button class="btn btn-secondary">, so role=link matched
@@ -1802,52 +1951,73 @@ export async function act0(page, h, cfg = {}) {
    *
    * It also creates the candidate FOR REAL and hands him to Luis, so every later act has him.
    */
-  await h.scene('s1_4', async () => {
-    const candidate = cfg.candidate || {};
-    const fullName = candidate.name || 'Marcus Reyes';
-    const ownedBy = new RegExp(ACCOUNTS.luis.label, 'i');
+  // The existence probe below is SETUP, not content: it loads a board (5–11s), may run a grid
+  // search, and none of it is narrated. It therefore runs in `prepare`, so this scene's offset marks
+  // the moment the form work actually begins. State it discovers is shared through `s14`.
+  const s14 = {
+    candidate: cfg.candidate || {},
+    probed: false,       // did the existence check COMPLETE? (see the guard in the body)
+    exists: false,
+    existingText: '',
+    existing: null,
+  };
+  s14.fullName = s14.candidate.name || 'Marcus Reyes';
+  s14.ownedBy = new RegExp(ACCOUNTS.luis.label, 'i');
 
-    // IDEMPOTENT BY DESIGN. Check for the record BEFORE touching the form.
-    //
-    // The submit's first click is a duplicate-EMAIL lookup (see submitAddForm). If the candidate
-    // already exists and we submit the same email again, the app drops into a duplicate path that
-    // nobody has seen — and it would be filmed unscripted. So: create only when he is missing, and
-    // otherwise DEMONSTRATE the form and leave via Cancel. The narration was re-pointed to the
-    // silent rejection, so it no longer depends on a successful save.
-    // Look on COMPANY, not Mine: "Mine" means records the CURRENT user owns, and this record is
-    // owned by a recruiter, so it is correctly absent from admin's Mine.
-    // ABSENT vs COULD-NOT-DETERMINE. Shoot 3 taught this the expensive way: staging was slow, the
-    // board never loaded, the check read that as "the record is absent" and took the CREATION
-    // branch — the branch that MUTATES — on a record that already existed. A failed or empty load
-    // must therefore be retried and then hard-fail, never silently mean "absent".
-    let boardLoaded = false;
-    let existing = h.row(fullName);
-    for (let attempt = 1; attempt <= 3 && !boardLoaded; attempt += 1) {
-      try {
-        await h.goto(URLS.rloCompany);
-        const state = await h.waitForRows();
-        // A board that reports neither rows nor an explicit empty state has not loaded.
-        boardLoaded = state.rows > 0 || state.empty;
-        if (!boardLoaded) throw new Error(`board did not populate (pager "${state.pager}")`);
-      } catch (err) {
-        console.warn(`[act0]   s1_4: existence check attempt ${attempt}/3 failed: ${err.message}`);
-        if (attempt < 3) await h.hold(5);
+  await h.scene('s1_4', {
+    prepare: async () => {
+      const { fullName } = s14;
+      // IDEMPOTENT BY DESIGN. Check for the record BEFORE touching the form.
+      //
+      // The submit's first click is a duplicate-EMAIL lookup (see submitAddForm). If the candidate
+      // already exists and we submit the same email again, the app drops into a duplicate path that
+      // nobody has seen — and it would be filmed unscripted. So: create only when he is missing, and
+      // otherwise DEMONSTRATE the form and leave via Cancel. The narration was re-pointed to the
+      // silent rejection, so it no longer depends on a successful save.
+      // Look on COMPANY, not Mine: "Mine" means records the CURRENT user owns, and this record is
+      // owned by a recruiter, so it is correctly absent from admin's Mine.
+      // ABSENT vs COULD-NOT-DETERMINE. Shoot 3 taught this the expensive way: staging was slow, the
+      // board never loaded, the check read that as "the record is absent" and took the CREATION
+      // branch — the branch that MUTATES — on a record that already existed. A failed or empty load
+      // must therefore be retried and then hard-fail, never silently mean "absent".
+      let boardLoaded = false;
+      for (let attempt = 1; attempt <= 3 && !boardLoaded; attempt += 1) {
+        try {
+          await h.goto(URLS.rloCompany);
+          const state = await h.waitForRows();
+          // A board that reports neither rows nor an explicit empty state has not loaded.
+          boardLoaded = state.rows > 0 || state.empty;
+          if (!boardLoaded) throw new Error(`board did not populate (pager "${state.pager}")`);
+        } catch (err) {
+          console.warn(`[act0]   s1_4: existence check attempt ${attempt}/3 failed: ${err.message}`);
+          if (attempt < 3) await h.hold(5);
+        }
       }
+      if (!boardLoaded) {
+        throw new Error('could not determine whether the candidate exists — the Recruited board never '
+          + 'loaded after 3 attempts. REFUSING to guess: the creation branch mutates, and treating a '
+          + 'slow page as "absent" is how a duplicate gets created. Re-run act 0 when staging responds.');
+      }
+      s14.existing = h.row(fullName);
+      if (!(await s14.existing.count())) {
+        await h.optional('search for the candidate', async () => {
+          await h.filterGrid(fullName.toLowerCase());
+          s14.existing = h.row(fullName);
+        });
+      }
+      s14.exists = (await s14.existing.count()) > 0;
+      s14.existingText = s14.exists ? ((await s14.existing.innerText().catch(() => '')) || '') : '';
+      s14.probed = true;
+    },
+  }, async () => {
+    const { candidate, fullName, ownedBy, exists, existingText } = s14;
+    // A THROWN `prepare` is recorded and then the body still runs (see scene()), so re-assert the
+    // safety property here: without a COMPLETED probe, "absent" is unknown, and the creation branch
+    // mutates. Never guess.
+    if (!s14.probed) {
+      throw new Error('s1_4 setup did not complete, so whether the candidate exists is UNKNOWN. '
+        + 'Refusing to run the form: the creation branch mutates. Re-run act 0 when staging responds.');
     }
-    if (!boardLoaded) {
-      throw new Error('could not determine whether the candidate exists — the Recruited board never '
-        + 'loaded after 3 attempts. REFUSING to guess: the creation branch mutates, and treating a '
-        + 'slow page as "absent" is how a duplicate gets created. Re-run act 0 when staging responds.');
-    }
-    existing = h.row(fullName);
-    if (!(await existing.count())) {
-      await h.optional('search for the candidate', async () => {
-        await h.filterGrid(fullName.toLowerCase());
-        existing = h.row(fullName);
-      });
-    }
-    const exists = (await existing.count()) > 0;
-    const existingText = exists ? ((await existing.innerText().catch(() => '')) || '') : '';
 
     if (exists) {
       console.log(`[act0]   s1_4: BRANCH = DEMONSTRATION — "${fullName}" already exists`
@@ -1880,7 +2050,7 @@ export async function act0(page, h, cfg = {}) {
       return;
     }
 
-    await submitAddForm(page, h, { confirm: true });
+    const submitted = await submitAddForm(page, h, { confirm: true });
     await h.hold(4); // new records index slowly (Datastore eventual consistency)
 
     // VERIFY — deliberately NOT optional(). Shoot 1 had this wrapped, so a failed create still
@@ -1897,10 +2067,17 @@ export async function act0(page, h, cfg = {}) {
       // This form never shows a validation message (see submitAddForm), so dump the state and a
       // screenshot: that is the only way anyone can debug it after the fact.
       await reportAddFormRejection(page, 's1_4-rejected');
-      throw new Error(`"${fullName}" was NOT created — the submit did not save. This form gives NO `
-        + 'on-screen error, so check the screenshot in recorder/debug/ and the still-empty required '
-        + 'groups logged above, then re-record act 0 before anything else: every later act operates '
-        + 'on this record.');
+      // The SERVER does explain itself, even though the UI never does — surface that verbatim,
+      // because it names the actual defect ("Duplicated NMLS", …) instead of leaving a mystery.
+      throw new Error(`"${fullName}" was NOT created — `
+        + (submitted.serverMessage
+          ? `the server refused the save: "${submitted.serverMessage}". `
+            + 'Both --candidate-email AND --candidate-nmls must be unused: the previous take\'s '
+            + 'record still holds them (it sits on the Interested board once invited). '
+          : 'the submit did not save, and the server sent no reason. ')
+        + 'This form gives NO on-screen error, so check the screenshot in recorder/debug/ and the '
+        + 'still-empty required groups logged above, then re-record act 0 before anything else: '
+        + 'every later act operates on this record.');
     }
     console.log(`[act0]   s1_4: ${fullName} created`);
 
@@ -1923,15 +2100,18 @@ export async function act0(page, h, cfg = {}) {
     }
   });
 
-  await h.scene('s0_6', async () => {
+  await h.scene('s0_6', {
+    prepare: async () => {
+      await h.optional('associates screen', () => h.goto(URLS.associates));
+      // VERIFIED 2026-08-04: typing alone does NOT filter this grid — it is a select2 token widget
+      // (see h.filterGrid). The first shoot typed the name, never committed a token, so the grid was
+      // unfiltered and the row lookup below found nothing. Commit the unique EMAIL token.
+      await h.optional('search the account', () => h.filterGrid(ACCOUNTS.luis.email));
+    },
+  }, async () => {
     // INTRODUCE ONLY. Clicking "Login" here would swap THIS context's session mid-act and
     // there is no way back to admin (audit §10.3) — act 1 does the real login-as in its own
     // fresh context, so this scene only opens the menu and points at the item.
-    await h.optional('associates screen', () => h.goto(URLS.associates));
-    // VERIFIED 2026-08-04: typing alone does NOT filter this grid — it is a select2 token widget
-    // (see h.filterGrid). The first shoot typed the name, never committed a token, so the grid was
-    // unfiltered and the row lookup below found nothing. Commit the unique EMAIL token.
-    await h.optional('search the account', () => h.filterGrid(ACCOUNTS.luis.email));
     // VERIFIED 2026-08-03: per-row Action is <button>Action</button>; its menu holds
     // Permissions / Login / Audit log / … / Delete. Scope BOTH to the matched row: every row's
     // menu is pre-rendered, so an unscoped match would point at another account's Login — and
@@ -2001,9 +2181,8 @@ export async function act1(page, h, cfg = {}) {
     rowOfCandidate = () => substitute;
   }
 
-  await h.scene('s1_1', async () => {
-    // VERIFIED 2026-08-03: Mine is the default tab; clickTab is a no-op verification here.
-    await h.goto(URLS.rloMine);
+  // VERIFIED 2026-08-03: Mine is the default tab; clickTab is a no-op verification here.
+  await h.scene('s1_1', { prepare: () => h.goto(URLS.rloMine) }, async () => {
     await h.smoothScroll('window', 700, { steps: 14 });
     await h.hold(1);
     await h.smoothScroll('window', -700, { steps: 10 });
@@ -2083,9 +2262,8 @@ export async function act1(page, h, cfg = {}) {
   // says so on camera. Nothing is emitted for s1_4 in this act, so act 1's markers stay monotonic
   // and its narration cue cannot land on the wrong footage.
 
-  await h.scene('s1_5', async () => {
-    // THE evidence button: "Copy Name And NMLS #" exists only so the recruiter can leave the app.
-    await h.goto(URLS.rloMine);
+  // THE evidence button: "Copy Name And NMLS #" exists only so the recruiter can leave the app.
+  await h.scene('s1_5', { prepare: () => h.goto(URLS.rloMine) }, async () => {
     // VERIFIED 2026-08-03: the social-media cell holds a single
     // `button` labelled "Not checked" (becomes "Checked and has social links" once filled).
     await h.click([
@@ -2363,14 +2541,14 @@ export async function act1(page, h, cfg = {}) {
     console.log('[act1]   s1_14: verified in ILO with status "Invited to join"');
   });
 
-  await h.scene('s1_15', async () => {
-    // Same human, second warehouse, different vocabulary (8 ILO statuses vs 10 RLO statuses).
+  // Same human, second warehouse, different vocabulary (8 ILO statuses vs 10 RLO statuses).
+  // The narration names the ILO board, so it has to be up before the clock starts.
+  await h.scene('s1_15', { prepare: () => h.goto(URLS.iloMine) }, async () => {
     // Scope the reveals to the candidate's ILO ROW: unscoped, /Invited to join/ also matches the
     // stats tile above the board ("Invited but not onboarding"), which is hidden or elsewhere on the
     // page — that is why this hover was skipped in shoots 2 and 3. Note rowOfCandidate() may point
     // at a substitute on the RECRUITED board (see the top of act1), so name the candidate directly
     // here: on the ILO board he is present by definition once s1_14 has verified him.
-    await h.goto(URLS.iloMine);
     const iloRow = h.row(fullName);
     await h.optional('find the candidate', () => h.moveTo(() => iloRow, { timeout: 10_000 }));
     await h.hold(1);
@@ -2392,8 +2570,7 @@ export async function act2(page, h, cfg = {}) {
   const rowOfCandidate = () =>
     page.locator('tr', { hasText: new RegExp(candidate.name || 'Marcus Reyes', 'i') }).first();
 
-  await h.scene('s2_1', async () => {
-    await h.goto(URLS.iloMine);
+  await h.scene('s2_1', { prepare: () => h.goto(URLS.iloMine) }, async () => {
     // The point: there is only a Mine tab. Show the tab strip and the missing Company tab.
     await h.optional('tab strip', () => h.moveTo(() => page.getByText(/^\s*Mine\s*$/i).first(), { timeout: 8000 }));
     await h.hold(2);
@@ -2421,8 +2598,7 @@ export async function act2(page, h, cfg = {}) {
     await h.optional('scan the whole empty board', () => h.smoothScroll('window', 220));
   });
 
-  await h.scene('s2_3', async () => {
-    await h.goto(URLS.rloMine);
+  await h.scene('s2_3', { prepare: () => h.goto(URLS.rloMine) }, async () => {
     // Toolbar diff vs Luis: no Add / Delete / Assign recruiter; bulk Action has one entry.
     for (const t of [/^\s*Add\s*$/i, /^\s*Delete\s*$/i, /Assign recruiter/i]) {
       console.log(`[act2]   toolbar "${t}" present: ${(await page.getByText(t).count()) > 0}`);
@@ -2441,41 +2617,57 @@ export async function act2(page, h, cfg = {}) {
       h.moveTo(() => page.getByText(/Pending approvals/i).first(), { timeout: 5000 }));
   });
 
-  await h.scene('s2_4', async () => {
-    // An inside recruiter can still open the company-wide config, Calendly token included.
-    await h.goto(URLS.config);
-    await h.optional('Calendly tab', () =>
+  // The point: an inside recruiter can still reach the company-wide config at all.
+  // `URLS.config` always lands on the Webinar tab, which renders no secret.
+  await h.scene('s2_4', { prepare: () => h.goto(URLS.config, { rows: false }) }, async () => {
+    // 🔒 HOVER THE LABEL, NEVER OPEN THE TAB. The Calendly tab renders a live personal access token
+    // in clear text (see CONFIG_TABS_WITH_SECRETS). The tab's NAME in the strip is just text and is
+    // exactly the evidence this beat needs — that this role can see the tab exists. Do not turn this
+    // moveTo into a goto/click.
+    await h.optional('point at the Calendly tab (without opening it)', () =>
       h.moveTo(() => page.getByText(/1-1 Meeting using Calendly/i).first(), { timeout: 6000 }));
     await h.hold(2);
   });
 
-  await h.scene('s2_5', async () => {
-    // Self-apply queue. "Check Modex" per row is the system admitting it needs another site.
-    // VERIFIED 2026-08-04: "Pending approvals" cannot be deep-linked (the space bounces to
-    // /Mine) — reach it by clicking the tab.
-    //
+  // Self-apply queue. "Check Modex" per row is the system admitting it needs another site.
+  // VERIFIED 2026-08-04: "Pending approvals" cannot be deep-linked (the space bounces to /Mine) —
+  // reach it by clicking the tab. That navigation plus its retries is SETUP (and is also re-used to
+  // verify afterwards), so it lives in `prepare` and the queue reading is shared through `s25`.
+  const openQueue = async () => {
+    await h.goto(URLS.rloMine);
+    await h.clickTab(TABS.pendingApprovals);
+    return h.waitForRows();
+  };
+  const s25 = { probed: false, queue: null };
+
+  await h.scene('s2_5', {
+    prepare: async () => {
+      let queue = null;
+      for (let attempt = 1; attempt <= 3; attempt += 1) {
+        queue = await openQueue().catch((err) => ({ rows: 0, empty: false, pager: err.message }));
+        if (queue.rows > 0 || queue.empty) break;
+        console.warn(`[act2]   s2_5: queue read attempt ${attempt}/3 inconclusive (pager "${queue.pager}")`);
+        if (attempt < 3) await h.hold(5);
+      }
+      if (!(queue.rows > 0 || queue.empty)) {
+        throw new Error('CANNOT DETERMINE whether anything is pending approval — the queue never '
+          + 'loaded after 3 attempts, reporting neither rows nor an empty state. REFUSING to guess: '
+          + 'Approve is irreversible and targets whatever row happens to be first.');
+      }
+      s25.queue = queue;
+      s25.probed = true;
+    },
+  }, async () => {
     // ONE-WAY, and note this beat targets a DIFFERENT record from the rest of the shoot: whichever
     // self-apply row is at the top of the queue, not Marcus. Approving moves it into the Company tab
     // and cannot be undone, so it gets the same three-way branch. "Already done" here means the
     // queue is empty — there is nothing left to approve.
-    const openQueue = async () => {
-      await h.goto(URLS.rloMine);
-      await h.clickTab(TABS.pendingApprovals);
-      return h.waitForRows();
-    };
-
-    let queue = null;
-    for (let attempt = 1; attempt <= 3; attempt += 1) {
-      queue = await openQueue().catch((err) => ({ rows: 0, empty: false, pager: err.message }));
-      if (queue.rows > 0 || queue.empty) break;
-      console.warn(`[act2]   s2_5: queue read attempt ${attempt}/3 inconclusive (pager "${queue.pager}")`);
-      if (attempt < 3) await h.hold(5);
+    if (!s25.probed) {
+      throw new Error('s2_5 setup did not complete, so whether anything is pending approval is '
+        + 'UNKNOWN. Refusing to run the beat: Approve is irreversible and targets whatever row '
+        + 'happens to be first.');
     }
-    if (!(queue.rows > 0 || queue.empty)) {
-      throw new Error('CANNOT DETERMINE whether anything is pending approval — the queue never '
-        + 'loaded after 3 attempts, reporting neither rows nor an empty state. REFUSING to guess: '
-        + 'Approve is irreversible and targets whatever row happens to be first.');
-    }
+    const queue = s25.queue;
 
     await h.optional('Check Modex link', () =>
       h.moveTo(() => page.getByText(/Check Modex/i).first(), { timeout: 8000 }));
@@ -2532,8 +2724,7 @@ export async function act2(page, h, cfg = {}) {
 // ---------------------------------------------------------------------------
 
 export async function act3(page, h) {
-  await h.scene('s3_1', async () => {
-    await h.goto(URLS.canary);
+  await h.scene('s3_1', { prepare: () => h.goto(URLS.canary) }, async () => {
     // The evidence is an ABSENCE: no LO RECRUITING entry in this role's menu.
     const present = await page.getByText(/LO RECRUITING/i).count();
     console.log(`[act3]   "LO RECRUITING" menu entries visible: ${present}`);
@@ -2548,6 +2739,9 @@ export async function act3(page, h) {
     });
   });
 
+  // NO `prepare` HERE, DELIBERATELY. Everywhere else navigation is setup that must finish before the
+  // clock starts — but this scene's entire content IS the navigation: asking for a forbidden route by
+  // hand and being silently redirected. Moving that goto into `prepare` would put the beat off camera.
   await h.scene('s3_2', async () => {
     // Typing the route by hand: silent redirect, no 403, no message.
     const before = URLS.iloMine;
@@ -2563,18 +2757,23 @@ export async function act3(page, h) {
     await h.hold(0.5);
   });
 
-  await h.scene('s3_4', async () => {
-    // Licensing's own data lives as COLUMNS in someone else's table. This role cannot open
-    // that table on staging, so try and fall back to a hold; the columns themselves are
-    // shown from HR's session in act 4 / act 5.
-    const reached = await h.optional('try the ILO table', async () => {
-      await h.goto(URLS.iloCompany);
-      for (const c of [/NMLS status/i, /License status/i, /States to sponsor/i]) {
-        await h.optional(`column ${c}`, () => h.moveTo(() => page.getByText(c).first(), { timeout: 3000 }));
-        await h.hold(0.8);
-      }
-    });
-    if (!reached) console.log('[act3]   s3_4 has no drivable screen for this role — narration over the redirect');
+  // Licensing's own data lives as COLUMNS in someone else's table. This role cannot open that table
+  // on staging, so ATTEMPT the navigation in setup and fall back to a hold; the columns themselves
+  // are shown from HR's session in act 4 / act 5. Whether the attempt landed is shared through s34.
+  const s34 = { reached: false };
+  await h.scene('s3_4', {
+    prepare: async () => {
+      s34.reached = await h.optional('try the ILO table', () => h.goto(URLS.iloCompany));
+    },
+  }, async () => {
+    if (!s34.reached) {
+      console.log('[act3]   s3_4 has no drivable screen for this role — narration over the redirect');
+      return;
+    }
+    for (const c of [/NMLS status/i, /License status/i, /States to sponsor/i]) {
+      await h.optional(`column ${c}`, () => h.moveTo(() => page.getByText(c).first(), { timeout: 3000 }));
+      await h.hold(0.8);
+    }
   });
 }
 
@@ -2588,8 +2787,7 @@ export async function act4(page, h, cfg = {}) {
   const rowOfCandidate = () =>
     page.locator('tr', { hasText: new RegExp(candidate.name || 'Marcus Reyes', 'i') }).first();
 
-  await h.scene('s4_1', async () => {
-    await h.goto(URLS.iloCompany);
+  await h.scene('s4_1', { prepare: () => h.goto(URLS.iloCompany) }, async () => {
     // 11 funnel tiles, each a drill-down that counts but assigns nothing.
     for (const s of [/Paid but not signed/i, /NMLS sponsored but HR onboarding/i, /HR completed but NMLS not sponsored/i, /100% onboarded/i]) {
       await h.optional(`stat ${s}`, () => h.moveTo(() => page.getByText(s).first(), { timeout: 3500 }));
@@ -2762,10 +2960,9 @@ export async function act4(page, h, cfg = {}) {
     console.log('[act4]   s4_4: verified — status is "100% onboarded" (NMLS/HR/1-1 still outstanding)');
   });
 
-  await h.scene('s4_5', async () => {
-    // Template settings: real asset (per-status Email / SMS / Call script), on a settings page
-    // every role can open.
-    await h.goto(URLS.iloCompany);
+  // Template settings: real asset (per-status Email / SMS / Call script), on a settings page
+  // every role can open.
+  await h.scene('s4_5', { prepare: () => h.goto(URLS.iloCompany) }, async () => {
     // VERIFIED 2026-08-04: the TOOLBAR Action is <a id="gwt-debug-action">; getByRole('button')
     // grabbed a per-row Action button instead, which has no Template settings item — that is why
     // this scene failed. Anchor on the id.
@@ -2783,12 +2980,15 @@ export async function act4(page, h, cfg = {}) {
     await h.optional('scroll a template body', () => h.smoothScroll('window', 400, { steps: 12 }));
   });
 
-  await h.scene('s4_6', async () => {
-    // Calendly invite: the meeting lives in Calendly, the result is a checkbox in here, and
-    // nothing connects the two.
-    await h.goto(URLS.iloCompany);
-    // s4_4 may have advanced the record to "100% onboarded", which drops it off page one.
-    await ensureCandidateVisible(page, h, candidate.name || 'Marcus Reyes');
+  // Calendly invite: the meeting lives in Calendly, the result is a checkbox in here, and
+  // nothing connects the two.
+  await h.scene('s4_6', {
+    prepare: async () => {
+      await h.goto(URLS.iloCompany);
+      // s4_4 may have advanced the record to "100% onboarded", which drops it off page one.
+      await ensureCandidateVisible(page, h, candidate.name || 'Marcus Reyes');
+    },
+  }, async () => {
     await h.click([
       // VERIFIED 2026-08-03: per-row Action is <button>Action</button> (the toolbar one is an
       // <a id="gwt-debug-action">). Items carry data-name; see h.dropdownItem.
@@ -2837,9 +3037,8 @@ export async function act4(page, h, cfg = {}) {
     console.log('[act4]   s4_7: account form introduced and confirmed closed — nothing was submitted.');
   });
 
-  await h.scene('s4_8', async () => {
+  await h.scene('s4_8', { prepare: () => h.goto(URLS.iloCompany) }, async () => {
     // INTRODUCE ONLY: company-wide Delete over the whole 23.5K pipeline. Hover, never click.
-    await h.goto(URLS.iloCompany);
     await h.optional('hover Delete', () => h.moveTo(() => page.getByText(/^\s*Delete/i).first(), { timeout: 6000 }));
     await h.hold(2.5);
   });
@@ -2855,8 +3054,7 @@ export async function act5(page, h, cfg = {}) {
   const rowOfCandidate = () =>
     page.locator('tr', { hasText: new RegExp(candidate.name || 'Marcus Reyes', 'i') }).first();
 
-  await h.scene('s5_1', async () => {
-    await h.goto(URLS.iloMine);
+  await h.scene('s5_1', { prepare: () => h.goto(URLS.iloMine) }, async () => {
     // VERIFIED 2026-08-04 (probed on the ILO board): when a role has only ONE tab the strip is not
     // rendered visibly at all — the "Mine" tab exists but reads vis=false, and `div.tab-container
     // nav[role=tablist]` is not present on this view (LORecruitingListView). So there is nothing to
@@ -2869,11 +3067,13 @@ export async function act5(page, h, cfg = {}) {
     await h.hold(2);
   });
 
-  await h.scene('s5_2', async () => {
-    // Why a record already has an owner: an auto-assign toggle buried in settings.
-    // VERIFIED 2026-08-04: deep-linkable by data-name; /lo_recruiting_config alone always
-    // redirects to the Webinar tab, which is why the toggles looked missing.
-    await h.goto(URLS.configOwnerAssignment, { rows: false });
+  // Why a record already has an owner: an auto-assign toggle buried in settings.
+  // VERIFIED 2026-08-04: deep-linkable by data-name; /lo_recruiting_config alone always
+  // redirects to the Webinar tab, which is why the toggles looked missing.
+  // (This is the owner-assignment tab, which renders no secret — see CONFIG_TABS_WITH_SECRETS.)
+  await h.scene('s5_2', {
+    prepare: () => h.goto(URLS.configOwnerAssignment, { rows: false }),
+  }, async () => {
     await h.hold(2.5);
     for (const t of [/Recruiter/i, /Onboarding specialist/i, /Support/i]) {
       await h.optional(`toggle ${t}`, () => h.moveTo(() => page.getByText(t).first(), { timeout: 3000 }));
@@ -2881,11 +3081,14 @@ export async function act5(page, h, cfg = {}) {
     }
   });
 
-  await h.scene('s5_3', async () => {
-    // The whole onboarding checklist is a row of columns: no owner, no due date, no order.
-    await h.goto(URLS.iloMine);
-    // If act 4 already advanced the record to "100% onboarded" it is off page one here too.
-    await ensureCandidateVisible(page, h, candidate.name || 'Marcus Reyes');
+  // The whole onboarding checklist is a row of columns: no owner, no due date, no order.
+  await h.scene('s5_3', {
+    prepare: async () => {
+      await h.goto(URLS.iloMine);
+      // If act 4 already advanced the record to "100% onboarded" it is off page one here too.
+      await ensureCandidateVisible(page, h, candidate.name || 'Marcus Reyes');
+    },
+  }, async () => {
     await h.optional('find the candidate', () => h.moveTo(() => rowOfCandidate(), { timeout: 8000 }));
     const header = [() => page.getByText(/NMLS status/i).first(), () => page.locator('table').first()];
     const scroller = await h.scrollableNear(header);
@@ -2953,8 +3156,7 @@ export async function act5(page, h, cfg = {}) {
 export async function act6(page, h, cfg = {}) {
   const candidate = cfg.candidate || {};
 
-  await h.scene('s6_1', async () => {
-    await h.goto(URLS.iloCompany);
+  await h.scene('s6_1', { prepare: () => h.goto(URLS.iloCompany) }, async () => {
     // Accounting is the ONLY role with Export (csv) — the real reporting lives in spreadsheets.
     await h.click([
       () => page.getByRole('button', { name: /^\s*Action\s*$/i }).first(),
@@ -2995,9 +3197,8 @@ export async function act7(page, h, cfg = {}) {
   // referrals page is admin-only (see the note at the end of act6). markers.json records their
   // true on-camera offsets in THIS video, so their narration lands on the referrals screen.
   // VERIFIED 2026-08-04: the policy modal opener is `button#loan-officer-referral-policy`.
-  await h.scene('s6_2', async () => {
+  await h.scene('s6_2', { prepare: () => h.goto(URLS.referrals) }, async () => {
     // Referral policy: five exclusions printed in a modal that the system does not enforce.
-    await h.goto(URLS.referrals);
     await h.optional('open the policy modal', () =>
       h.click(['#loan-officer-referral-policy'], { timeout: 8000 }));
     await h.hold(2.5);
@@ -3027,14 +3228,20 @@ export async function act7(page, h, cfg = {}) {
     await h.dismiss();
   });
 
-  await h.scene('s7_1', async () => {
-    await h.goto(URLS.iloCompany);
-    // THE CLOSING REVEAL. By now the record is "100% onboarded" — exactly the state that drops it off
-    // page one of this board (verified live 2026-08-04). The previous hand-rolled optional search had
-    // the same shape as the ones that silently skipped all through shoots 2 and 3, so use the shared
-    // verified path (h.filterGrid) and say so loudly if the final shot has no subject.
-    await h.hold(1);
-    if (!(await ensureCandidateVisible(page, h, candidate.name || 'Marcus Reyes'))) {
+  // THE CLOSING REVEAL. By now the record is "100% onboarded" — exactly the state that drops it off
+  // page one of this board (verified live 2026-08-04). The previous hand-rolled optional search had
+  // the same shape as the ones that silently skipped all through shoots 2 and 3, so use the shared
+  // verified path (h.filterGrid) and say so loudly if the final shot has no subject.
+  // Both the navigation AND the search are setup: the reveal must already be on screen when the
+  // closing narration starts, or the film ends on the wrong frame.
+  const s71 = { visible: false };
+  await h.scene('s7_1', {
+    prepare: async () => {
+      await h.goto(URLS.iloCompany);
+      s71.visible = await ensureCandidateVisible(page, h, candidate.name || 'Marcus Reyes');
+    },
+  }, async () => {
+    if (!s71.visible) {
       console.error(`[act7]   s7_1: ${candidate.name || 'Marcus Reyes'} is not on the ILO board even by`);
       console.error('[act7]   s7_1: search — the closing state reveal has no subject to rest on.');
     }
@@ -3102,7 +3309,8 @@ export function parseArgs(argv = process.argv.slice(2)) {
       name: 'Marcus Reyes',
       email: '',            // supplied at shoot time via --candidate-email (see --mail-url)
       phone: '(444) 433-3444',
-      nmls: '107621',
+      // ALREADY USED by the first take — override per shoot with --candidate-nmls (main() warns).
+      nmls: DEFAULT_CANDIDATE_NMLS,
       channel: 'Retail LO',
       experience: 'Experienced',
       priority: 'High',
@@ -3378,6 +3586,25 @@ async function main() {
       "  --mail-url '"+INBOX+"'",
       '',
       'Never use a real person\'s address: this staging environment sends real email.',
+    ]);
+  }
+
+  // The record is deduped SERVER-SIDE on NMLS as well as email, and a refused save is INVISIBLE in
+  // the UI — SaveOp answers {"message":"Duplicated NMLS"} and the form just sits there (see
+  // submitAddForm). The previous take's record keeps its number forever (it lives on the Interested
+  // board once invited), so the built-in default is consumed the moment act 0 runs once. Warn while
+  // it is still cheap rather than let a shoot burn on a silent rejection.
+  if (selected.some((a) => a.id === 0) && args.candidate.nmls === DEFAULT_CANDIDATE_NMLS) {
+    banner([
+      'USING THE DEFAULT --candidate-nmls',
+      '',
+      `NMLS ${DEFAULT_CANDIDATE_NMLS} is the value the FIRST take used, and this app refuses a`,
+      'duplicate NMLS with no on-screen error whatsoever — the Add form simply never saves.',
+      '',
+      'Give this take its own unused number (and its own email):',
+      '  --candidate-nmls <unused-number>',
+      '',
+      'Both must be fresh per shoot; bumping only the email is not enough.',
     ]);
   }
 
