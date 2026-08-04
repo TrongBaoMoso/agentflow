@@ -1901,7 +1901,29 @@ export async function ensureCandidateVisible(page, h, candidate = {}) {
   // had just advanced dropped off page one, an OLDER record with the same name was still on page one,
   // so this returned "visible" without searching and the caller then read the wrong record. Ask for
   // the NMLS-matched row, so a same-name decoy cannot satisfy the check.
-  if (await candidateRow(page, cand).count()) return true;
+  if (await candidateRow(page, cand).count()) {
+    // 🎥 IT IS ON SCREEN — BUT IS IT ALONE IN FRAME?
+    // Being present is not the same as being unambiguous on camera. VERIFIED 2026-08-04: with the
+    // subject reset to "Invited to join" it returns to page one and sits there ALONGSIDE the older
+    // same-name record, so a beat that simply finds it films TWO identical "Marcus Reyes" rows with
+    // different statuses — the same defect that was fixed for s7_1, reached from the other direction
+    // (s7_1 hit it while filtering, act 4's early beats hit it while NOT needing to filter). So when
+    // a same-name row shares the board, narrow to the NMLS anyway.
+    const sharing = await countSameName(page, cand);
+    if (sharing <= 1 || !cand.nmls) return true;
+    console.log(`[find]   ${sharing} rows named "${fullName}" are in frame — narrowing to NMLS `
+      + `${cand.nmls} so only the subject is on camera`);
+    await h.optional(`narrow the board to NMLS ${cand.nmls}`, () => h.filterGrid(cand.nmls));
+    if (await candidateRow(page, cand).count()) {
+      const left = await countSameName(page, cand);
+      if (left > 1) {
+        console.warn(`[find]   still ${left} same-name rows in frame after narrowing — the shot will `
+          + 'show more than one "' + fullName + '"');
+      }
+      return true;
+    }
+    console.warn(`[find]   narrowing to NMLS ${cand.nmls} lost the row; falling back to a name search`);
+  }
   const sameName = await countSameName(page, cand);
   if (sameName && cand.nmls) {
     console.log(`[find]   ${sameName} row(s) named "${fullName}" are on this page but NONE is NMLS `
