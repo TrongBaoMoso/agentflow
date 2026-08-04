@@ -1201,6 +1201,22 @@ export async function submitAddForm(page, h, { confirm = false, attempts = 3 } =
 }
 
 /**
+ * Leave the create form WITHOUT saving.
+ * VERIFIED 2026-08-04: `button#gwt-debug-cancel` ("Cancel", class "btn btn-secondary btn-lg mr-1")
+ * sits beside the submit button. Used by the demonstration branch of s1_4, which must never reach
+ * the save phase.
+ */
+export async function cancelAddForm(page, h) {
+  await h.click(['#gwt-debug-cancel',
+    () => page.locator(ADD_FORM_ROOT).getByRole('button', { name: btnName('Cancel') }).first(),
+  ], { timeout: 10_000 });
+  await page.locator('#gwt-debug-submit')
+    .waitFor({ state: 'detached', timeout: 15_000 }).catch(() => {});
+  await h.dismiss();
+  await h.waitForAppIdle();
+}
+
+/**
  * Re-assign a record's recruiter from the board toolbar.
  *
  * VERIFIED 2026-08-04: needed because the create form does NOT keep the Recruiter typed into it —
@@ -1324,7 +1340,7 @@ export async function reportAddFormRejection(page, tag = 'add-form-rejected') {
  * block collapses while "Same as personal address" is checked (default) — #mailing_city and
  * #mailing_zip exist but stay HIDDEN, so only "Mailing street address" can be filled.
  */
-export async function fillAddForm(page, h, candidate = {}, { prematureSubmits = true } = {}) {
+export async function fillAddForm(page, h, candidate = {}, { prematureSubmits = true, skipEmail = false } = {}) {
   const fullName = candidate.name || 'Marcus Reyes';
   const form = page.locator(ADD_FORM_ROOT);
   const group = (labelRe) => form.locator('.form-group').filter({ hasText: labelRe }).first();
@@ -1340,13 +1356,20 @@ export async function fillAddForm(page, h, candidate = {}, { prematureSubmits = 
   await h.optional('first name', () => h.typeInto(['#first_name'], fullName.split(' ')[0]));
   await h.optional('last name', () => h.typeInto(['#last_name'], fullName.split(' ').slice(1).join(' ')));
 
-  if (prematureSubmits) {
-    await h.optional('premature submit 1', async () => { await submitAddForm(page, h); await h.hold(3); });
-  }
+  // The premature submits are the scene's evidence, and they are VISUALLY INERT by nature: the app
+  // shows no error, no highlight, no message. So click ONCE (attempts:1 — never let a premature
+  // click stumble into the save phase), leave the cursor resting on the button where the glide
+  // click left it, and hold long enough that a viewer sees the click land and the page not react.
+  // No synthetic annotation and no fake error: the emptiness IS the evidence.
+  const prematureSubmit = async (n) => {
+    await submitAddForm(page, h, { attempts: 1 });
+    await h.moveTo(['#gwt-debug-submit'], { timeout: 5000 }).catch(() => {});
+    await h.hold(4);
+    console.log(`[add-form] premature submit ${n}: no error shown (expected — this form never renders one)`);
+  };
+  if (prematureSubmits) await h.optional('premature submit 1', () => prematureSubmit(1));
   await h.optional('phone', () => h.typeInto(['#phone'], candidate.phone || '(444) 433-3444'));
-  if (prematureSubmits) {
-    await h.optional('premature submit 2', async () => { await submitAddForm(page, h); await h.hold(3); });
-  }
+  if (prematureSubmits) await h.optional('premature submit 2', () => prematureSubmit(2));
 
   await h.optional('NMLS', () => h.typeInto(['#nmls'], candidate.nmls || '107621'));
   await h.optional('experience = Experienced', () => pickButton(/^\s*Experience/i, 'Experienced'));
@@ -1369,8 +1392,11 @@ export async function fillAddForm(page, h, candidate = {}, { prematureSubmits = 
     await h.click(() => suggestion, { timeout: 6000 });
   });
 
-  if (candidate.email) await h.typeInto(['#email'], candidate.email);
-  return { fullName, emailFilled: !!candidate.email };
+  // skipEmail keeps the demonstration branch strictly incomplete: with no email the duplicate
+  // check has nothing to match, so the save phase can never be reached by accident.
+  const wantEmail = !skipEmail && !!candidate.email;
+  if (wantEmail) await h.typeInto(['#email'], candidate.email);
+  return { fullName, emailFilled: wantEmail };
 }
 
 // ---------------------------------------------------------------------------
@@ -1522,6 +1548,45 @@ export async function act0(page, h, cfg = {}) {
   await h.scene('s1_4', async () => {
     const candidate = cfg.candidate || {};
     const fullName = candidate.name || 'Marcus Reyes';
+    const ownedBy = new RegExp(ACCOUNTS.luis.label, 'i');
+
+    // IDEMPOTENT BY DESIGN. Check for the record BEFORE touching the form.
+    //
+    // The submit's first click is a duplicate-EMAIL lookup (see submitAddForm). If the candidate
+    // already exists and we submit the same email again, the app drops into a duplicate path that
+    // nobody has seen — and it would be filmed unscripted. So: create only when he is missing, and
+    // otherwise DEMONSTRATE the form and leave via Cancel. The narration was re-pointed to the
+    // silent rejection, so it no longer depends on a successful save.
+    // Look on COMPANY, not Mine: "Mine" means records the CURRENT user owns, and this record is
+    // owned by a recruiter, so it is correctly absent from admin's Mine.
+    await h.goto(URLS.rloCompany);
+    let existing = h.row(fullName);
+    if (!(await existing.count())) {
+      await h.optional('search for the candidate', async () => {
+        await h.filterGrid(fullName.toLowerCase());
+        existing = h.row(fullName);
+      });
+    }
+    const exists = (await existing.count()) > 0;
+    const existingText = exists ? ((await existing.innerText().catch(() => '')) || '') : '';
+
+    if (exists) {
+      console.log(`[act0]   s1_4: BRANCH = DEMONSTRATION — "${fullName}" already exists`
+        + `${ownedBy.test(existingText) ? ` (owned by ${ACCOUNTS.luis.label})` : ' (NOT owned by Luis — see below)'}.`);
+      console.log('[act0]   s1_4: filling the form and leaving via Cancel; this take contains NO real creation.');
+      await openAddForm(page, h);
+      await h.hold(1.5);
+      // skipEmail: with no email the duplicate check cannot match, so the save phase is unreachable.
+      await fillAddForm(page, h, candidate, { skipEmail: true });
+      await cancelAddForm(page, h);
+      if (!ownedBy.test(existingText)) {
+        console.error(`[act0]   s1_4: WARNING — ${fullName} is not owned by ${ACCOUNTS.luis.label};`);
+        console.error('[act0]   s1_4: act 1 reads his "Mine" board and will find nothing. Re-assign it by hand.');
+      }
+      return;
+    }
+
+    console.log(`[act0]   s1_4: BRANCH = CREATION — "${fullName}" does not exist yet; this take creates him.`);
     await openAddForm(page, h);
     await h.hold(1.5);
     await fillAddForm(page, h, candidate);
@@ -1532,20 +1597,15 @@ export async function act0(page, h, cfg = {}) {
       console.error('[act0]   s1_4: NO --candidate-email GIVEN — demonstrating the form but NOT submitting.');
       console.error('[act0]   s1_4: re-run with --candidate-email <address> or acts 1-7 have nobody to work on.');
       await h.hold(2);
-      await h.dismiss();
+      await cancelAddForm(page, h);
       return;
     }
 
     await submitAddForm(page, h, { confirm: true });
     await h.hold(4); // new records index slowly (Datastore eventual consistency)
 
-    // VERIFY — deliberately NOT optional().
-    // Shoot 1 had this wrapped in optional(), so a failed create still logged "ok" and the run
-    // reported success while sinking every downstream act.
-    //
-    // Check the COMPANY board, not Mine: "Mine" means records the CURRENT user owns, and this
-    // record ends up owned by a recruiter, so it correctly disappears from admin's Mine. Verifying
-    // there reported failure even on success.
+    // VERIFY — deliberately NOT optional(). Shoot 1 had this wrapped, so a failed create still
+    // logged "ok" and the run reported success while sinking every downstream act.
     await h.goto(URLS.rloCompany);
     let created = h.row(fullName);
     if (!(await created.count())) {
@@ -1567,9 +1627,7 @@ export async function act0(page, h, cfg = {}) {
 
     // Ownership. The create form does NOT keep the Recruiter it was given — the record comes back
     // auto-assigned (observed: "Manh Admin") — so re-assign it from the toolbar with the
-    // "Overwrite the current recruiter" box ticked. Act 1 reads LUIS's Mine board, so without this
-    // the entire act has nothing to work on.
-    const ownedBy = new RegExp(ACCOUNTS.luis.label, 'i');
+    // "Overwrite the current recruiter" box ticked. Act 1 reads LUIS's Mine board.
     if (ownedBy.test((await created.innerText()) || '')) {
       console.log(`[act0]   s1_4: already owned by ${ACCOUNTS.luis.label}`);
     } else {
