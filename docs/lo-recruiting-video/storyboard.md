@@ -20,13 +20,23 @@ Tạo **một** candidate mới và theo nó qua toàn bộ 8 act, không nhảy
 | Field | Giá trị |
 |---|---|
 | Tên | `Marcus Reyes` (đặt tên thật-nghe-được, không "Test 123" — video sẽ được chiếu cho CEO) |
-| Email | địa chỉ temp-mail lấy tại `temp-mail.org/vi` ngay đầu buổi quay |
+| Email | `mreyes-lo-q7w2m9@mailinator.com` — inbox mở bằng URL, **không cần session/login**: `https://www.mailinator.com/v4/public/inboxes.jsp?to=mreyes-lo-q7w2m9` (đã verify 04/08/2026: load được, không paywall) |
 | Phone | `(444) 433-3444` — số chết, an toàn |
 | NMLS | dùng NMLS thật có production data để Modex tra ra số liệu (ứng viên: `107621` Roger Kube — audit đã xác nhận ra $103.85M/138 units) |
 | Channel | Retail LO · Experience: Experienced · Priority: High |
 
 > ⚠️ Staging **gửi email ra ngoài thật** (audit §10.4). Mọi email trong video phải bay vào
-> temp-mail, không bao giờ vào địa chỉ thật.
+> hộp thư dùng-một-lần ở trên, không bao giờ vào địa chỉ thật.
+>
+> **Lý do chọn Mailinator thay vì temp-mail.org:** địa chỉ temp-mail.org gắn với cookie của
+> browser đã tạo ra nó, nên cửa sổ Playwright lúc quay sẽ **không thấy** hộp thư đó — mà scene 4.3
+> phải mở mail để ký LO Agreement (điều kiện chạm cổng "100% onboarded"). Inbox Mailinator public
+> mở được bằng URL từ bất kỳ browser nào, không session.
+>
+> **Đánh đổi đã biết:** inbox Mailinator public là **ai biết địa chỉ cũng đọc được**. Đó là lý do
+> local-part được chọn khó đoán. Email duy nhất bay vào đó là bộ e-sign của một ứng viên giả trên
+> staging; vẫn nên coi link e-sign trong đó là công khai, và đừng dùng hộp này cho bất cứ thứ gì
+> khác.
 
 ---
 
