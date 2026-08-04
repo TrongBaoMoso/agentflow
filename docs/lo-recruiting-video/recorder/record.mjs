@@ -1894,7 +1894,7 @@ async function countSameName(page, candidate = {}) {
     .count().catch(() => 0);
 }
 
-async function readIloState(page, candidate = {}) {
+export async function readIloState(page, candidate = {}) {
   const nm = candidate.name || 'Marcus Reyes';
   return page.evaluate(({ name, nmls }) => {
     const rows = [...document.querySelectorAll('table.table-hover tbody tr')];
@@ -2053,7 +2053,7 @@ async function pickDemoRow(page, h, { actLabel, fullName, demoRecord, absentBeca
  *     clicking it is a silent no-op — hence the already-set check below;
  *  3. a page-level text match would hit the SAME option in all ten other rows on the board.
  */
-async function setIloCellValue(page, h, row, { dataName, what }) {
+export async function setIloCellValue(page, h, row, { dataName, what }) {
   // ⚠️ SCOPE TO THE CELL, NOT THE ROW. "Yes"/"No" is NOT unique in an ILO row: VERIFIED 2026-08-04,
   // the row carries TWO such dropdowns — the agreement, and the webinar "Attended?" column further
   // right. Searching the whole row and taking .first() therefore only worked because the agreement
