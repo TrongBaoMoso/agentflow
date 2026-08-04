@@ -351,4 +351,57 @@ Kèm cờ `is_synced_modex=true` trên record — flow mới thay bằng badge "
 
 ---
 
+## 9. Ghi chú brainstorm 04/08/2026 (Q&A với Bao sau khi xem mockup)
+
+Định hướng chung từ anh Thuận (CEO): **tinh gọn action, giúp user/team tương tác dễ, kết hợp AI để làm việc hiệu quả** — mọi quyết định thiết kế dưới đây đều bám tiêu chí này.
+
+### 9.1. Nguồn dữ liệu và tiêu chí "lead sắp trễ hạn"
+
+- Dữ liệu nằm ngay trong app, không lấy từ ngoài: mỗi lead khi được tạo (từ 6 nguồn intake §1) ghi `created_at` và deadline liên hệ lần đầu = `created_at` + SLA (tính theo **giờ làm việc**, không đếm đêm/cuối tuần — lịch làm việc cũng là config).
+- "Đã liên hệ" xác định bằng **activity log**: Call/SMS/Email bấm trong app đều đi qua service (Zoom/mail) nên có bản ghi thật — không dựa vào recruiter tự khai. Hệ thống cũ đã có op đếm call/text theo lead (`CountCallAndTextForLeadOp`, `ScheduleToCountZoomCallAndTextForLORecruitingOp`) — khái niệm không mới, chỉ chưa được dùng để enforce SLA.
+- "Sắp trễ" = chưa có first touch VÀ thời gian còn lại < ngưỡng cảnh báo (mặc định đề xuất: còn <25% thời lượng hoặc <1h). "Trễ" = quá deadline → escalation (notify manager, hoặc trả lead về pool chung).
+
+### 9.2. SLA phải configurable (yêu cầu Bao 04/08) — KHÔNG hardcode 4h
+
+Theo mô hình **SLA policy** của Zendesk/Salesforce/HubSpot, mỗi policy gồm:
+
+| Thành phần | Ví dụ |
+|---|---|
+| Điều kiện áp dụng | nguồn lead = Modex List, team = Recruiting-West, stage = S1 |
+| Target | first touch ≤ 4h; follow-up ≤ 24h |
+| Lịch giờ làm việc | Mon–Fri 8am–6pm CT (calendar riêng, tái sử dụng) |
+| Ngưỡng cảnh báo | còn 25% thời lượng |
+| Hành động khi vi phạm | notify manager / reassign về pool |
+
+Lưu trong DB + admin UI chỉnh; đổi 4h→2h có hiệu lực cho **lead mới** (lead cũ giữ deadline đã gán — không retro); mọi thay đổi có audit (ai đổi, khi nào). Đây là bảng cấu hình đầu tiên của recruiting-service.
+
+### 9.3. Call/SMS dùng hạ tầng Zoom Phone có sẵn (đã xác minh trong code 04/08)
+
+- Hệ thống cũ KHÔNG gọi Zoom API trực tiếp — nó proxy qua **service Zoom riêng**: `https://zoom.loanfactory.com/api/` (staging `zoom.viet18.com`), auth bằng `X-API-Key` (xem `packs/loan/.../op/zoom/ZoomAPIServlet.java:63`).
+- Repo trên org LoanFactory-Inc: **`zoom`** (bản gốc) và **`zoom-go`** (Go rewrite, strangler migration) — cả hai chưa có trong agentflow, cần pull về.
+- Capability có sẵn (theo tên op cũ): assign số phone cho user, gửi SMS, list messages, download call recording, đếm call/text theo lead, webhook subscription activated/suspended.
+- recruiting-service chỉ cần gọi service này → nút Call/SMS trong mockup khả thi với hạ tầng hiện có. Mở rộng AI: recording → tóm tắt cuộc gọi tự ghi vào timeline.
+- Phát hiện kèm: org có repo **`document-esign`** (ứng viên trả lời câu hỏi mở "e-sign vendor" cho bước offer S5 — dùng nội bộ thay vì mua DocuSign) và **`callcenter`** (cần xem có liên quan routing cuộc gọi không).
+
+### 9.4. Pipeline: kanban KHÔNG phải view duy nhất
+
+Best practice các ATS hiện đại (Ashby/Greenhouse/Lever): **cùng một dữ liệu, nhiều view, toggle được, view lưu trong URL**:
+
+1. **Kanban** (đã mockup) — mặc định cho recruiter, chỉ hiện thẻ của mình/team; chết khi 1 cột có hàng trăm thẻ nên phải giới hạn.
+2. **Table view** — bắt buộc có song song: filter + sort + bulk action, cho ops/manager làm việc trên khối lượng lớn (dữ liệu cũ 106K record).
+3. **Focus mode / next-best-action queue** — hệ thống xếp sẵn hàng đợi ưu tiên, recruiter xử lý từng người, xong tự nhảy người kế (kiểu power-dialer). Khớp nhất với "tinh gọn action" của CEO; ứng viên tốt cho v2.
+4. **Funnel view** — cho manager: chỉ số + drill-down, không thao tác.
+
+### 9.5. Per-role visibility: cùng hồ sơ, khác ống kính (2 chiều)
+
+- **Row-level** (thấy NHỮNG AI): recruiter = lead mình + team; HR = từ S4–S5 trở đi; Licensing/Accounting = việc S6/S7 của phòng mình; LO giới thiệu = chỉ tiến độ người mình giới thiệu.
+- **Field-level** (thấy TRƯỜNG NÀO): số tiền offer/comp chỉ HR + manager; LO giới thiệu KHÔNG BAO GIỜ thấy comp; dữ liệu licensing nhạy cảm chỉ team Licensing.
+- Ma trận RBAC §4 hiện mới phủ chiều tác vụ — cần bổ sung chiều field-level khi viết spec chi tiết.
+
+### 9.6. Comp band là ĐỀ XUẤT MỚI, hệ thống cũ không có
+
+Band P1–P4 + ngưỡng trong mockup là placeholder minh hoạ. Hệ thống cũ: recruiter tự tra Modex rồi tự ước offer (chính là pain). Con số thật (bao nhiêu band, ngưỡng volume/units, comp đi kèm) phải do anh Thuận/HR chốt — đã nằm trong danh sách quyết định Nhóm 2. Kỹ thuật chỉ là bảng mapping volume→band, rẻ, có thể ship sau v1 mà không ảnh hưởng kiến trúc.
+
+---
+
 *Tài liệu cùng bộ:* [lo-recruiting-redesign-direction.md](lo-recruiting-redesign-direction.md) (17 pain points + hướng + quyết định kiến trúc §6) · [lo-recruiting-feature-review.md](lo-recruiting-feature-review.md) (hiện trạng chi tiết + Phụ lục C production)
