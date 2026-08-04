@@ -114,7 +114,11 @@ export const URLS = {
   configOwnerAssignment: `${BASE}/lo_recruiting_config/ilo_assignment_owner`,
   configCalendly: `${BASE}/lo_recruiting_config/one_one_meeting`,
   modexData: `${BASE}/modex_data`,
+  // VERIFIED 2026-08-04 from the LO RECRUITING menu hrefs: ##loan_officer_referrals is the
+  // "Admin - Loan Officer referrals" page and it is ADMIN-ONLY (Accounting is silently redirected
+  // to /marketplace/Lenders). "My Loan Officer referrals" is a different route.
   referrals: `${BASE}/loan_officer_referrals`,
+  myReferrals: `${BASE}/my_loan_officer_referrals`,
   // VERIFIED 2026-08-03: direct route works, no redirect (view BrokerMembersView).
   associates: `${BASE}/associates`,
 };
@@ -302,7 +306,7 @@ export async function createContext(browser, { storageStatePath, recordDir } = {
  * context seeded from it comes up as the impersonated user and is bounced off /associates. Only an
  * admin-only capability check can tell the difference — a login-screen check cannot.
  */
-async function verifyState(browser, statePath, { requireAdmin = false } = {}) {
+export async function verifyState(browser, statePath, { requireAdmin = false } = {}) {
   const ctx = await createContext(browser, { storageStatePath: statePath });
   const page = await ctx.newPage();
   try {
@@ -770,11 +774,25 @@ export function makeHelpers(page, { actLabel = 'act?', durations = {}, ctxStart 
     // Not every grid uses the select2 label widget: the ILO page's box is a plain text search
     // ("Type any text to search..."). Adapt — commit a suggestion when one is offered, otherwise
     // fall back to a plain Enter.
-    const option = page.locator('li.select2-results__option')
-      .filter({ hasNotText: /^\s*(Searching|Loading|Please)/i }).first();
-    const gotSuggestion = await option.waitFor({ state: 'visible', timeout })
+    const options = page.locator('li.select2-results__option')
+      .filter({ hasNotText: /^\s*(Searching|Loading|Please)/i });
+    const gotSuggestion = await options.first().waitFor({ state: 'visible', timeout })
       .then(() => true).catch(() => false);
     if (gotSuggestion) {
+      // Prefer an EXACT (case-insensitive) match over the first suggestion. Suggestions render
+      // lower-cased and a term can return several: searching "Maria" offers five, one of which is
+      // a decoy account literally named "maria inactive and unmark". Taking the first match on a
+      // prefix basis is how the wrong account gets picked — so match the whole token when we can.
+      let option = options.filter({ hasText: new RegExp(`^\\s*${reEscape(term)}\\s*$`, 'i') }).first();
+      if (!(await option.count())) {
+        const n = await options.count();
+        if (n > 1) {
+          const texts = await options.allInnerTexts().catch(() => []);
+          console.warn(`[${actLabel}] no exact suggestion for "${term}"; ${n} offered `
+            + `(${texts.map((t) => t.replace(/\s+/g, ' ').trim()).slice(0, 5).join(' | ')}) — taking the first`);
+        }
+        option = options.first();
+      }
       await withGridUpdate(() => click(() => option, { timeout: 10_000 }));
     } else {
       console.log(`[${actLabel}] no select2 suggestion for "${term}" — committing with Enter (plain text search)`);
@@ -1233,66 +1251,89 @@ export async function act0(page, h, cfg = {}) {
     await h.waitForAppIdle();
     await h.hold(1.5);
 
-    // PROBE: the Add form's field markup is still unverified — it could only be opened from an
-    // admin session, and the stored admin state was burned by impersonation before this form was
-    // reached. Every field is optional() so a wrong guess costs one field, not the scene.
-    const field = (labelRe) => [
-      () => page.getByLabel(labelRe),
-      () => page.locator('tr', { has: page.getByText(labelRe) }).locator('input,textarea,select').first(),
-      () => page.locator('td', { has: page.getByText(labelRe) }).locator('input').first(),
-    ];
-    const submit = () => h.click([
-      () => page.locator('div.modal.show').getByRole('button', { name: /^\s*(Submit|Save)\s*$/i }).first(),
-      () => page.getByRole('button', { name: /^\s*(Submit|Save)\s*$/i }).first(),
-    ], { timeout: 8000 });
+    // VERIFIED 2026-08-04 (opened read-only as admin, never submitted). The Add form is a
+    // FULL-PAGE view, not a modal: clicking Add navigates to ?_e=new and renders a SECOND view
+    // root — `RecruitedLoanOfficerView` (singular) — while the list's `RecruitedLoanOfficersView`
+    // (plural) stays in the DOM but hidden. Scope to the singular root or you read the list.
+    // Fields carry real ids, and "(optional)" in the label is the ONLY marker of optionality —
+    // there is no asterisk on the required ones, which is the pain this scene shows.
+    //   #first_name              First name              REQUIRED
+    //   #last_name               Last name (optional)
+    //   #email                   Email                   REQUIRED
+    //   #phone                   Personal phone (optional)
+    //   #nmls                    NMLS (optional)
+    //   #closed_loan_since_2021  Career Production       REQUIRED
+    //   #mailing_street          Mailing address         REQUIRED
+    //   #recruiter               Recruiter (optional)  — twitter-typeahead; a sibling .tt-hint
+    //                            shadow input exists, so target .tt-input (that IS #recruiter)
+    //   Licensed states / States to sponsor / Preferred languages — REQUIRED select2 multis, no id
+    //   Loan officer channel     select2 over <select id="channel"> (Wholesale LO / Retail LO /
+    //                            Broker/Owner)
+    //   Experience               a BUTTON GROUP (Inexperienced | Experienced | More ▾), not a field
+    const FORM = '[id$="RecruitedLoanOfficerView"]';
+    const form = page.locator(FORM);
+    await form.first().waitFor({ state: 'visible', timeout: 20_000 });
 
-    await h.optional('first name', () => h.typeInto(field(/First name/i), fullName.split(' ')[0]));
-    await h.optional('last name', () => h.typeInto(field(/Last name/i), fullName.split(' ').slice(1).join(' ')));
+    const submit = async () => {
+      // ⚠️ UNRESOLVED 2026-08-04: this form has NO Save / Submit / Create / Update / Done control
+      // anywhere on the page — verified clean, after filling fields (dirty), and after scrolling
+      // to the bottom. It also does NOT autosave per field (confirmed: typing into fields left no
+      // new record on the board). So the commit gesture is still unknown and the storyboard's
+      // "submit twice to reveal one error each" cannot be automated yet.
+      const btn = await h.resolve([
+        () => form.getByRole('button', { name: /^\s*(Save|Submit|Create|Update|Done)\s*$/i }).first(),
+        () => page.getByRole('button', { name: /^\s*(Save|Submit|Create)\s*$/i }).first(),
+      ], { timeout: 4000, label: 'Add-form submit' }).catch(() => null);
+      if (!btn) throw new Error('no submit control found on the Add form (see the UNRESOLVED note)');
+      await h.click(() => btn, { timeout: 6000 });
+    };
 
-    // Deliberate premature submit #1 — reveals exactly one error.
+    await h.optional('first name', () => h.typeInto(['#first_name'], fullName.split(' ')[0]));
+    await h.optional('last name', () => h.typeInto(['#last_name'], fullName.split(' ').slice(1).join(' ')));
+
+    // Deliberate premature submit #1 — reveals exactly one error (if a submit control is found).
     await h.optional('premature submit 1', async () => { await submit(); await h.hold(2.5); });
 
-    await h.optional('phone', () => h.typeInto(field(/Phone|Mobile/i), candidate.phone || '(444) 433-3444'));
+    await h.optional('phone', () => h.typeInto(['#phone'], candidate.phone || '(444) 433-3444'));
 
     // Deliberate premature submit #2 — reveals one NEW error.
     await h.optional('premature submit 2', async () => { await submit(); await h.hold(2.5); });
 
-    await h.optional('NMLS', () => h.typeInto(field(/NMLS/i), candidate.nmls || '107621'));
-    await h.optional('channel', async () => {
-      // PROBE: native <select> vs GWT custom dropdown unknown for the Add form.
-      await h.click(field(/Loan officer channel|Channel/i), { timeout: 4000 });
-      await h.click(() => page.getByText(/^\s*Retail LO\s*$/i).first(), { timeout: 4000 });
+    await h.optional('NMLS', () => h.typeInto(['#nmls'], candidate.nmls || '107621'));
+    await h.optional('channel = Retail LO', async () => {
+      // select2 over <select id="channel">: drive it visually, options render at page level.
+      await h.click(() => form.locator('.form-group').filter({ hasText: /Loan officer channel/i })
+        .locator('.select2-selection').first(), { timeout: 5000 });
+      await h.click(() => page.locator('li.select2-results__option')
+        .filter({ hasText: /^\s*Retail LO\s*$/i }).first(), { timeout: 5000 });
     });
-    await h.optional('experience', async () => {
-      await h.click(field(/Experience/i), { timeout: 4000 });
-      await h.click(() => page.getByText(/^\s*Experienced\s*$/i).first(), { timeout: 4000 });
-    });
-    await h.optional('priority', async () => {
-      await h.click(field(/Priority/i), { timeout: 4000 });
-      await h.click(() => page.getByText(/^\s*High\s*$/i).first(), { timeout: 4000 });
-    });
-    // Hand the record to Luis right in the form if the field is there — his board is "Mine",
-    // i.e. records he OWNS, so an admin-created record with no recruiter would never appear in it.
+    await h.optional('experience = Experienced', () =>
+      h.click(() => form.locator('.form-group').filter({ hasText: /^\s*Experience/i })
+        .getByRole('button', { name: /^\s*Experienced\s*$/i }).first(), { timeout: 5000 }));
+
+    // Required fields, so the record can actually be created once the commit gesture is known.
+    await h.optional('career production', () => h.typeInto(['#closed_loan_since_2021'], '25000000'));
+    await h.optional('mailing address', () => h.typeInto(['#mailing_street'], '1 Market Street'));
+    const multi = async (labelRe, option) => {
+      await h.click(() => form.locator('.form-group').filter({ hasText: labelRe })
+        .locator('.select2-selection').first(), { timeout: 5000 });
+      await h.click(() => page.locator('li.select2-results__option')
+        .filter({ hasText: new RegExp(`^\\s*${option}\\s*$`, 'i') }).first(), { timeout: 6000 });
+    };
+    await h.optional('licensed states', () => multi(/Licensed states/i, 'California'));
+    await h.optional('states to sponsor', () => multi(/States that you want/i, 'California'));
+    await h.optional('preferred languages', () => multi(/Preferred languages/i, 'English'));
+
+    // Hand the record to Luis here: his board is "Mine", i.e. records he OWNS, so an
+    // admin-created record with no recruiter would never appear in it.
+    // VERIFIED 2026-08-04: #recruiter is a twitter-typeahead — type, then pick from
+    // `.tt-menu.tt-open .tt-suggestion` (typing "Luis Testcase" offers "Luis Testcase 635211").
     await h.optional('recruiter = Luis', async () => {
-      await h.click(field(/Recruiter/i), { timeout: 4000 });
-      await h.click(() => page.getByText(new RegExp(ACCOUNTS.luis.label, 'i')).first(), { timeout: 4000 });
+      await h.typeInto(['#recruiter'], ACCOUNTS.luis.label);
+      const suggestion = page.locator('.tt-menu.tt-open .tt-suggestion, .tt-suggestion').first();
+      await suggestion.waitFor({ state: 'visible', timeout: 8000 });
+      await h.click(() => suggestion, { timeout: 6000 });
     });
-
-    // The email must be a temp-mail address created at shoot time. Never invent one and never
-    // use a real person's address — staging sends real mail (audit §10.4).
-    if (!candidate.email) {
-      console.error('[act0]   s1_4: NO --candidate-email GIVEN — demonstrating the form but NOT submitting.');
-      console.error('[act0]   s1_4: re-run with --candidate-email <temp-mail address> or no candidate exists');
-      console.error('[act0]   s1_4: for acts 1-7 to work on.');
-      await h.hold(2);
-      await h.dismiss();
-      return;
-    }
-
-    await h.typeInto(field(/Email/i), candidate.email);
-    await submit();
-    await h.hold(4); // new records index slowly (Datastore eventual consistency)
-    await h.dismiss();
 
     // Verify he exists and belongs to Luis; fall back to the toolbar's Assign recruiter.
     await h.optional('confirm the candidate is on the board', async () => {
@@ -1546,7 +1587,8 @@ export async function act1(page, h, cfg = {}) {
         () => page.getByText(/Save \+ Email/i).first(),
       ], { timeout: 5000 });
       await h.hold(2);
-      // PROBE: department checkboxes (HR / Licensing / Compliance / Onboarding).
+      // VERIFIED 2026-08-04: the note modal really does expose "Save + Email" (probed as Maria
+      // with the modal open). PROBE remains only on the department checkbox labels inside it.
       await h.optional('tick Licensing', () => h.click(() => page.getByText(/^\s*Licensing\s*$/i).first(), { timeout: 4000 }));
       await h.optional('confirm send', () => h.click(() => page.getByRole('button', { name: /^\s*(Send|Submit|Save)\s*$/i }).first(), { timeout: 4000 }));
       await h.hold(2);
@@ -1588,7 +1630,8 @@ export async function act1(page, h, cfg = {}) {
     await h.clickMenuItem(rowOfCandidate(), 'Add or remove a follow-up flag');
     await h.hold(2);
     await h.optional('pick a wake-up date', async () => {
-      // PROBE: date input markup unknown; must be a future date or it fails validation.
+      // PROBE: the follow-up flag modal's date input is still unverified — reaching it needs the
+      // modal open on a real record, which no read-only pass could do safely.
       await h.click([
         () => page.getByRole('textbox').first(),
         () => page.locator('input').first(),
@@ -1760,9 +1803,10 @@ export async function act3(page, h) {
     const present = await page.getByText(/LO RECRUITING/i).count();
     console.log(`[act3]   "LO RECRUITING" menu entries visible: ${present}`);
     await h.optional('pan across the menu', async () => {
-      // PROBE: nav container unknown; scroll the sidebar so the viewer can read every entry.
-      const nav = [() => page.getByRole('navigation').first(), () => page.locator('nav').first()];
-      const scroller = await h.scrollableNear(nav);
+      // VERIFIED 2026-08-04: the sidebar carries NO role=navigation (probing as licensing
+      // returned 0), and `nav` matches the grid tab strip instead. Anchor on a sidebar entry that
+      // definitely exists for every role — the gwt-debug section links — and scroll its container.
+      const scroller = await h.scrollableNear([gwt('admin'), gwt('users'), () => page.locator('nav').first()]);
       await h.smoothScroll(scroller || 'window', 500, { steps: 14 });
       await h.hold(1);
       await h.smoothScroll(scroller || 'window', -500, { steps: 10 });
@@ -2068,14 +2112,34 @@ export async function act6(page, h, cfg = {}) {
     });
   });
 
+  // s6_2 / s6_3 / s6_4 ARE NOT SHOT HERE — they are filmed in act 7's admin context.
+  // VERIFIED 2026-08-04 probing as Accounting: /loan_officer_referrals silently redirects to
+  // /marketplace/Lenders for this role. The LO RECRUITING menu hrefs show ##loan_officer_referrals
+  // is the "Admin - Loan Officer referrals" page, reachable only by admin, so the referral policy,
+  // payout-timeline and Zelle beats cannot be filmed in the Accounting session. Act 6 keeps s6_1,
+  // which is the role-specific point anyway: Accounting is the ONLY role with Export (csv)
+  // (confirmed present here, absent for HR).
+}
+
+// ---------------------------------------------------------------------------
+// ACT 7 — Wrap-up (admin session again, fresh context from the admin state)
+// Storyboard rows 7.1 – 7.4
+// ---------------------------------------------------------------------------
+
+export async function act7(page, h, cfg = {}) {
+  const candidate = cfg.candidate || {};
+  const rowOfCandidate = () =>
+    page.locator('tr', { hasText: new RegExp(candidate.name || 'Marcus Reyes', 'i') }).first();
+
+  // These three beats belong to act 6 but are filmed HERE because the Admin - Loan Officer
+  // referrals page is admin-only (see the note at the end of act6). markers.json records their
+  // true on-camera offsets in THIS video, so their narration lands on the referrals screen.
+  // VERIFIED 2026-08-04: the policy modal opener is `button#loan-officer-referral-policy`.
   await h.scene('s6_2', async () => {
     // Referral policy: five exclusions printed in a modal that the system does not enforce.
     await h.goto(URLS.referrals);
     await h.optional('open the policy modal', () =>
-      h.click([
-        () => page.getByRole('link', { name: /polic/i }),
-        () => page.getByText(/polic/i).first(),
-      ], { timeout: 8000 }));
+      h.click(['#loan-officer-referral-policy'], { timeout: 8000 }));
     await h.hold(2.5);
     await h.optional('read the exclusions', () => h.smoothScroll(() => page.getByText(/120 days|eligible/i).first(), 420, { steps: 12 }));
     await h.hold(1.5);
@@ -2102,17 +2166,6 @@ export async function act6(page, h, cfg = {}) {
     await h.hold(2);
     await h.dismiss();
   });
-}
-
-// ---------------------------------------------------------------------------
-// ACT 7 — Wrap-up (admin session again, fresh context from the admin state)
-// Storyboard rows 7.1 – 7.4
-// ---------------------------------------------------------------------------
-
-export async function act7(page, h, cfg = {}) {
-  const candidate = cfg.candidate || {};
-  const rowOfCandidate = () =>
-    page.locator('tr', { hasText: new RegExp(candidate.name || 'Marcus Reyes', 'i') }).first();
 
   await h.scene('s7_1', async () => {
     await h.goto(URLS.iloCompany);
@@ -2173,6 +2226,7 @@ export function parseArgs(argv = process.argv.slice(2)) {
     roleState: false,
     forceLoginAs: false,
     provision: false,
+    checkStates: false,
     trim: 0,
     modex: false,
     modexUrl: null,
@@ -2205,6 +2259,7 @@ export function parseArgs(argv = process.argv.slice(2)) {
       case '--role-state': out.roleState = true; break;
       case '--force-login-as': out.forceLoginAs = true; break;
       case '--provision': out.provision = true; break;
+      case '--check-states': out.checkStates = true; break;
       case '--role': out.role = next(); break;
       case '--login-as': out.loginAs = true; break;
       case '--open-modals': out.openModals = true; break;

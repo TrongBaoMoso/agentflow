@@ -17,8 +17,9 @@
  * Usage:
  *   node inspect.mjs --act 1                       # probe act 1's screens (see notes on --role)
  *   node inspect.mjs --act 1 --role luis           # use .auth/viet18-luis.json if it exists
- *   node inspect.mjs --act 1 --role luis --login-as # impersonate now (burns THIS context only)
+ *   (--login-as is refused: it would burn the admin state — provision role states instead)
  *   node inspect.mjs --act 4 --open-modals         # also open the whitelisted read-only modals
+ *   node inspect.mjs --check-states              # are the saved sessions still alive?
  *   node inspect.mjs --act 0 --auth /abs/state.json
  */
 
@@ -31,12 +32,11 @@ import {
   URLS,
   authPathFor,
   createContext,
-  ensureAdminState,
+  verifyState,
   launchBrowser,
   looksLikeLogin,
   makeHelpers,
   parseArgs,
-  performLoginAs,
 } from './record.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -622,8 +622,48 @@ async function shoot(page, name) {
   return file;
 }
 
+/**
+ * Read-only health check for the saved sessions.
+ *
+ * VERIFIED 2026-08-04 the hard way: these sessions EXPIRE in hours. The states captured at 23:58
+ * (luis) and 01:42 (nocha) were dead by ~08:00 while the 07:0x batch was still alive — and a dead
+ * one renders the login screen IN PLACE at the canary URL, so a URL check cannot see it. Provision
+ * shortly before shooting, and run this first.
+ */
+async function checkStates(browser) {
+  const names = ['admin', ...Object.keys(ACCOUNTS).filter((r) => r !== 'admin')];
+  console.log('\n=== SAVED SESSION STATES (read-only check) ===');
+  let bad = 0;
+  for (const name of names) {
+    const file = authPathFor(name);
+    if (!fs.existsSync(file)) {
+      console.log(`  MISSING  ${name.padEnd(11)} ${file}`);
+      bad += 1;
+      continue;
+    }
+    const ageMin = Math.round((Date.now() - fs.statSync(file).mtimeMs) / 60000);
+    const ok = await verifyState(browser, file, { requireAdmin: name === 'admin' });
+    if (!ok) bad += 1;
+    console.log(`  ${ok ? 'OK     ' : 'EXPIRED'}  ${name.padEnd(11)} age ${String(ageMin).padStart(4)}m  ${file}`);
+  }
+  console.log(bad
+    ? `\n  ${bad} state(s) unusable — re-provision them with: node record.mjs --provision --acts 0,1,2,3,4,5,6,7`
+    : '\n  all states usable.');
+  return bad === 0;
+}
+
 async function main() {
   const args = parseArgs();
+  if (args.checkStates) {
+    const browser = await launchBrowser({ slow: args.slow });
+    try {
+      const ok = await checkStates(browser);
+      process.exitCode = ok ? 0 : 1;
+    } finally {
+      await browser.close().catch(() => {});
+    }
+    return;
+  }
   const actId = Number.isInteger(args.act) ? args.act : 0;
   const plan = PROBES[actId];
   if (!plan) throw new Error(`no probe table for --act ${actId} (have ${Object.keys(PROBES).join(',')})`);
@@ -646,21 +686,28 @@ async function main() {
   let context;
   try {
     let seed = args.auth;
-    let impersonate = false;
 
+    // The saved state files cost 6 manual logins, so this probe NEVER creates or repairs one:
+    // it verifies read-only and refuses to run rather than falling into a login prompt (which
+    // would hang for 5 minutes) or an impersonation (which would burn the admin state).
     if (wantRole === 'admin') {
-      await ensureAdminState(browser, args.auth);
+      if (!fs.existsSync(args.auth)) {
+        throw new Error(`no admin state at ${args.auth} — provisioning is required; this probe will not create one`);
+      }
+      console.log('[probe] verifying the saved admin state is still admin (read-only)');
+      if (!(await verifyState(browser, args.auth, { requireAdmin: true }))) {
+        throw new Error('the saved admin state is NO LONGER ADMIN. STOP: do not re-provision from '
+          + 'here. Report it — an impersonation somewhere re-bound that session.');
+      }
+      console.log('[probe] admin state OK');
     } else if (fs.existsSync(roleStatePath)) {
       console.log(`[probe] seeding from saved role state ${roleStatePath}`);
       seed = roleStatePath;
     } else if (args.loginAs) {
-      await ensureAdminState(browser, args.auth);
-      impersonate = true;
+      throw new Error(`--login-as is refused: impersonating burns the admin state (each burn costs `
+        + `a manual login). Provision ${roleStatePath} with "record.mjs --provision" instead.`);
     } else {
-      await ensureAdminState(browser, args.auth);
-      console.warn(`\n!! No ${roleStatePath} and no --login-as: probing as ADMIN.`);
-      console.warn('!! Role-scoped differences (missing tabs, missing toolbar buttons, silent');
-      console.warn('!! redirects) will NOT be reproduced. Re-run with --login-as for real answers.\n');
+      throw new Error(`no ${roleStatePath} — provision it first; this probe will not impersonate.`);
     }
 
     context = await createContext(browser, { storageStatePath: seed }); // no recordVideo: probing
@@ -668,12 +715,14 @@ async function main() {
     const h = makeHelpers(page, { actLabel: `probe${actId}` });
 
     await page.goto(URLS.canary, { waitUntil: 'domcontentloaded', timeout: 60_000 });
-    await sleep(2500);
-    if (await looksLikeLogin(page)) throw new Error('seeded state is not authenticated');
-
-    if (impersonate) {
-      await performLoginAs(page, h, wantRole, { adminStatePath: args.auth });
-      await h.saveRoleState(wantRole);
+    // Wait for the app shell explicitly — a fixed sleep here re-introduced the very load race
+    // that made act 0 lie: at 2.5s the GWT shell can still look like a login screen.
+    await h.waitForAppIdle();
+    if (await looksLikeLogin(page)) {
+      await sleep(4000);
+      if (await looksLikeLogin(page)) {
+        throw new Error(`seeded state is not authenticated (${seed}) — page is ${page.url()}`);
+      }
     }
 
     for (const screen of plan.screens) {
