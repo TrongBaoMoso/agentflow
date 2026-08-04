@@ -1132,6 +1132,248 @@ export async function performLoginAs(page, h, roleKey, { adminStatePath } = {}) 
 }
 
 // ---------------------------------------------------------------------------
+// Add-form driver — exported so a diagnostic drives the SHIPPING routine, not a copy
+// ---------------------------------------------------------------------------
+
+/**
+ * VERIFIED 2026-08-04: the Add form is a FULL-PAGE view, not a modal. Clicking Add navigates to
+ * ?_e=new and mounts a SECOND view root — `RecruitedLoanOfficerView` (singular) — while the list's
+ * `RecruitedLoanOfficersView` (plural) stays in the DOM but hidden. Scope here or you read the list.
+ * Fields carry real ids; "(optional)" in the label is the ONLY marker of optionality.
+ *   #first_name First name (REQ) · #last_name · #email (REQ) · #phone · #nmls
+ *   #closed_loan_since_2021 Career Production (REQ) · #mailing_street (REQ)
+ *   #recruiter Recruiter — twitter-typeahead (.tt-input; a sibling .tt-hint shadow input exists)
+ *   Licensed states / States to sponsor / Preferred languages — REQUIRED select2 multis, no id
+ *   Loan officer channel — select2 over <select id="channel">
+ *   Experience — a BUTTON GROUP, not a field
+ */
+export const ADD_FORM_ROOT = '[id$="RecruitedLoanOfficerView"]';
+
+/** Open the create form from the board and wait until it is really interactive. */
+export async function openAddForm(page, h) {
+  await h.goto(URLS.rloMine);
+  await h.click(['#gwt-debug-add', () => page.getByRole('button', { name: /^\s*Add\s*$/i })], { timeout: 15_000 });
+  await h.waitForAppIdle();
+  const form = page.locator(ADD_FORM_ROOT);
+  await form.first().waitFor({ state: 'visible', timeout: 20_000 });
+  await page.locator('#gwt-debug-submit').waitFor({ state: 'visible', timeout: 25_000 });
+  return form;
+}
+
+/**
+ * Click the form's submit control until the form actually goes away.
+ *
+ * VERIFIED LIVE 2026-08-04 by watching the network: submitting is a TWO-CLICK flow.
+ *   click 1 -> POST /exec/FindOp — an async DUPLICATE-EMAIL check:
+ *              SELECT * FROM LORecruiting WHERE (labels = _active:true AND labels = _email:<email>)
+ *              with _exact:true. The form then just sits there: no save, no navigation, and
+ *              NOTHING on screen.
+ *   click 2 -> POST /exec/SaveOp with the full payload (including duplicated:false, the dedup
+ *              result) and navigates back to the board.
+ * That silent first click is what made two shoots look like a rejected submit. The oracle is the
+ * form unmounting, so click until #gwt-debug-submit detaches.
+ *
+ * ⚠️ This form NEVER renders a validation message. Verified after a genuinely rejected submit:
+ * no .invalid-feedback, no .alert, no toast, no red borders, nothing focused — the only reliable
+ * signal that anything worked is whether the record exists afterwards. Do not add error-text
+ * parsing here expecting it to fire.
+ */
+export async function submitAddForm(page, h, { confirm = false, attempts = 3 } = {}) {
+  const submitBtn = ['#gwt-debug-submit',
+    () => page.locator(ADD_FORM_ROOT).getByRole('button', { name: btnName('Submit') }).first()];
+  for (let i = 1; i <= attempts; i += 1) {
+    await h.click(submitBtn, { timeout: 10_000 });
+    if (confirm) {
+      await h.optional('confirm the submission', async () => {
+        const btn = page.getByRole('button', { name: btnName('Confirm') }).first();
+        await btn.waitFor({ state: 'visible', timeout: 4000 });
+        await h.click(() => btn, { timeout: 6000 });
+      });
+    }
+    const gone = await page.locator('#gwt-debug-submit')
+      .waitFor({ state: 'detached', timeout: 12_000 }).then(() => true).catch(() => false);
+    if (gone) return true;
+    if (i < attempts) {
+      console.log(`[add-form] submit ${i} did not save (click 1 only runs the duplicate check) — clicking again`);
+    }
+  }
+  return false;
+}
+
+/**
+ * Re-assign a record's recruiter from the board toolbar.
+ *
+ * VERIFIED 2026-08-04: needed because the create form does NOT keep the Recruiter typed into it —
+ * the record came back owned by "Manh Admin" (auto-assigned) no matter what the field said. The
+ * modal holds `select#recruiter` (a select2 whose option text is "<name> (Outside recruiter)") and
+ * a checkbox labelled "Overwrite the current recruiter" whose id is a generated gwt-uid, so it is
+ * matched by that label. Ticking it is MANDATORY here: without it the assignment only applies to
+ * records that have no recruiter yet, and this one already has one.
+ */
+export async function assignRecruiter(page, h, row, recruiterLabel) {
+  await row.locator('input[type="checkbox"]').first().check({ timeout: 8000 });
+  await h.click(['#assign-recruiter'], { timeout: 10_000 });
+  const modal = page.locator('.modal.show');
+  await modal.first().waitFor({ state: 'visible', timeout: 10_000 });
+  // The recruiter select2 lists 51 people, so TYPE to narrow before picking — typing
+  // "Luis Testcase" reduces it to the single "Luis Testcase 635211 (Outside recruiter)".
+  await h.click(() => modal.locator('.select2-selection').first(), { timeout: 8000 });
+  await page.keyboard.type(recruiterLabel, { delay: 60 });
+  const option = page.locator('li.select2-results__option').filter({ hasText: new RegExp(recruiterLabel, 'i') }).first();
+  await option.waitFor({ state: 'visible', timeout: 10_000 });
+  await h.click(() => option, { timeout: 10_000 });
+
+  // "Overwrite the current recruiter" — its real <input> is visually hidden behind custom styling,
+  // so a normal click/check cannot reach it. Click the LABEL text, then force-check as a fallback,
+  // and assert the state: skipping this silently leaves the record with its auto-assigned owner.
+  const overwrite = modal.locator('input[type="checkbox"]').first();
+  await h.optional('tick "Overwrite the current recruiter"', () =>
+    h.click(() => modal.getByText(/Overwrite the current recruiter/i).first(), { timeout: 6000 }));
+  if (!(await overwrite.isChecked().catch(() => false))) {
+    await overwrite.check({ force: true, timeout: 6000 }).catch(() => {});
+  }
+  if (!(await overwrite.isChecked().catch(() => false))) {
+    throw new Error('could not tick "Overwrite the current recruiter" — the reassignment would be a no-op');
+  }
+  await h.click(() => modal.getByRole('button', { name: btnName('Submit') }).first(), { timeout: 8000 });
+  await h.waitForAppIdle();
+  await h.dismiss();
+}
+
+/** Everything the app is complaining about, plus which required groups are still empty. */
+export async function captureAddFormState(page) {
+  return page.evaluate((rootSel) => {
+    const root = document.querySelector(rootSel) || document;
+    const vis = (el) => { const r = el.getBoundingClientRect(); return r.width > 1 && r.height > 1; };
+    const txt = (el) => ((el && (el.innerText || el.textContent)) || '').replace(/\s+/g, ' ').trim();
+    const errorSel = ['.invalid-feedback', '.is-invalid', '.error', '.has-error', '.text-danger',
+      '.alert', '.toast', '[role="alert"]', '.help-block', '.validation-message'].join(',');
+    const errors = [...document.querySelectorAll(errorSel)]
+      .filter((e) => vis(e) && txt(e))
+      .map((e) => ({ where: `${e.tagName.toLowerCase()}.${(e.className || '').toString().split(/\s+/).slice(0, 2).join('.')}`, text: txt(e).slice(0, 300) }));
+    const emptyRequired = [];
+    for (const g of root.querySelectorAll('.form-group')) {
+      const lbl = txt(g.querySelector('label'));
+      if (!lbl || /\(optional\)/i.test(lbl) || !vis(g)) continue;
+      const s2 = g.querySelector('.select2-container');
+      const inp = g.querySelector('input:not(.select2-search__field):not(.tt-hint), select, textarea');
+      let val = '';
+      if (s2) {
+        val = [...g.querySelectorAll('.select2-selection__choice')].map((e) => txt(e).replace(/×/g, '')).join(',')
+          || (g.querySelector('.select2-selection__rendered')?.getAttribute('title') || '');
+      } else if (inp && inp.tagName === 'SELECT') val = inp.options[inp.selectedIndex]?.text || '';
+      else if (inp) val = inp.value || '';
+      else if (g.querySelector('button')) {
+        val = [...g.querySelectorAll('button')].filter((x) => /active|primary/.test(x.className)).map(txt).join(',');
+      }
+      if (!String(val).trim()) emptyRequired.push(lbl.slice(0, 70));
+    }
+    return {
+      url: location.href,
+      stillOnForm: !!document.querySelector('#gwt-debug-submit'),
+      errors,
+      emptyRequired,
+      modals: [...document.querySelectorAll('.modal.show')].map((m) => txt(m).slice(0, 300)),
+    };
+  }, ADD_FORM_ROOT);
+}
+
+/**
+ * Log what the app said and save a screenshot before failing.
+ * Permanent part of the ship path: a rejected submit must explain itself in the shoot log so a
+ * separate diagnostic round is never needed again.
+ */
+export async function reportAddFormRejection(page, tag = 'add-form-rejected') {
+  const state = await captureAddFormState(page).catch(() => null);
+  console.error('--- Add form state after the rejected submit ---');
+  if (!state) {
+    console.error('  (could not read the form state)');
+  } else {
+    console.error(`  url: ${state.url}   still on the form: ${state.stillOnForm}`);
+    if (state.errors.length) {
+      console.error('  APP SAYS:');
+      for (const e of state.errors) console.error(`    [${e.where}] ${e.text}`);
+    } else {
+      console.error('  APP SAYS: (no visible error element found)');
+    }
+    if (state.emptyRequired.length) {
+      console.error(`  still-empty required groups (${state.emptyRequired.length}):`);
+      for (const l of state.emptyRequired) console.error(`    - ${l}`);
+    }
+    for (const m of state.modals) console.error(`  modal: ${m}`);
+  }
+  try {
+    const file = path.join(HERE, 'debug', `${tag}.png`);
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    await page.screenshot({ path: file, fullPage: true });
+    console.error(`  screenshot: ${file}`);
+  } catch { /* best effort */ }
+  return state;
+}
+
+/**
+ * Fill the create form. Does NOT perform the final submit — the caller does, so the
+ * candidate-email guard stays in the scene.
+ *
+ * `prematureSubmits` keeps the storyboard beat: the form reveals only ONE new error per attempt,
+ * so s1_4 submits early twice on purpose. A diagnostic can turn it off.
+ *
+ * VERIFIED 2026-08-04 by dry-running this read-only and reading every required field back. Two
+ * traps: (1) choosing California pulls in a cascade of extra REQUIRED per-state questions
+ * (Indiana/California license type, CA-DRE, real-estate) while TEXAS pulls in none; (2) the mailing
+ * block collapses while "Same as personal address" is checked (default) — #mailing_city and
+ * #mailing_zip exist but stay HIDDEN, so only "Mailing street address" can be filled.
+ */
+export async function fillAddForm(page, h, candidate = {}, { prematureSubmits = true } = {}) {
+  const fullName = candidate.name || 'Marcus Reyes';
+  const form = page.locator(ADD_FORM_ROOT);
+  const group = (labelRe) => form.locator('.form-group').filter({ hasText: labelRe }).first();
+  const pickOption = async (labelRe, option) => {
+    await h.click(() => group(labelRe).locator('.select2-selection').first(), { timeout: 6000 });
+    await h.click(() => page.locator('li.select2-results__option')
+      .filter({ hasText: new RegExp(`^\\s*${option}\\s*$`, 'i') }).first(), { timeout: 8000 });
+  };
+  // btnName matters: a plain /Experienced/i also matches "Inexperienced" right beside it.
+  const pickButton = (labelRe, name) =>
+    h.click(() => group(labelRe).getByRole('button', { name: btnName(name) }).first(), { timeout: 6000 });
+
+  await h.optional('first name', () => h.typeInto(['#first_name'], fullName.split(' ')[0]));
+  await h.optional('last name', () => h.typeInto(['#last_name'], fullName.split(' ').slice(1).join(' ')));
+
+  if (prematureSubmits) {
+    await h.optional('premature submit 1', async () => { await submitAddForm(page, h); await h.hold(3); });
+  }
+  await h.optional('phone', () => h.typeInto(['#phone'], candidate.phone || '(444) 433-3444'));
+  if (prematureSubmits) {
+    await h.optional('premature submit 2', async () => { await submitAddForm(page, h); await h.hold(3); });
+  }
+
+  await h.optional('NMLS', () => h.typeInto(['#nmls'], candidate.nmls || '107621'));
+  await h.optional('experience = Experienced', () => pickButton(/^\s*Experience/i, 'Experienced'));
+  await h.optional('career production', () => h.typeInto(['#closed_loan_since_2021'], '25000000'));
+  await h.optional('mailing street', () => h.typeInto(['#mailing_street'], '1 Market Street'));
+  await h.optional('licensed states = Texas', () => pickOption(/Licensed states/i, 'Texas'));
+  await h.optional('states to sponsor = Texas', () => pickOption(/States that you want/i, 'Texas'));
+  await h.optional('preferred languages', () => pickOption(/Preferred languages/i, 'English'));
+  await h.optional('preferred contact method', () => pickButton(/Preferred method of communication/i, 'Email'));
+  await h.optional('channel = Retail LO', () => pickOption(/Loan officer channel/i, 'Retail LO'));
+
+  // Hand the record to Luis: his board is "Mine", i.e. records he OWNS, so an admin-created record
+  // with no recruiter would never appear there.
+  // VERIFIED 2026-08-04: #recruiter is a twitter-typeahead — type, then pick from
+  // `.tt-menu.tt-open .tt-suggestion` (typing "Luis Testcase" offers "Luis Testcase 635211").
+  await h.optional('recruiter = Luis', async () => {
+    await h.typeInto(['#recruiter'], ACCOUNTS.luis.label);
+    const suggestion = page.locator('.tt-menu.tt-open .tt-suggestion, .tt-suggestion').first();
+    await suggestion.waitFor({ state: 'visible', timeout: 8000 });
+    await h.click(() => suggestion, { timeout: 6000 });
+  });
+
+  if (candidate.email) await h.typeInto(['#email'], candidate.email);
+  return { fullName, emailFilled: !!candidate.email };
+}
+
+// ---------------------------------------------------------------------------
 // ACT 0 — Admin: the terrain (Chau Chau)
 // Storyboard rows 0.1 – 0.6, PLUS s1_4 (the Add-form beat) which is shot here because an Outside
 // Recruiter has no Add button on staging — see the note beside that scene. Shooting order:
@@ -1280,159 +1522,66 @@ export async function act0(page, h, cfg = {}) {
   await h.scene('s1_4', async () => {
     const candidate = cfg.candidate || {};
     const fullName = candidate.name || 'Marcus Reyes';
-    await h.goto(URLS.rloMine);
-    await h.click(['#gwt-debug-add', () => page.getByRole('button', { name: /^\s*Add\s*$/i })], { timeout: 15_000 });
-    await h.waitForAppIdle();
+    await openAddForm(page, h);
     await h.hold(1.5);
+    await fillAddForm(page, h, candidate);
 
-    // VERIFIED 2026-08-04 (opened read-only as admin, never submitted). The Add form is a
-    // FULL-PAGE view, not a modal: clicking Add navigates to ?_e=new and renders a SECOND view
-    // root — `RecruitedLoanOfficerView` (singular) — while the list's `RecruitedLoanOfficersView`
-    // (plural) stays in the DOM but hidden. Scope to the singular root or you read the list.
-    // Fields carry real ids, and "(optional)" in the label is the ONLY marker of optionality —
-    // there is no asterisk on the required ones, which is the pain this scene shows.
-    //   #first_name              First name              REQUIRED
-    //   #last_name               Last name (optional)
-    //   #email                   Email                   REQUIRED
-    //   #phone                   Personal phone (optional)
-    //   #nmls                    NMLS (optional)
-    //   #closed_loan_since_2021  Career Production       REQUIRED
-    //   #mailing_street          Mailing address         REQUIRED
-    //   #recruiter               Recruiter (optional)  — twitter-typeahead; a sibling .tt-hint
-    //                            shadow input exists, so target .tt-input (that IS #recruiter)
-    //   Licensed states / States to sponsor / Preferred languages — REQUIRED select2 multis, no id
-    //   Loan officer channel     select2 over <select id="channel"> (Wholesale LO / Retail LO /
-    //                            Broker/Owner)
-    //   Experience               a BUTTON GROUP (Inexperienced | Experienced | More ▾), not a field
-    const FORM = '[id$="RecruitedLoanOfficerView"]';
-    const form = page.locator(FORM);
-    await form.first().waitFor({ state: 'visible', timeout: 20_000 });
+    // The email must come from --candidate-email (a Mailinator PUBLIC inbox at shoot time).
+    // Never invent one and never use a real person's address: staging sends real mail (audit §10.4).
+    if (!candidate.email) {
+      console.error('[act0]   s1_4: NO --candidate-email GIVEN — demonstrating the form but NOT submitting.');
+      console.error('[act0]   s1_4: re-run with --candidate-email <address> or acts 1-7 have nobody to work on.');
+      await h.hold(2);
+      await h.dismiss();
+      return;
+    }
 
-    // VERIFIED LIVE 2026-08-04: the submit control is `button#gwt-debug-submit`
-    // (class "btn btn-primary btn-lg mr-1"), inside the SINGULAR RecruitedLoanOfficerView root,
-    // visible ~1s after the form mounts. Its accessible name is "check Submit" — the leading
-    // material-icons ligature is why an earlier ^-anchored scan reported "no submit control".
-    // A sibling `button.btn-secondary` reading "Confirm" exists but starts hidden; it is treated
-    // as an optional second step below.
-    await page.locator('#gwt-debug-submit').waitFor({ state: 'visible', timeout: 25_000 });
-    const submit = async ({ confirm = false } = {}) => {
-      await h.click(['#gwt-debug-submit',
-        () => form.getByRole('button', { name: btnName('Submit') }).first(),
-      ], { timeout: 10_000 });
-      if (!confirm) return;
-      // Second step, if the app raises one. VERIFIED: a hidden "Confirm" button exists pre-submit,
-      // so it most likely becomes visible here; treated as optional so a no-confirm flow is fine.
-      await h.optional('confirm the submission', async () => {
-        const btn = page.getByRole('button', { name: btnName('Confirm') }).first();
-        await btn.waitFor({ state: 'visible', timeout: 6000 });
-        await h.click(() => btn, { timeout: 6000 });
-      });
-    };
-
-    await h.optional('first name', () => h.typeInto(['#first_name'], fullName.split(' ')[0]));
-    await h.optional('last name', () => h.typeInto(['#last_name'], fullName.split(' ').slice(1).join(' ')));
-
-    // Deliberate premature submit #1 — the form reveals exactly ONE new error per attempt, which
-    // is the pain the narration describes, so this beat needs real submits.
-    await h.optional('premature submit 1', async () => { await submit(); await h.hold(3); });
-
-    await h.optional('phone', () => h.typeInto(['#phone'], candidate.phone || '(444) 433-3444'));
-
-    // Deliberate premature submit #2 — one MORE error, never the full list.
-    await h.optional('premature submit 2', async () => { await submit(); await h.hold(3); });
-
-    await h.optional('NMLS', () => h.typeInto(['#nmls'], candidate.nmls || '107621'));
-    // VERIFIED 2026-08-04 by dry-running the whole fill read-only (no submit) and reading every
-    // required field back. The form has 22 required groups — "(optional)" in the label is the ONLY
-    // marker — and the FIRST shoot's submit bounced because ten of them were still empty.
-    // Two traps found:
-    //  1. PER-STATE CASCADE. Choosing California pulls in a whole extra block of REQUIRED
-    //     questions (Indiana/California license type, CA-DRE license type, "do you also have a
-    //     California DRE Real Estate licence", "do you want to practice real estate with …").
-    //     Choosing TEXAS pulls in none of them, which collapses the required set from ten
-    //     outstanding to one. Hence Texas — the narration never names a state.
-    //  2. The mailing block collapses to a single visible field while "Same as personal address"
-    //     is checked (it is, by default): #mailing_city and #mailing_zip exist but stay HIDDEN, so
-    //     only "Mailing street address" has to be filled.
-    // Left empty deliberately: "Upload Agreement", a file input whose label merely lacks
-    // "(optional)" — a lead cannot require a signed agreement, and nothing else remains.
-    const group = (labelRe) => form.locator('.form-group').filter({ hasText: labelRe }).first();
-    const pickOption = async (labelRe, option) => {
-      await h.click(() => group(labelRe).locator('.select2-selection').first(), { timeout: 6000 });
-      await h.click(() => page.locator('li.select2-results__option')
-        .filter({ hasText: new RegExp(`^\\s*${option}\\s*$`, 'i') }).first(), { timeout: 8000 });
-    };
-    const pickButton = (labelRe, name) =>
-      h.click(() => group(labelRe).getByRole('button', { name: btnName(name) }).first(), { timeout: 6000 });
-
-    // btnName matters here: a plain /Experienced/i also matches "Inexperienced", which is the
-    // button sitting right beside it — the dry run picked the wrong one until this was fixed.
-    await h.optional('experience = Experienced', () => pickButton(/^\s*Experience/i, 'Experienced'));
-    await h.optional('career production', () => h.typeInto(['#closed_loan_since_2021'], '25000000'));
-    await h.optional('mailing street', () => h.typeInto(['#mailing_street'], '1 Market Street'));
-    await h.optional('licensed states = Texas', () => pickOption(/Licensed states/i, 'Texas'));
-    await h.optional('states to sponsor = Texas', () => pickOption(/States that you want/i, 'Texas'));
-    await h.optional('preferred languages', () => pickOption(/Preferred languages/i, 'English'));
-    await h.optional('preferred contact method', () => pickButton(/Preferred method of communication/i, 'Email'));
-    // Optional, but the storyboard specifies it: select2 over <select id="channel">.
-    await h.optional('channel = Retail LO', () => pickOption(/Loan officer channel/i, 'Retail LO'));
-
-    // Hand the record to Luis here: his board is "Mine", i.e. records he OWNS, so an
-    // admin-created record with no recruiter would never appear in it.
-    // VERIFIED 2026-08-04: #recruiter is a twitter-typeahead — type, then pick from
-    // `.tt-menu.tt-open .tt-suggestion` (typing "Luis Testcase" offers "Luis Testcase 635211").
-    await h.optional('recruiter = Luis', async () => {
-      await h.typeInto(['#recruiter'], ACCOUNTS.luis.label);
-      const suggestion = page.locator('.tt-menu.tt-open .tt-suggestion, .tt-suggestion').first();
-      await suggestion.waitFor({ state: 'visible', timeout: 8000 });
-      await h.click(() => suggestion, { timeout: 6000 });
-    });
+    await submitAddForm(page, h, { confirm: true });
+    await h.hold(4); // new records index slowly (Datastore eventual consistency)
 
     // VERIFY — deliberately NOT optional().
-    // In the first shoot this check WAS wrapped in optional(), so when the submit silently bounced
-    // the scene still logged "ok" and the run reported success while every downstream act that
-    // needed this record failed. A scene whose PURPOSE is creating the record must fail loudly.
-    // The board sorts by Created DESC by default (a#gwt-debug-sort-created---desc-default), so a
-    // new record lands on page 1 — check that first and only fall back to the search widget,
-    // because the label search cannot offer a suggestion for a name that does not exist yet
-    // (which is what made the original check throw a confusing "grid did not change" first).
-    await h.goto(URLS.rloMine);
+    // Shoot 1 had this wrapped in optional(), so a failed create still logged "ok" and the run
+    // reported success while sinking every downstream act.
+    //
+    // Check the COMPANY board, not Mine: "Mine" means records the CURRENT user owns, and this
+    // record ends up owned by a recruiter, so it correctly disappears from admin's Mine. Verifying
+    // there reported failure even on success.
+    await h.goto(URLS.rloCompany);
     let created = h.row(fullName);
     if (!(await created.count())) {
       await h.optional('search for the new record', async () => {
-        await h.filterGrid(candidate.email);
+        await h.filterGrid(fullName.toLowerCase());
         created = h.row(fullName);
       });
     }
     if (!(await created.count())) {
-      throw new Error(`"${fullName}" was NOT created — the final submit was rejected. Check the `
-        + 'form for a required field that is still empty (22 are required; "(optional)" in the '
-        + 'label is the only marker) and re-record act 0 before anything else: every later act '
-        + 'operates on this record.');
+      // This form never shows a validation message (see submitAddForm), so dump the state and a
+      // screenshot: that is the only way anyone can debug it after the fact.
+      await reportAddFormRejection(page, 's1_4-rejected');
+      throw new Error(`"${fullName}" was NOT created — the submit did not save. This form gives NO `
+        + 'on-screen error, so check the screenshot in recorder/debug/ and the still-empty required '
+        + 'groups logged above, then re-record act 0 before anything else: every later act operates '
+        + 'on this record.');
     }
     console.log(`[act0]   s1_4: ${fullName} created`);
 
-    // Ownership: his board is "Mine", i.e. records he OWNS, so hand it over if the form field
-    // did not take.
-    const owned = new RegExp(ACCOUNTS.luis.label, 'i').test((await created.innerText()) || '');
-    if (owned) {
+    // Ownership. The create form does NOT keep the Recruiter it was given — the record comes back
+    // auto-assigned (observed: "Manh Admin") — so re-assign it from the toolbar with the
+    // "Overwrite the current recruiter" box ticked. Act 1 reads LUIS's Mine board, so without this
+    // the entire act has nothing to work on.
+    const ownedBy = new RegExp(ACCOUNTS.luis.label, 'i');
+    if (ownedBy.test((await created.innerText()) || '')) {
       console.log(`[act0]   s1_4: already owned by ${ACCOUNTS.luis.label}`);
     } else {
-      await h.optional('assign the recruiter via the toolbar', async () => {
-        // PROBE: the Assign recruiter modal's internals are unverified.
-        await created.locator('input[type="checkbox"]').first().check({ timeout: 5000 });
-        await h.click(['#assign-recruiter'], { timeout: 8000 });
-        await h.hold(1.5);
-        await h.click(() => page.getByText(new RegExp(ACCOUNTS.luis.label, 'i')).first(), { timeout: 6000 });
-        await h.click([
-          () => page.locator('div.modal.show').getByRole('button', { name: btnName('Submit', 'Save', 'Assign') }).first(),
-        ], { timeout: 6000 });
-        await h.hold(2.5);
-        await h.dismiss();
-      });
-      if (!new RegExp(ACCOUNTS.luis.label, 'i').test((await h.row(fullName).innerText().catch(() => '')) || '')) {
+      await h.optional(`assign the recruiter to ${ACCOUNTS.luis.label}`, () =>
+        assignRecruiter(page, h, created, ACCOUNTS.luis.label));
+      await h.goto(URLS.rloCompany);
+      const after = (await h.row(fullName).innerText().catch(() => '')) || '';
+      if (ownedBy.test(after)) {
+        console.log(`[act0]   s1_4: reassigned to ${ACCOUNTS.luis.label}`);
+      } else {
         console.error(`[act0]   s1_4: ${fullName} exists but is NOT owned by ${ACCOUNTS.luis.label} —`);
-        console.error('[act0]   s1_4: act 1 reads his "Mine" board, so it will not see the record.');
+        console.error('[act0]   s1_4: act 1 reads his "Mine" board and will find nothing. Assign it by hand.');
       }
     }
   });
