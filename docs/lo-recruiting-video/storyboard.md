@@ -253,3 +253,91 @@ còn đó (`expandSplicePlan` + `seq`/`durSec`), chỉ cần một file clip là
    không? Tôi đề xuất **có** — đó là pain point sống, và quay được bằng hình.
 4. Act 3 (Licensing) trên staging gần như trắng. Muốn tôi chèn slide đối chiếu production
    (Licensing thấy 23.5K + mở được config) để act này có nội dung không?
+
+
+---
+
+## Bản PRODUCTION (`narration.production.json`)
+
+Bản thứ hai của cùng câu chuyện, quay trên `www.loanfactory.com` thay vì staging. Lý do tồn tại: bản
+staging phải *kể* các con số production ("on production this warehouse holds…") vì dữ liệu staging quá
+mỏng. Bản này **chiếu** chúng.
+
+`narration.production.json` giữ **nguyên 51 id và nguyên thứ tự** của bản English, nên mọi thứ trong
+`recorder/` map 1-1; chỉ nội dung thoại đổi. Bản English đã ship (`final/lo-recruiting-role-walkthrough.mp4`)
+**không được ghi đè**.
+
+### Nhân vật và dàn diễn viên
+
+| | Staging | Production |
+|---|---|---|
+| Ứng viên | Marcus Reyes (tự tạo trong act 1) | **Test Test (New York)** — record có sẵn từ 09/09/2025, `?_e=…NTcxNjEwNDAyNjUyMTYwMA` |
+| Admin | Chau Chau | IT Team |
+| Outside Recruiter | Luis Testcase | **Seth August** (Hawaii) |
+| Inside Recruiter | Nocha Hien | **Brayan Suarez** (Colombia) |
+| Licensing | Chu Con Gi Nua | **Dung Nguyen** |
+| HR | Ken Customer | **Dave Hoang** |
+| Onboard Specialist | Maria Testcase | **Miley Dau** |
+| Accounting | Admin Request | **Rosaline Pham** |
+
+Ứng viên **không** được tạo mới trong act 1 nữa. Nhân vật vào pipeline qua menu Action của chính dòng RLO
+(`Invite Loan officer to join Loan Factory`) — tức là ghi lên dòng test có sẵn, không sinh record mới.
+
+### Chuẩn bị record trước khi quay (đã làm 05/08/2026, off camera)
+
+Email cũ của Test Test là `sssseulgi309@gmail.com` — **Gmail thật của một người lạ**, gần như chắc chắn từ
+một lần scrape. Đã đổi sang `lfrecruit-q9x3m7@mailinator.com` để không nút gửi nào bắn vào người thật.
+Đổi được một field đó **buộc** phải điền 5 field `required` khác (xem act 1 dưới): `Licensed states`=New York,
+`States to sponsor`=New Jersey (chọn NJ có chủ ý — bang này có rule 2.5h nên act Licensing có việc thật),
+`Career Production`=25000000, `Preferred languages`=English, `Mailing street address`= tick *Same as personal
+address* (không bịa dữ liệu). **NMLS cố ý để trống** — nó là đạo cụ của act 1.
+
+### Deltas theo act
+
+- **Act 0** — s0_3 không còn nói về "Run Update" (chưa đo trên production) mà nói về thứ đã đo: ba counter
+  của funnel (`Invited to join`, `Want to join`, `Interested but thinking`) đều **0**, và `claimed + not claimed`
+  hụt 3.000 so với `Total`. s0_5 dùng bằng chứng production: mọi dòng `/modex_data` cùng ngày `1/24/2024` với
+  timestamp cách nhau **7 giây** (một lần import duy nhất) và cột liên lạc là `No email / No Phone`.
+- **Act 1** — s1_4 thay hẳn: không còn là "form Add 22 nhóm required", mà là **không sửa nổi record có sẵn**.
+  Submit → `Licensed states is required` → điền → `States to sponsor` → `Career Production` → `Mailing street
+  address` → `Preferred languages`. Năm field bung ra từng cái một. s1_1 mở bằng sổ khách **rỗng** (Seth sở hữu
+  0 record; toàn kho chỉ 11 dòng claimed). s1_3 kết bằng dòng `Katie Test (Duplicated)` đỏ có thật trên grid.
+- **Act 2** — s2_1 lượng hoá thay vì mô tả: cùng hai chữ *inside recruiter* mà Seth có **2/82** công tắc, Brayan
+  có **15/82**. s2_2 viết lại để **không** khẳng định trước board của Brayan hiện gì (chưa xem session của anh ấy);
+  câu thoại giữ phần cơ chế, hình để hình nói.
+- **Act 3** — bỏ hẳn câu so sánh staging↔production của bản cũ (nó **sai** trên production). Sự thật: Dung có
+  **30/82** nhưng **không** có `RECRUITED_/INTERESTED_LOAN_OFFICERS`, trong khi lại có `CONFIG`, `EDIT_LENDER`,
+  `EDIT_ALL_COMPANY_TRANSACTIONS`, `PAY_BRANCH_COMMISSION`. Người licensing sửa được *cách công ty tuyển dụng*
+  mà không xem được một ứng viên nào.
+- **Act 4** — số thật: `Paid but not signed` 4, `1-1 done nhưng HR chưa initiate` 33, `fully onboarded` **2.601**.
+  s4_8 thêm phát hiện **74/82** của Dave, gồm `PAM_GRANT_PERMISSION` — chính là cơ chế sinh ra mọi dị thường quyền
+  trong video.
+- **Act 5** — s5_2 đảo ngược: quy tắc gán chủ sở hữu nằm trong trang config mà **Miley không mở được** (không có
+  `CONFIG`), nên người nhận việc không thấy được luật quyết định việc đó là của mình.
+- **Act 6** — viết lại quanh phát hiện lớn nhất của act: Rosaline **không có quyền vào pipeline**. Người chi
+  referral bonus chưa từng mở được cái pipeline sinh ra khoản đó; số liệu tới tay accounting dưới dạng file
+  người khác export. (Bỏ câu "accounting là role duy nhất có CSV export" của bản staging.)
+- **Act 7** — kết bằng ma trận quyền: 74 vs 2, và hai người không mở được thứ họ chịu trách nhiệm.
+
+### Kỷ luật: mọi số đọc trên camera phải là số tự đo
+
+Bản staging từng suýt ship hai câu sai (cả 7 role mở được config; licensing trên production thấy toàn pipeline).
+Cả hai đều **sai** khi đo thật. Nguồn của từng con số trong bản production:
+
+| Khẳng định | Nguồn |
+|---|---|
+| 106.145 / 102.715 / 11 | counter RLO, đọc live 05/08/2026 |
+| 23.602 / 2.601 / 542 / 4 / 33 | counter ILO, đọc live 05/08/2026 |
+| 82 công tắc; 2 / 5 / 14 / 15 / 30 / 74 | modal Permissions từng account (không cần Login-as) |
+| 4/6 role có `CONFIG` | tick trên Brayan, Dung, Dave, Rosaline; không có ở Seth, Miley |
+| Dung + Rosaline không vào được pipeline | thiếu cả `RECRUITED_` và `INTERESTED_LOAN_OFFICERS` |
+| Seth sở hữu 0 record | `?recruiter=sethdaugust@gmail.com` → No results (lưu ý: filter dùng **Gmail cá nhân**) |
+| Modex: một batch, 7 giây | `/modex_data` timestamps `1:07:47 / :50 / :54`, tất cả `1/24/2024` |
+| 5 field required chặn mọi lần sửa | tái hiện trực tiếp trên record Test Test |
+| 60 ngày + job thứ Bảy ≈ 75 ngày | phân tích code, `lo-recruiting-redesign-direction.md` |
+
+### Đọc quyền mà KHÔNG cần Login-as
+
+`/associates?labels=<email>` → row `Action` → **`Permissions`** → modal cây 82 checkbox. Đọc được hết từ admin,
+**không đốt session**, nên viết được narration đúng trước buổi quay. Đóng modal bằng `.modal.show button.close`
+(Escape không đóng). Đây là cách rẻ nhất để kiểm mọi khẳng định về quyền — dùng lại trước mỗi lần quay.
