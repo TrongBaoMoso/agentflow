@@ -20,6 +20,8 @@
  *   (--login-as is refused: it would burn the admin state — provision role states instead)
  *   node inspect.mjs --act 4 --open-modals         # also open the whitelisted read-only modals
  *   node inspect.mjs --check-states              # are the saved sessions still alive?
+ *                                                # EXIT CODE: 0 = all usable, 1 = at least one
+ *                                                # missing/expired -> safe to gate a shoot on it
  *   node inspect.mjs --act 0 --auth /abs/state.json
  */
 
@@ -650,6 +652,8 @@ async function shoot(page, name) {
 
 /**
  * Read-only health check for the saved sessions.
+ *
+ * Exits 0 only when every state is usable, 1 otherwise, so a shoot can be gated on it.
  *
  * VERIFIED 2026-08-04 the hard way: these sessions EXPIRE in hours. The states captured at 23:58
  * (luis) and 01:42 (nocha) were dead by ~08:00 while the 07:0x batch was still alive — and a dead

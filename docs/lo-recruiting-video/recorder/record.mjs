@@ -38,7 +38,7 @@
  *   node record.mjs --acts 0,1,2
  *   node record.mjs --acts 4 --role-state            # re-record one act from its saved role state
  *   node record.mjs --auth /abs/path/state.json --out /abs/path/video
- *   node record.mjs --candidate-email <temp-mail addr> --candidate-name "Marcus Reyes"
+ *   node record.mjs --candidate-email mreyes-lo-q7w2m9@mailinator.com --mail-url 'https://www.mailinator.com/v4/public/inboxes.jsp?to=mreyes-lo-q7w2m9'
  *
  * Flags:
  *   --acts 0,1,2         subset of acts to record (default: all)
@@ -56,7 +56,9 @@
  *   --trim <sec>         videoTrimSec written into markers.json (default 0 — auth is off camera)
  *   --modex              enable the external-Modex beat in scene 1.6 (opens a 2nd tab => 2nd webm)
  *   --modex-url <url>    where that tab goes (no default; the human logs into Modex himself)
- *   --mail-url <url>     temp-mail inbox URL for the e-sign beat in scene 4.3 (2nd tab)
+ *   --mail-url <url>     inbox URL for the e-sign beat in s4_3 (2nd tab). Use the Mailinator
+ *                        PUBLIC inbox — readable by URL with no session:
+ *                        https://www.mailinator.com/v4/public/inboxes.jsp?to=mreyes-lo-q7w2m9
  *   --slow <ms>          Playwright slowMo (default 0)
  *   --login-timeout <m>  minutes to wait for each manual login (default 20). Provisioning needs
  *                        6 logins back to back; a timeout aborts the queue, though re-running
@@ -137,6 +139,17 @@ export const TABS = {
  * an <a>), add (toolbar <button>), reset (Reset filters <button>), plus every sidebar section.
  */
 export const gwt = (name) => `#gwt-debug-${name}`;
+
+/**
+ * Build a button-name matcher that tolerates a leading material-icons LIGATURE.
+ *
+ * VERIFIED 2026-08-04, the hard way: this app renders icons as text inside the button, so the
+ * accessible name of the Add form's submit control is "check Submit" — not "Submit". Other
+ * examples: "check Save + Email", "phone Call via my Zoom Phone", "add_circle Add". A regex
+ * anchored at ^ therefore matches NOTHING, which is exactly why an earlier pass concluded the
+ * Add form had no submit button at all. Never anchor a button-name regex at the start.
+ */
+export const btnName = (...words) => new RegExp(`(?:^|\\s)(?:${words.join('|')})\\s*$`, 'i');
 
 /**
  * Staging test accounts (already committed in docs/lo-recruiting-video-prompt.md).
@@ -820,7 +833,7 @@ export function makeHelpers(page, { actLabel = 'act?', durations = {}, ctxStart 
         await click([
           () => modal.locator('button.close[data-dismiss="modal"]').first(),
           () => modal.locator('button.close').first(),
-          () => modal.getByRole('button', { name: /^\s*(Cancel|Close)\s*$/i }).first(),
+          () => modal.getByRole('button', { name: btnName('Cancel', 'Close') }).first(),
         ], { timeout, pause: 200 });
         closed = true;
       } catch (err) {
@@ -1274,30 +1287,38 @@ export async function act0(page, h, cfg = {}) {
     const form = page.locator(FORM);
     await form.first().waitFor({ state: 'visible', timeout: 20_000 });
 
-    const submit = async () => {
-      // ⚠️ UNRESOLVED 2026-08-04: this form has NO Save / Submit / Create / Update / Done control
-      // anywhere on the page — verified clean, after filling fields (dirty), and after scrolling
-      // to the bottom. It also does NOT autosave per field (confirmed: typing into fields left no
-      // new record on the board). So the commit gesture is still unknown and the storyboard's
-      // "submit twice to reveal one error each" cannot be automated yet.
-      const btn = await h.resolve([
-        () => form.getByRole('button', { name: /^\s*(Save|Submit|Create|Update|Done)\s*$/i }).first(),
-        () => page.getByRole('button', { name: /^\s*(Save|Submit|Create)\s*$/i }).first(),
-      ], { timeout: 4000, label: 'Add-form submit' }).catch(() => null);
-      if (!btn) throw new Error('no submit control found on the Add form (see the UNRESOLVED note)');
-      await h.click(() => btn, { timeout: 6000 });
+    // VERIFIED LIVE 2026-08-04: the submit control is `button#gwt-debug-submit`
+    // (class "btn btn-primary btn-lg mr-1"), inside the SINGULAR RecruitedLoanOfficerView root,
+    // visible ~1s after the form mounts. Its accessible name is "check Submit" — the leading
+    // material-icons ligature is why an earlier ^-anchored scan reported "no submit control".
+    // A sibling `button.btn-secondary` reading "Confirm" exists but starts hidden; it is treated
+    // as an optional second step below.
+    await page.locator('#gwt-debug-submit').waitFor({ state: 'visible', timeout: 25_000 });
+    const submit = async ({ confirm = false } = {}) => {
+      await h.click(['#gwt-debug-submit',
+        () => form.getByRole('button', { name: btnName('Submit') }).first(),
+      ], { timeout: 10_000 });
+      if (!confirm) return;
+      // Second step, if the app raises one. VERIFIED: a hidden "Confirm" button exists pre-submit,
+      // so it most likely becomes visible here; treated as optional so a no-confirm flow is fine.
+      await h.optional('confirm the submission', async () => {
+        const btn = page.getByRole('button', { name: btnName('Confirm') }).first();
+        await btn.waitFor({ state: 'visible', timeout: 6000 });
+        await h.click(() => btn, { timeout: 6000 });
+      });
     };
 
     await h.optional('first name', () => h.typeInto(['#first_name'], fullName.split(' ')[0]));
     await h.optional('last name', () => h.typeInto(['#last_name'], fullName.split(' ').slice(1).join(' ')));
 
-    // Deliberate premature submit #1 — reveals exactly one error (if a submit control is found).
-    await h.optional('premature submit 1', async () => { await submit(); await h.hold(2.5); });
+    // Deliberate premature submit #1 — the form reveals exactly ONE new error per attempt, which
+    // is the pain the narration describes, so this beat needs real submits.
+    await h.optional('premature submit 1', async () => { await submit(); await h.hold(3); });
 
     await h.optional('phone', () => h.typeInto(['#phone'], candidate.phone || '(444) 433-3444'));
 
-    // Deliberate premature submit #2 — reveals one NEW error.
-    await h.optional('premature submit 2', async () => { await submit(); await h.hold(2.5); });
+    // Deliberate premature submit #2 — one MORE error, never the full list.
+    await h.optional('premature submit 2', async () => { await submit(); await h.hold(3); });
 
     await h.optional('NMLS', () => h.typeInto(['#nmls'], candidate.nmls || '107621'));
     await h.optional('channel = Retail LO', async () => {
@@ -1353,7 +1374,7 @@ export async function act0(page, h, cfg = {}) {
         await h.hold(1.5);
         await h.click(() => page.getByText(new RegExp(ACCOUNTS.luis.label, 'i')).first(), { timeout: 6000 });
         await h.click([
-          () => page.locator('div.modal.show').getByRole('button', { name: /^\s*(Submit|Save|Assign)\s*$/i }).first(),
+          () => page.locator('div.modal.show').getByRole('button', { name: btnName('Submit', 'Save', 'Assign') }).first(),
         ], { timeout: 6000 });
         await h.hold(2.5);
         await h.dismiss();
@@ -1557,7 +1578,7 @@ export async function act1(page, h, cfg = {}) {
     await h.click([() => rowOfCandidate().getByRole('button', { name: /^\s*Zoom SMS\s*$/i }).first()], { timeout: 10_000 });
     await h.hold(2);
     await h.optional('send to surface the error', async () => {
-      await h.click([() => page.getByRole('button', { name: /^\s*Send\s*$/i })], { timeout: 5000 });
+      await h.click([() => page.getByRole('button', { name: btnName('Send') })], { timeout: 5000 });
       await h.hold(3);
       await h.moveTo(() => page.getByText(/User not found|Failed to send/i).first(), { timeout: 6000 });
     });
@@ -1590,7 +1611,7 @@ export async function act1(page, h, cfg = {}) {
       // VERIFIED 2026-08-04: the note modal really does expose "Save + Email" (probed as Maria
       // with the modal open). PROBE remains only on the department checkbox labels inside it.
       await h.optional('tick Licensing', () => h.click(() => page.getByText(/^\s*Licensing\s*$/i).first(), { timeout: 4000 }));
-      await h.optional('confirm send', () => h.click(() => page.getByRole('button', { name: /^\s*(Send|Submit|Save)\s*$/i }).first(), { timeout: 4000 }));
+      await h.optional('confirm send', () => h.click(() => page.getByRole('button', { name: btnName('Send', 'Submit', 'Save') }).first(), { timeout: 4000 }));
       await h.hold(2);
     });
   });
@@ -1615,7 +1636,7 @@ export async function act1(page, h, cfg = {}) {
     await h.optional('choose Dialogue', () => h.click(() => page.getByText(/^\s*Dialogue\s*$/i).first(), { timeout: 5000 }));
     await h.optional('status note', () =>
       h.typeInto([() => page.getByRole('textbox').last()], 'First conversation done — sending comp details.', { delay: 22, clear: false }));
-    await h.optional('submit', () => h.click(() => page.getByRole('button', { name: /^\s*Submit\s*$/i }).first(), { timeout: 5000 }));
+    await h.optional('submit', () => h.click(() => page.getByRole('button', { name: btnName('Submit') }).first(), { timeout: 5000 }));
     await h.hold(2);
   });
 
@@ -1683,7 +1704,7 @@ export async function act1(page, h, cfg = {}) {
     await h.optional('send invitation email toggle', () => h.moveTo(() => page.getByText(/invitation email/i).first(), { timeout: 4000 }));
     await h.hold(1);
     await h.optional('submit the invite', async () => {
-      await h.click(() => page.getByRole('button', { name: /^\s*(Submit|Invite)\s*$/i }).first(), { timeout: 5000 });
+      await h.click(() => page.getByRole('button', { name: btnName('Submit', 'Invite') }).first(), { timeout: 5000 });
       await h.hold(4);
     });
   });
@@ -1784,7 +1805,7 @@ export async function act2(page, h, cfg = {}) {
       await h.hold(1);
       await h.click(() => page.getByText(/^\s*Approve\s*$/i).first(), { timeout: 5000 });
       await h.hold(1.5);
-      await h.click(() => page.getByRole('button', { name: /^\s*(Yes|OK|Confirm|Approve)\s*$/i }).first(), { timeout: 5000 });
+      await h.click(() => page.getByRole('button', { name: btnName('Yes', 'OK', 'Confirm', 'Approve') }).first(), { timeout: 5000 });
       console.log('[act2]   Approve submitted (staging mutation, by design)');
       await h.hold(3);
     });
@@ -1874,7 +1895,7 @@ export async function act4(page, h, cfg = {}) {
       await h.hold(1.5);
       await h.click(() => page.getByText(/^\s*Paid\s*$/i).first(), { timeout: 5000 });
       await h.hold(1);
-      await h.optional('submit', () => h.click(() => page.getByRole('button', { name: /^\s*(Submit|Save)\s*$/i }).first(), { timeout: 4000 }));
+      await h.optional('submit', () => h.click(() => page.getByRole('button', { name: btnName('Submit', 'Save') }).first(), { timeout: 4000 }));
     });
     await h.hold(3);
     // Hold on the status cell so the automatic jump is visible on camera.
@@ -1894,9 +1915,12 @@ export async function act4(page, h, cfg = {}) {
     await h.hold(1);
     await h.clickMenuItem(rowOfCandidate(), 'Re-generate e-sign documents and send email', { prefix: true });
     await h.hold(2);
-    await h.optional('confirm', () => h.click(() => page.getByRole('button', { name: /^\s*(Yes|OK|Submit|Send)\s*$/i }).first(), { timeout: 5000 }));
+    await h.optional('confirm', () => h.click(() => page.getByRole('button', { name: btnName('Yes', 'OK', 'Submit', 'Send') }).first(), { timeout: 5000 }));
     await h.hold(3);
-    // The actual signing happens in the temp-mail inbox: a human beat, opt-in via --mail-url.
+    // The actual signing happens in the candidate's inbox: a human beat, opt-in via --mail-url.
+    // Use a Mailinator PUBLIC inbox. NOT temp-mail.org: a temp-mail.org address is bound to the
+    // cookie of the browser that created it, so the recording browser would open an empty,
+    // different inbox. A Mailinator public inbox is addressable by URL from any session.
     if (cfg.mailUrl) {
       const tab = await page.context().newPage();
       cfg.extraPages?.push({ label: 'act4-mail', page: tab });
@@ -1907,7 +1931,7 @@ export async function act4(page, h, cfg = {}) {
       await h.goto(URLS.iloCompany);
       await h.optional('signed', () => h.moveTo(() => rowOfCandidate().getByText(/Signed/i).first(), { timeout: 8000 }));
     } else {
-      console.log('[act4]   s4_3: temp-mail signing beat SKIPPED (pass --mail-url <inbox>)');
+      console.log('[act4]   s4_3: inbox signing beat SKIPPED (pass --mail-url <public inbox URL>)');
     }
   });
 
@@ -1928,7 +1952,7 @@ export async function act4(page, h, cfg = {}) {
     await h.optional('set 100% onboarded', async () => {
       await h.click(() => page.getByText(/100% onboarded/i).first(), { timeout: 5000 });
       await h.hold(1);
-      await h.click(() => page.getByRole('button', { name: /^\s*Submit\s*$/i }).first(), { timeout: 4000 });
+      await h.click(() => page.getByRole('button', { name: btnName('Submit') }).first(), { timeout: 4000 });
       await h.hold(3);
     });
   });
@@ -1963,7 +1987,7 @@ export async function act4(page, h, cfg = {}) {
     await h.hold(1);
     await h.clickMenuItem(rowOfCandidate(), 'Invite 1-1 meeting', { prefix: true });
     await h.hold(2.5);
-    await h.optional('send the invite', () => h.click(() => page.getByRole('button', { name: /^\s*(Send|Submit)\s*$/i }).first(), { timeout: 5000 }));
+    await h.optional('send the invite', () => h.click(() => page.getByRole('button', { name: btnName('Send', 'Submit') }).first(), { timeout: 5000 }));
     await h.hold(2);
   });
 
@@ -2054,7 +2078,7 @@ export async function act5(page, h, cfg = {}) {
       await h.click([() => page.getByText(/Save \+ Email/i).first()], { timeout: 5000 });
       await h.hold(2);
       await h.optional('tick Licensing', () => h.click(() => page.getByText(/^\s*Licensing\s*$/i).first(), { timeout: 4000 }));
-      await h.optional('send', () => h.click(() => page.getByRole('button', { name: /^\s*(Send|Submit|Save)\s*$/i }).first(), { timeout: 4000 }));
+      await h.optional('send', () => h.click(() => page.getByRole('button', { name: btnName('Send', 'Submit', 'Save') }).first(), { timeout: 4000 }));
       await h.hold(2);
     });
   });
@@ -2234,7 +2258,7 @@ export function parseArgs(argv = process.argv.slice(2)) {
     slow: 0,
     candidate: {
       name: 'Marcus Reyes',
-      email: '',            // temp-mail address, supplied at shoot time
+      email: '',            // supplied at shoot time via --candidate-email (see --mail-url)
       phone: '(444) 433-3444',
       nmls: '107621',
       channel: 'Retail LO',
@@ -2428,8 +2452,10 @@ async function main() {
   };
 
   // Preflight: act 0 hosts the s1_4 form beat, which creates the candidate every later act works
-  // on. The address must be a temp-mail one made at shoot time — staging really does send mail
-  // (audit §10.4) — so it is never hardcoded, and its absence must be loud, not discovered later.
+  // on. Staging really does send mail (audit §10.4), so the address is never hardcoded and its
+  // absence must be loud rather than discovered later. Use a Mailinator PUBLIC inbox so the
+  // recording browser can actually read the mail (a temp-mail.org address is bound to the cookie
+  // of the browser that created it and would be unreadable here).
   if (selected.some((a) => a.id === 0) && !args.candidate.email) {
     banner([
       'NO --candidate-email GIVEN',
@@ -2437,8 +2463,9 @@ async function main() {
       `Act 0 will demonstrate the Add form for "${args.candidate.name}" but will NOT submit it,`,
       'so no candidate record will exist and acts 1-7 will have nobody to work on.',
       '',
-      'Open https://temp-mail.org/ , copy the address, and re-run with:',
-      '  --candidate-email <that address>',
+      'Re-run with the shoot address (a Mailinator PUBLIC inbox, readable by URL):',
+      '  --candidate-email "+ADDR+"',
+      "  --mail-url '"+INBOX+"'",
       '',
       'Never use a real person\'s address: this staging environment sends real email.',
     ]);
@@ -2509,7 +2536,7 @@ async function main() {
       // §6.3: take the exact driven page's path — never glob for "the largest webm".
       entry.videoPath = video ? await video.path().catch(() => null) : null;
       markers.videos.push(entry);
-      // Side-tab takes (external Modex, temp-mail) are NOT part of the main timeline —
+      // Side-tab takes (external Modex, the mail inbox) are NOT part of the main timeline —
       // assemble.mjs concatenates everything in `videos`, and these have no scenes. They are
       // listed separately so they can be hand-cut into the final edit if wanted.
       for (const ev of extraVideos) {
