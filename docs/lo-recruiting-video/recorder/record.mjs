@@ -1459,6 +1459,59 @@ export async function inviteToILO(page, h, row, { referralSource = 'Direct Invit
   return true;
 }
 
+/**
+ * Read the candidate's three stacked state buttons off the ILO board.
+ *
+ * VERIFIED LIVE 2026-08-04: one cell (header "Status/Startup fee/Agreement") holds THREE <button>
+ * dropdowns in this order: [0] status, [1] startup fee, [2] agreement. For Marcus they read
+ * "Invited to join" / "Unpaid" / "Not signed". The cell is found by its FEE button (a small, known
+ * vocabulary) and the other two are taken positionally, so it survives column reordering.
+ *
+ * Returns null when the record is not on the board at all — the caller must treat that as
+ * CANNOT DETERMINE, never as "the transition has not happened yet".
+ */
+async function readIloState(page, fullName) {
+  return page.evaluate((nm) => {
+    const rows = [...document.querySelectorAll('table.table-hover tbody tr')];
+    const tr = rows.find((r) => new RegExp(nm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i').test(r.innerText || ''));
+    if (!tr) return null;
+    const td = [...tr.children].find((c) => [...c.querySelectorAll('button')]
+      .some((b) => /^(Unpaid|Paid|Not paid)$/i.test((b.innerText || '').trim())));
+    if (!td) return { onBoard: true, cellFound: false };
+    const btns = [...td.querySelectorAll('button')].map((b) => (b.innerText || '').trim());
+    return { onBoard: true, cellFound: true, status: btns[0] || '', fee: btns[1] || '', agreement: btns[2] || '' };
+  }, fullName);
+}
+
+/** Read ILO state with retries; hard-fail rather than let a slow board look like an un-done transition. */
+async function readIloStateOrFail(page, h, fullName, sceneLabel) {
+  let st = null;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    await h.goto(URLS.iloCompany);
+    st = await readIloState(page, fullName);
+    if (st && st.cellFound) return st;
+    console.warn(`[${sceneLabel}] state read attempt ${attempt}/3: `
+      + (st ? 'found the row but not the Status/Startup fee cell' : `${fullName} not on the ILO board`));
+    if (attempt < 3) await h.hold(5);
+  }
+  throw new Error(`CANNOT DETERMINE the state of ${fullName} after 3 attempts — `
+    + (st ? 'the row is on the ILO board but its "Status/Startup fee/Agreement" cell could not be read.'
+          : 'the record is not on the ILO board at all, so act 1\'s invite has not run.')
+    + ' REFUSING to guess: the perform branch mutates a record that cannot be restored.');
+}
+
+/** Pick an option from an open per-cell dropdown, tolerating data-name items and plain text. */
+async function pickCellOption(page, h, labelRe, what) {
+  await h.click([
+    () => page.locator('a.dropdown-item:visible').filter({ hasText: labelRe }).first(),
+    () => page.locator('.dropdown-menu.show, .dropdown-menu:visible').first().getByText(labelRe).first(),
+    () => page.getByText(labelRe).first(),
+  ], { timeout: 8000 });
+  await h.hold(1);
+  await h.optional(`confirm ${what}`, () => h.click(
+    () => page.getByRole('button', { name: btnName('Submit', 'Save', 'Yes', 'OK') }).first(), { timeout: 4500 }));
+}
+
 // ---------------------------------------------------------------------------
 // ACT 0 — Admin: the terrain (Chau Chau)
 // Storyboard rows 0.1 – 0.6, PLUS s1_4 (the Add-form beat) which is shot here because an Outside
@@ -2197,48 +2250,76 @@ export async function act2(page, h, cfg = {}) {
     // Self-apply queue. "Check Modex" per row is the system admitting it needs another site.
     // VERIFIED 2026-08-04: "Pending approvals" cannot be deep-linked (the space bounces to
     // /Mine) — reach it by clicking the tab.
-    await h.goto(URLS.rloMine);
-    await h.clickTab(TABS.pendingApprovals);
+    //
+    // ONE-WAY, and note this beat targets a DIFFERENT record from the rest of the shoot: whichever
+    // self-apply row is at the top of the queue, not Marcus. Approving moves it into the Company tab
+    // and cannot be undone, so it gets the same three-way branch. "Already done" here means the
+    // queue is empty — there is nothing left to approve.
+    const openQueue = async () => {
+      await h.goto(URLS.rloMine);
+      await h.clickTab(TABS.pendingApprovals);
+      return h.waitForRows();
+    };
+
+    let queue = null;
+    for (let attempt = 1; attempt <= 3; attempt += 1) {
+      queue = await openQueue().catch((err) => ({ rows: 0, empty: false, pager: err.message }));
+      if (queue.rows > 0 || queue.empty) break;
+      console.warn(`[act2]   s2_5: queue read attempt ${attempt}/3 inconclusive (pager "${queue.pager}")`);
+      if (attempt < 3) await h.hold(5);
+    }
+    if (!(queue.rows > 0 || queue.empty)) {
+      throw new Error('CANNOT DETERMINE whether anything is pending approval — the queue never '
+        + 'loaded after 3 attempts, reporting neither rows nor an empty state. REFUSING to guess: '
+        + 'Approve is irreversible and targets whatever row happens to be first.');
+    }
+
     await h.optional('Check Modex link', () =>
       h.moveTo(() => page.getByText(/Check Modex/i).first(), { timeout: 8000 }));
     await h.hold(2);
-    // MUTATES STAGING: Approve moves the record into the Company tab. Storyboard row 2.5
-    // asks for it explicitly; staging CRUD is allowed. Nothing is deleted.
-    // Capture which record we are about to approve, so the outcome can be verified.
-    let pendingTarget = '';
-    await h.optional('note the target record', async () => {
-      pendingTarget = ((await page.locator('table.table-hover tbody tr').filter({ hasText: /\S/ })
-        .first().innerText().catch(() => '')) || '').replace(/\s+/g, ' ').slice(0, 40);
-    });
-    let approveClicked = false;
-    await h.optional('Approve one self-apply record', async () => {
-      await h.click([
-        () => page.getByRole('button', { name: /^\s*Action/i }).first(),
-        () => page.getByText(/^\s*Action\s*$/i).first(),
-      ], { timeout: 6000 });
-      await h.hold(1);
-      await h.click(() => page.getByText(/^\s*Approve\s*$/i).first(), { timeout: 5000 });
-      await h.hold(1.5);
-      await h.click(() => page.getByRole('button', { name: btnName('Yes', 'OK', 'Confirm', 'Approve') }).first(), { timeout: 5000 });
-      console.log('[act2]   Approve submitted (staging mutation, by design)');
-      approveClicked = true;
-      await h.hold(3);
-    });
 
-    // VERIFY — Approve moves the record out of Pending approvals and into Company. If the click
-    // silently did nothing, say so: this scene claims a state transition.
-    if (approveClicked && pendingTarget) {
-      await h.goto(URLS.rloMine);
-      await h.clickTab(TABS.pendingApprovals);
-      const stillPending = await page.locator('table.table-hover tbody tr')
-        .filter({ hasText: pendingTarget.split(' ').slice(0, 3).join(' ') }).count();
-      if (stillPending) {
-        console.error(`[act2]   s2_5: "${pendingTarget}" is STILL in Pending approvals — the Approve`);
-        console.error('[act2]   s2_5: did not take effect. The narration claims it moved to Company.');
-      } else {
-        console.log(`[act2]   s2_5: verified — "${pendingTarget}" left Pending approvals`);
-      }
+    if (queue.rows === 0) {
+      // ALREADY DONE — positive assertion: the board explicitly reports an empty queue.
+      console.warn('[act2]   s2_5: BRANCH = ALREADY DONE — Pending approvals is empty (the board');
+      console.warn('[act2]   s2_5: reports its empty state, it did not merely fail to load). THIS TAKE');
+      console.warn('[act2]   s2_5: CONTAINS NO REAL MUTATION: the queue and its Check Modex column are');
+      console.warn('[act2]   s2_5: shown, and no Approve is filmed. Nothing is re-approved.');
+      await h.hold(3);
+      return;
     }
+
+    const targetRow = page.locator('table.table-hover tbody tr').filter({ hasText: /\S/ }).first();
+    const pendingTarget = ((await targetRow.innerText().catch(() => '')) || '').replace(/\s+/g, ' ').slice(0, 40);
+    // A row we cannot name is a row we cannot verify afterwards.
+    if (!pendingTarget) {
+      throw new Error('CANNOT DETERMINE: the queue reports rows but the first row yielded no text, '
+        + 'so the outcome of an Approve could not be verified. Refusing to mutate blind.');
+    }
+    console.log(`[act2]   s2_5: BRANCH = PERFORM — approving the top self-apply record: "${pendingTarget}"`);
+    const fingerprint = pendingTarget.split(' ').slice(0, 3).join(' ');
+
+    await h.click([
+      () => targetRow.getByRole('button', { name: /^\s*Action/i }).first(),
+      () => page.getByRole('button', { name: /^\s*Action/i }).first(),
+    ], { timeout: 6000 });
+    await h.hold(1);
+    await h.click(() => page.getByText(/^\s*Approve\s*$/i).first(), { timeout: 5000 });
+    await h.hold(1.5);
+    await h.optional('confirm the approval', () => h.click(
+      () => page.getByRole('button', { name: btnName('Yes', 'OK', 'Confirm', 'Approve') }).first(), { timeout: 5000 }));
+    console.log('[act2]   s2_5: Approve submitted (staging mutation, by design)');
+    await h.hold(3);
+
+    // VERIFY — Approve must actually remove the record from the queue.
+    const after = await openQueue();
+    const stillPending = await page.locator('table.table-hover tbody tr')
+      .filter({ hasText: fingerprint }).count();
+    if (stillPending) {
+      throw new Error(`the Approve did not take effect: "${pendingTarget}" is STILL in Pending `
+        + `approvals (queue now reports ${after.rows} row(s)). The narration claims it moved to the `
+        + 'Company tab, so do not ship this take.');
+    }
+    console.log(`[act2]   s2_5: verified — "${pendingTarget}" left Pending approvals`);
   });
 }
 
@@ -2315,43 +2396,69 @@ export async function act4(page, h, cfg = {}) {
   });
 
   await h.scene('s4_2', async () => {
-    // The only auto-transition in the system: Startup fee = Paid => status jumps to Onboarding.
+    // ONE-WAY. Startup fee = Paid is the only auto-transition in the system (status jumps to
+    // Onboarding) and it cannot be undone, so this is a three-way branch: a non-idempotent retry
+    // after a later failure in act 4 would hard-fail on an already-advanced record, and recovering
+    // from that means a new candidate plus re-recording acts 0, 1 and 2.
+    const fullName = candidate.name || 'Marcus Reyes';
+    const before = await readIloStateOrFail(page, h, fullName, 'act4]   s4_2');
+    console.log(`[act4]   s4_2: state = status "${before.status}" / fee "${before.fee}" / agreement "${before.agreement}"`);
+
+    const isPaid = /^Paid$/i.test(before.fee);
+    const isUnpaid = /^(Unpaid|Not paid)$/i.test(before.fee);
+    const advanced = /Onboarding|100% onboarded/i.test(before.status);
+
+    if (isPaid) {
+      // ALREADY DONE — but assert POSITIVELY that the observed state is what paying would have
+      // produced. Fee Paid while the status never left "Invited to join" is a third state that
+      // neither branch expects, and must not be waved through.
+      if (!advanced) {
+        throw new Error(`CANNOT DETERMINE: the startup fee already reads "Paid" but the status is `
+          + `"${before.status}", not Onboarding/100% onboarded. Paying is supposed to auto-advance the `
+          + 'status, so this record is in a third state neither branch expects — inspect it by hand.');
+      }
+      console.warn(`[act4]   s4_2: BRANCH = ALREADY DONE — fee is "Paid" and the status has already`);
+      console.warn(`[act4]   s4_2: auto-advanced to "${before.status}". THIS TAKE CONTAINS NO REAL MUTATION:`);
+      console.warn('[act4]   s4_2: the fee field is shown and narrated over the existing state, and the');
+      console.warn('[act4]   s4_2: auto-jump is NOT filmed happening. Re-pay is not attempted.');
+      await h.optional('show the fee field', () => h.moveTo(() => rowOfCandidate(), { timeout: 8000 }));
+      await h.hold(2);
+      await h.optional('hold on the advanced status', () =>
+        h.moveTo(() => rowOfCandidate().getByText(/Onboarding|100% onboarded/i).first(), { timeout: 6000 }));
+      await h.hold(2);
+      return;
+    }
+
+    if (!isUnpaid) {
+      throw new Error(`CANNOT DETERMINE: the startup fee reads "${before.fee}", which is neither `
+        + 'Paid nor Unpaid/Not paid. Refusing to act on an unrecognised state.');
+    }
+
+    console.log('[act4]   s4_2: BRANCH = PERFORM — fee is Unpaid; setting it to Paid on camera.');
     await h.optional('open the candidate', () => h.moveTo(() => rowOfCandidate(), { timeout: 8000 }));
-    await h.optional('set the startup fee', async () => {
-      await h.click([
-        () => rowOfCandidate().getByText(/Not paid|Unpaid|Startup fee/i).first(),
-        () => page.getByText(/Startup fee/i).first(),
-      ], { timeout: 8000 });
-      await h.hold(1.5);
-      await h.click(() => page.getByText(/^\s*Paid\s*$/i).first(), { timeout: 5000 });
-      await h.hold(1);
-      await h.optional('submit', () => h.click(() => page.getByRole('button', { name: btnName('Submit', 'Save') }).first(), { timeout: 4000 }));
-    });
+    await h.click([
+      () => rowOfCandidate().getByRole('button', { name: /^\s*(Unpaid|Not paid)\s*$/i }).first(),
+      () => rowOfCandidate().getByText(/Not paid|Unpaid/i).first(),
+    ], { timeout: 8000 });
+    await h.hold(1.5);
+    await pickCellOption(page, h, /^\s*Paid\s*$/i, 'the fee');
     await h.hold(3);
     // Hold on the status cell so the automatic jump is visible on camera.
     await h.optional('watch the status flip', () =>
       h.moveTo(() => rowOfCandidate().getByText(/Onboarding/i).first(), { timeout: 8000 }));
     await h.hold(2);
 
-    // VERIFY — this scene's purpose is the state transition (fee -> Paid, and the ONE documented
-    // auto-transition in the whole system: status -> Onboarding). Not optional: a silent no-op here
-    // would leave s4_4 and act 5 operating on a record that never advanced.
-    await h.goto(URLS.iloCompany);
-    const feeRow = (await h.row(candidate.name || 'Marcus Reyes').innerText().catch(() => '')) || '';
-    if (!feeRow) {
-      throw new Error(`${candidate.name || 'Marcus Reyes'} is not on the ILO board — act 1's invite `
-        + 'must run before act 4.');
+    // VERIFY the transition really happened — positively, on the re-read state.
+    const after = await readIloStateOrFail(page, h, fullName, 'act4]   s4_2 verify');
+    if (!/^Paid$/i.test(after.fee)) {
+      throw new Error(`the startup fee was NOT recorded as Paid — it still reads "${after.fee}" `
+        + `(status "${after.status}"). s4_4 and act 5 depend on this, so stop here.`);
     }
-    if (!/Paid/i.test(feeRow)) {
-      throw new Error('the startup fee was not recorded as Paid — the row still reads: '
-        + feeRow.replace(/\s+/g, ' ').slice(0, 160));
+    if (!/Onboarding|100% onboarded/i.test(after.status)) {
+      throw new Error(`the fee is now "Paid" but the status did NOT auto-jump — it reads `
+        + `"${after.status}". That auto-transition is the entire point of this scene.`);
     }
-    if (!/Onboarding/i.test(feeRow)) {
-      console.error('[act4]   s4_2: fee is Paid but the status did NOT auto-jump to "Onboarding".');
-      console.error('[act4]   s4_2: that auto-transition is the point of this scene — check the row.');
-    } else {
-      console.log('[act4]   s4_2: verified — fee Paid and status auto-jumped to Onboarding');
-    }
+    console.log(`[act4]   s4_2: verified — fee "Paid" and the status auto-jumped to "${after.status}"`);
   });
 
   await h.scene('s4_3', async () => {
@@ -2391,35 +2498,65 @@ export async function act4(page, h, cfg = {}) {
   });
 
   await h.scene('s4_4', async () => {
-    // The finding of the act: the gate only checks Paid + Signed. NMLS / HR / 1-1 can all be
-    // outstanding and the record still counts as "100% onboarded".
+    // ONE-WAY. The finding of the act: the gate only checks Paid + Signed, so NMLS / HR / 1-1 can
+    // all be outstanding and the record still counts as "100% onboarded". Same three-way branch as
+    // s4_2 — the status cannot be walked back.
+    const fullName = candidate.name || 'Marcus Reyes';
+    const before = await readIloStateOrFail(page, h, fullName, 'act4]   s4_4');
+    console.log(`[act4]   s4_4: state = status "${before.status}" / fee "${before.fee}"`);
+
+    const showPrereqs = async () => {
+      await h.optional('show the unfinished prerequisites', async () => {
+        for (const c of [/NMLS status/i, /HR status/i, /1-1 Onboarding meeting/i]) {
+          await h.optional(`column ${c}`, () => h.moveTo(() => page.getByText(c).first(), { timeout: 3000 }));
+          await h.hold(0.7);
+        }
+      });
+    };
+
+    if (/^100% onboarded$/i.test(before.status)) {
+      // ALREADY DONE — positive assertion: the status IS the value the transition produces, and the
+      // fee prerequisite it depends on is genuinely satisfied.
+      if (!/^Paid$/i.test(before.fee)) {
+        throw new Error(`CANNOT DETERMINE: the status already reads "100% onboarded" but the startup `
+          + `fee reads "${before.fee}". The gate requires Paid, so this record is in a third state `
+          + 'neither branch expects — inspect it by hand.');
+      }
+      console.warn('[act4]   s4_4: BRANCH = ALREADY DONE — the status is already "100% onboarded"');
+      console.warn('[act4]   s4_4: (fee Paid). THIS TAKE CONTAINS NO REAL MUTATION: the outstanding');
+      console.warn('[act4]   s4_4: prerequisites are shown and narrated over the existing state, and the');
+      console.warn('[act4]   s4_4: gate is NOT filmed being crossed.');
+      await showPrereqs();
+      await h.optional('hold on the gate result', () =>
+        h.moveTo(() => rowOfCandidate().getByText(/100% onboarded/i).first(), { timeout: 6000 }));
+      await h.hold(2);
+      return;
+    }
+
+    // PERFORM requires the fee prerequisite; without it the gate legitimately refuses and we would
+    // be filming a failure we mistook for a bug.
+    if (!/^Paid$/i.test(before.fee)) {
+      throw new Error(`CANNOT DETERMINE: cannot set "100% onboarded" because the startup fee reads `
+        + `"${before.fee}", not Paid. s4_2 must succeed first.`);
+    }
+
+    console.log(`[act4]   s4_4: BRANCH = PERFORM — status is "${before.status}"; crossing the gate on camera.`);
     await h.click([
+      () => rowOfCandidate().getByRole('button', { name: new RegExp(`^\\s*${before.status.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*$`, 'i') }).first(),
       () => rowOfCandidate().getByText(/Onboarding|Invited to join|New/i).first(),
-      () => page.getByText(/^\s*Onboarding\s*$/i).first(),
     ], { timeout: 10_000 });
     await h.hold(1.5);
-    await h.optional('show the unfinished prerequisites', async () => {
-      for (const c of [/NMLS status/i, /HR status/i, /1-1 Onboarding meeting/i]) {
-        await h.optional(`column ${c}`, () => h.moveTo(() => page.getByText(c).first(), { timeout: 3000 }));
-        await h.hold(0.7);
-      }
-    });
-    await h.optional('set 100% onboarded', async () => {
-      await h.click(() => page.getByText(/100% onboarded/i).first(), { timeout: 5000 });
-      await h.hold(1);
-      await h.click(() => page.getByRole('button', { name: btnName('Submit') }).first(), { timeout: 4000 });
-      await h.hold(3);
-    });
+    await showPrereqs();
+    await pickCellOption(page, h, /^\s*100% onboarded\s*$/i, 'the status');
+    await h.hold(3);
 
     // VERIFY — the gate is the whole finding of this act, so a silent no-op must not pass.
-    await h.goto(URLS.iloCompany);
-    const gateRow = (await h.row(candidate.name || 'Marcus Reyes').innerText().catch(() => '')) || '';
-    if (!/100% onboarded/i.test(gateRow)) {
-      throw new Error('the record was NOT moved to "100% onboarded" — the row reads: '
-        + gateRow.replace(/\s+/g, ' ').slice(0, 160)
-        + '. That status is what act 7 and the wrap-up narration describe, so fix it before moving on.');
+    const after = await readIloStateOrFail(page, h, fullName, 'act4]   s4_4 verify');
+    if (!/^100% onboarded$/i.test(after.status)) {
+      throw new Error(`the record was NOT moved to "100% onboarded" — the status reads `
+        + `"${after.status}". That status is what act 7 and the wrap-up narration describe.`);
     }
-    console.log('[act4]   s4_4: verified — status is "100% onboarded" (with NMLS/HR/1-1 still outstanding)');
+    console.log('[act4]   s4_4: verified — status is "100% onboarded" (NMLS/HR/1-1 still outstanding)');
   });
 
   await h.scene('s4_5', async () => {
@@ -2472,7 +2609,24 @@ export async function act4(page, h, cfg = {}) {
       await h.hold(0.7);
     }
     await h.hold(1);
-    await h.dismiss(); // introduce only — never submit
+    // INTRODUCE ONLY — never submit. This is the single most destructive beat in the shoot: it
+    // creates a REAL associate account, one-way and unrecoverable. Nothing here clicks a submit, but
+    // a dismiss that silently fails would leave the form open for a later scene's stray click, so
+    // assert it actually closed and stop the act if it did not.
+    await h.dismiss();
+    await h.hold(0.5);
+    const stillOpen = await page.locator('.modal.show').count();
+    if (stillOpen) {
+      const looksLikeAccountForm = await page.locator('.modal.show')
+        .filter({ hasText: /classification|probation|company email|W-2|W-9/i }).count();
+      if (looksLikeAccountForm) {
+        throw new Error('the "Create new account" form is STILL OPEN after dismiss(). Refusing to '
+          + 'continue: this form creates a real associate account, and leaving it open risks a later '
+          + 'click submitting it. Close it by hand and re-run the act.');
+      }
+      console.warn('[act4]   s4_7: a modal is still open after dismiss, but it is not the account form.');
+    }
+    console.log('[act4]   s4_7: account form introduced and confirmed closed — nothing was submitted.');
   });
 
   await h.scene('s4_8', async () => {
