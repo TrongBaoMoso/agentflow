@@ -3097,10 +3097,20 @@ export async function act4(page, h, cfg = {}) {
   });
 
   await h.scene('s4_2', async () => {
-    // ONE-WAY. Startup fee = Paid is the only auto-transition in the system (status jumps to
-    // Onboarding) and it cannot be undone, so this is a three-way branch: a non-idempotent retry
-    // after a later failure in act 4 would hard-fail on an already-advanced record, and recovering
-    // from that means a new candidate plus re-recording acts 0, 1 and 2.
+    // Startup fee = Paid is the only AUTO-TRANSITION in the system: setting it jumps the status to
+    // "Onboarding" by itself. That is the finding, and it is what the three-way branch below protects
+    // — an already-advanced record must not be filmed being "advanced" again, because the take would
+    // show a no-op.
+    //
+    // CORRECTION, VERIFIED 2026-08-04 by doing it: this is NOT one-way, and the old claim here (that
+    // recovery "means a new candidate plus re-recording acts 0, 1 and 2") was wrong. All three fields
+    // walk back from their own dropdowns, each returning SaveOp 200 and surviving a reload:
+    //     status  100% onboarded -> interviewed_and_accepted ("Onboarding") -> invited_to_join
+    //     fee     Paid -> Unpaid
+    //     agreement Signed -> No ("Not signed")
+    // Done in that order (status, then fee, then agreement) a record is restored in place, so act 4
+    // can simply be re-recorded. Setting the status back while the fee is still Paid sticks — the
+    // auto-transition fires on the fee change, it is not continuously enforced.
     const fullName = candidate.name || 'Marcus Reyes';
     const before = await readIloStateOrFail(page, h, candidate, 'act4]   s4_2');
     console.log(`[act4]   s4_2: state = status "${before.status}" / fee "${before.fee}" / agreement "${before.agreement}"`);
@@ -3197,9 +3207,10 @@ export async function act4(page, h, cfg = {}) {
   });
 
   await h.scene('s4_4', async () => {
-    // ONE-WAY. The finding of the act: the gate only checks Paid + Signed, so NMLS / HR / 1-1 can
-    // all be outstanding and the record still counts as "100% onboarded". Same three-way branch as
-    // s4_2 — the status cannot be walked back.
+    // THE FINDING OF THE ACT: the gate only checks Paid + Signed, so NMLS / HR / 1-1 can all be
+    // outstanding and the record still counts as "100% onboarded". Same three-way branch as s4_2 —
+    // not because the change is irreversible (it is not; see the correction there and the note at the
+    // end of this scene) but because filming an already-crossed gate would film a no-op.
     const fullName = candidate.name || 'Marcus Reyes';
     const before = await readIloStateOrFail(page, h, candidate, 'act4]   s4_4');
     console.log(`[act4]   s4_4: state = status "${before.status}" / fee "${before.fee}" / agreement "${before.agreement}"`);
@@ -3290,12 +3301,10 @@ export async function act4(page, h, cfg = {}) {
     }
     console.log('[act4]   s4_4: verified — status is "100% onboarded" with the agreement Signed by');
     console.log('[act4]   s4_4: dropdown and NMLS/HR/1-1 still outstanding — the finding of the act.');
-    // RE-RECORDING THIS SCENE: the status IS reversible, contrary to the "ONE-WAY" framing above.
-    // VERIFIED 2026-08-04 by doing it on a throwaway record: status -> data-name
-    // "interviewed_and_accepted" walks it back to "Onboarding", and agreement -> "No" back to
-    // "Not signed", both persisting across a reload. So a record whose gate has already been crossed
-    // can be reset to the pre-gate state and this beat filmed again. (Only the STARTUP FEE is
-    // documented as un-doable, and that was NOT re-tested — do not assume it is reversible.)
+    // RE-RECORDING THIS SCENE: every field here walks back, so a record whose gate has already been
+    // crossed can be reset in place and the beat filmed again. VERIFIED 2026-08-04 by doing it on the
+    // real records (see the note in s4_2 for the data-names and the order). No new candidate and no
+    // re-recording of acts 0/1/2 is needed.
   });
 
   // Template settings: real asset (per-status Email / SMS / Call script), on a settings page
