@@ -1424,10 +1424,28 @@ export async function fillAddForm(page, h, candidate = {}, { prematureSubmits = 
  * NEVER press Escape in this modal: Escape dismisses the whole dialog, not just an open dropdown
  * (that is what made an earlier Cancel click find nothing). Close dropdowns by picking an option.
  */
-export async function demonstrateInviteDialog(page, h, { referralSource = 'Direct Invite' } = {}) {
-  await h.goto(URLS.iloMine);
-  const before = await page.locator('table.table-hover tbody tr').count();
-  await h.click(['#add-and-invite-loan-officer'], { timeout: 12_000 });
+export async function demonstrateInviteDialog(page, h, { row = null, referralSource = 'Direct Invite' } = {}) {
+  // TWO OPENERS, and the choice matters for the narration.
+  //  - row mode (preferred): the row Action -> "Invite Loan officer to join <company>". ONLY this
+  //    variant renders "The recruited loan officer will be moved to the Interested Loan Officers
+  //    pipeline", which is the sentence s1_14's narration relies on.
+  //  - standalone: `button#add-and-invite-loan-officer` on the ILO board. Same dialog, same three
+  //    select2s, same cascade, same toggles, but EMPTY and attached to no record — the safe
+  //    fallback when no record of ours is on the Recruited board.
+  const board = row ? URLS.rloMine : URLS.iloMine;
+  const countRows = async () => {
+    await h.goto(board);
+    return page.locator('table.table-hover tbody tr').filter({ hasText: /\S/ }).count();
+  };
+  const before = await countRows();
+
+  if (row) {
+    await h.click(() => row.getByRole('button', { name: /^\s*Action\s*$/i }), { timeout: 15_000 });
+    await h.hold(1);
+    await h.clickMenuItem(row, 'Invite Loan officer to join', { prefix: true });
+  } else {
+    await h.click(['#add-and-invite-loan-officer'], { timeout: 12_000 });
+  }
   const modal = page.locator('.modal.show');
   await modal.first().waitFor({ state: 'visible', timeout: 20_000 });
   await h.waitForAppIdle();
@@ -1443,14 +1461,13 @@ export async function demonstrateInviteDialog(page, h, { referralSource = 'Direc
   await h.hold(1.5);
 
   // 2) The cascade appearing is the thing worth seeing — open it so the dependent options show,
-  //    then pick one (never Escape).
+  //    then pick one. NEVER press Escape here: it dismisses the whole dialog, not just the dropdown.
   await h.click(() => modal.locator('.select2-container').nth(1), { timeout: 9000 });
   await h.hold(2);
-  const opts = page.locator('li.select2-results__option');
   const cascade = await page.evaluate(() => [...document.querySelectorAll('li.select2-results__option')]
     .map((o) => (o.innerText || '').trim()));
-  console.log(`[act1]   s1_14: Detail source cascade offered ${JSON.stringify(cascade)}`);
-  await h.click(() => opts.filter({ hasText: /\S/ }).first(), { timeout: 9000 });
+  console.log(`[s1_14]  Detail source cascade offered ${JSON.stringify(cascade)}`);
+  await h.click(() => page.locator('li.select2-results__option').filter({ hasText: /\S/ }).first(), { timeout: 9000 });
   await h.hold(1.5);
 
   // 3) The two toggles, pointed at but NOT flipped.
@@ -1461,37 +1478,38 @@ export async function demonstrateInviteDialog(page, h, { referralSource = 'Direc
     h.moveTo(() => modal.getByText(/Send an invitation email/i).first(), { timeout: 6000 }));
   await h.hold(1.5);
 
-  // 4) The pipeline sentence, only present when opened from a recruited record.
-  const hasPipelineLine = await modal.filter({ hasText: /moved to the Interested Loan Officers pipeline/i }).count();
-  if (hasPipelineLine) {
+  // 4) The pipeline sentence — present in row mode, absent standalone.
+  const pipelineRe = /moved to the Interested Loan Officers pipeline/i;
+  if (await modal.filter({ hasText: pipelineRe }).count()) {
     await h.optional('the pipeline sentence', () =>
-      h.moveTo(() => modal.getByText(/moved to the Interested Loan Officers pipeline/i).first(), { timeout: 6000 }));
+      h.moveTo(() => modal.getByText(pipelineRe).first(), { timeout: 6000 }));
+    console.log('[s1_14]  the dialog states the record moves to the Interested pipeline — on screen.');
   } else {
-    console.warn('[act1]   s1_14: the standalone dialog does NOT contain the "moved to the Interested');
-    console.warn('[act1]   s1_14: Loan Officers pipeline" sentence — that line exists only when the');
-    console.warn('[act1]   s1_14: dialog is opened from a recruited record. Resting on the title instead;');
-    console.warn('[act1]   s1_14: the narration clause about that sentence has no footage to match it.');
+    console.warn('[s1_14]  this dialog does NOT contain the "moved to the Interested Loan Officers');
+    console.warn('[s1_14]  pipeline" sentence — that line renders only when the dialog is opened from a');
+    console.warn('[s1_14]  recruited record. Resting on the title; the narration clause has no footage.');
     await h.optional('the dialog title', () =>
       h.moveTo(() => modal.getByText(/ADD AND INVITE LOAN OFFICER/i).first(), { timeout: 6000 }));
   }
   await h.hold(2);
 
-  // Leave via Cancel. Submitting would create a record; nothing here may be submitted.
+  // Leave via Cancel. Submitting in row mode would CONVERT the record and re-break the row beats for
+  // every future re-record; standalone it would create one. Neither is allowed.
   await h.click(['#gwt-debug-cancel'], { timeout: 10_000 });
   const closed = await modal.first().waitFor({ state: 'detached', timeout: 15_000 })
     .then(() => true).catch(() => false);
   if (!closed) {
-    throw new Error('the Add-and-Invite dialog did not close after Cancel. Refusing to continue with '
-      + 'an invite dialog open — a later stray click could submit it and convert a record.');
+    throw new Error('the invite dialog did not close after Cancel. Refusing to continue with it open — '
+      + 'a later stray click could submit it and convert a record.');
   }
-  // Prove nothing was created.
-  await h.goto(URLS.iloMine);
-  const after = await page.locator('table.table-hover tbody tr').count();
+  const after = await countRows();
   if (after !== before) {
-    throw new Error(`the ILO board row count changed from ${before} to ${after} across a dialog that `
-      + 'was only ever cancelled — something was submitted. Investigate before shooting.');
+    throw new Error(`the ${row ? 'Recruited' : 'Interested'} board row count changed from ${before} to `
+      + `${after} across a dialog that was only ever cancelled — something was submitted. Investigate `
+      + 'before shooting.');
   }
-  console.log(`[act1]   s1_14: dialog cancelled; ILO row count unchanged (${before}) — nothing submitted.`);
+  console.log(`[s1_14]  dialog cancelled; ${row ? 'Recruited' : 'Interested'} row count unchanged `
+    + `(${before}) — nothing submitted.`);
   return true;
 }
 
@@ -2251,9 +2269,18 @@ export async function act1(page, h, cfg = {}) {
 
   await h.scene('s1_14', async () => {
     // The handoff: Invite -> the record MOVES into the Interested-LO pipeline and LEAVES the
-    // Recruited board entirely (verified: after the invite the RLO board returns 0 rows for the
-    // candidate, even by search). So this transition can only happen once per candidate, and the
-    // scene has to be idempotent the same way s1_4 is.
+    // Recruited board entirely (verified: afterwards the RLO board returns 0 rows for the candidate,
+    // even by search). It is the ONE transition with no path back, so it can never be re-filmed.
+    //
+    // BRANCH ORDER IS PINNED, because after act 0 re-creates the fixture a "Marcus Reyes" exists on
+    // BOTH boards and two conditions are true at once:
+    //   1. present in ILO      -> DEMONSTRATION  (always wins; the transition already happened)
+    //   2. on Recruited only   -> INVITE         (perform it, then verify)
+    //   3. on neither          -> hard fail
+    // In DEMONSTRATION, if a Recruited row exists the dialog is opened from the ROW ACTION, because
+    // only that variant renders the sentence about the record moving to the Interested pipeline,
+    // which the narration relies on. It is then CANCELLED — submitting would convert the fresh
+    // fixture and re-break the row beats for every future re-record.
     const fullName = candidate.name || 'Marcus Reyes';
     const alreadyInILO = async () => {
       await h.goto(URLS.iloMine);
@@ -2268,55 +2295,72 @@ export async function act1(page, h, cfg = {}) {
       return ((await r.innerText().catch(() => '')) || '');
     };
 
-    const onRlo = await h.row(fullName).count() > 0;
-    if (!onRlo) {
-      // Either already converted (fine) or genuinely missing (a real problem) — tell them apart.
-      const iloText = await alreadyInILO();
-      if (iloText && /Invited to join/i.test(iloText)) {
-        // ALREADY CONVERTED -> DEMONSTRATION. The invite cannot be re-performed on ${fullName} (it is
-        // the one transition with no path back), but this scene's narration is entirely about the
-        // three decisions INSIDE the dialog, so the dialog is shown on the standalone
-        // "Add and invite loan officer" entry point and cancelled. That touches no record at all —
-        // which matters because every other row on this staging board is a real person imported via
-        // Modex, and this footage goes to the CEO.
-        console.warn(`[act1]   s1_14: BRANCH = DEMONSTRATION (modal shown on the standalone`);
-        console.warn('[act1]   s1_14: "Add and invite loan officer" dialog, not submitted) —');
-        console.warn(`[act1]   s1_14: ${fullName} is already in the ILO pipeline with status "Invited to`);
-        console.warn('[act1]   s1_14: join", and that transition has no path back, so it cannot be re-filmed.');
-        console.warn('[act1]   s1_14: NO RECORD IS TOUCHED and nothing is submitted.');
-        await demonstrateInviteDialog(page, h);
-        // The claim the scene makes is still verified, just not performed here.
-        const stillThere = await alreadyInILO();
-        if (!stillThere || !/Invited to join/i.test(stillThere)) {
-          throw new Error(`${fullName} was in the ILO pipeline with "Invited to join" before the `
-            + 'demonstration but not after — the dialog was supposed to be cancelled. Investigate.');
-        }
-        console.log(`[act1]   s1_14: verified — ${fullName} still in ILO with status "Invited to join"`);
-        return;
+    const iloText = await alreadyInILO();
+    const inILO = !!(iloText && /Invited to join/i.test(iloText));
+
+    // Re-check the Recruited board directly: rowOfCandidate() may be pointing at a substitute.
+    await h.goto(URLS.rloMine);
+    const ownRow = h.row(fullName);
+    const onRlo = (await ownRow.count()) > 0;
+
+    if (inILO) {
+      console.warn('[act1]   s1_14: BRANCH = DEMONSTRATION (modal shown'
+        + `${onRlo ? ' via the row action' : ' on the standalone dialog'}, not submitted) —`);
+      console.warn(`[act1]   s1_14: ${fullName} is already in the ILO pipeline with status "Invited to`);
+      console.warn('[act1]   s1_14: join", and that transition has no path back, so it cannot be re-filmed.');
+      if (onRlo) {
+        console.warn('[act1]   s1_14: using the Recruited row so the dialog renders the "moves to the');
+        console.warn('[act1]   s1_14: Interested pipeline" sentence. IT IS CANCELLED, NEVER SUBMITTED —');
+        console.warn('[act1]   s1_14: submitting would convert this fixture and re-break the row beats.');
+      } else {
+        console.warn('[act1]   s1_14: no record of ours is on the Recruited board, so the standalone');
+        console.warn('[act1]   s1_14: dialog is used instead. NO RECORD IS TOUCHED.');
       }
+      await demonstrateInviteDialog(page, h, { row: onRlo ? ownRow : null });
+
+      // The claim the scene makes is still verified, just not performed here.
+      const stillInILO = await alreadyInILO();
+      if (!stillInILO || !/Invited to join/i.test(stillInILO)) {
+        throw new Error(`${fullName} was in the ILO pipeline with "Invited to join" before the `
+          + 'demonstration but not after — the dialog was supposed to be cancelled. Investigate.');
+      }
+      if (onRlo) {
+        await h.goto(URLS.rloMine);
+        if (!(await h.row(fullName).count())) {
+          throw new Error(`${fullName} has LEFT the Recruited board across a dialog that was only ever `
+            + 'cancelled — the invite was submitted after all. The row beats are now broken for future '
+            + 're-records; investigate before shooting.');
+        }
+        console.log(`[act1]   s1_14: verified — ${fullName} still on the Recruited board (not converted)`);
+      }
+      console.log(`[act1]   s1_14: verified — ${fullName} still in ILO with status "Invited to join"`);
+      return;
+    }
+
+    if (!onRlo) {
       throw new Error(`${fullName} is on neither board: not on Recruited LO (so the invite cannot be `
         + `performed) and not in ILO with "Invited to join" (so it was never converted). Re-record `
         + 'act 0 to create the candidate first.');
     }
 
-    console.log(`[act1]   s1_14: BRANCH = INVITE — ${fullName} is on the Recruited board; performing the transition.`);
-    await inviteToILO(page, h, h.row(fullName));
+    console.log(`[act1]   s1_14: BRANCH = INVITE — ${fullName} is on the Recruited board only; performing the transition.`);
+    await inviteToILO(page, h, ownRow);
     await h.hold(2);
 
     // VERIFY — deliberately NOT optional(). This scene's whole purpose is the state transition,
-    // and the previous version reported "ok" while every modal interaction had been skipped,
-    // which then sank act 4 and act 5.
-    const iloText = await alreadyInILO();
-    if (!iloText) {
+    // and an earlier version reported "ok" while every modal interaction had been skipped, which
+    // then sank act 4 and act 5.
+    const verified = await alreadyInILO();
+    if (!verified) {
       throw new Error(`the invite was submitted but ${fullName} is NOT in the Interested-LO `
         + 'pipeline (checked ILO/Mine directly and via the label search). Acts 4 and 5 operate on '
         + 'that ILO record, so stop and fix this before recording them.');
     }
-    if (!/Invited to join/i.test(iloText)) {
+    if (!/Invited to join/i.test(verified)) {
       throw new Error(`${fullName} reached the ILO pipeline but its status is not "Invited to join" `
-        + `— the row reads: ${iloText.replace(/\s+/g, ' ').slice(0, 160)}`);
+        + `— the row reads: ${verified.replace(/\s+/g, ' ').slice(0, 160)}`);
     }
-    console.log(`[act1]   s1_14: verified in ILO with status "Invited to join"`);
+    console.log('[act1]   s1_14: verified in ILO with status "Invited to join"');
   });
 
   await h.scene('s1_15', async () => {
