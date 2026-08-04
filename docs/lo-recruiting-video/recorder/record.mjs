@@ -2328,7 +2328,22 @@ export async function launchBrowser({ slow = 0 } = {}) {
  */
 async function provisionRoles(browser, acts, args) {
   const roles = [...new Set(acts.map((a) => a.role))].filter((r) => r !== 'admin');
-  const todo = roles.filter((r) => args.forceLoginAs || !fs.existsSync(authPathFor(r)));
+  // A state FILE existing is not the same as its session still working: viet18 invalidates the
+  // server-side session after a few hours and the file stays byte-identical on disk. Checking only
+  // existsSync (the original bug) silently skipped every expired role, so provisioning appeared to
+  // succeed while leaving act 1 and act 2 unshootable. Verify each existing state for real.
+  const todo = [];
+  for (const r of roles) {
+    if (args.forceLoginAs) { todo.push(r); continue; }
+    const statePath = authPathFor(r);
+    if (!fs.existsSync(statePath)) { todo.push(r); continue; }
+    if (await verifyState(browser, statePath)) {
+      console.log(`[provision] ${r}: saved state still works — skipping`);
+    } else {
+      console.log(`[provision] ${r}: state file exists but the session is EXPIRED — re-capturing`);
+      todo.push(r);
+    }
+  }
   const logins = [];
 
   banner([
