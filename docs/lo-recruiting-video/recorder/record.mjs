@@ -1483,11 +1483,30 @@ async function readIloState(page, fullName) {
   }, fullName);
 }
 
+/**
+ * Make sure the candidate's row is actually on screen, searching if it is not.
+ *
+ * VERIFIED LIVE 2026-08-04: once a record reaches "100% onboarded" it DROPS OFF THE DEFAULT FIRST
+ * PAGE of both ILO boards (default sort puts it out of the top 10) — a plain read returns 0 rows and
+ * only finds it after a search. s4_4 advances the candidate mid-act, so every later beat that
+ * navigates fresh must search rather than trust page position, or it silently hovers nothing.
+ * Call AFTER the caller's h.goto(). Returns true when the row is present.
+ */
+async function ensureCandidateVisible(page, h, fullName) {
+  if (await h.row(fullName).count()) return true;
+  await h.optional(`search the board for ${fullName}`, () => h.filterGrid(fullName.toLowerCase()));
+  const found = (await h.row(fullName).count()) > 0;
+  if (found) console.log(`[find]   ${fullName} was not on page one — found via search`);
+  return found;
+}
+
 /** Read ILO state with retries; hard-fail rather than let a slow board look like an un-done transition. */
 async function readIloStateOrFail(page, h, fullName, sceneLabel) {
   let st = null;
   for (let attempt = 1; attempt <= 3; attempt += 1) {
     await h.goto(URLS.iloCompany);
+    // A record at "100% onboarded" is off page one, so search before concluding anything.
+    await ensureCandidateVisible(page, h, fullName);
     st = await readIloState(page, fullName);
     if (st && st.cellFound) return st;
     console.warn(`[${sceneLabel}] state read attempt ${attempt}/3: `
@@ -2563,9 +2582,12 @@ export async function act4(page, h, cfg = {}) {
     // Template settings: real asset (per-status Email / SMS / Call script), on a settings page
     // every role can open.
     await h.goto(URLS.iloCompany);
+    // VERIFIED 2026-08-04: the TOOLBAR Action is <a id="gwt-debug-action">; getByRole('button')
+    // grabbed a per-row Action button instead, which has no Template settings item — that is why
+    // this scene failed. Anchor on the id.
     await h.click([
-      () => page.getByRole('button', { name: /^\s*Action\s*$/i }).first(),
-      () => page.getByText(/^\s*Action\s*$/i).first(),
+      () => page.locator('#gwt-debug-action'),
+      () => page.locator('a', { hasText: /^\s*Action\s*$/i }).first(),
     ], { timeout: 8000 });
     await h.hold(1);
     await h.click([() => page.getByText(/Template settings/i).first()], { timeout: 6000 });
@@ -2581,6 +2603,8 @@ export async function act4(page, h, cfg = {}) {
     // Calendly invite: the meeting lives in Calendly, the result is a checkbox in here, and
     // nothing connects the two.
     await h.goto(URLS.iloCompany);
+    // s4_4 may have advanced the record to "100% onboarded", which drops it off page one.
+    await ensureCandidateVisible(page, h, candidate.name || 'Marcus Reyes');
     await h.click([
       // VERIFIED 2026-08-03: per-row Action is <button>Action</button> (the toolbar one is an
       // <a id="gwt-debug-action">). Items carry data-name; see h.dropdownItem.
@@ -2676,6 +2700,8 @@ export async function act5(page, h, cfg = {}) {
   await h.scene('s5_3', async () => {
     // The whole onboarding checklist is a row of columns: no owner, no due date, no order.
     await h.goto(URLS.iloMine);
+    // If act 4 already advanced the record to "100% onboarded" it is off page one here too.
+    await ensureCandidateVisible(page, h, candidate.name || 'Marcus Reyes');
     await h.optional('find the candidate', () => h.moveTo(() => rowOfCandidate(), { timeout: 8000 }));
     const header = [() => page.getByText(/NMLS status/i).first(), () => page.locator('table').first()];
     const scroller = await h.scrollableNear(header);
@@ -2819,14 +2845,16 @@ export async function act7(page, h, cfg = {}) {
 
   await h.scene('s7_1', async () => {
     await h.goto(URLS.iloCompany);
-    await h.optional('search the candidate', async () => {
-      await h.typeInto([
-        () => page.getByPlaceholder(/search/i),
-        () => page.getByRole('textbox').first(),
-      ], candidate.name || 'Marcus Reyes', { delay: 60 });
-      await page.keyboard.press('Enter').catch(() => {});
-      await h.hold(3);
-    });
+    // THE CLOSING REVEAL. By now the record is "100% onboarded" — exactly the state that drops it off
+    // page one of this board (verified live 2026-08-04). The previous hand-rolled optional search had
+    // the same shape as the ones that silently skipped all through shoots 2 and 3, so use the shared
+    // verified path (h.filterGrid) and say so loudly if the final shot has no subject.
+    await h.hold(1);
+    if (!(await ensureCandidateVisible(page, h, candidate.name || 'Marcus Reyes'))) {
+      console.error(`[act7]   s7_1: ${candidate.name || 'Marcus Reyes'} is not on the ILO board even by`);
+      console.error('[act7]   s7_1: search — the closing state reveal has no subject to rest on.');
+    }
+    await h.hold(2);
     await h.optional('final state', () => h.moveTo(() => rowOfCandidate(), { timeout: 8000 }));
     await h.hold(2);
     const scroller = await h.scrollableNear([() => page.locator('table').first()]);
