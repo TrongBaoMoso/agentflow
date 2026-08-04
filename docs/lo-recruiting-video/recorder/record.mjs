@@ -1742,20 +1742,16 @@ export async function act2(page, h, cfg = {}) {
   });
 
   await h.scene('s2_2', async () => {
-    // Nocha opens the very person Luis just called and cannot see that it happened.
-    await h.optional('open the candidate row', () => h.moveTo(() => rowOfCandidate(), { timeout: 8000 }));
-    await h.hold(1.5);
-    await h.optional('point at the status cell', () =>
-      h.moveTo(() => rowOfCandidate().getByText(/Invited to join|New/i).first(), { timeout: 5000 }));
-    await h.hold(1.5);
-    await h.optional('only the note carries the call', async () => {
-      await h.click([
-        // VERIFIED 2026-08-03: nested <i class="material-icons">chat_bubble_outline</i> pair.
-        () => rowOfCandidate().locator('i.material-icons', { hasText: 'chat_bubble_outline' }).first(),
-      ], { timeout: 6000 });
-      await h.hold(3);
-      await h.dismiss();
-    });
+    // Reality check done 2026-08-04: Marcus is owned by LUIS, and nocha's role has no Company tab,
+    // so her ILO Mine renders "No results." She cannot open his record at all. That absence IS the
+    // finding, and the narration was rewritten to say so — do not try to open a row here.
+    await h.optional('point at the empty grid', () =>
+      h.moveTo(() => page.getByText(/No results/i).first(), { timeout: 8000 }));
+    await h.hold(3);
+    await h.optional('point at the tab strip with no Company tab', () =>
+      h.moveTo(() => page.locator('div.tab-container nav[role=tablist]').first(), { timeout: 6000 }));
+    await h.hold(2.5);
+    await h.optional('scan the whole empty board', () => h.smoothScroll(page, 220));
   });
 
   await h.scene('s2_3', async () => {
