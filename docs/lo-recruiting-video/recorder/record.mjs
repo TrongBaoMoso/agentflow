@@ -892,14 +892,22 @@ export function makeHelpers(page, { actLabel = 'act?', durations = {}, ctxStart 
         + 'clickable — this screen will be filmed with the nav covering its left edge');
       return false;
     }
-    await btn.click({ timeout }).catch((err) => console.warn(`[${actLabel}] sidebar collapse click failed: ${err.message}`));
-    await sleep(700);
-    const after = await navWidth();
-    if (after > NAV_COLLAPSED_MAX_PX) {
-      console.warn(`[${actLabel}] sidebar did not collapse (still ${after}px) — the page title will be clipped`);
-      return false;
+    // WAIT OUT THE APP'S OWN LOADER FIRST. VERIFIED 2026-08-04 on a COLD context: `#page-loader`
+    // (class "fade show") is still up after waitForRows and INTERCEPTS POINTER EVENTS, so the click
+    // is refused for its whole timeout and the sidebar stays 250px — i.e. the first scene of an act
+    // gets filmed with the nav covering the page, silently apart from the warning below. The overlay
+    // is visible but not hit-testable, which is why isVisible() above says nothing about it.
+    await page.locator('#page-loader').waitFor({ state: 'hidden', timeout: 20_000 }).catch(() => {});
+    for (let attempt = 1; attempt <= 2; attempt += 1) {
+      await btn.click({ timeout }).catch((err) => console.warn(
+        `[${actLabel}] sidebar collapse click failed (attempt ${attempt}/2): ${err.message.split('\n')[0]}`));
+      await sleep(700);
+      if ((await navWidth()) <= NAV_COLLAPSED_MAX_PX) return true;
+      if (attempt < 2) await sleep(1500);
     }
-    return true;
+    console.warn(`[${actLabel}] sidebar did not collapse (still ${await navWidth()}px) — this screen `
+      + 'will be filmed with the nav covering its left edge and the page title clipped');
+    return false;
   }
 
   /**
