@@ -254,6 +254,7 @@ let LOGIN_WAIT_MS = 20 * 60 * 1000;
 export const authPathFor = (name) => path.join(AUTH_DIR, `viet18-${name}.json`);
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const reEsc = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const round2 = (n) => Math.round(n * 100) / 100;
 
 // ---------------------------------------------------------------------------
@@ -740,8 +741,49 @@ export function makeHelpers(page, { actLabel = 'act?', durations = {}, ctxStart 
    */
   async function clickMenuItem(scope, name, opts = {}) {
     const item = dropdownItem(scope, name, opts).first();
-    await item.waitFor({ state: 'visible', timeout: opts.timeout ?? 8000 });
+    const visible = await item.waitFor({ state: 'visible', timeout: opts.timeout ?? 8000 })
+      .then(() => true).catch(() => false);
+    if (!visible) {
+      // Say WHICH failure this is. Playwright's own message ("20 × locator resolved to hidden …") is
+      // its retry count on one hidden node and reads like twenty stray matches, which sent shoot 6's
+      // s5_5 diagnosis off in the wrong direction entirely.
+      const exists = await item.count().catch(() => 0);
+      throw new Error(exists
+        ? `the menu item "${name}" EXISTS but is HIDDEN, i.e. its dropdown was never opened. Items are `
+          + 'pre-rendered while the menu is shut, so a hidden item means the trigger click did not land '
+          + '— usually because a modal from the previous beat is still up and swallowed it. Open the '
+          + 'menu with h.openRowMenu(row), which dismisses first and proves the menu opened.'
+        : `the menu item "${name}" is not present in this scope at all`);
+    }
     return click(() => item, { timeout: opts.timeout ?? 8000 });
+  }
+
+  /**
+   * Open a row's Action menu AND PROVE IT OPENED.
+   *
+   * VERIFIED 2026-08-04 (shoot 6, s5_5): s5_4 leaves its NOTE modal open, `div.modal.show` then
+   * swallows the click on the row's Action button, and every item in that row stays hidden — while
+   * still being present in the DOM and still reporting isVisible() on the BUTTON, so nothing looks
+   * wrong until an item lookup times out. Reproduced and confirmed: with the modal up the menu never
+   * opens; after dismiss() the identical click opens it.
+   *
+   * So: dismiss whatever is open, click, then require a VISIBLE item before returning. Clicking a
+   * trigger is not evidence that a menu opened.
+   */
+  async function openRowMenu(row, { timeout = 10_000 } = {}) {
+    for (let attempt = 1; attempt <= 2; attempt += 1) {
+      await dismiss().catch(() => {});
+      await click([
+        () => row.getByRole('button', { name: /^\s*Action\s*$/i }).first(),
+        () => row.getByText(/^\s*Action\s*$/i).first(),
+      ], { timeout });
+      const opened = await row.locator('a.dropdown-item:visible').first()
+        .waitFor({ state: 'visible', timeout: 3500 }).then(() => true).catch(() => false);
+      if (opened) return true;
+      console.warn(`[${actLabel}] the row Action menu did not open (attempt ${attempt}/2): its items `
+        + 'are present but hidden. Retrying after a dismiss.');
+    }
+    return false;
   }
 
   /**
@@ -1160,6 +1202,7 @@ export function makeHelpers(page, { actLabel = 'act?', durations = {}, ctxStart 
     dropdownWith,
     dropdownItem,
     clickMenuItem,
+    openRowMenu,
     optional,
     sleep,
     // session
@@ -1245,7 +1288,7 @@ export async function performLoginAs(page, h, roleKey, { adminStatePath } = {}) 
       throw new Error(`could not identify a unique Associates row for ${acct.label} (${n} data rows after filtering) — refusing to guess which account to impersonate`);
     }
   }
-  await h.click(() => target.getByRole('button', { name: /^\s*Action\s*$/i }), { timeout: 15_000 });
+  await h.openRowMenu(target, { timeout: 15_000 });
   await h.hold(1);
   // VERIFIED 2026-08-03: the item is <a data-name="Login" class="dropdown-item"> — matched by
   // data-name (see h.dropdownItem), because its text has a leading space and, while the menu is
@@ -1624,7 +1667,7 @@ export async function demonstrateInviteDialog(page, h, { row = null, referralSou
   const before = await countRows();
 
   if (row) {
-    await h.click(() => row.getByRole('button', { name: /^\s*Action\s*$/i }), { timeout: 15_000 });
+    await h.openRowMenu(row, { timeout: 15_000 });
     await h.hold(1);
     await h.clickMenuItem(row, 'Invite Loan officer to join', { prefix: true });
   } else {
@@ -1718,7 +1761,7 @@ export async function demonstrateInviteDialog(page, h, { row = null, referralSou
  * null while select2 shows the picked value), hence the index-based scoping.
  */
 export async function inviteToILO(page, h, row, { referralSource = 'Direct Invite' } = {}) {
-  await h.click(() => row.getByRole('button', { name: /^\s*Action\s*$/i }), { timeout: 15_000 });
+  await h.openRowMenu(row, { timeout: 15_000 });
   await h.clickMenuItem(row, 'Invite Loan officer to join', { prefix: true });
   const modal = page.locator('.modal.show');
   await modal.first().waitFor({ state: 'visible', timeout: 20_000 });
@@ -1768,17 +1811,70 @@ export async function inviteToILO(page, h, row, { referralSource = 'Direct Invit
  * Returns null when the record is not on the board at all — the caller must treat that as
  * CANNOT DETERMINE, never as "the transition has not happened yet".
  */
-async function readIloState(page, fullName) {
-  return page.evaluate((nm) => {
+/**
+ * 🎯 THE CANDIDATE'S ROW, DISAMBIGUATED BY NMLS — never by name alone.
+ *
+ * VERIFIED 2026-08-04, and this is not a nicety: the ILO board now holds TWO records named
+ * "Marcus Reyes" — take 1's (NMLS 107621) and the one act 1 created and invited on camera
+ * (NMLS 1076215). NMLS is what tells them apart; the name does not.
+ *
+ * This caused shoot 6's s4_4 to report a failure for a transition that had actually SUCCEEDED:
+ * the write landed on 1076215, that record crossed the gate to "100% onboarded" and therefore
+ * dropped off page one (see ensureCandidateVisible), the older same-name row was still sitting on
+ * page one, so the verify read THAT row's stale "Onboarding / Not signed" and declared a refusal.
+ * A same-name row is not the same record. Always filter on the NMLS when one is known.
+ */
+export function candidateRow(page, candidate = {}) {
+  const name = candidate.name || 'Marcus Reyes';
+  const loc = page.locator('table.table-hover tbody tr, div.table-row')
+    .filter({ hasText: new RegExp(reEsc(name), 'i') });
+  if (!candidate.nmls) return loc.first();
+  // ⚠️ MATCH THE NMLS AS AN ELEMENT, NOT AS ROW TEXT.
+  // VERIFIED 2026-08-04 the hard way: `filter({ hasText: /\b1076215\b/ })` matches NOTHING. hasText
+  // tests the row's concatenated textContent, which runs cells together with no separator —
+  // "…send email Loan referral1076215TXExperienced…" — so there is no word boundary before the
+  // number and \b can never fire. (innerText would have separators; hasText does not use it.)
+  // Dropping the \b instead would make 107621 match inside 1076215, i.e. the wrong record.
+  // The NMLS is rendered as its own <a> whose exact text is the number, so :text-is() is both
+  // separator-proof and exact. Confirmed: 1 row each for 1076215 and 107621 out of 2 same-name rows.
+  return loc.filter({ has: page.locator(`:text-is("${candidate.nmls}")`) }).first();
+}
+
+/** How many rows carry the candidate's NAME (ambiguity detector for the logs). */
+async function countSameName(page, candidate = {}) {
+  return page.locator('table.table-hover tbody tr, div.table-row')
+    .filter({ hasText: new RegExp(reEsc(candidate.name || 'Marcus Reyes'), 'i') })
+    .count().catch(() => 0);
+}
+
+async function readIloState(page, candidate = {}) {
+  const nm = candidate.name || 'Marcus Reyes';
+  return page.evaluate(({ name, nmls }) => {
     const rows = [...document.querySelectorAll('table.table-hover tbody tr')];
-    const tr = rows.find((r) => new RegExp(nm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i').test(r.innerText || ''));
-    if (!tr) return null;
+    const esc = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const nameRe = new RegExp(esc(name), 'i');
+    const matches = rows.filter((r) => nameRe.test(r.innerText || ''));
+    // Match on NMLS as well when we have one — two records can share the name (see candidateRow).
+    // Compare against a LEAF ELEMENT's exact text, not the row's text: the row's textContent runs
+    // cells together ("…Loan referral1076215TX…"), so a substring test would let 107621 match inside
+    // 1076215 and pick the wrong record.
+    const hasNmls = (r) => [...r.querySelectorAll('*')]
+      .some((el) => !el.children.length && (el.textContent || '').trim() === String(nmls));
+    const tr = matches.find((r) => !nmls || hasNmls(r));
+    if (!tr) return { onBoard: false, sameName: matches.length };
     const td = [...tr.children].find((c) => [...c.querySelectorAll('button')]
-      .some((b) => /^(Unpaid|Paid|Not paid)$/i.test((b.innerText || '').trim())));
-    if (!td) return { onBoard: true, cellFound: false };
+      .some((b) => /^(Unpaid|Paid|Waived|Not paid)$/i.test((b.innerText || '').trim())));
+    if (!td) return { onBoard: true, cellFound: false, sameName: matches.length };
     const btns = [...td.querySelectorAll('button')].map((b) => (b.innerText || '').trim());
-    return { onBoard: true, cellFound: true, status: btns[0] || '', fee: btns[1] || '', agreement: btns[2] || '' };
-  }, fullName);
+    return {
+      onBoard: true,
+      cellFound: true,
+      sameName: matches.length,
+      status: btns[0] || '',
+      fee: btns[1] || '',
+      agreement: btns[2] || '',
+    };
+  }, { name: nm, nmls: candidate.nmls || null });
 }
 
 /**
@@ -1790,11 +1886,24 @@ async function readIloState(page, fullName) {
  * navigates fresh must search rather than trust page position, or it silently hovers nothing.
  * Call AFTER the caller's h.goto(). Returns true when the row is present.
  */
-async function ensureCandidateVisible(page, h, fullName) {
-  if (await h.row(fullName).count()) return true;
+export async function ensureCandidateVisible(page, h, candidate = {}) {
+  const fullName = typeof candidate === 'string' ? candidate : (candidate.name || 'Marcus Reyes');
+  const cand = typeof candidate === 'string' ? { name: candidate } : candidate;
+  // ⚠️ THE PRECISE ROW, NOT MERELY A SAME-NAME ROW. Shoot 6's s4_4 broke exactly here: the record we
+  // had just advanced dropped off page one, an OLDER record with the same name was still on page one,
+  // so this returned "visible" without searching and the caller then read the wrong record. Ask for
+  // the NMLS-matched row, so a same-name decoy cannot satisfy the check.
+  if (await candidateRow(page, cand).count()) return true;
+  const sameName = await countSameName(page, cand);
+  if (sameName && cand.nmls) {
+    console.log(`[find]   ${sameName} row(s) named "${fullName}" are on this page but NONE is NMLS `
+      + `${cand.nmls} — searching for the real one instead of trusting the name`);
+  }
   await h.optional(`search the board for ${fullName}`, () => h.filterGrid(fullName.toLowerCase()));
-  if (await h.row(fullName).count()) {
-    console.log(`[find]   ${fullName} was not on page one — found via search`);
+  if (await candidateRow(page, cand).count()) {
+    const n = await countSameName(page, cand);
+    console.log(`[find]   ${fullName} was not on page one — found via search`
+      + (n > 1 ? ` (${n} records share this name; matched on NMLS ${cand.nmls})` : ''));
     return true;
   }
   // THE SEARCH FOUND NOTHING, AND ITS CHIP IS STILL APPLIED — which now hides EVERY row from the
@@ -1901,22 +2010,39 @@ async function setIloCellValue(page, h, row, { dataName, what }) {
   return true;
 }
 
-/** Read ILO state with retries; hard-fail rather than let a slow board look like an un-done transition. */
-async function readIloStateOrFail(page, h, fullName, sceneLabel) {
+/**
+ * Read ILO state with retries; hard-fail rather than let a slow board look like an un-done transition.
+ * Reads the NMLS-matched row — see candidateRow for why a name is not enough.
+ */
+async function readIloStateOrFail(page, h, candidate, sceneLabel) {
+  const cand = typeof candidate === 'string' ? { name: candidate } : (candidate || {});
+  const fullName = cand.name || 'Marcus Reyes';
   let st = null;
   for (let attempt = 1; attempt <= 3; attempt += 1) {
     await h.goto(URLS.iloCompany);
     // A record at "100% onboarded" is off page one, so search before concluding anything.
-    await ensureCandidateVisible(page, h, fullName);
-    st = await readIloState(page, fullName);
-    if (st && st.cellFound) return st;
+    await ensureCandidateVisible(page, h, cand);
+    st = await readIloState(page, cand);
+    if (st && st.cellFound) {
+      if (st.sameName > 1) {
+        console.log(`[${sceneLabel}] NOTE: ${st.sameName} rows are named "${fullName}" on this board; `
+          + `read the one with NMLS ${cand.nmls || '(none given — AMBIGUOUS)'}`);
+      }
+      return st;
+    }
     console.warn(`[${sceneLabel}] state read attempt ${attempt}/3: `
-      + (st ? 'found the row but not the Status/Startup fee cell' : `${fullName} not on the ILO board`));
+      + (st?.onBoard ? 'found the row but not the Status/Startup fee cell'
+        : `no row matches ${fullName}${cand.nmls ? ` + NMLS ${cand.nmls}` : ''}`
+          + `${st?.sameName ? ` (${st.sameName} same-name row(s) present — wrong record)` : ''}`));
     if (attempt < 3) await h.hold(5);
   }
-  throw new Error(`CANNOT DETERMINE the state of ${fullName} after 3 attempts — `
-    + (st ? 'the row is on the ILO board but its "Status/Startup fee/Agreement" cell could not be read.'
-          : 'the record is not on the ILO board at all, so act 1\'s invite has not run.')
+  throw new Error(`CANNOT DETERMINE the state of ${fullName}`
+    + `${cand.nmls ? ` (NMLS ${cand.nmls})` : ''} after 3 attempts — `
+    + (st?.onBoard ? 'the row is on the ILO board but its "Status/Startup fee/Agreement" cell could not be read.'
+      : st?.sameName
+        ? `${st.sameName} row(s) carry that NAME but none carries that NMLS, so the record this shoot `
+          + 'follows is not on the board. Check --candidate-nmls against the board before re-recording.'
+        : 'the record is not on the ILO board at all, so act 1\'s invite has not run.')
     + ' REFUSING to guess: the perform branch mutates a record that cannot be restored.');
 }
 
@@ -2280,8 +2406,7 @@ export async function act0(page, h, cfg = {}) {
     // menu is pre-rendered, so an unscoped match would point at another account's Login — and
     // Delete sits two items below it.
     const target = h.row(ACCOUNTS.luis.email);
-    await h.optional('open row Action menu', () =>
-      h.click(() => target.getByRole('button', { name: /^\s*Action\s*$/i }), { timeout: 8000 }));
+    await h.optional('open row Action menu', () => h.openRowMenu(target, { timeout: 8000 }));
     await h.hold(1);
     await h.optional('hover Login (NO click — that would swap this act\'s session)', () =>
       h.moveTo(() => h.dropdownItem(target, 'Login').first(), { timeout: 5000 }));
@@ -2306,8 +2431,10 @@ export async function act1(page, h, cfg = {}) {
   // row controls on another record and say so loudly — the controls are identical, and the beats
   // are about what the controls DO, not about whose row it is.
   await h.goto(URLS.rloMine);
-  let rowOfCandidate = () => h.row(fullName);
-  if (!(await h.row(fullName).count())) {
+  let rowOfCandidate = () => candidateRow(page, candidate);
+  // Test the SAME locator the beats will use (name + NMLS). Testing only the name would let an older
+  // same-name record satisfy the check while rowOfCandidate resolved to nothing.
+  if (!(await rowOfCandidate().count())) {
     const sub = await pickDemoRow(page, h, {
       actLabel: 'act1',
       fullName,
@@ -2545,11 +2672,9 @@ export async function act1(page, h, cfg = {}) {
 
   await h.scene('s1_12', async () => {
     // Follow-up flag = snooze + wake notification, and it HIDES the record from the pipeline.
-    await h.click([
-      // VERIFIED 2026-08-03: per-row Action is <button>Action</button> (the toolbar one is an
-      // <a id="gwt-debug-action">). Items carry data-name; see h.dropdownItem.
-      () => rowOfCandidate().getByRole('button', { name: /^\s*Action\s*$/i }),
-    ], { timeout: 10_000 });
+    // openRowMenu dismisses anything still open and PROVES the menu opened — a modal left up by the
+    // previous beat otherwise swallows this click and every item stays hidden (see s5_5, shoot 6).
+    await h.openRowMenu(rowOfCandidate(), { timeout: 10_000 });
     await h.hold(1);
     await h.clickMenuItem(rowOfCandidate(), 'Add or remove a follow-up flag');
     await h.hold(2);
@@ -2569,11 +2694,9 @@ export async function act1(page, h, cfg = {}) {
 
   await h.scene('s1_13', async () => {
     // Genuine strength: field-level audit log (old -> new, user, timestamp). Keep on rebuild.
-    await h.click([
-      // VERIFIED 2026-08-03: per-row Action is <button>Action</button> (the toolbar one is an
-      // <a id="gwt-debug-action">). Items carry data-name; see h.dropdownItem.
-      () => rowOfCandidate().getByRole('button', { name: /^\s*Action\s*$/i }),
-    ], { timeout: 10_000 });
+    // openRowMenu dismisses anything still open and PROVES the menu opened — a modal left up by the
+    // previous beat otherwise swallows this click and every item stays hidden (see s5_5, shoot 6).
+    await h.openRowMenu(rowOfCandidate(), { timeout: 10_000 });
     await h.hold(1);
     await h.clickMenuItem(rowOfCandidate(), 'Audit log');
     await h.hold(2.5);
@@ -2704,8 +2827,9 @@ export async function act1(page, h, cfg = {}) {
 
 export async function act2(page, h, cfg = {}) {
   const candidate = cfg.candidate || {};
-  const rowOfCandidate = () =>
-    page.locator('tr', { hasText: new RegExp(candidate.name || 'Marcus Reyes', 'i') }).first();
+  // NMLS-matched, not name-matched: two records share the name (see candidateRow). A bare `tr`
+  // match would also reach into the stats table above the grid.
+  const rowOfCandidate = () => candidateRow(page, candidate);
 
   await h.scene('s2_1', { prepare: () => h.goto(URLS.iloMine) }, async () => {
     // The point: there is only a Mine tab. Show the tab strip and the missing Company tab.
@@ -2853,7 +2977,7 @@ export async function act2(page, h, cfg = {}) {
       console.warn('[act2]   s2_5: its Check Modex column are shown; nothing is approved.');
       // Show the menu this role DOES get — the absence of Approve is itself the evidence.
       await h.optional('open the row Action menu to show what this role can do', async () => {
-        await h.click([() => targetRow.getByRole('button', { name: /^\s*Action/i }).first()], { timeout: 6000 });
+        await h.openRowMenu(targetRow, { timeout: 6000 });
         await h.hold(2.5);
         await h.dismiss();
       });
@@ -2864,10 +2988,7 @@ export async function act2(page, h, cfg = {}) {
     console.log(`[act2]   s2_5: BRANCH = PERFORM — approving the top self-apply record: "${pendingTarget}"`);
     const fingerprint = pendingTarget.split(' ').slice(0, 3).join(' ');
 
-    await h.click([
-      () => targetRow.getByRole('button', { name: /^\s*Action/i }).first(),
-      () => page.getByRole('button', { name: /^\s*Action/i }).first(),
-    ], { timeout: 6000 });
+    await h.openRowMenu(targetRow, { timeout: 6000 });
     await h.hold(1);
     // By data-name, scoped to the row: the label carries a leading space and every other row's menu
     // is pre-rendered in the DOM too, so a page-level text match could approve the WRONG record.
@@ -2962,8 +3083,9 @@ export async function act3(page, h) {
 
 export async function act4(page, h, cfg = {}) {
   const candidate = cfg.candidate || {};
-  const rowOfCandidate = () =>
-    page.locator('tr', { hasText: new RegExp(candidate.name || 'Marcus Reyes', 'i') }).first();
+  // NMLS-matched, not name-matched: two records share the name (see candidateRow). A bare `tr`
+  // match would also reach into the stats table above the grid.
+  const rowOfCandidate = () => candidateRow(page, candidate);
 
   await h.scene('s4_1', { prepare: () => h.goto(URLS.iloCompany) }, async () => {
     // 11 funnel tiles, each a drill-down that counts but assigns nothing.
@@ -2980,7 +3102,7 @@ export async function act4(page, h, cfg = {}) {
     // after a later failure in act 4 would hard-fail on an already-advanced record, and recovering
     // from that means a new candidate plus re-recording acts 0, 1 and 2.
     const fullName = candidate.name || 'Marcus Reyes';
-    const before = await readIloStateOrFail(page, h, fullName, 'act4]   s4_2');
+    const before = await readIloStateOrFail(page, h, candidate, 'act4]   s4_2');
     console.log(`[act4]   s4_2: state = status "${before.status}" / fee "${before.fee}" / agreement "${before.agreement}"`);
 
     const isPaid = /^Paid$/i.test(before.fee);
@@ -3028,7 +3150,7 @@ export async function act4(page, h, cfg = {}) {
     await h.hold(2);
 
     // VERIFY the transition really happened — positively, on the re-read state.
-    const after = await readIloStateOrFail(page, h, fullName, 'act4]   s4_2 verify');
+    const after = await readIloStateOrFail(page, h, candidate, 'act4]   s4_2 verify');
     if (!/^Paid$/i.test(after.fee)) {
       throw new Error(`the startup fee was NOT recorded as Paid — it still reads "${after.fee}" `
         + `(status "${after.status}"). s4_4 and act 5 depend on this, so stop here.`);
@@ -3043,11 +3165,9 @@ export async function act4(page, h, cfg = {}) {
   await h.scene('s4_3', async () => {
     // Re-generate e-sign docs + send email. The system tracks signed / not signed, never
     // sent / opened / viewed.
-    await h.click([
-      // VERIFIED 2026-08-03: per-row Action is <button>Action</button> (the toolbar one is an
-      // <a id="gwt-debug-action">). Items carry data-name; see h.dropdownItem.
-      () => rowOfCandidate().getByRole('button', { name: /^\s*Action\s*$/i }),
-    ], { timeout: 10_000 });
+    // openRowMenu dismisses anything still open and PROVES the menu opened — a modal left up by the
+    // previous beat otherwise swallows this click and every item stays hidden (see s5_5, shoot 6).
+    await h.openRowMenu(rowOfCandidate(), { timeout: 10_000 });
     await h.hold(1);
     await h.clickMenuItem(rowOfCandidate(), 'Re-generate e-sign documents and send email', { prefix: true });
     await h.hold(2);
@@ -3081,7 +3201,7 @@ export async function act4(page, h, cfg = {}) {
     // all be outstanding and the record still counts as "100% onboarded". Same three-way branch as
     // s4_2 — the status cannot be walked back.
     const fullName = candidate.name || 'Marcus Reyes';
-    const before = await readIloStateOrFail(page, h, fullName, 'act4]   s4_4');
+    const before = await readIloStateOrFail(page, h, candidate, 'act4]   s4_4');
     console.log(`[act4]   s4_4: state = status "${before.status}" / fee "${before.fee}" / agreement "${before.agreement}"`);
 
     const showPrereqs = async () => {
@@ -3139,7 +3259,7 @@ export async function act4(page, h, cfg = {}) {
       // data-name="Yes" is the "Signed" option (label " Signed", leading space) — see setIloCellValue.
       await setIloCellValue(page, h, rowOfCandidate(), { dataName: 'Yes', what: 'the agreement' });
       await h.hold(2);
-      const mid = await readIloStateOrFail(page, h, fullName, 'act4]   s4_4 agreement');
+      const mid = await readIloStateOrFail(page, h, candidate, 'act4]   s4_4 agreement');
       if (!/^Signed$/i.test(mid.agreement)) {
         throw new Error('could not set the agreement to "Signed", so the gate cannot be crossed. '
           + `Stored values now: status "${mid.status}", startup fee "${mid.fee}", agreement `
@@ -3158,7 +3278,7 @@ export async function act4(page, h, cfg = {}) {
     await h.hold(3);
 
     // VERIFY — the gate is the whole finding of this act, so a silent no-op must not pass.
-    const after = await readIloStateOrFail(page, h, fullName, 'act4]   s4_4 verify');
+    const after = await readIloStateOrFail(page, h, candidate, 'act4]   s4_4 verify');
     if (!/^100% onboarded$/i.test(after.status)) {
       throw new Error('the gate REFUSED "100% onboarded" and said nothing on screen. Stored values: '
         + `status "${after.status}", startup fee "${after.fee}", agreement "${after.agreement}". `
@@ -3170,6 +3290,12 @@ export async function act4(page, h, cfg = {}) {
     }
     console.log('[act4]   s4_4: verified — status is "100% onboarded" with the agreement Signed by');
     console.log('[act4]   s4_4: dropdown and NMLS/HR/1-1 still outstanding — the finding of the act.');
+    // RE-RECORDING THIS SCENE: the status IS reversible, contrary to the "ONE-WAY" framing above.
+    // VERIFIED 2026-08-04 by doing it on a throwaway record: status -> data-name
+    // "interviewed_and_accepted" walks it back to "Onboarding", and agreement -> "No" back to
+    // "Not signed", both persisting across a reload. So a record whose gate has already been crossed
+    // can be reset to the pre-gate state and this beat filmed again. (Only the STARTUP FEE is
+    // documented as un-doable, and that was NOT re-tested — do not assume it is reversible.)
   });
 
   // Template settings: real asset (per-status Email / SMS / Call script), on a settings page
@@ -3198,14 +3324,12 @@ export async function act4(page, h, cfg = {}) {
     prepare: async () => {
       await h.goto(URLS.iloCompany);
       // s4_4 may have advanced the record to "100% onboarded", which drops it off page one.
-      await ensureCandidateVisible(page, h, candidate.name || 'Marcus Reyes');
+      await ensureCandidateVisible(page, h, candidate);
     },
   }, async () => {
-    await h.click([
-      // VERIFIED 2026-08-03: per-row Action is <button>Action</button> (the toolbar one is an
-      // <a id="gwt-debug-action">). Items carry data-name; see h.dropdownItem.
-      () => rowOfCandidate().getByRole('button', { name: /^\s*Action\s*$/i }),
-    ], { timeout: 10_000 });
+    // openRowMenu dismisses anything still open and PROVES the menu opened — a modal left up by the
+    // previous beat otherwise swallows this click and every item stays hidden (see s5_5, shoot 6).
+    await h.openRowMenu(rowOfCandidate(), { timeout: 10_000 });
     await h.hold(1);
     await h.clickMenuItem(rowOfCandidate(), 'Invite 1-1 meeting', { prefix: true });
     await h.hold(2.5);
@@ -3216,11 +3340,9 @@ export async function act4(page, h, cfg = {}) {
   await h.scene('s4_7', async () => {
     // Create new account: the boundary between recruiting and the rest of the company.
     // Open the form and walk it — do NOT submit (that would create a real associate).
-    await h.click([
-      // VERIFIED 2026-08-03: per-row Action is <button>Action</button> (the toolbar one is an
-      // <a id="gwt-debug-action">). Items carry data-name; see h.dropdownItem.
-      () => rowOfCandidate().getByRole('button', { name: /^\s*Action\s*$/i }),
-    ], { timeout: 10_000 });
+    // openRowMenu dismisses anything still open and PROVES the menu opened — a modal left up by the
+    // previous beat otherwise swallows this click and every item stays hidden (see s5_5, shoot 6).
+    await h.openRowMenu(rowOfCandidate(), { timeout: 10_000 });
     await h.hold(1);
     await h.clickMenuItem(rowOfCandidate(), 'Create new account', { prefix: true });
     await h.hold(2.5);
@@ -3266,7 +3388,7 @@ export async function act5(page, h, cfg = {}) {
   const fullName = candidate.name || 'Marcus Reyes';
   // REASSIGNED in s5_3's prepare when the candidate is not on Maria's board — see the note there.
   // s5_3, s5_4 and s5_5 all read it through this binding, so the substitution reaches all three.
-  let rowOfCandidate = () => h.row(fullName);
+  let rowOfCandidate = () => candidateRow(page, candidate);
 
   await h.scene('s5_1', { prepare: () => h.goto(URLS.iloMine) }, async () => {
     // VERIFIED 2026-08-04 (probed on the ILO board): when a role has only ONE tab the strip is not
@@ -3300,7 +3422,7 @@ export async function act5(page, h, cfg = {}) {
     prepare: async () => {
       await h.goto(URLS.iloMine);
       // If act 4 already advanced the record to "100% onboarded" it is off page one here too.
-      if (await ensureCandidateVisible(page, h, fullName)) return;
+      if (await ensureCandidateVisible(page, h, candidate)) return;
       // NOT A BUG TO FIX — THIS IS WHAT s5_1 NARRATES.
       // PROBED 2026-08-04 as Maria: her ILO "Mine" holds 4 records and the candidate is not among
       // them, and a search for him returns nothing. The ILO record's onboarding_specialist is a
@@ -3354,15 +3476,23 @@ export async function act5(page, h, cfg = {}) {
       await h.optional('send', () => h.click(() => page.getByRole('button', { name: btnName('Send', 'Submit', 'Save') }).first(), { timeout: 4000 }));
       await h.hold(2);
     });
+    // CLOSE THE NOTE MODAL. Verified 2026-08-04: shoot 6 left it open, and `div.modal.show` then
+    // swallowed s5_5's click on the row Action button, so its menu never opened and every item stayed
+    // hidden — which is how s5_5 failed on a row and a selector that were both correct. Any beat that
+    // opens a modal owns closing it. (h.openRowMenu now dismisses defensively too, belt and braces.)
+    await h.dismiss();
+    const stillOpen = await page.locator('div.modal.show').count();
+    if (stillOpen) {
+      console.warn(`[act5]   s5_4: ${stillOpen} modal(s) STILL open after dismiss — s5_5's row menu `
+        + 'will be blocked. Investigate before trusting the next scene.');
+    }
   });
 
   await h.scene('s5_5', async () => {
     // Webinar registration + attendance by CSV import: "attended" always lags reality.
-    await h.click([
-      // VERIFIED 2026-08-03: per-row Action is <button>Action</button> (the toolbar one is an
-      // <a id="gwt-debug-action">). Items carry data-name; see h.dropdownItem.
-      () => rowOfCandidate().getByRole('button', { name: /^\s*Action\s*$/i }),
-    ], { timeout: 10_000 });
+    // openRowMenu dismisses anything still open and PROVES the menu opened — a modal left up by the
+    // previous beat otherwise swallows this click and every item stays hidden (see s5_5, shoot 6).
+    await h.openRowMenu(rowOfCandidate(), { timeout: 10_000 });
     await h.hold(1);
     await h.clickMenuItem(rowOfCandidate(), 'Register for a webinar');
     await h.hold(2.5);
@@ -3439,8 +3569,9 @@ export async function act6(page, h, cfg = {}) {
 
 export async function act7(page, h, cfg = {}) {
   const candidate = cfg.candidate || {};
-  const rowOfCandidate = () =>
-    page.locator('tr', { hasText: new RegExp(candidate.name || 'Marcus Reyes', 'i') }).first();
+  // NMLS-matched, not name-matched: two records share the name (see candidateRow). A bare `tr`
+  // match would also reach into the stats table above the grid.
+  const rowOfCandidate = () => candidateRow(page, candidate);
 
   // These three beats belong to act 6 but are filmed HERE because the Admin - Loan Officer
   // referrals page is admin-only (see the note at the end of act6). markers.json records their
@@ -3487,7 +3618,7 @@ export async function act7(page, h, cfg = {}) {
   await h.scene('s7_1', {
     prepare: async () => {
       await h.goto(URLS.iloCompany);
-      s71.visible = await ensureCandidateVisible(page, h, candidate.name || 'Marcus Reyes');
+      s71.visible = await ensureCandidateVisible(page, h, candidate);
     },
   }, async () => {
     if (!s71.visible) {
