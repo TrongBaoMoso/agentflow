@@ -1899,11 +1899,23 @@ export async function ensureCandidateVisible(page, h, candidate = {}) {
     console.log(`[find]   ${sameName} row(s) named "${fullName}" are on this page but NONE is NMLS `
       + `${cand.nmls} — searching for the real one instead of trusting the name`);
   }
-  await h.optional(`search the board for ${fullName}`, () => h.filterGrid(fullName.toLowerCase()));
+  // 🎥 SEARCH BY NMLS, NOT BY NAME — this filter is ON CAMERA.
+  // VERIFIED 2026-08-04 on the ILO board: filterGrid('1076215') commits a chip reading "×1076215"
+  // and narrows to exactly ONE row, whereas filterGrid('marcus reyes') leaves BOTH same-name records
+  // on screen — the subject at "100% onboarded" directly above the older one at "Onboarding". In
+  // s7_1, whose narration is "let us retrace the whole path", that puts two identical names with
+  // contradictory statuses in the closing image and a viewer cannot tell which person the film
+  // followed. The NMLS is unique, so filtering on it keeps one row in frame and needs no
+  // scroll-and-point workaround.
+  const term = cand.nmls || fullName.toLowerCase();
+  await h.optional(`search the board for ${cand.nmls ? `NMLS ${cand.nmls}` : fullName}`,
+    () => h.filterGrid(term));
   if (await candidateRow(page, cand).count()) {
-    const n = await countSameName(page, cand);
-    console.log(`[find]   ${fullName} was not on page one — found via search`
-      + (n > 1 ? ` (${n} records share this name; matched on NMLS ${cand.nmls})` : ''));
+    const shown = await page.locator('table.table-hover tbody tr')
+      .filter({ hasText: /\S/ }).filter({ hasNotText: /^\s*No results/i }).count().catch(() => 0);
+    console.log(`[find]   ${fullName} was not on page one — found by filtering on `
+      + `${cand.nmls ? `NMLS ${cand.nmls}` : 'the name'}; ${shown} row(s) now on screen`
+      + (cand.nmls ? '' : ' (NAME filter — same-name records may share the frame)'));
     return true;
   }
   // THE SEARCH FOUND NOTHING, AND ITS CHIP IS STILL APPLIED — which now hides EVERY row from the
@@ -1992,9 +2004,28 @@ async function pickDemoRow(page, h, { actLabel, fullName, demoRecord, absentBeca
  *  3. a page-level text match would hit the SAME option in all ten other rows on the board.
  */
 async function setIloCellValue(page, h, row, { dataName, what }) {
-  const group = row.locator('div[role="group"]')
-    .filter({ has: page.locator(`a.dropdown-item[data-name="${dataName}"]`) }).first();
-  if (!(await group.count())) throw new Error(`no dropdown group offers data-name="${dataName}" in this row`);
+  // ⚠️ SCOPE TO THE CELL, NOT THE ROW. "Yes"/"No" is NOT unique in an ILO row: VERIFIED 2026-08-04,
+  // the row carries TWO such dropdowns — the agreement, and the webinar "Attended?" column further
+  // right. Searching the whole row and taking .first() therefore only worked because the agreement
+  // cell happens to come first in DOM order. Had it ever resolved the other way, this would have set
+  // the webinar attendance flag while leaving the agreement at "Not signed", the gate would have
+  // refused, and the symptom would have been indistinguishable from the bug this code was written to
+  // fix. Anchor on data-name="Waived", which exists only in the startup-fee dropdown, to identify the
+  // Status / Startup fee / Agreement cell, then look inside that cell alone.
+  const cell = row.locator('td').filter({ has: page.locator('a.dropdown-item[data-name="Waived"]') }).first();
+  if (!(await cell.count())) {
+    throw new Error('could not find the Status/Startup fee/Agreement cell (no startup-fee dropdown '
+      + 'offering "Waived" in this row) — refusing to guess which dropdown to set');
+  }
+  const groups = cell.locator('div[role="group"]')
+    .filter({ has: page.locator(`a.dropdown-item[data-name="${dataName}"]`) });
+  const n = await groups.count();
+  if (n === 0) throw new Error(`no dropdown in the Status/fee/Agreement cell offers data-name="${dataName}"`);
+  if (n > 1) {
+    throw new Error(`${n} dropdowns in the Status/fee/Agreement cell offer data-name="${dataName}" — `
+      + 'ambiguous, so refusing to guess which field to set. The cell layout has changed; re-probe it.');
+  }
+  const group = groups.first();
   const item = group.locator(`a.dropdown-item[data-name="${dataName}"]`).first();
   if (await item.evaluate((el) => getComputedStyle(el).pointerEvents === 'none').catch(() => false)) {
     console.log(`[cell]   ${what} is already set to this value — not clicking a disabled item`);
@@ -3172,7 +3203,14 @@ export async function act4(page, h, cfg = {}) {
     console.log(`[act4]   s4_2: verified — fee "Paid" and the status auto-jumped to "${after.status}"`);
   });
 
-  await h.scene('s4_3', async () => {
+  // Same invariant as s4_7: a beat that touches the candidate's row establishes that row itself.
+  // s4_3 used to inherit whatever s4_2 left on screen, which is the fragile shape that broke s4_7.
+  await h.scene('s4_3', {
+    prepare: async () => {
+      await h.goto(URLS.iloCompany);
+      await ensureCandidateVisible(page, h, candidate);
+    },
+  }, async () => {
     // Re-generate e-sign docs + send email. The system tracks signed / not signed, never
     // sent / opened / viewed.
     // openRowMenu dismisses anything still open and PROVES the menu opened — a modal left up by the
@@ -3346,7 +3384,22 @@ export async function act4(page, h, cfg = {}) {
     await h.hold(2);
   });
 
-  await h.scene('s4_7', async () => {
+  // s4_7 MUST RE-ESTABLISH ITS OWN ROW. It used to inherit whatever s4_6 left behind, and shoot 7
+  // failed here with "no visible candidate for 2 candidate(s)" — which is openRowMenu's own click,
+  // i.e. the ROW did not resolve, not the menu item. Probed 2026-08-04: the subject row IS present
+  // right up to s4_6's "Send the invite", so the send (and the grid refresh that follows it) is what
+  // loses it — and by this point in the act the record sits at "100% onboarded", which keeps it off
+  // page one for good (see ensureCandidateVisible). Every beat that touches the row therefore owns
+  // getting it on screen; none may assume the previous scene left it there.
+  await h.scene('s4_7', {
+    prepare: async () => {
+      await h.goto(URLS.iloCompany);
+      if (!(await ensureCandidateVisible(page, h, candidate))) {
+        console.error('[act4]   s4_7: the candidate row could not be brought on screen — the '
+          + 'Create-new-account beat has no row to open. Narration will play over the board.');
+      }
+    },
+  }, async () => {
     // Create new account: the boundary between recruiting and the rest of the company.
     // Open the form and walk it — do NOT submit (that would create a real associate).
     // openRowMenu dismisses anything still open and PROVES the menu opened — a modal left up by the
