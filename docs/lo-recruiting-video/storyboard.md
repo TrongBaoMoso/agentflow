@@ -411,3 +411,55 @@ staging, nơi cả hai giá trị đó bắt buộc phải tươi mỗi lượt 
 Sau bước 4, **bắt buộc soi frame từng scene** trong `final/verify-production/` trước khi gửi. Bài học từ
 bản staging: log báo "act 0: 1 lỗi" trong khi 6/7 scene quay sai màn hình — `0 failures` không phải thước
 đo chất lượng.
+
+### Trạng thái bản production sau buổi quay 05/08/2026 — CHƯA XONG
+
+Bốn lượt quay. Đã sạch và dùng được: **act 0, 2, 3, 6, 7** (23 scene). Còn hỏng: **act 1** (9 beat cấp dòng
++ `s1_14`) và **act 4, 5**.
+
+**Gốc của mọi thứ còn lại là DANH TÍNH NHÂN VẬT.** File này nhận diện ứng viên bằng *tên + NMLS* ở **bốn**
+chỗ độc lập — `candidateRow`, `readIloState`, `countSameName`, `narrowToCandidate` — và nhân vật production
+cố tình **không có NMLS** (để lấy beat recruiter tự gõ). Trong pipeline lại có **tám** record cùng tên
+`Test Test`. Hệ quả: mọi phép đọc/ghi rơi vào `.first()`, một dòng ngẫu nhiên. Tôi đã thêm `candidate.match`
+(chuỗi nhận diện chính xác, tách khỏi chuỗi gõ vào search) nhưng nó chỉ chữa `candidateRow`; ba chỗ kia vẫn
+kiểm `nmls`.
+
+**CÁCH SỬA, và đừng vá lớp thứ năm:** cho nhân vật **một NMLS riêng**. Mọi đường nhận diện trong file vốn đã
+hỗ trợ NMLS chính xác (`:text-is()`, xem ghi chú viết hoa ở `candidateRow`), nên **không cần sửa code nữa**.
+
+1. Mở record ILO của nhân vật. Nó là dòng **duy nhất** mang nhãn `Test Test (New York)` kèm
+   `Converted from recruited LO` và `Since 2021: 25000000`. Tool có sẵn: `node tools/find-subject.mjs`.
+2. Đặt `NMLS = 9990125` (chưa dùng) rồi Submit. Năm field required đã điền sẵn nên form lưu được.
+3. Quay lại: `node record.mjs --acts 1,4,5 --candidate-nmls 9990125 --wall-record 'Katie Test' \
+   --wall-nmls 9999001 --demo-record 'RLO Test' --markers markers.production.json \
+   --durations ../audio-production/durations.json --out video-production`
+
+**Lưu ý về act 1:** nhân vật **đã rời board Recruited** (invite ở lượt 2 thành công thật). Nên các beat cấp
+dòng của act 1 phải diễn trên dòng thay thế (`--demo-record 'RLO Test'`, đã nằm trong allowlist) và `s1_14`
+sẽ đi nhánh DEMONSTRATION — mở dialog rồi Cancel. Đúng thiết kế: invite là chuyển đổi một chiều, không quay
+lại được lần hai.
+
+### Những lượt GHI đã thực hiện trên production trong buổi này
+
+Ghi đầy đủ, kể cả cái ngoài ý muốn.
+
+| Ghi gì | Dòng | Có phép? |
+|---|---|---|
+| email → Mailinator + 5 field required | `Test Test (New York)` (RLO) | có — chuẩn bị nhân vật |
+| Invite → vào pipeline ILO | `Test Test (New York)` | có — chính là `s1_14` |
+| **Approve** rời hàng chờ tự-ứng-tuyển | một submission **rác** (tên tục, NMLS `123456`) | **KHÔNG** — xem dưới |
+| fee → `Paid`, status → `Onboarding` | một dòng `Test Test (Duplicated)` | dòng test, nhưng **sai dòng** |
+| gõ NMLS vào form rồi **Cancel** | `Katie Test` | có — và không lưu, đã xác minh |
+
+Cái Approve là một **giả định staging đi thẳng vào production**: `s2_5` được port nguyên xi, log của nó còn
+in `"staging mutation, by design"`. Không ai bị hại (dòng rác, không email, không tài khoản; dòng thật ngay
+bên dưới không bị chạm) và **không có chức năng un-approve**, nên khuyến nghị để nguyên. Chốt chặn đã dựng:
+xem `assertWritableRow` + `tools/test-write-guard.mjs`.
+
+### Còn lại sau khi act 1/4/5 sạch
+
+1. Dịch **391 cue** sang tiếng Việt → `narration.production.vi.json` (`node assemble.mjs --variant=production
+   --dump-cues` chạy được **không cần** footage, nên việc này làm song song được).
+2. `node assemble.mjs --variant=production --markers=markers.production.json`
+3. **Soi từng frame** trong `final/verify-production/`. Bài học bản staging vẫn đứng: log báo "1 lỗi" trong
+   khi 6/7 scene quay sai màn hình. `0 failures` không phải thước đo chất lượng.
