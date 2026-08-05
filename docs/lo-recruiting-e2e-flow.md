@@ -426,15 +426,22 @@ Band P1–P4 + ngưỡng trong mockup là placeholder minh hoạ. Hệ thống c
 **Benchmark role-based view của các app khác (kiểm chứng mô hình 2 chiều):**
 
 | App | Cách họ làm |
-|---|---|
-| Greenhouse (ATS) | Permission theo role (Job Admin / Hiring Manager…) — hiring manager chỉ thấy candidate của job mình; lương/offer là "private fields" gated riêng |
-| Lever (ATS) | "Sensitive Data Access" tách khỏi quyền xem hồ sơ — đúng mô hình field-level; offer đi qua approval chain |
-| Ashby (ATS) | RBAC granular + dashboard mặc định cấu hình theo role — giống đề xuất view-config ở trên |
-| Salesforce / HubSpot (CRM) | Record-level sharing rules + field-level security — chuẩn ngành, trùng khớp mô hình row+field 2 chiều của §9.5 |
+|---|
+### 9.8. Tech stack + deploy (đề xuất 05/08/2026 — theo pattern thật của platform, chờ Tai/anh Thuận gật)
 
-→ Kết luận: mô hình đang mockup trùng chuẩn ngành, **giữ nguyên**; khi viết spec chi tiết sẽ chụp tham khảo màn hình thật của Ashby/Greenhouse làm phụ lục nếu cần.
+**Nguồn sự thật:** quét 149 repo org LoanFactory-Inc (gh CLI) + mổ `deploy/` và `.github/workflows/auto-deploy.yaml` của auth-service, tera-be, account-fe + trao đổi Slack với Tai Pham 05/08 (BE build ở private network k8s, KHÔNG Cloud Run; trong private network service gọi nhau trực tiếp không cần access token).
 
-**Repo:** `zoom`, `zoom-go`, `document-esign` đã clone về agentflow (05/08).
+| Lớp | Chọn | Vì sao |
+|---|---|---|
+| BE | **Java 21 + Spring Boot** qua Gradle plugin `com.loanfactory.service-conventions` (xuất bản từ tera-core/build-conventions) | 1 dòng plugin = toolchain + Spring Boot + convention chuẩn LF; đội thuần Java; reviewer (Tai) review Java; tera-core cho sẵn auth/search/envelope. Go hợp lệ trong org (ai-hr-be, crm-be-go…) nhưng recruiting là app domain-rich → Java lợi hơn |
+| DB | **PostgreSQL + Flyway** migration từ ngày 1 (theo tera-be `db/migration/V0xx__*.sql`) | KHÔNG lặp lại lỗi lfiq-backend (Hibernate auto-DDL, không Flyway → field primitive NPE, schema drift) |
+| FE | **Next.js 15 + React 18 + Mantine 8 + Zustand 5 + React Query 5 + TS** — copy skeleton account-fe/tera-fe (2 repo này trùng stack từng version) | Lý do KHÔNG phải SEO: account-fe (portal nội bộ, zero SEO) vẫn dùng Next → chuẩn công ty cho app hệ sinh thái là Next+Mantine. React/Vite SPA (tiền lệ life-of-a-loan) không sai nhưng tạo đảo pattern: tự trả tiền routing/auth-guard/i18n/deploy conventions |
+| Deploy | **GKE k8s + Helm chart trong `deploy/` + GitHub Actions `auto-deploy.yaml`** — copy auth-service (BE) / account-fe (FE, folder `helm-chart/`) | Flow chuẩn: push branch `staging` → cluster moso-kube (project lenderrate-master), push `production` → moso-gke (lender-rate); build image → Artifact Registry → helm upgrade với values-sta/values-prod. moso-aid (Cloud Run + nginx tự chế) là NGOẠI LỆ lịch sử, không copy |
+| Service-to-service | Trong private network gọi **trực tiếp qua k8s service name, không token** (lời Tai) | S7 gọi user-service, licensing data gọi tera-be — không cần bearer nội bộ. Webhook Modex là traffic TỪ INTERNET → phải vào qua edge/ingress có xác thực (X-API-Key/HMAC + IP allowlist) rồi mới chạm service |
+| Tên repo | Đề xuất **tera-recruiting-be / tera-recruiting-fe** (theo cặp tera-engagement-be/-fe mới nhất) | Phương án khác: recruiting-service (kiểu auth/user-service) — chốt với Tai |
+| Jobs định kỳ | Đăng ký qua **cron-service-go** (centralized dynamic cron, Postgres SKIP LOCKED) thay vì tự nuôi Quartz | SLA breach check, nurture wake-up, re-verify 90 ngày đều là cron — dùng hạ tầng chung |
+| RBAC | **App-owned** (bảng roles/grants trong schema recruiting) — central chỉ là IdP | Đúng pivot đã học từ LOL RBAC + pattern LFIQ; ống kính row/field-level §9.5 nằm trong app |
 
+---
 
 *Tài liệu cùng bộ:* [lo-recruiting-redesign-direction.md](lo-recruiting-redesign-direction.md) (17 pain points + hướng + quyết định kiến trúc §6) · [lo-recruiting-feature-review.md](lo-recruiting-feature-review.md) (hiện trạng chi tiết + Phụ lục C production)
