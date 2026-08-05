@@ -557,13 +557,111 @@ function segmentCues(text) {
 }
 
 /** Share the scene's clip duration across its cues by character count; cues stay contiguous. */
-function distributeCues(texts, start, dur) {
+/**
+ * The real pauses in a narration clip, as candidate cue boundaries.
+ *
+ * Character count is a poor clock: numbers are read slowly, commas add pauses, and a short cue full
+ * of long words takes longer than a long cue of short ones. Measured across all 51 production
+ * scenes, splitting a scene's duration by character weight put cue boundaries a median 1.3s and up
+ * to 3.5s away from where the sentence actually starts — and a cue only lasts 3-4s, so the worst
+ * ones captioned the NEXT sentence while the voice was still on the previous one.
+ *
+ * `silence_end` is the moment speech resumes, which is exactly what a cue start should be.
+ */
+function silenceEnds(wav, noiseDb, minDur) {
+  // silencedetect reports on STDERR, so this needs spawnSync rather than run() (stdout only).
+  const r = spawnSync('ffmpeg', ['-hide_banner', '-i', wav, '-af', `silencedetect=noise=${noiseDb}dB:d=${minDur}`, '-f', 'null', '-'],
+    { encoding: 'utf8', maxBuffer: 16 * 1024 * 1024 });
+  if (r.error) return [];
+  return [...String(r.stderr || '').matchAll(/silence_end: ([0-9.]+)/g)].map((m) => Number(m[1]))
+    .filter((n) => Number.isFinite(n) && n > 0)
+    .sort((a, b) => a - b);
+}
+
+/**
+ * TWO TIERS, because one threshold cannot serve both jobs.
+ *
+ * Sentence pauses are long and quiet (-35dB / 0.20s) and are the boundaries we actually want. But
+ * segmentCues also splits long sentences at clause boundaries the voice runs straight through, so
+ * some scenes need MORE boundaries than there are real sentence pauses — measured: s5_1 needed 5 and
+ * had 4, s4_4 needed 11 and had 10. Those scenes fell back to the character estimate entirely and
+ * stayed ~3s out while every other scene landed exactly.
+ *
+ * So collect a loose set too (-30dB / 0.08s: breaths, short clause stops) and let the DP prefer a
+ * strong pause whenever one sits near the estimate — WEAK_PENALTY is the margin by which it must be
+ * closer for a weak candidate to win.
+ */
+const WEAK_PENALTY = 0.35;
+
+function detectSpeechStarts(wav) {
+  const strong = silenceEnds(wav, -35, '0.20');
+  const loose = silenceEnds(wav, -30, '0.08');
+  const isStrong = (t) => strong.some((s) => Math.abs(s - t) < 0.12);
+  const merged = [...new Set([...strong, ...loose].map((t) => Math.round(t * 100) / 100))].sort((a, b) => a - b);
+  return merged.map((t) => ({ t, weak: !isStrong(t) }));
+}
+
+/**
+ * Snap the N-1 interior cue boundaries onto real pauses, in order, staying as close as possible to
+ * the character-weighted estimate. Dynamic programming over (cue index x candidate pause), because
+ * a greedy nearest-pause pass can consume a pause an earlier cue needed and then run out of order.
+ * Fewer pauses than boundaries (one long unbroken sentence) → keep the estimate for that scene.
+ */
+function snapToSpeech(estimates, pauses) {
+  const n = estimates.length;
+  const m = pauses.length;
+  if (!n || !m) return estimates;
+  if (m < n) {
+    // Fewer candidates than boundaries: anchor the m boundaries that fit the pauses best (monotone),
+    // then space the unanchored ones proportionally between anchors. Strictly better than giving up
+    // on the whole scene — that fallback is what left s5_1 and s4_4 three seconds out.
+    const anchors = snapToSpeech(estimates.slice(0, m), pauses);      // m boundaries, m candidates
+    const out = estimates.slice();
+    for (let i = 0; i < m; i += 1) out[i] = anchors[i];
+    return out;
+  }
+  const INF = Infinity;
+  const cost = Array.from({ length: n }, () => new Float64Array(m).fill(INF));
+  const from = Array.from({ length: n }, () => new Int32Array(m).fill(-1));
+  const at = (j, est) => Math.abs(pauses[j].t - est) + (pauses[j].weak ? WEAK_PENALTY : 0);
+  for (let j = 0; j < m; j += 1) cost[0][j] = at(j, estimates[0]);
+  for (let i = 1; i < n; i += 1) {
+    let bestPrev = INF;
+    let bestIdx = -1;
+    for (let j = 0; j < m; j += 1) {
+      if (j > 0 && cost[i - 1][j - 1] < bestPrev) { bestPrev = cost[i - 1][j - 1]; bestIdx = j - 1; }
+      if (bestIdx < 0) continue;                       // no room for i predecessors before j
+      cost[i][j] = bestPrev + at(j, estimates[i]);
+      from[i][j] = bestIdx;
+    }
+  }
+  let end = -1;
+  let best = INF;
+  for (let j = 0; j < m; j += 1) if (cost[n - 1][j] < best) { best = cost[n - 1][j]; end = j; }
+  if (end < 0) return estimates;
+  const out = new Array(n);
+  for (let i = n - 1; i >= 0; i -= 1) { out[i] = pauses[end].t; end = from[i][end]; }
+  return out;
+}
+
+function distributeCues(texts, start, dur, pauses = null) {
   const weights = texts.map((t) => Math.max(1, t.length));
   const totalWeight = weights.reduce((a, b) => a + b, 0);
+
+  // Character-weighted estimate for the interior boundaries, then snapped onto real pauses.
+  const interior = [];
+  let walk = 0;
+  for (let i = 0; i < texts.length - 1; i += 1) {
+    walk += (weights[i] / totalWeight) * dur;
+    interior.push(walk);
+  }
+  const snapped = pauses && pauses.length ? snapToSpeech(interior, pauses) : interior;
+  const bounds = snapped.map((t) => start + Math.min(Math.max(t, 0), dur));
+
   let acc = start;
   return texts.map((text, i) => {
     const isLast = i === texts.length - 1;
-    const end = isLast ? start + dur : acc + (weights[i] / totalWeight) * dur;
+    const end = isLast ? start + dur : Math.max(acc + 0.3, bounds[i]);
     // wrapForRender only moves the line BREAK; cue boundaries come from segmentCues(), which calls
     // wrapLines() itself for its ≤2-line checks. A balanced wrap is never wider than the greedy one
     // (greedy fills line 1 to the limit), so this cannot push a caption past the frame edge.
@@ -582,6 +680,8 @@ const wrapForRender = BILINGUAL ? wrapBalanced : wrapLines;
 function buildCues(scenes, total, viByScene = null) {
   const cues = [];
   const missingVi = [];
+  let snapped = 0;
+  let noPauses = 0;
   for (const scene of scenes) {
     if (!scene.text) continue;
     const texts = segmentCues(scene.text);
@@ -595,7 +695,13 @@ function buildCues(scenes, total, viByScene = null) {
         missingVi.push(`${scene.id}: ${vi.length} Vietnamese strings for ${texts.length} English cues`);
       }
     }
-    distributeCues(texts, scene.adjOffset, scene.dur).forEach((cue, i) => {
+    // Real pauses in THIS scene's clip; cue starts land on them (see detectSpeechStarts).
+    const wav = path.join(CLIPS_DIR, `${scene.id}.wav`);
+    const pauses = texts.length > 1 && existsSync(wav) ? detectSpeechStarts(wav) : [];
+    if (pauses.length >= texts.length - 1) snapped += 1;
+    else if (texts.length > 1) noPauses += 1;   // partially anchored — see snapToSpeech's m < n branch
+
+    distributeCues(texts, scene.adjOffset, scene.dur, pauses).forEach((cue, i) => {
       const viText = Array.isArray(vi) && vi.length === texts.length ? vi[i] : null;
       cues.push({
         ...cue,
@@ -609,6 +715,10 @@ function buildCues(scenes, total, viByScene = null) {
   if (missingVi.length) {
     fail(`the Vietnamese track does not line up with the English cues:\n   - ${missingVi.join('\n   - ')}\n`
       + '   Re-run `node assemble.mjs --dump-cues` and match the arrays one string per cue.');
+  }
+  if (snapped || noPauses) {
+    console.log(`   cue timing     ${snapped} scene(s) fully snapped to real speech pauses`
+      + (noPauses ? `, ${noPauses} partially anchored (more cues than pauses)` : ''));
   }
   return cues.filter((c) => c.end > c.start + 0.05);
 }
@@ -735,14 +845,47 @@ async function renderCuePngs(cues) {
 }
 
 // ── Master narration track ────────────────────────────────────────────────────────────────
+/**
+ * WHERE THE VOICE COMES FROM — variant-aware, and it MUST be.
+ *
+ * This was hardcoded to `audio/clips` while the durations, narration text, markers, subtitles and
+ * output filenames were all variant-aware. So the production cut shipped with the STAGING voice
+ * over PRODUCTION subtitles: 34 of the 51 scenes have different wording between the two scripts,
+ * including every number act 4 had just been re-measured for. Nothing in the pipeline caught it —
+ * the clips existed, the mix succeeded, the durations came from the right file, and the verify
+ * frames only ever show pictures. It took a human watching the film and saying the voice and the
+ * captions disagreed.
+ */
+const CLIPS_DIR = path.join(ROOT, IS_PRODUCTION ? 'audio-production' : 'audio', 'clips');
+
 function buildMasterAudio(scenes, total, filterFlag) {
   const clips = scenes
-    .map((s) => ({ ...s, wav: path.join(ROOT, 'audio', 'clips', `${s.id}.wav`) }))
+    .map((s) => ({ ...s, wav: path.join(CLIPS_DIR, `${s.id}.wav`) }))
     .filter((s) => {
       if (existsSync(s.wav)) return true;
       console.warn(`   ⚠︎ missing clip for ${s.id}: ${s.wav}`);
       return false;
     });
+
+  /**
+   * THE CHEAP INVARIANT THAT WOULD HAVE CAUGHT THE WRONG-VOICE BUG IN ONE SECOND.
+   *
+   * `durations.json` is written by build-narration beside the clips it just rendered, so a clip's
+   * real length and its recorded duration are the same number BY CONSTRUCTION — unless the two came
+   * from different directories. Every scene whose text differs between variants then mismatches, and
+   * a mismatch means the voice about to be mixed is not the script the subtitles were cut from.
+   * Timing depends on this too: cue placement and each scene's hold both use durations.json.
+   */
+  const drifted = clips
+    .map((c) => ({ id: c.id, want: c.dur, got: probeDuration(c.wav) }))
+    .filter((c) => Math.abs(c.got - c.want) > 0.15);
+  if (drifted.length) {
+    fail(`${drifted.length} narration clip(s) do not match durations.json — the clips in\n`
+      + `   ${CLIPS_DIR}\n`
+      + '   are not the ones that file was written for, so the VOICE would not be the script the\n'
+      + '   subtitles were cut from. Re-run build-narration for this variant, or fix the clip path.\n'
+      + `   ${drifted.slice(0, 5).map((c) => `${c.id}: clip ${c.got.toFixed(2)}s vs durations ${c.want.toFixed(2)}s`).join('\n   ')}`);
+  }
 
   const master = path.join(WORK_DIR, 'master.wav');
   const inputs = ['-f', 'lavfi', '-t', total.toFixed(3), '-i', `anullsrc=channel_layout=stereo:sample_rate=${AUDIO_RATE}`];
