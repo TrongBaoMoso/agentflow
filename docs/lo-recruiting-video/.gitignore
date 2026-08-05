@@ -2,12 +2,20 @@
 # The SCRIPTS must stay committed: the previous pipeline (lf-chat-service/docs/video)
 # was never committed and was lost, which is why this one had to be rebuilt from the playbook.
 audio/clips/
+audio-production/clips/
 durations.json
 markers.json
+markers.production.json
 recorder/video/
+recorder/video-production/
 recorder/debug/
 recorder/node_modules/
 final/
 
-# NEVER commit — holds a live session cookie for www.viet18.com
+# NEVER commit — holds a live session cookie for the recorded host
 .auth/
+
+# NEVER commit — real colleagues' company addresses for the production cut's cast.
+# Staging's equivalent list IS committed in record.mjs because those are throwaway test
+# accounts; these are six actual employees, so the list lives on disk only.
+production-cast.local.json

@@ -259,7 +259,8 @@ còn đó (`expandSplicePlan` + `seq`/`durSec`), chỉ cần một file clip là
 
 ## Bản PRODUCTION (`narration.production.json`)
 
-Bản thứ hai của cùng câu chuyện, quay trên `www.loanfactory.com` thay vì staging. Lý do tồn tại: bản
+Bản thứ hai của cùng câu chuyện, quay trên host production thay vì staging (host lấy từ biến môi
+trường `LORV_PRODUCTION_BASE`, **không commit vào repo** — xem quy tắc env ở dưới). Lý do tồn tại: bản
 staging phải *kể* các con số production ("on production this warehouse holds…") vì dữ liệu staging quá
 mỏng. Bản này **chiếu** chúng.
 
@@ -285,8 +286,10 @@ mỏng. Bản này **chiếu** chúng.
 
 ### Chuẩn bị record trước khi quay (đã làm 05/08/2026, off camera)
 
-Email cũ của Test Test là `sssseulgi309@gmail.com` — **Gmail thật của một người lạ**, gần như chắc chắn từ
-một lần scrape. Đã đổi sang `lfrecruit-q9x3m7@mailinator.com` để không nút gửi nào bắn vào người thật.
+Email cũ của Test Test là một địa chỉ **Gmail thật của một người lạ**, gần như chắc chắn đến từ một lần
+scrape. Đã đổi sang một inbox Mailinator dùng-một-lần để không nút gửi nào bắn vào người thật. Địa chỉ cũ
+và địa chỉ mới đều **không ghi ở đây**: cái thứ nhất là dữ liệu cá nhân của người ngoài, cái thứ hai là hộp
+thư công khai ai đọc cũng được. Cả hai nằm trong `bd memories lo-recruiting-video-production-shoot`.
 Đổi được một field đó **buộc** phải điền 5 field `required` khác (xem act 1 dưới): `Licensed states`=New York,
 `States to sponsor`=New Jersey (chọn NJ có chủ ý — bang này có rule 2.5h nên act Licensing có việc thật),
 `Career Production`=25000000, `Preferred languages`=English, `Mailing street address`= tick *Same as personal
@@ -331,10 +334,16 @@ Cả hai đều **sai** khi đo thật. Nguồn của từng con số trong bả
 | 82 công tắc; 2 / 5 / 14 / 15 / 30 / 74 | modal Permissions từng account (không cần Login-as) |
 | 4/6 role có `CONFIG` | tick trên Brayan, Dung, Dave, Rosaline; không có ở Seth, Miley |
 | Dung + Rosaline không vào được pipeline | thiếu cả `RECRUITED_` và `INTERESTED_LOAN_OFFICERS` |
-| Seth sở hữu 0 record | `?recruiter=sethdaugust@gmail.com` → No results (lưu ý: filter dùng **Gmail cá nhân**) |
+| Seth sở hữu 0 record | filter `?recruiter=<...>` → No results. Đáng chú ý: filter khoá theo **Gmail cá nhân** của nhân viên, không phải email công ty (địa chỉ cụ thể không commit) |
 | Modex: một batch, 7 giây | `/modex_data` timestamps `1:07:47 / :50 / :54`, tất cả `1/24/2024` |
 | 5 field required chặn mọi lần sửa | tái hiện trực tiếp trên record Test Test |
 | 60 ngày + job thứ Bảy ≈ 75 ngày | phân tích code, `lo-recruiting-redesign-direction.md` |
+
+### Quy tắc env cho bản production
+
+Host production, email nhân viên, và địa chỉ inbox của nhân vật **không được commit**. `record.mjs` đọc host
+từ `LORV_PRODUCTION_BASE` và fail sớm nếu thiếu, nên không có domain nào nằm trong file. Danh sách account
+theo role nằm trong `bd memories lo-recruiting-production-permission-matrix`, không nằm trong repo.
 
 ### Đọc quyền mà KHÔNG cần Login-as
 

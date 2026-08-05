@@ -110,7 +110,38 @@ const DURATIONS_CANDIDATES = [
   path.join(VIDEO_ROOT, 'audio', 'durations.json'),
 ];
 
-export const BASE = 'https://www.viet18.com';
+/**
+ * Which of the two cuts this process is shooting. Set by `LORV_VARIANT=production` (env, not a flag,
+ * so tools/ that import this module inherit it without re-parsing argv).
+ *
+ * The staging cut is already shipped. Everything the production variant writes is keyed to a
+ * different path — session states, markers, durations — so a production run cannot overwrite the
+ * artifacts the signed-off staging mp4 was built from.
+ */
+export const VARIANT = process.env.LORV_VARIANT === 'production' ? 'production' : 'staging';
+export const IS_PRODUCTION = VARIANT === 'production';
+
+/**
+ * The production host is NOT committed. It arrives via `LORV_PRODUCTION_BASE`, per the standing rule
+ * that every env VALUE — hosts and client ids included — stays out of the repo, and that the call on
+ * what counts as sensitive is not mine to make. Staging's host is already public in this repo's
+ * history and in the prompt doc, so it stays inline; that asymmetry is deliberate, not an oversight.
+ */
+export const BASE = (() => {
+  if (!IS_PRODUCTION) return 'https://www.viet18.com';
+  const raw = (process.env.LORV_PRODUCTION_BASE ?? '').trim().replace(/\/+$/, '');
+  if (!raw) {
+    console.error('\n✖ LORV_VARIANT=production but LORV_PRODUCTION_BASE is unset.');
+    console.error('   The production host is deliberately not committed. Export it for the shoot:');
+    console.error('     export LORV_PRODUCTION_BASE="https://<host>"\n');
+    process.exit(1);
+  }
+  if (!/^https:\/\/[^/\s]+$/.test(raw)) {
+    console.error(`\n✖ LORV_PRODUCTION_BASE must be a bare https origin, got "${raw}"\n`);
+    process.exit(1);
+  }
+  return raw;
+})();
 
 /**
  * Routes. VERIFIED 2026-08-03 against staging unless marked otherwise.
@@ -225,7 +256,7 @@ export const btnName = (...words) => new RegExp(`(?:^|\\s)(?:${words.join('|')})
  * display name matches 15 accounts across pages. So `email` is what gets typed AND how the row is
  * confirmed; `label` is only used for logging and as a fallback.
  */
-export const ACCOUNTS = {
+const STAGING_ACCOUNTS = {
   admin: { label: 'Chau Chau', email: '', role: 'Admin' },
   luis: { label: 'Luis Testcase', email: 'luis7522333@viet18.com', role: 'Outside Recruiter' },
   nocha: { label: 'Nocha Hien', email: 'test4591872@test.com', role: 'Inside Recruiter' },
@@ -234,6 +265,78 @@ export const ACCOUNTS = {
   maria: { label: 'Maria Testcase', email: 'm123123aria@test.com', role: 'Onboarding Specialist' },
   accounting: { label: 'Admin Request', email: 'admingiftrequestor@viet18.com', role: 'Accounting' },
 };
+
+/**
+ * The seven ACCOUNTS keys are ROLE SLOTS, not people — four of them just happen to be named after
+ * whoever filled the slot on staging. Every act refers to a slot, so the production cast drops in
+ * without touching a single scene.
+ */
+const CAST_SLOT_FOR_ROLE = {
+  admin: 'admin',
+  outsideRecruiter: 'luis',
+  insideRecruiter: 'nocha',
+  licensing: 'licensing',
+  hr: 'ken',
+  onboardingSpecialist: 'maria',
+  accounting: 'accounting',
+};
+
+/** Gitignored: real colleagues' company addresses do not belong in a repo. */
+const PRODUCTION_CAST_FILE = path.join(VIDEO_ROOT, 'production-cast.local.json');
+
+/**
+ * Production cast, loaded from a gitignored file rather than inlined.
+ *
+ * These are real employees. On staging the equivalent list is committed because those are throwaway
+ * test accounts; here the same list would put six colleagues' company addresses into git history, so
+ * it stays on disk next to the session states that are already excluded for the same reason.
+ */
+function loadProductionAccounts() {
+  if (!fs.existsSync(PRODUCTION_CAST_FILE)) {
+    console.error(`\n✖ LORV_VARIANT=production but ${path.basename(PRODUCTION_CAST_FILE)} is missing.`);
+    console.error(`   Expected at: ${PRODUCTION_CAST_FILE}   (gitignored on purpose)`);
+    console.error('   Shape — one entry per role, email is what the Associates filter is driven with:');
+    console.error('     {');
+    console.error('       "admin":                { "label": "…", "email": "" },');
+    console.error('       "outsideRecruiter":     { "label": "…", "email": "…" },');
+    console.error('       "insideRecruiter":      { "label": "…", "email": "…" },');
+    console.error('       "licensing":            { "label": "…", "email": "…" },');
+    console.error('       "hr":                   { "label": "…", "email": "…" },');
+    console.error('       "onboardingSpecialist": { "label": "…", "email": "…" },');
+    console.error('       "accounting":           { "label": "…", "email": "…" }');
+    console.error('     }\n');
+    process.exit(1);
+  }
+
+  let raw;
+  try {
+    raw = JSON.parse(fs.readFileSync(PRODUCTION_CAST_FILE, 'utf8'));
+  } catch (err) {
+    console.error(`\n✖ ${path.basename(PRODUCTION_CAST_FILE)} is not valid JSON: ${err.message}\n`);
+    process.exit(1);
+  }
+
+  const out = {};
+  const missing = [];
+  for (const [role, slot] of Object.entries(CAST_SLOT_FOR_ROLE)) {
+    const entry = raw[role];
+    // admin is impersonated FROM, never TO, so it is the one slot allowed an empty email.
+    if (!entry?.label || (!entry.email && role !== 'admin')) { missing.push(role); continue; }
+    out[slot] = {
+      label: String(entry.label),
+      email: String(entry.email ?? ''),
+      role: STAGING_ACCOUNTS[slot].role,
+    };
+  }
+  if (missing.length) {
+    console.error(`\n✖ ${path.basename(PRODUCTION_CAST_FILE)} is missing usable entries for: ${missing.join(', ')}`);
+    console.error('   Each needs a "label" and (except admin) an "email".\n');
+    process.exit(1);
+  }
+  return out;
+}
+
+export const ACCOUNTS = IS_PRODUCTION ? loadProductionAccounts() : STAGING_ACCOUNTS;
 
 /**
  * The NMLS the FIRST take used. Kept as the default only so the flags stay self-documenting — it is
@@ -262,7 +365,13 @@ const DEFAULT_NARRATION_SEC = 6;    // used when durations.json has no entry for
 // is doing 6 of these back to back. Override with --login-timeout <minutes>.
 let LOGIN_WAIT_MS = 20 * 60 * 1000;
 
-export const authPathFor = (name) => path.join(AUTH_DIR, `viet18-${name}.json`);
+/**
+ * One state file per role PER VARIANT. Without the variant in the name, a production Login-as would
+ * overwrite the staging state of the same role, and a later staging re-record would silently shoot
+ * the wrong environment — the app renders the login screen at whatever URL you ask for, so nothing
+ * about the failure would look like a failure.
+ */
+export const authPathFor = (name) => path.join(AUTH_DIR, `${IS_PRODUCTION ? 'production' : 'viet18'}-${name}.json`);
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const reEsc = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
