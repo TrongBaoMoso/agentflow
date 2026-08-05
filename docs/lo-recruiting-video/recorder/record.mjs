@@ -1630,12 +1630,17 @@ export async function cancelAddForm(page, h) {
  * Staging is unguarded on purpose: every row there is a throwaway test account.
  */
 const PRODUCTION_WRITABLE_ROWS = [
-  /\bTest\s+Test\b/i,      // the subject
-  /\bKatie\s+Test\b/i,     // the duplicate row s1_4's required-field wall is filmed on
-  /\bRLO\s+Test\b/i,       // --demo-record fallback
-  /\bTest\s+Check\b/i,
-  /\bTest\s+Adda\b/i,
-  /\bTest\s+Testcase\b/i,
+  // ⚠️ NO TRAILING \b. Row text arrives CONCATENATED — innerText of a row runs the cells together, so
+  // "Test Test" is immediately followed by the next cell and reads "Test Testinfoemailphone". A
+  // trailing word boundary therefore never fires. This is the same trap candidateRow() documents in
+  // capitals for NMLS matching, and the guard walked straight into it on its first production run:
+  // s4_4 refused a legitimate test row. A LEADING \b is safe (a date or space precedes the name).
+  /\bTest\s+Test/i,        // the subject, and its same-named siblings in the pipeline
+  /\bKatie\s+Test/i,       // the duplicate row s1_4's required-field wall is filmed on
+  /\bRLO\s+Test/i,
+  /\bTest\s+Check/i,
+  /\bTest\s+Adda/i,
+  /\bTest\s+Testcase/i,
 ];
 
 /**
@@ -2453,12 +2458,28 @@ export async function demonstrateRequiredFieldWall(page, h, { rowName, nmls = ''
   const row = h.row(rowName);
   if (!(await row.count())) throw new Error(`s1_4: no row matching "${rowName}" on the Recruited board`);
 
-  // PROBE: the name cell is a link; scope it to the matched row so a same-name decoy cannot win.
+  /**
+   * VERIFIED 2026-08-05 the hard way: the name cell is NOT an anchor.
+   *
+   * It renders as `<div class="btn-link GPVN-… d-inline-block mr-1">Katie Test</div>` — a GWT widget
+   * styled to look like a link, with no href, no role and no onclick property. So both
+   * getByRole('link') and locator('a') find nothing, even though the row contains 24 real anchors
+   * (every status dropdown item is one). The first production take lost s1_4 to exactly that.
+   *
+   * Match on the STABLE half of the class (`btn-link`; the GPVN-… half is a GWT build hash), and
+   * anchor the text so a longer name containing this one cannot win. Scoped to the row throughout,
+   * so a same-name decoy elsewhere on the board cannot be opened by mistake.
+   */
+  const exact = new RegExp(`^\\s*${reEsc(rowName)}\\s*$`, 'i');
   const nameLink = await firstVisible([
-    () => row.getByRole('link', { name: new RegExp(reEsc(rowName), 'i') }).first(),
-    () => row.locator('a').filter({ hasText: new RegExp(reEsc(rowName), 'i') }).first(),
+    () => row.locator('div.btn-link').filter({ hasText: exact }).first(),
+    () => row.getByText(exact).first(),
+    () => row.locator('[class*="btn-link"]').filter({ hasText: exact }).first(),
   ]);
-  if (!nameLink) throw new Error(`s1_4: found the "${rowName}" row but no link to open it`);
+  if (!nameLink) {
+    throw new Error(`s1_4: found the "${rowName}" row but nothing in it opens the record. The name is a `
+      + 'div.btn-link, not an anchor (see above) — if this fires again, the widget markup changed.');
+  }
   await h.click(() => nameLink);
   await h.waitForAppIdle();
 
@@ -3317,8 +3338,30 @@ export async function act1(page, h, cfg = {}) {
     // which the narration relies on. It is then CANCELLED — submitting would convert the fresh
     // fixture and re-break the row beats for every future re-record.
     const fullName = candidate.name || 'Marcus Reyes';
+    /**
+     * PROVING THE INVITE LANDED — two staging assumptions that are both false on production.
+     *
+     * Board: staging looked at ILO/Mine, because the fixture was created in act 0 and handed to this
+     * recruiter, so it was his. On production the subject arrives in the pipeline UNASSIGNED, so Mine
+     * can never contain it and the company board is the only place it exists.
+     *
+     * Status: production DOES set "Invited to join" — verified on the row afterwards, alongside the
+     * label "Converted from recruited LO". Either string proves the transition; the label is used here
+     * because it says WHY the record is in the pipeline.
+     *
+     * Worth writing down, because it fooled me first: the Recruited board's own "Invited to join"
+     * counter reads 0 across all 106,145 records, which looks like a status nobody uses. It is 0
+     * because an invited record LEAVES that board — the counter can only ever be zero. An earlier
+     * draft of the act 0 narration called it evidence of disuse; it is evidence of the two-warehouse
+     * split instead.
+     *
+     * The board, then, was the only real bug — and it was enough to make the first production run
+     * report the invite as FAILED when it had in fact succeeded.
+     */
+    const iloBoard = IS_PRODUCTION ? URLS.iloCompany : URLS.iloMine;
+    const INVITE_PROOF = IS_PRODUCTION ? /Converted from recruited LO/i : /Invited to join/i;
     const alreadyInILO = async () => {
-      await h.goto(URLS.iloMine);
+      await h.goto(iloBoard);
       let r = h.row(fullName);
       if (!(await r.count())) {
         await h.optional('search ILO for the candidate', async () => {
@@ -3331,10 +3374,12 @@ export async function act1(page, h, cfg = {}) {
     };
 
     const iloText = await alreadyInILO();
-    const inILO = !!(iloText && /Invited to join/i.test(iloText));
+    const inILO = !!(iloText && INVITE_PROOF.test(iloText));
 
     // Re-check the Recruited board directly: rowOfCandidate() may be pointing at a substitute.
-    await h.goto(URLS.rloMine);
+    // Production: unassigned records are not on Mine — see the note above.
+    await h.goto(IS_PRODUCTION ? URLS.rloCompany : URLS.rloMine);
+    if (IS_PRODUCTION) await h.optional('narrow to the subject', () => h.filterGrid(fullName.toLowerCase()));
     const ownRow = h.row(fullName);
     const onRlo = (await ownRow.count()) > 0;
 
@@ -3355,7 +3400,7 @@ export async function act1(page, h, cfg = {}) {
 
       // The claim the scene makes is still verified, just not performed here.
       const stillInILO = await alreadyInILO();
-      if (!stillInILO || !/Invited to join/i.test(stillInILO)) {
+      if (!stillInILO || !INVITE_PROOF.test(stillInILO)) {
         throw new Error(`${fullName} was in the ILO pipeline with "Invited to join" before the `
           + 'demonstration but not after — the dialog was supposed to be cancelled. Investigate.');
       }

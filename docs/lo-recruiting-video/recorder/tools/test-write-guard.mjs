@@ -26,6 +26,10 @@ const CASES = [
   ['the pending row beside it', '10/17/2023 Thian Nguyen Added by LO 320777',                      'REFUSE'],
   ['a name merely LIKE test',   'Maria Testa (Arizona) Guild Mortgage',                            'REFUSE'],
   ['a row we cannot read',      null,                                                             'REFUSE'],
+  // The row s4_4 refused on the first production run. innerText concatenates the cells, so the name
+  // is glued to the next one — a trailing \\b in the allowlist could never match it. Regression only.
+  ['cells glued together',      '10/2/2025 Test Testinfoemailphone (Duplicated) Referred by',      'ALLOW'],
+  ['glued, but a real broker',  '10/2/2025 Maria Testainfoemailphone Guild Mortgage',              'REFUSE'],
 ];
 
 const outcome = (fn) => fn().then(() => 'ALLOW').catch(() => 'REFUSE');
