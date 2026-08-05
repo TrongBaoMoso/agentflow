@@ -8,6 +8,9 @@ markers.json
 markers.production.json
 recorder/video/
 recorder/video-production/
+# Footage from an aborted take, kept locally only. The first production run's copy holds the
+# unauthorised Approve on camera; the frame that identifies it is in the storyboard's write log.
+recorder/video-production.aborted-*/
 recorder/debug/
 recorder/node_modules/
 final/
