@@ -28,6 +28,11 @@
  *   node build-narration.mjs --force         # re-render everything
  *   node build-narration.mjs --rate=default  # use say's default rate (no -r)
  *   node build-narration.mjs --only=s1_5,s2_1
+ *   node build-narration.mjs --variant=production   # narration.production.json -> audio-production/
+ *
+ * Variants: 'staging' (default) reads narration.json -> audio/;  'production' reads
+ * narration.production.json -> audio-production/. Separate output dirs so a production
+ * render can never overwrite the durations the shipped staging cut was measured against.
  */
 
 import { execFileSync } from 'node:child_process';
@@ -49,10 +54,30 @@ const CHANNELS = 2;
 const LONG_CLIP_WARN_SEC = 30;    // a single scene holding longer than this is a smell
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
-const NARRATION_JSON = path.join(HERE, 'narration.json');
-const CLIP_DIR = path.join(HERE, 'audio', 'clips');
-const TMP_DIR = path.join(HERE, 'audio', 'tmp');
-const DURATIONS_JSON = path.join(HERE, 'audio', 'durations.json');
+
+/**
+ * Two cuts of the SAME 51 scene ids exist: the shipped staging cut and the production cut. They
+ * differ only in narration text, so the variant is one flag rather than a forked script.
+ *
+ * The output directory is part of the variant on purpose. The staging mp4 was assembled against
+ * `audio/durations.json`, and those durations are what its scene offsets were measured from — a
+ * production render writing into the same directory would silently invalidate a video that is
+ * already signed off. Separate dirs make that mistake impossible rather than merely unlikely.
+ */
+const VARIANT = (() => {
+  const raw = (process.argv.slice(2).find((a) => a.startsWith('--variant=')) ?? '').slice('--variant='.length);
+  if (!raw) return 'staging';
+  if (raw !== 'staging' && raw !== 'production') fail(`--variant must be "staging" or "production" (got "${raw}")`);
+  return raw;
+})();
+const IS_PRODUCTION = VARIANT === 'production';
+
+const NARRATION_JSON = path.join(HERE, IS_PRODUCTION ? 'narration.production.json' : 'narration.json');
+const NARRATION_NAME = path.basename(NARRATION_JSON);
+const AUDIO_DIR = path.join(HERE, IS_PRODUCTION ? 'audio-production' : 'audio');
+const CLIP_DIR = path.join(AUDIO_DIR, 'clips');
+const TMP_DIR = path.join(AUDIO_DIR, 'tmp');
+const DURATIONS_JSON = path.join(AUDIO_DIR, 'durations.json');
 
 // ── CLI ───────────────────────────────────────────────────────────────────────────────────
 const argv = process.argv.slice(2);
@@ -153,25 +178,25 @@ function preflight() {
 // ── Load + validate narration.json ────────────────────────────────────────────────────────
 function loadNarration() {
   if (!existsSync(NARRATION_JSON)) {
-    fail(`narration.json not found at ${NARRATION_JSON}\n   Expected shape: [{ "id": "s1_5", "act": 1, "text": "…" }, …]`);
+    fail(`${NARRATION_NAME} not found at ${NARRATION_JSON}\n   Expected shape: [{ "id": "s1_5", "act": 1, "text": "…" }, …]`);
   }
 
   let data;
   try {
     data = JSON.parse(readFileSync(NARRATION_JSON, 'utf8'));
   } catch (err) {
-    fail(`narration.json is not valid JSON: ${err.message}`);
+    fail(`${NARRATION_NAME} is not valid JSON: ${err.message}`);
   }
-  if (!Array.isArray(data)) fail('narration.json must be a top-level ARRAY of { id, act, text }');
-  if (data.length === 0) fail('narration.json is empty');
+  if (!Array.isArray(data)) fail(NARRATION_NAME + ' must be a top-level ARRAY of { id, act, text }');
+  if (data.length === 0) fail(NARRATION_NAME + ' is empty');
 
   const seen = new Map();
   data.forEach((entry, i) => {
-    if (!entry || typeof entry !== 'object') fail(`narration.json[${i}] is not an object`);
+    if (!entry || typeof entry !== 'object') fail(`${NARRATION_NAME}[${i}] is not an object`);
     const { id, act, text } = entry;
-    if (typeof id !== 'string' || !id.trim()) fail(`narration.json[${i}] has no usable "id"`);
-    if (!Number.isInteger(act)) fail(`narration.json[${i}] (${id}) has a non-integer "act"`);
-    if (typeof text !== 'string' || !text.trim()) fail(`narration.json[${i}] (${id}) has no usable "text"`);
+    if (typeof id !== 'string' || !id.trim()) fail(`${NARRATION_NAME}[${i}] has no usable "id"`);
+    if (!Number.isInteger(act)) fail(`${NARRATION_NAME}[${i}] (${id}) has a non-integer "act"`);
+    if (typeof text !== 'string' || !text.trim()) fail(`${NARRATION_NAME}[${i}] (${id}) has no usable "text"`);
     if (seen.has(id)) fail(`duplicate id "${id}" at narration.json[${seen.get(id)}] and [${i}] — clips would overwrite each other`);
     seen.set(id, i);
 
@@ -254,7 +279,7 @@ mkdirSync(CLIP_DIR, { recursive: true });
 mkdirSync(TMP_DIR, { recursive: true });
 
 const narrationMtime = statSync(NARRATION_JSON).mtimeMs;
-console.log(`\nnarration.json: ${entries.length} entries`);
+console.log(`\n${NARRATION_NAME}: ${entries.length} entries  [variant: ${VARIANT}]`);
 scanAcronyms(entries);
 console.log('');
 
@@ -307,7 +332,7 @@ const orphans = readdirSync(CLIP_DIR)
   .map((f) => f.replace(/\.wav$/, ''))
   .filter((id) => !known.has(id));
 if (orphans.length) {
-  console.log(`\n⚠︎  Stale clips not in narration.json (safe to delete): ${orphans.join(', ')}`);
+  console.log(`\n⚠︎  Stale clips not in ${NARRATION_NAME} (safe to delete): ${orphans.join(', ')}`);
 }
 
 // ── Summary: per-act subtotal + TOTAL estimated runtime (playbook §5 pacing) ──────────────
