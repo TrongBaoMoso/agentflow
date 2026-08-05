@@ -89,14 +89,30 @@ const KEEP_WORK = argv.includes('--keep-work');
 const BILINGUAL = argv.includes('--bilingual');
 const markersArg = argv.find((a) => a.startsWith('--markers='));
 
+/**
+ * Which cut this is. `--variant=production` reads narration.production.json +
+ * audio-production/durations.json and writes -production filenames.
+ *
+ * Every output name carries the variant, for the same reason build-narration.mjs keeps a separate
+ * audio dir: the staging cut is signed off, and an assemble run that overwrote it would be
+ * unrecoverable without a re-shoot. Four cuts can therefore coexist — {staging, production} x
+ * {English, bilingual} — and none of them can clobber another.
+ */
+const VARIANT = (() => {
+  const raw = (argv.find((a) => a.startsWith('--variant=')) ?? '').slice('--variant='.length);
+  if (!raw) return 'staging';
+  if (raw !== 'staging' && raw !== 'production') fail(`--variant must be "staging" or "production" (got "${raw}")`);
+  return raw;
+})();
+const IS_PRODUCTION = VARIANT === 'production';
+const CUT = IS_PRODUCTION ? '-production' : '';
+
 // The bilingual cut is a SEPARATE deliverable — the verified English-only file is never overwritten.
-const OUT_MP4 = path.join(FINAL_DIR, BILINGUAL
-  ? 'lo-recruiting-role-walkthrough-bilingual.mp4'
-  : 'lo-recruiting-role-walkthrough.mp4');
-const OUT_SRT = path.join(FINAL_DIR, BILINGUAL ? 'subtitles.bilingual.srt' : 'subtitles.srt');
-const OUT_SRT_VI = path.join(FINAL_DIR, 'subtitles.vi.srt');
-const VI_JSON = path.join(ROOT, 'narration.vi.json');
-const VERIFY_DIR = path.join(FINAL_DIR, BILINGUAL ? 'verify-bilingual' : 'verify');
+const OUT_MP4 = path.join(FINAL_DIR, `lo-recruiting-role-walkthrough${CUT}${BILINGUAL ? '-bilingual' : ''}.mp4`);
+const OUT_SRT = path.join(FINAL_DIR, `subtitles${CUT}${BILINGUAL ? '.bilingual' : ''}.srt`);
+const OUT_SRT_VI = path.join(FINAL_DIR, `subtitles${CUT}.vi.srt`);
+const VI_JSON = path.join(ROOT, IS_PRODUCTION ? 'narration.production.vi.json' : 'narration.vi.json');
+const VERIFY_DIR = path.join(FINAL_DIR, `verify${CUT}${BILINGUAL ? '-bilingual' : ''}`);
 
 // ── Small helpers ─────────────────────────────────────────────────────────────────────────
 function fail(msg) {
@@ -213,32 +229,70 @@ async function loadPlaywright() {
 }
 
 // ── Inputs ────────────────────────────────────────────────────────────────────────────────
+/**
+ * A stand-in timeline for --dump-cues, so the translation can be authored BEFORE the shoot.
+ *
+ * Cue TEXT is a pure function of the narration string and the segmenter — markers contribute only
+ * WHERE each scene sits on the timeline. So when the only thing wanted is the cue list to translate
+ * against, lay the scenes end to end in narration order and get on with it: the strings, their
+ * order and their count are byte-identical to what the real assemble will produce.
+ *
+ * These timings are fiction and are never written anywhere. --dump-cues exits before encoding.
+ */
+function syntheticMarkers(narration, durations) {
+  const gap = 0.6;
+  const byAct = new Map();
+  let offset = 0;
+  for (const n of narration) {
+    if (!byAct.has(n.act)) byAct.set(n.act, { act: n.act, videoPath: '(synthetic)', trimSec: 0, scenes: [] });
+    byAct.get(n.act).scenes.push({ id: n.id, offset: Math.round(offset * 100) / 100 });
+    offset += (durations[n.id] ?? 6) + gap;
+  }
+  return { videoTrimSec: 0, videos: [...byAct.values()], synthetic: true };
+}
+
 function loadInputs() {
-  const markersPath = markersArg
-    ? firstExisting([path.resolve(markersArg.slice('--markers='.length))], 'markers.json (from --markers=)')
-    : firstExisting([path.join(HERE, 'markers.json'), path.join(ROOT, 'markers.json')], 'markers.json (run the recorder first)');
+  // A production assemble must never fall back to the staging markers — the scene offsets would be
+  // plausible, monotonic and completely wrong, which is the hardest kind of mistake to spot.
+  const DUMP_ONLY = argv.includes('--dump-cues');
+  const markerCandidates = markersArg
+    ? [path.resolve(markersArg.slice('--markers='.length))]
+    : IS_PRODUCTION
+      ? [path.join(HERE, 'markers.production.json'), path.join(ROOT, 'markers.production.json')]
+      : [path.join(HERE, 'markers.json'), path.join(ROOT, 'markers.json')];
+  const markersPath = (DUMP_ONLY && !markerCandidates.some((f) => existsSync(f)))
+    ? null
+    : firstExisting(markerCandidates, IS_PRODUCTION
+      ? 'markers.production.json (run: LORV_VARIANT=production node record.mjs --markers markers.production.json)'
+      : 'markers.json (run the recorder first)');
 
-  const durationsPath = firstExisting(
-    [path.join(ROOT, 'audio', 'durations.json'), path.join(ROOT, 'durations.json'), path.join(HERE, 'durations.json')],
-    'durations.json (run: node ../build-narration.mjs)',
-  );
+  const durationsPath = IS_PRODUCTION
+    ? firstExisting(
+      [path.join(ROOT, 'audio-production', 'durations.json')],
+      'audio-production/durations.json (run: node ../build-narration.mjs --variant=production)',
+    )
+    : firstExisting(
+      [path.join(ROOT, 'audio', 'durations.json'), path.join(ROOT, 'durations.json'), path.join(HERE, 'durations.json')],
+      'durations.json (run: node ../build-narration.mjs)',
+    );
 
-  const narrationPath = firstExisting(
-    [path.join(ROOT, 'narration.json'), path.join(HERE, 'narration.json')],
-    'narration.json',
-  );
+  const narrationPath = IS_PRODUCTION
+    ? firstExisting([path.join(ROOT, 'narration.production.json')], 'narration.production.json')
+    : firstExisting([path.join(ROOT, 'narration.json'), path.join(HERE, 'narration.json')], 'narration.json');
 
-  const markers = readJson(markersPath, 'markers.json');
   const durations = readJson(durationsPath, 'durations.json');
-  const narration = readJson(narrationPath, 'narration.json');
+  const narration = readJson(narrationPath, path.basename(narrationPath));
+  const markers = markersPath
+    ? readJson(markersPath, 'markers.json')
+    : syntheticMarkers(narration, durations);
 
   if (!Array.isArray(markers?.videos) || markers.videos.length === 0) {
     fail('markers.json must contain a non-empty "videos" array: { videoTrimSec, videos: [{ act, videoPath, scenes }] }');
   }
   if (!Array.isArray(narration)) fail('narration.json must be an array of { id, act, text }');
 
-  console.log(`\nInputs:`);
-  console.log(`   markers    ${markersPath}`);
+  console.log(`\nInputs  [variant: ${VARIANT}${BILINGUAL ? ' + bilingual' : ''}]:`);
+  console.log(`   markers    ${markersPath ?? 'NONE — synthetic timeline, --dump-cues only'}`);
   console.log(`   durations  ${durationsPath}`);
   console.log(`   narration  ${narrationPath}`);
 
@@ -281,6 +335,25 @@ function buildTimeline({ markers, durations, narration }) {
     }
     // Use the EXACT path the recorder wrote — never glob for the largest webm (playbook §6.3).
     const videoPath = path.isAbsolute(v.videoPath) ? v.videoPath : path.resolve(ROOT, v.videoPath);
+    // A synthetic timeline (--dump-cues before the shoot) has no footage by definition: every scene
+    // gets its narration duration and nothing is probed. Real runs still hard-fail on a missing file.
+    if (markers.synthetic) {
+      for (const sc of v.scenes ?? []) {
+        const dur = durations[sc.id];
+        if (!Number.isFinite(dur)) { problems.push(`no narration duration for ${sc.id}`); continue; }
+        // Same shape the real branch pushes — offsets ARE the timeline here, so base is 0.
+        scenes.push({
+          id: sc.id,
+          act: v.act,
+          offset: Number(sc.offset) || 0,
+          adjOffset: Number(sc.offset) || 0,
+          dur,
+          text: textById.get(sc.id) ?? '',
+        });
+        cursor = Math.max(cursor, (Number(sc.offset) || 0) + dur);
+      }
+      return [];
+    }
     if (!existsSync(videoPath)) fail(`act ${v.act} video is missing: ${videoPath}`);
 
     // Scenes the recorder caught in try/catch are no-ops on screen; the narration still plays.
@@ -332,7 +405,7 @@ function buildTimeline({ markers, durations, narration }) {
     return [{ ...v, videoPath, srcDur, trim, effDur, base }];
   });
 
-  if (!laidOut.length) fail('no usable act videos in markers.json — every videoPath was null or missing');
+  if (!laidOut.length && !markers.synthetic) fail('no usable act videos in markers.json — every videoPath was null or missing');
 
   const total = cursor;
   scenes.sort((a, b) => a.adjOffset - b.adjOffset);
