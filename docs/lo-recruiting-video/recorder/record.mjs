@@ -1488,24 +1488,51 @@ export async function performLoginAs(page, h, roleKey, { adminStatePath } = {}) 
   // The header's account name is the only ground truth. Enforced on production only — the staging
   // header markup was never probed for this and staging casts are throwaways anyway.
   if (IS_PRODUCTION) {
-    const who = await page.evaluate(() => {
-      const leaves = [...document.querySelectorAll('header *, nav *, [class*="topbar"] *, [class*="navbar"] *')]
-        .filter((e) => e.children.length === 0)
-        .map((e) => (e.textContent || '').trim())
-        .filter((t) => t && t.length < 40
-          && /^[A-Za-zÀ-ỹ.'-]+( [A-Za-zÀ-ỹ.'-]+){1,3}$/.test(t)
-          && !/dashboard|pricing|leads|applications|loans|marketplace|resources|menu|team/i.test(t));
-      return leaves.length ? leaves[leaves.length - 1] : '';
-    }).catch(() => '');
-    // `reEscape` lives inside makeHelpers, not module scope — compare on plain lower-cased
-    // substrings instead of building a regex (a name never contains regex metacharacters anyway).
-    const lastName = acct.label.trim().split(/\s+/).pop().toLowerCase();
-    if (who && !who.toLowerCase().includes(lastName)) {
-      throw new Error(`impersonation landed on "${who}" but this slot expects "${acct.label}" — `
-        + 'refusing to continue, and the state file must NOT be saved. The Associates filter '
-        + 'probably never applied; re-run provisioning and watch the search commit.');
+    /**
+     * Read every name-shaped label in the chrome, not just the last one.
+     *
+     * First attempt took `leaves[leaves.length - 1]` and got "Log out" — a two-word string that
+     * matches any name pattern — then refused a swap that had actually worked. So: collect ALL
+     * candidates, drop the UI vocabulary explicitly, and PASS if the expected surname appears among
+     * them. Fail only when candidates exist and none of them is the expected person; report
+     * "unverifiable" when the header yields nothing rather than inventing a verdict.
+     */
+    const NOT_A_NAME = /^(log ?out|sign ?out|log ?in|sign ?in|my profile|my account|settings|help|search|loan factory|it team|go live|new loan|create a new loan)$/i;
+    const readNames = () => page.evaluate(() => [...document.querySelectorAll(
+      'header *, nav *, [class*="topbar"] *, [class*="navbar"] *, [class*="user"] *, [class*="account"] *',
+    )]
+      .filter((e) => e.children.length === 0)
+      .map((e) => (e.textContent || '').trim())
+      .filter((t) => t && t.length < 40 && /^[A-Za-zÀ-ỹ.'-]+( [A-Za-zÀ-ỹ.'-]+){1,3}$/.test(t))).catch(() => []);
+
+    /**
+     * Match the WHOLE label as its own leaf, never a surname substring.
+     *
+     * Measured across five live role states (each one's own name renders as an exact standalone
+     * leaf — "Miley Dau", "Dung Nguyen", …), so an exact test is strict enough to work. It is also
+     * the only test that is safe: on Seth's and Brayan's pages the string "nguyen" appears anyway,
+     * from colleagues elsewhere in the chrome, so a surname substring would have passed those two
+     * slots no matter who was actually logged in.
+     */
+    const want = acct.label.trim().replace(/\s+/g, ' ').toLowerCase();
+    let names = [];
+    let matched = false;
+    // The chrome can still be re-rendering right after the session swap, so give it a few tries
+    // before concluding the wrong person is logged in.
+    for (let attempt = 0; attempt < 4 && !matched; attempt += 1) {
+      names = (await readNames()).filter((t) => !NOT_A_NAME.test(t));
+      matched = names.some((t) => t.replace(/\s+/g, ' ').toLowerCase() === want);
+      if (!matched) await sleep(2500);
     }
-    console.log(`[login-as] header shows "${who || '(unreadable — could not verify)'}" — expected ${acct.label}`);
+    if (!matched && names.length) {
+      throw new Error(`impersonation landed on somebody else — this slot expects "${acct.label}" but the `
+        + `header offers ${JSON.stringify(names.slice(0, 6))}. Refusing to continue, and the state file `
+        + 'must NOT be saved: a state that opens the app under the wrong account passes every other '
+        + 'check and silently films the wrong person (act 4, shoot 8).');
+    }
+    console.log(matched
+      ? `[login-as] header confirms ${acct.label}`
+      : `[login-as] ⚠️ could not read any name from the header — identity UNVERIFIED for ${acct.label}`);
   }
   console.log(`[login-as] now impersonating ${acct.label} (${acct.role})`);
 }
