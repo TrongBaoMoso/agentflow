@@ -362,3 +362,48 @@ theo role nằm trong `bd memories lo-recruiting-production-permission-matrix`, 
 `/associates?labels=<email>` → row `Action` → **`Permissions`** → modal cây 82 checkbox. Đọc được hết từ admin,
 **không đốt session**, nên viết được narration đúng trước buổi quay. Đóng modal bằng `.modal.show button.close`
 (Escape không đóng). Đây là cách rẻ nhất để kiểm mọi khẳng định về quyền — dùng lại trước mỗi lần quay.
+
+### Runbook buổi quay production
+
+Session state chỉ sống vài giờ (đo được: chết trong khoảng ~1h–6h) nên **provisioning và quay phải cùng
+một buổi**. Sáu lần login tay ở bước 1, một lần nữa ở bước 2 — tổng bảy, mỗi lần chỉ là bấm trong cửa sổ
+Playwright đang mở.
+
+```bash
+cd docs/lo-recruiting-video/recorder
+export LORV_VARIANT=production
+export LORV_PRODUCTION_BASE='https://<host>'     # không commit, xem quy tắc env ở trên
+
+# 1. Provisioning: 6 role, mỗi role một lần admin login tươi (impersonate đốt state admin).
+#    Off camera, không ghi footage.
+node record.mjs --provision --acts 1,2,3,4,5,6
+
+# 2. Act 0 và act 7 chạy dưới admin, mà provisionRoles() lọc admin ra —
+#    nên phải lấy một state admin CHƯA bị đốt, sau cùng.
+node inspect.mjs --act 0
+
+# 3. Kiểm mọi state còn sống TRƯỚC khi quay (exit 1 nếu có cái chết).
+#    Đừng đo $? qua pipe — nó sẽ là exit code của tail.
+node inspect.mjs --check-states
+
+# 4. Quay. Login-free vì đã có role state.
+node record.mjs --acts 0,1,2,3,4,5,6,7 \
+  --markers markers.production.json \
+  --durations ../audio-production/durations.json \
+  --out video-production \
+  --wall-record 'Katie Test' --wall-nmls <số-chưa-dùng> \
+  --demo-record 'RLO Test' \
+  --mail-url '<mailinator public inbox>'
+
+# 5. Ghép. Bản English trước để soi frame, rồi bản song ngữ.
+node assemble.mjs --variant=production --markers=markers.production.json
+node assemble.mjs --variant=production --bilingual --markers=markers.production.json
+```
+
+Production **không cần** `--candidate-email` / `--candidate-nmls`: nó làm việc trên record có sẵn, không
+mở form Add, nên không có gì bị dedupe và không tạo record mới. Đây là khác biệt lớn nhất so với runbook
+staging, nơi cả hai giá trị đó bắt buộc phải tươi mỗi lượt quay.
+
+Sau bước 4, **bắt buộc soi frame từng scene** trong `final/verify-production/` trước khi gửi. Bài học từ
+bản staging: log báo "act 0: 1 lỗi" trong khi 6/7 scene quay sai màn hình — `0 failures` không phải thước
+đo chất lượng.

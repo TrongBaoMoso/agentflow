@@ -38,6 +38,17 @@
  *   node record.mjs --acts 0,1,2
  *   node record.mjs --acts 4 --role-state            # re-record one act from its saved role state
  *   node record.mjs --auth /abs/path/state.json --out /abs/path/video
+ *
+ * PRODUCTION CUT — set the variant in the ENV (tools/ that import this module inherit it):
+ *   export LORV_VARIANT=production
+ *   export LORV_PRODUCTION_BASE='https://<host>'      # deliberately not committed
+ *   node record.mjs --provision --acts 1,2,3,4,5,6    # 6 manual logins, off camera
+ *   node inspect.mjs --act 0                          # then ONE fresh admin login (acts 0 + 7)
+ *   node record.mjs --acts 0,1,2,3,4,5,6,7 \
+ *      --markers markers.production.json --durations ../audio-production/durations.json \
+ *      --out video-production --wall-record 'Katie Test' --wall-nmls <unused-number>
+ * Production needs NO --candidate-email / --candidate-nmls: it works an existing record and
+ * never opens the Add form, so nothing is deduped and nothing is created.
  *   node record.mjs --candidate-email mreyes-lo-q7w2m9b@mailinator.com --candidate-nmls 1076215 \
  *                   --mail-url 'https://www.mailinator.com/v4/public/inboxes.jsp?to=mreyes-lo-q7w2m9b'
  *
