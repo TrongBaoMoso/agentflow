@@ -460,6 +460,32 @@ Band P1–P4 + ngưỡng trong mockup là placeholder minh hoạ. Hệ thống c
 
 **Ảnh hưởng tiến độ:** Track B (schema, scaffold, webhook receiver) KHÔNG bị chặn — webhook viết theo field mapping §8.5 của hệ cũ + payload giả; khi contract xong chỉ là Modex team cấu hình connection trỏ vào URL (họ config, mình không code thêm). Rủi ro thật duy nhất: contract kéo dài nhiều tuần (tài khoản hiện 1 seat/-1, không còn connection active → gần như chắc chắn phải thương lượng lại) → nếu launch trước khi có sync, 3 feature cột "CÓ" chạy chế độ fallback. Khuyến nghị: nudge Victoria trong tuần; nếu cần đòn bẩy giá, dùng quote MMI (benchmark §trước).
 
+
+### 9.10. Data model v1.1 — chốt sau review 05/08/2026
+
+Review dựa trên bằng chứng đo thật trên production (106.145 dòng tồn kho, 96,8% "Not claimed" là hàng import, 8 dòng trùng cùng tên "Test Test", record "(Duplicated)" dán nhãn mà không gộp, ma trận quyền 2/5/14/15/30/74 công tắc trên 6 người, "100% onboarded" trong khi checklist dở dang). Kết luận: **nhận toàn bộ các bổ sung, với 3 điều chỉnh gọn hoá**.
+
+**8 bổ sung được chốt:**
+
+1. **`candidates.account_id`** (UUID, null tới khi joined) — tham chiếu identity trung tâm sau S7. KHÔNG phải FK cứng (user-service là DB khác) → kèm job đối soát định kỳ chống drift (bài học LOL grant user_id drift: account re-provision là mọi tham chiếu mồ côi). Sự kiện provisioning ghi vào `stage_history`.
+2. **Dedup là quy trình, không phải constraint:** NMLS nullable, không unique constraint cứng (production đầy NMLS trống + rác `50000`/`123456`). Cơ chế gộp = `candidates.merged_into_id` + bảng **`candidate_merges`** (survivor, loser, survivorship từng field, ai gộp, lúc nào); khi merge, activities/stage_history dồn về survivor, id cũ redirect. Gate S3 validate NMLS + check trùng cho record NHẬP MỚI; hàng import đi qua pipeline dedup.
+3. **Assignment đa vai:** `candidates.owner` = recruiter (claim = hành động set owner từ pool, có ghi vết); **`checklist_items.assignee` + `department`** cho onboarding (act 5: có recruiter nhưng không ai assign onboarding specialist → tàng hình trên board của Miley); `routing_rules` đổ output ra được cả hai trục.
+4. **Audit dùng platform `audit-log-service`** (phát hiện 05/08 khi đọc repo: write-once, Pub/Sub → Postgres 16 partitioned + BigQuery archive + digest ký KMS, LIVE staging, tera-be producer đã chạy — recruiting-be copy producer pattern outbox+poller của tera-be, epic tera-be#17). Outbox local đảm bảo độ bền nếu prod rollout audit-svc (#80) chưa xong. Phạm vi audit: sửa offer, đổi comp band, cấp quyền, đổi config, đổi trạng thái bonus — mọi mutation ngoài pipeline.
+5. **`sponsorships(candidate_id, state, status, rule_applied, dates...)`** — trạng thái licensing runtime per ứng viên per bang (NY xong mà NJ còn vướng course 2.5h là chuyện bình thường); checklist items licensing sinh theo bang từ `licensing_state_rules`. Board cũ nén thành 1 bit "NMLS sponsored" — đó là một phần pain.
+6. **`suppression_list` độc lập**, khớp theo định danh chuẩn hoá (phone E.164 / email lowercase / NMLS), 2 loại ngữ nghĩa: `STOP_SMS` (TCPA — theo KÊNH, bắt buộc pháp lý) và `BLACKLIST` (theo NGƯỜI: reason, blocked_by, rehire_after). Sống bất kể dòng candidate bị xoá/gộp/tạo lại. `candidates` chỉ giữ flag hiển thị tính từ bảng này.
+7. **`import_batches`** (nguồn SFTP/S3/CSV/tay, file, số dòng vào/lỗi/trùng, ai chạy) + `candidates.import_batch_id` — 96,8% kho cũ là hàng import tàng hình, và "import count=0 bug" nằm trong danh sách anti-pattern §8.7. `webhook_events` giữ riêng cho Modex webhook.
+8. **`stage_requirements`** (bảng config): field nào bắt buộc ở chặng nào — validation sống ở STAGE TRANSITION, không ở record-level. **Mọi profile field trong `candidates` nullable ở tầng DB** (structural: id/created_at/stage/source vẫn NOT NULL). Bài học bức tường 5-field: 106k dòng import thiếu field → không ai sửa nổi một số điện thoại.
+
+**3 chỉnh trong bảng đã có:**
+- `offers.fee_status` enum PENDING/PAID/**WAIVED** + `waived_by/waived_at` — Waived là trạng thái hạng nhất (board cũ có `data-name='Waived'`); fee / agreement / sponsorship là các trạng thái ĐỘC LẬP, "joined" = tổng hợp, không phải dropdown chọn tay.
+- `candidates.status` (ACTIVE/NURTURE/ARCHIVED/BLOCKED) + `archive_reason` (reason code) — tách khỏi `stage`; hệ cũ có 3 terminal khác ngữ nghĩa (23.995 "Archived – Wrong information" / 6.267 "Block display" / 4.386 "Archived").
+- KPI: giữ nguyên tắc **no-cache, đọc thẳng stage_history + activities**; nếu 100k+ dòng làm dashboard chậm → materialized view refresh TƯỜNG MINH, rebuild được từ nguồn, không bao giờ là nguồn sự thật (khác bản chất cache TTL 8 ngày của hệ cũ).
+
+**3 điều chỉnh gọn hoá so với bản review:**
+- `duplicate_of` và bảng merge là MỘT cơ chế — chỉ dùng `merged_into_id` + `candidate_merges`, không thêm cột thứ hai.
+- `audit_log` tự chế → thay bằng tích hợp audit-log-service (mục 4).
+- blacklist / do-not-contact / STOP gộp về MỘT chỗ là `suppression_list` (mục 6) — không rải cờ trên candidates.
+
 ---
 
 *Tài liệu cùng bộ:* [lo-recruiting-redesign-direction.md](lo-recruiting-redesign-direction.md) (17 pain points + hướng + quyết định kiến trúc §6) · [lo-recruiting-feature-review.md](lo-recruiting-feature-review.md) (hiện trạng chi tiết + Phụ lục C production)
