@@ -480,11 +480,27 @@ xem `assertWritableRow` + `tools/test-write-guard.mjs`.
    không chỉ nội dung màn hình — đó là thứ vòng trước bỏ lọt.
 5. `node assemble.mjs --variant=production --bilingual --markers=markers.production.json` (bản dịch đã sẵn).
 
-**Checklist soi frame — cập nhật sau vòng này.** Với mỗi frame, hỏi đủ bốn câu, theo thứ tự:
+**Checklist soi frame — cập nhật sau vòng này.** Với mỗi frame, hỏi đủ sáu câu, theo thứ tự:
 
-1. **Tên trên header có đúng người mà narration đang nói tới?** (mới — lỗi act 4)
+1. **Tên trên header có đúng người mà narration đang nói tới?** (lỗi act 4: cả act quay dưới sai người)
 2. Màn hình có đúng thứ narration mô tả? (không chỉ "đúng trang")
-3. Có modal/toast/lỗi nào của beat trước còn đè lại? (`s1_10` → `s1_11`)
-4. Board có dòng nào không, hay đang là `No results`? (`s1_15`)
+3. **Mọi con số được đọc có khớp con số trên màn hình?** (act 4: 4 vs 5, 33 vs 0, 2601 vs 2603)
+4. Có modal/toast/lỗi nào của beat trước còn đè lại? (`s1_10` → `s1_11`)
+5. Board có dòng nào không, hay đang là `No results`? (`s1_15`)
+6. **Có chữ nào bị gõ vào chỗ không định gõ?** (`s1_11`: câu ghi chú rơi vào ô search → "No results found" lên phim)
 
-Ba trong bốn câu này sinh ra từ lỗi thật, không phải suy đoán.
+Năm trong sáu câu sinh ra từ lỗi thật, không phải suy đoán.
+
+**HAI QUY TẮC VỀ CHÍNH VIỆC SOI FRAME** — cả hai đều do tôi tự sập bẫy trong vòng này:
+
+- **Một frame verify KHÔNG đủ cho beat dạng modal.** Frame được lấy tại mốc trên timeline narration, thường
+  đúng lúc con trỏ còn đang di chuyển và modal chưa mở. Vòng này tôi kết luận `s1_10` hỏng (thực ra đúng) và
+  suýt bỏ qua `s1_11` (thực ra hỏng). Với mọi beat mở modal: `ffmpeg -ss <giữa scene>` trích thêm 2-3 frame.
+- **Kiểm mtime của mp4 trước khi soi.** Lệnh ghép sau lượt 11 chết ngay từ đầu (`MODULE_NOT_FOUND` — cwd của
+  Bash reset về gốc project giữa các lượt, xem memory `feedback_bash_cwd_reset_rm_danger`), nên tôi soi bản
+  **cũ** và báo một lỗi đã sửa là "vẫn còn". So `stat` mp4 với mtime footage của act vừa quay: mp4 phải **mới
+  hơn**. `cd` trong lệnh ghép phải là đường dẫn tuyệt đối, mọi lần.
+
+**Số liệu production là dữ liệu sống — narration phải đo SAU khi setup, TRƯỚC khi quay.** Counter ILO trôi vì
+hoạt động thật của công ty *và* vì chính các lượt ghi của buổi quay. Thứ tự bắt buộc: reset nhân vật → đo
+counter → sửa narration → render audio → quay. Đảo thứ tự là đọc một con số mà máy quay sẽ không thấy.
