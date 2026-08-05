@@ -414,8 +414,16 @@ bản staging: log báo "act 0: 1 lỗi" trong khi 6/7 scene quay sai màn hình
 
 ### Trạng thái bản production sau buổi quay 05/08/2026 — CHƯA XONG
 
-Bốn lượt quay. Đã sạch và dùng được: **act 0, 2, 3, 6, 7** (23 scene). Còn hỏng: **act 1** (9 beat cấp dòng
-+ `s1_14`) và **act 4, 5**.
+Bốn lượt quay. Cả 8 act đã có trong markers: **51 scene đặt được, 38 sạch, 13 hỏng.**
+
+| Act | Scene | Trạng thái |
+|---|---|---|
+| 0, 2, 3, 6, 7 | 23 | sạch |
+| 1 | 15 | hỏng 9: `s1_5`, `s1_7`…`s1_13`, `s1_14` |
+| 4 | 8 | hỏng 2: `s4_3`, `s4_4` |
+| 5 | 5 | hỏng 2: `s5_4`, `s5_5` |
+
+Cả 13 cái hỏng truy về **cùng một nguyên nhân** dưới đây — không phải 13 lỗi rời rạc.
 
 **Gốc của mọi thứ còn lại là DANH TÍNH NHÂN VẬT.** File này nhận diện ứng viên bằng *tên + NMLS* ở **bốn**
 chỗ độc lập — `candidateRow`, `readIloState`, `countSameName`, `narrowToCandidate` — và nhân vật production
