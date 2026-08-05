@@ -3383,17 +3383,46 @@ export async function act1(page, h, cfg = {}) {
       () => rowOfCandidate().locator('div.btn-link').filter({ hasText: /Not touched|Initiate contact|Message sent|Dialogue|Invited to join/i }).first(),
     ], { timeout: 10_000 });
     await h.hold(1.5);
+
+    /**
+     * EVERY CONTROL BELOW IS SCOPED TO THE MODAL, and the beat gives up if the modal never opened.
+     *
+     * Shoot 10, on camera: the modal did not open, the page-level `getByRole('combobox').first()`
+     * and `getByRole('textbox').last()` then resolved to the BOARD's own filter widgets, and the
+     * status note — "First conversation done — sending comp details." — was typed into the search
+     * box, which answered "No results found" while the narration talked about statuses. Same family
+     * as s1_10's note going into a search field.
+     *
+     * The rule this encodes: a beat that needs a modal must never fall back to a page-level input.
+     * Typing into whatever happens to be focusable is how footage ends up showing the wrong thing
+     * while every step reports success.
+     */
+    const modal = page.locator('div.modal.show');
+    const opened = await modal.first().waitFor({ state: 'visible', timeout: 8000 })
+      .then(() => true).catch(() => false);
+    if (!opened) {
+      console.warn('[act1]   s1_11: the CHANGE STATUS modal did not open. Skipping the fields rather '
+        + 'than typing into the page — the narration is about the status vocabulary, which is on '
+        + 'screen in the row either way.');
+      await h.hold(2);
+      return;
+    }
     await h.optional('open the dropdown', () =>
       h.click([
-        () => page.getByRole('combobox').first(),
-        () => page.locator('select').first(),
+        () => modal.getByRole('combobox').first(),
+        () => modal.locator('select').first(),
       ], { timeout: 5000 }));
     await h.hold(1);
     await h.optional('choose Dialogue', () => h.click(() => page.getByText(/^\s*Dialogue\s*$/i).first(), { timeout: 5000 }));
     await h.optional('status note', () =>
-      h.typeInto([() => page.getByRole('textbox').last()], 'First conversation done — sending comp details.', { delay: 22, clear: false }));
-    await h.optional('submit', () => h.click(() => page.getByRole('button', { name: btnName('Submit') }).first(), { timeout: 5000 }));
+      h.typeInto([
+        () => modal.locator('[contenteditable="true"]').last(),
+        () => modal.getByRole('textbox').last(),
+        () => modal.locator('textarea').last(),
+      ], 'First conversation done — sending comp details.', { delay: 22, clear: false }));
+    await h.optional('submit', () => h.click(() => modal.getByRole('button', { name: btnName('Submit') }).first(), { timeout: 5000 }));
     await h.hold(2);
+    await h.dismiss();
   });
 
   await h.scene('s1_12', async () => {
@@ -3407,9 +3436,13 @@ export async function act1(page, h, cfg = {}) {
     await h.optional('pick a wake-up date', async () => {
       // PROBE: the follow-up flag modal's date input is still unverified — reaching it needs the
       // modal open on a real record, which no read-only pass could do safely.
+      // SCOPED TO THE MODAL for the same reason as s1_11: a page-level `input.first()` is the
+      // board's own filter, and clicking it on camera looks like the beat missed.
+      const flagModal = page.locator('div.modal.show');
+      if (!(await flagModal.count())) return;
       await h.click([
-        () => page.getByRole('textbox').first(),
-        () => page.locator('input').first(),
+        () => flagModal.getByRole('textbox').first(),
+        () => flagModal.locator('input:visible').first(),
       ], { timeout: 4000 });
       await h.hold(1.5);
     });
@@ -4369,9 +4402,13 @@ export async function act5(page, h, cfg = {}) {
       () => rowOfCandidate().getByText(/^\s*Note\s*$/i).first(),
     ], { timeout: 10_000 });
     await h.hold(2);
+    // MODAL-SCOPED, contenteditable first — same trap as s1_10/s1_11: a page-level
+    // getByRole('textbox').last() is the board's search field, and typing the question into it puts
+    // "No results found" on camera under narration about asking Licensing for a status.
     await h.optional('write the question', () =>
       h.typeInto([
-        () => page.getByRole('textbox').last(),
+        () => page.locator('div.modal.show [contenteditable="true"]').last(),
+        () => page.locator('div.modal.show').getByRole('textbox').last(),
         () => page.locator('[contenteditable="true"]').last(),
       ], 'Licensing — any update on the NMLS sponsorship for Marcus? HR is done, I am holding onboarding on this.', { delay: 24, clear: false }));
     await h.hold(1);
