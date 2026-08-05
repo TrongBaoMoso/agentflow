@@ -414,38 +414,28 @@ bản staging: log báo "act 0: 1 lỗi" trong khi 6/7 scene quay sai màn hình
 
 ### Trạng thái bản production sau buổi quay 05/08/2026 — CHƯA XONG
 
-Bốn lượt quay. Cả 8 act đã có trong markers: **51 scene đặt được, 38 sạch, 13 hỏng.**
+Năm lượt quay. **51 scene đặt được, 40 sạch, 11 hỏng.**
 
 | Act | Scene | Trạng thái |
 |---|---|---|
-| 0, 2, 3, 6, 7 | 23 | sạch |
+| 0, 2, 3, 4, 6, 7 | 31 | sạch |
 | 1 | 15 | hỏng 9: `s1_5`, `s1_7`…`s1_13`, `s1_14` |
-| 4 | 8 | hỏng 2: `s4_3`, `s4_4` |
 | 5 | 5 | hỏng 2: `s5_4`, `s5_5` |
 
-Cả 13 cái hỏng truy về **cùng một nguyên nhân** dưới đây — không phải 13 lỗi rời rạc.
+Danh tính nhân vật **đã xử lý xong** (`candidate.match`, first-class ở `candidateRow` + `readIloState` +
+`narrowToCandidate`) — đó là thứ đã làm act 4 sạch. 11 scene còn lại **không** còn liên quan tới nó nữa; chúng
+là hai vấn đề nhỏ, độc lập:
 
-**Gốc của mọi thứ còn lại là DANH TÍNH NHÂN VẬT.** File này nhận diện ứng viên bằng *tên + NMLS* ở **bốn**
-chỗ độc lập — `candidateRow`, `readIloState`, `countSameName`, `narrowToCandidate` — và nhân vật production
-cố tình **không có NMLS** (để lấy beat recruiter tự gõ). Trong pipeline lại có **tám** record cùng tên
-`Test Test`. Hệ quả: mọi phép đọc/ghi rơi vào `.first()`, một dòng ngẫu nhiên. Tôi đã thêm `candidate.match`
-(chuỗi nhận diện chính xác, tách khỏi chuỗi gõ vào search) nhưng nó chỉ chữa `candidateRow`; ba chỗ kia vẫn
-kiểm `nmls`.
+**Act 5 (2 scene) — nhân vật không thuộc sở hữu của onboarding specialist.** Log nói rõ:
+`Test Test is NOT on this board — he is not assigned to this onboarding specialist, which is exactly what
+s5_1 narrates`. Và chốt an toàn **từ chối đúng**: `the next row would be a real loan officer and the
+checklist, note-and-email and webinar beats write`. Sửa: assign nhân vật cho **Miley Dau** (một lượt ghi lên
+dòng test của mình — và chính là việc mà narration đang mô tả), rồi quay lại act 5.
 
-**CÁCH SỬA, và đừng vá lớp thứ năm:** cho nhân vật **một NMLS riêng**. Mọi đường nhận diện trong file vốn đã
-hỗ trợ NMLS chính xác (`:text-is()`, xem ghi chú viết hoa ở `candidateRow`), nên **không cần sửa code nữa**.
-
-1. Mở record ILO của nhân vật. Nó là dòng **duy nhất** mang nhãn `Test Test (New York)` kèm
-   `Converted from recruited LO` và `Since 2021: 25000000`. Tool có sẵn: `node tools/find-subject.mjs`.
-2. Đặt `NMLS = 9990125` (chưa dùng) rồi Submit. Năm field required đã điền sẵn nên form lưu được.
-3. Quay lại: `node record.mjs --acts 1,4,5 --candidate-nmls 9990125 --wall-record 'Katie Test' \
-   --wall-nmls 9999001 --demo-record 'RLO Test' --markers markers.production.json \
-   --durations ../audio-production/durations.json --out video-production`
-
-**Lưu ý về act 1:** nhân vật **đã rời board Recruited** (invite ở lượt 2 thành công thật). Nên các beat cấp
-dòng của act 1 phải diễn trên dòng thay thế (`--demo-record 'RLO Test'`, đã nằm trong allowlist) và `s1_14`
-sẽ đi nhánh DEMONSTRATION — mở dialog rồi Cancel. Đúng thiết kế: invite là chuyển đổi một chiều, không quay
-lại được lần hai.
+**Act 1 (9 scene) — nhân vật đã rời board Recruited vĩnh viễn.** Invite là chuyển đổi một chiều; nó đã chạy
+thật ở lượt 2. Nên các beat cấp dòng phải diễn trên dòng thay thế. `--demo-record 'RLO Test'` đã được truyền
+nhưng `pickDemoRow` không nhặt — cần soi vì sao (`h.row('RLO Test')` không khớp, hay lần reset filter chưa
+thực sự xoá chip). `s1_14` sẽ đi nhánh DEMONSTRATION: mở dialog rồi Cancel, đúng thiết kế.
 
 ### Những lượt GHI đã thực hiện trên production trong buổi này
 
