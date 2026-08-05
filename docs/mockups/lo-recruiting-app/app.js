@@ -12,6 +12,7 @@ const S = {
   focusDone: [],       // [{id, note}]
   tableChecked: [],    // ids đã tick trong table view
   log: [],             // hoạt động phát sinh trong phiên demo
+  sim: 'normal',       // giả lập trạng thái: normal | quiet | modexDown | esignDown
 };
 
 /* ---------- helpers ---------- */
@@ -32,6 +33,20 @@ function toast(html) {
 function addTl(c, txt) {
   c.timeline = c.timeline || [];
   c.timeline.push(['Hôm nay', txt]);
+}
+
+/* Giả lập trạng thái hệ thống (empty/error states có hệ thống) */
+const simE = (arr) => (S.sim === 'quiet' ? [] : arr);
+function setSim(v) {
+  S.sim = v;
+  const msg = {
+    normal: 'Trở về trạng thái bình thường.',
+    quiet: '🎉 <b>Ngày vắng</b>: mọi task queue trống — xem empty state của từng màn. Với Manager, "màn hình trống" chính là thành công.',
+    modexDown: '💥 <b>Modex webhook down</b>: banner degraded-mode, enrichment lỗi + tự retry, data verify chuyển sang as-of cũ (fallback §9.9).',
+    esignDown: '💥 <b>e-sign service down</b>: nút gửi/nhắc offer bên HR tạm khoá, trạng thái sẽ đồng bộ lại khi service hồi.',
+  }[v];
+  if (S.role) render();
+  toast(msg);
 }
 
 /* Row-level lens: role này được thấy những candidate nào */
@@ -268,9 +283,19 @@ function actAddLead(ev) {
   toast(`＋ Lead <b>${esc(name)}</b> vào S1, SLA ${CONFIG.sla[1].hours}h bắt đầu chạy.${nmls ? ' ⚡ Zero-click enrichment: đang kéo Modex…' : ' Chưa có NMLS — nhớ hỏi để enrich.'}`);
   render();
   if (nmls) setTimeout(() => {
-    c.vol = 12.7; c.units = 29; c.licensed = '4 năm'; c.score = 77;
-    addTl(c, '⚡ Modex payload về (webhook) — production tự điền, không ai gõ tay');
-    toast(`⚡ <b>${esc(name)}</b> enriched: $12.7M · 29u (Modex webhook). Zero-click.`);
+    if (S.sim === 'modexDown') {
+      c.enrichFail = 'Modex webhook down — hệ thống tự retry, không mất record';
+      addTl(c, '⚠ Enrichment LỖI: Modex webhook down → vào hàng retry tự động, card giữ nguyên chờ data');
+      toast(`⚠ <b>${esc(name)}</b>: enrichment lỗi (Modex down) — tự retry, KHÔNG cần ai nhập tay lại.`);
+    } else if (nmls.endsWith('0')) {
+      c.enrichFail = 'Modex unmatched — NMLS không khớp, cần verify tay';
+      addTl(c, '⚠ Modex UNMATCHED: NMLS không khớp record nào → task "verify tay" tự tạo cho recruiter');
+      toast(`⚠ <b>${esc(name)}</b>: Modex unmatched (NMLS không khớp) — task verify tay tự tạo. (Demo: NMLS kết thúc bằng 0 → unmatched.)`);
+    } else {
+      c.vol = 12.7; c.units = 29; c.licensed = '4 năm'; c.score = 77; c.enrichFail = null;
+      addTl(c, '⚡ Modex payload về (webhook) — production tự điền, không ai gõ tay');
+      toast(`⚡ <b>${esc(name)}</b> enriched: $12.7M · 29u (Modex webhook). Zero-click.`);
+    }
     render();
   }, 2600);
   return false;
@@ -309,9 +334,9 @@ function actBulk(what) {
 
 /* ---------- focus queue ---------- */
 function focusQueue() {
-  return visibleCands()
+  return simE(visibleCands()
     .filter((c) => ['S1', 'S2', 'S3', 'S4', 'S5'].includes(c.stage) || c.wakeUp || c.signal)
-    .sort((a, b) => (a.slaMin ?? 9e9) - (b.slaMin ?? 9e9));
+    .sort((a, b) => (a.slaMin ?? 9e9) - (b.slaMin ?? 9e9)));
 }
 
 /* ---------- navigation ---------- */
@@ -356,7 +381,11 @@ function render() {
     <div class="layout">
       <div class="side">
         ${navHtml}
-        <div class="health"><b>● Integrations healthy</b>Modex sync · Zoom · Calendly<br>Last payload: 22 min ago</div>
+        ${S.sim === 'modexDown'
+          ? '<div class="health" style="background:var(--red-soft);color:var(--red)"><b>● Modex sync LỖI</b>Zoom · Calendly vẫn OK<br>Payload cuối: 26h trước · đang retry</div>'
+          : S.sim === 'esignDown'
+          ? '<div class="health" style="background:var(--amber-soft);color:var(--amber)"><b>● document-esign LỖI</b>Modex · Zoom vẫn OK<br>Health check fail 3 lần · đang retry</div>'
+          : '<div class="health"><b>● Integrations healthy</b>Modex sync · Zoom · Calendly<br>Last payload: 22 min ago</div>'}
       </div>
       <div class="main">${vLens()}${body}</div>
     </div>

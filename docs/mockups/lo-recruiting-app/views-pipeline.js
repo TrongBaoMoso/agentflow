@@ -55,6 +55,7 @@ function vKanban() {
           ${c.offer?.status === 'REQUESTED' ? '<span class="chip amber">chờ duyệt ' + (c.offer.waitDays || 0) + 'd</span>' : ''}
           ${c.offer?.status === 'VIEWED' ? '<span class="chip amber">viewed · chưa ký</span>' : ''}
           ${c.licensing?.status === 'FAIL' ? '<span class="chip red">licensing kẹt</span>' : ''}
+          ${c.enrichFail ? '<span class="chip red">⚠ enrich lỗi</span>' : ''}
           ${c.vol >= 100 ? '<span class="chip orange">High producer</span>' : ''}
         </div>
       </div>`).join('');
@@ -204,7 +205,7 @@ function vDrawer(c) {
       <div class="mixlbl"><span>Conv ${c.mix.conv}%</span><span>VA ${c.mix.va}%</span><span>FHA ${c.mix.fha}%</span></div>
     </div>` : '';
   const prod = c.vol != null ? `<div class="vcard">
-      <div class="vh">${c.verified ? '✅ Verified production' : '📈 Production (chưa verify)'} <span class="fresh">${c.verified ? 'Modex · ' + c.verified : 'nguồn: list import'}</span></div>
+      <div class="vh">${c.verified ? '✅ Verified production' : '📈 Production (chưa verify)'} <span class="fresh">${S.sim === 'modexDown' && c.verified ? '⚠ Modex down — dùng as-of ' + c.verified : c.verified ? 'Modex · ' + c.verified : 'nguồn: list import'}</span></div>
       <div class="vgrid">
         <div class="vcell"><b>$${c.vol}M</b><span>VOLUME (12M)</span></div>
         <div class="vcell"><b>${c.units}</b><span>UNITS (12M)</span></div>
@@ -257,7 +258,7 @@ function mAddLead() {
         <div class="fld"><label>Nguồn</label><select name="lsource">
           <option>Referral</option><option>Self-apply</option><option>Event · Webinar</option><option>Modex List</option><option>Khác</option>
         </select></div>
-        <p style="font-size:11.5px;color:var(--ink-3)">⚡ Có NMLS → production data tự về từ Modex trong vài phút (xem toast sau khi thêm). Mọi field khác nullable ở DB — validation nằm ở gate chuyển stage, không chặn lúc nhập (bài học bức tường 5-field / 106k dòng).</p>
+        <p style="font-size:11.5px;color:var(--ink-3)">⚡ Có NMLS → production data tự về từ Modex trong vài phút (xem toast sau khi thêm). Mọi field khác nullable ở DB — validation nằm ở gate chuyển stage, không chặn lúc nhập (bài học bức tường 5-field / 106k dòng).<br>🧪 Demo error path: NMLS kết thúc bằng <b>0</b> → Modex unmatched (verify tay); bật "💥 Modex down" trên thanh đen → enrichment lỗi + tự retry.</p>
       </div>
       <div class="mf"><button type="button" class="btn ghost" onclick="closeModal()">Cancel</button>
       <button type="submit" class="btn primary">Thêm vào S1</button></div>

@@ -10,11 +10,18 @@ const rowWho = (c) => `<div class="who" onclick="openC('${c.id}')">
 /* ---------- RECRUITER · TODAY ---------- */
 function vToday() {
   const mine = visibleCands();
-  const newLeads = mine.filter((c) => c.stage === 'S1' && c.slaMin != null && c.slaMin >= 0);
-  const followUps = mine.filter((c) => c.followUp || (c.licRelay && c.licRelay.answered));
-  const signals = mine.filter((c) => c.signal && c.stage === 'NURTURE');
-  const wakeups = mine.filter((c) => c.wakeUp);
-  const offers = mine.filter((c) => c.offer?.status === 'VIEWED');
+  const newLeads = simE(mine.filter((c) => c.stage === 'S1' && c.slaMin != null && c.slaMin >= 0));
+  const followUps = simE(mine.filter((c) => c.followUp || (c.licRelay && c.licRelay.answered)));
+  const signals = simE(mine.filter((c) => c.signal && c.stage === 'NURTURE'));
+  const wakeups = simE(mine.filter((c) => c.wakeUp));
+  const offers = simE(mine.filter((c) => c.offer?.status === 'VIEWED'));
+  const simBanner = S.sim === 'modexDown'
+    ? `<div class="card alertcard"><div class="in"><b>⚠ Modex webhook lỗi từ 09:12</b> — enrichment & monthly refresh tạm dừng, hệ thống tự retry (không mất record nào).
+       Verification dùng data as-of cũ; gate S4 vẫn chặn tạo offer nếu data &gt;90 ngày — pipeline S0–S7, SLA, Call/SMS <b>chạy bình thường</b> (fallback §9.9).</div></div>`
+    : S.sim === 'quiet'
+    ? `<div class="card" style="background:var(--green-soft);border-color:var(--green)"><div class="sec-h" style="border:0;color:var(--green)">🎉 Sạch việc — mọi SLA đạt, không follow-up quá hạn</div>
+       <div style="padding:0 16px 14px;font-size:12.5px;color:var(--ink-2)">Đây là trạng thái đích của Today view: việc tự tìm đến bạn, hết việc = màn hình nói rõ "xong rồi" thay vì bảng trống vô hồn. Gợi ý lúc rảnh: mở 🌙 Nurture xem ai sắp wake-up.</div></div>`
+    : '';
   const kpi = (n, l, alert) => `<div class="kpi ${alert ? 'alert' : ''}"><b>${n}</b><span>${l}</span></div>`;
   const cRow = (c, extra, acts) => `<div class="row">${rowWho(c)}<div class="meta">${extra}</div><div class="acts">${acts}</div></div>`;
   const contactBtns = (c) => `<button class="btn sm green" onclick="actContact('${c.id}','call')">Call</button>
@@ -22,11 +29,12 @@ function vToday() {
     <button class="btn sm ghost" onclick="actContact('${c.id}','email')">Email</button>`;
   return `
   <div class="cols"><div class="col-main">
+    ${simBanner}
     <div class="card">
       <div class="sec-h">🔥 New leads — first touch SLA <span class="cnt">${newLeads.length}</span><span class="hint">auto-assigned · SLA ${CONFIG.sla[1].hours}h (admin đổi trong Settings)</span></div>
       ${newLeads.map((c) => cRow(c,
         `<span class="chip ${c.source === 'Referral' ? 'blue' : c.source === 'Self-apply' ? 'grey' : 'orange'}">${c.source}</span> &nbsp;
-         ${c.vol != null ? `<b>$${c.vol}M</b> · ${c.units} units (12m)` : 'No NMLS data — <b>hỏi & nhập NMLS để enrich</b>'} &nbsp;${slaChip(c)}`,
+         ${c.vol != null ? `<b>$${c.vol}M</b> · ${c.units} units (12m)` : c.enrichFail ? `<span class="chip red">⚠ ${esc(c.enrichFail)}</span>` : 'No NMLS data — <b>hỏi & nhập NMLS để enrich</b>'} &nbsp;${slaChip(c)}`,
         contactBtns(c))).join('') || '<div class="empty">Không còn lead chờ first touch — Call/SMS xong là tự chuyển S2 ✓</div>'}
     </div>
     <div class="card">
@@ -70,8 +78,8 @@ function vToday() {
 
 /* ---------- MANAGER · EXCEPTIONS ---------- */
 function vExceptions() {
-  const breached = CANDIDATES.filter((c) => c.stage === 'S1' && c.slaMin != null && c.slaMin < 0);
-  const requests = CANDIDATES.filter((c) => c.offer?.status === 'REQUESTED');
+  const breached = simE(CANDIDATES.filter((c) => c.stage === 'S1' && c.slaMin != null && c.slaMin < 0));
+  const requests = simE(CANDIDATES.filter((c) => c.offer?.status === 'REQUESTED'));
   const reassignSel = (c) => `<select class="select" style="padding:4px 8px;font-size:11.5px" onchange="if(this.value)actReassign('${c.id}',this.value)">
       <option value="">Reassign ▾</option>
       ${['brayan', 'seth'].map((u) => `<option value="${u}">${USERS[u].name}</option>`).join('')}</select>`;
@@ -107,17 +115,21 @@ function vExceptions() {
 
 /* ---------- HR · OFFER DESK ---------- */
 function vHrQueue() {
-  const toDraft = CANDIDATES.filter((c) => c.offer?.status === 'APPROVED');
-  const tracking = CANDIDATES.filter((c) => ['SENT', 'VIEWED'].includes(c.offer?.status));
-  const signed = CANDIDATES.filter((c) => c.offer?.status === 'SIGNED');
+  const toDraft = simE(CANDIDATES.filter((c) => c.offer?.status === 'APPROVED'));
+  const tracking = simE(CANDIDATES.filter((c) => ['SENT', 'VIEWED'].includes(c.offer?.status)));
+  const signed = simE(CANDIDATES.filter((c) => c.offer?.status === 'SIGNED'));
+  const down = S.sim === 'esignDown';
+  const dis = down ? 'disabled title="e-sign service down — tạm khoá"' : '';
   return `
+  ${down ? `<div class="card alertcard"><div class="in"><b>⚠ document-esign không phản hồi</b> (health check fail 3 lần liên tiếp) — nút soạn/gửi/nhắc tạm khoá để không mất offer vào hư không.
+    Offer đã gửi vẫn ký được phía ứng viên; trạng thái viewed/signed sẽ <b>tự đồng bộ lại</b> khi service hồi. Không cần làm gì tay.</div></div>` : ''}
   <div class="card">
     <div class="sec-h">📝 Offer cần soạn <span class="cnt">${toDraft.length}</span><span class="hint">manager đã duyệt band — HR chốt số & gửi</span></div>
     ${toDraft.map((c) => `<div class="row">${rowWho(c)}
       <div class="meta">Band <b>${c.offer.band}</b> · số liệu snapshot đóng băng vào offer · Trả bằng:
         <span class="chip grey click" onclick="toast('Cash ⇄ RSU — chỉ HR bật RSU được (rule kế thừa §8.4).')">Cash ▾</span>
         ${c.offer.note ? ' · note recruiter: “' + esc(c.offer.note) + '”' : ''}</div>
-      <div class="acts"><button class="btn sm primary" onclick="actDraftOffer('${c.id}')">Soạn & gửi offer</button>
+      <div class="acts"><button class="btn sm primary" ${dis} onclick="actDraftOffer('${c.id}')">Soạn & gửi offer</button>
         <button class="btn sm ghost" onclick="toast('Template offer theo band — chỉ điền phần cá nhân hoá.')">Template ▾</button></div></div>`).join('')
     || '<div class="empty">Chưa có offer chờ soạn — sang role Manager duyệt request là việc hiện ra ở đây (một kho, hai lens)</div>'}
   </div>
@@ -127,9 +139,9 @@ function vHrQueue() {
       <div class="meta">${c.offer.status === 'VIEWED'
         ? `<span class="chip amber">Viewed · chưa ký · ${c.offer.stallDays}d</span> ${esc(c.offer.viewedNote || '')}`
         : `<span class="chip blue">Sent ${c.offer.sent} · chưa mở</span>`}</div>
-      <div class="acts"><button class="btn sm primary" onclick="actRemind('${c.id}')">Nhắc + gọi</button>
+      <div class="acts"><button class="btn sm primary" ${dis} onclick="actRemind('${c.id}')">Nhắc + gọi</button>
         <button class="btn sm green" onclick="actSign('${c.id}')">（demo: ứng viên ký）</button>
-        <button class="btn sm ghost" onclick="toast('Đã gia hạn link e-sign thêm 7 ngày.')">Gia hạn link</button></div></div>`).join('')
+        <button class="btn sm ghost" ${dis} onclick="toast('Đã gia hạn link e-sign thêm 7 ngày.')">Gia hạn link</button></div></div>`).join('')
     || '<div class="empty">Không có e-sign đang chờ</div>'}
   </div>
   ${signed.length ? `<div class="card"><div class="sec-h">✅ Vừa ký — đã tự sang S6 <span class="cnt">${signed.length}</span></div>
@@ -140,8 +152,8 @@ function vHrQueue() {
 
 /* ---------- LICENSING QUEUE ---------- */
 function vLicQueue() {
-  const queue = CANDIDATES.filter((c) => c.stage === 'S6' && c.licensing);
-  const relays = CANDIDATES.filter((c) => c.licRelay && !c.licRelay.answered);
+  const queue = simE(CANDIDATES.filter((c) => c.stage === 'S6' && c.licensing));
+  const relays = simE(CANDIDATES.filter((c) => c.licRelay && !c.licRelay.answered));
   return `
   <div class="card">
     <div class="sec-h">📋 Hàng đợi licensing <span class="cnt">${queue.length}</span><span class="hint">luật bang tự bật cờ — không cần nhớ 50 bang</span></div>
@@ -173,7 +185,7 @@ function vLicQueue() {
 
 /* ---------- ONBOARDING BOARD ---------- */
 function vOnbBoard() {
-  const onb = CANDIDATES.filter((c) => c.stage === 'S6' && c.checklist);
+  const onb = simE(CANDIDATES.filter((c) => c.stage === 'S6' && c.checklist));
   const rows = onb.map((c) => {
     const depts = Object.entries(c.checklist).map(([d, items]) => {
       const done = items.filter((i) => i[1]).length, total = items.length;
@@ -200,10 +212,10 @@ function vOnbBoard() {
 
 /* ---------- ACCOUNTING · PAYOUT ---------- */
 function vAccQueue() {
-  const bonuses = CANDIDATES.filter((c) => c.bonus);
+  const bonuses = simE(CANDIDATES.filter((c) => c.bonus));
   return `<div class="card">
     <div class="sec-h">💵 Referral bonus <span class="cnt">${bonuses.length}</span><span class="hint">chín sau 60 ngày từ ngày join — luật kế thừa §8.4</span></div>
-    ${bonuses.map((c) => {
+    ${bonuses.length ? bonuses.map((c) => {
       const b = c.bonus;
       const referrer = b.referrer ? USERS[b.referrer].name : b.referrerName;
       let status, acts;
@@ -214,7 +226,7 @@ function vAccQueue() {
       else { status = `Chín: <b>${b.mature}</b> (còn ${b.daysLeft} ngày) · điều kiện check lúc chín: cả 2 phía còn Active · Hình thức: <b>${esc(b.pay)}</b>${b.clockNote ? ' · <span class="chip green">' + b.clockNote + '</span>' : ''}`;
         acts = `<button class="btn sm ghost" onclick="toast('Chuỗi eligibility: joined ✓ → 60 ngày → 2 phía Active → chưa trả lần nào → nút mới hiện.')">Xem chuỗi eligibility</button>`; }
       return `<div class="row">${rowWho(c)}<div class="meta">giới thiệu bởi <b>${esc(referrer)}</b> · joined ${b.joined} · ${status}</div><div class="acts">${acts}</div></div>`;
-    }).join('')}
+    }).join('') : '<div class="empty">Không có bonus nào chờ xử lý — bonus mới tự hiện khi có người join qua referral, không cần ai báo Accounting.</div>'}
   </div>
   <p class="src-note">Đủ điều kiện nút mới hiện; trả rồi khoá vĩnh viễn; reject có lý do lưu — hệ cũ xử lý tay, dễ trả trùng. Accounting không thấy pipeline/production (lens).</p>`;
 }
@@ -241,7 +253,7 @@ function vPortal() {
     </div>`;
   }).join('');
   return `<div style="max-width:760px;margin:0 auto">
-    <div class="card"><div class="sec-h">🤝 Người bạn giới thiệu <span class="cnt">${referred.length}</span><span class="hint">trong LO portal — không phải app Recruit</span></div>${cards}</div>
+    <div class="card"><div class="sec-h">🤝 Người bạn giới thiệu <span class="cnt">${referred.length}</span><span class="hint">trong LO portal — không phải app Recruit</span></div>${cards || '<div class="empty">Bạn chưa giới thiệu ai — bấm nút bên dưới, chỉ cần 3 field (tên · phone · công ty). Bonus giới thiệu chín sau 60 ngày kể từ khi người đó join.</div>'}</div>
     <div style="text-align:center;margin-top:6px"><button class="btn primary" onclick="toast('Form giới thiệu 3 field (tên · phone · công ty) → lead vào S1 badge Referral, bạn theo dõi ở đây.')">＋ Giới thiệu một LO khác</button></div>
     <p class="src-note" style="text-align:center">Minh bạch tiến độ (không lộ tiền) = động lực giới thiệu tiếp — referral đang convert tốt nhất (4.8%). Card này ĐỌC TỪ CÙNG kho hồ sơ: tick xong checklist bên Onboarding là bước nhảy ở đây.</p>
   </div>`;

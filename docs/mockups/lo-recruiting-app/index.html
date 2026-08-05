@@ -12,6 +12,12 @@
   <b>INTERACTIVE PROTOTYPE · LF Recruit</b>
   <span>Chọn role → thấy đúng UI của role đó → mọi nút bấm được. State chia sẻ giữa các role (đổi role không mất thay đổi).</span>
   <span class="sp">
+    <select class="mock-btn" onchange="setSim(this.value)" title="Giả lập trạng thái hệ thống — xem empty/error states">
+      <option value="normal">Trạng thái: bình thường</option>
+      <option value="quiet">🎉 Ngày vắng — mọi queue trống</option>
+      <option value="modexDown">💥 Sự cố: Modex webhook down</option>
+      <option value="esignDown">💥 Sự cố: e-sign service down</option>
+    </select>
     <button class="mock-btn" onclick="logout()">⇦ Đổi role</button>
     <button class="mock-btn" onclick="resetDemo()">↺ Reset demo</button>
   </span>
