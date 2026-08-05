@@ -2107,9 +2107,17 @@ export async function narrowToCandidate(page, h, candidate = {}) {
   const sharing = await countSameName(page, cand);
   const here = async () => (await candidateRow(page, cand).count()) > 0;
   if (sharing <= 1) return here();
+  if (!cand.nmls && !cand.match) {
+    console.warn(`[frame]  ${sharing} rows are named "${fullName}" and neither --candidate-nmls nor a `
+      + 'match string was given, so they cannot be told apart — the shot will show all of them');
+    return here();
+  }
   if (!cand.nmls) {
-    console.warn(`[frame]  ${sharing} rows are named "${fullName}" and no --candidate-nmls was given, `
-      + 'so they cannot be told apart — the shot will show all of them');
+    // A match string identifies the row but cannot narrow the BOARD: it is the row's rendered label
+    // ("Test Test (New York)"), and the grid searches the stored name, so typing it returns nothing.
+    // The subject is still resolved exactly; the frame just also contains its namesakes.
+    console.log(`[frame]  ${sharing} rows named "${fullName}" are in frame; the subject is pinned by `
+      + `"${cand.match}" but the others stay on camera — the grid cannot filter on that label`);
     return here();
   }
   console.log(`[frame]  ${sharing} rows named "${fullName}" are in frame — narrowing to NMLS `
@@ -2132,7 +2140,7 @@ async function countSameName(page, candidate = {}) {
 
 export async function readIloState(page, candidate = {}) {
   const nm = candidate.name || 'Marcus Reyes';
-  return page.evaluate(({ name, nmls }) => {
+  return page.evaluate(({ name, nmls, match }) => {
     const rows = [...document.querySelectorAll('table.table-hover tbody tr')];
     const esc = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const nameRe = new RegExp(esc(name), 'i');
@@ -2143,7 +2151,14 @@ export async function readIloState(page, candidate = {}) {
     // 1076215 and pick the wrong record.
     const hasNmls = (r) => [...r.querySelectorAll('*')]
       .some((el) => !el.children.length && (el.textContent || '').trim() === String(nmls));
-    const tr = matches.find((r) => !nmls || hasNmls(r));
+    // `match` does the same job for a subject that has no NMLS. Production's pipeline holds EIGHT
+    // records named "Test Test" and the subject carries no licence number by design, so without a
+    // discriminator this picked matches[0] — an arbitrary sibling — and acts 4 and 5 read and wrote
+    // whichever one that happened to be. Compared against a LEAF's exact text for the same reason
+    // the NMLS is: row textContent runs the cells together.
+    const hasMatch = (r) => [...r.querySelectorAll('*')]
+      .some((el) => !el.children.length && (el.textContent || '').trim() === String(match));
+    const tr = matches.find((r) => (nmls ? hasNmls(r) : true) && (match ? hasMatch(r) : true));
     if (!tr) return { onBoard: false, sameName: matches.length };
     const td = [...tr.children].find((c) => [...c.querySelectorAll('button')]
       .some((b) => /^(Unpaid|Paid|Waived|Not paid)$/i.test((b.innerText || '').trim())));
@@ -2157,7 +2172,7 @@ export async function readIloState(page, candidate = {}) {
       fee: btns[1] || '',
       agreement: btns[2] || '',
     };
-  }, { name: nm, nmls: candidate.nmls || null });
+  }, { name: nm, nmls: candidate.nmls || null, match: candidate.match || null });
 }
 
 /**
