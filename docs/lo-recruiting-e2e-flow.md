@@ -426,7 +426,16 @@ Band P1–P4 + ngưỡng trong mockup là placeholder minh hoạ. Hệ thống c
 **Benchmark role-based view của các app khác (kiểm chứng mô hình 2 chiều):**
 
 | App | Cách họ làm |
-|---|
+|---|---|
+| Greenhouse (ATS) | Hiring manager chỉ thấy candidate của job mình; lương/offer là **private fields** gate riêng — đúng field-level |
+| Lever (ATS) | **Sensitive Data Access** tách khỏi quyền xem hồ sơ — thấy người ≠ thấy tiền |
+| Ashby (ATS) | Dashboard **mặc định theo role**, admin config — đúng ý "default view per role" ở trên |
+| Salesforce / HubSpot (CRM) | Record-level sharing (row) + field-level security (field) — chuẩn ngành 2 chiều |
+
+→ Kết luận: mô hình row+field 2 chiều của mình trùng chuẩn ngành, **giữ nguyên**. (Bảng từ kiến thức sản phẩm, chưa chụp màn hình thật — làm vòng research có screenshot khi viết spec nếu cần.)
+
+> **Interactive prototype 05/08/2026 (thay cho 3 file mockup tĩnh khi demo):** `docs/mockups/lo-recruiting-app/` — mở `index.html` là chạy (không cần server). Chọn role ở màn login → thấy đúng UI + data của role đó, mọi nút bấm được, state chia sẻ giữa các role trong phiên. Chuỗi demo xuyên phòng ban: Recruiter Call lead S1 (tự sang S2) → Manager duyệt offer → HR soạn & theo e-sign, ứng viên ký (tự sang S6, checklist tự mở) → Onboarding tick checklist đủ 100% (tự sang S7 Active) → card của Referring LO trong LO portal tự đổi theo. Có sẵn các màn trước đây còn thiếu: **Add lead form** (zero-click enrichment giả lập), **Settings** (SLA policies sửa sống — đổi 24h→2h là chip Today ăn theo; default view per role; comp bands), Licensing relay Q&A, Accounting payout với idempotency lock. Mock data: 17 ứng viên, mỗi người một case đúng business rules §8.
+
 ### 9.8. Tech stack + deploy (đề xuất 05/08/2026 — theo pattern thật của platform, chờ Tai/anh Thuận gật)
 
 **Nguồn sự thật:** quét 149 repo org LoanFactory-Inc (gh CLI) + mổ `deploy/` và `.github/workflows/auto-deploy.yaml` của auth-service, tera-be, account-fe + trao đổi Slack với Tai Pham 05/08 (BE build ở private network k8s, KHÔNG Cloud Run; trong private network service gọi nhau trực tiếp không cần access token).

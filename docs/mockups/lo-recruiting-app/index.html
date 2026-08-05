@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LF Recruit — Interactive prototype (mọi role, bấm được thật)</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<div class="mock-bar">
+  <b>INTERACTIVE PROTOTYPE · LF Recruit</b>
+  <span>Chọn role → thấy đúng UI của role đó → mọi nút bấm được. State chia sẻ giữa các role (đổi role không mất thay đổi).</span>
+  <span class="sp">
+    <button class="mock-btn" onclick="logout()">⇦ Đổi role</button>
+    <button class="mock-btn" onclick="resetDemo()">↺ Reset demo</button>
+  </span>
+</div>
+
+<div id="app"></div>
+<div id="modal" style="display:none"></div>
+<div id="toasts"></div>
+
+<script src="data.js"></script>
+<script src="views-pipeline.js"></script>
+<script src="views-roles.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
