@@ -2056,6 +2056,22 @@ export function candidateRow(page, candidate = {}) {
   const name = candidate.name || 'Marcus Reyes';
   const loc = page.locator('table.table-hover tbody tr, div.table-row')
     .filter({ hasText: new RegExp(reEsc(name), 'i') });
+  /**
+   * `match` disambiguates same-name rows when there is no NMLS to match on.
+   *
+   * The production pipeline holds EIGHT records named "Test Test". The subject carries no NMLS by
+   * design, so this function was matching on the name and taking .first() — every downstream act read
+   * and wrote an arbitrary one of them, and act 4 duly set a fee to Paid on the wrong record.
+   *
+   * It is a SEPARATE input from `name`, deliberately. `name` is what gets TYPED into the search box,
+   * and the grid searches the STORED name; the row's visible label has the licensed state appended by
+   * the UI ("Test Test (New York)"). Typing that finds nothing at all — which is exactly how the first
+   * attempt at this fix failed, taking nine row beats down with it. So: search by name, identify by
+   * match.
+   */
+  if (candidate.match) {
+    return loc.filter({ has: page.locator(`:text-is("${candidate.match}")`) }).first();
+  }
   if (!candidate.nmls) return loc.first();
   // ⚠️ MATCH THE NMLS AS AN ELEMENT, NOT AS ROW TEXT.
   // VERIFIED 2026-08-04 the hard way: `filter({ hasText: /\b1076215\b/ })` matches NOTHING. hasText
@@ -2382,22 +2398,6 @@ async function pickCellOption(page, h, labelRe, what) {
 // markers.json records each scene's true on-camera offset, so the s1_4 cue lands on the form.
 // ---------------------------------------------------------------------------
 
-/**
- * The five fields an older Recruited record predates, in the order the form reveals them.
- *
- * PROBE: every locator below is a CANDIDATE until inspect.mjs has confirmed it against the live DOM
- * (file convention, see the header). The ERROR strings are verbatim from a live reproduction on
- * 05/08/2026; the FIELD locators are inferred from the accessible names the page exposes and have
- * not been driven by Playwright yet.
- */
-const REQUIRED_FIELD_WALL = [
-  { error: /Licensed states is required/i, name: /^Licensed states$/i, kind: 'select2', value: 'New York' },
-  { error: /States that you want .*to sponsor is required/i, name: /want .*to sponsor/i, kind: 'select2', value: 'New Jersey' },
-  { error: /Career Production is required/i, name: /^Career Production$/i, kind: 'text', value: '25000000' },
-  { error: /Mailing street address is required/i, name: /Same as personal address/i, kind: 'checkbox' },
-  { error: /Preferred languages is required/i, name: /^Preferred languages$/i, kind: 'select2', value: 'English' },
-];
-
 /** Every "<field> is required" message currently on screen, verbatim. */
 async function requiredErrors(page) {
   return page.evaluate(() => [...document.querySelectorAll('*')]
@@ -2413,32 +2413,6 @@ function formField(page, nameRe, roles) {
     ...roles.map((r) => () => page.getByRole(r, { name: nameRe }).first()),
     () => page.locator(`xpath=//*[contains(normalize-space(text()),"${literal}")]/following::input[1]`).first(),
   ];
-}
-
-/** Fill ONE wall field. select2 needs the click-type-pick dance; fill() is a no-op on it. */
-async function fillWallField(page, h, field) {
-  if (field.kind === 'checkbox') {
-    const box = await firstVisible(formField(page, field.name, ['checkbox']));
-    if (!box) throw new Error(`wall: no checkbox for ${field.name}`);
-    await h.click(() => box);
-    return;
-  }
-  if (field.kind === 'text') {
-    const input = await firstVisible(formField(page, field.name, ['textbox']));
-    if (!input) throw new Error(`wall: no text input for ${field.name}`);
-    await h.typeInto(() => input, field.value);
-    return;
-  }
-  const combo = await firstVisible(formField(page, field.name, ['combobox', 'textbox']));
-  if (!combo) throw new Error(`wall: no select2 for ${field.name}`);
-  await h.click(() => combo);
-  await page.keyboard.type(field.value, { delay: 55 });
-  const option = page.locator('li.select2-results__option')
-    .filter({ hasNotText: /^\s*(Searching|Loading|Please)/i })
-    .filter({ hasText: new RegExp(`^\\s*${reEsc(field.value)}\\s*$`, 'i') })
-    .first();
-  await option.waitFor({ state: 'visible', timeout: 15_000 });
-  await h.click(() => option);
 }
 
 /**
@@ -2495,26 +2469,29 @@ export async function demonstrateRequiredFieldWall(page, h, { rowName, nmls = ''
     await h.hold(1);
   }
 
-  const revealed = [];
-  for (let round = 1; round <= REQUIRED_FIELD_WALL.length + 1; round += 1) {
-    await h.click(() => submit());
-    await h.hold(2.2);
-    const errors = await requiredErrors(page);
-    if (!errors.length) {
-      // Nothing left to refuse — which means the NEXT click would SAVE. Stop here, on purpose.
-      console.log(`[act1]   s1_4: errors cleared after ${round} submit(s) — stopping BEFORE a save`);
-      break;
-    }
-    for (const e of errors) if (!revealed.includes(e)) revealed.push(e);
-    console.log(`[act1]   s1_4: submit ${round} refused: ${errors.join(' | ')}`);
-    const next = REQUIRED_FIELD_WALL.find((f) => errors.some((e) => f.error.test(e)));
-    if (!next) {
-      console.warn('[act1]   s1_4: an error appeared that the wall list does not know — leaving it on screen');
-      break;
-    }
-    await h.optional(`fill ${next.name}`, () => fillWallField(page, h, next));
-    await h.hold(1.2);
+  /**
+   * ONE submit, and that is the whole beat.
+   *
+   * The first take ran a fill-then-resubmit loop, expecting the errors to surface one at a time. They
+   * do not: this record produces ALL FIVE on the first submit. The loop then re-submitted six times
+   * with nothing changing, which is footage that contradicts what the narration was saying — so the
+   * narration was re-pointed at what actually happens and the loop deleted.
+   *
+   * Filling nothing also means this scene cannot reach a successful save even in principle, which
+   * matters: a save would fill those five fields permanently (the same validation refuses to write
+   * them back to empty) and leave every future re-record with nothing to film.
+   */
+  await h.click(() => submit());
+  await h.hold(2.5);
+  const revealed = await requiredErrors(page);
+  if (!revealed.length) {
+    throw new Error('s1_4: the form accepted the submit — no "is required" errors came back. Either this '
+      + 'record already carries all five fields (pick another row: the wall is only reproducible on a '
+      + 'record that predates them) or the save went through, which would have destroyed the evidence.');
   }
+  // Let the reader's eye travel the list; it is the point of the shot.
+  await h.optional('scroll the errors into view', () => h.smoothScroll('window', 260, { steps: 8 }));
+  await h.hold(3);
 
   console.log(`[act1]   s1_4: the form demanded ${revealed.length} field(s): ${revealed.join(' | ')}`);
   await h.hold(1.5);
@@ -2924,6 +2901,10 @@ export async function act1(page, h, cfg = {}) {
   // Test the SAME locator the beats will use (name + NMLS). Testing only the name would let an older
   // same-name record satisfy the check while rowOfCandidate resolved to nothing.
   if (!(await rowOfCandidate().count())) {
+    // The name filter above narrowed the board; if the subject is not here, a substitute will not be
+    // found inside that narrowed view either. Clear it first — the first production attempt lost NINE
+    // row beats to this, every one of them reporting "no visible candidate".
+    if (IS_PRODUCTION) await h.optional('clear the filter before looking for a substitute', () => h.goto(ROW_BOARD));
     const sub = await pickDemoRow(page, h, {
       actLabel: 'act1',
       fullName,
@@ -4494,6 +4475,8 @@ export function parseArgs(argv = process.argv.slice(2)) {
      */
     candidate: IS_PRODUCTION ? {
       name: 'Test Test',
+      // Eight rows share that name in the pipeline; this is what tells them apart. See candidateRow.
+      match: 'Test Test (New York)',
       email: '',
       phone: '',
       nmls: '',
@@ -4547,6 +4530,7 @@ export function parseArgs(argv = process.argv.slice(2)) {
       case '--slow': out.slow = Number(next()); break;
       case '--login-timeout': LOGIN_WAIT_MS = Math.max(1, Number(next())) * 60 * 1000; break;
       case '--candidate-name': out.candidate.name = next(); break;
+      case '--candidate-match': out.candidate.match = next(); break;
       case '--candidate-email': out.candidate.email = next(); break;
       case '--demo-record': out.demoRecord = next(); break;
       case '--candidate-phone': out.candidate.phone = next(); break;
