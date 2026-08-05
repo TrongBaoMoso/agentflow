@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LF Recruit — Mockup: Mỗi role một ống kính</title>
+<style>
+  :root{
+    --orange:#E8570E; --orange-soft:#FDEDE3; --orange-deep:#C2410C;
+    --green:#2E7D57; --green-soft:#E7F3EC; --red:#D93025; --red-soft:#FDE8E6;
+    --amber:#B45309; --amber-soft:#FEF3D9; --blue:#1D4ED8; --blue-soft:#E8EEFC;
+    --ink:#1F2430; --ink-2:#5B6472; --ink-3:#8A93A2;
+    --bg:#F7F3EF; --cream:#FBF3EC; --card:#FFFFFF; --line:#ECE7E1; --line-2:#F3EFEA;
+    --r:12px; --shadow:0 1px 2px rgba(31,36,48,.05),0 4px 14px rgba(31,36,48,.05);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Inter",-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);font-size:13.5px;line-height:1.45}
+  .mock-bar{position:sticky;top:0;z-index:60;background:#1F2430;color:#fff;display:flex;align-items:center;gap:8px;padding:8px 18px;font-size:12.5px;flex-wrap:wrap}
+  .mock-bar b{font-weight:600}
+  .mock-tab{background:#3A4152;border:0;color:#fff;padding:5px 12px;border-radius:8px;font-size:12px;cursor:pointer}
+  .mock-tab.on{background:var(--orange)}
+  .mock-note{margin-left:auto;color:#B9C0CE}
+  .topbar{background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;padding:10px 20px}
+  .logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px}
+  .logo .dot{width:22px;height:22px;border-radius:50%;background:conic-gradient(from 210deg,var(--orange) 0 75%,#F8B889 75% 100%)}
+  .logo span{color:var(--ink-3);font-weight:500}
+  .top-right{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--ink-2)}
+  .avatar{width:30px;height:30px;border-radius:50%;color:#fff;display:grid;place-items:center;font-size:12px;font-weight:600;background:var(--orange)}
+  .main{padding:20px 26px;max-width:1150px;margin:0 auto}
+  .chip{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:2px 9px;font-size:11.5px;font-weight:600;white-space:nowrap}
+  .chip.red{background:var(--red-soft);color:var(--red)} .chip.amber{background:var(--amber-soft);color:var(--amber)}
+  .chip.green{background:var(--green-soft);color:var(--green)} .chip.blue{background:var(--blue-soft);color:var(--blue)}
+  .chip.grey{background:#EFECE8;color:var(--ink-2)} .chip.orange{background:var(--orange-soft);color:var(--orange-deep)}
+  .btn{border:0;border-radius:9px;padding:7px 14px;font-size:12.5px;font-weight:600;cursor:pointer}
+  .btn.primary{background:var(--orange);color:#fff} .btn.green{background:var(--green);color:#fff}
+  .btn.ghost{background:#fff;border:1px solid var(--line);color:var(--ink-2)}
+  .btn.sm{padding:4px 10px;font-size:11.5px;border-radius:7px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:16px}
+  .sec-h{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--line-2);font-weight:700;font-size:13.5px}
+  .sec-h .cnt{background:#EFECE8;color:var(--ink-2);border-radius:8px;padding:1px 8px;font-size:11.5px}
+  .sec-h .hint{margin-left:auto;font-weight:500;color:var(--ink-3);font-size:12px}
+  .row{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--line-2)}
+  .row:last-child{border-bottom:0}
+  .who{flex:0 0 235px;display:flex;gap:10px;align-items:center}
+  .who .av{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:11.5px;font-weight:700;color:#fff;flex:none}
+  .who b{display:block;font-size:13px} .who small{color:var(--ink-3);font-size:11.5px}
+  .meta{flex:1;min-width:0;color:var(--ink-2);font-size:12.5px}
+  .meta b{color:var(--ink)}
+  .acts{display:flex;gap:6px;flex:none}
+  .screen{display:none} .screen.on{display:block}
+  .src-note{margin-top:4px;color:var(--ink-3);font-size:11.5px}
+  /* lens banner: cái role này được thấy gì */
+  .lens{display:flex;gap:16px;align-items:center;background:linear-gradient(105deg,var(--cream),#FDF9F4 70%);border:1px solid var(--line);border-radius:16px;padding:15px 20px;margin-bottom:16px}
+  .lens .who-am-i h1{font-size:17px}
+  .lens .who-am-i p{color:var(--ink-2);font-size:12px;margin-top:2px}
+  .lens .rules{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;max-width:60%}
+  .mask{display:inline-flex;align-items:center;gap:4px;color:var(--ink-3);background:#EFECE8;border-radius:6px;padding:1px 8px;font-size:11.5px;letter-spacing:1px}
+  .prog{flex:1;height:7px;background:#EFECE8;border-radius:5px;overflow:hidden;min-width:60px}
+  .prog i{display:block;height:100%;border-radius:5px;background:var(--green)}
+  .dept{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink-2);padding:3px 0}
+  .dept span:first-child{flex:0 0 92px}
+  .dept b{flex:0 0 34px;text-align:right;font-size:11px}
+  /* referring LO portal stage bar */
+  .steps{display:flex;align-items:center;gap:0;margin:14px 0 6px}
+  .step{flex:1;text-align:center;position:relative}
+  .step .pip{width:22px;height:22px;border-radius:50%;background:#EFECE8;color:var(--ink-3);display:grid;place-items:center;font-size:10.5px;font-weight:700;margin:0 auto 5px;position:relative;z-index:2}
+  .step.done .pip{background:var(--green);color:#fff}
+  .step.now .pip{background:var(--orange);color:#fff;outline:4px solid var(--orange-soft)}
+  .step small{font-size:10px;color:var(--ink-3);display:block}
+  .step::before{content:"";position:absolute;top:11px;left:-50%;width:100%;height:2px;background:#EFECE8;z-index:1}
+  .step:first-child::before{display:none}
+  .step.done::before,.step.now::before{background:var(--green)}
+</style>
+</head>
+<body>
+
+<div class="mock-bar">
+  <b>MOCKUP · LF Recruit — theo role</b>
+  <button class="mock-tab on" id="tab1" onclick="show(1)">1 · Manager</button>
+  <button class="mock-tab" id="tab2" onclick="show(2)">2 · HR</button>
+  <button class="mock-tab" id="tab3" onclick="show(3)">3 · Licensing</button>
+  <button class="mock-tab" id="tab4" onclick="show(4)">4 · Onboarding</button>
+  <button class="mock-tab" id="tab5" onclick="show(5)">5 · Accounting</button>
+  <button class="mock-tab" id="tab6" onclick="show(6)">6 · Referring LO</button>
+  <span class="mock-note">Recruiter view = mockup 1 · Cùng một hồ sơ, mỗi role một ống kính</span>
+</div>
+
+<div class="topbar">
+  <div class="logo"><div class="dot"></div>Loan Factory&nbsp;<span>Recruit</span></div>
+  <div class="top-right"><span id="whoami">Tracy Lam · Recruiting Manager</span><div class="avatar" id="whoav">TL</div></div>
+</div>
+
+<!-- ============ 1 · RECRUITING MANAGER ============ -->
+<div class="main screen on" id="scr1">
+  <div class="lens">
+    <div class="who-am-i"><h1>Tracy Lam — Recruiting Manager</h1><p>Câu hỏi 9h sáng: “Team có đang chạy đúng nhịp không, chỗ nào cần tôi nhúng tay?”</p></div>
+    <div class="rules">
+      <span class="chip green">Thấy: toàn team, mọi stage</span>
+      <span class="chip green">Comp: được xem & duyệt</span>
+      <span class="chip blue">Quyền riêng: reassign lead, duyệt offer</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec-h">🚨 SLA breached — cần reassign <span class="cnt">2</span><span class="hint">lead trễ hạn tự leo lên đây, không nằm im trong bảng</span></div>
+    <div class="row">
+      <div class="who"><div class="av" style="background:#7C5CBF">TW</div><div><b>Tara Wilkins</b><small>NMLS 2201456 · lead vào 26h trước</small></div></div>
+      <div class="meta">Owner: <b>Luis Ortega</b> — chưa liên hệ lần đầu · Luis trễ SLA <b>4 lần</b> tuần này</div>
+      <div class="acts"><button class="btn sm primary">Reassign ▾</button><button class="btn sm ghost">Nhắc Luis</button></div>
+    </div>
+    <div class="row">
+      <div class="who"><div class="av" style="background:#B45309">GB</div><div><b>Gary Boyd</b><small>NMLS 1877002 · lead vào 25h trước</small></div></div>
+      <div class="meta">Owner: <b>Nocha Kelly</b> — đang nghỉ phép (OOO đến 10/8) · lead vẫn auto-assign vào — cần sửa rule</div>
+      <div class="acts"><button class="btn sm primary">Reassign ▾</button><button class="btn sm ghost">Sửa routing</button></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec-h">✍️ Offer requests chờ duyệt <span class="cnt">3</span><span class="hint">nghẽn lớn nhất tháng này — S4→S5 giảm 18đ</span></div>
+    <div class="row">
+      <div class="who"><div class="av" style="background:#E8570E">RK</div><div><b>Roger Kube</b><small>NMLS 107621 · Verified Aug 1 · fresh</small></div></div>
+      <div class="meta"><b>$103.8M / 138u</b> · Band gợi ý: <b>P4 High producer</b> · Recruiter: Brayan · đợi <span class="chip amber">2 ngày</span></div>
+      <div class="acts"><button class="btn sm green">Approve</button><button class="btn sm ghost">Đổi band</button><button class="btn sm ghost">Hỏi lại</button></div>
+    </div>
+    <div class="row">
+      <div class="who"><div class="av" style="background:#2E7D57">AH</div><div><b>Angela Ho</b><small>NMLS 1544207 · Verified Aug 1</small></div></div>
+      <div class="meta"><b>$8.4M / 19u</b> · Band gợi ý: <b>P2</b> · Recruiter: Seth · đợi <span class="chip red">4 ngày</span></div>
+      <div class="acts"><button class="btn sm green">Approve</button><button class="btn sm ghost">Đổi band</button><button class="btn sm ghost">Hỏi lại</button></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec-h">📊 Team hôm nay<span class="hint">bấm tên → xem pipeline của người đó</span></div>
+    <div class="row"><div class="who"><div class="av" style="background:#1D4ED8">BS</div><b>Brayan Suarez</b></div><div class="meta">14 active · SLA <span class="chip green">96%</span> · 3 offer đang chạy</div></div>
+    <div class="row"><div class="who"><div class="av" style="background:#2E7D57">SA</div><b>Seth August</b> <span class="chip grey">outside</span></div><div class="meta">11 active · SLA <span class="chip green">91%</span> · 2 offer</div></div>
+    <div class="row"><div class="who"><div class="av" style="background:#D93025">LO</div><b>Luis Ortega</b></div><div class="meta">8 active · SLA <span class="chip red">64%</span> · <b>cần 1:1 về routing thứ Hai</b></div></div>
+  </div>
+  <p class="src-note">Manager không làm việc trên từng lead — màn hình chỉ hiện <b>ngoại lệ</b> (trễ, nghẽn, chờ duyệt). Mọi thứ chạy đúng thì màn hình này trống.</p>
+</div>
+
+<!-- ============ 2 · HR ============ -->
+<div class="main screen" id="scr2">
+  <div class="lens">
+    <div class="who-am-i"><h1>Dave Hoàng — HR</h1><p>Câu hỏi 9h sáng: “Offer nào cần soạn, offer nào cần đòi chữ ký?”</p></div>
+    <div class="rules">
+      <span class="chip green">Thấy: chỉ từ S4 · Verified trở đi</span>
+      <span class="chip green">Comp: toàn quyền (duy nhất HR sửa số cuối)</span>
+      <span class="chip grey">Không thấy: S1–S3 (việc của recruiter)</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec-h">📝 Offer cần soạn <span class="cnt">2</span><span class="hint">đã được manager duyệt band — HR chốt số & gửi</span></div>
+    <div class="row">
+      <div class="who"><div class="av" style="background:#E8570E">RK</div><div><b>Roger Kube</b><small>NMLS 107621 · approved by Tracy</small></div></div>
+      <div class="meta">Band <b>P4</b> · số liệu snapshot đóng băng vào offer · Trả bằng: <span class="chip grey">Cash ▾</span> <span class="chip grey">RSU — chỉ HR bật được</span></div>
+      <div class="acts"><button class="btn sm primary">Soạn offer</button><button class="btn sm ghost">Template ▾</button></div>
+    </div>
+    <div class="row">
+      <div class="who"><div class="av" style="background:#2E7D57">AH</div><div><b>Angela Ho</b><small>NMLS 1544207 · approved by Tracy</small></div></div>
+      <div class="meta">Band <b>P2</b> · lưu ý từ recruiter: “muốn remote, hỏi về đội TX”</div>
+      <div class="acts"><button class="btn sm primary">Soạn offer</button><button class="btn sm ghost">Template ▾</button></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec-h">✍️ E-sign đang theo dõi <span class="cnt">3</span><span class="hint">qua document-esign service — trạng thái tự cập nhật</span></div>
+    <div class="row">
+      <div class="who"><div class="av" style="background:#8A5A44">TM</div><div><b>Trent Malone</b><small>sent Jul 29</small></div></div>
+      <div class="meta"><span class="chip amber">Viewed · chưa ký · 5d</span> mở 3 lần, dừng ở trang comp → tín hiệu đang so offer khác</div>
+      <div class="acts"><button class="btn sm primary">Nhắc + gọi</button><button class="btn sm ghost">Gia hạn link</button></div>
+    </div>
+    <div class="row">
+      <div class="who"><div class="av" style="background:#5B6472">DW</div><div><b>Dana Whitfield</b><small>sent Jul 22</small></div></div>
+      <div class="meta"><span class="chip green">Signed ✓ Jul 24</span> → đã tự chuyển S6 · checklist onboarding tự mở</div>
+      <div class="acts"><button class="btn sm ghost">Xem hồ sơ</button></div>
+    </div>
+  </div>
+  <p class="src-note">HR không phải hỏi "ai tới lượt tôi?" — ứng viên qua gate S4 tự xuất hiện ở đây. Ký xong tự sang S6, không ai phải chuyển tay (hệ cũ: status nhảy ngầm, không ai giải thích được).</p>
+</div>
+
+<!-- ============ 3 · LICENSING ============ -->
+<div class="main screen" id="scr3">
+  <div class="lens">
+    <div class="who-am-i"><h1>Dung Nguyễn — Licensing</h1><p>Câu hỏi 9h sáng: “Người mới nào đang chờ giấy phép, bang nào có luật riêng phải xử?”</p></div>
+    <div class="rules">
+      <span class="chip green">Thấy: S6 + hồ sơ licensing</span>
+      <span class="chip amber">Comp: 🔒 bị ẩn (chỉ HR/Manager)</span>
+      <span class="chip blue">Quyền riêng: xác nhận state rules, NMLS transfer</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec-h">📋 Hàng đợi licensing <span class="cnt">4</span><span class="hint">luật bang tự bật cờ — không cần nhớ 50 bang trong đầu</span></div>
+    <div class="row">
+      <div class="who"><div class="av" style="background:#5B6472">DW</div><div><b>Dana Whitfield</b><small>OK → muốn thêm SC · joined Jul 24</small></div></div>
+      <div class="meta"><span class="chip red">SC: branch phải ≤ 75 dặm</span> chi nhánh gần nhất 82 dặm → <b>không đạt, cần xác nhận lại địa chỉ</b> · NMLS transfer: <span class="chip amber">đang chờ</span></div>
+      <div class="acts"><button class="btn sm primary">Xử lý</button><button class="btn sm ghost">Hỏi ứng viên</button></div>
+    </div>
+    <div class="row">
+      <div class="who"><div class="av" style="background:#2E7D57">LP</div><div><b>Louis Pham</b><small>NJ · joined Jul 20</small></div></div>
+      <div class="meta"><span class="chip amber">NJ: cần trong bán kính 2.5h lái xe</span> đã xác nhận ✓ · Sponsorship: <span class="chip green">filed Jul 28</span></div>
+      <div class="acts"><button class="btn sm green">Đánh dấu xong</button></div>
+    </div>
+    <div class="row">
+      <div class="who"><div class="av" style="background:#B45309">MT</div><div><b>Maria Torres</b><small>CA · pre-check từ S3</small></div></div>
+      <div class="meta"><span class="chip blue">CA: DRE license</span> recruiter hỏi trước khi offer — trả lời: <b>DRE cần thêm corporate filing, ~3 tuần</b></div>
+      <div class="acts"><button class="btn sm primary">Gửi trả lời</button></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec-h">🔒 Field-level RBAC — demo<span class="hint">cùng hồ sơ Dana, Licensing thấy khác HR</span></div>
+    <div class="row">
+      <div class="meta" style="display:flex;gap:26px;flex-wrap:wrap">
+        <span>NMLS: <b>1120843</b></span>
+        <span>States: <b>OK ✓ · SC (pending)</b></span>
+        <span>Comp package: <span class="mask">🔒 ••••••</span></span>
+        <span>Referral bonus: <span class="mask">🔒 ••••••</span></span>
+        <span>Sponsor date: <b>Jul 24</b></span>
+      </div>
+    </div>
+  </div>
+  <p class="src-note">Licensing thấy đầy đủ giấy tờ nhưng không bao giờ thấy tiền — không phải vì "giấu", mà vì không cần cho việc của họ (nguyên tắc least-privilege). Luật bang lấy từ bảng rule §8.2 flow doc, admin sửa được.</p>
+</div>
+
+<!-- ============ 4 · ONBOARDING ============ -->
+<div class="main screen" id="scr4">
+  <div class="lens">
+    <div class="who-am-i"><h1>Kim Lê — Onboarding coordinator</h1><p>Câu hỏi 9h sáng: “Người mới nào đang kẹt, kẹt ở phòng nào?”</p></div>
+    <div class="rules">
+      <span class="chip green">Thấy: S6 + checklist 4 phòng ban</span>
+      <span class="chip amber">Comp: 🔒 bị ẩn</span>
+      <span class="chip blue">Quyền riêng: điều phối, nhắc phòng ban khác</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec-h">🎓 Đang onboarding <span class="cnt">5</span><span class="hint">4 phòng chạy song song — không xếp hàng chờ nhau</span></div>
+    <div class="row">
+      <div class="who"><div class="av" style="background:#5B6472">DW</div><div><b>Dana Whitfield</b><small>signed Jul 24 · ngày 11</small></div></div>
+      <div class="meta">
+        <div class="dept"><span>Licensing</span><div class="prog"><i style="width:40%;background:var(--red)"></i></div><b>2/5</b> <span class="chip red">blocked: SC 75mi</span></div>
+        <div class="dept"><span>HR paperwork</span><div class="prog"><i style="width:100%"></i></div><b>4/4</b></div>
+        <div class="dept"><span>IT & systems</span><div class="prog"><i style="width:67%"></i></div><b>2/3</b></div>
+        <div class="dept"><span>Accounting</span><div class="prog"><i style="width:50%"></i></div><b>1/2</b></div>
+      </div>
+      <div class="acts"><button class="btn sm primary">Nhắc Licensing</button></div>
+    </div>
+    <div class="row">
+      <div class="who"><div class="av" style="background:#2E7D57">LP</div><div><b>Louis Pham</b><small>signed Jul 20 · ngày 15</small></div></div>
+      <div class="meta">
+        <div class="dept"><span>Licensing</span><div class="prog"><i style="width:100%"></i></div><b>5/5</b></div>
+        <div class="dept"><span>HR paperwork</span><div class="prog"><i style="width:100%"></i></div><b>4/4</b></div>
+        <div class="dept"><span>IT & systems</span><div class="prog"><i style="width:100%"></i></div><b>3/3</b></div>
+        <div class="dept"><span>Trainings (Benjamin)</span><div class="prog"><i style="width:75%"></i></div><b>3/4</b> <span class="chip green">on track</span></div>
+      </div>
+      <div class="acts"><button class="btn sm green">Sắp Active ✓</button></div>
+    </div>
+  </div>
+  <p class="src-note">Hệ cũ: onboarding là chuỗi email giữa 4 phòng, không ai thấy tổng thể. Ở đây mỗi phòng tick việc của mình, coordinator chỉ nhìn chỗ đỏ. Đủ 100% → tự chuyển S7 Active + đóng băng attribution.</p>
+</div>
+
+<!-- ============ 5 · ACCOUNTING ============ -->
+<div class="main screen" id="scr5">
+  <div class="lens">
+    <div class="who-am-i"><h1>Hà Vũ — Accounting</h1><p>Câu hỏi 9h sáng: “Bonus giới thiệu nào đến hạn trả, cái nào đủ điều kiện?”</p></div>
+    <div class="rules">
+      <span class="chip green">Thấy: S7 + payout queue</span>
+      <span class="chip grey">Không thấy: pipeline, production data</span>
+      <span class="chip blue">Quyền riêng: phát lệnh trả bonus</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec-h">💵 Referral bonus sắp chín <span class="cnt">3</span><span class="hint">chín sau 60 ngày kể từ ngày join — luật kế thừa §8.4</span></div>
+    <div class="row">
+      <div class="who"><div class="av" style="background:#2E7D57">LP</div><div><b>Louis Pham</b><small>joined Jul 20 · giới thiệu bởi David Park</small></div></div>
+      <div class="meta">Chín: <b>Sep 18</b> (còn 44 ngày) · Điều kiện 2 phía: <span class="chip green">người giới thiệu Active ✓</span> <span class="chip green">người join Active ✓</span> · Hình thức: <b>Cash → tự động phát Check</b></div>
+      <div class="acts"><button class="btn sm ghost">Xem chuỗi eligibility</button></div>
+    </div>
+    <div class="row">
+      <div class="who"><div class="av" style="background:#1D4ED8">RM</div><div><b>Rita Moreno</b><small>joined Jun 2 · giới thiệu bởi T. Nguyen</small></div></div>
+      <div class="meta">Chín: <b>Aug 1 ✓</b> · Điều kiện: <span class="chip green">2 phía đạt ✓</span> · idempotency check: <span class="chip green">chưa từng trả ✓</span> · Hình thức: <span class="chip amber">RSU — chờ HR xác nhận tay</span></div>
+      <div class="acts"><button class="btn sm green">Phát lệnh trả</button><button class="btn sm ghost">Hold</button></div>
+    </div>
+    <div class="row">
+      <div class="who"><div class="av" style="background:#D93025">KD</div><div><b>Kyle Dunn</b><small>joined May 28 · giới thiệu bởi M. Reyes</small></div></div>
+      <div class="meta">Chín: Jul 27 · <span class="chip red">KHÔNG đạt: người giới thiệu đã nghỉ Jun 30</span> → auto-reject, đã ghi lý do vào hồ sơ</div>
+      <div class="acts"><button class="btn sm ghost">Xem lý do</button></div>
+    </div>
+  </div>
+  <p class="src-note">Hệ cũ: bonus xử lý tay, dễ trả trùng (phải chế cờ idempotency). Ở đây: đủ điều kiện mới hiện nút, trả rồi khoá vĩnh viễn, mọi reject có lý do lưu lại.</p>
+</div>
+
+<!-- ============ 6 · REFERRING LO ============ -->
+<div class="main screen" id="scr6" style="max-width:760px">
+  <div class="lens">
+    <div class="who-am-i"><h1>David Park — LO (người giới thiệu)</h1><p>Không vào app Recruit — chỉ thấy MỘT card trong LO portal của mình.</p></div>
+    <div class="rules">
+      <span class="chip green">Thấy: tiến độ người mình giới thiệu</span>
+      <span class="chip amber">Không thấy: comp, ghi chú recruiter, pipeline</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec-h">🤝 Người bạn giới thiệu <span class="cnt">2</span><span class="hint">trong LO portal — không phải app Recruit</span></div>
+    <div style="padding:16px 20px;border-bottom:1px solid var(--line-2)">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="who" style="flex:1"><div class="av" style="background:#2E7D57">LP</div><div><b>Louis Pham</b><small>giới thiệu Jun 14</small></div></div>
+        <span class="chip green">Đang onboarding — sắp thành đồng nghiệp 🎉</span>
+      </div>
+      <div class="steps">
+        <div class="step done"><span class="pip">✓</span><small>Nhận</small></div>
+        <div class="step done"><span class="pip">✓</span><small>Liên hệ</small></div>
+        <div class="step done"><span class="pip">✓</span><small>Trao đổi</small></div>
+        <div class="step done"><span class="pip">✓</span><small>Xác minh</small></div>
+        <div class="step done"><span class="pip">✓</span><small>Offer ký</small></div>
+        <div class="step now"><span class="pip">6</span><small>Onboarding</small></div>
+        <div class="step"><span class="pip">7</span><small>Active</small></div>
+      </div>
+      <p style="font-size:12px;color:var(--ink-2)">Bonus giới thiệu: <b>chín vào Sep 18</b> (60 ngày sau khi Louis join) — điều kiện: cả hai còn Active tại thời điểm đó. <span class="mask">🔒 Chi tiết offer/comp không hiển thị</span></p>
+    </div>
+    <div style="padding:16px 20px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="who" style="flex:1"><div class="av" style="background:#8A93A2">JT</div><div><b>Jenna Tran</b><small>giới thiệu Jul 30</small></div></div>
+        <span class="chip blue">Recruiter đã nhận — đang liên hệ</span>
+      </div>
+      <p style="font-size:12px;color:var(--ink-2);margin-top:8px">Bạn sẽ được báo khi Jenna qua từng mốc. Không cần hỏi recruiter — trạng thái luôn ở đây.</p>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:6px"><button class="btn primary">＋ Giới thiệu một LO khác</button></div>
+  <p class="src-note" style="text-align:center">Hệ cũ: LO giới thiệu xong là mù tịt, phải nhắn hỏi. Minh bạch tiến độ (không lộ tiền) = động lực giới thiệu tiếp — nguồn referral đang convert tốt nhất (4.8%).</p>
+</div>
+
+<script>
+const ROLES={1:['Tracy Lam · Recruiting Manager','TL'],2:['Dave Hoàng · HR','DH'],3:['Dung Nguyễn · Licensing','DN'],4:['Kim Lê · Onboarding','KL'],5:['Hà Vũ · Accounting','HV'],6:['David Park · LO Portal','DP']};
+function show(n){
+  for(let k=1;k<=6;k++){
+    document.getElementById('scr'+k).classList.toggle('on', k===n);
+    document.getElementById('tab'+k).classList.toggle('on', k===n);
+  }
+  document.getElementById('whoami').textContent=ROLES[n][0];
+  document.getElementById('whoav').textContent=ROLES[n][1];
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

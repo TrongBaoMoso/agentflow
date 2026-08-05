@@ -392,11 +392,15 @@ Best practice các ATS hiện đại (Ashby/Greenhouse/Lever): **cùng một d�
 3. **Focus mode / next-best-action queue** — hệ thống xếp sẵn hàng đợi ưu tiên, recruiter xử lý từng người, xong tự nhảy người kế (kiểu power-dialer). Khớp nhất với "tinh gọn action" của CEO; ứng viên tốt cho v2.
 4. **Funnel view** — cho manager: chỉ số + drill-down, không thao tác.
 
+> Mockup 05/08/2026: cả 3 view (Table / Focus / Funnel) đã dựng tại `docs/mockups/lo-recruiting-views.html` — kanban ở `docs/mockups/lo-recruiting-mockup.html`.
+
 ### 9.5. Per-role visibility: cùng hồ sơ, khác ống kính (2 chiều)
 
 - **Row-level** (thấy NHỮNG AI): recruiter = lead mình + team; HR = từ S4–S5 trở đi; Licensing/Accounting = việc S6/S7 của phòng mình; LO giới thiệu = chỉ tiến độ người mình giới thiệu.
 - **Field-level** (thấy TRƯỜNG NÀO): số tiền offer/comp chỉ HR + manager; LO giới thiệu KHÔNG BAO GIỜ thấy comp; dữ liệu licensing nhạy cảm chỉ team Licensing.
 - Ma trận RBAC §4 hiện mới phủ chiều tác vụ — cần bổ sung chiều field-level khi viết spec chi tiết.
+
+> Mockup 05/08/2026: 6 màn hình theo role (Manager / HR / Licensing / Onboarding / Accounting / Referring LO) tại `docs/mockups/lo-recruiting-roles.html` — mỗi màn có banner "ống kính" ghi rõ role thấy hàng nào, trường nào bị khoá; Recruiter view = mockup 1.
 
 ### 9.6. Comp band là ĐỀ XUẤT MỚI, hệ thống cũ không có
 

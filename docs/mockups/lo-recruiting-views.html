@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LF Recruit — Mockup: Pipeline views (Table · Focus · Funnel)</title>
+<style>
+  :root{
+    --orange:#E8570E; --orange-soft:#FDEDE3; --orange-deep:#C2410C;
+    --green:#2E7D57; --green-soft:#E7F3EC; --red:#D93025; --red-soft:#FDE8E6;
+    --amber:#B45309; --amber-soft:#FEF3D9; --blue:#1D4ED8; --blue-soft:#E8EEFC;
+    --ink:#1F2430; --ink-2:#5B6472; --ink-3:#8A93A2;
+    --bg:#F7F3EF; --cream:#FBF3EC; --card:#FFFFFF; --line:#ECE7E1; --line-2:#F3EFEA;
+    --r:12px; --shadow:0 1px 2px rgba(31,36,48,.05),0 4px 14px rgba(31,36,48,.05);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Inter",-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);font-size:13.5px;line-height:1.45}
+  .mock-bar{position:sticky;top:0;z-index:60;background:#1F2430;color:#fff;display:flex;align-items:center;gap:10px;padding:8px 18px;font-size:12.5px;flex-wrap:wrap}
+  .mock-bar b{font-weight:600}
+  .mock-tab{background:#3A4152;border:0;color:#fff;padding:5px 14px;border-radius:8px;font-size:12.5px;cursor:pointer}
+  .mock-tab.on{background:var(--orange)}
+  .mock-note{margin-left:auto;color:#B9C0CE}
+  .topbar{background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;padding:10px 20px}
+  .logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px}
+  .logo .dot{width:22px;height:22px;border-radius:50%;background:conic-gradient(from 210deg,var(--orange) 0 75%,#F8B889 75% 100%)}
+  .logo span{color:var(--ink-3);font-weight:500}
+  .top-right{margin-left:auto;display:flex;align-items:center;gap:14px}
+  .avatar{width:30px;height:30px;border-radius:50%;background:var(--orange);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:600}
+  .main{padding:20px 26px;max-width:1360px;margin:0 auto}
+  .chip{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:2px 9px;font-size:11.5px;font-weight:600;white-space:nowrap}
+  .chip.red{background:var(--red-soft);color:var(--red)} .chip.amber{background:var(--amber-soft);color:var(--amber)}
+  .chip.green{background:var(--green-soft);color:var(--green)} .chip.blue{background:var(--blue-soft);color:var(--blue)}
+  .chip.grey{background:#EFECE8;color:var(--ink-2)} .chip.orange{background:var(--orange-soft);color:var(--orange-deep)}
+  .btn{border:0;border-radius:9px;padding:7px 14px;font-size:12.5px;font-weight:600;cursor:pointer}
+  .btn.primary{background:var(--orange);color:#fff} .btn.green{background:var(--green);color:#fff}
+  .btn.ghost{background:#fff;border:1px solid var(--line);color:var(--ink-2)}
+  .btn.sm{padding:4px 10px;font-size:11.5px;border-radius:7px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+  .src-note{margin-top:14px;color:var(--ink-3);font-size:11.5px}
+  .screen{display:none} .screen.on{display:block}
+  /* view switcher (in-app, khác mock-bar) */
+  .vswitch{display:inline-flex;background:#EFECE8;border-radius:10px;padding:3px;gap:2px}
+  .vswitch button{border:0;background:transparent;padding:6px 14px;border-radius:8px;font-size:12.5px;font-weight:600;color:var(--ink-2);cursor:pointer}
+  .vswitch button.on{background:#fff;color:var(--ink);box-shadow:var(--shadow)}
+  .toolrow{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+  .select{background:#fff;border:1px solid var(--line);border-radius:9px;padding:7px 12px;color:var(--ink-2);font-size:12.5px}
+  .saved{display:flex;gap:8px;margin-bottom:14px;align-items:center;font-size:12px;color:var(--ink-3)}
+  .saved .chip{cursor:pointer}
+  /* table view */
+  .bulk{display:flex;align-items:center;gap:12px;background:#1F2430;color:#fff;border-radius:10px;padding:8px 14px;margin-bottom:10px;font-size:12.5px}
+  .bulk .btn{background:#3A4152;color:#fff}
+  .bulk .btn.primary{background:var(--orange)}
+  .tblwrap{overflow-x:auto}
+  .tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+  .tbl th{text-align:left;padding:9px 12px;color:var(--ink-3);font-size:11px;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--line);white-space:nowrap;background:#FCFAF8}
+  .tbl td{padding:10px 12px;border-bottom:1px solid var(--line-2);white-space:nowrap}
+  .tbl tr:hover td{background:#FCFAF7}
+  .tbl b{font-size:12.5px}
+  .tbl small{color:var(--ink-3);display:block;font-size:11px}
+  .pager{display:flex;align-items:center;gap:10px;padding:11px 14px;color:var(--ink-3);font-size:12px}
+  /* focus mode */
+  .focus-wrap{display:flex;gap:16px;align-items:flex-start}
+  .queue{flex:0 0 264px}
+  .queue .qh{padding:12px 14px;border-bottom:1px solid var(--line-2);font-weight:700;font-size:12.5px;display:flex;justify-content:space-between;align-items:center}
+  .qi{display:flex;gap:9px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line-2);font-size:12px;cursor:pointer}
+  .qi:last-child{border:0}
+  .qi.on{background:var(--orange-soft)}
+  .qi .n{width:20px;height:20px;border-radius:50%;background:#EFECE8;color:var(--ink-2);display:grid;place-items:center;font-size:10.5px;font-weight:700;flex:none}
+  .qi.done .n{background:var(--green-soft);color:var(--green)}
+  .qi b{display:block;font-size:12px} .qi small{color:var(--ink-3);font-size:10.5px}
+  .fcard{flex:1;min-width:0}
+  .fc-head{padding:18px 22px;background:var(--cream);border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:center}
+  .fc-head .av{width:46px;height:46px;border-radius:50%;background:#7C5CBF;color:#fff;display:grid;place-items:center;font-weight:700;font-size:15px}
+  .fc-head h2{font-size:17px} .fc-head .sub{color:var(--ink-2);font-size:12px;margin-top:2px}
+  .why{margin-left:auto;text-align:right}
+  .fc-body{padding:16px 22px;display:flex;flex-direction:column;gap:14px}
+  .facts{display:flex;gap:10px;flex-wrap:wrap}
+  .fact{background:#FCFAF8;border:1px solid var(--line);border-radius:10px;padding:8px 13px;font-size:12px}
+  .fact b{display:block;font-size:13.5px}
+  .ai{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .ai .aih{display:flex;align-items:center;gap:8px;background:var(--blue-soft);color:var(--blue);padding:9px 13px;font-weight:700;font-size:12.5px}
+  .ai .aih .rg{margin-left:auto;font-weight:500;font-size:11px}
+  .ai .aib{padding:12px 14px;font-size:12.5px;color:var(--ink-2);font-style:italic}
+  .ai .aif{display:flex;gap:8px;padding:0 14px 12px}
+  .fc-foot{padding:14px 22px;border-top:1px solid var(--line);display:flex;gap:9px;background:#FCFAF8;align-items:center}
+  .kbd{margin-left:auto;color:var(--ink-3);font-size:11.5px}
+  .kbd i{font-style:normal;background:#EFECE8;border-radius:5px;padding:1px 6px;font-size:11px}
+  /* funnel view */
+  .fun-grid{display:flex;gap:18px;align-items:flex-start}
+  .fun-main{flex:1;min-width:0}
+  .fun-rail{flex:0 0 300px;display:flex;flex-direction:column;gap:14px}
+  .fun-row{display:flex;align-items:center;gap:12px;padding:8px 16px}
+  .fun-row .lbl{flex:0 0 130px;font-size:12.5px;font-weight:600}
+  .fun-row .lbl small{display:block;color:var(--ink-3);font-weight:500;font-size:11px}
+  .fun-track{flex:1;height:28px;background:#F3EFEA;border-radius:8px;overflow:hidden}
+  .fun-track i{display:flex;align-items:center;padding-left:10px;height:100%;border-radius:8px;background:var(--orange);color:#fff;font-size:11.5px;font-weight:700;font-style:normal;min-width:34px}
+  .fun-conv{flex:0 0 120px;font-size:11.5px;color:var(--ink-2);text-align:right}
+  .fun-conv b{color:var(--ink)}
+  .fun-conv .down{color:var(--red)} .fun-conv .up{color:var(--green)}
+  .alertcard{border-left:4px solid var(--red);background:var(--red-soft)}
+  .alertcard .in{padding:12px 16px;font-size:12.5px}
+</style>
+</head>
+<body>
+
+<div class="mock-bar">
+  <b>MOCKUP · LF Recruit — Pipeline views</b>
+  <button class="mock-tab on" id="tabT" onclick="show('T')">1 · Table view</button>
+  <button class="mock-tab" id="tabF" onclick="show('F')">2 · Focus mode</button>
+  <button class="mock-tab" id="tabN" onclick="show('N')">3 · Funnel view</button>
+  <span class="mock-note">Cùng một dữ liệu pipeline — 3 cách nhìn khác ngoài kanban (kanban xem mockup 1)</span>
+</div>
+
+<div class="topbar">
+  <div class="logo"><div class="dot"></div>Loan Factory&nbsp;<span>Recruit</span></div>
+  <div class="top-right"><div class="avatar">BS</div></div>
+</div>
+
+<!-- ============ SCREEN T: TABLE VIEW ============ -->
+<div class="main screen on" id="scrT">
+  <div class="toolrow">
+    <div class="vswitch">
+      <button>Kanban</button><button class="on">Table</button><button>Focus</button><button>Funnel</button>
+    </div>
+    <div class="select">Stage: All ▾</div>
+    <div class="select">Source: All ▾</div>
+    <div class="select">Owner: Anyone ▾</div>
+    <div class="select">State: TX ▾</div>
+    <button class="btn primary" style="margin-left:auto">＋ Add lead</button>
+  </div>
+  <div class="saved">Saved views:
+    <span class="chip orange">TX high producers</span>
+    <span class="chip grey">Stale &gt;14 days</span>
+    <span class="chip grey">Modex list · Feb batch</span>
+    <span class="chip grey">＋ Save current</span>
+  </div>
+
+  <div class="bulk">
+    <b>3 selected</b>
+    <button class="btn sm">Assign owner ▾</button>
+    <button class="btn sm">Add to nurture</button>
+    <button class="btn sm">Export CSV</button>
+    <button class="btn sm primary">Bulk SMS (template) ▾</button>
+    <span style="margin-left:auto;color:#B9C0CE">Bulk action có audit log — ai làm gì trên bao nhiêu record</span>
+  </div>
+
+  <div class="card">
+    <div class="tblwrap">
+    <table class="tbl">
+      <tr><th></th><th>Candidate ↕</th><th>Stage</th><th>Source</th><th>Production (12m) ↓</th><th>SLA / Next task</th><th>Owner</th><th>Last activity</th></tr>
+      <tr><td><input type="checkbox" checked></td><td><b>Joseph Guarino</b><small>NMLS 1637367 · Austin, TX</small></td><td><span class="chip blue">S3 · Engaged</span></td><td>Modex List</td><td><b>$514M</b> · 1,410u</td><td>Call after Friday closing</td><td>Brayan S.</td><td>2h ago</td></tr>
+      <tr><td><input type="checkbox" checked></td><td><b>Roger Kube</b><small>NMLS 107621 · Plano, TX</small></td><td><span class="chip green">S4 · Verified</span></td><td>Referral</td><td><b>$103.8M</b> · 138u</td><td>Request offer approval</td><td>Brayan S.</td><td>1d ago</td></tr>
+      <tr><td><input type="checkbox" checked></td><td><b>Chad Standish</b><small>NMLS 843765 · Dallas, TX</small></td><td><span class="chip grey">S2 · Contacted</span></td><td>Modex List</td><td><b>$41.2M</b> · 96u</td><td><span class="chip amber">Follow-up today</span></td><td>Brayan S.</td><td>3d ago</td></tr>
+      <tr><td><input type="checkbox"></td><td><b>Kaprice Nicholson</b><small>NMLS 2667971 · Charlotte, NC</small></td><td><span class="chip orange">S1 · New</span></td><td>Modex List</td><td><b>$18.2M</b> · 41u</td><td><span class="chip red">⏱ First touch 3h left</span></td><td>Brayan S.</td><td>—</td></tr>
+      <tr><td><input type="checkbox"></td><td><b>Maria Torres</b><small>NMLS 1990254 · San Jose, CA</small></td><td><span class="chip blue">S3 · Engaged</span></td><td>Event · Webinar</td><td><b>$12.6M</b> · 28u</td><td>Relay CA DRE answer</td><td>Seth A.</td><td>5h ago</td></tr>
+      <tr><td><input type="checkbox"></td><td><b>Trent Malone</b><small>NMLS 556201 · Houston, TX</small></td><td><span class="chip amber">S5 · Offer</span></td><td>Referral</td><td><b>$67.9M</b> · 122u</td><td><span class="chip amber">Not signed · 5d</span></td><td>Dave H. (HR)</td><td>1d ago</td></tr>
+      <tr><td><input type="checkbox"></td><td><b>Dana Whitfield</b><small>NMLS 1120843 · Tulsa, OK</small></td><td><span class="chip green">S6 · Onboarding</span></td><td>Self-apply</td><td><b>$8.1M</b> · 20u</td><td><span class="chip red">Blocked: NMLS transfer</span></td><td>Kim L.</td><td>4h ago</td></tr>
+    </table>
+    </div>
+    <div class="pager">1–25 of <b>&nbsp;4,812&nbsp;</b> · <span class="chip grey">‹ Prev</span> <span class="chip grey">Next ›</span><span style="margin-left:auto">Sort: Production desc — click header để đổi</span></div>
+  </div>
+  <p class="src-note">View 1/3 — Table: cho ops & manager. Kanban vô dụng khi một cột có vài trăm thẻ (dữ liệu cũ 106K record) — bảng lọc/sort/bulk là bắt buộc. Filter + sort + view đều nằm trong URL (share được link).</p>
+</div>
+
+<!-- ============ SCREEN F: FOCUS MODE ============ -->
+<div class="main screen" id="scrF">
+  <div class="toolrow">
+    <div class="vswitch">
+      <button>Kanban</button><button>Table</button><button class="on">Focus</button><button>Funnel</button>
+    </div>
+    <span class="chip green">✓ 3 done</span><span class="chip grey">9 left today</span>
+    <span style="margin-left:auto;color:var(--ink-3);font-size:12px">Hệ thống xếp thứ tự — bạn chỉ việc xử lý từng người</span>
+  </div>
+
+  <div class="focus-wrap">
+    <div class="card queue">
+      <div class="qh">Queue hôm nay <span class="chip grey">12</span></div>
+      <div class="qi done"><span class="n">✓</span><div><b>Peter Lawson</b><small>Re-engaged — Zoom booked</small></div></div>
+      <div class="qi done"><span class="n">✓</span><div><b>Trina Vo</b><small>Wake-up — SMS sent</small></div></div>
+      <div class="qi done"><span class="n">✓</span><div><b>Sam Ridley</b><small>Skipped — số sai, tạo task sửa</small></div></div>
+      <div class="qi on"><span class="n">4</span><div><b>Kaprice Nicholson</b><small>SLA first touch · còn 3h 40m</small></div></div>
+      <div class="qi"><span class="n">5</span><div><b>Dominic Silvestri</b><small>SLA first touch · còn 9h</small></div></div>
+      <div class="qi"><span class="n">6</span><div><b>Roger Kube</b><small>Offer viewed 3d — chưa ký</small></div></div>
+      <div class="qi"><span class="n">7</span><div><b>Joseph Guarino</b><small>Follow-up đã hẹn hôm nay</small></div></div>
+      <div class="qi"><span class="n">8</span><div><b>Angela Ho</b><small>Signal: volume +38%</small></div></div>
+      <div class="qi"><span class="n">…</span><div><small style="color:var(--ink-3)">+ 4 nữa, xếp theo độ gấp</small></div></div>
+    </div>
+
+    <div class="card fcard">
+      <div class="fc-head">
+        <div class="av">KN</div>
+        <div>
+          <h2>Kaprice Nicholson</h2>
+          <div class="sub">NMLS 2667971 · Imperium Lending · Charlotte, NC</div>
+        </div>
+        <div class="why">
+          <span class="chip red">⏱ SLA first touch — còn 3h 40m</span>
+          <div style="font-size:11px;color:var(--ink-3);margin-top:4px">Vì sao người này lên đầu queue</div>
+        </div>
+      </div>
+      <div class="fc-body">
+        <div class="facts">
+          <div class="fact"><b>$18.2M</b>Volume 12m</div>
+          <div class="fact"><b>41</b>Units 12m</div>
+          <div class="fact"><b>11 mo</b>Licensed</div>
+          <div class="fact"><b>Modex List</b>Source · TMC batch</div>
+          <div class="fact"><b>Chưa từng liên hệ</b>Lịch sử</div>
+        </div>
+        <div class="ai">
+          <div class="aih">✨ AI gợi ý mở lời <span class="rg">soạn từ data Modex — sửa được trước khi gửi</span></div>
+          <div class="aib">“Hi Kaprice, this is Brayan with Loan Factory. Saw you've closed 41 loans in your first year at Imperium — that's a serious start. LOs at your volume usually keep 40–60% more per file on our comp plan. Worth a 10-minute call this week?”</div>
+          <div class="aif"><button class="btn sm ghost">Đổi giọng: ngắn hơn</button><button class="btn sm ghost">Nhấn về comp</button><button class="btn sm ghost">Viết lại</button></div>
+        </div>
+      </div>
+      <div class="fc-foot">
+        <button class="btn green">📞 Call</button>
+        <button class="btn primary">Send SMS</button>
+        <button class="btn ghost">Email</button>
+        <button class="btn ghost">Log & Next →</button>
+        <button class="btn ghost">Skip (lý do…)</button>
+        <span class="kbd"><i>J</i>/<i>K</i> chuyển người · <i>Enter</i> gọi</span>
+      </div>
+    </div>
+  </div>
+  <p class="src-note">View 2/3 — Focus mode: "tinh gọn action" đúng nghĩa — không nhìn bảng, không chọn việc; xử lý xong tự nhảy người kế. Mọi action (call/SMS qua Zoom service) tự ghi activity log → SLA tự tính, không cần khai tay.</p>
+</div>
+
+<!-- ============ SCREEN N: FUNNEL VIEW ============ -->
+<div class="main screen" id="scrN">
+  <div class="toolrow">
+    <div class="vswitch">
+      <button>Kanban</button><button>Table</button><button>Focus</button><button class="on">Funnel</button>
+    </div>
+    <div class="select">Team: All recruiters ▾</div>
+    <div class="select">Range: Aug 2026 ▾</div>
+    <span class="chip grey">So với: Jul 2026</span>
+  </div>
+
+  <div class="fun-grid">
+    <div class="fun-main">
+      <div class="card" style="padding:8px 0 10px">
+        <div class="fun-row"><div class="lbl">S1 · New<small>lead vào</small></div><div class="fun-track"><i style="width:100%">184</i></div><div class="fun-conv">→ S2 <b>62%</b> <span class="up">▲3</span></div></div>
+        <div class="fun-row"><div class="lbl">S2 · Contacted</div><div class="fun-track"><i style="width:62%">114</i></div><div class="fun-conv">→ S3 <b>34%</b> <span class="up">▲5</span></div></div>
+        <div class="fun-row"><div class="lbl">S3 · Engaged</div><div class="fun-track"><i style="width:21%">39</i></div><div class="fun-conv">→ S4 <b>67%</b> <span class="up">▲1</span></div></div>
+        <div class="fun-row"><div class="lbl">S4 · Verified</div><div class="fun-track"><i style="width:14%">26</i></div><div class="fun-conv">→ S5 <b>31%</b> <span class="down">▼18</span></div></div>
+        <div class="fun-row"><div class="lbl">S5 · Offer</div><div class="fun-track"><i style="width:4.5%;background:var(--green)">8</i></div><div class="fun-conv">→ S6 <b>75%</b> <span class="up">▲8</span></div></div>
+        <div class="fun-row"><div class="lbl">S6 · Onboarding</div><div class="fun-track"><i style="width:3.3%;background:var(--green)">6</i></div><div class="fun-conv">→ Active <b>100%</b></div></div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <table class="tbl">
+          <tr><th>Recruiter</th><th>Leads</th><th>First touch trong SLA</th><th>Engaged</th><th>Offers ký</th><th>Joined</th></tr>
+          <tr><td><b>Brayan Suarez</b></td><td>61</td><td><span class="chip green">96%</span></td><td>15</td><td>3</td><td>2</td></tr>
+          <tr><td><b>Seth August</b> <small>outside</small></td><td>48</td><td><span class="chip green">91%</span></td><td>11</td><td>2</td><td>2</td></tr>
+          <tr><td><b>Nocha Kelly</b></td><td>44</td><td><span class="chip amber">78%</span></td><td>8</td><td>2</td><td>1</td></tr>
+          <tr><td><b>Luis Ortega</b></td><td>31</td><td><span class="chip red">64%</span></td><td>5</td><td>1</td><td>1</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="fun-rail">
+      <div class="card alertcard"><div class="in"><b>⚠ Nghẽn ở S4 → S5</b><br>Conversion giảm 18 điểm so với tháng 7. <b>6 offer request đợi HR duyệt &gt;3 ngày.</b><br><button class="btn sm primary" style="margin-top:8px">Xem 6 request</button></div></div>
+      <div class="card" style="padding:14px 16px">
+        <h4 style="font-size:12.5px;margin-bottom:10px">Nguồn hiệu quả nhất (joined / lead)</h4>
+        <div class="fun-row" style="padding:5px 0"><div class="lbl" style="flex-basis:90px;font-size:12px">Referral</div><div class="fun-track" style="height:18px"><i style="width:88%;background:var(--green);font-size:10.5px">4.8%</i></div></div>
+        <div class="fun-row" style="padding:5px 0"><div class="lbl" style="flex-basis:90px;font-size:12px">Modex List</div><div class="fun-track" style="height:18px"><i style="width:45%;font-size:10.5px">2.4%</i></div></div>
+        <div class="fun-row" style="padding:5px 0"><div class="lbl" style="flex-basis:90px;font-size:12px">Self-apply</div><div class="fun-track" style="height:18px"><i style="width:30%;font-size:10.5px">1.6%</i></div></div>
+        <div class="fun-row" style="padding:5px 0"><div class="lbl" style="flex-basis:90px;font-size:12px">Event</div><div class="fun-track" style="height:18px"><i style="width:21%;font-size:10.5px">1.1%</i></div></div>
+      </div>
+      <div class="card" style="padding:14px 16px;background:var(--cream)">
+        <h4 style="font-size:12.5px;margin-bottom:6px">✨ AI weekly digest</h4>
+        <p style="font-size:12px;color:var(--ink-2)">“Tuần này referral từ chi nhánh TX tạo 3/5 candidate Verified. Luis trễ SLA 4 lần liên tiếp vào thứ Hai — cân nhắc đổi lịch trực lead weekend.”</p>
+      </div>
+    </div>
+  </div>
+  <p class="src-note">View 3/3 — Funnel: cho manager/CEO. Không thao tác trên từng người — nhìn số, thấy nghẽn, bấm drill-down. KPI tự đo từ activity log (§6 flow doc), không ai phải làm report tay.</p>
+</div>
+
+<script>
+function show(w){
+  ['T','F','N'].forEach(k=>{
+    document.getElementById('scr'+k).classList.toggle('on', k===w);
+    document.getElementById('tab'+k).classList.toggle('on', k===w);
+  });
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
