@@ -442,6 +442,24 @@ Band P1–P4 + ngưỡng trong mockup là placeholder minh hoạ. Hệ thống c
 | Jobs định kỳ | Đăng ký qua **cron-service-go** (centralized dynamic cron, Postgres SKIP LOCKED) thay vì tự nuôi Quartz | SLA breach check, nurture wake-up, re-verify 90 ngày đều là cron — dùng hạ tầng chung |
 | RBAC | **App-owned** (bảng roles/grants trong schema recruiting) — central chỉ là IdP | Đúng pivot đã học từ LOL RBAC + pattern LFIQ; ống kính row/field-level §9.5 nằm trong app |
 
+
+### 9.9. Bản đồ phụ thuộc Modex + fallback (05/08/2026 — Victoria chưa reply contract)
+
+**Nguyên tắc kiến trúc:** Modex là NGUỒN DỮ LIỆU cắm vào qua webhook + bảng `modex_snapshots`, không phải xương sống. Mọi số liệu xác minh lưu kèm `source` (MODEX | SELF_REPORTED | DOCUMENT | NMLS_CA) + `as_of_date` → gate S4 kiểm tra "có số liệu đủ tươi từ nguồn đủ tin" chứ không kiểm tra "có Modex". Đổi/thêm nhà cung cấp (MMI...) là config, không phải viết lại.
+
+| Feature | Cần Modex? | Không có Modex thì sao |
+|---|---|---|
+| Pipeline S0–S7, SLA engine, Today view, 4 views | KHÔNG | Chạy bình thường — đây là phần lõi |
+| Call/SMS (Zoom), offer + e-sign, onboarding 4 phòng, referral bonus, RBAC | KHÔNG | Chạy bình thường |
+| Nurture wake-up theo ngày hẹn | KHÔNG | Chạy bình thường |
+| Lead intake từ Modex prospecting list | CÓ (1/6 nguồn) | 5 nguồn còn lại vẫn chạy; thay bằng CSV import |
+| Zero-click enrichment (P0-17) | CÓ | Fallback: NMLS Consumer Access (miễn phí — license + nơi làm, KHÔNG có volume) + nhập tay số ứng viên tự khai |
+| Verification card / gate S4 | MỘT PHẦN | Gate vẫn hoạt động với source=SELF_REPORTED (khai) hoặc DOCUMENT (W2/paystub HR verify ở bước offer) — card ghi rõ nguồn + độ tin |
+| Signals đổi công ty / volume tăng (monthly diff) | CÓ, KHÔNG fallback | Mất hẳn feature này cho tới khi có sync — nurture wake-up theo ngày vẫn còn |
+| Comp band suggestion | GIÁN TIẾP | Vẫn gợi ý từ số self-reported, gắn cờ "chưa xác minh" |
+
+**Ảnh hưởng tiến độ:** Track B (schema, scaffold, webhook receiver) KHÔNG bị chặn — webhook viết theo field mapping §8.5 của hệ cũ + payload giả; khi contract xong chỉ là Modex team cấu hình connection trỏ vào URL (họ config, mình không code thêm). Rủi ro thật duy nhất: contract kéo dài nhiều tuần (tài khoản hiện 1 seat/-1, không còn connection active → gần như chắc chắn phải thương lượng lại) → nếu launch trước khi có sync, 3 feature cột "CÓ" chạy chế độ fallback. Khuyến nghị: nudge Victoria trong tuần; nếu cần đòn bẩy giá, dùng quote MMI (benchmark §trước).
+
 ---
 
 *Tài liệu cùng bộ:* [lo-recruiting-redesign-direction.md](lo-recruiting-redesign-direction.md) (17 pain points + hướng + quyết định kiến trúc §6) · [lo-recruiting-feature-review.md](lo-recruiting-feature-review.md) (hiện trạng chi tiết + Phụ lục C production)
