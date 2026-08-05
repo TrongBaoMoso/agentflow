@@ -303,7 +303,19 @@ address* (không bịa dữ liệu). **NMLS cố ý để trống** — nó là 
   timestamp cách nhau **7 giây** (một lần import duy nhất) và cột liên lạc là `No email / No Phone`.
 - **Act 1** — s1_4 thay hẳn: không còn là "form Add 22 nhóm required", mà là **không sửa nổi record có sẵn**.
   Submit → `Licensed states is required` → điền → `States to sponsor` → `Career Production` → `Mailing street
-  address` → `Preferred languages`. Năm field bung ra từng cái một. s1_1 mở bằng sổ khách **rỗng** (Seth sở hữu
+  address` → `Preferred languages`. Năm field bung ra từng cái một.
+
+  **Quay trên dòng `Katie Test`, KHÔNG phải trên nhân vật chính.** Hai lý do. (1) Chuẩn bị record đã điền
+  đủ 5 field cho Test Test để đổi được email, nên trên record đó cái tường **không còn tái hiện** — tôi đã
+  tự phá mất bằng chứng bằng cách sửa nó. (2) Đặt ở Katie Test lại **đúng hơn về mặt kể**: s1_3 kết ở đúng
+  dòng bị đánh `(Duplicated)` đỏ, s1_4 là Seth đi dọn cái trùng đó và form không cho — hai pain nối nhau
+  theo nhân quả thay vì rời rạc. Katie Test đã verify 05/08/2026: cả 5 field trống, `NMLS` trống, email là
+  `test@test.com` (rác, không phải người thật).
+
+  **Scene BẮT BUỘC kết bằng Cancel, không bao giờ Submit thành công.** Narration chỉ cần cái tường, không
+  cần lần lưu thành công; mà lưu thành công thì lấp luôn cái tường và lần quay lại sau sẽ không còn gì để
+  chiếu. Đây là scene duy nhất trong cả video mà "không ghi" là một yêu cầu kỹ thuật, không phải sự thận
+  trọng. s1_1 mở bằng sổ khách **rỗng** (Seth sở hữu
   0 record; toàn kho chỉ 11 dòng claimed). s1_3 kết bằng dòng `Katie Test (Duplicated)` đỏ có thật trên grid.
 - **Act 2** — s2_1 lượng hoá thay vì mô tả: cùng hai chữ *inside recruiter* mà Seth có **2/82** công tắc, Brayan
   có **15/82**. s2_2 viết lại để **không** khẳng định trước board của Brayan hiện gì (chưa xem session của anh ấy);
