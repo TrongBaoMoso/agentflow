@@ -504,3 +504,29 @@ Năm trong sáu câu sinh ra từ lỗi thật, không phải suy đoán.
 **Số liệu production là dữ liệu sống — narration phải đo SAU khi setup, TRƯỚC khi quay.** Counter ILO trôi vì
 hoạt động thật của công ty *và* vì chính các lượt ghi của buổi quay. Thứ tự bắt buộc: reset nhân vật → đo
 counter → sửa narration → render audio → quay. Đảo thứ tự là đọc một con số mà máy quay sẽ không thấy.
+
+---
+
+## Bản TEXT của phim (Google Doc, 2 cột)
+
+Bao yêu cầu 05/08/2026: một bản đọc được thay cho việc bấm play. Bảng 2 cột, trái là màn hình của cảnh, phải
+là đúng narration của cảnh đó — tiếng Anh trên, tiếng Việt dưới.
+
+```bash
+node tools/pick-doc-frames.mjs      # chọn 1 frame/cảnh  -> final/doc-frames/ + work/doc-frame-picks.json
+node tools/build-transcript-doc.mjs # dựng               -> final/lo-recruiting-walkthrough.docx
+python3 tools/push-doc.py <docId> ../final/lo-recruiting-walkthrough.docx "<title>" [--force]
+```
+
+Ba điều đã trả giá để biết:
+
+- **Frame verify của `assemble.mjs` nằm ở `adjOffset` = giây narration BẮT ĐẦU**, tức trước cái click mà nó
+  đang kể. Dùng thẳng làm ảnh minh hoạ thì hàng `s1_11` không có modal CHANGE STATUS nào cả.
+- **Lấy theo phần trăm giữa cảnh cũng sai**, và **lấy max-change cả cảnh thì sai nặng hơn**: cảnh nào cũng KẾT
+  bằng việc điều hướng sang chỗ cảnh sau cần, nên act 0 đem trang config ra minh hoạ cho narration về counter.
+  Luật đang dùng: chỉ tìm trong 65% đầu cảnh, loại frame nhạt mực (trang đang load vừa trắng vừa "khác" nhất),
+  và **chỉ đổi frame khi frame thắng đủ tối để chắc là có modal đang làm mờ trang** — 35 cảnh giữ frame mở đầu
+  đã soi bằng mắt, 16 cảnh đổi sang modal (đã soi cả 16 trước khi ship).
+- **Đăng bằng cách thay thân Doc bằng .docx đã convert, không dùng `batchUpdate`**: chèn ảnh inline qua Docs
+  API cần URL public, tức phải đẩy 51 ảnh production ra web mở. `gws.py` không có lệnh này nên có
+  `tools/push-doc.py` (dùng lại `get_token()` của `gws.py`, upload resumable vì multipart chặn ở 5 MB).
