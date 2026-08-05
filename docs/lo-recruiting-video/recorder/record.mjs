@@ -1613,7 +1613,54 @@ export async function cancelAddForm(page, h) {
  * matched by that label. Ticking it is MANDATORY here: without it the assignment only applies to
  * records that have no recruiter yet, and this one already has one.
  */
+/**
+ * WHICH ROWS A PRODUCTION TAKE IS ALLOWED TO WRITE TO.
+ *
+ * Added 05/08/2026 after the first production run clicked Approve on a row nobody authorised. The
+ * beat (s2_5) was carried over from staging untouched, its log line still read "staging mutation, by
+ * design", and the review pass that ported this cut only re-read the scenes whose NARRATION changed
+ * — so a scene whose BEHAVIOUR was unchanged sailed straight through. The row turned out to be a junk
+ * self-application, so nothing was harmed, but the next act along would have marked a real loan
+ * officer's startup fee Paid and their agreement Signed via the pickDemoRow fallback.
+ *
+ * Reviewing call sites is what failed. So the check lives at the CHOKE POINTS instead — every write
+ * funnels through setIloCellValue / inviteToILO / assignRecruiter, and a future beat that forgets
+ * about this list still cannot get past them.
+ *
+ * Staging is unguarded on purpose: every row there is a throwaway test account.
+ */
+const PRODUCTION_WRITABLE_ROWS = [
+  /\bTest\s+Test\b/i,      // the subject
+  /\bKatie\s+Test\b/i,     // the duplicate row s1_4's required-field wall is filmed on
+  /\bRLO\s+Test\b/i,       // --demo-record fallback
+  /\bTest\s+Check\b/i,
+  /\bTest\s+Adda\b/i,
+  /\bTest\s+Testcase\b/i,
+];
+
+/**
+ * Throw unless `row` is one of the rows this shoot is allowed to mutate. No-op on staging.
+ *
+ * Fails CLOSED: a row whose text cannot be read is refused, because "could not tell" and "safe" are
+ * not the same answer — that conflation is what created the incident this guard exists for.
+ */
+async function assertWritableRow(row, what, { actLabel = 'act?' } = {}) {
+  if (!IS_PRODUCTION) return;
+  const text = await row.innerText().catch(() => null);
+  if (text == null) {
+    throw new Error(`REFUSING TO WRITE (${what}): could not read the target row's text on production, `
+      + 'so it cannot be shown to be a test row. Nothing was changed.');
+  }
+  const flat = text.replace(/\s+/g, ' ').trim();
+  if (PRODUCTION_WRITABLE_ROWS.some((re) => re.test(flat))) return;
+  throw new Error(`REFUSING TO WRITE (${what}) on production: the target row is not on the test-row `
+    + `allowlist. Row reads: "${flat.slice(0, 120)}". Only these may be mutated: `
+    + `${PRODUCTION_WRITABLE_ROWS.map((r) => r.source).join(', ')}. `
+    + `[${actLabel}] Nothing was changed.`);
+}
+
 export async function assignRecruiter(page, h, row, recruiterLabel) {
+  await assertWritableRow(row, 'assign recruiter');
   await row.locator('input[type="checkbox"]').first().check({ timeout: 8000 });
   await h.click(['#assign-recruiter'], { timeout: 10_000 });
   const modal = page.locator('.modal.show');
@@ -1936,6 +1983,7 @@ export async function demonstrateInviteDialog(page, h, { row = null, referralSou
  * null while select2 shows the picked value), hence the index-based scoping.
  */
 export async function inviteToILO(page, h, row, { referralSource = 'Direct Invite' } = {}) {
+  await assertWritableRow(row, 'invite to the ILO pipeline');
   await h.openRowMenu(row, { timeout: 15_000 });
   await h.clickMenuItem(row, 'Invite Loan officer to join', { prefix: true });
   const modal = page.locator('.modal.show');
@@ -2186,7 +2234,21 @@ async function pickDemoRow(page, h, { actLabel, fullName, demoRecord, absentBeca
   }
   if (!substitute) {
     const fixture = dataRows(page).filter({ hasText: /\b(test|demo|sample|dummy|qa)\b|mailinator/i }).first();
-    if (await fixture.count()) { substitute = fixture; how = 'auto-detected test fixture'; }
+    if (await fixture.count()) {
+      // On production "contains the word test" is not good enough — a real broker called Testa would
+      // match. Require the same allowlist the write guard enforces, so the two can never disagree.
+      const ok = await assertWritableRow(fixture, 'use as the demo row', { actLabel })
+        .then(() => true).catch((err) => { console.error(`[${actLabel}]   ${err.message}`); return false; });
+      if (ok) { substitute = fixture; how = 'auto-detected test fixture'; }
+    }
+  }
+  if (!substitute && IS_PRODUCTION) {
+    // The last-resort fallback below takes whatever row is FIRST. On staging that is a throwaway
+    // account; on production it is a real loan officer, and the beats that follow WRITE — this is
+    // the exact path that would have marked a real person's startup fee Paid. Stop instead.
+    console.error(`[${actLabel}]   no allowlisted test row on this board, and production has no safe`);
+    console.error(`[${actLabel}]   fallback: the next row would be a real loan officer and ${beats} write.`);
+    return null;
   }
   if (!substitute) {
     const any = dataRows(page).first();
@@ -2221,6 +2283,7 @@ async function pickDemoRow(page, h, { actLabel, fullName, demoRecord, absentBeca
  *  3. a page-level text match would hit the SAME option in all ten other rows on the board.
  */
 export async function setIloCellValue(page, h, row, { dataName, what }) {
+  await assertWritableRow(row, `set ${what} to "${dataName}"`);
   // ⚠️ SCOPE TO THE CELL, NOT THE ROW. "Yes"/"No" is NOT unique in an ILO row: VERIFIED 2026-08-04,
   // the row carries TWO such dropdowns — the agreement, and the webinar "Attended?" column further
   // right. Searching the whole row and taking .first() therefore only worked because the agreement
@@ -3519,6 +3582,18 @@ export async function act2(page, h, cfg = {}) {
       return;
     }
 
+    if (IS_PRODUCTION) {
+      // THE INCIDENT THIS GUARD EXISTS FOR (05/08/2026). This branch approved the top row of the
+      // production pending queue — irreversible, and aimed at whatever happens to be first. The
+      // queue contains no test row, so there is nothing here this shoot may touch. The narration
+      // describes what Approve does and needs no click: "Approving moves the record into the company
+      // list, and then nothing happens."
+      console.warn('[act2]   s2_5: PRODUCTION — Approve is NOT clicked. Showing the menu only;');
+      console.warn('[act2]   s2_5: the pending queue holds no allowlisted test row, and Approve cannot be undone.');
+      await h.hold(2);
+      await h.dismiss();
+      return;
+    }
     console.log(`[act2]   s2_5: BRANCH = PERFORM — approving the top self-apply record: "${pendingTarget}"`);
     const fingerprint = pendingTarget.split(' ').slice(0, 3).join(' ');
 
@@ -4724,7 +4799,15 @@ async function main() {
   // absence must be loud rather than discovered later. Use a Mailinator PUBLIC inbox so the
   // recording browser can actually read the mail (a temp-mail.org address is bound to the cookie
   // of the browser that created it and would be unreadable here).
-  if (selected.some((a) => a.id === 0) && !args.candidate.email) {
+  // PRODUCTION has no Add form and creates nothing, so it deliberately passes no email — see the
+  // candidate defaults. Running this preflight there would demand an address for a record that
+  // already exists.
+  //
+  // The two placeholders below were `"+ADDR+"` and `'"+INBOX+"'` — leftovers of a botched string
+  // concatenation. INBOX is not a binding anywhere, so this banner threw a ReferenceError instead of
+  // printing. It never surfaced because every staging shoot passed --candidate-email and the branch
+  // was dead; the production run, which correctly passes none, hit it on the first try.
+  if (!IS_PRODUCTION && selected.some((a) => a.id === 0) && !args.candidate.email) {
     banner([
       'NO --candidate-email GIVEN',
       '',
@@ -4732,8 +4815,8 @@ async function main() {
       'so no candidate record will exist and acts 1-7 will have nobody to work on.',
       '',
       'Re-run with the shoot address (a Mailinator PUBLIC inbox, readable by URL):',
-      '  --candidate-email "+ADDR+"',
-      "  --mail-url '"+INBOX+"'",
+      '  --candidate-email <address>@mailinator.com',
+      "  --mail-url 'https://www.mailinator.com/v4/public/inboxes.jsp?to=<address>'",
       '',
       'Never use a real person\'s address: this staging environment sends real email.',
     ]);
@@ -4803,9 +4886,34 @@ async function main() {
 
       let actError = null;
       try {
-        await page.goto(URLS.canary, { waitUntil: 'domcontentloaded', timeout: 60_000 });
+        /**
+         * The canary exists to answer ONE boolean — is this seeded session still logged in — so a
+         * slow load must not cost an entire act.
+         *
+         * It did, on the first production run: /prospects/Mine belongs to a REAL loan officer there,
+         * with real prospects behind it, and it missed domcontentloaded inside 60s. act 1 aborted with
+         * zero scenes before a single frame was shot. On staging the same page is a handful of test
+         * rows and always returned instantly, so the timeout was never load-bearing.
+         *
+         * So: give production longer, and on a timeout still ASK the question rather than giving up.
+         * Only an actual login screen — or a DOM too broken to read — stops the act.
+         */
+        const canaryTimeout = IS_PRODUCTION ? 120_000 : 60_000;
+        let canaryTimedOut = false;
+        await page.goto(URLS.canary, { waitUntil: 'domcontentloaded', timeout: canaryTimeout })
+          .catch((err) => {
+            canaryTimedOut = true;
+            console.warn(`[${actLabel}] canary ${URLS.canary} did not finish loading in `
+              + `${canaryTimeout / 1000}s (${err.message.split('\n')[0]}) — checking the session anyway`);
+          });
         await sleep(2500);
-        if (await looksLikeLogin(page)) throw new Error('seeded state is not authenticated (session expired?)');
+        const onLogin = await looksLikeLogin(page).catch(() => null);
+        if (onLogin === true) throw new Error('seeded state is not authenticated (session expired?)');
+        if (onLogin === null) {
+          throw new Error('could not tell whether the seeded session is authenticated — the canary page '
+            + `did not render readably${canaryTimedOut ? ' within the timeout' : ''}. Refusing to shoot blind.`);
+        }
+        if (canaryTimedOut) console.warn(`[${actLabel}] session is valid despite the slow canary — continuing`);
 
         if (act.role !== 'admin' && !seedFromRole) {
           await h.loginAs(act.role, { adminStatePath: args.auth });
