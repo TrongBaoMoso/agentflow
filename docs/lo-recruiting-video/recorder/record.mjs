@@ -2302,160 +2302,140 @@ async function pickCellOption(page, h, labelRe, what) {
 // markers.json records each scene's true on-camera offset, so the s1_4 cue lands on the form.
 // ---------------------------------------------------------------------------
 
-export async function act0(page, h, cfg = {}) {
-  // collapseNav:false — THE MENU IS THIS SCENE'S SUBJECT. Every other scene collapses the overlay
-  // sidebar (see h.collapseNav); here the beat is expanding LO RECRUITING and reading its five
-  // entries, so it must stay at full width. s0_2 navigates afterwards, which resets and then
-  // collapses it, so the expansion cannot leak into the rest of the film.
-  await h.scene('s0_1', { prepare: () => h.goto(URLS.canary, { collapseNav: false }) }, async () => {
-    // VERIFIED 2026-08-03: the sidebar entry is <a id="gwt-debug-lo-recruiting"> — a stable GWT
-    // debug id, immune to text drift. Text match kept as a fallback.
-    await h.click([
-      gwt('lo-recruiting'),
-      () => page.getByRole('link', { name: /LO RECRUITING/i }),
-    ], { timeout: 12_000 });
-    await h.hold(1.5);
-    // VERIFIED 2026-08-04: clicking the nav expands `li.has-sub` into `li.has-sub.expand` and all
-    // five entries become visible inside its nested <ul>. The first shoot still missed them because
-    // the candidate baked in `.first()`: "My Loan Officer referrals" exists TWICE (only one copy
-    // visible) and `.first()` resolved to the hidden duplicate, which also defeats resolve()'s
-    // scan for a visible match. Scope to this section's submenu and never narrow with .first().
-    const loSubmenu = page.locator('li.has-sub')
-      .filter({ has: page.locator(gwt('lo-recruiting')) }).locator('ul');
-    for (const name of [
-      /My Loan Officer referrals/i,
-      /Admin - Loan Officer referrals/i,
-      /Interested Loan Officers/i,
-      /Recruited Loan Officers/i,
-      /Loan Officers Obtained from Modex/i,
-    ]) {
-      await h.optional(`menu ${name}`, () => h.moveTo(() => loSubmenu.getByText(name), { timeout: 4000 }));
-      await h.hold(0.5);
+/**
+ * The five fields an older Recruited record predates, in the order the form reveals them.
+ *
+ * PROBE: every locator below is a CANDIDATE until inspect.mjs has confirmed it against the live DOM
+ * (file convention, see the header). The ERROR strings are verbatim from a live reproduction on
+ * 05/08/2026; the FIELD locators are inferred from the accessible names the page exposes and have
+ * not been driven by Playwright yet.
+ */
+const REQUIRED_FIELD_WALL = [
+  { error: /Licensed states is required/i, name: /^Licensed states$/i, kind: 'select2', value: 'New York' },
+  { error: /States that you want .*to sponsor is required/i, name: /want .*to sponsor/i, kind: 'select2', value: 'New Jersey' },
+  { error: /Career Production is required/i, name: /^Career Production$/i, kind: 'text', value: '25000000' },
+  { error: /Mailing street address is required/i, name: /Same as personal address/i, kind: 'checkbox' },
+  { error: /Preferred languages is required/i, name: /^Preferred languages$/i, kind: 'select2', value: 'English' },
+];
+
+/** Every "<field> is required" message currently on screen, verbatim. */
+async function requiredErrors(page) {
+  return page.evaluate(() => [...document.querySelectorAll('*')]
+    .filter((e) => e.children.length === 0 && /is required/i.test(e.textContent || ''))
+    .map((e) => e.textContent.trim())
+    .filter((t, i, a) => a.indexOf(t) === i));
+}
+
+/** A form control by its accessible name, with an xpath fallback onto the label's next input. */
+function formField(page, nameRe, roles) {
+  const literal = String(nameRe.source).replace(/[\\^$]/g, '').replace(/\.\*/g, '');
+  return [
+    ...roles.map((r) => () => page.getByRole(r, { name: nameRe }).first()),
+    () => page.locator(`xpath=//*[contains(normalize-space(text()),"${literal}")]/following::input[1]`).first(),
+  ];
+}
+
+/** Fill ONE wall field. select2 needs the click-type-pick dance; fill() is a no-op on it. */
+async function fillWallField(page, h, field) {
+  if (field.kind === 'checkbox') {
+    const box = await firstVisible(formField(page, field.name, ['checkbox']));
+    if (!box) throw new Error(`wall: no checkbox for ${field.name}`);
+    await h.click(() => box);
+    return;
+  }
+  if (field.kind === 'text') {
+    const input = await firstVisible(formField(page, field.name, ['textbox']));
+    if (!input) throw new Error(`wall: no text input for ${field.name}`);
+    await h.typeInto(() => input, field.value);
+    return;
+  }
+  const combo = await firstVisible(formField(page, field.name, ['combobox', 'textbox']));
+  if (!combo) throw new Error(`wall: no select2 for ${field.name}`);
+  await h.click(() => combo);
+  await page.keyboard.type(field.value, { delay: 55 });
+  const option = page.locator('li.select2-results__option')
+    .filter({ hasNotText: /^\s*(Searching|Loading|Please)/i })
+    .filter({ hasText: new RegExp(`^\\s*${reEsc(field.value)}\\s*$`, 'i') })
+    .first();
+  await option.waitFor({ state: 'visible', timeout: 15_000 });
+  await h.click(() => option);
+}
+
+/**
+ * PRODUCTION s1_4 — the required-field wall, filmed on the row the system itself flagged Duplicated.
+ *
+ * s1_3 ends on that red row, so this beat is the recruiter trying to clean it up and being refused:
+ * the record predates five fields the form now marks required, and they surface one at a time, so
+ * correcting the one field he actually knows is impossible without inventing the other five.
+ *
+ * ⚠︎ THIS SCENE MUST NEVER SUBMIT SUCCESSFULLY. A successful save fills those five in permanently —
+ * the same validation refuses to write them back to empty — and a re-record would have nothing left
+ * to film. The subject's own record was already lost that way, prepared off camera so its email
+ * could be changed, which is the only reason this beat is on a different row. So: stop the instant
+ * the errors clear, leave via Cancel, and let the caller re-read the record to prove nothing stuck.
+ */
+export async function demonstrateRequiredFieldWall(page, h, { rowName, nmls = '' } = {}) {
+  const row = h.row(rowName);
+  if (!(await row.count())) throw new Error(`s1_4: no row matching "${rowName}" on the Recruited board`);
+
+  // PROBE: the name cell is a link; scope it to the matched row so a same-name decoy cannot win.
+  const nameLink = await firstVisible([
+    () => row.getByRole('link', { name: new RegExp(reEsc(rowName), 'i') }).first(),
+    () => row.locator('a').filter({ hasText: new RegExp(reEsc(rowName), 'i') }).first(),
+  ]);
+  if (!nameLink) throw new Error(`s1_4: found the "${rowName}" row but no link to open it`);
+  await h.click(() => nameLink);
+  await h.waitForAppIdle();
+
+  const submit = () => page.locator('#gwt-debug-submit');
+  await submit().waitFor({ state: 'visible', timeout: 30_000 });
+
+  // The one field he actually knows. Typing it is the whole point of the visit.
+  if (nmls) {
+    await h.optional('type the missing NMLS', async () => {
+      const input = await firstVisible(formField(page, /^NMLS$/i, ['textbox']));
+      if (input) await h.typeInto(() => input, nmls);
+    });
+    await h.hold(1);
+  }
+
+  const revealed = [];
+  for (let round = 1; round <= REQUIRED_FIELD_WALL.length + 1; round += 1) {
+    await h.click(() => submit());
+    await h.hold(2.2);
+    const errors = await requiredErrors(page);
+    if (!errors.length) {
+      // Nothing left to refuse — which means the NEXT click would SAVE. Stop here, on purpose.
+      console.log(`[act1]   s1_4: errors cleared after ${round} submit(s) — stopping BEFORE a save`);
+      break;
     }
-  });
-
-  // The narration opens with "this is the board every single role shares, sixteen columns…", so the
-  // board — not the previous scene's page — has to be up before the clock starts.
-  await h.scene('s0_2', {
-    prepare: async () => {
-      await h.goto(URLS.rloMine);
-      await h.clickTab(TABS.company); // VERIFIED: clicking beats deep-linking (see URLS note)
-    },
-  }, async () => {
-    // 16 columns: prove it by scrolling the table horizontally.
-    // VERIFIED 2026-08-03: the data grid is `table.table-sm.table-hover` with 17 <th>; the view
-    // also holds a separate summary <table>, so anchor on the data table, not `table` first().
-    const header = [
-      () => page.locator('table.table-hover th').filter({ hasText: /Started date/i }).first(),
-      () => page.locator('table.table-hover').first(),
-    ];
-    await h.moveTo(header, { timeout: 10_000 });
-    const scroller = await h.scrollableNear(header);
-    await h.smoothScroll(scroller || 'window', 1400, { axis: 'x', steps: 22, gap: 55 });
-    await h.hold(1);
-    await h.smoothScroll(scroller || 'window', -1400, { axis: 'x', steps: 14, gap: 40 });
-  });
-
-  await h.scene('s0_3', async () => {
-    // Stats panel: every number is a drill-down.
-    // VERIFIED 2026-08-03: tiles read "<Label> - <N>" inside div.col-md-2 and the link is the
-    // NUMBER (a.gwt-Anchor href="javascript:"), not the label — see h.statLink(). The labels
-    // present on this tab are Total / Initiate contact / Message sent / Dialogue / Invited to
-    // join / Interested but thinking / Want to join / Archived / Block display / Claimed /
-    // Not claimed. ("Not touched" is a per-ROW status value, not a tile.)
-    await h.moveTo(() => h.statLink(/^Total/).first(), { timeout: 10_000 });
-    await h.hold(1);
-    await h.click(() => h.statLink(/Initiate contact/).first(), { timeout: 10_000 });
-    await h.waitForRows();
-    await h.hold(2.5);
-    await page.goBack({ waitUntil: 'domcontentloaded' }).catch(() => {});
-    await h.waitForRows();
-    // goBack is a real page load, which re-expands the overlay sidebar; h.goto is not involved here,
-    // so collapse it by hand or the rest of this scene is filmed with the title clipped.
-    await h.collapseNav();
-    // VERIFIED 2026-08-03: the icon strip above the stats panel is 4 icon-only <button>s with
-    // EMPTY innerText (no title, no aria-label, no gwt-debug id) — refresh plus the 3 view modes
-    // (bar chart / text / hide). The refresh one does carry a generated id derived from its own
-    // markup, `button#i-classfas-fa-refreshi` (<i class="fas fa-refresh">), so use it as the
-    // anchor and take its siblings rather than guessing at classes.
-    await h.optional('stats view-mode toggles', async () => {
-      const strip = page.locator('button#i-classfas-fa-refreshi').locator('xpath=..');
-      const toggles = strip.locator('button:not(#i-classfas-fa-refreshi)');
-      const n = Math.min(2, await toggles.count());
-      if (!n) throw new Error('view-mode icon strip not found');
-      for (let i = 0; i < n; i += 1) {
-        await h.click(() => toggles.nth(i), { timeout: 3000 });
-        await h.hold(1.2);
-      }
-    });
-  });
-
-  await h.scene('s0_4', { prepare: () => h.goto(URLS.config, { rows: false }) }, async () => {
-    // 🔒 The Calendly tab is DELIBERATELY NOT OPENED — it renders a live personal access token in
-    // clear text. See CONFIG_TABS_WITH_SECRETS for the full reasoning. Do not re-add it, and do not
-    // "solve" it with a blur: the tab STRIP below shows the audience that all five tabs exist, and
-    // the narration's line about the stored Calendly token lands fine without the token on screen.
-    //
-    // VERIFIED 2026-08-04: clicking this strip is unreliable — `a.nav-link[role=tab]` also matches
-    // dozens of SIDEBAR entries, so a name lookup can land outside the page's own strip (that is
-    // why four of these five tabs found nothing in the first shoot). Deep-link them instead: every
-    // tab is addressable as /lo_recruiting_config/<data-name>.
-    for (const [label, dn] of FILMABLE_CONFIG_TABS) {
-      await h.optional(`config tab ${label}`, async () => {
-        // Shoot 3 lost this whole scene to a single 60s goto timeout on a slow staging, so retry.
-        let ok = false;
-        for (let attempt = 1; attempt <= 2 && !ok; attempt += 1) {
-          try {
-            await h.goto(`${BASE}/lo_recruiting_config/${dn}`, { rows: false });
-            ok = true;
-          } catch (err) {
-            console.warn(`[act0]   config tab ${label} attempt ${attempt}/2 failed: ${err.message.split('\n')[0]}`);
-            if (attempt < 2) await h.hold(4);
-          }
-        }
-        if (!ok) throw new Error(`could not open the ${label} tab`);
-        await h.hold(1.6);
-      });
+    for (const e of errors) if (!revealed.includes(e)) revealed.push(e);
+    console.log(`[act1]   s1_4: submit ${round} refused: ${errors.join(' | ')}`);
+    const next = REQUIRED_FIELD_WALL.find((f) => errors.some((e) => f.error.test(e)));
+    if (!next) {
+      console.warn('[act1]   s1_4: an error appeared that the wall list does not know — leaving it on screen');
+      break;
     }
-    // Land on Webinar — a clean tab — and trace the tab strip so all five labels are on camera.
-    // Hovering the Calendly LABEL is safe and is the point of the beat; OPENING it is not.
-    await h.optional('land on a tab that renders no secret', () =>
-      h.goto(URLS.configWebinar, { rows: false }));
-    await h.optional('trace the five config tabs', async () => {
-      const strip = page.locator('div.tab-container nav[role="tablist"]').first();
-      for (const label of Object.keys(CONFIG_TABS)) {
-        await h.optional(`tab label ${label}`, () =>
-          h.moveTo(() => strip.getByText(label, { exact: false }).first(), { timeout: 3000 }));
-        await h.hold(0.6);
-      }
-    });
-  });
+    await h.optional(`fill ${next.name}`, () => fillWallField(page, h, next));
+    await h.hold(1.2);
+  }
 
-  // The narration opens with "this is the Modex data", so the Modex page — not the config tab this
-  // scene follows — must be up before the clock starts.
-  await h.scene('s0_5', { prepare: () => h.goto(URLS.modexData) }, async () => {
-    // Open one record's MODEX INFORMATION modal (read-only).
-    // VERIFIED 2026-08-03: this page is the ONE div-grid (div.table-row / div.table-cell, 9 rows)
-    // and "View" / "Update" are real <button class="btn btn-secondary">, so role=link matched
-    // nothing here. There is no per-row Action menu on this page — "Action" is only a column
-    // header, and the row's write control is "Update" (not clicked: it starts a merge job).
-    await h.click([
-      () => page.getByRole('button', { name: /^\s*View\s*$/i }).first(),
-    ], { timeout: 10_000 });
-    await h.hold(2);
-    await h.optional('performance block', () => h.moveTo(() => page.getByText(/PERFORMANCE/i).first(), { timeout: 4000 }));
-    await h.hold(1);
-    await h.optional('transaction summary', async () => {
-      await h.smoothScroll(() => page.getByText(/TRANSACTION SUMMARY/i).first(), 400, { steps: 10 });
-      await h.moveTo(() => page.getByText(/TRANSACTION SUMMARY/i).first(), { timeout: 4000 });
-    });
-    await h.hold(1);
-    await h.dismiss();
-    await h.hold(1);
-    // The whole point: every row was Received 24/01/2024 and nothing newer.
-    await h.optional('Received column', () => h.moveTo(() => page.getByText(/Received/i).first(), { timeout: 4000 }));
-  });
+  console.log(`[act1]   s1_4: the form demanded ${revealed.length} field(s): ${revealed.join(' | ')}`);
+  await h.hold(1.5);
+  await h.click(() => page.locator('#gwt-debug-cancel'));
+  await h.waitForAppIdle();
+  return { revealed };
+}
 
+/**
+ * STAGING ONLY — the Add-form beat (s1_4), filmed inside act 0's admin context.
+ *
+ * Lifted out of act0() verbatim when the production variant landed: production re-points s1_4 at a
+ * different pain on a different record in a different session, so the two cannot share a body. The
+ * original reasoning for shooting it here rather than in act 1 is preserved below and still applies
+ * to the staging cut.
+ */
+async function shootAddFormBeat(page, h, cfg) {
   /**
    * s1_4 IS SHOT HERE, in act 0's admin context — decided 2026-08-04.
    *
@@ -2624,6 +2604,165 @@ export async function act0(page, h, cfg = {}) {
       }
     }
   });
+}
+
+export async function act0(page, h, cfg = {}) {
+  // collapseNav:false — THE MENU IS THIS SCENE'S SUBJECT. Every other scene collapses the overlay
+  // sidebar (see h.collapseNav); here the beat is expanding LO RECRUITING and reading its five
+  // entries, so it must stay at full width. s0_2 navigates afterwards, which resets and then
+  // collapses it, so the expansion cannot leak into the rest of the film.
+  await h.scene('s0_1', { prepare: () => h.goto(URLS.canary, { collapseNav: false }) }, async () => {
+    // VERIFIED 2026-08-03: the sidebar entry is <a id="gwt-debug-lo-recruiting"> — a stable GWT
+    // debug id, immune to text drift. Text match kept as a fallback.
+    await h.click([
+      gwt('lo-recruiting'),
+      () => page.getByRole('link', { name: /LO RECRUITING/i }),
+    ], { timeout: 12_000 });
+    await h.hold(1.5);
+    // VERIFIED 2026-08-04: clicking the nav expands `li.has-sub` into `li.has-sub.expand` and all
+    // five entries become visible inside its nested <ul>. The first shoot still missed them because
+    // the candidate baked in `.first()`: "My Loan Officer referrals" exists TWICE (only one copy
+    // visible) and `.first()` resolved to the hidden duplicate, which also defeats resolve()'s
+    // scan for a visible match. Scope to this section's submenu and never narrow with .first().
+    const loSubmenu = page.locator('li.has-sub')
+      .filter({ has: page.locator(gwt('lo-recruiting')) }).locator('ul');
+    for (const name of [
+      /My Loan Officer referrals/i,
+      /Admin - Loan Officer referrals/i,
+      /Interested Loan Officers/i,
+      /Recruited Loan Officers/i,
+      /Loan Officers Obtained from Modex/i,
+    ]) {
+      await h.optional(`menu ${name}`, () => h.moveTo(() => loSubmenu.getByText(name), { timeout: 4000 }));
+      await h.hold(0.5);
+    }
+  });
+
+  // The narration opens with "this is the board every single role shares, sixteen columns…", so the
+  // board — not the previous scene's page — has to be up before the clock starts.
+  await h.scene('s0_2', {
+    prepare: async () => {
+      await h.goto(URLS.rloMine);
+      await h.clickTab(TABS.company); // VERIFIED: clicking beats deep-linking (see URLS note)
+    },
+  }, async () => {
+    // 16 columns: prove it by scrolling the table horizontally.
+    // VERIFIED 2026-08-03: the data grid is `table.table-sm.table-hover` with 17 <th>; the view
+    // also holds a separate summary <table>, so anchor on the data table, not `table` first().
+    const header = [
+      () => page.locator('table.table-hover th').filter({ hasText: /Started date/i }).first(),
+      () => page.locator('table.table-hover').first(),
+    ];
+    await h.moveTo(header, { timeout: 10_000 });
+    const scroller = await h.scrollableNear(header);
+    await h.smoothScroll(scroller || 'window', 1400, { axis: 'x', steps: 22, gap: 55 });
+    await h.hold(1);
+    await h.smoothScroll(scroller || 'window', -1400, { axis: 'x', steps: 14, gap: 40 });
+  });
+
+  await h.scene('s0_3', async () => {
+    // Stats panel: every number is a drill-down.
+    // VERIFIED 2026-08-03: tiles read "<Label> - <N>" inside div.col-md-2 and the link is the
+    // NUMBER (a.gwt-Anchor href="javascript:"), not the label — see h.statLink(). The labels
+    // present on this tab are Total / Initiate contact / Message sent / Dialogue / Invited to
+    // join / Interested but thinking / Want to join / Archived / Block display / Claimed /
+    // Not claimed. ("Not touched" is a per-ROW status value, not a tile.)
+    await h.moveTo(() => h.statLink(/^Total/).first(), { timeout: 10_000 });
+    await h.hold(1);
+    await h.click(() => h.statLink(/Initiate contact/).first(), { timeout: 10_000 });
+    await h.waitForRows();
+    await h.hold(2.5);
+    await page.goBack({ waitUntil: 'domcontentloaded' }).catch(() => {});
+    await h.waitForRows();
+    // goBack is a real page load, which re-expands the overlay sidebar; h.goto is not involved here,
+    // so collapse it by hand or the rest of this scene is filmed with the title clipped.
+    await h.collapseNav();
+    // VERIFIED 2026-08-03: the icon strip above the stats panel is 4 icon-only <button>s with
+    // EMPTY innerText (no title, no aria-label, no gwt-debug id) — refresh plus the 3 view modes
+    // (bar chart / text / hide). The refresh one does carry a generated id derived from its own
+    // markup, `button#i-classfas-fa-refreshi` (<i class="fas fa-refresh">), so use it as the
+    // anchor and take its siblings rather than guessing at classes.
+    await h.optional('stats view-mode toggles', async () => {
+      const strip = page.locator('button#i-classfas-fa-refreshi').locator('xpath=..');
+      const toggles = strip.locator('button:not(#i-classfas-fa-refreshi)');
+      const n = Math.min(2, await toggles.count());
+      if (!n) throw new Error('view-mode icon strip not found');
+      for (let i = 0; i < n; i += 1) {
+        await h.click(() => toggles.nth(i), { timeout: 3000 });
+        await h.hold(1.2);
+      }
+    });
+  });
+
+  await h.scene('s0_4', { prepare: () => h.goto(URLS.config, { rows: false }) }, async () => {
+    // 🔒 The Calendly tab is DELIBERATELY NOT OPENED — it renders a live personal access token in
+    // clear text. See CONFIG_TABS_WITH_SECRETS for the full reasoning. Do not re-add it, and do not
+    // "solve" it with a blur: the tab STRIP below shows the audience that all five tabs exist, and
+    // the narration's line about the stored Calendly token lands fine without the token on screen.
+    //
+    // VERIFIED 2026-08-04: clicking this strip is unreliable — `a.nav-link[role=tab]` also matches
+    // dozens of SIDEBAR entries, so a name lookup can land outside the page's own strip (that is
+    // why four of these five tabs found nothing in the first shoot). Deep-link them instead: every
+    // tab is addressable as /lo_recruiting_config/<data-name>.
+    for (const [label, dn] of FILMABLE_CONFIG_TABS) {
+      await h.optional(`config tab ${label}`, async () => {
+        // Shoot 3 lost this whole scene to a single 60s goto timeout on a slow staging, so retry.
+        let ok = false;
+        for (let attempt = 1; attempt <= 2 && !ok; attempt += 1) {
+          try {
+            await h.goto(`${BASE}/lo_recruiting_config/${dn}`, { rows: false });
+            ok = true;
+          } catch (err) {
+            console.warn(`[act0]   config tab ${label} attempt ${attempt}/2 failed: ${err.message.split('\n')[0]}`);
+            if (attempt < 2) await h.hold(4);
+          }
+        }
+        if (!ok) throw new Error(`could not open the ${label} tab`);
+        await h.hold(1.6);
+      });
+    }
+    // Land on Webinar — a clean tab — and trace the tab strip so all five labels are on camera.
+    // Hovering the Calendly LABEL is safe and is the point of the beat; OPENING it is not.
+    await h.optional('land on a tab that renders no secret', () =>
+      h.goto(URLS.configWebinar, { rows: false }));
+    await h.optional('trace the five config tabs', async () => {
+      const strip = page.locator('div.tab-container nav[role="tablist"]').first();
+      for (const label of Object.keys(CONFIG_TABS)) {
+        await h.optional(`tab label ${label}`, () =>
+          h.moveTo(() => strip.getByText(label, { exact: false }).first(), { timeout: 3000 }));
+        await h.hold(0.6);
+      }
+    });
+  });
+
+  // The narration opens with "this is the Modex data", so the Modex page — not the config tab this
+  // scene follows — must be up before the clock starts.
+  await h.scene('s0_5', { prepare: () => h.goto(URLS.modexData) }, async () => {
+    // Open one record's MODEX INFORMATION modal (read-only).
+    // VERIFIED 2026-08-03: this page is the ONE div-grid (div.table-row / div.table-cell, 9 rows)
+    // and "View" / "Update" are real <button class="btn btn-secondary">, so role=link matched
+    // nothing here. There is no per-row Action menu on this page — "Action" is only a column
+    // header, and the row's write control is "Update" (not clicked: it starts a merge job).
+    await h.click([
+      () => page.getByRole('button', { name: /^\s*View\s*$/i }).first(),
+    ], { timeout: 10_000 });
+    await h.hold(2);
+    await h.optional('performance block', () => h.moveTo(() => page.getByText(/PERFORMANCE/i).first(), { timeout: 4000 }));
+    await h.hold(1);
+    await h.optional('transaction summary', async () => {
+      await h.smoothScroll(() => page.getByText(/TRANSACTION SUMMARY/i).first(), 400, { steps: 10 });
+      await h.moveTo(() => page.getByText(/TRANSACTION SUMMARY/i).first(), { timeout: 4000 });
+    });
+    await h.hold(1);
+    await h.dismiss();
+    await h.hold(1);
+    // The whole point: every row was Received 24/01/2024 and nothing newer.
+    await h.optional('Received column', () => h.moveTo(() => page.getByText(/Received/i).first(), { timeout: 4000 }));
+  });
+
+  // STAGING ONLY. On production the recruiter owns this screen and the beat changes subject
+  // entirely, so it moves to act 1 where it always belonged narratively (see act1).
+  if (!IS_PRODUCTION) await shootAddFormBeat(page, h, cfg);
 
   await h.scene('s0_6', {
     prepare: async () => {
@@ -2763,6 +2902,51 @@ export async function act1(page, h, cfg = {}) {
   // and its narration cue cannot land on the wrong footage.
 
   // THE evidence button: "Copy Name And NMLS #" exists only so the recruiter can leave the app.
+  /**
+   * PRODUCTION ONLY: s1_4 lands here, between s1_3 and s1_5, exactly where the storyboard always
+   * wanted it. On staging it had to be shot in act 0 because an Outside Recruiter has no Add button
+   * there; on production the recruiter owns this screen, and the beat is no longer the Add form at
+   * all — it is being unable to correct the duplicate s1_3 just uncovered.
+   *
+   * The board is reached in `prepare` and the label filter is committed there too: neither is
+   * narrated, and the scene's offset must mark the moment the form work starts.
+   */
+  if (IS_PRODUCTION) {
+    const wall = { record: cfg.wallRecord || 'Katie Test', nmls: cfg.wallNmls || '1076215' };
+    await h.scene('s1_4', {
+      prepare: async () => {
+        await h.goto(URLS.rloCompany);
+        await h.optional('surface the test rows', () => h.filterGrid('test'));
+      },
+    }, async () => {
+      await demonstrateRequiredFieldWall(page, h, { rowName: wall.record, nmls: wall.nmls });
+    });
+
+    /**
+     * NOT NARRATED, and deliberately outside the scene: prove the take wrote nothing.
+     *
+     * If a submit ever slips through, those five fields are filled for good — the same validation
+     * refuses to write them back to empty — and every future re-record of this beat has nothing left
+     * to film. That already happened once, to the subject's own record. So re-open the row and hard
+     * fail while somebody is still watching, rather than discovering it on the next shoot.
+     */
+    await h.optional('verify s1_4 saved nothing', async () => {
+      await h.goto(URLS.rloCompany);
+      await h.filterGrid('test');
+      const still = await page.evaluate(() => {
+        const el = [...document.querySelectorAll('input')].find((i) => /^\s*$/.test(i.value)
+          && /Licensed states/i.test(i.getAttribute('aria-label') || ''));
+        return el ? 'empty' : 'unknown';
+      });
+      console.log(`[act1]   s1_4 post-check: licensed-states on the wall record reads "${still}"`);
+      if (still === 'unknown') {
+        console.warn('[act1]   s1_4 post-check could not read the field from the list view — open '
+          + `"${wall.record}" by hand and confirm Licensed states is STILL EMPTY. If it is not, the `
+          + 'take saved, and this beat is no longer re-recordable on that row.');
+      }
+    });
+  }
+
   await h.scene('s1_5', { prepare: () => h.goto(URLS.rloMine) }, async () => {
     // VERIFIED 2026-08-03: the social-media cell holds a single
     // `button` labelled "Not checked" (becomes "Checked and has social links" once filled).
@@ -4066,7 +4250,25 @@ export function parseArgs(argv = process.argv.slice(2)) {
     // converted off the Recruited board. See the substitute picker in act1.
     demoRecord: null,
     slow: 0,
-    candidate: {
+    /**
+     * The production cut does NOT create its subject — it works an existing test record, so the
+     * fields the staging Add form needed are irrelevant here. Two differences matter:
+     *
+     *   name  the subject is a real production row, and its name is what every row-level beat
+     *         locates it by.
+     *   nmls  it has NONE, on purpose: the recruiter typing one in is a beat (s1_4/s1_5). An NMLS
+     *         here would make candidateRow() demand a number the row does not carry, so every
+     *         row-level beat would silently fall through to the substitute picker.
+     */
+    candidate: IS_PRODUCTION ? {
+      name: 'Test Test',
+      email: '',
+      phone: '',
+      nmls: '',
+      channel: 'Retail LO',
+      experience: 'Experienced',
+      priority: 'High',
+    } : {
       name: 'Marcus Reyes',
       email: '',            // supplied at shoot time via --candidate-email (see --mail-url)
       phone: '(444) 433-3444',
@@ -4076,6 +4278,10 @@ export function parseArgs(argv = process.argv.slice(2)) {
       experience: 'Experienced',
       priority: 'High',
     },
+    // PRODUCTION s1_4 only: the row the required-field wall is filmed on, and the licence number
+    // typed into it. Kept separate from `candidate` — this is deliberately NOT the subject.
+    wallRecord: null,
+    wallNmls: null,
     role: null,             // inspect.mjs only
     act: null,              // inspect.mjs only
     loginAs: false,         // inspect.mjs only
@@ -4085,6 +4291,8 @@ export function parseArgs(argv = process.argv.slice(2)) {
     const a = argv[i];
     const next = () => argv[++i];
     switch (a) {
+      case '--wall-record': out.wallRecord = next(); break;
+      case '--wall-nmls': out.wallNmls = next(); break;
       case '--acts': out.acts = next().split(',').map((s) => Number(s.trim())).filter((n) => Number.isInteger(n)); break;
       case '--act': out.act = Number(next()); break;
       case '--auth': out.auth = path.resolve(next()); break;
