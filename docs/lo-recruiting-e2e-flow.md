@@ -407,5 +407,34 @@ Best practice các ATS hiện đại (Ashby/Greenhouse/Lever): **cùng một d�
 Band P1–P4 + ngưỡng trong mockup là placeholder minh hoạ. Hệ thống cũ: recruiter tự tra Modex rồi tự ước offer (chính là pain). Con số thật (bao nhiêu band, ngưỡng volume/units, comp đi kèm) phải do anh Thuận/HR chốt — đã nằm trong danh sách quyết định Nhóm 2. Kỹ thuật chỉ là bảng mapping volume→band, rẻ, có thể ship sau v1 mà không ảnh hưởng kiến trúc.
 
 ---
+### 9.7. Ghi chú bổ sung 05/08/2026 (sau khi Bao xem mockup views + roles)
+
+**View config (để làm — yêu cầu Bao):** không chốt cứng view mặc định. Cần 2 lớp cấu hình:
+1. **Admin đặt default view theo role** (vd Recruiter → Focus, Manager → Funnel) — bảng config, đổi được không cần deploy.
+2. **User tự override**: chọn default riêng + đánh dấu favorite views (saved view có tên, kèm bộ lọc). View state nằm trong URL nên share được link.
+
+**Ai thấy Kanban (và mọi pipeline view)?** Nguyên tắc: *view và quyền là hai thứ tách nhau* — 4 view (Kanban/Table/Focus/Funnel) chỉ là 4 cách vẽ, còn **ống kính role (row-level + field-level §9.5) áp dụng cho MỌI view**:
+
+| Role | Mở được Pipeline? | Thấy gì trong đó |
+|---|---|---|
+| Recruiter | Có — mặc định thẻ của mình | Mọi stage, lead của mình/team |
+| Manager | Có — toàn team | Mọi stage, mọi recruiter |
+| HR | Có (ít dùng — landing là queue offer) | Kanban chỉ đổ dữ liệu từ S4 trở đi, cột S1–S3 trống |
+| Licensing / Onboarding / Accounting | Không cần — landing là queue riêng | (nếu cấp quyền: chỉ S6/S7, comp vẫn khoá) |
+| Referring LO | Không bao giờ | Chỉ card tiến độ trong LO portal |
+
+**Benchmark role-based view của các app khác (kiểm chứng mô hình 2 chiều):**
+
+| App | Cách họ làm |
+|---|---|
+| Greenhouse (ATS) | Permission theo role (Job Admin / Hiring Manager…) — hiring manager chỉ thấy candidate của job mình; lương/offer là "private fields" gated riêng |
+| Lever (ATS) | "Sensitive Data Access" tách khỏi quyền xem hồ sơ — đúng mô hình field-level; offer đi qua approval chain |
+| Ashby (ATS) | RBAC granular + dashboard mặc định cấu hình theo role — giống đề xuất view-config ở trên |
+| Salesforce / HubSpot (CRM) | Record-level sharing rules + field-level security — chuẩn ngành, trùng khớp mô hình row+field 2 chiều của §9.5 |
+
+→ Kết luận: mô hình đang mockup trùng chuẩn ngành, **giữ nguyên**; khi viết spec chi tiết sẽ chụp tham khảo màn hình thật của Ashby/Greenhouse làm phụ lục nếu cần.
+
+**Repo:** `zoom`, `zoom-go`, `document-esign` đã clone về agentflow (05/08).
+
 
 *Tài liệu cùng bộ:* [lo-recruiting-redesign-direction.md](lo-recruiting-redesign-direction.md) (17 pain points + hướng + quyết định kiến trúc §6) · [lo-recruiting-feature-review.md](lo-recruiting-feature-review.md) (hiện trạng chi tiết + Phụ lục C production)
