@@ -3549,11 +3549,49 @@ export async function act3(page, h) {
     await h.hold(2.5);
   });
 
-  await h.scene('s3_3', async () => {
-    // Production comparison (Licensing sees 23.5K ILO + can open config) is a SLIDE built in
-    // assemble.mjs — nothing to drive here, just hold the current screen for the narration.
-    await h.hold(0.5);
-  });
+  /**
+   * s3_3 is the one scene the production cut had to REWRITE rather than renumber.
+   *
+   * The staging narration compared this role against production ("the same job title there sees the
+   * entire pipeline of twenty-three thousand records and can open the company configuration"). Read
+   * off her Permissions tree on 05/08/2026, that is FALSE: thirty of eighty-two switches are on, and
+   * RECRUITED_/INTERESTED_LOAN_OFFICERS are not among them — so on production she cannot open a
+   * candidate either. CONFIG, however, IS on.
+   *
+   * So there is nothing to compare and something much better to film: the licensing specialist can
+   * change how the whole company recruits while being unable to see one person being recruited. That
+   * is drivable, in her own session, which is why the staging hold becomes a real beat here.
+   */
+  if (IS_PRODUCTION) {
+    await h.scene('s3_3', async () => {
+      const landed = await h.goto(URLS.config, { retryBounce: false, rows: false });
+      const reached = /lo_recruiting_config/.test(landed);
+      console.log(`[act3]   s3_3: asked for the recruiting config -> ${landed}`
+        + `   ${reached ? '(SHE CAN OPEN IT)' : '(redirected — CONFIG says she should not have been)'}`);
+      if (!reached) {
+        // The permission tree said CONFIG is on. If the app disagrees, say so loudly instead of
+        // narrating a claim the footage contradicts.
+        console.error('[act3]   s3_3: CONFIG is ticked for this account but the page redirected. The '
+          + 'narration asserts she can open it — RE-CHECK before shipping this act.');
+        await h.hold(3);
+        return;
+      }
+      await h.hold(2);
+      // 🔒 Hovering tab LABELS is the beat; opening the Calendly tab is never allowed — it renders a
+      // live personal access token in clear text (see CONFIG_TABS_WITH_SECRETS). Hover only.
+      for (const label of [/Webinar/i, /Owner Assignment|ILO Owner/i, /Facebook/i]) {
+        await h.optional(`hover the ${label} tab`, () =>
+          h.moveTo(() => page.getByText(label).first(), { timeout: 4000 }));
+        await h.hold(1.2);
+      }
+    });
+  } else {
+    await h.scene('s3_3', async () => {
+      // Production comparison (Licensing sees 23.5K ILO + can open config) is a SLIDE built in
+      // assemble.mjs — nothing to drive here, just hold the current screen for the narration.
+      await h.hold(0.5);
+    });
+  }
 
   // Licensing's own data lives as COLUMNS in someone else's table. This role cannot open that table
   // on staging, so ATTEMPT the navigation in setup and fall back to a hold; the columns themselves
@@ -4089,6 +4127,45 @@ export async function act5(page, h, cfg = {}) {
 
 export async function act6(page, h, cfg = {}) {
   const candidate = cfg.candidate || {};
+
+  /**
+   * PRODUCTION: the accountant cannot open either recruiting list.
+   *
+   * Read off her Permissions tree on 05/08/2026: fourteen of the eighty-two switches are on, and
+   * they include paying company commission and editing every transaction in the company — but not
+   * RECRUITED_LOAN_OFFICERS and not INTERESTED_LOAN_OFFICERS. So the staging beat (Accounting is the
+   * only role with Export (csv)) is not reproducible here: there is no board for her to export.
+   *
+   * That is not a hole in the act, it IS the act. The person who pays the referral bonus has never
+   * been able to look at the pipeline that produced it, so the scene is the two attempts and the two
+   * silent redirects — no message, no permission error, just a different page.
+   *
+   * retryBounce is off on purpose: h.goto() normally re-navigates when the landing URL differs from
+   * the requested one, which is exactly what a redirect looks like, and it would double-navigate
+   * on camera.
+   */
+  if (IS_PRODUCTION) {
+    await h.scene('s6_1', async () => {
+      for (const [what, url] of [['the live pipeline', URLS.iloCompany], ['the cold list', URLS.rloCompany]]) {
+        const landed = await h.goto(url, { retryBounce: false, rows: false })
+          .catch((err) => `THREW: ${err.message}`);
+        const bounced = typeof landed === 'string' && !landed.startsWith('THREW')
+          && landed.replace(/\/$/, '') !== url.replace(/\/$/, '');
+        console.log(`[act6]   s6_1: ${what} -> ${landed}${bounced ? '   (silently redirected)' : ''}`);
+        await h.hold(3);
+      }
+      // What she CAN reach. Unverified for this role on production — log the outcome either way so
+      // the next take knows whether s6_2..s6_4 could move out of act 7's admin session into hers.
+      await h.optional('try the referral page as Accounting', async () => {
+        const landed = await h.goto(URLS.referrals, { retryBounce: false, rows: false });
+        const ok = landed.replace(/\/$/, '') === URLS.referrals.replace(/\/$/, '');
+        console.log(`[act6]   s6_1: referrals page ${ok ? 'IS reachable' : `redirected -> ${landed}`}`
+          + ' (she holds MANAGE_LOAN_OFFICER_REFERRAL but not the two list permissions)');
+        await h.hold(2.5);
+      });
+    });
+    return;
+  }
 
   await h.scene('s6_1', { prepare: () => h.goto(URLS.iloCompany) }, async () => {
     // Accounting is the ONLY role with Export (csv) — the real reporting lives in spreadsheets.
