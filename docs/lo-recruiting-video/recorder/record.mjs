@@ -1644,7 +1644,7 @@ const PRODUCTION_WRITABLE_ROWS = [
  * Fails CLOSED: a row whose text cannot be read is refused, because "could not tell" and "safe" are
  * not the same answer — that conflation is what created the incident this guard exists for.
  */
-async function assertWritableRow(row, what, { actLabel = 'act?' } = {}) {
+export async function assertWritableRow(row, what, { actLabel = 'act?' } = {}) {
   if (!IS_PRODUCTION) return;
   const text = await row.innerText().catch(() => null);
   if (text == null) {
