@@ -15,11 +15,16 @@
 // cannot match inside 1076215.
 import {
   launchBrowser, createContext, makeHelpers, URLS, authPathFor,
-  ensureCandidateVisible, candidateRow, readIloState, setIloCellValue,
+  ensureCandidateVisible, candidateRow, readIloState, setIloCellValue, IS_PRODUCTION,
 } from '../record.mjs';
 
-const SUBJECT = { name: 'Marcus Reyes', nmls: '1076215' };
-const DECOY = { name: 'Marcus Reyes', nmls: '107621' };
+// Production subject: the unique "(New York)" leaf pins the row among EIGHT same-name records; the
+// NMLS is empty on purpose (the record has no NMLS field to set — see tools/set-subject-nmls.mjs).
+// Every write below funnels through setIloCellValue, which runs the production write guard.
+const SUBJECT = IS_PRODUCTION
+  ? { name: 'Test Test', match: 'Test Test (New York)', nmls: '' }
+  : { name: 'Marcus Reyes', nmls: '1076215' };
+const DECOY = IS_PRODUCTION ? null : { name: 'Marcus Reyes', nmls: '107621' };
 const DRY = process.argv.includes('--dry');
 
 const browser = await launchBrowser({});
@@ -99,15 +104,18 @@ await land();
 // ---- FINAL READ-BACK: both records, from a fresh load ------------------------------------------
 await land();
 const subj = await readIloState(page, SUBJECT);
-await h.goto(URLS.iloCompany);
-await ensureCandidateVisible(page, h, DECOY);
-const dec = await readIloState(page, DECOY);
+let dec = null;
+if (DECOY) {
+  await h.goto(URLS.iloCompany);
+  await ensureCandidateVisible(page, h, DECOY);
+  dec = await readIloState(page, DECOY);
+}
 const stamp = new Date().toISOString();
 
 console.log('\n==================== FINAL READ-BACK ====================');
 console.log(`read at ${stamp}  (local ${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })} US/Pacific)`);
-console.log(`SUBJECT 1076215 : ${subj.status} / ${subj.fee} / ${subj.agreement}`);
-console.log(`DECOY   107621  : ${dec.status} / ${dec.fee} / ${dec.agreement}`);
+console.log(`SUBJECT ${SUBJECT.nmls || SUBJECT.match || SUBJECT.name} : ${subj.status} / ${subj.fee} / ${subj.agreement}`);
+if (dec) console.log(`DECOY   ${DECOY.nmls}  : ${dec.status} / ${dec.fee} / ${dec.agreement}`);
 const want = /Invited to join/i.test(subj.status) && /^(Unpaid|Not paid)$/i.test(subj.fee) && /Not signed/i.test(subj.agreement);
 console.log(want ? 'SUBJECT IS RESET — act 4 can film all three transitions.'
   : '!! SUBJECT IS NOT IN THE EXPECTED RESET STATE — do not start the shoot.');

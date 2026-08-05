@@ -1,0 +1,496 @@
+{
+  "s0_1": [
+    "Đây là module LO Recruiting công ty đang vận hành hôm nay,",
+    "và mọi thứ bạn sắp xem đều là production: record thật,",
+    "nhân sự thật, con số thật.",
+    "Trước khi theo dấu một ứng viên đi qua nó, hãy nhìn vào menu.",
+    "Funnel bị chẻ thành hai kho riêng biệt.",
+    "Recruited Loan Officers là kho nguội, 106.000 record.",
+    "Interested Loan Officers là pipeline đang chạy, 23.000.",
+    "Người mới vào đội không ai nói được một cái tên đang nằm ở kho nào,",
+    "và không gì ngăn cùng một người nằm ở cả hai kho."
+  ],
+  "s0_2": [
+    "Đây là board mà mọi role đều dùng chung.",
+    "Mười sáu cột, phải cuộn ngang mới tới cuối.",
+    "Không role nào trong bảy role cần đủ mười sáu cột,",
+    "và cũng không ai bỏ bớt được cột nào,",
+    "nên ai cũng học cách phớt lờ phần lớn màn hình trước mặt mình.",
+    "Giờ nhìn vào quy mô.",
+    "106.145 record.",
+    "102.715 trong số đó chưa từng được ai claim.",
+    "Mười một record thì có."
+  ],
+  "s0_3": [
+    "Các counter này là cách lãnh đạo đọc hiệu suất tuyển dụng.",
+    "Số nào cũng bấm được và mở đúng danh sách đã lọc,",
+    "và phần đó thật sự hoạt động tốt.",
+    "Giờ đọc chúng như một tổng thể.",
+    "Want to join: 0.",
+    "Interested but thinking: 0.",
+    "Hai trạng thái funnel công ty này tự định nghĩa",
+    "trống trơn trên cả trăm nghìn record,",
+    "nghĩa là không ai dùng chúng.",
+    "Và claimed cộng not claimed",
+    "hụt ba nghìn so với tổng số ngay trên cùng panel.",
+    "Các con số này không khớp với nhau, và vì chúng được cache,",
+    "chưa chắc chúng đã khớp với sáng nay."
+  ],
+  "s0_4": [
+    "Đây là cấu hình toàn công ty.",
+    "Nó điều khiển chuỗi sáu email webinar, landing page tuyển dụng,",
+    "rule quyết định ai sở hữu record mới, và kết nối Facebook Ads.",
+    "Vấn đề không phải trang này, mà là ai mở được nó.",
+    "Bốn trong sáu role vận hành mở được, hai người không mở được lại là recruiter.",
+    "Chuyên viên licensing và kế toán",
+    "có thể thay đổi cách công ty này tuyển dụng.",
+    "Outside recruiter thì không.",
+    "Một tab trong này còn chứa Calendly access token cá nhân của một nhân viên,",
+    "và đó chính là lý do tôi sẽ không mở nó trên camera."
+  ],
+  "s0_5": [
+    "Đây là dữ liệu Modex,",
+    "và nó đúng là thứ recruiter cần",
+    "để định giá một offer: sản lượng,",
+    "số khoản vay, cơ cấu sản phẩm.",
+    "Rõ ràng nó từng về tự động.",
+    "Giờ đọc ngày nhận trên từng dòng của màn hình này.",
+    "Ngày 24 tháng 1 năm 2024 —",
+    "và các timestamp cách nhau bảy giây,",
+    "tức toàn bộ về trong đúng một batch.",
+    "Hai tuần sau ngày đó,",
+    "Modex công bố công ty mẹ của chúng ta là đối tác tích hợp.",
+    "Và nhìn cột liên hệ trên những dòng nó đã giao: không email,",
+    "không điện thoại, không điện thoại.",
+    "Vậy là đường ống này được xây, bắn đúng một lần,",
+    "về tay mà không có cách nào liên hệ ai, rồi chết.",
+    "Mọi thứ bạn sắp xem xảy ra là vì điều đó."
+  ],
+  "s0_6": [
+    "Sáu người làm việc trên module này,",
+    "và để cho bạn xem một ngày của từng người,",
+    "tôi sẽ mượn session của họ từ tài khoản admin.",
+    "Hai điều đáng biết, vì chúng định hình cả bản ghi hình này.",
+    "Mượn session sẽ thay thế đăng nhập",
+    "của cả trình duyệt và không có đường quay lại admin;",
+    "lối ra duy nhất là đăng xuất rồi đăng nhập lại.",
+    "Và đây là production,",
+    "nên mọi hành động bạn xem đều đang được ghi",
+    "vào audit log dưới tên người đó."
+  ],
+  "s1_1": [
+    "Seth là outside recruiter.",
+    "Đây là kho nguội lọc theo record anh sở hữu, và nó trống.",
+    "Trên cả cái kho trăm nghìn record này,",
+    "board đếm được đúng mười một record có người claim.",
+    "Nên recruiter không bắt đầu buổi sáng bằng danh sách việc của mình.",
+    "Anh bắt đầu bằng cách mở một đống trăm nghìn người lạ và tự quyết,",
+    "bằng trí nhớ và bằng cách đọc, xem ai đáng một cuộc gọi."
+  ],
+  "s1_2": [
+    "Thế là anh thu hẹp bằng tay.",
+    "Active, có mạng xã hội, rồi bảy tiêu chí nữa sau nút More.",
+    "Bản thân các filter là tốt.",
+    "Vấn đề là chúng đang phải gánh thay thứ khác:",
+    "hệ thống không bao giờ nhớ bộ filter của hôm qua,",
+    "không có saved view, và không gì gợi ý nên gọi ai trước.",
+    "Filter đang làm công việc lẽ ra thuộc về sự ưu tiên."
+  ],
+  "s1_3": [
+    "Đây là con bug Seth dính liên tục mà không biết nó là bug.",
+    "Cái này trông như ô tìm kiếm. Không phải.",
+    "Nó là ô chọn label,",
+    "và chọn một gợi ý sẽ lọc trang theo label",
+    "trong khi một chip filter mặc định vẫn đang bật,",
+    "nên kết quả trả về trống.",
+    "Anh kết luận người này chưa có trong hệ thống, và anh tạo một bản trùng.",
+    "Nhìn nhé: không có kết quả.",
+    "Giờ bỏ chip đi, và kia — những record vẫn nằm đó từ đầu.",
+    "Dòng bị đánh Duplicated màu đỏ kia chính là sản phẩm của con bug này."
+  ],
+  "s1_4": [
+    "Seth thử dọn cái bản trùng đó.",
+    "Muốn đánh giá nó, anh cần số license,",
+    "đang thiếu, nên anh gõ vào và bấm lưu.",
+    "Xem cái gì trả về.",
+    "Không phải một lỗi, mà năm.",
+    "Licensed states.",
+    "States to sponsor.",
+    "Career production.",
+    "Địa chỉ nhận thư.",
+    "Ngôn ngữ ưa dùng.",
+    "Năm field mà record này sinh ra đã thiếu và chưa bao giờ có,",
+    "giờ field nào cũng bắt buộc,",
+    "và field nào anh cũng sẽ phải bịa ra",
+    "thì hệ thống mới cho lưu đúng cái field anh thật sự biết.",
+    "Thế là anh bấm Cancel.",
+    "Đó là lý do, trên trăm nghìn record, không ai sửa bất cứ thứ gì."
+  ],
+  "s1_5": [
+    "Nút này là bằng chứng rõ nhất trong cả hệ thống.",
+    "Nó tồn tại vì đúng một mục đích: copy tên",
+    "và số license của người này vào clipboard,",
+    "để Seth dán sang một website khác.",
+    "Facebook, LinkedIn, Zillow, và trên hết là Modex.",
+    "Hệ thống biết nó thiếu dữ liệu anh cần,",
+    "và giải pháp của nó là giúp anh rời đi nhanh hơn."
+  ],
+  "s1_6": [
+    "Và đây là bước đó — bước mà cả cuộc rebuild nhắm vào.",
+    "Seth copy số license, mở Modex ở tab khác,",
+    "và đọc lại sản lượng 12 tháng, số khoản vay, giá trị vay trung bình.",
+    "Không có mấy con số đó, anh không thể ra một offer hợp lý.",
+    "Anh làm việc này ngoài hệ thống, mỗi ứng viên một lần,",
+    "record không nhớ gì việc anh đã làm, nên người sau lặp lại y hệt.",
+    "Địa chỉ hồ sơ Modex là một chuỗi định danh ngẫu nhiên,",
+    "nên anh thậm chí không dán lại được link cho lần sau."
+  ],
+  "s1_7": [
+    "Quay lại app, anh đánh dấu friend request.",
+    "Đây là việc tuyển dụng thật,",
+    "không phải việc vặt: loan officer không nghe máy số lạ,",
+    "nên recruiter kết bạn trên mạng xã hội trước.",
+    "Trạng thái kết bạn được theo dõi bằng tay,",
+    "và đó là lý do lúc nãy anh cần mấy cái link mạng xã hội."
+  ],
+  "s1_8": [
+    "Nút Call không gọi điện.",
+    "Nó mở kịch bản chào mời Seth phải đọc: 250 basis points,",
+    "hoa hồng 100%, cấu trúc phí, thưởng giới thiệu.",
+    "Rồi nó chuyển sang app Zoom.",
+    "Cái bẫy ở đây: số cuộc gọi lấy từ log Zoom, không phải từ cú click này.",
+    "Nên khi Seth gọi bằng điện thoại cá nhân — chuyện xảy ra suốt —",
+    "hệ thống ghi nhận anh không gọi ai cả,",
+    "và số liệu hoạt động của đội thấp hơn thực tế."
+  ],
+  "s1_9": [
+    "Đây là trạng thái mặc định của một recruiter mới.",
+    "Chừng nào chưa ai map tài khoản Zoom phone, nút này đơn giản là hỏng,",
+    "và lỗi không nói phải làm gì hay hỏi ai.",
+    "Thế là người ta bỏ, nhắn tin bằng máy riêng,",
+    "và từng cuộc hội thoại đó biến mất khỏi hệ thống."
+  ],
+  "s1_10": [
+    "Panel ghi chú này dán nhãn conversation history,",
+    "nhưng thực tế nó là hệ điều hành của cả module.",
+    "Mọi bàn giao giữa các phòng ban đi qua đây, dưới dạng note kèm email.",
+    "Không có task, không người phụ trách, không deadline.",
+    "Ai đã đọc, ai đã xử lý — nằm ngoài hệ thống,",
+    "trong inbox của một ai đó."
+  ],
+  "s1_11": [
+    "Mười trạng thái này là toàn bộ hiểu biết",
+    "của công ty về việc một ứng viên đang tới đâu.",
+    "Nó là nhãn gắn tay, không bắt buộc, và không gì kiểm tra nó.",
+    "Seth sắp mời người này gia nhập công ty",
+    "trong khi trạng thái vẫn ghi Not touched,",
+    "vì hành động invite khả dụng ở mọi trạng thái.",
+    "Nghĩa là các con số funnel lãnh đạo xem",
+    "phụ thuộc việc từng recruiter có nhớ đổi dropdown hay không."
+  ],
+  "s1_12": [
+    "Đây là cách Seth tạm gác một người chưa sẵn sàng.",
+    "Cơ chế thì đúng: tới ngày hẹn, hệ thống báo cho người sở hữu.",
+    "Nhưng record bị ẩn khỏi pipeline cho tới ngày đó,",
+    "nên việc tương lai của chính Seth không hiển thị ở đâu cả,",
+    "và nếu thông báo rơi vào spam, lead im lặng vĩnh viễn."
+  ],
+  "s1_13": [
+    "Công bằng mà nói.",
+    "Ở đây có audit log thật, theo từng field,",
+    "giá trị cũ sang giá trị mới, kèm người dùng và thời điểm.",
+    "Thứ này thật sự tốt, và nên được giữ nguyên qua cuộc rebuild."
+  ],
+  "s1_14": [
+    "Đây là cú bàn giao,",
+    "và trên production nó nằm ngay trong menu action",
+    "của record: mời loan officer này gia nhập Loan Factory.",
+    "Ba quyết định nằm trong đúng một dialog này.",
+    "Nguồn giới thiệu,",
+    "bắt buộc vì nó quyết định một khoản thưởng nhiều tháng sau.",
+    "Có miễn khoản phí khởi động 100 đô hay không.",
+    "Và có gửi email mời hay không.",
+    "Dialog nói cho bạn biết record sẽ chuyển sang pipeline Interested.",
+    "Điều nó không nói là phần nghiên cứu Modex",
+    "Seth vừa làm bằng tay sẽ không đi theo.",
+    "Người tiếp theo bắt đầu từ con số không."
+  ],
+  "s1_15": [
+    "Vẫn con người đó, giờ sống ở kho thứ hai,",
+    "với một bộ trạng thái khác,",
+    "tám thay vì mười, và một bộ cột khác.",
+    "Ai học việc này phải học hai bộ từ vựng cho một quy trình."
+  ],
+  "s2_1": [
+    "Brayan là inside recruiter.",
+    "Cùng phòng với Seth, ngồi cách một bàn.",
+    "Đây là sự khác biệt, đo được hẳn hoi.",
+    "Màn hình phân quyền sau các tài khoản này có 82 công tắc.",
+    "Seth, outside recruiter, được bật 2 cái.",
+    "Brayan có 15, gồm gửi SMS hàng loạt,",
+    "tải bản ghi Zoom,",
+    "và mở cấu hình tuyển dụng toàn công ty mà Seth còn không thấy nổi.",
+    "Không ai viết cái khác biệt đó thành chính sách.",
+    "Nó là kết quả tích tụ của việc cấp quyền cho từng cá nhân,",
+    "mỗi lần một người."
+  ],
+  "s2_2": [
+    "Và đây là đoạn đáng xem kỹ.",
+    "Ứng viên của chúng ta giờ đã trong pipeline,",
+    "thuộc về Seth, đã được nghiên cứu và đã được gọi.",
+    "Xem board của Brayan hiện gì về đúng con người đó.",
+    "Quyền sở hữu trên màn hình này làm gì thì làm,",
+    "nó làm trong im lặng: không có luồng hoạt động chung,",
+    "nên không gì ở đây báo anh biết đồng nghiệp vừa gọi người này một giờ trước.",
+    "Đó là cách một người bị hai recruiter liên hệ hai lần —",
+    "không phải vì hoạt động không được ghi,",
+    "mà vì nó được ghi ở nơi anh không nhìn được."
+  ],
+  "s2_3": [
+    "Trên kho nguội, anh có record của mình và hàng chờ phê duyệt.",
+    "Xem toolbar này cho anh những nút gì,",
+    "và nhớ rằng không có rule nào đứng sau bất kỳ nút nào.",
+    "Cùng một cụm từ, inside recruiter,",
+    "mô tả một người 15 công tắc và một người 2 công tắc,",
+    "và chưa ai từng được cho biết mình có những cái nào."
+  ],
+  "s2_4": [
+    "Và anh vẫn mở được cấu hình toàn công ty,",
+    "gồm cả tab đang giữ Calendly token cá nhân của một nhân viên."
+  ],
+  "s2_5": [
+    "Đây là hàng chờ của những người tự nộp đơn làm loan officer.",
+    "Để ý link Check Modex nằm ngay trên dòng: hệ thống",
+    "thừa nhận công khai rằng không qua Modex thì không đánh giá nổi người này,",
+    "nhưng nó chỉ thừa nhận ở đúng một chỗ này.",
+    "Approve đưa record vào danh sách công ty, và rồi không gì xảy ra.",
+    "Không ai được phân công gọi cho họ."
+  ],
+  "s3_1": [
+    "Licensing bảo trợ license cho loan officer.",
+    "Thiếu bước đó, người này không được phép làm hồ sơ vay theo luật,",
+    "nên đây là cổng cứng của cả quy trình.",
+    "Và Dung, người làm việc đó, không mở được cả hai danh sách tuyển dụng.",
+    "Trong 82 công tắc trên tài khoản của chị, 30 cái được bật.",
+    "Hai cái giúp chị nhìn thấy ứng viên không nằm trong số đó."
+  ],
+  "s3_2": [
+    "Gõ thẳng địa chỉ cũng không được giải thích gì.",
+    "Không thông báo về quyền, chỉ lặng lẽ chuyển sang trang khác.",
+    "Người dùng tưởng mình bấm nhầm,",
+    "thử lại, và cuối cùng đi hỏi đội kỹ thuật."
+  ],
+  "s3_3": [
+    "Giờ nhìn xem 30 công tắc đó gồm những gì.",
+    "Chị sửa được thông tin lender.",
+    "Chị sửa được mọi giao dịch trong công ty.",
+    "Chị trả được hoa hồng chi nhánh.",
+    "Và chị mở được cấu hình tuyển dụng",
+    "toàn công ty: chuỗi webinar,",
+    "landing page, rule quyết định ai sở hữu lead mới.",
+    "Vậy là chuyên viên licensing đổi được cách công ty này tuyển dụng,",
+    "mà không thấy được một người nào đang được tuyển.",
+    "Đó là hệ quả khi quyền truy cập được cấp cho cá nhân",
+    "thay vì suy ra từ công việc mà role thật sự phải làm."
+  ],
+  "s3_4": [
+    "Đây là thông tin của chính licensing: trạng thái license,",
+    "trạng thái bảo trợ, các bang cần bảo trợ.",
+    "Nó sống dưới dạng cột trong bảng của người khác.",
+    "Không có màn hình licensing, không hàng chờ hồ sơ đợi bảo trợ,",
+    "và không hỗ trợ các rule theo từng bang mà đội này phải tuân.",
+    "Thế là họ giữ danh sách riêng ngoài hệ thống,",
+    "và đó là lý do trạng thái bảo trợ thật",
+    "và thứ app hiển thị cứ trôi xa nhau dần."
+  ],
+  "s4_1": [
+    "HR thấy toàn bộ pipeline.",
+    "Mười một counter này đặt những câu hỏi thật sự hữu ích,",
+    "và câu trả lời trên production rất đáng nghe.",
+    "Đã trả phí nhưng chưa ký: 4.",
+    "License đã bảo trợ nhưng HR chưa bắt đầu: 1.",
+    "HR xong nhưng license chưa bảo trợ: 0.",
+    "Họp 1-1 xong nhưng HR chưa từng khởi động: 33.",
+    "Mỗi con số là một kiểu tắc khác nhau.",
+    "Nhưng chúng chỉ biết đếm.",
+    "Bấm vào ra một danh sách, không phải một phân công.",
+    "Không người sở hữu, không deadline, không ai chịu trách nhiệm gỡ."
+  ],
+  "s4_2": [
+    "Nhìn field trạng thái khi tôi đánh dấu phí khởi động đã trả.",
+    "Nó tự đổi thành Onboarding.",
+    "Đây là bước chuyển tự động duy nhất trong cả hệ thống, và nó chạy đúng.",
+    "Nhưng nó cũng là nguồn của một sự nhầm lẫn có thật:",
+    "vài trạng thái do máy đặt,",
+    "đa số đặt bằng tay, và trên màn hình hai loại giống hệt nhau.",
+    "Không ai phân biệt nổi cái nào là cái nào."
+  ],
+  "s4_3": [
+    "Ký là yêu cầu cứng thứ hai.",
+    "Tùy chọn tạo lại tồn tại vì bộ hồ sơ",
+    "thường phải phát hành lại: chi tiết thay đổi,",
+    "link hết hạn, người ta xóa email.",
+    "Hệ thống chỉ biết đã ký hay chưa, không biết đã gửi, đã tới, hay đã mở.",
+    "Nên khi một ứng viên im lặng,",
+    "HR không biết email không tới hay người ta đang lưỡng lự,",
+    "và cách duy nhất để biết là gọi điện."
+  ],
+  "s4_4": [
+    "Đây là điều quan trọng nhất trong act này.",
+    "Cái cổng đánh dấu một người 100% onboarded,",
+    "con số mà mọi báo cáo tuyển dụng đếm,",
+    "chỉ đòi đúng hai thứ: phí Paid và hợp đồng Signed.",
+    "Mà Signed ở đây là một giá trị dropdown trần trụi.",
+    "Không gì trong hệ thống đòi một chữ ký thật để đặt nó.",
+    "Bảo trợ license,",
+    "HR hoàn tất và buổi họp 1-1 chỉ phục vụ nhánh tự động.",
+    "Vậy nên một người có thể được đếm là 100% onboarded",
+    "trong khi không có license hành nghề ở bất kỳ bang nào,",
+    "và 2.601 record 100% onboarded",
+    "trên pipeline production này nên được đọc với điều đó trong đầu."
+  ],
+  "s4_5": [
+    "Đây là nơi cất ngôn ngữ tuyển dụng của công ty: một email,",
+    "một tin nhắn,",
+    "và một kịch bản gọi cho từng trạng thái,",
+    "với biến cho tên công ty, ứng viên, và người gửi.",
+    "Đây là tài sản thật sự và nên được mang theo nguyên vẹn.",
+    "Vấn đề duy nhất là nó nằm trong một trang settings",
+    "mà đa số các role này đều mở được."
+  ],
+  "s4_6": [
+    "Buổi 1-1 là nơi một con người đánh giá một con người.",
+    "Việc đặt lịch nằm ở Calendly,",
+    "kết quả nằm ở một checkbox trong app này, và hai thứ không nối nhau.",
+    "Phải có người nhớ tick vào ô sau buổi họp.",
+    "Quên một cái, mọi thống kê phụ thuộc nó đều sai,",
+    "và 33 record trên pipeline này",
+    "đang nằm đúng trong trạng thái đó ngay lúc này."
+  ],
+  "s4_7": [
+    "Đây là khoảnh khắc ứng viên thành nhân viên: một tài khoản,",
+    "một phân loại, một chi nhánh, một quản lý, một email công ty.",
+    "Nó là biên giới giữa module tuyển dụng này",
+    "và phần còn lại của các hệ thống công ty.",
+    "Và để ý cái nút nằm ở đâu —",
+    "trên đúng cái toolbar chung mọi role có quyền pipeline đều nhìn,",
+    "chứ không phải trên một màn hình của riêng HR."
+  ],
+  "s4_8": [
+    "Và đây là tài khoản cần nhớ",
+    "mỗi khi video này nhắc tới phân quyền.",
+    "74 trong 82 công tắc được bật cho người HR này,",
+    "gồm cả cái cho phép anh cấp các công tắc đó cho bất kỳ ai.",
+    "Đúng một quyền đó là cơ chế đứng sau mọi điều kỳ lạ về truy cập bạn đã thấy.",
+    "Nằm cùng toolbar là một nút delete,",
+    "trong một pipeline 23.600 record.",
+    "Tôi sẽ không bấm nó."
+  ],
+  "s5_1": [
+    "Miley là onboarding specialist.",
+    "Cô là người thật sự làm cho một loan officer mới tạo ra kết quả,",
+    "và cô được bật 5 trong 82 công tắc.",
+    "Cô chỉ thấy record được gán cho mình,",
+    "nghĩa là nếu quyền sở hữu bị đặt sai, một ứng viên có thể nằm",
+    "trong pipeline mà không ai coi đó là việc của mình."
+  ],
+  "s5_2": [
+    "Lý do record về tới nơi đã có sẵn chủ",
+    "là một toggle trong trang cấu hình.",
+    "Mà cô thì không mở được.",
+    "Vậy nên cái rule quyết định ứng viên mới là việc của ai",
+    "lại vô hình với chính người mà nó thành việc của họ,",
+    "và cách duy nhất để cô biết rule đó là gì,",
+    "là đi hỏi một người có công tắc."
+  ],
+  "s5_3": [
+    "Đây là toàn bộ checklist onboarding: một dãy cột trong bảng.",
+    "Chúng không phải task, nên không người phụ trách, không deadline,",
+    "không thứ tự, và không cách nào thấy đang đợi ai.",
+    "Bốn phòng ban làm việc trên cùng một dòng dữ liệu,",
+    "và cách duy nhất để biết người khác xong phần của họ chưa",
+    "là nhìn vào một cột, hoặc đi hỏi."
+  ],
+  "s5_4": [
+    "Và đi hỏi là thế này: một note kèm một email.",
+    "Đây là động cơ workflow thật của onboarding, và nó là một inbox.",
+    "Không gì trong hệ thống biết Miley đang bị chặn,",
+    "bị chặn bao lâu, hay ai đang giữ việc."
+  ],
+  "s5_5": [
+    "Webinar là kênh nuôi dưỡng lớn nhất trong funnel,",
+    "và điểm danh được nạp về sau từ một file bảng tính.",
+    "Nên cờ attended luôn chậm hơn thực tế,",
+    "và nó phụ thuộc có người nhớ export từ Zoom rồi import vào đây."
+  ],
+  "s6_1": [
+    "Rosaline làm kế toán, và chị là người trả thưởng giới thiệu.",
+    "Chị không mở được cả hai danh sách tuyển dụng.",
+    "Chị được bật 14 công tắc: trả hoa hồng công ty,",
+    "sửa mọi giao dịch trong công ty,",
+    "trả hoa hồng chi nhánh, và cấu hình tuyển dụng toàn công ty.",
+    "Hai cái cho phép chị nhìn thấy ứng viên thì tắt.",
+    "Vậy là bước tài chính cuối của việc tuyển một người",
+    "do một người chưa từng nhìn được cái pipeline sinh ra họ thực hiện,",
+    "và số liệu tuyển dụng tới tay kế toán dưới dạng file do người khác export."
+  ],
+  "s6_2": [
+    "Đây là chương trình giới thiệu: loan officer cũ giới thiệu người mới.",
+    "Năm điều kiện loại nằm trong",
+    "một bức tường chữ: quá 120 ngày,",
+    "đã đăng ký webinar trước khi được giới thiệu,",
+    "từng làm ở đây, là vợ/chồng người giới thiệu, dính broker không độc quyền.",
+    "Hệ thống không kiểm tra cái nào cả.",
+    "Nó in ra, và người duyệt phải giữ đủ năm điều trong đầu,",
+    "mỗi một lần duyệt."
+  ],
+  "s6_3": [
+    "Giờ tới dòng thời gian.",
+    "Khoản thưởng chín 60 ngày sau khi loan officer 100% onboarded.",
+    "Rồi một job chạy định kỳ thứ Bảy tạo yêu cầu hoa hồng.",
+    "Rồi đội hoa hồng phê duyệt.",
+    "Tổng cộng khoảng 75 ngày,",
+    "và chừng 15 ngày trong đó không đến từ chính sách",
+    "mà từ kiến trúc: ngồi đợi tới thứ Bảy.",
+    "Người giới thiệu chỉ cảm nhận được đúng một điều: chậm."
+  ],
+  "s6_4": [
+    "Và phương thức thanh toán là một ô chữ tự do trên form tuyển dụng,",
+    "không nối với payroll.",
+    "Vậy nên bước cuối của việc tuyển một người vẫn là",
+    "một con người chép tay thông tin sang một hệ thống khác."
+  ],
+  "s7_1": [
+    "Cùng đi lại cả con đường.",
+    "Người này bước vào là một dòng trong kho 106.000,",
+    "nơi có đúng 11 record được claim.",
+    "Một recruiter phải bịa năm field mới sửa nổi một field,",
+    "rồi tự tay nghiên cứu ứng viên trên một website khác.",
+    "Record chuyển sang kho thứ hai với một bộ từ vựng khác.",
+    "Nó được trả phí, được ký,",
+    "và nó hoàn toàn có thể bị đánh dấu 100% onboarded",
+    "mà không có chút bảo trợ license nào.",
+    "Sáu người đã chạm vào nó.",
+    "Một người giữ 74 trong 82 quyền, một người giữ 2,",
+    "và hai người không mở được cái pipeline mình chịu trách nhiệm.",
+    "Không một ai trong sáu người thấy được trọn con đường."
+  ],
+  "s7_2": [
+    "Mọi điểm ma sát bạn vừa xem, theo đúng thứ tự nó xảy ra."
+  ],
+  "s7_3": [
+    "Và tất cả những điều đó mới là một trong sáu nguồn đầu vào.",
+    "Modex, import bảng tính, Facebook lead ads,",
+    "tự nộp đơn, funnel webinar, và giới thiệu.",
+    "Mỗi nguồn vào bằng một cánh cửa khác nhau,",
+    "và không hai nguồn nào chung một định nghĩa thế nào là đã liên hệ."
+  ],
+  "s7_4": [
+    "Vậy kết luận không phải là hệ thống này thiếu tính năng.",
+    "Nó có nhiều tính năng hơn mức đa số các đội sẽ xây.",
+    "Thứ nó thiếu là một trật tự công việc, một định danh cho mỗi con người,",
+    "quyền đi theo công việc,",
+    "và dữ liệu tự tìm đến đúng người cần nó.",
+    "Cuộc rebuild là để làm điều đó."
+  ]
+}

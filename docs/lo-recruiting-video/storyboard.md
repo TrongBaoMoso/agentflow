@@ -414,28 +414,43 @@ bản staging: log báo "act 0: 1 lỗi" trong khi 6/7 scene quay sai màn hình
 
 ### Trạng thái bản production sau buổi quay 05/08/2026 — CHƯA XONG
 
-Năm lượt quay. **51 scene đặt được, 40 sạch, 11 hỏng.**
+Tám lượt quay. Lượt 8: **51/51 scene, log báo `all scenes ok`.** Bản mp4 English đã ghép
+(`final/lo-recruiting-role-walkthrough-production.mp4`, 28:20, 51 frame trong `verify-production/`).
+Bản dịch tiếng Việt xong: `narration.production.vi.json`, 392 cue, khớp 51/51 scene.
 
-| Act | Scene | Trạng thái |
-|---|---|---|
-| 0, 2, 3, 4, 6, 7 | 31 | sạch |
-| 1 | 15 | hỏng 9: `s1_5`, `s1_7`…`s1_13`, `s1_14` |
-| 5 | 5 | hỏng 2: `s5_4`, `s5_5` |
+**Nhưng vòng soi frame lôi ra 4 lỗi mà log gọi là "ok".** Đây là lần thứ hai bài học `0 failures ≠ chất lượng`
+tự chứng minh — lần này nặng hơn bản staging, vì lỗi số 1 là *sai người*, không phải sai màn hình.
 
-Danh tính nhân vật **đã xử lý xong** (`candidate.match`, first-class ở `candidateRow` + `readIloState` +
-`narrowToCandidate`) — đó là thứ đã làm act 4 sạch. 11 scene còn lại **không** còn liên quan tới nó nữa; chúng
-là hai vấn đề nhỏ, độc lập:
+| # | Scene | Log nói | Frame nói |
+|---|---|---|---|
+| 1 | act 4 (8 scene) | ok | **quay dưới session của onboarding specialist, không phải HR** |
+| 2 | `s3_2` | ok | narration "lặng lẽ redirect", màn hình **mở board bình thường** |
+| 3 | `s1_10` | ok | note trống + `New note is required`, modal đè sang `s1_11` |
+| 4 | `s1_15` | ok | "cùng con người đó, ở kho thứ hai" → **`No results`** |
 
-**Act 5 (2 scene) — nhân vật không thuộc sở hữu của onboarding specialist.** Log nói rõ:
-`Test Test is NOT on this board — he is not assigned to this onboarding specialist, which is exactly what
-s5_1 narrates`. Và chốt an toàn **từ chối đúng**: `the next row would be a real loan officer and the
-checklist, note-and-email and webinar beats write`. Sửa: assign nhân vật cho **Miley Dau** (một lượt ghi lên
-dòng test của mình — và chính là việc mà narration đang mô tả), rồi quay lại act 5.
+**(1) Sai người — lỗi nghiêm trọng nhất của cả hai bản.** State `ken` (slot HR) chứa session **Miley Dau**.
+Cả act 4 nói về Dave Hoang trong khi chiếu màn hình Miley — kể cả `s4_8` "74 trong 82 công tắc của người HR
+này", tức là câu định lượng mạnh nhất của video đặt trên tài khoản sai. Không log nào bắt được: state mở được
+app, đúng URL, có đủ dòng, `verifyState` báo OK. Chỉ tên trên header tố cáo.
+**Chốt chặn đã dựng** trong `loginAs` (production-only): đọc tên hiển thị trên header, so với slot đang
+provision, **throw + không lưu state** nếu lệch. Từ giờ không thể lưu một state mang danh tính sai.
+`node inspect.mjs --check-states` vẫn *không* phát hiện được lỗi này — nó kiểm session sống, không kiểm là ai.
 
-**Act 1 (9 scene) — nhân vật đã rời board Recruited vĩnh viễn.** Invite là chuyển đổi một chiều; nó đã chạy
-thật ở lượt 2. Nên các beat cấp dòng phải diễn trên dòng thay thế. `--demo-record 'RLO Test'` đã được truyền
-nhưng `pickDemoRow` không nhặt — cần soi vì sao (`h.row('RLO Test')` không khớp, hay lần reset filter chưa
-thực sự xoá chip). `s1_14` sẽ đi nhánh DEMONSTRATION: mở dialog rồi Cancel, đúng thiết kế.
+**(2) `s3_2`.** Đo live dưới session Dung: `/recruited_loan_officers/*` → redirect thật sang `/prospects/Mine`;
+còn `/lo_recruiting/*` → **mở, 23.612 record**, dù `INTERESTED_LOAN_OFFICERS` tắt trong cây quyền. Tức là một
+**lỗ enforcement** — mạnh hơn điều narration định kể. Scene đã trỏ sang RLO (nơi redirect có thật); còn cái lỗ
+thì `s3_4` chiếu đúng board đó nên vẫn có hình.
+
+**(3) `s1_10`.** `getByRole('textbox').last()` ở page level bắt vào ô search; ô note thật là contenteditable
+**trong modal**. Đã scope `div.modal.show [contenteditable]` + `dismiss()` cuối scene (luật "beat nào mở modal
+thì beat đó đóng" của `s5_4` giờ áp cho cả `s1_10`).
+
+**(4) `s1_15`.** Nhân vật vào pipeline ở trạng thái Unassigned rồi được assign cho onboarding specialist, nên
+ILO **Mine của Seth** rỗng. Đã trỏ sang board company + `ensureCandidateVisible` (có discriminator).
+
+Trước đó — đã xử lý xong, đừng đào lại: danh tính nhân vật (`candidate.match`), act 5 (assign cho Miley Dau
+bằng `tools/assign-subject-owner.mjs`), act 1 row beats (`rowTerm` bám theo quyết định của `pickDemoRow`;
+`s1_8` chuyển sang `Katie Test` vì dòng `RLO Test` **không có nút Call** — không có số điện thoại).
 
 ### Những lượt GHI đã thực hiện trên production trong buổi này
 
@@ -448,16 +463,28 @@ Ghi đầy đủ, kể cả cái ngoài ý muốn.
 | **Approve** rời hàng chờ tự-ứng-tuyển | một submission **rác** (tên tục, NMLS `123456`) | **KHÔNG** — xem dưới |
 | fee → `Paid`, status → `Onboarding` | một dòng `Test Test (Duplicated)` | dòng test, nhưng **sai dòng** |
 | gõ NMLS vào form rồi **Cancel** | `Katie Test` | có — và không lưu, đã xác minh |
+| **Assign owner** → onboarding specialist Miley Dau | `Test Test (New York)` (ILO) | có — để act 5 quay được, `tools/assign-subject-owner.mjs`, có verify sau ghi |
+| Friendship → `Friend requested`, status, follow-up flag | `RLO Test (ABC)` | dòng test (guard cho qua) — beat cấp dòng của act 1 |
 
 Cái Approve là một **giả định staging đi thẳng vào production**: `s2_5` được port nguyên xi, log của nó còn
 in `"staging mutation, by design"`. Không ai bị hại (dòng rác, không email, không tài khoản; dòng thật ngay
 bên dưới không bị chạm) và **không có chức năng un-approve**, nên khuyến nghị để nguyên. Chốt chặn đã dựng:
 xem `assertWritableRow` + `tools/test-write-guard.mjs`.
 
-### Còn lại sau khi act 1/4/5 sạch
+### Còn lại
 
-1. Dịch **391 cue** sang tiếng Việt → `narration.production.vi.json` (`node assemble.mjs --variant=production
-   --dump-cues` chạy được **không cần** footage, nên việc này làm song song được).
-2. `node assemble.mjs --variant=production --markers=markers.production.json`
-3. **Soi từng frame** trong `final/verify-production/`. Bài học bản staging vẫn đứng: log báo "1 lỗi" trong
-   khi 6/7 scene quay sai màn hình. `0 failures` không phải thước đo chất lượng.
+1. Re-provision `ken` — **đã xong** (guard danh tính chạy trong lúc provision).
+2. Re-record `--acts 1,3,4` (≈25 phút máy). Act 2/5/6/7 và act 0 đã sạch ở vòng soi frame.
+3. `node assemble.mjs --variant=production --markers=markers.production.json`
+4. **Soi lại 51 frame** trong `final/verify-production/`. Riêng act 4: kiểm **tên trên header** ở từng frame,
+   không chỉ nội dung màn hình — đó là thứ vòng trước bỏ lọt.
+5. `node assemble.mjs --variant=production --bilingual --markers=markers.production.json` (bản dịch đã sẵn).
+
+**Checklist soi frame — cập nhật sau vòng này.** Với mỗi frame, hỏi đủ bốn câu, theo thứ tự:
+
+1. **Tên trên header có đúng người mà narration đang nói tới?** (mới — lỗi act 4)
+2. Màn hình có đúng thứ narration mô tả? (không chỉ "đúng trang")
+3. Có modal/toast/lỗi nào của beat trước còn đè lại? (`s1_10` → `s1_11`)
+4. Board có dòng nào không, hay đang là `No results`? (`s1_15`)
+
+Ba trong bốn câu này sinh ra từ lỗi thật, không phải suy đoán.

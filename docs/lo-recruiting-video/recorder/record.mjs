@@ -1481,6 +1481,32 @@ export async function performLoginAs(page, h, roleKey, { adminStatePath } = {}) 
     const after = await currentUserLabel(page);
     if (!before || !after || after !== before) break;
   }
+
+  // 5) PROVE the swap landed on the right person before the caller saves this session.
+  // DISCOVERED 05/08/2026 the expensive way: the ken slot was saved holding the WRONG person's
+  // session, and act 4 then filmed the entire HR act under the onboarding specialist's account.
+  // The header's account name is the only ground truth. Enforced on production only — the staging
+  // header markup was never probed for this and staging casts are throwaways anyway.
+  if (IS_PRODUCTION) {
+    const who = await page.evaluate(() => {
+      const leaves = [...document.querySelectorAll('header *, nav *, [class*="topbar"] *, [class*="navbar"] *')]
+        .filter((e) => e.children.length === 0)
+        .map((e) => (e.textContent || '').trim())
+        .filter((t) => t && t.length < 40
+          && /^[A-Za-zÀ-ỹ.'-]+( [A-Za-zÀ-ỹ.'-]+){1,3}$/.test(t)
+          && !/dashboard|pricing|leads|applications|loans|marketplace|resources|menu|team/i.test(t));
+      return leaves.length ? leaves[leaves.length - 1] : '';
+    }).catch(() => '');
+    // `reEscape` lives inside makeHelpers, not module scope — compare on plain lower-cased
+    // substrings instead of building a regex (a name never contains regex metacharacters anyway).
+    const lastName = acct.label.trim().split(/\s+/).pop().toLowerCase();
+    if (who && !who.toLowerCase().includes(lastName)) {
+      throw new Error(`impersonation landed on "${who}" but this slot expects "${acct.label}" — `
+        + 'refusing to continue, and the state file must NOT be saved. The Associates filter '
+        + 'probably never applied; re-run provisioning and watch the search commit.');
+    }
+    console.log(`[login-as] header shows "${who || '(unreadable — could not verify)'}" — expected ${acct.label}`);
+  }
   console.log(`[login-as] now impersonating ${acct.label} (${acct.role})`);
 }
 
@@ -1878,7 +1904,7 @@ export async function fillAddForm(page, h, candidate = {}, { prematureSubmits = 
  * NEVER press Escape in this modal: Escape dismisses the whole dialog, not just an open dropdown
  * (that is what made an earlier Cancel click find nothing). Close dropdowns by picking an option.
  */
-export async function demonstrateInviteDialog(page, h, { row = null, referralSource = 'Direct Invite' } = {}) {
+export async function demonstrateInviteDialog(page, h, { row = null, referralSource = 'Direct Invite', prepareBoard = null } = {}) {
   // TWO OPENERS, and the choice matters for the narration.
   //  - row mode (preferred): the row Action -> "Invite Loan officer to join <company>". ONLY this
   //    variant renders "The recruited loan officer will be moved to the Interested Loan Officers
@@ -1886,9 +1912,14 @@ export async function demonstrateInviteDialog(page, h, { row = null, referralSou
   //  - standalone: `button#add-and-invite-loan-officer` on the ILO board. Same dialog, same three
   //    select2s, same cascade, same toggles, but EMPTY and attached to no record — the safe
   //    fallback when no record of ours is on the Recruited board.
-  const board = row ? URLS.rloMine : URLS.iloMine;
+  //
+  // Production row mode: the recruiter's Mine is empty and the host row lives pages deep in the
+  // 106k-row company board, so the caller passes `prepareBoard` to re-apply the filter that makes
+  // the row visible. countRows then counts the FILTERED board — a tighter unchanged-check anyway.
+  const board = row ? (IS_PRODUCTION ? URLS.rloCompany : URLS.rloMine) : URLS.iloMine;
   const countRows = async () => {
     await h.goto(board);
+    if (prepareBoard) await prepareBoard();
     return page.locator('table.table-hover tbody tr').filter({ hasText: /\S/ }).count();
   };
   const before = await countRows();
@@ -2261,11 +2292,22 @@ async function pickDemoRow(page, h, { actLabel, fullName, demoRecord, absentBeca
   let substitute = null;
   let how = '';
   if (demoRecord) {
+    if (!(await h.row(demoRecord).count())) {
+      // Not on the current page is NOT "not on this board": production's company board is 106k rows
+      // deep, so a named record is almost never on page one. Shoot 5 lost all nine act-1 row beats
+      // to exactly this — the caller had cleared the subject filter back to page one, and "RLO Test"
+      // lives pages deeper. Search for it by name; filterGrid also removes any stale chip first, so
+      // this covers both ways the row can be invisible.
+      await h.optional(`search this board for the demo record "${demoRecord}"`, async () => {
+        await h.filterGrid(demoRecord.toLowerCase());
+        await h.waitForAppIdle();
+      });
+    }
     if (await h.row(demoRecord).count()) {
       substitute = h.row(demoRecord);
       how = `--demo-record "${demoRecord}"`;
     } else {
-      console.error(`[${actLabel}]   --demo-record "${demoRecord}" is NOT on this board.`);
+      console.error(`[${actLabel}]   --demo-record "${demoRecord}" is NOT on this board (searched for it too).`);
     }
   }
   if (!substitute) {
@@ -2913,6 +2955,10 @@ export async function act1(page, h, cfg = {}) {
     await h.optional('narrow the company board to the subject', () => h.filterGrid(fullName.toLowerCase()));
   }
   let rowOfCandidate = () => candidateRow(page, candidate);
+  // What s1_5's prepare re-narrows the board to. It MUST follow the same decision as rowOfCandidate:
+  // shoot 6 re-narrowed to the SUBJECT's name while the beats ran on the substitute, which filtered
+  // the substitute's row out of existence and took all nine row beats down a second time.
+  let rowTerm = fullName;
   // Test the SAME locator the beats will use (name + NMLS). Testing only the name would let an older
   // same-name record satisfy the check while rowOfCandidate resolved to nothing.
   if (!(await rowOfCandidate().count())) {
@@ -2927,7 +2973,12 @@ export async function act1(page, h, cfg = {}) {
       absentBecause: 'he has already been invited into the ILO pipeline, which removes him from here',
       beats: 'the row-level beats (s1_5-s1_13)',
     });
-    if (sub) rowOfCandidate = () => sub.row;
+    if (sub) {
+      rowOfCandidate = () => sub.row;
+      // A named demo record can be re-found by searching for it; an auto-detected fixture was found
+      // on the UNfiltered page one, so the only way to see it again is to not filter at all.
+      rowTerm = sub.how.startsWith('--demo-record') ? cfg.demoRecord : null;
+    }
   }
 
   // VERIFIED 2026-08-03: Mine is the default tab; clickTab is a no-op verification here.
@@ -3060,7 +3111,11 @@ export async function act1(page, h, cfg = {}) {
   await h.scene('s1_5', {
     prepare: async () => {
       await h.goto(ROW_BOARD);
-      if (IS_PRODUCTION) await h.optional('re-narrow to the subject', () => h.filterGrid(fullName.toLowerCase()));
+      // Re-narrow to the row the beats actually use (subject or substitute — rowTerm tracks the
+      // pickDemoRow decision). Narrowing to the absent subject here is what killed shoot 6's beats.
+      if (IS_PRODUCTION && rowTerm) {
+        await h.optional(`re-narrow to ${rowTerm}`, () => h.filterGrid(rowTerm.toLowerCase()));
+      }
     },
   }, async () => {
     // VERIFIED 2026-08-03: the social-media cell holds a single
@@ -3204,7 +3259,20 @@ export async function act1(page, h, cfg = {}) {
     // Call modal = a sales script + a Zoom deep-link. It does not place the call, and the
     // Call counter is fed by the Zoom log, not by this click.
     // VERIFIED 2026-08-03: per-row `button` labelled "Call".
-    await h.click([() => rowOfCandidate().getByRole('button', { name: /^\s*Call\s*$/i }).first()], { timeout: 10_000 });
+    let callBtn = () => rowOfCandidate().getByRole('button', { name: /^\s*Call\s*$/i }).first();
+    if (IS_PRODUCTION && !(await callBtn().count())) {
+      // MEASURED 05/08/2026 under the recruiter session: some production rows render NO Call
+      // button at all — RLO Test among them (its name cell carries only the "info" marker, no
+      // phone on file), while Katie Test's row has one named exactly "Call". The beat is about
+      // what the modal CONTAINS (the sales script and the Zoom hand-off), not whose row it is,
+      // so host it on the wall record. The beat is read-only: the modal is dismissed, and "Call
+      // via my Zoom Phone" is pointed at, never clicked.
+      const host = cfg.wallRecord || 'Katie Test';
+      console.warn(`[act1]   s1_8: no Call button on the row in use — hosting the beat on "${host}"`);
+      await h.optional(`narrow to ${host}`, () => h.filterGrid(host.toLowerCase()));
+      callBtn = () => h.row(host).getByRole('button', { name: /^\s*Call\s*$/i }).first();
+    }
+    await h.click([callBtn], { timeout: 10_000 });
     await h.hold(2);
     await h.optional('read the script', () => h.smoothScroll(() => page.getByText(/250\s*bps|commission/i).first(), 350, { steps: 10 }));
     await h.hold(1);
@@ -3213,6 +3281,10 @@ export async function act1(page, h, cfg = {}) {
       h.moveTo(() => page.getByText(/Call via my Zoom Phone/i).first(), { timeout: 5000 }));
     await h.hold(1.5);
     await h.dismiss();
+    // If the beat borrowed another row, hand the board back to the one the next beats use.
+    if (IS_PRODUCTION && rowTerm && !(await rowOfCandidate().count())) {
+      await h.optional(`re-narrow to ${rowTerm}`, () => h.filterGrid(rowTerm.toLowerCase()));
+    }
   });
 
   await h.scene('s1_9', async () => {
@@ -3239,8 +3311,13 @@ export async function act1(page, h, cfg = {}) {
     ], { timeout: 10_000 });
     await h.hold(2);
     await h.optional('write a real note', () =>
+      // MODAL-SCOPED, CONTENTEDITABLE FIRST. Shoot 8: the page-level textbox.last() resolved to a
+      // search input elsewhere, the note body stayed empty, Save+Email then raised "New note is
+      // required" and the modal survived into s1_11's opening frames. This note editor is a
+      // rich-text contenteditable inside the NOTE modal (verified on the s1_11 frame).
       h.typeInto([
-        () => page.getByRole('textbox').last(),
+        () => page.locator('div.modal.show [contenteditable="true"]').last(),
+        () => page.locator('div.modal.show').getByRole('textbox').last(),
         () => page.locator('[contenteditable="true"]').last(),
       ], 'Spoke with Marcus — 12-month volume looks strong on Modex, wants to hear the comp plan. Licensing: can we sponsor TX and AZ?', { delay: 24, clear: false }));
     await h.hold(1);
@@ -3258,6 +3335,10 @@ export async function act1(page, h, cfg = {}) {
       await h.optional('confirm send', () => h.click(() => page.getByRole('button', { name: btnName('Send', 'Submit', 'Save') }).first(), { timeout: 4000 }));
       await h.hold(2);
     });
+    // Any beat that opens a modal owns closing it (s5_4's rule). On staging the send flow closed
+    // this modal itself; shoot 8 proved that when the save is refused the modal survives the scene
+    // and squats over s1_11's opening frames. dismiss() is a no-op when the send already closed it.
+    await h.dismiss();
   });
 
   await h.scene('s1_11', async () => {
@@ -3358,15 +3439,20 @@ export async function act1(page, h, cfg = {}) {
     const INVITE_PROOF = IS_PRODUCTION ? /Converted from recruited LO/i : /Invited to join/i;
     const alreadyInILO = async () => {
       await h.goto(iloBoard);
-      let r = h.row(fullName);
-      if (!(await r.count())) {
-        await h.optional('search ILO for the candidate', async () => {
-          await h.filterGrid(fullName.toLowerCase());
-          r = h.row(fullName);
-        });
+      // Use the SAME resolver as act 5 (ensureCandidateVisible -> candidateRow): production holds
+      // EIGHT same-name rows, so h.row(fullName) can read a sibling's text and pass or fail the
+      // INVITE_PROOF test on the wrong person. candidateRow carries the match discriminator.
+      let found = await ensureCandidateVisible(page, h, candidate);
+      if (!found) {
+        // Measured 05/08/2026: the 23.6k-row ILO company board can apply the plain-text search
+        // AFTER filterGrid has stopped waiting for it (>25s) — shoot 6's s1_14 concluded "on
+        // neither board" from exactly this. One settled retry separates "slow" from "absent".
+        await h.waitForAppIdle();
+        await sleep(5000);
+        found = await ensureCandidateVisible(page, h, candidate);
       }
-      if (!(await r.count())) return null;
-      return ((await r.innerText().catch(() => '')) || '');
+      if (!found) return null;
+      return ((await candidateRow(page, candidate).innerText().catch(() => '')) || '');
     };
 
     const iloText = await alreadyInILO();
@@ -3376,8 +3462,20 @@ export async function act1(page, h, cfg = {}) {
     // Production: unassigned records are not on Mine — see the note above.
     await h.goto(IS_PRODUCTION ? URLS.rloCompany : URLS.rloMine);
     if (IS_PRODUCTION) await h.optional('narrow to the subject', () => h.filterGrid(fullName.toLowerCase()));
-    const ownRow = h.row(fullName);
-    const onRlo = (await ownRow.count()) > 0;
+    let ownRow = h.row(fullName);
+    let onRlo = (await ownRow.count()) > 0;
+    let demoPrep = null;
+    if (!onRlo && IS_PRODUCTION && rowTerm && rowTerm.toLowerCase() !== fullName.toLowerCase()) {
+      // The subject left this board for good (the invite is one-way), but the demo row can host the
+      // dialog — and ONLY the row-action variant renders the "moves to the Interested pipeline"
+      // sentence the narration leans on. The helper CANCELS and proves the row count unchanged, so
+      // the demo row is never converted.
+      demoPrep = () => h.optional(`narrow to the demo record ${rowTerm}`, () => h.filterGrid(rowTerm.toLowerCase()));
+      await demoPrep();
+      const demoRow = h.row(rowTerm);
+      if (await demoRow.count()) { ownRow = demoRow; onRlo = true; }
+      else demoPrep = null;
+    }
 
     if (inILO) {
       console.warn('[act1]   s1_14: BRANCH = DEMONSTRATION (modal shown'
@@ -3392,7 +3490,7 @@ export async function act1(page, h, cfg = {}) {
         console.warn('[act1]   s1_14: no record of ours is on the Recruited board, so the standalone');
         console.warn('[act1]   s1_14: dialog is used instead. NO RECORD IS TOUCHED.');
       }
-      await demonstrateInviteDialog(page, h, { row: onRlo ? ownRow : null });
+      await demonstrateInviteDialog(page, h, { row: onRlo ? ownRow : null, prepareBoard: demoPrep });
 
       // The claim the scene makes is still verified, just not performed here.
       const stillInILO = await alreadyInILO();
@@ -3401,13 +3499,20 @@ export async function act1(page, h, cfg = {}) {
           + 'demonstration but not after — the dialog was supposed to be cancelled. Investigate.');
       }
       if (onRlo) {
-        await h.goto(URLS.rloMine);
-        if (!(await h.row(fullName).count())) {
-          throw new Error(`${fullName} has LEFT the Recruited board across a dialog that was only ever `
+        // Verify the row that HOSTED the dialog — on production that is the demo record, and the
+        // subject left this board for good back when the invite ran for real. Shoot 7 checked the
+        // subject here and raised a false "the invite was submitted after all" alarm while the
+        // helper's own row-count check had already proved nothing was.
+        const hostName = demoPrep ? rowTerm : fullName;
+        await h.goto(IS_PRODUCTION ? URLS.rloCompany : URLS.rloMine);
+        if (demoPrep) await demoPrep();
+        else if (IS_PRODUCTION) await h.optional('narrow to the subject', () => h.filterGrid(fullName.toLowerCase()));
+        if (!(await h.row(hostName).count())) {
+          throw new Error(`${hostName} has LEFT the Recruited board across a dialog that was only ever `
             + 'cancelled — the invite was submitted after all. The row beats are now broken for future '
             + 're-records; investigate before shooting.');
         }
-        console.log(`[act1]   s1_14: verified — ${fullName} still on the Recruited board (not converted)`);
+        console.log(`[act1]   s1_14: verified — ${hostName} still on the Recruited board (not converted)`);
       }
       console.log(`[act1]   s1_14: verified — ${fullName} still in ILO with status "Invited to join"`);
       return;
@@ -3441,13 +3546,23 @@ export async function act1(page, h, cfg = {}) {
 
   // Same human, second warehouse, different vocabulary (8 ILO statuses vs 10 RLO statuses).
   // The narration names the ILO board, so it has to be up before the clock starts.
-  await h.scene('s1_15', { prepare: () => h.goto(URLS.iloMine) }, async () => {
+  await h.scene('s1_15', {
+    prepare: async () => {
+      // Production: the subject arrived in the pipeline UNASSIGNED (and was later assigned to the
+      // onboarding specialist, not to this recruiter), so Seth's ILO Mine is empty — shoot 8 filmed
+      // "No results" under "same human being, now living in the second warehouse". He lives on the
+      // company ILO board; find him there, with the same resolver every other production beat uses.
+      await h.goto(IS_PRODUCTION ? URLS.iloCompany : URLS.iloMine);
+      if (IS_PRODUCTION) await ensureCandidateVisible(page, h, candidate);
+    },
+  }, async () => {
     // Scope the reveals to the candidate's ILO ROW: unscoped, /Invited to join/ also matches the
     // stats tile above the board ("Invited but not onboarding"), which is hidden or elsewhere on the
     // page — that is why this hover was skipped in shoots 2 and 3. Note rowOfCandidate() may point
     // at a substitute on the RECRUITED board (see the top of act1), so name the candidate directly
-    // here: on the ILO board he is present by definition once s1_14 has verified him.
-    const iloRow = h.row(fullName);
+    // here: on the ILO board he is present by definition once s1_14 has verified him. On production
+    // the match discriminator pins the right one among the same-name siblings.
+    const iloRow = IS_PRODUCTION ? candidateRow(page, candidate) : h.row(fullName);
     await h.optional('find the candidate', () => h.moveTo(() => iloRow, { timeout: 10_000 }));
     await h.hold(1);
     await h.optional('converted badge', () =>
@@ -3690,7 +3805,14 @@ export async function act3(page, h) {
   // hand and being silently redirected. Moving that goto into `prepare` would put the beat off camera.
   await h.scene('s3_2', async () => {
     // Typing the route by hand: silent redirect, no 403, no message.
-    const before = URLS.iloMine;
+    //
+    // PRODUCTION TARGETS THE RECRUITED LIST, NOT THE ILO. Measured live 05/08/2026 under this
+    // session: /recruited_loan_officers/* really does silently redirect her to /prospects/Mine —
+    // but /lo_recruiting/* OPENS, all 23.6k records, despite INTERESTED_LOAN_OFFICERS being off
+    // in her permission tree. Shoot 5 filmed the ILO goto here and the "silent redirect" line
+    // played over a board that had just opened. The enforcement hole itself is narrated in s3_4,
+    // over the ILO board it applies to.
+    const before = IS_PRODUCTION ? URLS.rloCompany : URLS.iloMine;
     await page.goto(before, { waitUntil: 'domcontentloaded' }).catch(() => {});
     // Wait for the GWT shell before collapsing: #__sidebar_collapse_btn does not exist yet at
     // domcontentloaded, and collapseNav() correctly declines to click what it cannot measure.
