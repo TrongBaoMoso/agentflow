@@ -378,12 +378,16 @@ export LORV_PRODUCTION_BASE='https://<host>'     # không commit, xem quy tắc 
 #    Off camera, không ghi footage.
 node record.mjs --provision --acts 1,2,3,4,5,6
 
-# 2. Act 0 và act 7 chạy dưới admin, mà provisionRoles() lọc admin ra —
-#    nên phải lấy một state admin CHƯA bị đốt, sau cùng.
-node inspect.mjs --act 0
+# 2. KHÔNG có bước riêng để lấy state admin. `inspect.mjs` là probe READ-ONLY và nó
+#    TỪ CHỐI chạy khi chưa có state admin — nó không tạo ra state. Chính lệnh quay ở
+#    bước 4 gọi ensureAdminState() và hỏi login admin một lần ở đầu, vì act 0 và act 7
+#    có role 'admin'. Acts 1-6 seed từ role state nên không impersonate, nên state admin
+#    KHÔNG bị đốt giữa đường: một lần login phục vụ cả act 0 và act 7.
 
 # 3. Kiểm mọi state còn sống TRƯỚC khi quay (exit 1 nếu có cái chết).
 #    Đừng đo $? qua pipe — nó sẽ là exit code của tail.
+#    Lưu ý: 'MISSING admin' ở bước này là BÌNH THƯỜNG — lần impersonate cuối của
+#    provisioning đốt state admin và script xoá nó đi.
 node inspect.mjs --check-states
 
 # 4. Quay. Login-free vì đã có role state.

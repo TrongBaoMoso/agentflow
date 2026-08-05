@@ -43,7 +43,8 @@
  *   export LORV_VARIANT=production
  *   export LORV_PRODUCTION_BASE='https://<host>'      # deliberately not committed
  *   node record.mjs --provision --acts 1,2,3,4,5,6    # 6 manual logins, off camera
- *   node inspect.mjs --act 0                          # then ONE fresh admin login (acts 0 + 7)
+ *   # no separate admin step: inspect.mjs is a read-only probe and REFUSES to run without an
+ *   # admin state. The record run below asks for that login itself (acts 0 and 7 are admin).
  *   node record.mjs --acts 0,1,2,3,4,5,6,7 \
  *      --markers markers.production.json --durations ../audio-production/durations.json \
  *      --out video-production --wall-record 'Katie Test' --wall-nmls <unused-number>
@@ -2816,7 +2817,25 @@ export async function act1(page, h, cfg = {}) {
   // after a successful invite he is simply not here. Rather than fail nine scenes, demonstrate the
   // row controls on another record and say so loudly — the controls are identical, and the beats
   // are about what the controls DO, not about whose row it is.
-  await h.goto(URLS.rloMine);
+  /**
+   * WHICH BOARD THE ROW BEATS RUN ON.
+   *
+   * Staging: the candidate was created in act 0 and handed to this recruiter, so he sat on Mine.
+   *
+   * Production: measured 05/08/2026, this recruiter owns ZERO records — across the whole 106,145-row
+   * warehouse the board counts eleven as claimed by anyone. The subject is therefore NOT on Mine and
+   * never will be, so resolving the row there would find nothing, silently fall through to the
+   * substitute picker, and shoot nine row-level beats on the wrong person.
+   *
+   * s1_1 still opens Mine, because an EMPTY Mine is precisely what that scene is about. Everything
+   * after it works the company board, which is where the subject actually is.
+   */
+  const ROW_BOARD = IS_PRODUCTION ? URLS.rloCompany : URLS.rloMine;
+  await h.goto(ROW_BOARD);
+  if (IS_PRODUCTION) {
+    // The company board is 106k rows deep and paginated; the subject will not be on page one.
+    await h.optional('narrow the company board to the subject', () => h.filterGrid(fullName.toLowerCase()));
+  }
   let rowOfCandidate = () => candidateRow(page, candidate);
   // Test the SAME locator the beats will use (name + NMLS). Testing only the name would let an older
   // same-name record satisfy the check while rowOfCandidate resolved to nothing.
@@ -2958,7 +2977,12 @@ export async function act1(page, h, cfg = {}) {
     });
   }
 
-  await h.scene('s1_5', { prepare: () => h.goto(URLS.rloMine) }, async () => {
+  await h.scene('s1_5', {
+    prepare: async () => {
+      await h.goto(ROW_BOARD);
+      if (IS_PRODUCTION) await h.optional('re-narrow to the subject', () => h.filterGrid(fullName.toLowerCase()));
+    },
+  }, async () => {
     // VERIFIED 2026-08-03: the social-media cell holds a single
     // `button` labelled "Not checked" (becomes "Checked and has social links" once filled).
     await h.click([
