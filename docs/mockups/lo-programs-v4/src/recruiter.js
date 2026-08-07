@@ -1,233 +1,276 @@
-/* Recruiter page — behaviour translated from the design canvas component. */
+/* Recruiter page — behaviour from the design canvas component. */
 ;(function () {
-  var REC = [
-    { name: 'Chase Bardwell', nmls: '1211964', photo: '__IMG_men-41__' },
-    { name: 'Nadia Reyes-Kim', nmls: '1489330', photo: '__IMG_women-21__' },
-    { name: 'Wes Turnbull', nmls: '1052287', photo: '__IMG_men-64__' },
-    { name: 'Imani Fletcher', nmls: '1637701', photo: '__IMG_women-79__' },
-    { name: 'Doug Halverson', nmls: '1178452', photo: '__IMG_men-8__' },
-    { name: 'Renata Okafor', nmls: '1725118', photo: '__IMG_women-47__' }
-  ]
-
+  /* ------------------------------------------------------------- steps --- */
   var STEPS = [
-    ['1', 'Source and register', 'Identify the Loan Officer, branch or team and register the candidate in the CRM and referral system.'],
-    ['2', 'First conversation', 'Hold the initial conversation and, when helpful, give a one-to-one tour of Loan Factory and TERA.'],
-    ['3', 'Webinar', 'Register the prospect for the weekly Loan Factory webinar so they hear directly from leadership and can ask questions live.'],
-    ['4', 'Follow up', 'Address concerns and help the candidate reach a decision.'],
-    ['5', 'Activation', 'Support the Onboarding team until the Loan Officer is fully active at Loan Factory.']
+    ['01', 'Source and<br>register', 'Identify the loan officer, branch or team and register the candidate in the CRM and referral system.', false],
+    ['02', 'First<br>conversation', 'Hold the initial conversation and, when helpful, give a one-to-one tour of Loan Factory and TERA.', false],
+    ['03', 'Weekly<br>webinar', 'Register the prospect for the weekly Loan Factory webinar so they hear directly from leadership and can ask questions live.', true],
+    ['04', 'Follow<br>up', 'Address concerns and help the candidate reach a decision.', false],
+    ['05', 'Activation', 'Support the Onboarding team until the loan officer is fully active at Loan Factory.', false]
   ]
 
-  /* ---------------------------------------------------------------- steps -- */
   var stepsHost = document.querySelector('[data-steps]')
   STEPS.forEach(function (s, i) {
+    var last = i === STEPS.length - 1
     var li = document.createElement('li')
     li.setAttribute(
       'style',
-      'display:grid;grid-template-columns:minmax(0,1fr);gap:6px;padding:22px 0;border-top:1px solid #45454e'
+      'display:grid;grid-template-columns:clamp(56px,8vw,120px) minmax(0,1fr) minmax(0,1.3fr);gap:clamp(14px,3vw,40px);align-items:baseline;padding:clamp(20px,3vw,32px) 0;border-bottom:' +
+        (last ? '2px solid #272727' : '1px solid #eae5e0') +
+        (s[3] ? ';background:#ffffff' : '')
     )
     li.innerHTML =
-      '<div style="display:flex;gap:clamp(14px,3vw,40px);align-items:baseline;flex-wrap:wrap">' +
-      '<span style="font-size:clamp(34px,5vw,62px);font-weight:800;letter-spacing:-0.05em;line-height:0.9;color:' +
-      (i === STEPS.length - 1 ? '#f36f20' : '#63636d') +
-      ';min-width:2ch"></span>' +
-      '<h3 style="margin:0;font-size:clamp(20px,2.6vw,30px);font-weight:800;letter-spacing:-0.02em;text-transform:uppercase;flex:0 0 auto"></h3>' +
-      '<p style="margin:0;flex:1 1 320px;min-width:0;font-size:15px;line-height:1.65;color:#c9c9d1;max-width:60ch"></p></div>'
-    var row = li.firstChild
-    row.children[0].textContent = s[0]
-    row.children[1].textContent = s[1]
-    row.children[2].textContent = s[2]
+      '<span style="font-size:clamp(34px,6vw,68px);font-weight:900;letter-spacing:-.05em;line-height:.8;color:' +
+      (s[3] ? '#f36f20' : '#e0dbd5') +
+      '"></span>' +
+      '<h3 style="margin:0;font-size:clamp(17px,2vw,24px);font-weight:900;letter-spacing:-.02em;text-transform:uppercase;line-height:1.12">' +
+      s[1] +
+      '</h3>' +
+      '<p style="margin:0;font-size:14px;line-height:1.75;color:#44403c;font-weight:500"></p>'
+    li.children[0].textContent = s[0]
+    li.children[2].textContent = s[2]
     stepsHost.appendChild(li)
   })
 
-  /* ---------------------------------------------------------- bonus table -- */
-  var ROWS = []
-  for (var i = 1; i <= 30; i++) {
-    ROWS.push({ units: i * 12 + '+', bonus: '$' + (i * 1000).toLocaleString('en-US') })
+  /* --------------------------------------------------------- bonus table - */
+  function scale(from, to) {
+    var rows = []
+    for (var u = from; u <= to; u += 12) {
+      rows.push({
+        units: u + '+',
+        bonus: '$' + ((u / 12) * 1000).toLocaleString('en-US'),
+        bg: (u / 12) % 2 === 0 ? '#faf9f8' : '#ffffff'
+      })
+    }
+    return rows
   }
-  var left = ROWS.slice(0, 15)
-  var right = ROWS.slice(15)
-  var fullScale = false
+
+  var COL_A = scale(12, 180)
+  var COL_B = scale(192, 360)
+  var fullScale = window.innerWidth >= 760
   var tablesHost = document.querySelector('[data-tables]')
   var scaleBtn = document.querySelector('[data-scale]')
 
-  function renderTables() {
-    var sets = fullScale
-      ? [['12 to 180 units', left], ['192 to 360 units', right]]
-      : [['12 to 108 units', left.slice(0, 9)], ['192 to 288 units', right.slice(0, 9)]]
-
-    tablesHost.textContent = ''
-    sets.forEach(function (set) {
-      var wrap = document.createElement('div')
-      wrap.setAttribute('style', 'overflow-x:auto;max-width:100%')
-      var table = document.createElement('table')
-      table.setAttribute('style', 'width:100%;border-collapse:collapse;min-width:280px')
-      var caption = document.createElement('caption')
-      caption.setAttribute(
-        'style',
-        'text-align:left;font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#8b8a92;padding-bottom:8px'
-      )
-      caption.textContent = set[0]
-      table.appendChild(caption)
-      table.insertAdjacentHTML(
-        'beforeend',
-        '<thead><tr>' +
-          '<th scope="col" style="background:#272727;color:#faf9f8;text-align:left;padding:14px 16px;border-radius:16px 0 0 0;font-size:11.5px;font-weight:800;letter-spacing:0.09em;text-transform:uppercase">Referred Loan Officer production (12 mo.)</th>' +
-          '<th scope="col" style="background:#f36f20;color:#272727;text-align:right;padding:14px 16px;border-radius:0 16px 0 0;font-size:11.5px;font-weight:800;letter-spacing:0.09em;text-transform:uppercase">Recruiter one-time bonus</th>' +
-          '</tr></thead>'
-      )
-      var tbody = document.createElement('tbody')
-      set[1].forEach(function (r, idx) {
-        var tr = document.createElement('tr')
-        tr.setAttribute('style', 'background:' + (idx % 2 === 0 ? '#ffffff' : '#faf9f8'))
-        tr.innerHTML =
-          '<td style="padding:11px 14px;font-size:15px;font-weight:700;border-bottom:1px solid #ececf0;white-space:nowrap"></td>' +
-          '<td style="padding:11px 14px;font-size:15px;font-weight:800;color:#f36f20;text-align:right;border-bottom:1px solid #ececf0;white-space:nowrap"></td>'
-        tr.children[0].textContent = r.units
-        tr.children[1].textContent = r.bonus
-        tbody.appendChild(tr)
-      })
-      table.appendChild(tbody)
-      wrap.appendChild(table)
-      tablesHost.appendChild(wrap)
+  function table(rows, caption) {
+    var t = document.createElement('table')
+    t.setAttribute('style', 'width:100%;border-collapse:collapse;background:#ffffff;font-variant-numeric:tabular-nums')
+    t.innerHTML =
+      '<caption style="width:1px;height:1px;overflow:hidden;display:block;clip:rect(0 0 0 0)">' +
+      caption +
+      '</caption><thead><tr>' +
+      '<th scope="col" style="background:#272727;color:#ffffff;text-align:left;padding:16px 18px;font-size:10.5px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;line-height:1.4">Referred production<br><span style="opacity:.6">(12 mo.)</span></th>' +
+      '<th scope="col" style="background:#f36f20;color:#272727;text-align:right;padding:16px 18px;font-size:10.5px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;line-height:1.4">Recruiter<br>one-time bonus</th>' +
+      '</tr></thead>'
+    var tbody = document.createElement('tbody')
+    rows.forEach(function (r) {
+      var tr = document.createElement('tr')
+      tr.setAttribute('style', 'background:' + r.bg)
+      tr.innerHTML =
+        '<td style="padding:13px 18px;font-size:14px;font-weight:700;white-space:nowrap"></td>' +
+        '<td style="padding:13px 18px;font-size:14.5px;font-weight:900;color:#C2591A;text-align:right;white-space:nowrap"></td>'
+      tr.children[0].textContent = r.units
+      tr.children[1].textContent = r.bonus
+      tbody.appendChild(tr)
     })
+    t.appendChild(tbody)
+    return t
+  }
+
+  function renderTables() {
+    tablesHost.textContent = ''
+    tablesHost.appendChild(table(fullScale ? COL_A : COL_A.slice(0, 8), 'Recruiter bonus scale, 12 to 180 units'))
+    tablesHost.appendChild(table(fullScale ? COL_B : COL_B.slice(0, 8), 'Recruiter bonus scale, 192 to 360 units'))
+    scaleBtn.textContent = fullScale ? 'Show top of scale only' : 'Show full scale — all 30 steps'
+    scaleBtn.setAttribute('aria-expanded', String(fullScale))
   }
 
   scaleBtn.addEventListener('click', function () {
     fullScale = !fullScale
-    scaleBtn.textContent = fullScale ? 'Show the short scale' : 'Show full scale · 30 tiers'
-    scaleBtn.setAttribute('aria-expanded', String(fullScale))
     renderTables()
   })
 
-  /* --------------------------------------------------------------- roster -- */
-  function renderRoster() {
-    var host = document.querySelector('[data-roster]')
-    var zero = document.querySelector('[data-zero]')
-    var count = document.querySelector('[data-count-label]')
-    host.textContent = ''
+  /* ------------------------------------------------------------ roster --- */
+  var LEAD = [['Elena Vasquez', '1094412', '__IMG_LG_women-50__']]
+  var RECRUITERS = [
+    ['Marcus Trombley', '1276530', '__IMG_LG_men-60__'],
+    ['Grace Adeyemi', '1611248', '__IMG_LG_women-72__'],
+    ['Peter Salcedo', '1003977', '__IMG_LG_men-41__'],
+    ['Nadia Farouk', '1745120', '__IMG_LG_women-12__'],
+    ['Brett Kowalczyk', '1358804', '__IMG_LG_men-29__']
+  ]
 
-    if (!REC.length) {
-      zero.hidden = false
-      count.textContent = 'No recruiters approved yet'
-      return
-    }
-    count.textContent = REC.length + ' recruiters'
-
-    REC.forEach(function (a) {
-      var card = document.createElement('article')
-      card.className = 'h-card'
-      card.setAttribute(
-        'style',
-        'border:1px solid #eaeaee;background:#ffffff;border-radius:22px;padding:20px;display:flex;gap:16px;align-items:center;transition:box-shadow 0.15s ease,border-color 0.15s ease'
-      )
-      card.innerHTML =
-        '<img alt="" aria-hidden="true" loading="lazy" width="96" height="96" src="' +
-        a.photo +
-        '" style="width:96px;height:96px;flex:0 0 96px;border-radius:50%;background-color:#eceaf1;object-fit:cover" />' +
-        '<div style="min-width:0;flex:1">' +
-        '<h3 style="margin:0;font-size:17px;font-weight:800;letter-spacing:-0.01em"></h3>' +
-        '<div style="font-size:12.5px;color:#8b8a92;font-weight:600;margin-top:3px"></div>' +
-        '<div style="margin-top:9px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">' +
-        '<span style="font-size:10.5px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;padding:5px 11px;border-radius:999px;background:#f2f2f5;color:#5c5b63;border:1px solid #e4e4e9">Recruiter</span>' +
-        '</div></div>'
-      var body = card.lastChild
-      body.children[0].textContent = a.name
-      body.children[1].textContent = 'NMLS ' + a.nmls
-      host.appendChild(card)
-    })
+  function personCard(p, cardStyle, nameStyle, roleStyle, roleLabel) {
+    var card = document.createElement('article')
+    card.setAttribute('style', cardStyle)
+    card.innerHTML =
+      '<img alt="" aria-hidden="true" loading="lazy" width="230" height="230" src="' +
+      p[2] +
+      '" style="width:100%;height:230px;object-fit:cover;background:#f6f4f2" />' +
+      '<div style="padding:18px 20px 20px">' +
+      '<h4 style="margin:0;font-size:16px;font-weight:800;letter-spacing:-.01em;' + nameStyle + '"></h4>' +
+      '<p style="margin:6px 0 0;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#a8a29e"></p>' +
+      '<p style="margin:12px 0 0;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;' + roleStyle + '"></p>' +
+      '</div>'
+    var body = card.lastChild
+    body.children[0].textContent = p[0]
+    body.children[1].textContent = 'NMLS ' + p[1]
+    body.children[2].textContent = roleLabel
+    return card
   }
 
-  /* ---------------------------------------------------------------- modal -- */
+  function groupHead(title, badge, badgeStyle) {
+    var head = document.createElement('div')
+    head.setAttribute('style', 'display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:18px')
+    head.innerHTML =
+      '<h3 style="margin:0;font-size:clamp(17px,2.2vw,24px);font-weight:900;letter-spacing:-.02em;text-transform:uppercase"></h3>' +
+      '<span style="font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;border-radius:999px;padding:5px 11px;' +
+      badgeStyle +
+      '"></span>'
+    head.children[0].textContent = title
+    head.children[1].textContent = badge
+    return head
+  }
+
+  var rosterHost = document.querySelector('[data-roster]')
+  var gridStyle = 'display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px'
+
+  var leadBlock = document.createElement('div')
+  leadBlock.setAttribute('style', 'margin-bottom:40px')
+  leadBlock.appendChild(groupHead('Recruiting Team Lead', 'Runs the team', 'color:#272727;background:#f36f20'))
+  var leadGrid = document.createElement('div')
+  leadGrid.setAttribute('style', gridStyle)
+  LEAD.forEach(function (p) {
+    leadGrid.appendChild(
+      personCard(p, 'background:#272727;color:#f5f5f4;border-radius:24px;overflow:hidden', 'color:#ffffff', 'color:#f36f20', 'Recruiting Team Lead')
+    )
+  })
+  leadBlock.appendChild(leadGrid)
+  rosterHost.appendChild(leadBlock)
+
+  var recBlock = document.createElement('div')
+  recBlock.appendChild(groupHead('Producing Loan Officer Recruiters', '5 of 6 seats filled', 'color:#944924;background:#fff6f0'))
+  var recGrid = document.createElement('div')
+  recGrid.setAttribute('style', gridStyle)
+  RECRUITERS.forEach(function (p) {
+    recGrid.appendChild(
+      personCard(p, 'background:#ffffff;border:1px solid #fbd8bd;border-radius:24px;overflow:hidden', '', 'color:#C2591A', 'Producing Loan Officer Recruiter')
+    )
+  })
+
+  /* The open seat is a call to action, not a person. */
+  var open = document.createElement('article')
+  open.setAttribute(
+    'style',
+    'background:#faf9f8;border:1px dashed #d9d2ca;border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px 22px;min-height:230px'
+  )
+  open.innerHTML =
+    '<p style="margin:0;font-size:clamp(20px,2.6vw,26px);font-weight:900;letter-spacing:-.02em;text-transform:uppercase;line-height:1.1">One seat<br>open</p>' +
+    '<p style="margin:12px 0 18px;font-size:12.5px;line-height:1.65;color:#78716c;font-weight:500;max-width:26ch">Full-time, starts with the next recruiting month.</p>' +
+    '<button type="button" data-when="public" data-open-modal class="h-cta-ink" style="border:0;background:#f36f20;color:#fff;padding:12px 22px;border-radius:999px;font-size:12.5px;font-weight:800;cursor:pointer">Sign in to register</button>' +
+    '<button type="button" data-when="new submitted approved denied" data-open-modal class="h-cta-ink" style="border:0;background:#f36f20;color:#fff;padding:12px 22px;border-radius:999px;font-size:12.5px;font-weight:800;cursor:pointer">Register for this seat</button>'
+  recGrid.appendChild(open)
+  recBlock.appendChild(recGrid)
+  rosterHost.appendChild(recBlock)
+
+  /* ------------------------------------------------------------- modal --- */
   var modal = document.querySelector('[data-modal]')
-  var form = document.querySelector('[data-modal-form]')
-  var success = document.querySelector('[data-modal-success]')
-  var title = document.querySelector('[data-modal-title]')
+  var stepSignIn = document.querySelector('[data-step-signin]')
+  var stepForm = document.querySelector('[data-step-form]')
+  var stepSuccess = document.querySelector('[data-step-success]')
   var role = document.querySelector('[data-role]')
   var roleErr = document.querySelector('[data-role-err]')
+  var avail = document.querySelector('[data-avail]')
+  var phone = document.querySelector('[data-phone]')
+  var phoneErr = document.querySelector('[data-phone-err]')
+  var exp = document.querySelector('[data-exp]')
+  var expHint = document.querySelector('[data-exp-hint]')
   var why = document.querySelector('[data-why]')
   var whyErr = document.querySelector('[data-why-err]')
-  var errBox = document.querySelector('[data-err-summary]')
+  var errBox = document.querySelector('[data-err-box]')
   var errText = document.querySelector('[data-err-text]')
   var spinner = document.querySelector('[data-spinner]')
   var submitBtn = document.querySelector('[data-submit]')
   var submitLabel = document.querySelector('[data-submit-label]')
+  var teamLead = null
+  var touched = false
   var lastFocus = null
   var timer = null
 
-  var chosenAvail = 'Full-time'
-  var chosenLead = 'Yes'
-
-  function choiceStyle(active) {
-    return active
-      ? 'background:#fff3e9;color:#272727;border:1px solid #f36f20'
-      : 'background:#ffffff;color:#3d3c44;border:1px solid #d9d9de'
-  }
-
-  function renderChoices() {
-    var availHost = document.querySelector('[data-avail]')
-    availHost.textContent = ''
-    ;[
-      ['Full-time', 'Recruiting is the primary role'],
-      ['Part-time', 'Alongside an active pipeline']
-    ].forEach(function (o) {
+  function renderTl() {
+    var wrap = document.querySelector('[data-tl]')
+    wrap.textContent = ''
+    ;[['Yes', true], ['No', false]].forEach(function (o) {
+      var on = teamLead === o[1]
       var b = document.createElement('button')
       b.type = 'button'
-      b.className = 'h-border-orange'
-      b.setAttribute('aria-pressed', String(chosenAvail === o[0]))
+      b.className = 'h-pill'
+      b.setAttribute('aria-pressed', String(on))
       b.setAttribute(
         'style',
-        'text-align:left;padding:13px 14px;cursor:pointer;border-radius:18px;' + choiceStyle(chosenAvail === o[0])
+        'flex:1;padding:13px 0;border-radius:14px;font-size:13px;font-weight:800;cursor:pointer;border:1.5px solid ' +
+          (on ? '#f36f20' : '#e0dbd5') +
+          ';background:' +
+          (on ? '#fff6f0' : '#ffffff') +
+          ';color:' +
+          (on ? '#944924' : '#272727')
       )
-      b.innerHTML =
-        '<span style="display:block;font-size:13px;font-weight:800"></span>' +
-        '<span style="display:block;font-size:11.5px;margin-top:3px;opacity:0.75"></span>'
-      b.children[0].textContent = o[0]
-      b.children[1].textContent = o[1]
+      b.textContent = o[0]
       b.addEventListener('click', function () {
-        chosenAvail = o[0]
-        renderChoices()
+        teamLead = o[1]
+        renderTl()
+        document.querySelector('[data-tl-note]').hidden = teamLead !== true
       })
-      availHost.appendChild(b)
-    })
-
-    var leadHost = document.querySelector('[data-lead]')
-    leadHost.textContent = ''
-    ;['Yes', 'No'].forEach(function (label) {
-      var b = document.createElement('button')
-      b.type = 'button'
-      b.className = 'h-border-orange'
-      b.setAttribute('aria-pressed', String(chosenLead === label))
-      b.setAttribute(
-        'style',
-        'padding:13px 28px;font-size:13px;font-weight:800;cursor:pointer;border-radius:999px;' +
-          choiceStyle(chosenLead === label)
-      )
-      b.textContent = label
-      b.addEventListener('click', function () {
-        chosenLead = label
-        renderChoices()
-      })
-      leadHost.appendChild(b)
+      wrap.appendChild(b)
     })
   }
 
-  function clearErrors() {
-    roleErr.hidden = true
-    whyErr.hidden = true
-    errBox.hidden = true
-    role.style.borderColor = '#d9d9de'
-    why.style.borderColor = '#d9d9de'
+  function errors() {
+    var e = []
+    if (!role.value) e.push('role')
+    if (phone.value.replace(/[^0-9]/g, '').length < 10) e.push('phone')
+    if (exp.value.trim().length < 40) e.push('exp')
+    if (why.value.trim().length < 30) e.push('why')
+    return e
+  }
+
+  function paintErrors() {
+    var e = touched ? errors() : []
+    var has = function (k) {
+      return e.indexOf(k) > -1
+    }
+    roleErr.hidden = !has('role')
+    role.style.borderColor = has('role') ? '#fa5252' : '#e0dbd5'
+    phoneErr.hidden = !has('phone')
+    phone.style.borderColor = has('phone') ? '#fa5252' : '#e0dbd5'
+    exp.style.borderColor = has('exp') ? '#fa5252' : '#e0dbd5'
+    whyErr.hidden = !has('why')
+    why.style.borderColor = has('why') ? '#fa5252' : '#e0dbd5'
+
+    var len = exp.value.trim().length
+    expHint.textContent = has('exp')
+      ? 'A little more, please — ' + len + ' of 40 characters minimum.'
+      : len + ' characters. A few lines is plenty.'
+    expHint.style.color = has('exp') ? '#b02525' : '#a8a29e'
+
+    errBox.hidden = e.length === 0
+    errText.textContent =
+      e.length + (e.length === 1 ? ' field needs attention before you can submit.' : ' fields need attention before you can submit.')
+  }
+
+  function showStep(which) {
+    stepSignIn.hidden = which !== 'signin'
+    stepForm.hidden = which !== 'form'
+    stepSuccess.hidden = which !== 'success'
   }
 
   function openModal() {
     lastFocus = document.activeElement
-    clearErrors()
-    success.hidden = true
-    form.hidden = false
-    title.textContent = "Tell us how you'd bring producers over"
+    touched = false
+    paintErrors()
+    showStep(document.body.getAttribute('data-view') === 'public' ? 'signin' : 'form')
     modal.hidden = false
     document.body.style.overflow = 'hidden'
-    var close = modal.querySelector('[data-close-modal]')
+    var close = modal.querySelector('[data-step-signin]:not([hidden]) [data-close-modal], [data-step-form]:not([hidden]) [data-close-modal]')
     if (close) close.focus()
   }
 
@@ -240,13 +283,20 @@
     document.body.style.overflow = ''
     spinner.hidden = true
     submitBtn.disabled = false
-    submitLabel.textContent = 'Submit application'
+    submitBtn.style.background = '#f36f20'
+    submitLabel.textContent = 'Submit registration'
     if (lastFocus && lastFocus.focus) lastFocus.focus()
   }
 
-  Array.prototype.forEach.call(document.querySelectorAll('[data-open-modal]'), function (b) {
-    b.addEventListener('click', openModal)
-  })
+  function wireModalTriggers() {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-open-modal]'), function (b) {
+      if (b.dataset.wired) return
+      b.dataset.wired = '1'
+      b.addEventListener('click', openModal)
+    })
+  }
+  wireModalTriggers()
+
   Array.prototype.forEach.call(document.querySelectorAll('[data-close-modal]'), function (b) {
     b.addEventListener('click', closeModal)
   })
@@ -257,45 +307,61 @@
     if (e.key === 'Escape' && !modal.hidden) closeModal()
   })
 
+  document.querySelector('[data-signin]').addEventListener('click', function () {
+    window.setView('new')
+    showStep('form')
+  })
+
+  ;[role, phone, exp, why].forEach(function (el) {
+    el.addEventListener('input', function () {
+      if (touched) paintErrors()
+    })
+    el.addEventListener('change', function () {
+      if (touched) paintErrors()
+    })
+  })
+
   submitBtn.addEventListener('click', function () {
-    clearErrors()
-    var bad = 0
-    if (!role.value.trim()) {
-      roleErr.hidden = false
-      role.style.borderColor = '#fa5252'
-      bad++
-    }
-    if (!why.value.trim()) {
-      whyErr.hidden = false
-      why.style.borderColor = '#fa5252'
-      bad++
-    }
-    if (bad) {
-      errText.textContent =
-        bad === 1 ? 'One field still needs your attention.' : 'Two fields still need your attention.'
-      errBox.hidden = false
-      return
-    }
+    touched = true
+    paintErrors()
+    if (errors().length) return
     submitBtn.disabled = true
+    submitBtn.style.background = '#944924'
     spinner.hidden = false
     submitLabel.textContent = 'Submitting…'
     timer = setTimeout(function () {
       timer = null
       spinner.hidden = true
       submitBtn.disabled = false
-      submitLabel.textContent = 'Submit application'
-      form.hidden = true
-      success.hidden = false
-      title.textContent = "Thanks — it's in"
-    }, 1400)
+      submitBtn.style.background = '#f36f20'
+      submitLabel.textContent = 'Submit registration'
+      document.querySelector('[data-success-avail]').textContent = avail.value
+      document.querySelector('[data-success-tl]').textContent =
+        teamLead === true ? 'Yes' : teamLead === false ? 'No' : 'Not stated'
+      showStep('success')
+    }, 1500)
   })
 
-  document.querySelector('[data-finish]').addEventListener('click', function () {
-    closeModal()
-    window.setView('submitted')
+  Array.prototype.forEach.call(document.querySelectorAll('[data-finish]'), function (b) {
+    b.addEventListener('click', function () {
+      closeModal()
+      window.setView('submitted')
+    })
   })
 
   renderTables()
-  renderRoster()
-  renderChoices()
+  renderTl()
+  paintErrors()
+
+  window.onViewChange = function (view) {
+    var label = document.querySelector('[data-register-label]')
+    label.textContent =
+      view === 'approved'
+        ? 'Update your details'
+        : view === 'denied'
+          ? 'Reapply for a seat'
+          : view === 'submitted'
+            ? 'Update your registration'
+            : 'Register for a seat'
+  }
 })()

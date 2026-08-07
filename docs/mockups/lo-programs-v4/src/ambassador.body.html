@@ -1,386 +1,410 @@
 <main id="top">
-  <!-- ======================================================= hero ======= -->
-  <section style="max-width:1340px;margin:0 auto;padding:clamp(38px,7vw,92px) 20px clamp(30px,5vw,58px);display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,56px);align-items:end">
-    <div style="min-width:0">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
-        <span style="width:44px;height:2px;background:#f36f20"></span>
-        <span style="font-size:11.5px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#C2591A">Internal program</span>
+
+<section aria-labelledby="hero-h" style="background:#272727;color:#ffffff;overflow:hidden">
+  <div style="max-width:1400px;margin:0 auto;padding:clamp(40px,6vw,84px) clamp(14px,4vw,56px) clamp(48px,7vw,92px);display:grid;gridTemplateColumns:repeat(auto-fit,minmax(330px,1fr));gap:clamp(28px,5vw,60px);alignItems:start">
+    <div>
+      <div style="display:flex;alignItems:center;gap:12px;marginBottom:22px">
+        <span style="width:38px;height:3px;background:#f36f20;display:block;borderRadius:999px"></span>
+        <span style="fontSize:10.5px;fontWeight:800;letterSpacing:.22em;textTransform:uppercase;color:#f36f20">Internal recruiting program</span>
       </div>
-      <h1 style="margin:0;font-size:clamp(42px,8.2vw,104px);line-height:0.9;font-weight:800;letter-spacing:-0.035em;text-transform:uppercase">Loan Officer Ambassador<br /><span style="color:#f36f20">Program</span></h1>
-      <p style="margin:26px 0 0;font-size:clamp(18px,2.2vw,25px);line-height:1.35;font-weight:600;max-width:20ch;text-wrap:pretty">Three levels. Company-funded marketing. Approved content posted for you.</p>
-      <p style="margin:16px 0 0;font-size:15px;line-height:1.6;color:#5c5b63;max-width:46ch">Open to every Loan Factory loan officer and staff member in good standing.</p>
-      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:32px">
-        <button type="button" data-when="new" data-open-modal class="h-orange" style="background:#f36f20;color:#272727;border:none;padding:16px 30px;font-size:14px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;border-radius:999px">Apply now</button>
-        <button type="button" data-when="public" class="h-orange" style="background:#f36f20;color:#272727;border:none;padding:16px 30px;font-size:14px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;border-radius:999px">Sign in to apply</button>
-        <a href="#apply" data-when="submitted approved denied" style="display:inline-block;background:#272727;color:#faf9f8;padding:16px 30px;font-size:14px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none;border-radius:999px">See your application status</a>
-        <a href="#directory" class="h-ink" style="display:inline-block;border:1px solid #272727;color:#272727;padding:16px 30px;font-size:14px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none;border-radius:999px">See our ambassadors</a>
+      <h1 id="hero-h" style="margin:0;fontSize:clamp(34px,5.6vw,74px);lineHeight:.94;fontWeight:900;letterSpacing:-.035em;textTransform:uppercase">Loan Officer<br />Ambassador<br />Program</h1>
+      <p style="margin:clamp(18px,2.6vw,28px) 0 0;fontSize:clamp(16px,2vw,23px);lineHeight:1.4;fontWeight:500;maxWidth:24ch;color:#f5f5f4">Three levels. Company-funded marketing. Approved content posted for you.</p>
+      <p style="margin:14px 0 0;fontSize:13.5px;lineHeight:1.65;color:#a8a29e;maxWidth:48ch;fontWeight:500">Open to every Loan Factory loan officer and staff member in good standing.</p>
+      <div style="display:flex;gap:12px;flexWrap:wrap;marginTop:clamp(24px,3.4vw,34px)">
+        <button type="button" data-when="public" data-open-modal class="h-cta" style="border:0;background:#f36f20;color:#fff;padding:16px 30px;borderRadius:999px;fontSize:14px;fontWeight:800;cursor:pointer">Sign in to register</button>
+        <button type="button" data-when="new submitted approved denied" data-open-modal class="h-cta" style="border:0;background:#f36f20;color:#fff;padding:16px 30px;borderRadius:999px;fontSize:14px;fontWeight:800;cursor:pointer"><span data-register-label>Register for the program</span></button>
+        <a href="#directory" class="h-ghost" style="display:inline-flex;alignItems:center;border:1.5px solid #4a4644;color:#f5f5f4;padding:15px 26px;borderRadius:999px;fontSize:14px;fontWeight:700">See our ambassadors →</a>
+      </div>
+      <p data-when="public" style="margin:16px 0 0;fontSize:12px;fontWeight:600;color:#a8a29e">Loan Factory loan officers only — you'll be asked to sign in.</p>
+    </div>
+
+    <!-- 1 · public and 2 · not applied see the money stack -->
+    <div data-when="public new" style="display:grid;gap:8px">
+      <div style="background:#3a3735;padding:20px 24px;borderRadius:20px"><div style="fontSize:clamp(26px,3.2vw,36px);fontWeight:900;letterSpacing:-.03em;lineHeight:1">$0</div><div style="fontSize:11px;fontWeight:700;letterSpacing:.13em;textTransform:uppercase;color:#a8a29e;marginTop:7px">Level 1 · General participation</div></div>
+      <div style="background:#3a3735;padding:20px 24px;borderRadius:20px;border:1px solid #4a4644"><div style="fontSize:clamp(26px,3.2vw,36px);fontWeight:900;letterSpacing:-.03em;lineHeight:1;color:#f36f20">$500<span style="fontSize:15px;fontWeight:700;color:#a8a29e;letterSpacing:0"> / mo</span></div><div style="fontSize:11px;fontWeight:700;letterSpacing:.13em;textTransform:uppercase;color:#a8a29e;marginTop:7px">Level 2 · Loan Officer Ambassador</div></div>
+      <div style="background:#f36f20;color:#272727;padding:20px 24px;borderRadius:20px"><div style="fontSize:clamp(26px,3.2vw,36px);fontWeight:900;letterSpacing:-.03em;lineHeight:1">$1,000<span style="fontSize:15px;fontWeight:700;letterSpacing:0;opacity:.75"> / mo</span></div><div style="fontSize:11px;fontWeight:800;letterSpacing:.13em;textTransform:uppercase;marginTop:7px;opacity:.82">Level 3 · Senior Loan Officer Ambassador</div></div>
+      <p style="margin:6px 4px 0;fontSize:11px;color:#a8a29e;fontWeight:600">Marketing budget is company-funded and approval-based.</p>
+    </div>
+
+    <!-- 3 · submitted -->
+    <div data-when="submitted" style="background:#ffffff;color:#272727;borderRadius:24px;padding:clamp(22px,3vw,30px)">
+      <span style="display:inline-flex;alignItems:center;gap:8px;fontSize:10px;fontWeight:800;letterSpacing:.16em;textTransform:uppercase;color:#1b6fb8;background:#e7f2fc;borderRadius:999px;padding:6px 13px">Application under review</span>
+      <h2 style="margin:16px 0 0;fontSize:clamp(20px,2.6vw,28px);lineHeight:1.12;fontWeight:900;letterSpacing:-.025em;textTransform:uppercase">Thanks, Jordan — we have your application</h2>
+      <dl style="margin:18px 0 0;display:grid;gridTemplateColumns:repeat(auto-fit,minmax(130px,1fr));gap:14px">
+        <div><dt style="fontWeight:800;color:#a8a29e;fontSize:9.5px;letterSpacing:.14em;textTransform:uppercase;marginBottom:5px">Submitted</dt><dd style="margin:0;fontWeight:700;fontSize:13.5px">July 28, 2026</dd></div>
+        <div><dt style="fontWeight:800;color:#a8a29e;fontSize:9.5px;letterSpacing:.14em;textTransform:uppercase;marginBottom:5px">Applied for</dt><dd style="margin:0;fontWeight:700;fontSize:13.5px">Level 2 — Ambassador</dd></div>
+        <div><dt style="fontWeight:800;color:#a8a29e;fontSize:9.5px;letterSpacing:.14em;textTransform:uppercase;marginBottom:5px">Reviewer</dt><dd style="margin:0;fontWeight:700;fontSize:13.5px">Program team</dd></div>
+      </dl>
+      <ol style="margin:20px 0 0;padding:0;listStyle:none;display:grid;gap:8px">
+        <li style="background:#faf9f8;borderRadius:16px;padding:13px 15px;display:grid;gridTemplateColumns:22px 1fr;gap:11px;alignItems:start"><span style="fontSize:11px;fontWeight:900;color:#40C057">✓</span><span style="fontSize:12.5px;lineHeight:1.6;fontWeight:600">Application received and logged</span></li>
+        <li style="background:#faf9f8;borderRadius:16px;padding:13px 15px;display:grid;gridTemplateColumns:22px 1fr;gap:11px;alignItems:start"><span style="fontSize:11px;fontWeight:900;color:#228BE6">●</span><span style="fontSize:12.5px;lineHeight:1.6;fontWeight:600">Leadership review — in progress<span style="display:block;fontWeight:500;color:#78716c;marginTop:3px">Typically five business days.</span></span></li>
+        <li style="background:#faf9f8;borderRadius:16px;padding:13px 15px;display:grid;gridTemplateColumns:22px 1fr;gap:11px;alignItems:start"><span style="fontSize:11px;fontWeight:900;color:#d6d3d1">○</span><span style="fontSize:12.5px;lineHeight:1.6;fontWeight:500;color:#78716c">Decision by email, and here. If approved, your budget and content support start the same week.</span></li>
+      </ol>
+    </div>
+
+    <!-- 4 · approved -->
+    <div data-when="approved" style="background:#ffffff;color:#272727;borderRadius:24px;padding:clamp(22px,3vw,30px)">
+      <span style="display:inline-flex;alignItems:center;gap:8px;fontSize:10px;fontWeight:800;letterSpacing:.16em;textTransform:uppercase;color:#1f6b33;background:#e9f8ee;borderRadius:999px;padding:6px 13px">Approved · Level 2</span>
+      <h2 style="margin:16px 0 0;fontSize:clamp(22px,2.8vw,32px);lineHeight:1.05;fontWeight:900;letterSpacing:-.03em;textTransform:uppercase">You're a Level 2 Ambassador</h2>
+      <p style="margin:14px 0 0;fontSize:13.5px;lineHeight:1.7;color:#57534e;fontWeight:500">Approved August 3, 2026. Your <b style="color:#C2591A;fontWeight:800">$500 / month</b> marketing budget is active and your card is live in the directory below.</p>
+      <div style="display:grid;gap:8px;marginTop:18px">
+        <div style="background:#faf9f8;borderRadius:16px;padding:14px 16px;display:flex;justifyContent:space-between;gap:12px;alignItems:center;flexWrap:wrap"><span style="fontSize:10.5px;fontWeight:800;letterSpacing:.12em;textTransform:uppercase;color:#a8a29e">Next 90-day standard</span><span style="fontSize:12.5px;fontWeight:800">3 recruited or onboarded loan officers</span></div>
+        <div style="background:#faf9f8;borderRadius:16px;padding:14px 16px;display:flex;justifyContent:space-between;gap:12px;alignItems:center;flexWrap:wrap"><span style="fontSize:10.5px;fontWeight:800;letterSpacing:.12em;textTransform:uppercase;color:#a8a29e">Review date</span><span style="fontSize:12.5px;fontWeight:800">November 1, 2026</span></div>
+      </div>
+      <div style="marginTop:18px;display:flex;gap:14px;alignItems:center;background:#fff6f0;borderRadius:18px;padding:14px 16px">
+        <img alt="" aria-hidden="true" width="52" height="52" src="__IMG_SM_men-22__" style="width:52px;height:52px;flex:none;borderRadius:999px;objectFit:cover" />
+        <span style="display:flex;flexDirection:column;gap:3px"><span style="fontSize:13.5px;fontWeight:800">Jordan Alvarez</span><span style="fontSize:11px;fontWeight:700;color:#944924;letterSpacing:.04em">NMLS 1102547 · Level 2 Ambassador</span></span>
+        <a href="#directory" style="marginLeft:auto;fontSize:12px;fontWeight:800">In directory →</a>
       </div>
     </div>
-    <div style="min-width:0;display:flex;flex-direction:column;gap:0;padding-bottom:6px">
-      <div style="border-top:2px solid #272727;padding:16px 0;display:flex;align-items:baseline;gap:16px">
-        <span style="font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-0.04em;color:#e4e4e9;line-height:1">01</span>
-        <div>
-          <div style="font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:0.04em">General participation</div>
-          <div style="font-size:13px;color:#5c5b63">$0 budget · self-serve</div>
-        </div>
+
+    <!-- 5 · not approved -->
+    <div data-when="denied" style="background:#ffffff;color:#272727;borderRadius:24px;padding:clamp(22px,3vw,30px)">
+      <span style="display:inline-flex;alignItems:center;gap:8px;fontSize:10px;fontWeight:800;letterSpacing:.16em;textTransform:uppercase;color:#8a6100;background:#fff6dd;borderRadius:999px;padding:6px 13px">Not approved for Level 2 yet</span>
+      <h2 style="margin:16px 0 0;fontSize:clamp(20px,2.6vw,28px);lineHeight:1.12;fontWeight:900;letterSpacing:-.025em;textTransform:uppercase">Still in the program — just not at Level 2 yet</h2>
+      <p style="margin:14px 0 0;fontSize:13.5px;lineHeight:1.7;color:#57534e;fontWeight:500">Your Level 1 participation stays active: Recruiting tab, approved content posted for you, and the standard referral bonus. Reviewed August 3, 2026.</p>
+      <div style="display:grid;gap:8px;marginTop:18px">
+        <div style="background:#faf9f8;borderRadius:16px;padding:13px 15px;display:grid;gridTemplateColumns:70px 1fr;gap:12px;alignItems:center"><span style="fontSize:9.5px;fontWeight:800;letterSpacing:.1em;textTransform:uppercase;color:#8a6100;background:#fff6dd;borderRadius:999px;padding:5px 9px;textAlign:center">Short</span><span style="fontSize:12.5px;lineHeight:1.55;fontWeight:600">Connections: <b style="fontWeight:800">640</b> — Level 2 prefers 1,000+</span></div>
+        <div style="background:#faf9f8;borderRadius:16px;padding:13px 15px;display:grid;gridTemplateColumns:70px 1fr;gap:12px;alignItems:center"><span style="fontSize:9.5px;fontWeight:800;letterSpacing:.1em;textTransform:uppercase;color:#8a6100;background:#fff6dd;borderRadius:999px;padding:5px 9px;textAlign:center">Short</span><span style="fontSize:12.5px;lineHeight:1.55;fontWeight:600">No referrals submitted in the last 90 days</span></div>
+        <div style="background:#faf9f8;borderRadius:16px;padding:13px 15px;display:grid;gridTemplateColumns:70px 1fr;gap:12px;alignItems:center"><span style="fontSize:9.5px;fontWeight:800;letterSpacing:.1em;textTransform:uppercase;color:#2f8f45;background:#e9f8ee;borderRadius:999px;padding:5px 9px;textAlign:center">Met</span><span style="fontSize:12.5px;lineHeight:1.55;fontWeight:600">Active loan officer in good standing</span></div>
       </div>
-      <div style="border-top:1px solid #eaeaee;padding:16px 0;display:flex;align-items:baseline;gap:16px;margin-left:clamp(0px,3vw,34px)">
-        <span style="font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-0.04em;color:#f7b98a;line-height:1">02</span>
-        <div>
-          <div style="font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:0.04em">Loan Officer Ambassador</div>
-          <div style="font-size:13px;color:#5c5b63">Up to <strong style="color:#C2591A">$500</strong> / month</div>
-        </div>
-      </div>
-      <div style="border-top:1px solid #eaeaee;border-bottom:2px solid #f36f20;padding:16px 0;display:flex;align-items:baseline;gap:16px;margin-left:clamp(0px,6vw,68px)">
-        <span style="font-size:clamp(30px,4vw,44px);font-weight:800;letter-spacing:-0.04em;color:#f36f20;line-height:1">03</span>
-        <div>
-          <div style="font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:0.04em">Senior Loan Officer Ambassador</div>
-          <div style="font-size:13px;color:#5c5b63">Up to <strong style="color:#C2591A">$1,000</strong> / month</div>
-        </div>
-      </div>
+      <p style="margin:14px 0 0;fontSize:12.5px;lineHeight:1.7;color:#78716c;fontWeight:500">Reapply from November 1, 2026 — or sooner with two qualified referrals. <a href="#directory">Talk to the program team</a>.</p>
     </div>
-  </section>
 
-  <!-- ================================================ status / apply ==== -->
-  <section id="apply" style="background:#272727;color:#faf9f8">
-    <div style="max-width:1340px;margin:0 auto;padding:clamp(44px,6vw,84px) 20px">
-      <!-- 1 · public -->
-      <div data-when="public" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,56px);align-items:center">
-        <div>
-          <div style="font-size:11px;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:#f36f20;margin-bottom:14px">Internal program</div>
-          <h2 style="margin:0;font-size:clamp(28px,4.4vw,52px);line-height:1;font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;max-width:16ch">Loan Factory loan officers can apply for this program.</h2>
-          <p style="margin:18px 0 0;font-size:15px;line-height:1.7;color:#c9c9d1;max-width:52ch">Applications are open to Loan Officers and staff already licensed with Loan Factory. Not with us yet? The ambassadors above are the people to talk to — every one of them can walk you through the platform.</p>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start">
-          <button type="button" class="h-paper" style="background:#f36f20;color:#272727;border:none;padding:17px 32px;font-size:14px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;border-radius:999px">Sign in to apply</button>
-          <a href="#directory" style="color:#f36f20;font-size:13px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid rgba(243,111,32,0.4);padding-bottom:2px">Or browse the ambassador directory</a>
-        </div>
-      </div>
+  </div>
+</section>
 
-      <!-- 2 · signed in, not applied -->
-      <div data-when="new" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,56px);align-items:center">
-        <div>
-          <div style="font-size:11px;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:#f36f20;margin-bottom:14px">You're eligible</div>
-          <h2 style="margin:0;font-size:clamp(28px,4.4vw,52px);line-height:1;font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;max-width:14ch">Apply to the Ambassador Program</h2>
-          <p style="margin:18px 0 0;font-size:15px;line-height:1.7;color:#c9c9d1;max-width:52ch">Your application goes to the program team for review. Level 1 is activated as soon as you confirm the content rules; Levels 2 and 3 are reviewed by leadership, usually within five business days.</p>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:14px;align-items:flex-start">
-          <button type="button" data-open-modal class="h-paper" style="background:#f36f20;color:#272727;border:none;padding:17px 32px;font-size:14px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;border-radius:999px">Apply now</button>
-          <div style="font-size:12.5px;color:#91919b;line-height:1.6;max-width:34ch">Applying as <strong style="color:#faf9f8">Jordan Mackey</strong> · NMLS 1492003 · jordan.mackey@loanfactory.com</div>
-        </div>
-      </div>
-
-      <!-- 3 · submitted -->
-      <div data-when="submitted" style="background:#33333a;border-left:6px solid #FAB005;padding:clamp(24px,4vw,40px);border-radius:26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:clamp(20px,4vw,48px)">
-        <div>
-          <div style="display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:#FAB005"><span style="width:8px;height:8px;background:#FAB005;border-radius:50%"></span> Application under review</div>
-          <h2 style="margin:14px 0 0;font-size:clamp(24px,3.6vw,40px);line-height:1.05;font-weight:800;letter-spacing:-0.025em;text-transform:uppercase">We have your application</h2>
-          <p style="margin:14px 0 0;font-size:14.5px;line-height:1.7;color:#c9c9d1;max-width:48ch">Submitted <strong style="color:#faf9f8">July 28, 2026</strong> for <strong style="color:#faf9f8">Level 2 — Loan Officer Ambassador</strong>.</p>
-        </div>
-        <div>
-          <div style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#91919b;margin-bottom:12px">What happens next</div>
-          <ol style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:9px;font-size:14px;line-height:1.6;color:#e6e6ea">
-            <li>The program team reviews your recruiting activity and standing.</li>
-            <li>Leadership approves the level, or suggests a different one.</li>
-            <li>You get an email decision and, if approved, a budget onboarding call.</li>
-          </ol>
-          <div style="margin-top:16px;font-size:12.5px;color:#91919b">Typical decision time: 5 business days. Questions go to <a href="#apply" style="color:#f36f20">ambassadors@loanfactory.com</a>.</div>
-        </div>
-      </div>
-
-      <!-- 4 · approved -->
-      <div data-when="approved" style="background:#33333a;border-left:6px solid #40C057;padding:clamp(24px,4vw,40px);border-radius:26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(20px,4vw,48px)">
-        <div>
-          <div style="display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:#40C057"><span style="width:8px;height:8px;background:#40C057;border-radius:50%"></span> Approved</div>
-          <h2 style="margin:14px 0 0;font-size:clamp(26px,4vw,46px);line-height:1;font-weight:800;letter-spacing:-0.03em;text-transform:uppercase">You're a <span style="color:#f36f20">Level 2</span> Ambassador</h2>
-          <p style="margin:14px 0 0;font-size:14.5px;line-height:1.7;color:#c9c9d1;max-width:48ch">Approved August 3, 2026. Your $500 monthly marketing budget is active and approved content is now posting on your behalf. Your next 90-day activity review is November 1.</p>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:20px">
-            <a href="#directory" style="background:#f36f20;color:#272727;padding:13px 22px;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;border-radius:999px">Open campaign requests</a>
-            <a href="#levels" style="border:1px solid #63636d;color:#faf9f8;padding:13px 22px;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;border-radius:999px">See Level 3 requirements</a>
-          </div>
-        </div>
-        <div>
-          <div style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#91919b;margin-bottom:12px">How your card appears in the public directory</div>
-          <article style="border:1px solid #eaeaee;background:#faf9f8;color:#272727;border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:14px;max-width:360px">
-            <div style="display:flex;gap:14px;align-items:flex-start">
-              <div style="width:56px;height:56px;flex:0 0 56px;border-radius:50%;background:#272727;color:#f36f20;display:grid;place-items:center;font-size:16px;font-weight:800">JM</div>
-              <div>
-                <h3 style="margin:0;font-size:17px;font-weight:800">Jordan Mackey</h3>
-                <div style="font-size:12px;color:#8b8a92;font-weight:600;margin-top:2px">NMLS 1492003</div>
-                <div style="margin-top:8px;display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;padding:4px 9px;background:#f36f20;color:#272727;border:1px solid #f36f20">Level 2</div>
-              </div>
-            </div>
-            <div style="font-size:12.5px;color:#8b8a92;font-weight:600">Listed under Loan Officer Ambassadors · Level 2</div>
-          </article>
-          <div style="margin-top:10px;font-size:12px;color:#91919b">Headshot and licensed states are pulled from your Loan Factory profile.</div>
-        </div>
-      </div>
-
-      <!-- 5 · not approved -->
-      <div data-when="denied" style="background:#33333a;border-left:6px solid #228BE6;padding:clamp(24px,4vw,40px);border-radius:26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(20px,4vw,48px)">
-        <div>
-          <div style="font-size:11px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:#228BE6">Not approved this round</div>
-          <h2 style="margin:14px 0 0;font-size:clamp(24px,3.6vw,40px);line-height:1.05;font-weight:800;letter-spacing:-0.025em;text-transform:uppercase">Level 2 isn't a fit yet — Level 1 is open to you today</h2>
-          <p style="margin:14px 0 0;font-size:14.5px;line-height:1.7;color:#c9c9d1;max-width:50ch">Reviewed August 1, 2026. Nothing about this decision affects your standing, your pipeline or your comp.</p>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:20px">
-            <button type="button" data-open-modal class="h-paper" style="background:#f36f20;color:#272727;border:none;padding:13px 22px;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;border-radius:999px">Activate Level 1 now</button>
-            <a href="#levels" style="border:1px solid #63636d;color:#faf9f8;padding:13px 22px;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;border-radius:999px">Review Level 2 criteria</a>
-          </div>
-        </div>
-        <div>
-          <div style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#91919b;margin-bottom:12px">What wasn't met</div>
-          <ul style="margin:0 0 18px;padding-left:18px;display:flex;flex-direction:column;gap:9px;font-size:14px;line-height:1.6;color:#e6e6ea">
-            <li>Recruiting activity in the last 90 days was below the Level 2 pipeline standard.</li>
-            <li>Professional connection count was under the 1,000 preferred for Level 2.</li>
-          </ul>
-          <div style="border-top:1px solid #45454e;padding-top:14px;font-size:14px;line-height:1.65;color:#c9c9d1">You can reapply after <strong style="color:#faf9f8">November 1, 2026</strong>, or sooner if you submit two referred Loan Officers before then. The program team can review your outreach with you — ask for a 20-minute working session.</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================================================= the three levels == -->
-  <section id="levels" style="background:#ffffff;border-top:1px solid #eaeaee;border-bottom:1px solid #eaeaee">
-    <div style="max-width:1340px;margin:0 auto;padding:clamp(44px,6vw,80px) 20px">
-      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:34px">
-        <h2 style="margin:0;font-size:clamp(30px,4.6vw,58px);line-height:0.95;font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;max-width:14ch">The three<br />levels</h2>
-        <p style="margin:0;max-width:40ch;font-size:14.5px;line-height:1.65;color:#5c5b63">Every level is a real seat in the program. Level 1 needs no approval. Levels 2 and 3 add budget, tools and support in exchange for measured recruiting activity.</p>
-      </div>
-
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;align-items:stretch">
-        <article style="background:#faf9f8;border:1px solid #eaeaee;border-top:6px solid #d9d9de;padding:28px 26px 30px;display:flex;flex-direction:column;border-radius:26px">
-          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px">
-            <span style="font-size:11px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:#8b8a92">Level 1</span>
-            <span style="font-size:38px;font-weight:800;letter-spacing:-0.04em;color:#e4e4e9;line-height:1">01</span>
-          </div>
-          <h3 style="margin:4px 0 0;font-size:23px;font-weight:800;letter-spacing:-0.02em;text-transform:uppercase;line-height:1.05">General<br />Participation</h3>
-          <div style="margin:20px 0 22px;padding:14px 0;border-top:1px solid #eaeaee;border-bottom:1px solid #eaeaee">
-            <div style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#8b8a92">Monthly marketing budget</div>
-            <div style="font-size:40px;font-weight:800;letter-spacing:-0.04em;line-height:1.15;color:#272727">$0</div>
-          </div>
-          <div style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#8b8a92;margin-bottom:7px">Who</div>
-          <p style="margin:0 0 20px;font-size:14px;line-height:1.6;color:#3d3c44">Every Loan Factory Loan Officer or staff member in good standing. Self-serve — no approval needed.</p>
-          <div style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#8b8a92;margin-bottom:7px">To qualify</div>
-          <ul style="margin:0 0 20px;padding-left:16px;font-size:14px;line-height:1.6;color:#3d3c44;display:flex;flex-direction:column;gap:5px">
-            <li>Turn on the Recruiting tab</li>
-            <li>Use approved content only</li>
-            <li>Submit interested Loan Officers through the referral process</li>
-            <li>Stay in good standing</li>
-          </ul>
-          <div style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#8b8a92;margin-bottom:7px">To stay active · per 90 days</div>
-          <p style="margin:0 0 20px;font-size:14px;line-height:1.6;color:#3d3c44">Keep the Recruiting tab on, keep using approved content, keep following the referral process.</p>
-          <div style="margin-top:auto;padding-top:18px;border-top:2px solid #272727">
-            <div style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#272727;margin-bottom:9px">What you get</div>
-            <ul style="margin:0;padding-left:16px;font-size:14px;line-height:1.6;color:#3d3c44;display:flex;flex-direction:column;gap:5px">
-              <li>Standard Loan Factory referral bonus</li>
-              <li>Approved recruiting content posted on your behalf</li>
-            </ul>
-          </div>
-        </article>
-
-        <article style="background:#fff6ef;border:1px solid #f9d8c0;border-top:6px solid #f36f20;padding:28px 26px 30px;display:flex;flex-direction:column;border-radius:26px;box-shadow:0 10px 28px rgba(39,39,39,0.06)">
-          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px">
-            <span style="font-size:11px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:#C2591A">Level 2</span>
-            <span style="font-size:38px;font-weight:800;letter-spacing:-0.04em;color:#f7b98a;line-height:1">02</span>
-          </div>
-          <h3 style="margin:4px 0 0;font-size:23px;font-weight:800;letter-spacing:-0.02em;text-transform:uppercase;line-height:1.05">Loan Officer<br />Ambassador</h3>
-          <div style="margin:20px 0 22px;padding:14px 0;border-top:1px solid #f9d8c0;border-bottom:1px solid #f9d8c0">
-            <div style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#C2591A">Monthly marketing budget · up to</div>
-            <div style="font-size:40px;font-weight:800;letter-spacing:-0.04em;line-height:1.15;color:#f36f20">$500<span style="font-size:15px;font-weight:700;color:#C2591A;letter-spacing:0"> / month</span></div>
-          </div>
-          <div style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#C2591A;margin-bottom:7px">Who</div>
-          <p style="margin:0 0 20px;font-size:14px;line-height:1.6;color:#3d3c44">Approved ambassadors active in recruiting outreach, posting, webinar support and Loan Officer to Loan Officer conversations.</p>
-          <div style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#C2591A;margin-bottom:7px">To qualify</div>
-          <ul style="margin:0 0 20px;padding-left:16px;font-size:14px;line-height:1.6;color:#3d3c44;display:flex;flex-direction:column;gap:5px">
-            <li>Active Loan Officer in good standing</li>
-            <li>1,000+ professional connections preferred</li>
-            <li>Able to represent Loan Factory professionally</li>
-            <li>Able to explain our platform, pricing, technology and support</li>
-            <li>Approved by leadership</li>
-          </ul>
-          <div style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#C2591A;margin-bottom:7px">To stay active · per 90 days</div>
-          <p style="margin:0 0 20px;font-size:14px;line-height:1.6;color:#3d3c44"><strong style="color:#272727">3 recruited or onboarded Loan Officers</strong>, or a clear qualified pipeline showing real progress.</p>
-          <div style="margin-top:auto;padding-top:18px;border-top:2px solid #f36f20">
-            <div style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#272727;margin-bottom:9px">What you get</div>
-            <ul style="margin:0;padding-left:16px;font-size:14px;line-height:1.6;color:#3d3c44;display:flex;flex-direction:column;gap:5px">
-              <li>Everything in Level 1</li>
-              <li>Up to $500/mo marketing budget</li>
-              <li>MMI reimbursement when approved</li>
-              <li>Campaign support</li>
-            </ul>
-          </div>
-        </article>
-
-        <article style="background:#272727;border:1px solid #272727;border-top:6px solid #f36f20;padding:28px 26px 30px;display:flex;flex-direction:column;border-radius:26px;color:#faf9f8;box-shadow:0 18px 42px rgba(39,39,39,0.18)">
-          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px">
-            <span style="font-size:11px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:#f36f20">Level 3 · Senior</span>
-            <span style="font-size:38px;font-weight:800;letter-spacing:-0.04em;color:#45454e;line-height:1">03</span>
-          </div>
-          <h3 style="margin:4px 0 0;font-size:23px;font-weight:800;letter-spacing:-0.02em;text-transform:uppercase;line-height:1.05">Senior Loan Officer<br />Ambassador</h3>
-          <div style="margin:20px 0 22px;padding:14px 0;border-top:1px solid #45454e;border-bottom:1px solid #45454e">
-            <div style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#b3b3bd">Monthly marketing budget · up to</div>
-            <div style="font-size:40px;font-weight:800;letter-spacing:-0.04em;line-height:1.15;color:#f36f20">$1,000<span style="font-size:15px;font-weight:700;color:#b3b3bd;letter-spacing:0"> / month</span></div>
-          </div>
-          <div style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#b3b3bd;margin-bottom:7px">Who</div>
-          <p style="margin:0 0 20px;font-size:14px;line-height:1.6;color:#e6e6ea">Approved senior ambassadors producing strong recruiting activity, supporting high-value prospects, webinars and events.</p>
-          <div style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#b3b3bd;margin-bottom:7px">To qualify</div>
-          <ul style="margin:0 0 20px;padding-left:16px;font-size:14px;line-height:1.6;color:#e6e6ea;display:flex;flex-direction:column;gap:5px">
-            <li>Meets all Level 2 requirements</li>
-            <li>2,000+ professional connections preferred</li>
-            <li>Strong professional presence</li>
-            <li>Demonstrated recruiting activity</li>
-            <li>Able to support Loan Officer, Team Leader and branch-level conversations</li>
-            <li>Approved by leadership</li>
-          </ul>
-          <div style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#b3b3bd;margin-bottom:7px">To stay active · per 90 days</div>
-          <p style="margin:0 0 20px;font-size:14px;line-height:1.6;color:#e6e6ea"><strong style="color:#f36f20">6+ recruited or onboarded Loan Officers</strong>, or a strong qualified producer / team pipeline, plus continued support on webinars, events and warm pipeline follow-up.</p>
-          <div style="margin-top:auto;padding-top:18px;border-top:2px solid #f36f20">
-            <div style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#f36f20;margin-bottom:9px">What you get</div>
-            <ul style="margin:0;padding-left:16px;font-size:14px;line-height:1.6;color:#e6e6ea;display:flex;flex-direction:column;gap:5px">
-              <li>Everything in Level 2</li>
-              <li>Up to $1,000/mo marketing budget</li>
-              <li>Advanced tool support</li>
-              <li>MMI / LinkedIn / recruiting tool support</li>
-              <li>Warm lead and competitor top-producer lists when approved</li>
-              <li>Webinar hosting and co-hosting</li>
-              <li>Event and conference support</li>
-              <li>Priority campaign support</li>
-            </ul>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================ team leaders / coaches = -->
-  <section style="max-width:1340px;margin:0 auto;padding:clamp(40px,5vw,64px) 20px">
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(20px,4vw,52px);align-items:start">
+<!-- ==================================================== section 01 ======= -->
+<section id="levels" aria-labelledby="levels-h" style="padding:clamp(52px,7vw,100px) 0 clamp(44px,6vw,84px)">
+  <div style="max-width:1400px;margin:0 auto;padding:0 clamp(14px,4vw,56px)">
+    <div style="display:grid;gridTemplateColumns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(18px,3vw,48px);alignItems:end;marginBottom:clamp(26px,4vw,48px)">
       <div>
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
-          <span style="width:30px;height:2px;background:#f36f20"></span>
-          <span style="font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#C2591A">Also for leadership</span>
-        </div>
-        <h2 style="margin:0;font-size:clamp(24px,3.2vw,38px);line-height:1.05;font-weight:800;letter-spacing:-0.025em;text-transform:uppercase;max-width:18ch">Team Leaders and Corporate Coaches are strongly encouraged to participate.</h2>
+        <span style="fontSize:10.5px;fontWeight:800;letterSpacing:.22em;textTransform:uppercase;color:#C2591A">Section 01</span>
+        <h2 id="levels-h" style="margin:14px 0 0;fontSize:clamp(30px,5.4vw,62px);lineHeight:.94;fontWeight:900;letterSpacing:-.03em;textTransform:uppercase">The three<br />levels</h2>
       </div>
-      <div style="display:flex;flex-direction:column;gap:18px;font-size:15px;line-height:1.7;color:#3d3c44;max-width:56ch">
-        <p style="margin:0">Team Leaders make valuable ambassadors — they can recruit to Loan Factory while growing their own teams.</p>
-        <p style="margin:0;padding-left:16px;border-left:2px solid #FAB005">Team Leader status does not automatically qualify you for Level 2 or Level 3. Approval is still required and Ambassador standards still apply.</p>
-        <p style="margin:0">For approved Team Leader Ambassadors, Loan Factory supports your team's recruiting with team-focused recruiting content, Team Leader spotlight content, approved team posts, and help attracting loan officers who fit your team.</p>
+      <p style="margin:0;fontSize:14.5px;lineHeight:1.75;color:#57534e;fontWeight:500;maxWidth:52ch">Every level is real participation with real support behind it. Level 1 is self-serve and open today. Levels 2 and 3 are approved roles with a company-funded marketing budget and a 90-day activity standard.</p>
+    </div>
+
+    <div style="display:grid;gridTemplateColumns:repeat(auto-fit,minmax(304px,1fr));gap:clamp(14px,1.6vw,20px);alignItems:start">
+
+      <article style="background:#ffffff;border:1px solid #eae5e0;borderRadius:26px;overflow:hidden">
+        <button type="button" data-tier="1" aria-expanded="false" aria-controls="tier-1" style="width:100%;textAlign:left;border:0;background:transparent;padding:28px 26px 20px;cursor:pointer;display:block">
+          <div style="display:flex;alignItems:baseline;justifyContent:space-between;gap:12px">
+            <span style="fontSize:42px;fontWeight:900;letterSpacing:-.05em;lineHeight:.8;color:#d6d3d1">01</span>
+            <span style="fontSize:10px;fontWeight:800;letterSpacing:.14em;textTransform:uppercase;color:#78716c;background:#f6f4f2;borderRadius:999px;padding:5px 11px">Self-serve</span>
+          </div>
+          <h3 style="margin:18px 0 0;fontSize:20px;fontWeight:900;letterSpacing:-.01em;textTransform:uppercase;lineHeight:1.05">General<br />Participation</h3>
+          <div style="marginTop:18px;paddingTop:16px;borderTop:1px solid #f1eeeb;display:flex;alignItems:baseline;gap:10px">
+            <span style="fontSize:34px;fontWeight:900;letterSpacing:-.03em">$0</span>
+            <span style="fontSize:10.5px;fontWeight:800;letterSpacing:.1em;textTransform:uppercase;color:#a8a29e">Monthly marketing budget</span>
+          </div>
+          <span data-chev style="display:none;marginTop:16px;fontSize:11px;fontWeight:800;letterSpacing:.1em;textTransform:uppercase;color:#C2591A">Show details +</span>
+        </button>
+        <div id="tier-1" data-panel="1" style="padding:0 26px 28px">
+          <dl style="margin:0;display:grid;gap:18px">
+            <div><dt style="fontSize:9.5px;fontWeight:800;letterSpacing:.18em;textTransform:uppercase;color:#a8a29e;marginBottom:7px">Who</dt><dd style="margin:0;fontSize:13.5px;lineHeight:1.7;color:#44403c;fontWeight:500">Every Loan Factory loan officer or staff member in good standing. No approval needed.</dd></div>
+            <div><dt style="fontSize:9.5px;fontWeight:800;letterSpacing:.18em;textTransform:uppercase;color:#a8a29e;marginBottom:7px">To qualify</dt><dd style="margin:0;fontSize:13.5px;lineHeight:1.7;color:#44403c;fontWeight:500">Turn on the Recruiting tab. Use approved content only. Submit interested loan officers through the referral process. Stay in good standing.</dd></div>
+            <div style="background:#faf9f8;borderRadius:18px;padding:16px 18px"><dt style="fontSize:9.5px;fontWeight:800;letterSpacing:.18em;textTransform:uppercase;color:#a8a29e;marginBottom:7px">To stay active · per 90 days</dt><dd style="margin:0;fontSize:13.5px;lineHeight:1.7;color:#44403c;fontWeight:500">Keep the Recruiting tab on, keep using approved content, keep following the referral process.</dd></div>
+            <div><dt style="fontSize:9.5px;fontWeight:800;letterSpacing:.18em;textTransform:uppercase;color:#a8a29e;marginBottom:9px">What you get</dt>
+              <dd style="margin:0;display:grid;gap:9px">
+                <span style="display:grid;gridTemplateColumns:14px 1fr;gap:9px;fontSize:13.5px;lineHeight:1.6;color:#44403c;fontWeight:500"><span style="color:#C2591A;fontWeight:900">·</span>Standard Loan Factory referral bonus</span>
+                <span style="display:grid;gridTemplateColumns:14px 1fr;gap:9px;fontSize:13.5px;lineHeight:1.6;color:#44403c;fontWeight:500"><span style="color:#C2591A;fontWeight:900">·</span>Approved recruiting content posted on your behalf</span>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </article>
+
+      <article style="background:#ffffff;border:1px solid #fbd8bd;borderRadius:26px;overflow:hidden;boxShadow:0 20px 48px -28px rgba(39,39,39,.3)">
+        <button type="button" data-tier="2" aria-expanded="false" aria-controls="tier-2" style="width:100%;textAlign:left;border:0;background:transparent;padding:28px 26px 20px;cursor:pointer;display:block">
+          <div style="display:flex;alignItems:baseline;justifyContent:space-between;gap:12px">
+            <span style="fontSize:42px;fontWeight:900;letterSpacing:-.05em;lineHeight:.8;color:#f9cba7">02</span>
+            <span style="fontSize:10px;fontWeight:800;letterSpacing:.14em;textTransform:uppercase;color:#944924;background:#fff6f0;borderRadius:999px;padding:5px 11px">Approval required</span>
+          </div>
+          <h3 style="margin:18px 0 0;fontSize:20px;fontWeight:900;letterSpacing:-.01em;textTransform:uppercase;lineHeight:1.05">Loan Officer<br />Ambassador</h3>
+          <div style="marginTop:18px;paddingTop:16px;borderTop:1px solid #fbe9db;display:flex;alignItems:baseline;gap:10px;flexWrap:wrap">
+            <span style="fontSize:34px;fontWeight:900;letterSpacing:-.03em;color:#f36f20">$500</span>
+            <span style="fontSize:10.5px;fontWeight:800;letterSpacing:.1em;textTransform:uppercase;color:#a8a29e">Up to, per month</span>
+          </div>
+          <span data-chev style="display:none;marginTop:16px;fontSize:11px;fontWeight:800;letterSpacing:.1em;textTransform:uppercase;color:#C2591A">Show details +</span>
+        </button>
+        <div id="tier-2" data-panel="2" style="padding:0 26px 28px">
+          <dl style="margin:0;display:grid;gap:18px">
+            <div><dt style="fontSize:9.5px;fontWeight:800;letterSpacing:.18em;textTransform:uppercase;color:#a8a29e;marginBottom:7px">Who</dt><dd style="margin:0;fontSize:13.5px;lineHeight:1.7;color:#44403c;fontWeight:500">Approved ambassadors active in recruiting outreach, posting, webinar support and conversations with other loan officers.</dd></div>
+            <div><dt style="fontSize:9.5px;fontWeight:800;letterSpacing:.18em;textTransform:uppercase;color:#a8a29e;marginBottom:9px">To qualify</dt>
+              <dd style="margin:0;display:grid;gap:9px">
+                <span style="display:grid;gridTemplateColumns:14px 1fr;gap:9px;fontSize:13.5px;lineHeight:1.6;color:#44403c;fontWeight:500"><span style="color:#f36f20;fontWeight:900">·</span>Active loan officer in good standing</span>
+                <span style="display:grid;gridTemplateColumns:14px 1fr;gap:9px;fontSize:13.5px;lineHeight:1.6;color:#44403c;fontWeight:500"><span style="color:#f36f20;fontWeight:900">·</span>1,000+ professional connections preferred</span>
+                <span style="display:grid;gridTemplateColumns:14px 1fr;gap:9px;fontSize:13.5px;lineHeight:1.6;color:#44403c;fontWeight:500"><span style="color:#f36f20;fontWeight:900">·</span>Able to represent Loan Factory professionally</span>
+                <span style="display:grid;gridTemplateColumns:14px 1fr;gap:9px;fontSize:13.5px;lineHeight:1.6;color:#44403c;fontWeight:500"><span style="color:#f36f20;fontWeight:900">·</span>Able to explain our platform, pricing, technology and support</span>
+                <span style="display:grid;gridTemplateColumns:14px 1fr;gap:9px;fontSize:13.5px;lineHeight:1.6;color:#44403c;fontWeight:500"><span style="color:#f36f20;fontWeight:900">·</span>Approved by leadership</span>
+              </dd>
+            </div>
+            <div style="background:#fff6f0;borderRadius:18px;padding:16px 18px"><dt style="fontSize:9.5px;fontWeight:800;letterSpacing:.18em;textTransform:uppercase;color:#944924;marginBottom:7px">To stay active · per 90 days</dt><dd style="margin:0;fontSize:13.5px;lineHeight:1.7;color:#44403c;fontWeight:500"><b style="fontWeight:800;color:#272727">3 recruited or onboarded loan officers</b>, or a clear qualified pipeline showing real progress.</dd></div>
+            <div><dt style="fontSize:9.5px;fontWeight:800;letterSpacing:.18em;textTransform:uppercase;color:#a8a29e;marginBottom:9px">What you get</dt>
+              <dd style="margin:0;display:grid;gap:9px">
+                <span style="display:grid;gridTemplateColumns:14px 1fr;gap:9px;fontSize:13.5px;lineHeight:1.6;color:#44403c;fontWeight:600"><span style="color:#f36f20;fontWeight:900">·</span>Everything in Level 1</span>
+                <span style="display:grid;gridTemplateColumns:14px 1fr;gap:9px;fontSize:13.5px;lineHeight:1.6;color:#44403c;fontWeight:500"><span style="color:#f36f20;fontWeight:900">·</span>Up to <b style="fontWeight:800;color:#C2591A">$500/mo</b> marketing budget</span>
+                <span style="display:grid;gridTemplateColumns:14px 1fr;gap:9px;fontSize:13.5px;lineHeight:1.6;color:#44403c;fontWeight:500"><span style="color:#f36f20;fontWeight:900">·</span>MMI reimbursement when approved</span>
+                <span style="display:grid;gridTemplateColumns:14px 1fr;gap:9px;fontSize:13.5px;lineHeight:1.6;color:#44403c;fontWeight:500"><span style="color:#f36f20;fontWeight:900">·</span>Campaign support</span>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </article>
+
+      <article style="background:#272727;color:#f5f5f4;borderRadius:26px;overflow:hidden;boxShadow:0 28px 64px -30px rgba(39,39,39,.55)">
+        <button type="button" data-tier="3" aria-expanded="true" aria-controls="tier-3" style="width:100%;textAlign:left;border:0;background:transparent;padding:28px 26px 20px;cursor:pointer;display:block;color:inherit">
+          <div style="display:flex;alignItems:baseline;justifyContent:space-between;gap:12px">
+            <span style="fontSize:42px;fontWeight:900;letterSpacing:-.05em;lineHeight:.8;color:#f36f20">03</span>
+            <span style="fontSize:10px;fontWeight:800;letterSpacing:.14em;textTransform:uppercase;color:#272727;background:#f36f20;borderRadius:999px;padding:5px 11px">Senior tier</span>
+          </div>
+          <h3 style="margin:18px 0 0;fontSize:20px;fontWeight:900;letterSpacing:-.01em;textTransform:uppercase;lineHeight:1.05;color:#ffffff">Senior Loan Officer<br />Ambassador</h3>
+          <div style="marginTop:18px;paddingTop:16px;borderTop:1px solid #4a4644;display:flex;alignItems:baseline;gap:10px;flexWrap:wrap">
+            <span style="fontSize:34px;fontWeight:900;letterSpacing:-.03em;color:#f36f20">$1,000</span>
+            <span style="fontSize:10.5px;fontWeight:800;letterSpacing:.1em;textTransform:uppercase;color:#a8a29e">Up to, per month</span>
+          </div>
+          <span data-chev style="display:none;marginTop:16px;fontSize:11px;fontWeight:800;letterSpacing:.1em;textTransform:uppercase;color:#f36f20">Hide details −</span>
+        </button>
+        <div id="tier-3" data-panel="3" style="padding:0 26px 28px">
+          <dl style="margin:0;display:grid;gap:18px">
+            <div><dt style="fontSize:9.5px;fontWeight:800;letterSpacing:.18em;textTransform:uppercase;color:#a8a29e;marginBottom:7px">Who</dt><dd style="margin:0;fontSize:13.5px;lineHeight:1.7;color:#d6d3d1;fontWeight:500">Approved senior ambassadors producing strong recruiting activity, supporting high-value prospects, webinars and events.</dd></div>
+            <div><dt style="fontSize:9.5px;fontWeight:800;letterSpacing:.18em;textTransform:uppercase;color:#a8a29e;marginBottom:9px">To qualify</dt>
+              <dd style="margin:0;display:grid;gap:9px">
+                <span style="display:grid;gridTemplateColumns:14px 1fr;gap:9px;fontSize:13.5px;lineHeight:1.6;color:#d6d3d1;fontWeight:600"><span style="color:#f36f20;fontWeight:900">·</span>Meets all Level 2 requirements</span>
+                <span style="display:grid;gridTemplateColumns:14px 1fr;gap:9px;fontSize:13.5px;lineHeight:1.6;color:#d6d3d1;fontWeight:500"><span style="color:#f36f20;fontWeight:900">·</span>2,000+ professional connections preferred</span>
+                <span style="display:grid;gridTemplateColumns:14px 1fr;gap:9px;fontSize:13.5px;lineHeight:1.6;color:#d6d3d1;fontWeight:500"><span style="color:#f36f20;fontWeight:900">·</span>Strong professional presence</span>
+                <span style="display:grid;gridTemplateColumns:14px 1fr;gap:9px;fontSize:13.5px;lineHeight:1.6;color:#d6d3d1;fontWeight:500"><span style="color:#f36f20;fontWeight:900">·</span>Demonstrated recruiting activity</span>
+                <span style="display:grid;gridTemplateColumns:14px 1fr;gap:9px;fontSize:13.5px;lineHeight:1.6;color:#d6d3d1;fontWeight:500"><span style="color:#f36f20;fontWeight:900">·</span>Able to support loan officer, Team Leader and branch-level conversations</span>
+                <span style="display:grid;gridTemplateColumns:14px 1fr;gap:9px;fontSize:13.5px;lineHeight:1.6;color:#d6d3d1;fontWeight:500"><span style="color:#f36f20;fontWeight:900">·</span>Approved by leadership</span>
+              </dd>
+            </div>
+            <div style="background:#f36f20;color:#272727;borderRadius:18px;padding:16px 18px"><dt style="fontSize:9.5px;fontWeight:800;letterSpacing:.18em;textTransform:uppercase;marginBottom:7px;opacity:.75">To stay active · per 90 days</dt><dd style="margin:0;fontSize:13.5px;lineHeight:1.7;fontWeight:600"><b style="fontWeight:900">6+ recruited or onboarded loan officers</b>, or a strong qualified producer / team pipeline, plus continued support on webinars, events and warm pipeline follow-up.</dd></div>
+            <div><dt style="fontSize:9.5px;fontWeight:800;letterSpacing:.18em;textTransform:uppercase;color:#a8a29e;marginBottom:9px">What you get</dt>
+              <dd style="margin:0;display:grid;gap:9px">
+                <span style="display:grid;gridTemplateColumns:14px 1fr;gap:9px;fontSize:13.5px;lineHeight:1.6;color:#d6d3d1;fontWeight:600"><span style="color:#f36f20;fontWeight:900">·</span>Everything in Level 2</span>
+                <span style="display:grid;gridTemplateColumns:14px 1fr;gap:9px;fontSize:13.5px;lineHeight:1.6;color:#d6d3d1;fontWeight:500"><span style="color:#f36f20;fontWeight:900">·</span>Up to <b style="fontWeight:800;color:#f36f20">$1,000/mo</b> marketing budget</span>
+                <span style="display:grid;gridTemplateColumns:14px 1fr;gap:9px;fontSize:13.5px;lineHeight:1.6;color:#d6d3d1;fontWeight:500"><span style="color:#f36f20;fontWeight:900">·</span>Advanced tool support · MMI / LinkedIn / recruiting tools</span>
+                <span style="display:grid;gridTemplateColumns:14px 1fr;gap:9px;fontSize:13.5px;lineHeight:1.6;color:#d6d3d1;fontWeight:500"><span style="color:#f36f20;fontWeight:900">·</span>Warm lead and competitor top-producer lists when approved</span>
+                <span style="display:grid;gridTemplateColumns:14px 1fr;gap:9px;fontSize:13.5px;lineHeight:1.6;color:#d6d3d1;fontWeight:500"><span style="color:#f36f20;fontWeight:900">·</span>Webinar hosting and co-hosting</span>
+                <span style="display:grid;gridTemplateColumns:14px 1fr;gap:9px;fontSize:13.5px;lineHeight:1.6;color:#d6d3d1;fontWeight:500"><span style="color:#f36f20;fontWeight:900">·</span>Event and conference support</span>
+                <span style="display:grid;gridTemplateColumns:14px 1fr;gap:9px;fontSize:13.5px;lineHeight:1.6;color:#d6d3d1;fontWeight:500"><span style="color:#f36f20;fontWeight:900">·</span>Priority campaign support</span>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ==================================================== section 02 ======= -->
+<section aria-labelledby="tl-h" style="background:#ffffff;borderTop:1px solid #eae5e0;borderBottom:1px solid #eae5e0;padding:clamp(44px,6vw,84px) 0">
+  <div style="max-width:1400px;margin:0 auto;padding:0 clamp(14px,4vw,56px);display:grid;gridTemplateColumns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,64px);alignItems:start">
+    <div>
+      <span style="fontSize:10.5px;fontWeight:800;letterSpacing:.22em;textTransform:uppercase;color:#C2591A">Section 02</span>
+      <h2 id="tl-h" style="margin:14px 0 0;fontSize:clamp(24px,3.4vw,40px);lineHeight:1.08;fontWeight:900;letterSpacing:-.025em;textTransform:uppercase;textWrap:balance">Team Leaders and Corporate Coaches are strongly encouraged to participate</h2>
+      <p style="margin:18px 0 0;fontSize:14.5px;lineHeight:1.75;color:#57534e;fontWeight:500;maxWidth:46ch">Team Leaders make valuable ambassadors — they can recruit to Loan Factory while growing their own teams.</p>
+    </div>
+    <div style="display:grid;gap:12px">
+      <div style="background:#faf9f8;borderRadius:22px;padding:20px 22px">
+        <span style="display:inline-block;background:#272727;color:#fff;fontSize:9.5px;fontWeight:800;letterSpacing:.14em;textTransform:uppercase;padding:5px 11px;borderRadius:999px;marginBottom:12px">Approval still required</span>
+        <p style="margin:0;fontSize:13.5px;lineHeight:1.75;color:#44403c;fontWeight:500">Team Leader status does not automatically qualify you for Level 2 or Level 3. Approval is still required and Ambassador standards still apply.</p>
+      </div>
+      <div style="background:#fff6f0;borderRadius:22px;padding:20px 22px">
+        <span style="display:inline-block;background:#f36f20;color:#fff;fontSize:9.5px;fontWeight:800;letterSpacing:.14em;textTransform:uppercase;padding:5px 11px;borderRadius:999px;marginBottom:12px">Team support included</span>
+        <p style="margin:0 0 12px;fontSize:13.5px;lineHeight:1.75;color:#44403c;fontWeight:500">For approved Team Leader Ambassadors, Loan Factory supports your team's recruiting with:</p>
+        <div style="display:flex;flexWrap:wrap;gap:7px">
+          <span style="fontSize:11.5px;fontWeight:700;color:#944924;background:#ffffff;borderRadius:999px;padding:6px 13px">Team-focused recruiting content</span>
+          <span style="fontSize:11.5px;fontWeight:700;color:#944924;background:#ffffff;borderRadius:999px;padding:6px 13px">Team Leader spotlight content</span>
+          <span style="fontSize:11.5px;fontWeight:700;color:#944924;background:#ffffff;borderRadius:999px;padding:6px 13px">Approved team posts</span>
+          <span style="fontSize:11.5px;fontWeight:700;color:#944924;background:#ffffff;borderRadius:999px;padding:6px 13px">Help attracting loan officers who fit your team</span>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ==================================================== directory ====== -->
-  <section id="directory" style="background:#ffffff;border-top:1px solid #eaeaee">
-    <div style="max-width:1340px;margin:0 auto;padding:clamp(44px,6vw,80px) 20px">
-      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;border-bottom:2px solid #272727;padding-bottom:18px">
-        <h2 style="margin:0;font-size:clamp(30px,4.6vw,58px);line-height:0.95;font-weight:800;letter-spacing:-0.03em;text-transform:uppercase">Our ambassadors</h2>
-        <p style="margin:0;font-size:13.5px;color:#5c5b63;max-width:40ch;line-height:1.6">Approved Loan Factory ambassadors, their licensing footprint and how to reach them.</p>
+<!-- ==================================================== section 03 ======= -->
+<section id="directory" aria-labelledby="dir-h" style="padding:clamp(52px,7vw,100px) 0 clamp(44px,6vw,84px)">
+  <div style="max-width:1400px;margin:0 auto;padding:0 clamp(14px,4vw,56px)">
+    <div style="display:grid;gridTemplateColumns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(20px,3vw,48px);alignItems:end;marginBottom:clamp(28px,4vw,44px)">
+      <div>
+        <span style="fontSize:10.5px;fontWeight:800;letterSpacing:.22em;textTransform:uppercase;color:#C2591A">Section 03</span>
+        <h2 id="dir-h" style="margin:14px 0 0;fontSize:clamp(30px,5.4vw,62px);lineHeight:.94;fontWeight:900;letterSpacing:-.03em;textTransform:uppercase">Our<br />ambassadors</h2>
       </div>
-
-      <div style="display:flex;align-items:center;gap:10px;padding:22px 0 24px;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#8b8a92">
-        <span style="color:#272727" data-count-label></span>
-        <span style="flex:1;height:1px;background:#eaeaee"></span>
-      </div>
-
-      <div data-groups style="display:flex;flex-direction:column;gap:36px"></div>
-
-      <div data-zero hidden style="border:1px solid #eaeaee;border-top:6px solid #f36f20;background:#faf9f8;border-radius:26px;padding:clamp(32px,6vw,64px) 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:28px;align-items:center">
-        <div>
-          <div style="font-size:11px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:#C2591A">Just launched</div>
-          <h3 style="margin:10px 0 8px;font-size:clamp(22px,3.4vw,34px);font-weight:800;letter-spacing:-0.025em;text-transform:uppercase;line-height:1.05">The first ambassadors are being approved now</h3>
-          <p style="margin:0;max-width:48ch;font-size:14.5px;line-height:1.65;color:#5c5b63">This directory fills in as leadership approves applications. Loan officers who apply this month are considered in the first review round.</p>
-        </div>
-        <div style="display:flex;gap:12px;flex-wrap:wrap">
-          <a href="#apply" class="h-ink-orange" style="background:#f36f20;color:#272727;padding:14px 24px;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;border-radius:999px">Be one of the first</a>
-        </div>
-      </div>
-
-      <p style="margin:28px 0 0;font-size:12.5px;line-height:1.6;color:#8b8a92;max-width:70ch">Sample data for review. Every name, NMLS number, level and photograph on this page is invented — no real Loan Factory loan officer is represented here.</p>
+      <p style="margin:0;fontSize:14.5px;lineHeight:1.75;color:#57534e;fontWeight:500;maxWidth:50ch">Twelve approved ambassadors, grouped by level. Every one is a licensed Loan Factory loan officer — reach out to any of them directly.</p>
     </div>
-  </section>
+
+    <div data-groups></div>
+
+    <p style="margin:34px 0 0;fontSize:11.5px;lineHeight:1.7;color:#a8a29e;fontWeight:500;maxWidth:74ch">Sample data for review. Every name, NMLS number and photograph on this page is invented — no real Loan Factory loan officer is represented here.</p>
+  </div>
+</section>
+
+<section style="padding:0 0 clamp(48px,7vw,90px)">
+  <div style="max-width:1400px;margin:0 auto;padding:0 clamp(14px,4vw,56px)">
+    <div style="background:#f36f20;color:#272727;borderRadius:28px;padding:clamp(28px,4vw,48px);display:flex;flexWrap:wrap;gap:22px 32px;alignItems:center;justifyContent:space-between">
+      <div>
+        <span style="fontSize:10px;fontWeight:800;letterSpacing:.2em;textTransform:uppercase;opacity:.7">Related program</span>
+        <p style="margin:10px 0 0;fontSize:clamp(20px,3vw,32px);fontWeight:900;letterSpacing:-.025em;textTransform:uppercase;lineHeight:1.08">Producing Loan Officer<br />Recruiter Program</p>
+        <p style="margin:10px 0 0;fontSize:13.5px;fontWeight:600;maxWidth:52ch;lineHeight:1.6">A dedicated recruiting role with a one-time bonus scale up to $30,000. Separate from this program.</p>
+      </div>
+      <a href="recruiter.html" class="h-flip" style="display:inline-flex;alignItems:center;background:#272727;color:#ffffff;padding:16px 28px;borderRadius:999px;fontSize:13.5px;fontWeight:800;textDecoration:none">See the Recruiter Program →</a>
+    </div>
+  </div>
+</section>
+
 </main>
 
-<!-- ======================================================= apply modal === -->
-<div data-modal hidden role="dialog" aria-modal="true" aria-label="Ambassador application" style="position:fixed;inset:0;z-index:100;background:rgba(28,26,24,0.62);display:flex;align-items:flex-start;justify-content:center;padding:clamp(12px,4vw,48px);overflow:auto">
-  <div style="background:#faf9f8;width:100%;max-width:660px;border-top:6px solid #f36f20;border-radius:26px;overflow:hidden;animation:lffade 0.22s ease-out">
-    <div style="display:flex;align-items:flex-start;gap:16px;padding:24px 26px 18px;border-bottom:1px solid #eaeaee">
-      <div style="flex:1;min-width:0">
-        <div style="font-size:10.5px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:#C2591A">Ambassador application</div>
-        <h2 data-modal-title style="margin:6px 0 0;font-size:clamp(22px,3.4vw,30px);font-weight:800;letter-spacing:-0.025em;text-transform:uppercase;line-height:1.05">Tell us how you'd represent Loan Factory</h2>
-      </div>
-      <button type="button" data-close-modal aria-label="Close" class="h-icon" style="background:none;border:1px solid #d9d9de;width:34px;height:34px;border-radius:50%;font-size:16px;line-height:1;cursor:pointer;color:#5c5b63">×</button>
-    </div>
+<!-- ======================================================= modal ========= -->
+<div data-modal hidden role="dialog" aria-modal="true" aria-label="Ambassador registration" style="position:fixed;inset:0;zIndex:100;background:rgba(39,39,39,.62);display:flex;alignItems:flex-start;justifyContent:center;padding:clamp(10px,3vw,40px);overflowY:auto">
+  <div style="background:#ffffff;width:100%;maxWidth:760px;borderRadius:28px;overflow:hidden;animation:lfup .22s ease-out;boxShadow:0 40px 90px -30px rgba(0,0,0,.6)">
 
-    <!-- success -->
-    <div data-modal-success hidden style="padding:clamp(28px,5vw,52px) 26px;text-align:center">
-      <div style="width:56px;height:56px;margin:0 auto 18px;border-radius:50%;background:#40C057;color:#fff;display:grid;place-items:center;font-size:26px;font-weight:800">✓</div>
-      <h3 style="margin:0 0 10px;font-size:24px;font-weight:800;letter-spacing:-0.02em;text-transform:uppercase">Application submitted</h3>
-      <p style="margin:0 auto 22px;max-width:44ch;font-size:14.5px;line-height:1.65;color:#5c5b63">Submitted August 7, 2026 for Level 2 — Loan Officer Ambassador. The program team reviews applications weekly; you'll get an email decision within five business days.</p>
-      <button type="button" data-finish class="h-ink-orange" style="background:#272727;color:#faf9f8;border:none;padding:14px 26px;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;border-radius:999px">Back to the program page</button>
-    </div>
-
-    <!-- form -->
-    <div data-modal-form style="padding:22px 26px 26px;display:flex;flex-direction:column;gap:20px">
-      <div style="background:#ffffff;border:1px solid #eaeaee;border-radius:18px;padding:14px 16px">
-        <div style="font-size:10px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#8b8a92;margin-bottom:10px">From your Loan Factory profile · read only</div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">
-          <div><div style="font-size:11px;color:#8b8a92;font-weight:600">Name</div><div style="font-size:14px;font-weight:700">Jordan Mackey</div></div>
-          <div><div style="font-size:11px;color:#8b8a92;font-weight:600">Email</div><div style="font-size:14px;font-weight:700;overflow-wrap:anywhere">jordan.mackey@loanfactory.com</div></div>
-          <div><div style="font-size:11px;color:#8b8a92;font-weight:600">NMLS</div><div style="font-size:14px;font-weight:700">1492003</div></div>
+    <!-- step 1 · sign in (only for the public viewer) -->
+    <div data-step-signin>
+      <div style="background:#272727;color:#ffffff;padding:24px clamp(20px,3vw,34px);display:flex;justifyContent:space-between;gap:16px;alignItems:flex-start">
+        <div>
+          <span style="fontSize:9.5px;fontWeight:800;letterSpacing:.2em;textTransform:uppercase;color:#f36f20">Step 1 of 2 · Loan Factory sign-in</span>
+          <h2 style="margin:10px 0 0;fontSize:clamp(19px,2.4vw,26px);fontWeight:900;letterSpacing:-.025em;textTransform:uppercase;lineHeight:1.08">Sign in to register</h2>
         </div>
+        <button type="button" data-close-modal aria-label="Close" class="h-close" style="border:0;background:#3a3735;color:#d6d3d1;width:36px;height:36px;borderRadius:999px;fontSize:14px;fontWeight:700;cursor:pointer;flex:none">✕</button>
+      </div>
+      <div style="padding:clamp(18px,3vw,30px);display:grid;gap:18px">
+        <p style="margin:0;fontSize:13.5px;lineHeight:1.7;color:#57534e;fontWeight:500;maxWidth:56ch">The Ambassador Program is open to Loan Factory loan officers and staff. Sign in with your Loan Factory account and we'll pre-fill your name, email and NMLS — the rest of the form takes about two minutes.</p>
+        <div style="display:grid;gridTemplateColumns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
+          <div>
+            <label for="si-email" style="display:block;fontSize:10.5px;fontWeight:800;letterSpacing:.1em;textTransform:uppercase;color:#78716c;marginBottom:7px">Work email</label>
+            <input id="si-email" type="email" class="fld" placeholder="you@loanfactory.com" style="width:100%;border:1.5px solid #e0dbd5;background:#ffffff;borderRadius:14px;padding:13px 15px;fontSize:14px;fontWeight:600;outline:none;color:#272727" />
+          </div>
+          <div>
+            <label for="si-pass" style="display:block;fontSize:10.5px;fontWeight:800;letterSpacing:.1em;textTransform:uppercase;color:#78716c;marginBottom:7px">Password</label>
+            <input id="si-pass" type="password" class="fld" placeholder="••••••••" style="width:100%;border:1.5px solid #e0dbd5;background:#ffffff;borderRadius:14px;padding:13px 15px;fontSize:14px;fontWeight:600;outline:none;color:#272727" />
+          </div>
+        </div>
+        <p style="margin:0;fontSize:12.5px;lineHeight:1.7;color:#78716c;fontWeight:500">Not at Loan Factory yet? Everything about the program is public — browse the <a href="#directory" data-close-modal>ambassador directory</a> and reach out to anyone on it.</p>
+      </div>
+      <div style="background:#faf9f8;padding:16px clamp(20px,3vw,30px);display:flex;gap:12px;justifyContent:flex-end;alignItems:center;flexWrap:wrap">
+        <span style="marginRight:auto;fontSize:11.5px;fontWeight:600;color:#a8a29e">Internal program — loan officers and staff only.</span>
+        <button type="button" data-close-modal class="h-outline" style="border:1.5px solid #e0dbd5;background:#ffffff;color:#272727;padding:13px 24px;borderRadius:999px;fontSize:13px;fontWeight:800;cursor:pointer">Cancel</button>
+        <button type="button" data-signin class="h-cta-ink" style="border:0;background:#f36f20;color:#ffffff;padding:13px 28px;borderRadius:999px;fontSize:13px;fontWeight:800;cursor:pointer">Sign in and continue</button>
+      </div>
+    </div>
+
+    <!-- step 2 · the form -->
+    <div data-step-form hidden>
+      <div style="background:#272727;color:#ffffff;padding:24px clamp(20px,3vw,34px);display:flex;justifyContent:space-between;gap:16px;alignItems:flex-start">
+        <div>
+          <span style="fontSize:9.5px;fontWeight:800;letterSpacing:.2em;textTransform:uppercase;color:#f36f20">Ambassador registration</span>
+          <h2 style="margin:10px 0 0;fontSize:clamp(19px,2.4vw,26px);fontWeight:900;letterSpacing:-.025em;textTransform:uppercase;lineHeight:1.08">Register for the Ambassador Program</h2>
+        </div>
+        <button type="button" data-close-modal aria-label="Close" class="h-close" style="border:0;background:#3a3735;color:#d6d3d1;width:36px;height:36px;borderRadius:999px;fontSize:14px;fontWeight:700;cursor:pointer;flex:none">✕</button>
       </div>
 
-      <div data-err-summary hidden role="alert" style="border:1px solid #fa5252;background:#fff5f5;border-radius:14px;padding:13px 15px">
-        <div data-err-text style="font-size:13px;font-weight:800;color:#c92a2a;letter-spacing:0.01em"></div>
-      </div>
+      <div style="padding:clamp(18px,3vw,30px);display:grid;gap:18px">
+        <div data-err-box hidden role="alert" style="background:#fdeded;borderRadius:16px;padding:14px 16px">
+          <p data-err-text style="margin:0;fontSize:12.5px;fontWeight:800;color:#b02525"></p>
+        </div>
 
-      <fieldset style="border:none;padding:0;margin:0">
-        <legend style="font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;padding:0;margin-bottom:10px">Which level are you applying for?</legend>
-        <div data-levels role="group" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px"></div>
-      </fieldset>
+        <div style="background:#faf9f8;borderRadius:18px;padding:16px 18px">
+          <p style="margin:0 0 12px;fontSize:9.5px;fontWeight:800;letterSpacing:.18em;textTransform:uppercase;color:#a8a29e">From your Loan Factory profile · read only</p>
+          <div style="display:grid;gridTemplateColumns:repeat(auto-fit,minmax(150px,1fr));gap:14px">
+            <div style="minWidth:0"><p style="margin:0 0 4px;fontSize:10px;fontWeight:800;letterSpacing:.1em;textTransform:uppercase;color:#a8a29e">Name</p><p style="margin:0;fontSize:14px;fontWeight:700;overflowWrap:anywhere">Jordan Alvarez</p></div>
+            <div style="minWidth:0"><p style="margin:0 0 4px;fontSize:10px;fontWeight:800;letterSpacing:.1em;textTransform:uppercase;color:#a8a29e">Email</p><p style="margin:0;fontSize:14px;fontWeight:700;overflowWrap:anywhere">jordan.alvarez@loanfactory.com</p></div>
+            <div style="minWidth:0"><p style="margin:0 0 4px;fontSize:10px;fontWeight:800;letterSpacing:.1em;textTransform:uppercase;color:#a8a29e">NMLS</p><p style="margin:0;fontSize:14px;fontWeight:700;overflowWrap:anywhere">1102547</p></div>
+          </div>
+        </div>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px">
-        <label style="display:block">
-          <span style="display:block;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:7px">Professional + social connections</span>
-          <input type="number" class="fld" placeholder="e.g. 1400" style="width:100%;padding:12px 14px;border:1px solid #d9d9de;background:#fff;font-size:14px;outline:none;border-radius:14px" />
+        <div style="display:grid;gridTemplateColumns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
+          <div>
+            <label for="lvl" style="display:block;fontSize:10.5px;fontWeight:800;letterSpacing:.1em;textTransform:uppercase;color:#78716c;marginBottom:7px">Level you are applying for</label>
+            <select id="lvl" data-level class="fld" style="width:100%;border:1.5px solid #e0dbd5;background:#ffffff;borderRadius:14px;padding:13px 15px;fontSize:14px;fontWeight:600;color:#272727;outline:none">
+              <option value="1">Level 1 — General Participation</option>
+              <option value="2" selected>Level 2 — Loan Officer Ambassador</option>
+              <option value="3">Level 3 — Senior Loan Officer Ambassador</option>
+            </select>
+          </div>
+          <div>
+            <label for="conn" style="display:block;fontSize:10.5px;fontWeight:800;letterSpacing:.1em;textTransform:uppercase;color:#78716c;marginBottom:7px">Professional / social connections</label>
+            <select id="conn" data-conn class="fld" style="width:100%;border:1.5px solid #e0dbd5;background:#ffffff;borderRadius:14px;padding:13px 15px;fontSize:14px;fontWeight:600;color:#272727;outline:none">
+              <option value="">Select a range…</option>
+              <option value="Under 500">Under 500</option>
+              <option value="500 – 1,000">500 – 1,000</option>
+              <option value="1,000 – 2,000">1,000 – 2,000</option>
+              <option value="2,000 – 5,000">2,000 – 5,000</option>
+              <option value="5,000+">5,000+</option>
+            </select>
+            <p data-conn-err hidden style="margin:7px 0 0;fontSize:12px;fontWeight:700;color:#b02525">Pick the range closest to your total.</p>
+          </div>
+        </div>
+
+        <div style="display:grid;gridTemplateColumns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
+          <div>
+            <label for="phone" style="display:block;fontSize:10.5px;fontWeight:800;letterSpacing:.1em;textTransform:uppercase;color:#78716c;marginBottom:7px">Mobile phone</label>
+            <input id="phone" type="tel" data-phone class="fld" placeholder="(000) 000-0000" style="width:100%;border:1.5px solid #e0dbd5;background:#ffffff;borderRadius:14px;padding:13px 15px;fontSize:14px;fontWeight:600;outline:none;color:#272727" />
+            <p data-phone-err hidden style="margin:7px 0 0;fontSize:12px;fontWeight:700;color:#b02525">We need a number the program team can reach you on.</p>
+          </div>
+          <div>
+            <label for="role" style="display:block;fontSize:10.5px;fontWeight:800;letterSpacing:.1em;textTransform:uppercase;color:#78716c;marginBottom:7px">Your role at Loan Factory</label>
+            <select id="role" class="fld" style="width:100%;border:1.5px solid #e0dbd5;background:#ffffff;borderRadius:14px;padding:13px 15px;fontSize:14px;fontWeight:600;color:#272727;outline:none">
+              <option value="Loan officer">Loan officer</option>
+              <option value="Senior loan officer">Senior loan officer</option>
+              <option value="Team Leader">Team Leader</option>
+              <option value="Corporate Coach">Corporate Coach</option>
+              <option value="Branch manager">Branch manager</option>
+              <option value="Operations / support">Operations / support</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display:grid;gridTemplateColumns:repeat(auto-fit,minmax(220px,1fr));gap:14px;alignItems:start">
+          <div>
+            <label for="social" style="display:block;fontSize:10.5px;fontWeight:800;letterSpacing:.1em;textTransform:uppercase;color:#78716c;marginBottom:7px">LinkedIn or primary social profile</label>
+            <input id="social" type="url" class="fld" placeholder="linkedin.com/in/…" style="width:100%;border:1.5px solid #e0dbd5;background:#ffffff;borderRadius:14px;padding:13px 15px;fontSize:14px;fontWeight:600;outline:none;color:#272727" />
+          </div>
+          <div>
+            <span style="display:block;fontSize:10.5px;fontWeight:800;letterSpacing:.1em;textTransform:uppercase;color:#78716c;marginBottom:7px">Team Leader or Corporate Coach?</span>
+            <div role="group" data-tl style="display:flex;gap:10px"></div>
+          </div>
+        </div>
+
+        <p data-tl-note hidden style="margin:0;fontSize:12.5px;lineHeight:1.7;fontWeight:600;color:#944924;background:#fff6f0;borderRadius:14px;padding:12px 14px">Team Leader status doesn't automatically qualify you for Level 2 or 3 — Ambassador standards still apply.</p>
+
+        <div>
+          <label for="why" style="display:block;fontSize:10.5px;fontWeight:800;letterSpacing:.1em;textTransform:uppercase;color:#78716c;marginBottom:7px">Why you want to be an ambassador</label>
+          <textarea id="why" rows="3" data-why class="fld" placeholder="Recruiting experience, networks you can reach, loan officers you already have in mind." style="width:100%;border:1.5px solid #e0dbd5;background:#ffffff;borderRadius:14px;padding:13px 15px;fontSize:14px;fontWeight:500;lineHeight:1.6;outline:none;resize:vertical;color:#272727"></textarea>
+          <p data-why-hint style="margin:7px 0 0;fontSize:12px;fontWeight:600;color:#a8a29e">0 characters. Two or three sentences is plenty.</p>
+        </div>
+
+        <label data-confirm-box style="display:grid;gridTemplateColumns:22px 1fr;gap:12px;alignItems:start;border:1.5px solid transparent;background:#faf9f8;borderRadius:16px;padding:14px 16px;cursor:pointer">
+          <input type="checkbox" data-confirm style="accentColor:#f36f20;width:17px;height:17px;marginTop:1px" />
+          <span style="fontSize:12.5px;lineHeight:1.6;fontWeight:600">I will turn on the Recruiting tab, use <b style="fontWeight:800">approved Loan Factory content only</b>, and submit interested loan officers through the referral process.</span>
         </label>
-        <label style="display:block">
-          <span style="display:block;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:7px">LinkedIn or primary social profile</span>
-          <input type="text" class="fld" placeholder="linkedin.com/in/…" style="width:100%;padding:12px 14px;border:1px solid #d9d9de;background:#fff;font-size:14px;outline:none;border-radius:14px" />
-        </label>
       </div>
 
-      <label style="display:block">
-        <span style="display:block;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:7px">Why you want to be an ambassador</span>
-        <textarea rows="4" data-why class="fld" placeholder="What you'd say to a Loan Officer considering Loan Factory" style="width:100%;padding:12px 14px;border:1px solid #d9d9de;background:#fff;font-size:14px;line-height:1.55;outline:none;resize:vertical;border-radius:16px"></textarea>
-        <span data-why-err hidden style="display:block;margin-top:6px;font-size:12.5px;font-weight:700;color:#c92a2a">Tell us in a sentence or two why you want this — the review team reads every answer.</span>
-      </label>
-
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;align-items:start">
-        <label style="display:block">
-          <span style="display:block;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:7px">Recruiting experience so far</span>
-          <textarea rows="3" class="fld" placeholder="Referrals made, Loan Officers onboarded, webinars supported" style="width:100%;padding:12px 14px;border:1px solid #d9d9de;background:#fff;font-size:14px;line-height:1.55;outline:none;resize:vertical;border-radius:16px"></textarea>
-        </label>
-        <fieldset style="border:none;padding:0;margin:0">
-          <legend style="font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;padding:0;margin-bottom:7px">Team Leader or Corporate Coach?</legend>
-          <div data-tl role="group" style="display:flex;gap:8px;flex-wrap:wrap"></div>
-        </fieldset>
-      </div>
-
-      <label data-agree-box style="display:flex;gap:11px;align-items:flex-start;cursor:pointer;padding:16px;border:1px solid #eaeaee;background:#fff;border-radius:18px">
-        <input type="checkbox" data-agree style="width:18px;height:18px;margin-top:1px;accent-color:#f36f20;flex:0 0 18px" />
-        <span style="font-size:13.5px;line-height:1.55;color:#3d3c44">I confirm I will use approved Loan Factory content only, and follow the referral process for every Loan Officer I introduce.</span>
-      </label>
-      <span data-agree-err hidden style="display:block;margin-top:-12px;font-size:12.5px;font-weight:700;color:#c92a2a">You'll need to confirm the content rules before we can submit this.</span>
-
-      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;border-top:1px solid #eaeaee;padding-top:18px">
-        <button type="button" data-submit class="h-orange" style="background:#f36f20;color:#272727;border:none;padding:15px 30px;font-size:13px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;display:inline-flex;align-items:center;gap:10px;border-radius:999px">
-          <span data-spinner hidden style="width:14px;height:14px;border:2px solid rgba(39,39,39,0.3);border-top-color:#272727;border-radius:50%;display:inline-block;animation:lfspin 0.7s linear infinite"></span>
-          <span data-submit-label>Submit application</span>
+      <div style="background:#faf9f8;padding:16px clamp(20px,3vw,30px);display:flex;gap:12px;justifyContent:flex-end;alignItems:center;flexWrap:wrap">
+        <span data-foot style="marginRight:auto;fontSize:11.5px;fontWeight:600;color:#a8a29e">Levels 2 and 3 are reviewed by leadership.</span>
+        <button type="button" data-close-modal class="h-outline" style="border:1.5px solid #e0dbd5;background:#ffffff;color:#272727;padding:13px 24px;borderRadius:999px;fontSize:13px;fontWeight:800;cursor:pointer">Cancel</button>
+        <button type="button" data-submit class="h-cta-ink" style="border:0;background:#f36f20;color:#ffffff;padding:13px 28px;borderRadius:999px;fontSize:13px;fontWeight:800;cursor:pointer;display:inline-flex;alignItems:center;gap:10px">
+          <span data-spinner hidden aria-hidden="true" style="width:13px;height:13px;borderRadius:999px;border:2px solid rgba(255,255,255,.35);borderTopColor:#ffffff;display:inline-block;animation:lfspin .7s linear infinite"></span>
+          <span data-submit-label>Submit registration</span>
         </button>
-        <button type="button" data-close-modal class="h-quiet" style="background:none;border:none;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:#8b8a92;cursor:pointer">Cancel</button>
-        <span style="font-size:12px;color:#8b8a92;margin-left:auto">Reviewed weekly · decision by email</span>
+      </div>
+    </div>
+
+    <!-- step 3 · success -->
+    <div data-step-success hidden style="padding:clamp(26px,4vw,44px)">
+      <span style="display:inline-flex;alignItems:center;gap:8px;fontSize:10px;fontWeight:800;letterSpacing:.16em;textTransform:uppercase;color:#272727;background:#40C057;borderRadius:999px;padding:6px 13px">Registration submitted</span>
+      <h2 style="margin:20px 0 0;fontSize:clamp(23px,3.2vw,34px);fontWeight:900;letterSpacing:-.03em;textTransform:uppercase;lineHeight:1.05">Thanks, Jordan — it's with the program team</h2>
+      <p style="margin:16px 0 0;fontSize:14px;lineHeight:1.75;color:#57534e;fontWeight:500;maxWidth:52ch">We've logged your <span data-success-level>Level 2 — Loan Officer Ambassador</span> registration. Your status now shows at the top of this page, and you'll get an email decision within five business days.</p>
+      <div style="display:grid;gridTemplateColumns:repeat(auto-fit,minmax(160px,1fr));gap:10px;marginTop:24px">
+        <div style="background:#faf9f8;borderRadius:16px;padding:14px 16px"><p style="margin:0 0 5px;fontSize:9.5px;fontWeight:800;letterSpacing:.12em;textTransform:uppercase;color:#a8a29e">Submitted</p><p style="margin:0;fontSize:13.5px;fontWeight:800">August 7, 2026</p></div>
+        <div style="background:#faf9f8;borderRadius:16px;padding:14px 16px"><p style="margin:0 0 5px;fontSize:9.5px;fontWeight:800;letterSpacing:.12em;textTransform:uppercase;color:#a8a29e">Applied for</p><p data-success-level2 style="margin:0;fontSize:13.5px;fontWeight:800">Level 2 — Loan Officer Ambassador</p></div>
+        <div style="background:#faf9f8;borderRadius:16px;padding:14px 16px"><p style="margin:0 0 5px;fontSize:9.5px;fontWeight:800;letterSpacing:.12em;textTransform:uppercase;color:#a8a29e">Decision by</p><p style="margin:0;fontSize:13.5px;fontWeight:800">August 14, 2026</p></div>
+      </div>
+      <div style="display:flex;gap:12px;flexWrap:wrap;marginTop:26px">
+        <button type="button" data-finish class="h-cta-ink" style="border:0;background:#f36f20;color:#fff;padding:14px 28px;borderRadius:999px;fontSize:13.5px;fontWeight:800;cursor:pointer">See my status</button>
+        <a href="#directory" data-finish class="h-ghost-ink" style="display:inline-flex;alignItems:center;border:1.5px solid #e0dbd5;color:#272727;padding:13px 24px;borderRadius:999px;fontSize:13px;fontWeight:800">Browse ambassadors</a>
       </div>
     </div>
   </div>

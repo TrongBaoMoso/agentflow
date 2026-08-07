@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """Bundle the version 4 Loan Officer programme previews into three
-self-contained HTML files: font and every photograph become data URIs so the
-published page makes no external request at all.
+self-contained HTML files.
+
+The design canvas writes inline styles in React's camelCase (fontSize,
+borderRadius, …), which a browser ignores in a real style attribute, so every
+style attribute is rewritten to kebab-case here. The font and every photograph
+are inlined as data URIs, so a published page makes no external request.
 
     python3 build.py <output-dir>
 """
@@ -16,20 +20,13 @@ SRC = HERE / 'src'
 FONT = HERE / 'montserrat.woff2'
 PHOTOS = HERE / 'photos'
 
-STATES = [
-    ('public', '1 · Public'),
-    ('new', '2 · Not applied'),
-    ('submitted', '3 · Submitted'),
-    ('approved', '4 · Approved'),
-    ('denied', '5 · Not approved'),
-]
-
 PAGES = {
     'ambassador': {
         'file': 'ambassador.html',
         'title': 'Loan Officer Ambassador Program — Loan Factory',
         'preview': 'Loan Officer Ambassador Program — design preview',
         'note': 'Not a live page. Sample data only — forms submit nowhere.',
+        'view': 'public',
         'states': True,
     },
     'recruiter': {
@@ -37,49 +34,60 @@ PAGES = {
         'title': 'Producing Loan Officer Recruiter Program — Loan Factory',
         'preview': 'Producing Loan Officer Recruiter Program — design preview',
         'note': 'Not a live page. Sample data only — forms submit nowhere.',
+        'view': 'public',
         'states': True,
     },
     'admin': {
         'file': 'admin.html',
-        'title': 'Program admin — Loan Factory',
-        'preview': 'Loan Officer Programs — admin console preview',
-        'note': 'Administrators only. Names, NMLS numbers, photographs and '
-                'statuses are invented; nothing here is a real registration.',
+        'title': 'Program admin console — Loan Factory',
+        'preview': 'Program admin console — design preview',
+        'note': 'Not a live page. Sample data only — decisions change nothing outside this screen.',
+        'view': 'admin',
         'states': False,
     },
 }
 
 TABS = [
-    ('ambassador', 'ambassador.html', 'Ambassador'),
     ('recruiter', 'recruiter.html', 'Recruiter'),
+    ('ambassador', 'ambassador.html', 'Ambassador'),
     ('admin', 'admin.html', 'Admin console'),
 ]
 
-VIEW_SCRIPT = """
-      /* Viewer-state switcher. Every block that belongs to one or more of the
-         five states carries data-when="state [state…]"; switching hides the
-         rest. Admin has no pills, so the call is a no-op there. */
-      ;(function () {
-        var blocks = document.querySelectorAll('[data-when]')
-        var pills = document.querySelectorAll('[data-state]')
+# The viewer switcher is shared verbatim with v1…v5 (lf-homepage#2169): two
+# labelled groups rather than five numbered pills, and no preview title.
+STATES_ANON = [('public', 'Public visitor')]
+STATES_AUTH = [
+    ('new', 'Not applied'),
+    ('submitted', 'Submitted'),
+    ('approved', 'Approved'),
+    ('denied', 'Not approved'),
+]
 
-        window.setView = function (view) {
+VIEW_SCRIPT = """
+      /* Viewer-state switcher. Blocks that belong to one or more of the five
+         states carry data-when="state [state…]". Elements are re-queried on
+         every switch because the roster builds its cards in script. */
+      ;(function () {
+        function apply(view) {
           document.body.setAttribute('data-view', view)
-          Array.prototype.forEach.call(blocks, function (el) {
+          Array.prototype.forEach.call(document.querySelectorAll('[data-when]'), function (el) {
             el.hidden = el.getAttribute('data-when').split(' ').indexOf(view) === -1
           })
-          Array.prototype.forEach.call(pills, function (p) {
+          Array.prototype.forEach.call(document.querySelectorAll('[data-state]'), function (p) {
             p.setAttribute('aria-pressed', String(p.getAttribute('data-state') === view))
           })
+          if (typeof window.onViewChange === 'function') window.onViewChange(view)
         }
 
-        Array.prototype.forEach.call(pills, function (p) {
+        window.setView = apply
+
+        Array.prototype.forEach.call(document.querySelectorAll('[data-state]'), function (p) {
           p.addEventListener('click', function () {
-            window.setView(p.getAttribute('data-state'))
+            apply(p.getAttribute('data-state'))
           })
         })
 
-        window.setView(document.body.getAttribute('data-view') || 'public')
+        apply(document.body.getAttribute('data-view') || 'anon')
       })()
 """
 
@@ -87,7 +95,7 @@ VERSION_SCRIPT = """
       /* Version switcher, unchanged in behaviour since v1. Each design version
          lives in its own folder beside this one (/lo-programs/v1, /v2, …).
          Options start disabled and enable themselves once the matching file is
-         actually there, so dropping in a v5 folder needs no edit here. */
+         actually there, so dropping in a v6 folder needs no edit here. */
       ;(function () {
         var sel = document.getElementById('verpick')
         if (!sel) return
@@ -117,27 +125,71 @@ VERSION_SCRIPT = """
 """
 
 
+# --------------------------------------------------------------------------- #
+# The canvas writes style attributes the way React does. Browsers do not.
+CAMEL = re.compile(r'([a-z])([A-Z])')
+
+
+def kebab_declaration(decl: str) -> str:
+    if ':' not in decl:
+        return decl
+    prop, value = decl.split(':', 1)
+    return CAMEL.sub(r'\1-\2', prop.strip()).lower() + ':' + value
+
+
+def kebabify_styles(html: str) -> str:
+    def one(match):
+        body = ';'.join(kebab_declaration(d) for d in match.group(1).split(';'))
+        return 'style="%s"' % body
+
+    return re.sub(r'style="([^"]*)"', one, html)
+
+
 def data_uri(path: pathlib.Path, mime: str) -> str:
     return 'data:%s;base64,%s' % (mime, base64.b64encode(path.read_bytes()).decode())
 
 
-def version_picker(current: str) -> str:
+def inline_assets(text: str) -> str:
+    text = text.replace('__FONT__', data_uri(FONT, 'font/woff2'))
+
+    def photo(match):
+        path = PHOTOS / match.group(1).lower() / (match.group(2) + '.jpg')
+        if not path.exists():
+            sys.exit('missing photo: %s' % path)
+        return data_uri(path, 'image/jpeg')
+
+    return re.sub(r'__IMG_(LG|SM)_([a-z0-9-]+)__', photo, text)
+
+
+def version_picker() -> str:
     out = [
         '          <label class="pv__ver">',
         '            <span>Design version</span>',
         '            <select id="verpick" aria-label="Switch design version">',
     ]
-    for n in range(1, 7):
+    for n in range(1, 8):
         v = 'v%d' % n
-        if v == current:
-            out.append('              <option value="%s">Version %d</option>' % (v, n))
+        if v == 'v4':
+            out.append('              <option value="v4">Version 4</option>')
         else:
             out.append(
-                '              <option value="%s" disabled>Version %d &mdash; not uploaded yet</option>'
-                % (v, n)
+                '              <option value="%s" disabled>Version %d &mdash; not uploaded yet</option>' % (v, n)
             )
     out += ['            </select>', '          </label>']
     return '\n'.join(out)
+
+
+def state_group(states, label, cls) -> str:
+    buttons = ''.join(
+        '<button type="button" class="pv__state" data-state="%s" aria-pressed="false">%s</button>' % (sid, text)
+        for sid, text in states
+    )
+    return (
+        '          <div class="vsw-g%s">\n'
+        '            <span class="vsw-lbl vsw-lbl--%s">%s</span>\n'
+        '            <div class="vsw-btns">%s</div>\n'
+        '          </div>' % (' vsw-g--auth' if cls == 'auth' else '', cls, label, buttons)
+    )
 
 
 def toolbar(page: str, cfg: dict) -> str:
@@ -146,19 +198,26 @@ def toolbar(page: str, cfg: dict) -> str:
         current = ' aria-current="page"' if pid == page else ''
         tabs.append('          <a class="pv__tab" href="%s"%s>%s</a>' % (href, current, label))
 
-    states = ''
     if cfg['states']:
-        pills = '\n'.join(
-            '              <button type="button" class="pv__state" data-state="%s" aria-pressed="%s">%s</button>'
-            % (sid, 'true' if sid == 'public' else 'false', label)
-            for sid, label in STATES
+        bottom = (
+            '        <div class="vsw">\n'
+            + state_group(STATES_ANON, 'Not signed in &mdash; what the public sees', 'anon')
+            + '\n'
+            + state_group(STATES_AUTH, 'Signed in &mdash; what a Loan Officer sees at each stage', 'auth')
+            + '\n        </div>\n'
         )
-        states = (
-            '\n        <div style="min-width:0">\n'
-            '          <div class="pv__caption" id="pv-as">Viewing the page as</div>\n'
-            '          <div class="pv__states" role="group" aria-labelledby="pv-as">\n'
-            + pills
-            + '\n          </div>\n        </div>'
+    else:
+        # No applicant states on the console — the canvas puts the signed-in
+        # administrator here instead.
+        bottom = (
+            '        <div style="display:flex;align-items:center;gap:11px">\n'
+            '          <img alt="" aria-hidden="true" width="36" height="36" src="__IMG_SM_women-28__" '
+            'style="width:36px;height:36px;border-radius:999px;flex:none;object-fit:cover" />\n'
+            '          <span style="display:flex;flex-direction:column;line-height:1.3">\n'
+            '            <span style="font-size:13px;font-weight:800;color:#ffffff">Renata Callas</span>\n'
+            '            <span style="font-size:11px;font-weight:600;color:#8f8a85;letter-spacing:.03em">'
+            'Signed in as program administrator</span>\n'
+            '          </span>\n        </div>\n'
         )
 
     return (
@@ -168,35 +227,17 @@ def toolbar(page: str, cfg: dict) -> str:
         '        <nav class="pv__tabs" aria-label="Preview pages">\n'
         + '\n'.join(tabs)
         + '\n\n'
-        + version_picker('v4')
+        + version_picker()
         + '\n        </nav>\n'
-        '        <div class="pv__meta">\n'
-        '          <div style="min-width:0">\n'
-        '            <div class="pv__title">%s</div>\n'
-        '            <div class="pv__note">%s</div>\n'
-        '          </div>%s\n'
-        '        </div>\n'
-        '      </div>\n'
-        '    </div>\n' % (cfg['preview'], cfg['note'], states)
+        + bottom
+        + '      </div>\n'
+        '    </div>\n'
     )
 
 
-def inline_assets(text: str) -> str:
-    text = text.replace('__FONT__', data_uri(FONT, 'font/woff2'))
-
-    def photo(match):
-        name = match.group(1)
-        path = PHOTOS / (name + '.jpg')
-        if not path.exists():
-            sys.exit('missing photo: %s' % path)
-        return data_uri(path, 'image/jpeg')
-
-    return re.sub(r'__IMG_([a-z0-9-]+)__', photo, text)
-
-
 def build(page: str, cfg: dict, out_dir: pathlib.Path) -> None:
-    css = (SRC / 'common.css').read_text(encoding='utf-8')
-    body = (SRC / (page + '.body.html')).read_text(encoding='utf-8')
+    css = (SRC / 'common.css').read_text(encoding='utf-8') + '\n\n' + (SRC / '_chrome.css').read_text(encoding='utf-8')
+    body = kebabify_styles((SRC / (page + '.body.html')).read_text(encoding='utf-8'))
     script = (SRC / (page + '.js')).read_text(encoding='utf-8')
 
     body = '\n'.join('    ' + line if line.strip() else line for line in body.splitlines())
@@ -215,21 +256,12 @@ def build(page: str, cfg: dict, out_dir: pathlib.Path) -> None:
         '  <body data-view="%s">\n'
         '%s\n'
         '%s\n'
-        '    <script>%s    </script>\n'
-        '    <script>%s    </script>\n'
         '    <script>\n%s\n    </script>\n'
+        '    <script>%s    </script>\n'
+        '    <script>%s    </script>\n'
         '  </body>\n'
         '</html>\n'
-        % (
-            cfg['title'],
-            css,
-            'admin' if page == 'admin' else 'public',
-            toolbar(page, cfg),
-            body,
-            VIEW_SCRIPT,
-            VERSION_SCRIPT,
-            script,
-        )
+        % (cfg['title'], css, cfg['view'], toolbar(page, cfg), body, script, VIEW_SCRIPT, VERSION_SCRIPT)
     )
 
     html = inline_assets(html)
@@ -246,9 +278,13 @@ def build(page: str, cfg: dict, out_dir: pathlib.Path) -> None:
     if leftovers:
         sys.exit('%s: unsubstituted tokens %s' % (page, sorted(set(leftovers))))
 
-    # Anything still pointing outside the file is a bug. String-concatenation
-    # sites inside the scripts ( src="' + a.photo + '" ) resolve at runtime to
-    # an already-inlined data URI, so they are not real references.
+    # Any camelCase property left in a style attribute would be silently dropped
+    # by the browser, so treat one as a build failure.
+    for attr in re.findall(r'style="([^"]*)"', html):
+        for decl in attr.split(';'):
+            if ':' in decl and CAMEL.search(decl.split(':', 1)[0]):
+                sys.exit('%s: camelCase style property survived — %r' % (page, decl.strip()))
+
     external = [
         ref
         for ref in re.findall(r'(?:src|href)="(?!#|data:|[a-z-]+\.html)([^"]*)"', html)

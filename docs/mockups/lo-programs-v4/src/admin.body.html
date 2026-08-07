@@ -1,90 +1,107 @@
-<main>
-  <section id="admin" style="max-width:1340px;margin:0 auto;padding:26px 20px 60px">
-    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:22px">
-      <div>
-        <div style="font-size:10.5px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:#C2591A">Admin console · internal</div>
-        <h1 style="margin:8px 0 0;font-size:clamp(28px,4vw,46px);font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;line-height:1">Program administration</h1>
-        <p style="margin:8px 0 0;font-size:14px;color:#5c5b63">Registrations across the Loan Officer Ambassador and Producing Loan Officer Recruiter programs.</p>
+<main style="max-width:1500px;margin:0 auto;padding:clamp(22px,3vw,38px) clamp(14px,3vw,40px) 80px">
+
+  <div style="display:flex;alignItems:flex-end;gap:20px;flexWrap:wrap;marginBottom:22px">
+    <div>
+      <h1 style="margin:0;fontSize:clamp(26px,3.6vw,42px);lineHeight:1;fontWeight:900;letterSpacing:-.035em;textTransform:uppercase">Recruiting program<br />registrations</h1>
+      <p style="margin:12px 0 0;fontSize:13.5px;lineHeight:1.7;color:#57534e;fontWeight:500;maxWidth:60ch">Both programs in one queue. Approve, reject or park a registration, move an ambassador between levels, and watch volume by month.</p>
+    </div>
+    <div role="tablist" aria-label="Program" data-tabs style="marginLeft:auto;display:flex;gap:3px;background:#ffffff;border:1px solid #eae5e0;padding:4px;borderRadius:999px;flexWrap:wrap"></div>
+  </div>
+
+  <div data-kpis style="display:grid;gridTemplateColumns:repeat(auto-fit,minmax(170px,1fr));gap:10px;marginBottom:10px"></div>
+
+  <div style="display:grid;gridTemplateColumns:repeat(auto-fit,minmax(320px,1fr));gap:10px;marginBottom:22px">
+    <section aria-labelledby="chart1-h" style="background:#ffffff;border:1px solid #eae5e0;borderRadius:22px;padding:22px 24px">
+      <div style="display:flex;alignItems:baseline;gap:12px;flexWrap:wrap">
+        <h2 id="chart1-h" style="margin:0;fontSize:13px;fontWeight:900;letterSpacing:.04em;textTransform:uppercase">Registrations by month</h2>
+        <span style="marginLeft:auto;display:flex;gap:12px;alignItems:center">
+          <span style="display:flex;alignItems:center;gap:6px;fontSize:10.5px;fontWeight:700;color:#78716c"><span style="width:9px;height:9px;borderRadius:3px;background:#f36f20;display:block"></span>Ambassador</span>
+          <span style="display:flex;alignItems:center;gap:6px;fontSize:10.5px;fontWeight:700;color:#78716c"><span style="width:9px;height:9px;borderRadius:3px;background:#272727;display:block"></span>Recruiter</span>
+        </span>
       </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button type="button" class="h-border-ink" style="background:#ffffff;border:1px solid #d9d9de;color:#272727;padding:13px 22px;font-size:12px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;border-radius:999px">Export CSV</button>
-        <button type="button" class="h-ink-orange" style="background:#272727;border:none;color:#faf9f8;padding:13px 22px;font-size:12px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;border-radius:999px">Program settings</button>
+      <div data-months style="marginTop:22px;display:grid;gridTemplateColumns:repeat(6,1fr);gap:12px;alignItems:end;height:180px"></div>
+    </section>
+
+    <section aria-labelledby="chart2-h" style="background:#ffffff;border:1px solid #eae5e0;borderRadius:22px;padding:22px 24px">
+      <h2 id="chart2-h" style="margin:0;fontSize:13px;fontWeight:900;letterSpacing:.04em;textTransform:uppercase">Approved ambassadors by level</h2>
+      <div style="marginTop:22px;display:grid;gap:14px">
+        <div>
+          <div style="display:flex;justifyContent:space-between;alignItems:baseline;gap:12px;marginBottom:7px"><span style="fontSize:12px;fontWeight:700;color:#57534e">Level 1 · General</span><span data-lvl1 style="fontSize:13px;fontWeight:900">0</span></div>
+          <div style="height:12px;background:#f6f4f2;borderRadius:999px;overflow:hidden"><div data-lvl1w style="height:100%;background:#d6d3d1;borderRadius:999px;width:0%"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justifyContent:space-between;alignItems:baseline;gap:12px;marginBottom:7px"><span style="fontSize:12px;fontWeight:700;color:#57534e">Level 2 · Ambassador</span><span data-lvl2 style="fontSize:13px;fontWeight:900;color:#C2591A">0</span></div>
+          <div style="height:12px;background:#f6f4f2;borderRadius:999px;overflow:hidden"><div data-lvl2w style="height:100%;background:#f9a86b;borderRadius:999px;width:0%"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justifyContent:space-between;alignItems:baseline;gap:12px;marginBottom:7px"><span style="fontSize:12px;fontWeight:700;color:#57534e">Level 3 · Senior</span><span data-lvl3 style="fontSize:13px;fontWeight:900;color:#C2591A">0</span></div>
+          <div style="height:12px;background:#f6f4f2;borderRadius:999px;overflow:hidden"><div data-lvl3w style="height:100%;background:#f36f20;borderRadius:999px;width:0%"></div></div>
+        </div>
+        <div style="borderTop:1px solid #f1eeeb;paddingTop:14px;display:grid;gap:10px">
+          <div style="display:flex;justifyContent:space-between;alignItems:center;gap:12px"><span style="fontSize:12px;fontWeight:700;color:#57534e">Recruiter seats filled</span><span style="fontSize:13px;fontWeight:900"><span data-seats>0</span> of 6</span></div>
+          <div style="display:flex;justifyContent:space-between;alignItems:center;gap:12px"><span style="fontSize:12px;fontWeight:700;color:#57534e">Team Lead track interest</span><span style="fontSize:13px;fontWeight:900">7 applicants</span></div>
+          <div style="display:flex;justifyContent:space-between;alignItems:center;gap:12px"><span style="fontSize:12px;fontWeight:700;color:#57534e">Monthly marketing budget committed</span><span data-budget style="fontSize:13px;fontWeight:900;color:#C2591A">$0 / mo</span></div>
+        </div>
       </div>
+    </section>
+  </div>
+
+  <section aria-labelledby="queue-h" style="background:#ffffff;border:1px solid #eae5e0;borderRadius:24px;overflow:hidden">
+    <div style="padding:20px 22px;display:flex;gap:12px;flexWrap:wrap;alignItems:center;borderBottom:1px solid #f1eeeb">
+      <h2 id="queue-h" style="margin:0;fontSize:13px;fontWeight:900;letterSpacing:.04em;textTransform:uppercase">Registration queue</h2>
+      <label style="display:flex;alignItems:center;gap:9px;flex:1 1 240px;maxWidth:340px;background:#faf9f8;borderRadius:999px;padding:0 16px">
+        <span aria-hidden="true" style="color:#a8a29e;fontSize:13px;fontWeight:800">⌕</span>
+        <span style="width:1px;height:1px;overflow:hidden;display:block;clip:rect(0 0 0 0)">Search by name or NMLS</span>
+        <input type="search" data-q placeholder="Search name or NMLS" style="border:0;background:transparent;padding:11px 0;fontSize:13px;fontWeight:600;width:100%;outline:none;color:#272727" />
+      </label>
+      <div role="group" aria-label="Filter by status" data-status style="display:flex;gap:3px;background:#faf9f8;padding:3px;borderRadius:999px;flexWrap:wrap"></div>
+      <select data-level class="fld" aria-label="Filter by level" style="border:1px solid #eae5e0;background:#faf9f8;borderRadius:999px;padding:10px 15px;fontSize:12.5px;fontWeight:700;color:#272727;cursor:pointer">
+        <option value="All">All levels</option>
+        <option value="1">Level 1</option>
+        <option value="2">Level 2</option>
+        <option value="3">Level 3 · Senior</option>
+        <option value="Recruiter">Recruiter seat</option>
+      </select>
+      <select data-sort class="fld" aria-label="Sort" style="border:1px solid #eae5e0;background:#faf9f8;borderRadius:999px;padding:10px 15px;fontSize:12.5px;fontWeight:700;color:#272727;cursor:pointer">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="name">Name A–Z</option>
+      </select>
+      <span data-shown style="marginLeft:auto;fontSize:12px;fontWeight:800;color:#78716c"></span>
     </div>
 
-    <!-- headline numbers -->
-    <div data-stats style="display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:14px;margin-bottom:22px"></div>
-
-    <!-- registrations -->
-    <div style="border:1px solid #eaeaee;background:#ffffff;border-radius:26px;overflow:hidden">
-      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:18px 20px;border-bottom:1px solid #eaeaee">
-        <div data-programs role="tablist" aria-label="Program" style="display:flex;gap:6px;background:#f2f2f5;padding:4px;border-radius:999px"></div>
-        <input type="search" data-q class="fld" placeholder="Search name or NMLS" aria-label="Search registrations" style="flex:1 1 200px;min-width:0;padding:12px 18px;border:1px solid #d9d9de;background:#faf9f8;font-size:13.5px;outline:none;border-radius:999px" />
-        <select data-f-status class="fld" aria-label="Filter by status" style="padding:12px 16px;border:1px solid #d9d9de;background:#faf9f8;font-size:13.5px;font-weight:600;outline:none;border-radius:999px">
-          <option value="All">All statuses</option>
-          <option value="Pending">Pending</option>
-          <option value="Approved">Approved</option>
-          <option value="Rejected">Rejected</option>
-        </select>
-        <select data-f-level class="fld" aria-label="Filter by level" style="padding:12px 16px;border:1px solid #d9d9de;background:#faf9f8;font-size:13.5px;font-weight:600;outline:none;border-radius:999px">
-          <option value="All">All levels</option>
-          <option value="1">Level 1</option>
-          <option value="2">Level 2</option>
-          <option value="3">Level 3</option>
-          <option value="0">Recruiter (no level)</option>
-        </select>
-      </div>
-
-      <div style="display:flex;align-items:center;gap:12px;padding:12px 20px;background:#faf9f8;border-bottom:1px solid #eaeaee;flex-wrap:wrap">
-        <span data-count style="font-size:12px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#272727"></span>
-        <span data-pending style="font-size:12.5px;color:#8b8a92"></span>
-        <button type="button" data-reset class="h-rust" style="margin-left:auto;background:none;border:none;font-size:12px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;color:#C2591A;cursor:pointer">Reset filters</button>
-      </div>
-
-      <div style="overflow-x:auto">
-        <table style="width:100%;border-collapse:collapse;min-width:900px">
-          <thead>
-            <tr style="background:#faf9f8">
-              <th scope="col" style="text-align:left;font-size:10.5px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#8b8a92;padding:12px 16px">Applicant</th>
-              <th scope="col" style="text-align:left;font-size:10.5px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#8b8a92;padding:12px 16px">Program</th>
-              <th scope="col" style="text-align:left;font-size:10.5px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#8b8a92;padding:12px 16px">Level</th>
-              <th scope="col" style="text-align:left;font-size:10.5px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#8b8a92;padding:12px 16px">Submitted</th>
-              <th scope="col" style="text-align:left;font-size:10.5px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#8b8a92;padding:12px 16px">Status</th>
-              <th scope="col" style="text-align:right;font-size:10.5px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#8b8a92;padding:12px 16px">Decision</th>
-            </tr>
-          </thead>
-          <tbody data-rows></tbody>
-        </table>
-      </div>
-
-      <div data-empty hidden style="padding:48px 20px;text-align:center">
-        <div style="font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:-0.01em">No registrations match these filters</div>
-        <p style="margin:8px 0 16px;font-size:13.5px;color:#8b8a92">Try another program, status or level.</p>
-        <button type="button" data-reset class="h-ink-orange" style="background:#272727;color:#faf9f8;border:none;padding:12px 22px;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;border-radius:999px">Reset filters</button>
-      </div>
+    <div data-bulk hidden style="padding:12px 22px;background:#fff6f0;display:flex;gap:12px;alignItems:center;flexWrap:wrap;borderBottom:1px solid #fbe9db">
+      <span data-selected-label style="fontSize:12.5px;fontWeight:800;color:#944924"></span>
+      <button type="button" data-bulk-approve class="h-ink" style="border:0;background:#1f6b33;color:#fff;padding:9px 16px;borderRadius:999px;fontSize:12px;fontWeight:800;cursor:pointer">Approve selected</button>
+      <button type="button" data-bulk-reject class="h-ink" style="border:0;background:#57534e;color:#fff;padding:9px 16px;borderRadius:999px;fontSize:12px;fontWeight:800;cursor:pointer">Reject selected</button>
+      <button type="button" data-bulk-clear class="h-outline" style="border:1.5px solid #e0dbd5;background:#ffffff;color:#272727;padding:8px 16px;borderRadius:999px;fontSize:12px;fontWeight:800;cursor:pointer">Clear</button>
     </div>
 
-    <!-- distributions -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:22px">
-      <div style="border:1px solid #eaeaee;background:#ffffff;border-radius:22px;padding:22px">
-        <div style="font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#8b8a92;margin-bottom:14px">Ambassadors by level</div>
-        <div data-bars-levels style="display:flex;flex-direction:column;gap:12px"></div>
-      </div>
-      <div style="border:1px solid #eaeaee;background:#ffffff;border-radius:22px;padding:22px">
-        <div style="font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#8b8a92;margin-bottom:14px">Recruiter pipeline</div>
-        <div data-bars-recruiters style="display:flex;flex-direction:column;gap:12px"></div>
-      </div>
-      <div style="border:1px solid #eaeaee;background:#ffffff;border-radius:22px;padding:22px">
-        <div style="font-size:11px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#8b8a92;margin-bottom:14px">Needs attention</div>
-        <ul style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:10px;font-size:13.5px;line-height:1.55;color:#3d3c44">
-          <li>2 ambassador applications older than 5 business days.</li>
-          <li>1 Level 3 ambassador below the 6-recruit 90-day standard.</li>
-          <li>Recruiter cohort has 2 of 5 seats open.</li>
-          <li>$14,500 of monthly marketing budget committed against a $20,000 cap.</li>
-        </ul>
-      </div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;borderCollapse:collapse;minWidth:1080px">
+        <thead>
+          <tr style="background:#faf9f8">
+            <th scope="col" style="padding:12px 10px 12px 22px;width:40px"><span style="width:1px;height:1px;overflow:hidden;display:block;clip:rect(0 0 0 0)">Select</span></th>
+            <th scope="col" style="textAlign:left;padding:12px 14px;fontSize:9.5px;fontWeight:800;letterSpacing:.13em;textTransform:uppercase;color:#a8a29e">Applicant</th>
+            <th scope="col" style="textAlign:left;padding:12px 14px;fontSize:9.5px;fontWeight:800;letterSpacing:.13em;textTransform:uppercase;color:#a8a29e">Program</th>
+            <th scope="col" style="textAlign:left;padding:12px 14px;fontSize:9.5px;fontWeight:800;letterSpacing:.13em;textTransform:uppercase;color:#a8a29e">Level / seat</th>
+            <th scope="col" style="textAlign:left;padding:12px 14px;fontSize:9.5px;fontWeight:800;letterSpacing:.13em;textTransform:uppercase;color:#a8a29e">Key metric</th>
+            <th scope="col" style="textAlign:left;padding:12px 14px;fontSize:9.5px;fontWeight:800;letterSpacing:.13em;textTransform:uppercase;color:#a8a29e">Submitted</th>
+            <th scope="col" style="textAlign:left;padding:12px 14px;fontSize:9.5px;fontWeight:800;letterSpacing:.13em;textTransform:uppercase;color:#a8a29e">Status</th>
+            <th scope="col" style="textAlign:right;padding:12px 22px 12px 14px;fontSize:9.5px;fontWeight:800;letterSpacing:.13em;textTransform:uppercase;color:#a8a29e">Decision</th>
+          </tr>
+        </thead>
+        <tbody data-rows></tbody>
+      </table>
     </div>
 
-    <p style="margin:26px 0 0;font-size:12.5px;line-height:1.6;color:#8b8a92;max-width:70ch">Sample data for review. Every name, NMLS number, email address, level and photograph in this console is invented — no real Loan Factory loan officer is represented here.</p>
+    <div data-empty hidden style="padding:clamp(32px,5vw,60px) 24px;textAlign:center">
+      <p style="margin:0;fontSize:clamp(18px,2.4vw,24px);fontWeight:900;letterSpacing:-.02em;textTransform:uppercase">No registrations match these filters</p>
+      <p style="margin:12px auto 20px;fontSize:13px;lineHeight:1.7;color:#78716c;maxWidth:42ch;fontWeight:500">Widen the status or level filter, switch program tab, or clear the search.</p>
+      <button type="button" data-clear class="h-orange" style="border:0;background:#272727;color:#fff;padding:12px 22px;borderRadius:999px;fontSize:12.5px;fontWeight:800;cursor:pointer">Clear all filters</button>
+    </div>
   </section>
+
+  <p style="margin:18px 0 0;fontSize:11.5px;lineHeight:1.7;color:#a8a29e;fontWeight:500;maxWidth:86ch">Decisions here are the prototype's own state — nothing is sent. Level changes apply to Ambassador registrations only; Recruiter seats have no tiers. Every name, NMLS number and photograph is invented; no real Loan Factory loan officer is represented here.</p>
+
 </main>
