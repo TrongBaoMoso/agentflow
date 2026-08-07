@@ -1,0 +1,273 @@
+/* ------------------------------------------------------------------------
+   Version 4 — translated from the Claude Design canvas. The design keeps its
+   styling inline; this sheet carries only what an inline style cannot express:
+   the @font-face, the hover/focus states the canvas wrote as style-hover /
+   style-focus attributes, the preview chrome, and the few media queries.
+   ------------------------------------------------------------------------ */
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(__FONT__) format('woff2-variations');
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #faf9f8;
+}
+body {
+  font-family: Montserrat, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #272727;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+* {
+  box-sizing: border-box;
+}
+a {
+  color: #c2591a;
+  text-decoration: none;
+}
+a:hover {
+  color: #f36f20;
+  text-decoration: underline;
+}
+input,
+select,
+textarea,
+button {
+  font-family: inherit;
+}
+[hidden] {
+  display: none !important;
+}
+:focus-visible {
+  outline: 2px solid #f36f20;
+  outline-offset: 2px;
+}
+
+@keyframes lfspin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes lffade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------------------------------------------------------- hover states -- */
+.h-orange:hover {
+  background: #272727;
+  color: #f36f20;
+}
+.h-paper:hover {
+  background: #faf9f8;
+  color: #272727;
+}
+.h-ink:hover {
+  background: #272727;
+  color: #faf9f8;
+}
+.h-ink-orange:hover {
+  background: #f36f20;
+  color: #272727;
+}
+.h-border-ink:hover {
+  border-color: #272727;
+}
+.h-border-orange:hover {
+  border-color: #f36f20;
+}
+.h-card:hover {
+  border-color: #f36f20;
+  box-shadow: 0 10px 30px rgba(39, 39, 39, 0.09);
+}
+.h-icon:hover {
+  border-color: #272727;
+  color: #272727;
+}
+.h-up:hover:not(:disabled) {
+  border-color: #f36f20;
+  color: #f36f20;
+}
+.h-down:hover:not(:disabled) {
+  border-color: #272727;
+  color: #272727;
+}
+.h-row:hover {
+  background: #fffaf6;
+}
+.h-approve:hover {
+  background: #40c057 !important;
+  color: #fff !important;
+}
+.h-reject:hover {
+  border-color: #fa5252;
+  color: #fa5252;
+}
+.h-hold:hover {
+  border-color: #fab005;
+  color: #8a5a00;
+}
+.h-quiet:hover {
+  color: #272727;
+}
+.h-rust:hover {
+  color: #f36f20;
+}
+.fld:focus {
+  border-color: #f36f20;
+  box-shadow: 0 0 0 3px rgba(243, 111, 32, 0.18);
+}
+button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* -------------------------------------------------------- preview chrome -- */
+.pv {
+  background: #10141f;
+  color: #e6e6ea;
+  padding: 16px 20px 18px;
+  position: sticky;
+  top: 0;
+  z-index: 70;
+  box-shadow: 0 6px 24px rgba(10, 14, 25, 0.28);
+}
+.pv__in {
+  max-width: 1340px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.pv__tabs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.pv__tab {
+  padding: 12px 22px;
+  border: 1px solid #232a3d;
+  background: #171d2c;
+  color: #9aa1b4;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 14px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.pv__tab:hover {
+  color: #ffffff;
+  border-color: #39415a;
+  text-decoration: none;
+}
+.pv__tab[aria-current='page'] {
+  background: #262c3d;
+  border-color: #39415a;
+  color: #ffffff;
+}
+.pv__ver {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6f778c;
+}
+.pv__ver select {
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: 1px solid #232a3d;
+  background: #171d2c;
+  color: #e6e6ea;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.pv__meta {
+  display: flex;
+  gap: 26px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.pv__title {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+}
+.pv__note {
+  font-size: 13px;
+  color: #8b93a7;
+  margin-top: 4px;
+}
+.pv__caption {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #6f778c;
+  margin-bottom: 8px;
+}
+.pv__states {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pv__state {
+  padding: 11px 18px;
+  border: 1px solid #232a3d;
+  background: #171d2c;
+  color: #9aa1b4;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.pv__state:hover {
+  border-color: #f36f20;
+}
+.pv__state[aria-pressed='true'] {
+  background: #f36f20;
+  border-color: #f36f20;
+  color: #10141f;
+}
+
+@media (max-width: 900px) {
+  .pv__ver {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+/* The canvas laid the admin console out at 1440 only. On a phone the pill
+   track holds three tabs in one unwrappable row and clips "Recruiter", so
+   below 640 it wraps and gives up the pill silhouette. */
+@media (max-width: 640px) {
+  [data-programs] {
+    flex-wrap: wrap;
+    width: 100%;
+    border-radius: 18px;
+  }
+  [data-programs] button {
+    flex: 1 1 auto;
+  }
+}

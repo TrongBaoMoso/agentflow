@@ -1,0 +1,332 @@
+<main id="top">
+  <!-- ======================================================= hero ======= -->
+  <section style="max-width:1340px;margin:0 auto;padding:clamp(38px,7vw,92px) 20px clamp(30px,5vw,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,56px);align-items:end">
+    <div style="min-width:0">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+        <span style="width:44px;height:2px;background:#f36f20"></span>
+        <span style="font-size:11.5px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:#C2591A">Internal program</span>
+      </div>
+      <h1 style="margin:0;font-size:clamp(38px,7.4vw,96px);line-height:0.9;font-weight:800;letter-spacing:-0.035em;text-transform:uppercase">Producing Loan Officer<br /><span style="color:#f36f20">Recruiter</span> Program</h1>
+      <p style="margin:26px 0 0;font-size:clamp(18px,2.2vw,25px);line-height:1.35;font-weight:600;max-width:24ch;text-wrap:pretty">A small, accountable recruiting team focused on experienced loan officers.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:32px">
+        <button type="button" data-when="new" data-open-modal class="h-orange" style="background:#f36f20;color:#272727;border:none;padding:16px 30px;font-size:14px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;border-radius:999px">Apply now</button>
+        <button type="button" data-when="public" class="h-orange" style="background:#f36f20;color:#272727;border:none;padding:16px 30px;font-size:14px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;border-radius:999px">Sign in to apply</button>
+        <a href="#apply" data-when="submitted approved denied" style="display:inline-block;background:#272727;color:#faf9f8;padding:16px 30px;font-size:14px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none;border-radius:999px">See your application status</a>
+        <a href="#bonus" class="h-ink" style="display:inline-block;border:1px solid #272727;color:#272727;padding:16px 30px;font-size:14px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;text-decoration:none;border-radius:999px">See the bonus scale</a>
+      </div>
+    </div>
+    <div style="min-width:0;border-left:2px solid #f36f20;padding-left:clamp(16px,3vw,28px)">
+      <div style="font-size:11px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:#C2591A">Bonus at a glance</div>
+      <div style="display:flex;align-items:baseline;gap:10px;margin-top:10px;flex-wrap:wrap">
+        <span style="font-size:clamp(44px,7vw,84px);font-weight:800;letter-spacing:-0.045em;line-height:1;color:#f36f20">$1,000</span>
+        <span style="font-size:14px;font-weight:700;color:#5c5b63">per 12 verified units referred</span>
+      </div>
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid #eaeaee;font-size:14.5px;line-height:1.65;color:#3d3c44;max-width:40ch">Scaling to <strong>$30,000</strong> at 360 units. One-time, paid on the combined verified units of all qualified recruits in the locked recruiting month.</div>
+    </div>
+  </section>
+
+  <!-- ================================================ status / apply ==== -->
+  <section id="apply" style="background:#272727;color:#faf9f8">
+    <div style="max-width:1340px;margin:0 auto;padding:clamp(44px,6vw,84px) 20px">
+      <!-- 1 · public -->
+      <div data-when="public" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,56px);align-items:center">
+        <div>
+          <div style="font-size:11px;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:#f36f20;margin-bottom:14px">Internal program</div>
+          <h2 style="margin:0;font-size:clamp(28px,4.4vw,52px);line-height:1;font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;max-width:16ch">Loan Factory loan officers can apply for this program.</h2>
+          <p style="margin:18px 0 0;font-size:15px;line-height:1.7;color:#c9c9d1;max-width:52ch">The recruiter seats are filled from inside the company. If you're a producing Loan Officer looking at Loan Factory from the outside, the recruiters above are exactly the people to talk to.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start">
+          <button type="button" class="h-paper" style="background:#f36f20;color:#272727;border:none;padding:17px 32px;font-size:14px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;border-radius:999px">Sign in to apply</button>
+          <a href="#recruiters" style="color:#f36f20;font-size:13px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid rgba(243,111,32,0.4);padding-bottom:2px">Or meet the recruiting team</a>
+        </div>
+      </div>
+
+      <!-- 2 · signed in, not applied -->
+      <div data-when="new" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,4vw,56px);align-items:center">
+        <div>
+          <div style="font-size:11px;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:#f36f20;margin-bottom:14px">You're eligible</div>
+          <h2 style="margin:0;font-size:clamp(28px,4.4vw,52px);line-height:1;font-weight:800;letter-spacing:-0.03em;text-transform:uppercase;max-width:15ch">Apply for a recruiter seat</h2>
+          <p style="margin:18px 0 0;font-size:15px;line-height:1.7;color:#c9c9d1;max-width:52ch">Your application goes to the program team for review. Expect a conversation with the Recruiting Team Lead before any offer — the standards on this page are the ones you'd be held to.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;align-items:flex-start">
+          <button type="button" data-open-modal class="h-paper" style="background:#f36f20;color:#272727;border:none;padding:17px 32px;font-size:14px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;border-radius:999px">Apply now</button>
+          <div style="font-size:12.5px;color:#91919b;line-height:1.6;max-width:34ch">Applying as <strong style="color:#faf9f8">Jordan Mackey</strong> · NMLS 1492003 · jordan.mackey@loanfactory.com</div>
+        </div>
+      </div>
+
+      <!-- 3 · submitted -->
+      <div data-when="submitted" style="background:#33333a;border-left:6px solid #FAB005;padding:clamp(24px,4vw,40px);border-radius:26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:clamp(20px,4vw,48px)">
+        <div>
+          <div style="display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:#FAB005"><span style="width:8px;height:8px;background:#FAB005;border-radius:50%"></span> Application under review</div>
+          <h2 style="margin:14px 0 0;font-size:clamp(24px,3.6vw,40px);line-height:1.05;font-weight:800;letter-spacing:-0.025em;text-transform:uppercase">We have your application</h2>
+          <p style="margin:14px 0 0;font-size:14.5px;line-height:1.7;color:#c9c9d1;max-width:48ch">Submitted <strong style="color:#faf9f8">July 30, 2026</strong> · full-time · Team Lead track: interested.</p>
+        </div>
+        <div>
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#91919b;margin-bottom:12px">What happens next</div>
+          <ol style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:9px;font-size:14px;line-height:1.6;color:#e6e6ea">
+            <li>The program team reviews your production and recruiting history.</li>
+            <li>A 45-minute conversation with the Recruiting Team Lead.</li>
+            <li>Decision by email, then a start date and ramp plan.</li>
+          </ol>
+          <div style="margin-top:16px;font-size:12.5px;color:#91919b">Seats are limited to three to five recruiters in this cohort.</div>
+        </div>
+      </div>
+
+      <!-- 4 · approved -->
+      <div data-when="approved" style="background:#33333a;border-left:6px solid #40C057;padding:clamp(24px,4vw,40px);border-radius:26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(20px,4vw,48px)">
+        <div>
+          <div style="display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:#40C057"><span style="width:8px;height:8px;background:#40C057;border-radius:50%"></span> Approved</div>
+          <h2 style="margin:14px 0 0;font-size:clamp(26px,4vw,46px);line-height:1;font-weight:800;letter-spacing:-0.03em;text-transform:uppercase">You're on the <span style="color:#f36f20">recruiting team</span></h2>
+          <p style="margin:14px 0 0;font-size:14.5px;line-height:1.7;color:#c9c9d1;max-width:48ch">Approved August 4, 2026. Your CRM recruiting pipeline is live and your 60-day standard starts today: three separate qualified recruits by October 3.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:20px">
+            <a href="#recruiters" style="background:#f36f20;color:#272727;padding:13px 22px;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;border-radius:999px">Open recruiting pipeline</a>
+            <a href="#bonus" style="border:1px solid #63636d;color:#faf9f8;padding:13px 22px;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;border-radius:999px">Review the bonus scale</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#91919b;margin-bottom:12px">How your card appears in the public roster</div>
+          <article style="border:1px solid #eaeaee;background:#faf9f8;color:#272727;border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:14px;max-width:360px">
+            <div style="display:flex;gap:14px;align-items:flex-start">
+              <div style="width:56px;height:56px;flex:0 0 56px;border-radius:50%;background:#272727;color:#f36f20;display:grid;place-items:center;font-size:16px;font-weight:800">JM</div>
+              <div>
+                <h3 style="margin:0;font-size:17px;font-weight:800">Jordan Mackey</h3>
+                <div style="font-size:12px;color:#8b8a92;font-weight:600;margin-top:2px">NMLS 1492003</div>
+              </div>
+            </div>
+            <div style="font-size:12.5px;color:#8b8a92;font-weight:600">Listed on the public recruiter roster</div>
+          </article>
+        </div>
+      </div>
+
+      <!-- 5 · not selected -->
+      <div data-when="denied" style="background:#33333a;border-left:6px solid #228BE6;padding:clamp(24px,4vw,40px);border-radius:26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(20px,4vw,48px)">
+        <div>
+          <div style="font-size:11px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:#228BE6">Not selected for this cohort</div>
+          <h2 style="margin:14px 0 0;font-size:clamp(24px,3.6vw,40px);line-height:1.05;font-weight:800;letter-spacing:-0.025em;text-transform:uppercase">Not this round — and there's a clear route back</h2>
+          <p style="margin:14px 0 0;font-size:14.5px;line-height:1.7;color:#c9c9d1;max-width:50ch">Reviewed August 2, 2026. This decision is about the recruiter seat only. Your production role and comp are unaffected.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:20px">
+            <a href="ambassador.html" style="background:#f36f20;color:#272727;padding:13px 22px;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;border-radius:999px">Look at the Ambassador Program</a>
+            <a href="#apply" style="border:1px solid #63636d;color:#faf9f8;padding:13px 22px;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;border-radius:999px">Request review notes</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#91919b;margin-bottom:12px">What wasn't met</div>
+          <ul style="margin:0 0 18px;padding-left:18px;display:flex;flex-direction:column;gap:9px;font-size:14px;line-height:1.6;color:#e6e6ea">
+            <li>Documented recruiting or sales conversations were below what the 60-day standard requires.</li>
+            <li>Stated availability didn't cover the weekly activity standard alongside your current pipeline.</li>
+          </ul>
+          <div style="border-top:1px solid #45454e;padding-top:14px;font-size:14px;line-height:1.65;color:#c9c9d1">The next cohort opens <strong style="color:#faf9f8">January 2027</strong> and you're welcome to reapply. Referring a qualified producer through the standard referral process in the meantime counts in your favour.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== who this team recruits -->
+  <section style="background:#ffffff;border-top:1px solid #eaeaee;border-bottom:1px solid #eaeaee">
+    <div style="max-width:1340px;margin:0 auto;padding:clamp(40px,5.5vw,72px) 20px">
+      <h2 style="margin:0 0 28px;font-size:clamp(28px,4.2vw,52px);line-height:0.95;font-weight:800;letter-spacing:-0.03em;text-transform:uppercase">Who this team recruits</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px">
+        <div style="border:1px solid #272727;border-top:6px solid #f36f20;background:#faf9f8;border-radius:26px;padding:clamp(22px,3vw,34px)">
+          <div style="display:inline-flex;align-items:center;gap:9px;font-size:11px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:#272727">
+            <span style="width:20px;height:20px;background:#40C057;color:#fff;display:grid;place-items:center;font-size:12px;font-weight:800;border-radius:50%">✓</span> Qualifies
+          </div>
+          <p style="margin:16px 0 0;font-size:clamp(19px,2.4vw,27px);line-height:1.3;font-weight:700;letter-spacing:-0.015em;text-wrap:pretty">Loan officers with at least <span style="color:#f36f20">12 verified funded units</span> in the preceding 12 months.</p>
+          <p style="margin:14px 0 0;font-size:14.5px;line-height:1.65;color:#5c5b63">Branches and teams qualify on the same basis.</p>
+        </div>
+        <div style="border:1px solid #e4e4e9;background:#f2f2f5;border-radius:26px;padding:clamp(22px,3vw,34px)">
+          <div style="display:inline-flex;align-items:center;gap:9px;font-size:11px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:#5c5b63">
+            <span style="width:20px;height:20px;background:#ccccd3;color:#fff;display:grid;place-items:center;font-size:13px;font-weight:800;border-radius:50%">–</span> Does not count toward this program
+          </div>
+          <p style="margin:16px 0 0;font-size:clamp(18px,2.2vw,24px);line-height:1.3;font-weight:700;letter-spacing:-0.015em;color:#3d3c44;text-wrap:pretty">Newly licensed Loan Officers and anyone below 12 verified units.</p>
+          <p style="margin:14px 0 0;font-size:14.5px;line-height:1.65;color:#5c5b63">They're routed to our existing onboarding team — still welcome at Loan Factory, just not part of this program's scope.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================== the roles ====== -->
+  <section id="roles" style="max-width:1340px;margin:0 auto;padding:clamp(40px,5.5vw,72px) 20px">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:22px;flex-wrap:wrap;margin-bottom:26px">
+      <h2 style="margin:0;font-size:clamp(28px,4.2vw,52px);line-height:0.95;font-weight:800;letter-spacing:-0.03em;text-transform:uppercase">The roles</h2>
+      <p style="margin:0;max-width:44ch;font-size:14px;line-height:1.65;color:#5c5b63">The team starts with one Team Lead and three to five Recruiters, and operates separately from the Loan Officer Ambassador Program and the existing onboarding team.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0;border-top:2px solid #272727">
+      <div style="padding:24px 22px 26px;border-bottom:1px solid #eaeaee;border-right:1px solid #eaeaee">
+        <div style="font-size:11px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:#8b8a92">Tier 01</div>
+        <h3 style="margin:8px 0 10px;font-size:21px;font-weight:800;letter-spacing:-0.015em;text-transform:uppercase">Strategic support</h3>
+        <p style="margin:0;font-size:14.5px;line-height:1.65;color:#3d3c44">Sets program direction, steps in on major recruiting opportunities and problem-solving.</p>
+      </div>
+      <div style="padding:24px 22px 26px;border-bottom:1px solid #eaeaee;border-right:1px solid #eaeaee;background:#fff6ef">
+        <div style="font-size:11px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:#C2591A">Tier 02</div>
+        <h3 style="margin:8px 0 10px;font-size:21px;font-weight:800;letter-spacing:-0.015em;text-transform:uppercase">Recruiting Team Lead</h3>
+        <p style="margin:0;font-size:14.5px;line-height:1.65;color:#3d3c44">Runs the team day to day, recruits personally, coaches recruiters, reviews pipelines, reports results.</p>
+      </div>
+      <div style="padding:24px 22px 26px;border-bottom:6px solid #f36f20">
+        <div style="font-size:11px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:#C2591A">Tier 03 · hiring</div>
+        <h3 style="margin:8px 0 10px;font-size:21px;font-weight:800;letter-spacing:-0.015em;text-transform:uppercase">Producing Loan Officer Recruiters</h3>
+        <p style="margin:0;font-size:14.5px;line-height:1.65;color:#3d3c44">Source, educate and convert qualified producers, then stay involved through onboarding and activation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================== recruiting process === -->
+  <section style="background:#272727;color:#faf9f8">
+    <div style="max-width:1340px;margin:0 auto;padding:clamp(44px,6vw,80px) 20px">
+      <h2 style="margin:0 0 clamp(28px,4vw,46px);font-size:clamp(28px,4.2vw,52px);line-height:0.95;font-weight:800;letter-spacing:-0.03em;text-transform:uppercase">The recruiting process</h2>
+      <ol data-steps style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column"></ol>
+      <div style="border-top:2px solid #f36f20"></div>
+    </div>
+  </section>
+
+  <!-- ================================================== bonus table ===== -->
+  <section id="bonus" style="background:#ffffff;border-bottom:1px solid #eaeaee">
+    <div style="max-width:1340px;margin:0 auto;padding:clamp(44px,6vw,80px) 20px">
+      <div style="border-bottom:2px solid #f36f20;padding-bottom:14px;margin-bottom:26px">
+        <div style="font-size:11.5px;font-weight:800;letter-spacing:0.22em;text-transform:uppercase;color:#f36f20">Referred loan officer production</div>
+        <h2 style="margin:8px 0 0;font-size:clamp(30px,5.4vw,70px);line-height:0.9;font-weight:800;letter-spacing:-0.04em;text-transform:uppercase">Recruiter bonus table</h2>
+      </div>
+
+      <div data-tables style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:clamp(16px,3vw,34px)"></div>
+
+      <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-top:20px">
+        <button type="button" data-scale class="h-border-orange" aria-expanded="false" style="background:none;border:1px solid #272727;color:#272727;padding:12px 22px;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;border-radius:999px">Show full scale · 30 tiers</button>
+        <p style="margin:0;font-size:13px;line-height:1.6;color:#5c5b63;font-style:italic;max-width:60ch">Bonus is based on the combined verified units of all qualified recruits in the locked recruiting month.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================== performance standards == -->
+  <section style="max-width:1340px;margin:0 auto;padding:clamp(40px,5.5vw,72px) 20px">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(22px,4vw,52px)">
+      <div>
+        <h2 style="margin:0;font-size:clamp(28px,4.2vw,52px);line-height:0.95;font-weight:800;letter-spacing:-0.03em;text-transform:uppercase">Performance standards</h2>
+        <p style="margin:16px 0 0;font-size:14.5px;line-height:1.7;color:#5c5b63;max-width:42ch">This is a demanding seat. The numbers below are the standard from day one, and they're the same numbers used in coaching conversations.</p>
+        <div style="margin-top:20px;padding:14px 16px;border-left:2px solid #228BE6;background:#f3f8fd;font-size:13.5px;line-height:1.6;color:#3d3c44;max-width:44ch">Compensation is based on qualified results, not call volume. Activity tracking is used for coaching.</div>
+      </div>
+      <div style="display:flex;flex-direction:column">
+        <div style="border-top:2px solid #272727;padding:18px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px">
+          <div style="font-size:12px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#C2591A">First 60 days</div>
+          <div style="font-size:15px;line-height:1.6;color:#272727"><strong style="font-size:20px;letter-spacing:-0.01em">Three separate qualified recruits.</strong><br /><span style="color:#5c5b63">Firm probation standard, with room to ramp up.</span></div>
+        </div>
+        <div style="border-top:1px solid #eaeaee;padding:18px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px">
+          <div style="font-size:12px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#C2591A">Ongoing monthly minimum</div>
+          <div style="font-size:15px;line-height:1.6;color:#272727"><strong style="font-size:20px;letter-spacing:-0.01em">Two qualified recruits</strong><br /><span style="color:#5c5b63">or one qualified recruit with a combined 48+ verified trailing-12-month units.</span></div>
+        </div>
+        <div style="border-top:1px solid #eaeaee;padding:18px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px">
+          <div style="font-size:12px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#C2591A">Planning target</div>
+          <div style="font-size:15px;line-height:1.6;color:#272727"><strong style="font-size:20px;letter-spacing:-0.01em">5–7 qualified recruits / month</strong><br /><span style="color:#5c5b63">for recruiters; approximately ten personal qualified recruits per month for the Team Lead.</span></div>
+        </div>
+        <div style="border-top:1px solid #eaeaee;border-bottom:2px solid #f36f20;padding:18px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px">
+          <div style="font-size:12px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:#C2591A">Weekly activity standard</div>
+          <div style="font-size:15px;line-height:1.6;color:#272727"><strong style="font-size:20px;letter-spacing:-0.01em">Ten meaningful recruiting conversations</strong><br /><span style="color:#5c5b63">per week.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================ recruiter roster == -->
+  <section id="recruiters" style="background:#ffffff;border-top:1px solid #eaeaee">
+    <div style="max-width:1340px;margin:0 auto;padding:clamp(44px,6vw,80px) 20px">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;border-bottom:2px solid #272727;padding-bottom:18px">
+        <h2 style="margin:0;font-size:clamp(28px,4.2vw,52px);line-height:0.95;font-weight:800;letter-spacing:-0.03em;text-transform:uppercase">The recruiting team</h2>
+        <p style="margin:0;font-size:13.5px;color:#5c5b63;max-width:38ch;line-height:1.6">Approved Producing Loan Officer Recruiters. Talk to the one licensed where you are.</p>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:10px;padding:22px 0 24px;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#8b8a92">
+        <span style="color:#272727" data-count-label></span>
+        <span style="flex:1;height:1px;background:#eaeaee"></span>
+      </div>
+
+      <div data-roster style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px"></div>
+
+      <div data-zero hidden style="border:1px solid #eaeaee;border-top:6px solid #f36f20;background:#faf9f8;border-radius:26px;padding:clamp(32px,6vw,64px) 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:28px;align-items:center">
+        <div>
+          <div style="font-size:11px;font-weight:800;letter-spacing:0.18em;text-transform:uppercase;color:#C2591A">Team forming</div>
+          <h3 style="margin:10px 0 8px;font-size:clamp(22px,3.4vw,34px);font-weight:800;letter-spacing:-0.025em;text-transform:uppercase;line-height:1.05">We're hiring the first three to five recruiters now</h3>
+          <p style="margin:0;max-width:48ch;font-size:14.5px;line-height:1.65;color:#5c5b63">This roster publishes as recruiters are approved. Internal Loan Officers who apply this month are in the first cohort.</p>
+        </div>
+        <div><a href="#apply" class="h-ink-orange" style="display:inline-block;background:#f36f20;color:#272727;padding:14px 24px;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;border-radius:999px">Apply to the team</a></div>
+      </div>
+
+      <p style="margin:28px 0 0;font-size:12.5px;line-height:1.6;color:#8b8a92;max-width:70ch">Sample data for review. Every name, NMLS number and photograph on this page is invented — no real Loan Factory loan officer is represented here.</p>
+    </div>
+  </section>
+</main>
+
+<!-- ======================================================= apply modal === -->
+<div data-modal hidden role="dialog" aria-modal="true" aria-label="Recruiter application" style="position:fixed;inset:0;z-index:100;background:rgba(28,26,24,0.62);display:flex;align-items:flex-start;justify-content:center;padding:clamp(12px,4vw,48px);overflow:auto">
+  <div style="background:#faf9f8;width:100%;max-width:660px;border-top:6px solid #f36f20;border-radius:26px;overflow:hidden;animation:lffade 0.22s ease-out">
+    <div style="display:flex;align-items:flex-start;gap:16px;padding:24px 26px 18px;border-bottom:1px solid #eaeaee">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:#C2591A">Recruiter application</div>
+        <h2 data-modal-title style="margin:6px 0 0;font-size:clamp(22px,3.4vw,30px);font-weight:800;letter-spacing:-0.025em;text-transform:uppercase;line-height:1.05">Tell us how you'd bring producers over</h2>
+      </div>
+      <button type="button" data-close-modal aria-label="Close" class="h-icon" style="background:none;border:1px solid #d9d9de;width:34px;height:34px;border-radius:50%;font-size:16px;line-height:1;cursor:pointer;color:#5c5b63">×</button>
+    </div>
+
+    <div data-modal-success hidden style="padding:clamp(28px,5vw,52px) 26px;text-align:center">
+      <div style="width:56px;height:56px;margin:0 auto 18px;border-radius:50%;background:#40C057;color:#fff;display:grid;place-items:center;font-size:26px;font-weight:800">✓</div>
+      <h3 style="margin:0 0 10px;font-size:24px;font-weight:800;letter-spacing:-0.02em;text-transform:uppercase">Application submitted</h3>
+      <p style="margin:0 auto 22px;max-width:44ch;font-size:14.5px;line-height:1.65;color:#5c5b63">Submitted August 7, 2026. The program team reviews applications weekly and the Recruiting Team Lead reaches out to schedule a conversation.</p>
+      <button type="button" data-finish class="h-ink-orange" style="background:#272727;color:#faf9f8;border:none;padding:14px 26px;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;border-radius:999px">Back to the program page</button>
+    </div>
+
+    <div data-modal-form style="padding:22px 26px 26px;display:flex;flex-direction:column;gap:20px">
+      <div style="background:#ffffff;border:1px solid #eaeaee;border-radius:18px;padding:14px 16px">
+        <div style="font-size:10px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#8b8a92;margin-bottom:10px">From your Loan Factory profile · read only</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">
+          <div><div style="font-size:11px;color:#8b8a92;font-weight:600">Name</div><div style="font-size:14px;font-weight:700">Jordan Mackey</div></div>
+          <div><div style="font-size:11px;color:#8b8a92;font-weight:600">Email</div><div style="font-size:14px;font-weight:700;overflow-wrap:anywhere">jordan.mackey@loanfactory.com</div></div>
+          <div><div style="font-size:11px;color:#8b8a92;font-weight:600">NMLS</div><div style="font-size:14px;font-weight:700">1492003</div></div>
+        </div>
+      </div>
+
+      <div data-err-summary hidden role="alert" style="border:1px solid #fa5252;background:#fff5f5;border-radius:14px;padding:13px 15px">
+        <div data-err-text style="font-size:13px;font-weight:800;color:#c92a2a"></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;align-items:start">
+        <label style="display:block">
+          <span style="display:block;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:7px">Current role at Loan Factory</span>
+          <input type="text" data-role class="fld" placeholder="e.g. Senior Loan Officer, Houston" style="width:100%;padding:12px 14px;border:1px solid #d9d9de;background:#fff;font-size:14px;outline:none;border-radius:14px" />
+          <span data-role-err hidden style="display:block;margin-top:6px;font-size:12.5px;font-weight:700;color:#c92a2a">Add your current title and market so we can check your production record.</span>
+        </label>
+        <label style="display:block">
+          <span style="display:block;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:7px">Verified funded units · trailing 12 months</span>
+          <input type="number" class="fld" placeholder="e.g. 38" style="width:100%;padding:12px 14px;border:1px solid #d9d9de;background:#fff;font-size:14px;outline:none;border-radius:14px" />
+        </label>
+      </div>
+
+      <label style="display:block">
+        <span style="display:block;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:7px">Recruiting or sales experience</span>
+        <textarea rows="4" class="fld" placeholder="Producers you've brought over, teams you've built, sales roles outside mortgage" style="width:100%;padding:12px 14px;border:1px solid #d9d9de;background:#fff;font-size:14px;line-height:1.55;outline:none;resize:vertical;border-radius:16px"></textarea>
+      </label>
+
+      <label style="display:block">
+        <span style="display:block;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:7px">Why you want this role</span>
+        <textarea rows="4" data-why class="fld" placeholder="What you'd say to a 40-unit producer who's happy where they are" style="width:100%;padding:12px 14px;border:1px solid #d9d9de;background:#fff;font-size:14px;line-height:1.55;outline:none;resize:vertical;border-radius:16px"></textarea>
+        <span data-why-err hidden style="display:block;margin-top:6px;font-size:12.5px;font-weight:700;color:#c92a2a">The Team Lead reads this one first — a couple of sentences is enough.</span>
+      </label>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;align-items:start">
+        <fieldset style="border:none;padding:0;margin:0">
+          <legend style="font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;padding:0;margin-bottom:8px">Availability</legend>
+          <div data-avail role="group" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
+        </fieldset>
+        <fieldset style="border:none;padding:0;margin:0">
+          <legend style="font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;padding:0;margin-bottom:8px">Interested in the Team Lead track?</legend>
+          <div data-lead role="group" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+        </fieldset>
+      </div>
+
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;border-top:1px solid #eaeaee;padding-top:18px">
+        <button type="button" data-submit class="h-orange" style="background:#f36f20;color:#272727;border:none;padding:15px 30px;font-size:13px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;display:inline-flex;align-items:center;gap:10px;border-radius:999px">
+          <span data-spinner hidden style="width:14px;height:14px;border:2px solid rgba(39,39,39,0.3);border-top-color:#272727;border-radius:50%;display:inline-block;animation:lfspin 0.7s linear infinite"></span>
+          <span data-submit-label>Submit application</span>
+        </button>
+        <button type="button" data-close-modal class="h-quiet" style="background:none;border:none;font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:#8b8a92;cursor:pointer">Cancel</button>
+        <span style="font-size:12px;color:#8b8a92;margin-left:auto">3–5 seats in this cohort</span>
+      </div>
+    </div>
+  </div>
+</div>
