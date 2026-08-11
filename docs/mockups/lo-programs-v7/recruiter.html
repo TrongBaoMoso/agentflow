@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Producing Loan Officer Recruiter Program | Loan Factory</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;450;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="programs.css?v=2" />
+  </head>
+  <body data-auth="anon">
+    <!-- Preview toolbar — review chrome only, removed before implementation. -->
+    <div class="pv">
+      <div class="shell">
+        <nav class="pv-tabs" aria-label="Preview pages">
+          <a href="ambassador.html">Ambassador</a>
+          <a href="recruiter.html" aria-current="page">Recruiter</a>
+          <a href="admin-recruiter.html">Admin console</a>
+        </nav>
+        <div class="pv-row">
+          <div class="pv-id">
+            <h1>Loan Officer Recruiter Program — design preview · v7 (copy chưa cập nhật — Duyen chưa feedback trang này)</h1>
+            <p>Not a live page. Sample data only — forms submit nowhere.</p>
+          </div>
+        <div class="pv-states">
+          <span class="pv-lab">Viewing the page as</span>
+          <div class="pv-switch" role="group" aria-label="Viewer"></div>
+        </div>
+        </div>
+      </div>
+    </div>
+    <!-- ============================================================ nav -- -->
+    <main>
+      <!-- ========================================================= hero -- -->
+      <section class="hero">
+        <div class="shell hero__inner">
+          <div class="rise">
+            <p class="eyebrow">Loan Factory · Internal program</p>
+            <h1 class="display hero__title">
+              Recruit<br />producers.<br /><em>Get paid</em><br />per unit.
+            </h1>
+            <p class="lede">
+              A small, accountable recruiting team focused entirely on experienced loan officers — the
+              ones already funding real volume. Clear standards, a published bonus scale, and no
+              guessing what a good month looks like.
+            </p>
+
+            <div class="hero__meta">
+              <span class="pill">12+ verified units to qualify</span>
+              <span class="pill">Published bonus scale</span>
+              <span class="pill">Up to $30,000 per month</span>
+            </div>
+
+            <!-- The register CTA is in the hero on every state. It opens the
+                 application modal directly — no scrolling to a form section. -->
+            <div class="hero__cta">
+              <a class="btn btn--primary" data-state="anon" href="#">
+                <span>Sign in to apply</span>
+              </a>
+              <button class="btn btn--primary" data-state="lo-new" data-open-apply>
+                <span>Apply now</span>
+              </button>
+              <a class="btn btn--primary" data-state="lo-pending" href="#">
+                <span>Email the team lead</span>
+              </a>
+              <button class="btn btn--primary" data-state="lo-rejected" data-open-apply>
+                <span>Apply for the next cohort</span>
+              </button>
+              <a class="btn btn--primary" data-state="lo-approved" href="#directory">
+                <span>See your recruiter profile</span>
+              </a>
+
+              <a class="btn btn--ghost" href="#bonus"><span>See the bonus scale</span></a>
+            </div>
+          </div>
+
+          <!-- Side rail. Public sees the numbers that matter; a signed-in loan
+               officer sees their own application status here in the first
+               screen; an admin sees the headline counts. -->
+          <div class="rise rise--2">
+            <div data-state="anon">
+              <ul class="rail">
+                <li class="rail__row">
+                  <span class="rail__num">MIN</span>
+                  <span class="rail__label">Monthly minimum</span>
+                  <span class="rail__value">2</span>
+                </li>
+                <li class="rail__row">
+                  <span class="rail__num">TGT</span>
+                  <span class="rail__label">Planning target</span>
+                  <span class="rail__value">5&ndash;7</span>
+                </li>
+                <li class="rail__row rail__row--3">
+                  <span class="rail__num">MAX</span>
+                  <span class="rail__label">Top of the bonus scale</span>
+                  <span class="rail__value">$30k</span>
+                </li>
+              </ul>
+              <p class="rail__caption">
+                Qualified recruits per month, and the one-time bonus at the top of the published
+                scale.
+              </p>
+            </div>
+
+            <div data-state="lo-new">
+              <div class="panel panel--accent">
+                <div class="panel__head">
+                  <span class="status-dot status-dot--ok" aria-hidden="true"></span>
+                  <h2 class="panel__title">You're eligible to apply</h2>
+                </div>
+                <p class="panel__text">
+                  Applications go to the recruiting team lead. If it's a fit you'll be invited to a
+                  conversation before anything is decided.
+                </p>
+                <div class="panel__cta">
+                  <button class="btn btn--primary btn--block" data-open-apply>
+                    <span>Apply now</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div data-state="lo-pending">
+              <div class="panel">
+                <div class="panel__head">
+                  <span class="status-dot status-dot--pending" aria-hidden="true"></span>
+                  <h2 class="panel__title">Application under review</h2>
+                </div>
+                <p class="panel__text">
+                  The recruiting team lead has your application. You'll get an email with next
+                  steps.
+                </p>
+                <div class="panel__meta">
+                  <div><span>Applied for</span> <b>Producing Loan Officer Recruiter</b></div>
+                  <div><span>Submitted</span> <b>5 August 2026</b></div>
+                  <div><span>Typical decision</span> <b>3&ndash;5 business days</b></div>
+                </div>
+              </div>
+            </div>
+
+            <div data-state="lo-approved">
+              <div class="panel panel--accent">
+                <div class="panel__head">
+                  <span class="status-dot status-dot--ok" aria-hidden="true"></span>
+                  <h2 class="panel__title">You're on the recruiting team</h2>
+                </div>
+                <p class="panel__text">
+                  Approved 6 August 2026. You're on the public roster, and your 60-day standard
+                  starts now.
+                </p>
+                <div class="panel__self">
+                  <span class="avatar avatar--lg avatar--a" aria-hidden="true">JM</span>
+                  <div>
+                    <p class="panel__self-name">Jordan Mackey</p>
+                    <p class="panel__self-nmls">NMLS #1492003</p>
+                    <p style="margin-top: 0.4375rem">
+                      <span class="badge badge--l2">Recruiter</span>
+                    </p>
+                  </div>
+                </div>
+                <div class="panel__meta">
+                  <div><span>60-day standard ends</span> <b>5 October 2026</b></div>
+                  <div><span>Target</span> <b>3 qualified recruits</b></div>
+                </div>
+              </div>
+            </div>
+
+            <div data-state="lo-rejected">
+              <div class="panel">
+                <div class="panel__head">
+                  <span class="status-dot status-dot--no" aria-hidden="true"></span>
+                  <h2 class="panel__title">Not moving forward this round</h2>
+                </div>
+                <p class="panel__text">
+                  The team lead wanted more direct outbound recruiting experience for this cohort.
+                  This isn't a permanent no.
+                </p>
+                <div class="panel__meta">
+                  <div><span>Next cohort opens</span> <b>November 2026</b></div>
+                  <div><span>Open to you now</span> <b>Ambassador Program</b></div>
+                </div>
+                <div class="panel__cta">
+                  <a class="btn btn--ghost btn--block" href="ambassador.html">
+                    <span>Look at the Ambassador Program</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div data-state="admin">
+              <div class="panel">
+                <div class="panel__head">
+                  <span class="status-dot status-dot--pending" aria-hidden="true"></span>
+                  <h2 class="panel__title">4 applications waiting on you</h2>
+                </div>
+                <p class="panel__text">
+                  Oldest has been open 6 days. Full breakdown and the review queue are just below.
+                </p>
+                <dl class="ministat">
+                  <div>
+                    <dt>Pending</dt>
+                    <dd class="is-hot">4</dd>
+                  </div>
+                  <div>
+                    <dt>On team</dt>
+                    <dd>6</dd>
+                  </div>
+                </dl>
+                <div class="panel__cta">
+                  <a class="btn btn--primary btn--block" href="admin-recruiter.html">
+                    <span>Go to the review queue</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ==================================================== who we recruit -- -->
+      <section class="band band--white" id="who">
+        <div class="shell">
+          <div class="reveal" style="max-width: 60ch">
+            <p class="eyebrow">Who this team recruits</p>
+            <h2 class="h1">Producers only.<br />The bar is<br />published.</h2>
+            <p class="lede" style="margin-top: 1.25rem">
+              This program has one job: bring in loan officers who are already funding. Everyone else
+              is valuable — they just belong with a different team.
+            </p>
+          </div>
+
+          <div class="qual">
+            <article class="qual__card qual__card--yes reveal">
+              <p class="qual__mark" aria-hidden="true">✓</p>
+              <h3 class="h2">Counts toward your KPI and bonus</h3>
+              <p class="qual__figure">12<small>+ verified funded units</small></p>
+              <p style="color: rgba(250, 249, 248, 0.72); max-width: 46ch">
+                Loan officers with at least 12 verified funded units in the preceding 12 months —
+                plus branches and teams at the same standard.
+              </p>
+            </article>
+
+            <article class="qual__card qual__card--no reveal" data-reveal-delay="90">
+              <p class="qual__mark" aria-hidden="true">→</p>
+              <h3 class="h2">Routed to the onboarding team</h3>
+              <p class="qual__figure">&lt;12<small>units, or newly licensed</small></p>
+              <p class="muted" style="max-width: 46ch">
+                Newly licensed loan officers and anyone below 12 verified units go to our existing onboarding
+                team. They don't count toward this program's KPI or bonus.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================== roles -- -->
+      <section class="band band--ink">
+        <div class="shell split">
+          <div class="reveal">
+            <p class="eyebrow">The team</p>
+            <h2 class="h1">One lead.<br />Three to five<br />recruiters.</h2>
+            <p class="lede" style="color: rgba(250, 249, 248, 0.72); margin-top: 1.25rem">
+              Deliberately small, and run separately from the Loan Officer Ambassador Program and the existing
+              onboarding team.
+            </p>
+          </div>
+
+          <div class="notes reveal" data-reveal-delay="120">
+            <div class="note">
+              <b>Strategic support.</b> Sets program direction, steps in on major recruiting
+              opportunities, and unblocks problems as they come up.
+            </div>
+            <div class="note">
+              <b>Recruiting Team Lead.</b> Runs the team day to day, recruits personally, coaches the
+              recruiters, reviews pipelines and reports results.
+            </div>
+            <div class="note">
+              <b>Producing Loan Officer Recruiters.</b> Source, educate and convert qualified producers — then
+              stay involved through onboarding and activation.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================== process -- -->
+      <section class="band" id="process">
+        <div class="shell">
+          <div class="reveal" style="max-width: 60ch">
+            <p class="eyebrow">The recruiting process</p>
+            <h2 class="h1">Five steps,<br />start to active.</h2>
+          </div>
+
+          <ol class="steps reveal">
+            <li class="step">
+              <span class="step__num" aria-hidden="true"></span>
+              <div class="step__body">
+                <h3 class="step__title">Source and register</h3>
+                <p class="step__text">
+                  Identify the loan officer, branch or team, and register the candidate in the CRM
+                  and referral system. First documented owner keeps the candidate.
+                </p>
+              </div>
+            </li>
+            <li class="step">
+              <span class="step__num" aria-hidden="true"></span>
+              <div class="step__body">
+                <h3 class="step__title">First conversation</h3>
+                <p class="step__text">
+                  Hold the initial conversation and, where it helps, give a one-to-one tour of Loan
+                  Factory and TERA.
+                </p>
+              </div>
+            </li>
+            <li class="step">
+              <span class="step__num" aria-hidden="true"></span>
+              <div class="step__body">
+                <h3 class="step__title">Get them on the webinar</h3>
+                <p class="step__text">
+                  Register the prospect for the weekly Loan Factory webinar so they hear directly
+                  from leadership and can ask their own questions live.
+                </p>
+              </div>
+            </li>
+            <li class="step">
+              <span class="step__num" aria-hidden="true"></span>
+              <div class="step__body">
+                <h3 class="step__title">Follow up and close</h3>
+                <p class="step__text">
+                  Address concerns, answer the hard questions, and help the candidate reach a
+                  decision.
+                </p>
+              </div>
+            </li>
+            <li class="step">
+              <span class="step__num" aria-hidden="true"></span>
+              <div class="step__body">
+                <h3 class="step__title">Stay through activation</h3>
+                <p class="step__text">
+                  Support the Onboarding team until the loan officer is fully active at Loan Factory.
+                  The handoff isn't the finish line.
+                </p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- ======================================================== bonus -- -->
+      <section class="band band--white" id="bonus">
+        <div class="shell">
+          <div class="reveal" style="text-align: center">
+            <p class="eyebrow eyebrow--center">Referred loan officer production</p>
+            <h2 class="display">Recruiter<br />bonus table</h2>
+            <p class="lede" style="margin: 1.25rem auto 0">
+              One-time bonus based on the combined verified 12-month production of every qualified
+              recruit in the locked recruiting month.
+            </p>
+          </div>
+
+          <div class="bonus reveal">
+            <div class="bonus__grid" data-collapsed="true">
+              <!-- Column 1: 12 → 180 units -->
+              <div class="bonus__col bonus__col--1">
+                <div class="bonus__table-wrap">
+                  <table>
+                    <caption style="position: absolute; left: -9999px">
+                      Recruiter bonus, 12 to 180 referred units
+                    </caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Referred Loan Officer production<br />(12 mo.)</th>
+                        <th scope="col">Recruiter<br />one-time bonus</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>12+</td><td>$1,000</td></tr>
+                      <tr><td>24+</td><td>$2,000</td></tr>
+                      <tr><td>36+</td><td>$3,000</td></tr>
+                      <tr><td>48+</td><td>$4,000</td></tr>
+                      <tr><td>60+</td><td>$5,000</td></tr>
+                      <tr><td>72+</td><td>$6,000</td></tr>
+                      <tr><td>84+</td><td>$7,000</td></tr>
+                      <tr><td>96+</td><td>$8,000</td></tr>
+                      <tr><td>108+</td><td>$9,000</td></tr>
+                      <tr><td>120+</td><td>$10,000</td></tr>
+                      <tr><td>132+</td><td>$11,000</td></tr>
+                      <tr><td>144+</td><td>$12,000</td></tr>
+                      <tr><td>156+</td><td>$13,000</td></tr>
+                      <tr><td>168+</td><td>$14,000</td></tr>
+                      <tr><td>180+</td><td>$15,000</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Column 2: 192 → 360 units. Collapsed on small screens. -->
+              <div class="bonus__col bonus__col--2">
+                <div class="bonus__table-wrap">
+                  <table>
+                    <caption style="position: absolute; left: -9999px">
+                      Recruiter bonus, 192 to 360 referred units
+                    </caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Referred Loan Officer production<br />(12 mo.)</th>
+                        <th scope="col">Recruiter<br />one-time bonus</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>192+</td><td>$16,000</td></tr>
+                      <tr><td>204+</td><td>$17,000</td></tr>
+                      <tr><td>216+</td><td>$18,000</td></tr>
+                      <tr><td>228+</td><td>$19,000</td></tr>
+                      <tr><td>240+</td><td>$20,000</td></tr>
+                      <tr><td>252+</td><td>$21,000</td></tr>
+                      <tr><td>264+</td><td>$22,000</td></tr>
+                      <tr><td>276+</td><td>$23,000</td></tr>
+                      <tr><td>288+</td><td>$24,000</td></tr>
+                      <tr><td>300+</td><td>$25,000</td></tr>
+                      <tr><td>312+</td><td>$26,000</td></tr>
+                      <tr><td>324+</td><td>$27,000</td></tr>
+                      <tr><td>336+</td><td>$28,000</td></tr>
+                      <tr><td>348+</td><td>$29,000</td></tr>
+                      <tr><td>360+</td><td>$30,000</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mobile disclosure so 30 rows never become an endless wall -->
+            <div class="bonus__more">
+              <button class="btn btn--ghost btn--block" data-bonus-toggle>
+                Show the full scale to 360+ units
+              </button>
+            </div>
+
+            <p class="bonus__foot">
+              The bonus starts at two qualified recruits in the month, or one qualified recruit with
+              48+ verified units.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================== performance -- -->
+      <section class="band band--ink">
+        <div class="shell">
+          <div class="reveal" style="max-width: 60ch">
+            <p class="eyebrow">Performance standards</p>
+            <h2 class="h1">Demanding,<br />and honest<br />about it.</h2>
+            <p class="lede" style="color: rgba(250, 249, 248, 0.72); margin-top: 1.25rem">
+              You'll know exactly where you stand every month. Compensation is based on qualified
+              results, not call volume — activity tracking is for coaching.
+            </p>
+          </div>
+
+          <div class="targets reveal">
+            <div class="target">
+              <p class="target__value">3</p>
+              <p class="target__label">In your first 60 days</p>
+              <p class="target__note">
+                Three separate qualified recruits. A firm probation standard, with room to ramp up.
+              </p>
+            </div>
+            <div class="target">
+              <p class="target__value">2</p>
+              <p class="target__label">Monthly minimum</p>
+              <p class="target__note">
+                Two qualified recruits — or one qualified recruit with 48+ combined verified
+                trailing-12-month units.
+              </p>
+            </div>
+            <div class="target">
+              <p class="target__value">5–7</p>
+              <p class="target__label">Monthly planning target</p>
+              <p class="target__note">
+                What a strong recruiter month looks like. The Team Lead targets around ten personal
+                qualified recruits.
+              </p>
+            </div>
+            <div class="target">
+              <p class="target__value">10</p>
+              <p class="target__label">Conversations per week</p>
+              <p class="target__note">
+                Ten meaningful recruiting conversations a week — real discussions about Loan Factory
+                and how we help loan officers.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================== directory -- -->
+      <section class="band" id="directory">
+        <div class="shell">
+          <div class="reveal" style="max-width: 62ch">
+            <p class="eyebrow">The roster</p>
+            <h2 class="h1">Our recruiters</h2>
+            <p class="lede" style="margin-top: 1.25rem">
+              Every approved Loan Factory recruiter. Public — anyone can browse this.
+            </p>
+          </div>
+
+          <div class="reveal">
+            <div class="dir__group">
+              <div class="dir__group-head">
+                <h3 class="dir__group-title">Recruiting Team Lead</h3>
+                <span class="pill">1</span>
+                <span class="dir__group-rule" aria-hidden="true"></span>
+              </div>
+              <div class="dir__grid">
+              <article class="card card--l3">
+                <img class="card__photo" src="avatars/naima-dunn.jpg" alt="" width="84" height="84" loading="lazy" />
+                <h4 class="card__name">Naima Dunn</h4>
+                <p class="card__nmls">NMLS #2021704</p>
+                <p class="card__level"><span class="badge badge--l3">Team Lead</span></p>
+              </article>
+              </div>
+            </div>
+
+            <div class="dir__group">
+              <div class="dir__group-head">
+                <h3 class="dir__group-title">Producing Loan Officer Recruiters</h3>
+                <span class="pill">5</span>
+                <span class="dir__group-rule" aria-hidden="true"></span>
+              </div>
+              <div class="dir__grid">
+              <article class="card card--l2">
+                <img class="card__photo" src="avatars/nancy-nguyen.jpg" alt="" width="84" height="84" loading="lazy" />
+                <h4 class="card__name">Nancy Nguyen</h4>
+                <p class="card__nmls">NMLS #2113500</p>
+                <p class="card__level"><span class="badge badge--l2">Recruiter</span></p>
+              </article>
+              <article class="card card--l2">
+                <img class="card__photo" src="avatars/craig-barton.jpg" alt="" width="84" height="84" loading="lazy" />
+                <h4 class="card__name">Craig Barton</h4>
+                <p class="card__nmls">NMLS #329813</p>
+                <p class="card__level"><span class="badge badge--l2">Recruiter</span></p>
+              </article>
+              <article class="card card--l2">
+                <img class="card__photo" src="avatars/dan-horgan.jpg" alt="" width="84" height="84" loading="lazy" />
+                <h4 class="card__name">Dan Horgan</h4>
+                <p class="card__nmls">NMLS #249460</p>
+                <p class="card__level"><span class="badge badge--l2">Recruiter</span></p>
+              </article>
+              <article class="card card--l2">
+                <img class="card__photo" src="avatars/shawn-haghighi.jpg" alt="" width="84" height="84" loading="lazy" />
+                <h4 class="card__name">Shawn Haghighi</h4>
+                <p class="card__nmls">NMLS #2029525</p>
+                <p class="card__level"><span class="badge badge--l2">Recruiter</span></p>
+              </article>
+              <article class="card card--l2">
+                <img class="card__photo" src="avatars/an-le.jpg" alt="" width="84" height="84" loading="lazy" />
+                <h4 class="card__name">An Le</h4>
+                <p class="card__nmls">NMLS #1876935</p>
+                <p class="card__level"><span class="badge badge--l2">Recruiter</span></p>
+              </article>
+              </div>
+            </div>
+          </div>
+
+          <p class="dir__note">
+            Sample roster for review. Photos, names and NMLS numbers are real, pulled from the
+            public Loan Factory loan officer directory — the role shown against each person is
+            illustrative only, not an actual program assignment.
+          </p>
+
+          <div style="margin-top: 3.5rem" class="reveal">
+            <p class="eyebrow">Also designed — zero-data state at launch</p>
+            <div class="empty">
+              <p class="empty__mark" aria-hidden="true">1</p>
+              <h3 class="empty__title">We're hiring the first cohort now</h3>
+              <p class="empty__text">
+                The team starts with one Team Lead and three to five recruiters. Approved recruiters
+                will appear here as they come on board.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================== apply -- -->
+      <!-- ================================================ closing CTA -- -->
+      <section class="band band--ink apply">
+        <div class="shell closer">
+          <div class="reveal">
+            <p class="eyebrow">Join the team</p>
+            <h2 class="h1">Think you can<br />recruit producers?</h2>
+            <p class="lede" style="color: rgba(250, 249, 248, 0.72); margin-top: 1.25rem">
+              Applications go to the recruiting team lead. Expect a conversation about your outreach
+              approach before anything is decided.
+            </p>
+          </div>
+
+          <div class="reveal" data-reveal-delay="120">
+            <a class="btn btn--primary" data-state="anon" href="#"><span>Sign in to apply</span></a>
+            <button class="btn btn--primary" data-state="lo-new lo-rejected" data-open-apply>
+              <span>Apply now</span>
+            </button>
+            <a class="btn btn--light" data-state="lo-pending" href="#">
+              <span>Email the team lead</span>
+            </a>
+            <a class="btn btn--light" data-state="lo-approved" href="#directory">
+              <span>See your profile on the roster</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+    <!-- ========================================== application modal -- -->
+    <div
+      class="modal"
+      data-form="form"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="apply-title"
+    >
+      <div class="modal__scrim" data-close-modal></div>
+      <div class="modal__panel" tabindex="-1">
+        <header class="modal__head">
+          <div>
+            <h2 class="modal__title" id="apply-title">Recruiter application</h2>
+            <p class="modal__sub">Jordan Mackey · reviewed by the recruiting team lead</p>
+          </div>
+          <button class="modal__close" data-close-modal aria-label="Close">×</button>
+        </header>
+
+        <div class="modal__body modal__state modal__state--form">
+          <div class="alert">
+            <span aria-hidden="true">!</span> Please complete the required fields below.
+          </div>
+
+          <div class="prefill">
+            <p class="prefill__label">From your Loan Factory profile</p>
+            <div class="prefill__grid">
+              <div>
+                <p class="prefill__k">Name</p>
+                <p class="prefill__v">Jordan Mackey</p>
+              </div>
+              <div>
+                <p class="prefill__k">Work email</p>
+                <p class="prefill__v">jordan.mackey@loanfactory.com</p>
+              </div>
+              <div>
+                <p class="prefill__k">NMLS</p>
+                <p class="prefill__v">1492003</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="f__row">
+            <div class="f" data-required-demo>
+              <label class="f__label" for="r-role">
+                Your current role at Loan Factory <span class="f__req">*</span>
+              </label>
+              <select id="r-role">
+                <option value="">Select your role</option>
+                <option selected>Loan officer</option>
+                <option>Branch manager</option>
+                <option>Team Leader</option>
+                <option>Operations / support staff</option>
+              </select>
+              <p class="f__error">This field is required.</p>
+            </div>
+
+            <div class="f">
+              <label class="f__label" for="r-years">Recruiting or outbound sales experience</label>
+              <select id="r-years">
+                <option>None yet</option>
+                <option selected>Under 2 years</option>
+                <option>2 &ndash; 5 years</option>
+                <option>5+ years</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="f__row">
+            <fieldset class="f" style="border: 0; padding: 0; margin: 0">
+              <legend class="f__label" style="padding: 0; margin-bottom: 0.4375rem">
+                Availability <span class="f__req">*</span>
+              </legend>
+              <div class="choices choices--pair">
+                <label class="choice">
+                  <input type="radio" name="avail" value="ft" checked />
+                  <span class="choice__title">Full-time</span>
+                </label>
+                <label class="choice">
+                  <input type="radio" name="avail" value="pt" />
+                  <span class="choice__title">Part-time</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <fieldset class="f" style="border: 0; padding: 0; margin: 0">
+              <legend class="f__label" style="padding: 0; margin-bottom: 0.4375rem">
+                Interested in the Team Lead track?
+              </legend>
+              <div class="choices choices--pair">
+                <label class="choice">
+                  <input type="radio" name="lead" value="yes" />
+                  <span class="choice__title">Yes</span>
+                </label>
+                <label class="choice">
+                  <input type="radio" name="lead" value="no" checked />
+                  <span class="choice__title">No</span>
+                </label>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="f__row">
+            <div class="f">
+              <label class="f__label" for="r-linkedin">LinkedIn profile</label>
+              <input id="r-linkedin" type="url" placeholder="linkedin.com/in/&hellip;" />
+            </div>
+            <div class="f">
+              <label class="f__label" for="r-phone">Best contact number</label>
+              <input id="r-phone" type="tel" placeholder="(000) 000-0000" />
+            </div>
+          </div>
+
+          <div class="f" data-required-demo>
+            <label class="f__label" for="r-exp">
+              Recruiting or sales experience <span class="f__req">*</span>
+            </label>
+            <textarea
+              id="r-exp"
+              placeholder="Outbound work you've done, people you've brought in, teams you've built."
+            ></textarea>
+            <p class="f__error">Tell us a little about your recruiting background.</p>
+          </div>
+
+          <div class="f">
+            <label class="f__label" for="r-why">Why do you want this role?</label>
+            <textarea id="r-why" placeholder="A few sentences is plenty."></textarea>
+          </div>
+
+          <label class="choice">
+            <input type="checkbox" checked />
+            <span>
+              <span class="choice__title">I understand the monthly performance standards</span>
+              <span class="choice__text">
+                Three qualified recruits in the first 60 days, then a two-recruit monthly minimum.
+              </span>
+            </span>
+          </label>
+        </div>
+
+        <div class="modal__body modal__state modal__state--submitting">
+          <div class="pending-note">
+            <span class="spinner" aria-hidden="true"></span>
+            <p class="h3">Sending your application…</p>
+            <p class="muted">This only takes a moment.</p>
+          </div>
+        </div>
+
+        <div class="modal__body modal__state modal__state--success">
+          <div class="pending-note">
+            <span class="tick-mark" aria-hidden="true">✓</span>
+            <p class="h3">Application submitted</p>
+            <p class="muted" style="max-width: 42ch">
+              The recruiting team lead will review your application and email you next steps, usually
+              within 3–5 business days.
+            </p>
+            <button class="btn btn--primary" data-after-success><span>Done</span></button>
+          </div>
+        </div>
+
+        <footer class="modal__foot">
+          <button class="btn btn--primary" data-submit style="flex: 1">
+            <span>Submit application</span>
+          </button>
+          <button class="btn btn--ghost" data-demo-error><span>Show error state</span></button>
+        </footer>
+      </div>
+    </div>
+
+
+    <script src="programs.js?v=2"></script>
+  </body>
+</html>

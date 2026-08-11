@@ -1,0 +1,833 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Loan Officer Ambassador Program | Loan Factory</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;450;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="programs.css?v=2" />
+  </head>
+  <body data-auth="anon">
+    <!-- Preview toolbar — review chrome only, removed before implementation. -->
+    <div class="pv">
+      <div class="shell">
+        <nav class="pv-tabs" aria-label="Preview pages">
+          <a href="ambassador.html" aria-current="page">Ambassador</a>
+          <a href="recruiter.html">Recruiter</a>
+          <a href="admin-ambassador.html">Admin console</a>
+        </nav>
+        <div class="pv-row">
+          <div class="pv-id">
+            <h1>Loan Officer Ambassador Program — design preview · v7</h1>
+            <p>Not a live page. Sample data only — forms submit nowhere. v7 = Duyen's copy + form feedback applied; items tagged [PROPOSAL] await her confirmation.</p>
+          </div>
+        <div class="pv-states">
+          <span class="pv-lab">Viewing the page as</span>
+          <div class="pv-switch" role="group" aria-label="Viewer"></div>
+        </div>
+        </div>
+      </div>
+    </div>
+    <!-- ============================================================ nav -- -->
+    <main>
+      <!-- ========================================================= hero -- -->
+      <section class="hero">
+        <div class="shell hero__inner">
+          <div class="rise">
+            <p class="eyebrow">Loan Factory · Internal program</p>
+            <h1 class="display hero__title">
+              Recruit.<br /><em>Earn</em>.<br />Get Supported.
+            </h1>
+            <p class="lede">
+              The LO Ambassador Program helps Loan Factory LOs and staff support our recruiting
+              efforts with approved content, marketing support, and eligibility for referral
+              bonuses.
+            </p>
+
+            <div class="hero__meta">
+              <span class="pill">Level 1 open to all LOs and staff in good standing</span>
+              <span class="pill">Three levels</span>
+              <span class="pill">Up to $1,000 / month</span>
+            </div>
+
+            <!-- The register CTA is in the hero on every state. It opens the
+                 application modal directly — no scrolling to a form section. -->
+            <div class="hero__cta">
+              <a class="btn btn--primary" data-state="anon" href="#">
+                <span>Get Started</span>
+              </a>
+              <button class="btn btn--primary" data-state="lo-new" data-open-apply>
+                <span>Get Started</span>
+              </button>
+              <button class="btn btn--primary" data-state="lo-l1" data-open-apply data-apply-level="2">
+                <span>Apply for Level 2</span>
+              </button>
+              <a class="btn btn--primary" data-state="lo-pending" href="#">
+                <span>Email the program team</span>
+              </a>
+              <button class="btn btn--primary" data-state="lo-rejected" data-open-apply>
+                <span>Reapply</span>
+              </button>
+              <a class="btn btn--primary" data-state="lo-approved" href="#directory">
+                <span>See your ambassador profile</span>
+              </a>
+
+              <a class="btn btn--ghost" href="#directory"><span>Meet the ambassadors</span></a>
+            </div>
+          </div>
+
+          <!-- Side rail. Swaps by viewer: tier ladder for the public, your own
+               application status once signed in, headline numbers for admins.
+               Status belongs here, in the first screen — not at the foot of the
+               page where you have to hunt for it. -->
+          <div class="rise rise--2">
+            <!-- Public: what the three levels are worth -->
+            <div data-state="anon">
+              <ul class="rail">
+                <li class="rail__row rail__row--1">
+                  <span class="rail__num">L1</span>
+                  <span class="rail__label">General Participation</span>
+                  <span class="rail__value" style="color: var(--gray-3); font-size: 0.8em">No budget</span>
+                </li>
+                <li class="rail__row rail__row--2">
+                  <span class="rail__num">L2</span>
+                  <span class="rail__label">LO Ambassador</span>
+                  <span class="rail__value">Up to $500<small>/mo</small></span>
+                </li>
+                <li class="rail__row rail__row--3">
+                  <span class="rail__num">L3</span>
+                  <span class="rail__label">Senior LO Ambassador</span>
+                  <span class="rail__value">Up to $1,000<small>/mo</small></span>
+                </li>
+              </ul>
+              <p class="rail__caption">
+                Monthly marketing budget by level. Level 1 starts by enabling Recruiting in ALLY —
+                Levels 2 and 3 require leadership/program manager approval.
+              </p>
+            </div>
+
+            <!-- Signed in, hasn't enabled Recruiting yet -->
+            <div data-state="lo-new">
+              <div class="panel panel--accent">
+                <div class="panel__head">
+                  <span class="status-dot status-dot--ok" aria-hidden="true"></span>
+                  <h2 class="panel__title">You're eligible to participate</h2>
+                </div>
+                <p class="panel__text">
+                  Start with Level 1 by enabling Recruiting in
+                  <a href="https://ally.loanfactory.com/home/settings/auto-post" target="_blank" rel="noopener">ALLY</a>.
+                  Levels 2 and 3 require leadership/program manager approval.
+                </p>
+                <div class="panel__cta">
+                  <button class="btn btn--primary btn--block" data-open-apply>
+                    <span>Get Started</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- [PROPOSAL] Level 1 active (Recruiting enabled in ALLY), no L2/L3 application yet -->
+            <div data-state="lo-l1">
+              <div class="panel panel--accent">
+                <div class="panel__head">
+                  <span class="status-dot status-dot--ok" aria-hidden="true"></span>
+                  <h2 class="panel__title">You're participating at Level 1</h2>
+                  <span class="pill" title="Awaiting Duyen's confirmation">PROPOSAL</span>
+                </div>
+                <p class="panel__text">
+                  Recruiting is on in
+                  <a href="https://ally.loanfactory.com/home/settings/auto-post" target="_blank" rel="noopener">ALLY</a>
+                  — approved recruiting content is being posted on your behalf. Ready for a
+                  marketing budget? Apply for Level 2 or 3.
+                </p>
+                <div class="panel__meta">
+                  <div><span>Current level</span> <b>Level 1 · General Participation</b></div>
+                  <div><span>Recruiting in ALLY</span> <b>On</b></div>
+                </div>
+                <div class="panel__cta">
+                  <button class="btn btn--primary btn--block" data-open-apply data-apply-level="2">
+                    <span>Apply for Level 2</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Submitted, awaiting a decision -->
+            <div data-state="lo-pending">
+              <div class="panel">
+                <div class="panel__head">
+                  <span class="status-dot status-dot--pending" aria-hidden="true"></span>
+                  <h2 class="panel__title">Application under review</h2>
+                </div>
+                <p class="panel__text">
+                  The program team has your application. You'll get an email with the decision —
+                  nothing needed from you right now.
+                </p>
+                <div class="panel__meta">
+                  <div><span>Applied for</span> <b>Level 2 — LO Ambassador</b></div>
+                  <div><span>Submitted</span> <b>4 August 2026</b></div>
+                  <div><span>Status</span> <b>Under review</b></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Approved -->
+            <div data-state="lo-approved">
+              <div class="panel panel--accent">
+                <div class="panel__head">
+                  <span class="status-dot status-dot--ok" aria-hidden="true"></span>
+                  <h2 class="panel__title">You're a Level 2 Ambassador</h2>
+                </div>
+                <p class="panel__text">
+                  Approved 6 August 2026. Your $500 monthly marketing budget is live, and you're on
+                  the public roster.
+                </p>
+                <div class="panel__self">
+                  <span class="avatar avatar--lg avatar--a" aria-hidden="true">JM</span>
+                  <div>
+                    <p class="panel__self-name">Jordan Mackey</p>
+                    <p class="panel__self-nmls">NMLS #1492003</p>
+                    <p style="margin-top: 0.4375rem">
+                      <span class="badge badge--l2">Loan Officer Ambassador</span>
+                    </p>
+                  </div>
+                </div>
+                <div class="panel__meta">
+                  <div><span>Next 90-day checkpoint</span> <b>4 November 2026</b></div>
+                  <div><span>Target</span> <b>3 recruited loan officers</b></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Not approved — a next step, not a dead end -->
+            <div data-state="lo-rejected">
+              <div class="panel">
+                <div class="panel__head">
+                  <span class="status-dot status-dot--no" aria-hidden="true"></span>
+                  <h2 class="panel__title">Not approved for Level 2 yet</h2>
+                </div>
+                <p class="panel__text">
+                  The team wanted to see more recruiting activity behind the application. You're
+                  still active at Level 1, and you can reapply once you have some outreach to show.
+                </p>
+                <div class="panel__meta">
+                  <div><span>Current level</span> <b>Level 1</b></div>
+                  <div><span>Reapply from</span> <b>1 October 2026</b></div>
+                </div>
+                <div class="panel__cta">
+                  <a class="btn btn--ghost btn--block" href="#">
+                    <span>Talk to the program manager</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Admin: headline numbers, full breakdown one section down -->
+            <div data-state="admin">
+              <div class="panel">
+                <div class="panel__head">
+                  <span class="status-dot status-dot--pending" aria-hidden="true"></span>
+                  <h2 class="panel__title">7 applications waiting on you</h2>
+                </div>
+                <p class="panel__text">
+                  Oldest has been open 4 days. Full breakdown and the review queue are just below.
+                </p>
+                <dl class="ministat">
+                  <div>
+                    <dt>Pending</dt>
+                    <dd class="is-hot">7</dd>
+                  </div>
+                  <div>
+                    <dt>Active</dt>
+                    <dd>48</dd>
+                  </div>
+                </dl>
+                <div class="panel__cta">
+                  <a class="btn btn--primary btn--block" href="admin-ambassador.html">
+                    <span>Go to the review queue</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ======================================================= levels -- -->
+      <section class="band band--white" id="levels">
+        <div class="shell">
+          <div class="reveal" style="max-width: 62ch">
+            <p class="eyebrow">How it works</p>
+            <h2 class="h1">Three Levels<br />of Participation</h2>
+            <p class="lede" style="margin-top: 1.25rem">
+              Eligible LOs and staff can participate at Level 1 by enabling Recruiting in ALLY.
+              Levels 2 and 3 require leadership/program manager approval and come with a monthly
+              marketing budget — and an activity target to keep it.
+            </p>
+          </div>
+
+          <div class="tiers">
+            <!-- ---------------------------------------------- level 1 -- -->
+            <article class="tier tier--1 reveal">
+              <span class="tier__bar" aria-hidden="true"></span>
+              <p class="tier__level">Level 1</p>
+              <h3 class="tier__name">General<br />Participation</h3>
+              <p class="tier__blurb">
+                Open to all LOs and staff in good standing. Turn on Recruiting in
+                <a href="https://ally.loanfactory.com/home/settings/auto-post" target="_blank" rel="noopener">ALLY</a>
+                to participate.
+              </p>
+
+              <div class="tier__budget">
+                <p class="tier__budget-label">Monthly marketing budget</p>
+                <p class="tier__budget-value">None <small>no monthly marketing budget</small></p>
+              </div>
+
+              <div class="tier__section">
+                <p class="tier__section-title">What's required</p>
+                <ul class="ticks">
+                  <li>Remain in good standing</li>
+                  <li>
+                    Turn on Recruiting in
+                    <a href="https://ally.loanfactory.com/home/settings/auto-post" target="_blank" rel="noopener">ALLY</a>
+                  </li>
+                  <li>Use approved recruiting content only</li>
+                  <li>Submit interested loan officers through the referral process</li>
+                </ul>
+              </div>
+
+              <div class="tier__section">
+                <p class="tier__section-title">What you get</p>
+                <ul class="ticks">
+                  <li>Standard Loan Factory referral bonus</li>
+                  <li>Approved recruiting content posted on your behalf</li>
+                </ul>
+              </div>
+
+              <div class="tier__quota">
+                <div class="tier__quota-inner">
+                  <b>To stay active</b>
+                  Keep Recruiting on in ALLY, keep using approved content, keep following the
+                  referral process.
+                </div>
+              </div>
+            </article>
+
+            <!-- ---------------------------------------------- level 2 -- -->
+            <article class="tier tier--2 reveal" data-reveal-delay="90">
+              <span class="tier__bar" aria-hidden="true"></span>
+              <p class="tier__level">Level 2</p>
+              <h3 class="tier__name">Loan Officer<br />Ambassador</h3>
+              <p class="tier__blurb">
+                Approved Ambassadors who actively participate in recruiting outreach, content,
+                webinar support, and LO-to-LO conversations.
+              </p>
+
+              <div class="tier__budget">
+                <p class="tier__budget-label">Monthly marketing budget</p>
+                <p class="tier__budget-value">Up to $500 <small>per month</small></p>
+              </div>
+
+              <div class="tier__section">
+                <p class="tier__section-title">Who qualifies</p>
+                <ul class="ticks">
+                  <li>Active loan officer in good standing</li>
+                  <li>1,000+ professional and social connections preferred</li>
+                  <li>Able to represent Loan Factory professionally</li>
+                  <li>Can explain our platform, pricing, technology and support</li>
+                  <li>Approved by leadership or the program manager</li>
+                </ul>
+              </div>
+
+              <div class="tier__section">
+                <p class="tier__section-title">What you get</p>
+                <ul class="ticks">
+                  <li>Everything in Level 1</li>
+                  <li>Up to $500 / month for approved recruiting marketing</li>
+                  <li>MMI reimbursement and support when approved</li>
+                  <li>Approved content and campaign support</li>
+                </ul>
+              </div>
+
+              <div class="tier__quota">
+                <div class="tier__quota-inner">
+                  <b>90-Day Activity Target</b>
+                  3 recruited/onboarded LOs over 90 days, or a qualified pipeline showing
+                  meaningful progress.
+                </div>
+              </div>
+            </article>
+
+            <!-- ---------------------------------------------- level 3 -- -->
+            <article class="tier tier--3 reveal" data-reveal-delay="180">
+              <span class="tier__bar" aria-hidden="true"></span>
+              <p class="tier__level">Level 3</p>
+              <h3 class="tier__name">Senior Loan Officer<br />Ambassador</h3>
+              <p class="tier__blurb">
+                Approved Senior Ambassadors with strong recruiting activity who can support
+                higher-value prospects, webinars, events, and recruiting conversations.
+              </p>
+
+              <div class="tier__budget">
+                <p class="tier__budget-label">Monthly marketing budget</p>
+                <p class="tier__budget-value">Up to $1,000 <small>per month</small></p>
+              </div>
+
+              <div class="tier__section">
+                <p class="tier__section-title">Who qualifies</p>
+                <ul class="ticks">
+                  <li>Meets every Level 2 requirement</li>
+                  <li>2,000+ professional and social connections preferred</li>
+                  <li>Strong professional presence</li>
+                  <li>Demonstrated recruiting activity and professionalism</li>
+                  <li>Can support loan officer, Team Leader and branch-level conversations</li>
+                </ul>
+              </div>
+
+              <div class="tier__section">
+                <p class="tier__section-title">What you get</p>
+                <ul class="ticks">
+                  <li>Everything in Level 2</li>
+                  <li>Up to $1,000 / month for approved recruiting marketing</li>
+                  <li>Advanced tool support, MMI and LinkedIn support when approved</li>
+                  <li>Warm lead and competitor top-producer lists when approved</li>
+                  <li>Webinar hosting and co-hosting opportunities</li>
+                  <li>Event and conference support · priority campaign support</li>
+                </ul>
+              </div>
+
+              <div class="tier__quota">
+                <div class="tier__quota-inner">
+                  <b>90-Day Activity Target</b>
+                  6+ recruited/onboarded LOs over 90 days, or a strong qualified producer/team
+                  pipeline with continued recruiting support.
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================== leaders -- -->
+      <section class="band band--ink" id="leaders">
+        <div class="shell split">
+          <div class="reveal">
+            <p class="eyebrow">Team Leaders &amp; Corporate Coaches</p>
+            <h2 class="h1">Recruit for<br />Loan Factory.<br />Grow your own<br />team too.</h2>
+          </div>
+
+          <div class="notes reveal" data-reveal-delay="120">
+            <p class="lede" style="color: rgba(250, 249, 248, 0.78); margin-bottom: 0.5rem">
+              Team Leaders and Corporate Coaches are strongly encouraged to participate — you can
+              recruit to Loan Factory while building your own team at the same time.
+            </p>
+
+            <div class="note note--warn">
+              <b>Team Leader status doesn't automatically qualify you.</b> Level 2 and Level 3 still
+              require approval, and Ambassador standards still apply.
+            </div>
+
+            <div class="note">
+              <b>For approved Team Leader Ambassadors, Loan Factory can help market your team for recruiting.</b>
+              Team-focused recruiting content · Team Leader spotlight content · approved team posts ·
+              help attracting loan officers who fit your team · support recruiting newer and
+              developing loan officers where it makes sense.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================== directory -- -->
+      <section class="band" id="directory">
+        <div class="shell">
+          <div class="reveal" style="max-width: 62ch">
+            <p class="eyebrow">The roster</p>
+            <h2 class="h1">Meet Our Ambassadors</h2>
+            <p class="lede" style="margin-top: 1.25rem">
+              Meet approved Loan Factory Ambassadors by level.
+            </p>
+          </div>
+
+          <div class="reveal">
+            <div class="dir__group">
+              <div class="dir__group-head">
+                <h3 class="dir__group-title">Senior Loan Officer Ambassadors</h3>
+                <span class="pill">3</span>
+                <span class="dir__group-rule" aria-hidden="true"></span>
+              </div>
+              <div class="dir__grid">
+              <article class="card card--l3">
+                <img class="card__photo" src="avatars/babak-moghaddam.jpg" alt="" width="84" height="84" loading="lazy" />
+                <h4 class="card__name">Babak Moghaddam</h4>
+                <p class="card__nmls">NMLS #278061</p>
+                <p class="card__level"><span class="badge badge--l3">Senior Ambassador</span></p>
+              </article>
+              <article class="card card--l3">
+                <img class="card__photo" src="avatars/george-missiha-mba.jpg" alt="" width="84" height="84" loading="lazy" />
+                <h4 class="card__name">George Missiha, MBA</h4>
+                <p class="card__nmls">NMLS #1042820</p>
+                <p class="card__level"><span class="badge badge--l3">Senior Ambassador</span></p>
+              </article>
+              <article class="card card--l3">
+                <img class="card__photo" src="avatars/hanh-nguyen.jpg" alt="" width="84" height="84" loading="lazy" />
+                <h4 class="card__name">Hanh Nguyen</h4>
+                <p class="card__nmls">NMLS #1920157</p>
+                <p class="card__level"><span class="badge badge--l3">Senior Ambassador</span></p>
+              </article>
+              </div>
+            </div>
+
+            <div class="dir__group">
+              <div class="dir__group-head">
+                <h3 class="dir__group-title">Loan Officer Ambassadors</h3>
+                <span class="pill">5</span>
+                <span class="dir__group-rule" aria-hidden="true"></span>
+              </div>
+              <div class="dir__grid">
+              <article class="card card--l2">
+                <img class="card__photo" src="avatars/thessy-onyenedum.jpg" alt="" width="84" height="84" loading="lazy" />
+                <h4 class="card__name">Thessy Onyenedum</h4>
+                <p class="card__nmls">NMLS #1572748</p>
+                <p class="card__level"><span class="badge badge--l2">Ambassador</span></p>
+              </article>
+              <article class="card card--l2">
+                <img class="card__photo" src="avatars/terry-huy-nguyen.jpg" alt="" width="84" height="84" loading="lazy" />
+                <h4 class="card__name">Terry Huy Nguyen</h4>
+                <p class="card__nmls">NMLS #1138649</p>
+                <p class="card__level"><span class="badge badge--l2">Ambassador</span></p>
+              </article>
+              <article class="card card--l2">
+                <img class="card__photo" src="avatars/vivian-pang.jpg" alt="" width="84" height="84" loading="lazy" />
+                <h4 class="card__name">Vivian Pang</h4>
+                <p class="card__nmls">NMLS #2012258</p>
+                <p class="card__level"><span class="badge badge--l2">Ambassador</span></p>
+              </article>
+              <article class="card card--l2">
+                <img class="card__photo" src="avatars/damien-l-grant.jpg" alt="" width="84" height="84" loading="lazy" />
+                <h4 class="card__name">Damien L Grant</h4>
+                <p class="card__nmls">NMLS #1266311</p>
+                <p class="card__level"><span class="badge badge--l2">Ambassador</span></p>
+              </article>
+              <article class="card card--l2">
+                <img class="card__photo" src="avatars/chris-clark.jpg" alt="" width="84" height="84" loading="lazy" />
+                <h4 class="card__name">Chris Clark</h4>
+                <p class="card__nmls">NMLS #1530367</p>
+                <p class="card__level"><span class="badge badge--l2">Ambassador</span></p>
+              </article>
+              </div>
+            </div>
+
+            <div class="dir__group">
+              <div class="dir__group-head">
+                <h3 class="dir__group-title">General Participation</h3>
+                <span class="pill">4</span>
+                <span class="dir__group-rule" aria-hidden="true"></span>
+              </div>
+              <div class="dir__grid">
+              <article class="card card--l1">
+                <img class="card__photo" src="avatars/sobe-dhital.jpg" alt="" width="84" height="84" loading="lazy" />
+                <h4 class="card__name">Sobe Dhital</h4>
+                <p class="card__nmls">NMLS #2389496</p>
+                <p class="card__level"><span class="badge badge--l1">Level 1</span></p>
+              </article>
+              <article class="card card--l1">
+                <img class="card__photo" src="avatars/marcel-calderon.jpg" alt="" width="84" height="84" loading="lazy" />
+                <h4 class="card__name">Marcel Calderon</h4>
+                <p class="card__nmls">NMLS #1253516</p>
+                <p class="card__level"><span class="badge badge--l1">Level 1</span></p>
+              </article>
+              <article class="card card--l1">
+                <img class="card__photo" src="avatars/chris-carter.jpg" alt="" width="84" height="84" loading="lazy" />
+                <h4 class="card__name">Chris Carter</h4>
+                <p class="card__nmls">NMLS #619947</p>
+                <p class="card__level"><span class="badge badge--l1">Level 1</span></p>
+              </article>
+              <article class="card card--l1">
+                <img class="card__photo" src="avatars/kyle-lai.jpg" alt="" width="84" height="84" loading="lazy" />
+                <h4 class="card__name">Kyle Lai</h4>
+                <p class="card__nmls">NMLS #1455132</p>
+                <p class="card__level"><span class="badge badge--l1">Level 1</span></p>
+              </article>
+              </div>
+            </div>
+          </div>
+
+          <p class="dir__note">
+            Sample roster for review. Photos, names and NMLS numbers are real, pulled from the
+            public Loan Factory loan officer directory — the level shown against each person is
+            illustrative only, not an actual program assignment.
+          </p>
+
+          <!-- Zero-data state: the program has launched but nobody is approved yet.
+               Shown here beneath the live roster purely so reviewers can see it. -->
+          <div style="margin-top: 3.5rem" class="reveal">
+            <p class="eyebrow">Also designed — zero-data state at launch</p>
+            <div class="empty">
+              <p class="empty__mark" aria-hidden="true">1</p>
+              <h3 class="empty__title">Our first ambassadors are being approved now</h3>
+              <p class="empty__text">
+                The program just launched. Approved ambassadors will appear here as soon as the
+                program team signs them off — check back shortly.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================== apply -- -->
+      <!-- ================================================ closing CTA -- --
+           A short close, not a form. Application status now lives in the hero,
+           and the form itself is a modal — so this band only has to restate the
+           offer and reopen the modal. -->
+      <section class="band band--ink apply">
+        <div class="shell closer">
+          <div class="reveal">
+            <p class="eyebrow">Join the program</p>
+            <h2 class="h1">Ready to<br />Participate?</h2>
+            <p class="lede" style="color: rgba(250, 249, 248, 0.72); margin-top: 1.25rem">
+              Start with Level 1 by enabling Recruiting in
+              <a href="https://ally.loanfactory.com/home/settings/auto-post" target="_blank" rel="noopener" style="color: inherit">ALLY</a>.
+              Levels 2 and 3 require leadership/program manager approval.
+            </p>
+          </div>
+
+          <div class="reveal" data-reveal-delay="120">
+            <a class="btn btn--primary" data-state="anon" href="#"><span>Get Started</span></a>
+            <button class="btn btn--primary" data-state="lo-new lo-rejected" data-open-apply>
+              <span>Get Started</span>
+            </button>
+            <button class="btn btn--primary" data-state="lo-l1" data-open-apply data-apply-level="2">
+              <span>Apply for Level 2 or 3</span>
+            </button>
+            <a class="btn btn--light" data-state="lo-pending" href="#">
+              <span>Email the program team</span>
+            </a>
+            <a class="btn btn--light" data-state="lo-approved" href="#directory">
+              <span>See your profile on the roster</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+    <!-- ========================================== application modal -- -->
+    <div
+      class="modal"
+      data-form="form"
+      data-level="1"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="apply-title"
+    >
+      <div class="modal__scrim" data-close-modal></div>
+      <div class="modal__panel" tabindex="-1">
+        <header class="modal__head">
+          <div>
+            <h2 class="modal__title" id="apply-title">Ambassador application</h2>
+            <p class="modal__sub">Jordan Mackey · reviewed by the program team</p>
+          </div>
+          <button class="modal__close" data-close-modal aria-label="Close">×</button>
+        </header>
+
+        <!-- form + error state -->
+        <div class="modal__body modal__state modal__state--form">
+          <div class="alert">
+            <span aria-hidden="true">!</span> Please complete the required fields below.
+          </div>
+
+          <!-- Identity is read from the profile, so it reads as a fact block
+               rather than three dead input boxes taking a row each. -->
+          <!-- Role is no longer asked in the form — it comes from the Loan Factory
+               directory, same as name/email/NMLS (Duyen 2026-08-10). -->
+          <div class="prefill">
+            <p class="prefill__label">From your Loan Factory profile</p>
+            <div class="prefill__grid">
+              <div>
+                <p class="prefill__k">Name</p>
+                <p class="prefill__v">Jordan Mackey</p>
+              </div>
+              <div>
+                <p class="prefill__k">Work email</p>
+                <p class="prefill__v">jordan.mackey@loanfactory.com</p>
+              </div>
+              <div>
+                <p class="prefill__k">NMLS</p>
+                <p class="prefill__v">1492003</p>
+              </div>
+              <div>
+                <p class="prefill__k">Role</p>
+                <p class="prefill__v">Loan Officer</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- The level radio is a router (Duyen 2026-08-10): Level 1 has no
+               application — it swaps the body for a "turn on Recruiting in ALLY"
+               panel. The questions below only exist for Levels 2 and 3. -->
+          <fieldset class="f" style="border: 0; padding: 0; margin: 0">
+            <legend class="f__label" style="padding: 0; margin-bottom: 0.4375rem">
+              Which level do you want to participate at? <span class="f__req">*</span>
+            </legend>
+            <div class="choices choices--inline">
+              <label class="choice">
+                <input type="radio" name="level" value="1" checked />
+                <span>
+                  <span class="choice__title">Level 1</span>
+                  <span class="choice__text">Enable in ALLY &middot; no application</span>
+                </span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="level" value="2" />
+                <span>
+                  <span class="choice__title">Level 2</span>
+                  <span class="choice__text">Up to $500/mo &middot; approval</span>
+                </span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="level" value="3" />
+                <span>
+                  <span class="choice__title">Level 3</span>
+                  <span class="choice__text">Up to $1,000/mo &middot; approval</span>
+                </span>
+              </label>
+            </div>
+            <p class="f__hint">Team Leaders still need approval for Levels 2 and 3.</p>
+          </fieldset>
+
+          <!-- Level 1: no questions — direct the user to ALLY. -->
+          <div data-level1-panel>
+            <div class="panel panel--accent" style="margin-top: 1rem">
+              <div class="panel__head">
+                <span class="status-dot status-dot--ok" aria-hidden="true"></span>
+                <h3 class="panel__title">No application needed for Level 1</h3>
+              </div>
+              <p class="panel__text">
+                Turn on Recruiting in ALLY and you're participating — approved recruiting content
+                is posted on your behalf, and interested loan officers go through the referral
+                process.
+              </p>
+              <div class="panel__cta">
+                <a
+                  class="btn btn--primary btn--block"
+                  href="https://ally.loanfactory.com/home/settings/auto-post"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <span>Turn on Recruiting in ALLY</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Levels 2-3: the application questions. -->
+          <div data-level-questions>
+          <div class="f__row">
+            <div class="f" data-required-demo>
+              <label class="f__label" for="a-conn">
+                Professional + social connections <span class="f__req">*</span>
+              </label>
+              <select id="a-conn">
+                <option value="">Select a range</option>
+                <option>Under 500</option>
+                <option>500 &ndash; 1,000</option>
+                <option selected>1,000 &ndash; 2,000</option>
+                <option>2,000 &ndash; 5,000</option>
+                <option>5,000+</option>
+              </select>
+              <p class="f__error">Pick a range so we can assess level fit.</p>
+              <p class="f__hint">Level 2 prefers 1,000+ &middot; Level 3 prefers 2,000+</p>
+            </div>
+
+            <div class="f">
+              <label class="f__label" for="a-linkedin">LinkedIn profile</label>
+              <input id="a-linkedin" type="url" placeholder="linkedin.com/in/&hellip;" />
+            </div>
+          </div>
+
+          <div class="f">
+            <label class="f__label" for="a-social">Other primary social profile</label>
+            <input id="a-social" type="url" placeholder="Facebook, Instagram or X" />
+          </div>
+
+          <div class="f" data-required-demo>
+            <label class="f__label" for="a-why">
+              Why do you want to be an Ambassador? <span class="f__req">*</span>
+            </label>
+            <textarea
+              id="a-why"
+              placeholder="What you'd tell another loan officer about working here."
+            ></textarea>
+            <p class="f__error">This field is required.</p>
+          </div>
+
+          <div class="f">
+            <label class="f__label" for="a-exp">Recruiting experience so far</label>
+            <textarea
+              id="a-exp"
+              placeholder="Referrals you've made, loan officers you've spoken with, webinars you've supported."
+            ></textarea>
+          </div>
+
+          <label class="choice">
+            <input type="checkbox" checked />
+            <span>
+              <span class="choice__title">I'll use approved recruiting content only</span>
+              <span class="choice__text">
+                All posts and paid campaigns use content from Marketing or the Ambassador team, and
+                every loan officer I introduce goes through the referral process.
+              </span>
+            </span>
+          </label>
+          </div>
+        </div>
+
+        <!-- submitting -->
+        <div class="modal__body modal__state modal__state--submitting">
+          <div class="pending-note">
+            <span class="spinner" aria-hidden="true"></span>
+            <p class="h3">Sending your application…</p>
+            <p class="muted">This only takes a moment.</p>
+          </div>
+        </div>
+
+        <!-- success -->
+        <div class="modal__body modal__state modal__state--success">
+          <div class="pending-note">
+            <span class="tick-mark" aria-hidden="true">✓</span>
+            <p class="h3">Application submitted</p>
+            <p class="muted" style="max-width: 42ch">
+              The program team will review your Level 2 application and email you a decision.
+            </p>
+            <button class="btn btn--primary" data-after-success><span>Done</span></button>
+          </div>
+        </div>
+
+        <footer class="modal__foot">
+          <button class="btn btn--primary" data-submit data-level-questions style="flex: 1">
+            <span>Submit application</span>
+          </button>
+          <button class="btn btn--ghost" data-demo-error data-level-questions>
+            <span>Show error state</span>
+          </button>
+          <a
+            class="btn btn--primary"
+            data-level1-panel
+            href="https://ally.loanfactory.com/home/settings/auto-post"
+            target="_blank"
+            rel="noopener"
+            style="flex: 1"
+          >
+            <span>Open ALLY &middot; turn on Recruiting</span>
+          </a>
+        </footer>
+      </div>
+    </div>
+
+
+    <script src="programs.js?v=2"></script>
+  </body>
+</html>

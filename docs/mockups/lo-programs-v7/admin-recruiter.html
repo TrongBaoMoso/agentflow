@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Recruiter admin | Loan Factory</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;450;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="programs.css?v=2" />
+    <link rel="stylesheet" href="admin.css?v=2" />
+  </head>
+  <body class="admin-body">
+    <!-- Preview toolbar — review chrome only, removed before implementation. -->
+    <div class="pv">
+      <div class="shell">
+        <nav class="pv-tabs" aria-label="Preview pages">
+          <a href="ambassador.html">Ambassador</a>
+          <a href="recruiter.html">Recruiter</a>
+          <a href="admin-ambassador.html">Admin &middot; Ambassador</a>
+          <a href="admin-recruiter.html" aria-current="page">Admin &middot; Recruiter</a>
+        </nav>
+        <div class="pv-row">
+          <div class="pv-id">
+            <h1>Loan Officer Recruiter — admin preview</h1>
+            <p>Administrators only. Names, NMLS numbers and statuses are invented; photos are borrowed from our public directory.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- App bar — deliberately not the public site header. This is a tool. -->
+    <main class="shell ahead">
+      <div class="ahead__top">
+        <div>
+          <h1 class="ahead__title">Recruiter program</h1>
+          <p class="ahead__sub">
+            Loan Officer Recruiter applications and roles. Updated 7 August 2026, 09:14.
+          </p>
+        </div>
+        <div class="ahead__actions">
+          <button class="btn btn--ghost" style="padding: 0.625rem 1.125rem; font-size: 0.875rem">
+            <span>Export CSV</span>
+          </button>
+        </div>
+      </div>
+
+
+      <!-- ------------------------------------------------------------ kpis -- -->
+      <section class="kpis" aria-label="Headline numbers">
+        <div class="kpi kpi--hot">
+          <p class="kpi__label">Awaiting review</p>
+          <p class="kpi__value" data-kpi="pending">0</p>
+          <p class="kpi__note" data-kpi-note="pending">&nbsp;</p>
+        </div>
+        <div class="kpi">
+          <p class="kpi__label">Approved</p>
+          <p class="kpi__value" data-kpi="approved">0</p>
+          <p class="kpi__note" data-kpi-note="approved">&nbsp;</p>
+        </div>
+        <div class="kpi">
+          <p class="kpi__label">Declined</p>
+          <p class="kpi__value" data-kpi="declined">0</p>
+          <p class="kpi__note">Can reapply next cycle</p>
+        </div>
+        <div class="kpi">
+          <p class="kpi__label">Total registered</p>
+          <p class="kpi__value" data-kpi="total">0</p>
+          <p class="kpi__note">Since launch</p>
+        </div>
+      </section>
+
+      <!-- ---------------------------------------------------------- charts -- -->
+      <section class="charts" aria-label="Charts">
+        <div class="panelbox">
+          <div class="panelbox__head">
+            <h2 class="panelbox__title">Registrations by week</h2>
+            <span class="panelbox__hint">Last 12 weeks</span>
+          </div>
+          <svg class="spark" viewBox="0 0 640 148" preserveAspectRatio="none" role="img"
+               aria-label="Weekly registrations, last 12 weeks" data-spark></svg>
+          <div class="legend">
+            <div><i style="background: var(--ink-3)"></i> Recruiter <b data-legend="recruiter">0</b></div>
+          </div>
+        </div>
+
+        <div class="panelbox">
+          <div class="panelbox__head">
+            <h2 class="panelbox__title" data-dist-title>Level distribution</h2>
+            <span class="panelbox__hint">Approved only</span>
+          </div>
+          <div class="bars" data-dist></div>
+        </div>
+      </section>
+
+      <!-- --------------------------------------------------------- toolbar -- -->
+      <div class="toolbar">
+        <label class="srch">
+          <span style="position: absolute; left: -9999px">Search by name, NMLS or email</span>
+          <input type="search" placeholder="Search name, NMLS or email" data-q />
+        </label>
+
+        <select class="tsel" data-f-status aria-label="Filter by status">
+          <option value="">All statuses</option>
+          <option value="pending">Pending</option>
+          <option value="approved">Approved</option>
+          <option value="declined">Declined</option>
+        </select>
+
+        <select class="tsel" data-f-tier aria-label="Filter by level">
+          <option value="">All levels</option>
+        </select>
+
+        <select class="tsel" data-f-age aria-label="Filter by date submitted">
+          <option value="">Any time</option>
+          <option value="7">Last 7 days</option>
+          <option value="30">Last 30 days</option>
+          <option value="90">Last 90 days</option>
+        </select>
+
+        <button class="toolbar__reset" data-reset>Reset</button>
+
+        <span class="toolbar__count" data-count>0 shown</span>
+      </div>
+
+      <div class="bulk" data-bulk>
+        <span class="bulk__n"><b data-bulk-n>0</b> selected</span>
+        <span class="bulk__acts">
+          <button class="mini mini--go" data-bulk-approve>Approve selected</button>
+          <button class="mini mini--no" data-bulk-decline>Decline selected</button>
+          <button class="mini mini--no" data-bulk-clear>Clear</button>
+        </span>
+      </div>
+
+      <!-- ----------------------------------------------------------- table -- -->
+      <div class="tablebox">
+        <div class="tablescroll">
+          <table class="atable">
+            <thead>
+              <tr>
+                <th style="width: 40px">
+                  <input type="checkbox" class="chk" data-check-all aria-label="Select all" />
+                </th>
+                <th data-sort="name">Loan officer</th>
+                <th data-sort="nmls">NMLS</th>
+                <th data-sort="tier">Level</th>
+                <th data-sort="connections">Network</th>
+                <th data-sort="units">Units 12mo</th>
+                <th data-sort="submitted">Submitted</th>
+                <th class="stick" data-sort="status">Status &amp; decision</th>
+              </tr>
+            </thead>
+            <tbody data-rows></tbody>
+          </table>
+        </div>
+
+        <div class="noresults" data-noresults hidden>
+          <h3>Nothing matches those filters</h3>
+          <p>Try clearing the search box or widening the status and level filters.</p>
+        </div>
+
+        <div class="tfoot">
+          <span data-range>&nbsp;</span>
+          <span class="pager" data-pager></span>
+        </div>
+      </div>
+
+      <p class="dir__note" style="margin-bottom: 3rem">
+        Sample data for review. Photos, names and NMLS numbers are real, pulled from the public Loan
+        Factory loan officer directory — program, level and status against each person are
+        illustrative only, not real assignments.
+      </p>
+    </main>
+
+    <!-- --------------------------------------------------------- drawer -- -->
+    <div class="drawer" data-drawer role="dialog" aria-modal="true" aria-labelledby="dr-name">
+      <div class="drawer__scrim" data-drawer-close></div>
+      <div class="drawer__panel">
+        <header class="drawer__head">
+          <img
+            class="who__img"
+            data-dr-avatar
+            src=""
+            alt=""
+            width="52"
+            height="52"
+            style="width: 52px; height: 52px; border-radius: 50%; object-fit: cover"
+          />
+          <div>
+            <h2 class="panel__title" id="dr-name" data-dr-name></h2>
+            <p class="who__mail" data-dr-mail style="font-size: var(--small)"></p>
+          </div>
+          <button class="drawer__close" data-drawer-close aria-label="Close">×</button>
+        </header>
+
+        <div class="drawer__body">
+          <div>
+            <p class="dsec__title">Application</p>
+            <dl class="dl" data-dr-dl></dl>
+          </div>
+
+          <div>
+            <p class="dsec__title">Social presence</p>
+            <dl class="dl" data-dr-social></dl>
+            <p class="dnote" style="margin-top: 0.875rem">
+              Pulled automatically from ALLY at submission. Not wired up yet — phase 2.
+            </p>
+          </div>
+
+          <div>
+            <p class="dsec__title">History</p>
+            <div class="timeline" data-dr-time></div>
+          </div>
+        </div>
+
+        <footer class="drawer__foot">
+          <button class="btn btn--primary" data-dr-approve style="flex: 1; padding: 0.75rem 1rem">
+            <span>Approve</span>
+          </button>
+          <button class="btn btn--ghost" data-dr-decline style="padding: 0.75rem 1.25rem">
+            <span>Decline</span>
+          </button>
+        </footer>
+      </div>
+    </div>
+
+    <script>window.ADMIN_PROGRAM = 'recruiter'</script>
+    <script src="admin-data.js?v=2"></script>
+    <script src="admin.js?v=2"></script>
+  </body>
+</html>

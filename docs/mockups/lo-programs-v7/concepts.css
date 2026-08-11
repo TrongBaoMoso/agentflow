@@ -1,0 +1,1518 @@
+/* ==========================================================================
+   Loan Factory — design direction comparison
+
+   One specimen (nav → hero → tiers → roster → apply) re-skinned across eight
+   directions. Everything is driven off the token block on .spec, so a theme is
+   mostly a token swap plus a handful of component overrides.
+
+   Loan Factory orange (#f36f20) is the one constant. Each direction has to
+   earn its keep around it.
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #0f1116;
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid #f36f20;
+  outline-offset: 3px;
+}
+
+/* ================================================================ picker -- */
+
+.picker {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #14161c;
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem clamp(1rem, 0.5rem + 2vw, 2.5rem) 1.25rem;
+}
+
+.picker__bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.picker__label {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  white-space: nowrap;
+}
+
+.picker__opts {
+  display: flex;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+}
+
+.picker__opt {
+  padding: 0.5rem 0.9375rem;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.68);
+  background: rgba(255, 255, 255, 0.07);
+  white-space: nowrap;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+.picker__opt:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+.picker__opt[aria-selected='true'] {
+  background: linear-gradient(140deg, #ff9350, #f36f20);
+  color: #fff;
+}
+
+.picker__meta {
+  margin-top: 0.875rem;
+  max-width: 92ch;
+}
+
+.picker__name {
+  font-size: 1.125rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.picker__desc {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.66);
+}
+
+.picker__trade {
+  margin-top: 0.375rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.48);
+}
+
+.picker__trade b {
+  color: #ff9350;
+}
+
+/* ============================================================== specimen -- */
+
+.spec {
+  /* Tokens every theme overrides */
+  --s-bg: #f5f6f9;
+  --s-bg-2: #ffffff;
+  --s-surface: #ffffff;
+  --s-surface-2: #eef0f5;
+  --s-ink: #12151c;
+  --s-ink-invert: #ffffff;
+  --s-muted: #545c6d;
+  --s-faint: #798194;
+  --s-accent: #f36f20;
+  --s-accent-2: #ff9350;
+  --s-accent-ink: #ffffff;
+  --s-accent-tint: #fff2e9;
+  --s-line: #e1e4ec;
+  --s-dark: #12151c;
+
+  --s-r: 18px;
+  --s-r-lg: 24px;
+  --s-r-pill: 999px;
+
+  --s-shadow: 0 1px 2px rgba(18, 21, 28, 0.04), 0 6px 16px -10px rgba(18, 21, 28, 0.16);
+  --s-shadow-lg: 0 4px 12px rgba(18, 21, 28, 0.06), 0 40px 80px -36px rgba(18, 21, 28, 0.45);
+  --s-border: 1px solid var(--s-line);
+
+  --s-display-weight: 900;
+  --s-display-spacing: -0.035em;
+  --s-display-case: uppercase;
+  --s-body-weight: 450;
+  --s-font: 'Montserrat', sans-serif;
+
+  --s-pad: clamp(2.5rem, 1.5rem + 4vw, 5.5rem);
+  --s-gutter: clamp(1.25rem, 0.75rem + 2.5vw, 3.5rem);
+
+  display: block;
+  background: var(--s-bg);
+  color: var(--s-ink);
+  font-family: var(--s-font);
+  font-size: 1rem;
+  font-weight: var(--s-body-weight);
+  line-height: 1.6;
+  padding-bottom: 4rem;
+  transition: background-color 300ms ease, color 300ms ease;
+}
+
+/* ---------------------------------------------------------------- nav -- */
+
+.spec__nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.125rem var(--s-gutter);
+  background: var(--s-bg);
+  border-bottom: var(--s-border);
+}
+
+.spec__logo {
+  font-weight: 900;
+  font-size: 1rem;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.spec__logo em {
+  font-style: normal;
+  color: var(--s-accent);
+}
+
+.spec__links {
+  display: none;
+  gap: 1.5rem;
+  margin-left: auto;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--s-muted);
+}
+
+@media (min-width: 900px) {
+  .spec__links {
+    display: flex;
+  }
+}
+
+.spec__links + .spec__btn {
+  margin-left: 0;
+}
+
+.spec__nav > .spec__btn {
+  margin-left: auto;
+}
+
+/* ---------------------------------------------------------- primitives -- */
+
+.spec__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--s-accent);
+  margin-bottom: 1rem;
+}
+
+.spec__eyebrow::before {
+  content: '';
+  width: 2rem;
+  height: 3px;
+  border-radius: var(--s-r-pill);
+  background: var(--s-accent);
+  flex: none;
+}
+
+.spec__title {
+  font-size: clamp(2.25rem, 1.4rem + 3.6vw, 4rem);
+  font-weight: var(--s-display-weight);
+  line-height: 0.98;
+  letter-spacing: var(--s-display-spacing);
+  text-transform: var(--s-display-case);
+  text-wrap: balance;
+}
+
+.spec__title em {
+  font-style: normal;
+  color: var(--s-accent);
+}
+
+.spec__h2 {
+  font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2.375rem);
+  font-weight: var(--s-display-weight);
+  line-height: 1.06;
+  letter-spacing: var(--s-display-spacing);
+  text-transform: var(--s-display-case);
+}
+
+.spec__lede {
+  margin-top: 1.125rem;
+  font-size: clamp(1rem, 0.94rem + 0.4vw, 1.1875rem);
+  line-height: 1.55;
+  color: var(--s-muted);
+  max-width: 56ch;
+  text-wrap: pretty;
+}
+
+.spec__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 1.75rem;
+  border-radius: var(--s-r-pill);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 150ms ease,
+    box-shadow 150ms ease,
+    background-color 150ms ease;
+}
+
+.spec__btn--sm {
+  padding: 0.5rem 1.125rem;
+  font-size: 0.8125rem;
+}
+
+.spec__btn--primary {
+  background: var(--s-accent);
+  color: var(--s-accent-ink);
+  box-shadow: 0 14px 34px -14px rgba(243, 111, 32, 0.6);
+}
+
+.spec__btn--ghost {
+  box-shadow: inset 0 0 0 1.5px var(--s-line);
+  color: var(--s-ink);
+}
+
+.spec__nav > .spec__btn--sm {
+  box-shadow: inset 0 0 0 1.5px var(--s-line);
+}
+
+.spec__btn--block {
+  width: 100%;
+  margin-top: 1.25rem;
+}
+
+.spec__btn:hover {
+  transform: translateY(-1px);
+}
+
+.spec__chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.6875rem;
+  border-radius: var(--s-r-pill);
+  background: var(--s-surface-2);
+  color: var(--s-muted);
+  font-size: 0.6875rem;
+  font-weight: 800;
+}
+
+/* --------------------------------------------------------------- hero -- */
+
+.spec__hero {
+  display: grid;
+  gap: clamp(2rem, 1rem + 3vw, 3.5rem);
+  padding: var(--s-pad) var(--s-gutter);
+}
+
+@media (min-width: 1000px) {
+  .spec__hero {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+    align-items: center;
+  }
+}
+
+.spec__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.spec__rail {
+  display: grid;
+  gap: 0.625rem;
+}
+
+.spec__rail-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 1.125rem 1.25rem;
+  background: var(--s-surface);
+  border-radius: var(--s-r);
+  box-shadow: var(--s-shadow);
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.spec__rail-row:hover {
+  transform: translateX(5px);
+}
+
+.spec__rail-row--top {
+  background: var(--s-dark);
+  color: var(--s-ink-invert);
+}
+
+.spec__rail-tag {
+  font-size: 0.625rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  color: var(--s-faint);
+}
+
+.spec__rail-row--top .spec__rail-tag {
+  color: var(--s-accent-2);
+}
+
+.spec__rail-name {
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: -0.012em;
+}
+
+.spec__rail-val {
+  font-size: 1.125rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: var(--s-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.spec__rail-val--muted {
+  color: var(--s-faint);
+}
+
+/* ------------------------------------------------------------ sections -- */
+
+.spec__section {
+  padding: var(--s-pad) var(--s-gutter);
+  background: var(--s-bg-2);
+}
+
+.spec__section--roster {
+  background: var(--s-bg);
+}
+
+/* ---------------------------------------------------------------- tiers -- */
+
+.spec__tiers {
+  display: grid;
+  gap: 1.125rem;
+  margin-top: 2.25rem;
+}
+
+@media (min-width: 880px) {
+  .spec__tiers {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: start;
+  }
+}
+
+.spec__tier {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.625rem;
+  border-radius: var(--s-r-lg);
+  background: var(--s-surface);
+  border: var(--s-border);
+  overflow: hidden;
+}
+
+.spec__tier--2 {
+  box-shadow: var(--s-shadow);
+}
+
+.spec__tier--3 {
+  background: var(--s-dark);
+  color: var(--s-ink-invert);
+  border-color: transparent;
+  box-shadow: var(--s-shadow-lg);
+}
+
+@media (min-width: 880px) {
+  .spec__tier--2 {
+    margin-top: -0.625rem;
+  }
+
+  .spec__tier--3 {
+    margin-top: -1.5rem;
+    padding-block: 2.5rem 2.25rem;
+  }
+}
+
+.spec__tier-bar {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 5px;
+  background: var(--s-line);
+}
+
+.spec__tier--2 .spec__tier-bar {
+  background: var(--s-accent);
+}
+
+.spec__tier--3 .spec__tier-bar {
+  background: linear-gradient(90deg, var(--s-accent-2), #f5a524);
+}
+
+.spec__tier-level {
+  font-size: 0.6875rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--s-faint);
+}
+
+.spec__tier--3 .spec__tier-level {
+  color: var(--s-accent-2);
+}
+
+.spec__tier-name {
+  margin-top: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  text-transform: var(--s-display-case);
+}
+
+.spec__tier-blurb {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--s-muted);
+}
+
+.spec__tier--3 .spec__tier-blurb {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.spec__budget {
+  margin-top: 1.375rem;
+  padding: 1rem 1.125rem;
+  border-radius: calc(var(--s-r) - 6px);
+  background: var(--s-surface-2);
+}
+
+.spec__tier--2 .spec__budget {
+  background: var(--s-accent-tint);
+}
+
+.spec__tier--3 .spec__budget {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.spec__budget-label {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--s-faint);
+}
+
+.spec__budget-value {
+  margin-top: 0.25rem;
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--s-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.spec__tier--1 .spec__budget-value {
+  color: var(--s-faint);
+}
+
+.spec__ticks {
+  margin-top: 1.375rem;
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.spec__ticks li {
+  display: grid;
+  grid-template-columns: 0.875rem 1fr;
+  gap: 0.5rem;
+  align-items: start;
+}
+
+.spec__ticks li::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  margin-top: 0.5rem;
+  border-radius: 50%;
+  background: var(--s-accent);
+}
+
+/* --------------------------------------------------------------- roster -- */
+
+.spec__group-head {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  margin-top: 2.25rem;
+  margin-bottom: 1.125rem;
+}
+
+.spec__group-title {
+  font-size: 1.0625rem;
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  text-transform: var(--s-display-case);
+  white-space: nowrap;
+}
+
+.spec__rule {
+  flex: 1;
+  height: 1px;
+  background: var(--s-line);
+}
+
+.spec__people {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 900px) {
+  .spec__people {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.spec__person {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.625rem 1rem 1.375rem;
+  border-radius: var(--s-r-lg);
+  background: var(--s-surface);
+  border: var(--s-border);
+  transition:
+    transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.spec__person:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--s-shadow-lg);
+}
+
+.spec__avatar {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.125rem;
+}
+
+.spec__avatar--a {
+  background: linear-gradient(140deg, #ff9350, #e0530a);
+}
+.spec__avatar--b {
+  background: linear-gradient(140deg, #4f6f96, #21344c);
+}
+.spec__avatar--d {
+  background: linear-gradient(140deg, #5b6b7f, #262d39);
+}
+.spec__avatar--f {
+  background: linear-gradient(140deg, #8a6ea6, #43325a);
+}
+
+.spec__person-name {
+  margin-top: 0.875rem;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.spec__person-id {
+  margin-top: 0.25rem;
+  font-size: 0.8125rem;
+  color: var(--s-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.spec__person-link {
+  margin-top: 1rem;
+  padding: 0.4375rem 1rem;
+  border-radius: var(--s-r-pill);
+  background: var(--s-surface-2);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--s-muted);
+}
+
+.spec__person:hover .spec__person-link {
+  background: var(--s-accent-tint);
+  color: var(--s-accent);
+}
+
+/* ---------------------------------------------------------------- apply -- */
+
+.spec__apply {
+  display: grid;
+  gap: clamp(1.75rem, 1rem + 3vw, 3.5rem);
+  padding: var(--s-pad) var(--s-gutter);
+  background: var(--s-dark);
+  color: var(--s-ink-invert);
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .spec__apply {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+.spec__apply .spec__lede {
+  color: rgba(255, 255, 255, 0.66);
+}
+
+.spec__panel {
+  padding: clamp(1.5rem, 1.1rem + 1.4vw, 2.125rem);
+  border-radius: var(--s-r-lg);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.spec__panel-head {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 0.875rem;
+}
+
+.spec__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 0 5px rgba(74, 222, 128, 0.2);
+}
+
+.spec__panel-title {
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.spec__panel-text {
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.66);
+}
+
+/* ==========================================================================
+   01 · EDITORIAL — the current direction. Cool neutrals, heavy display type,
+   orange reserved for money and status.
+   ========================================================================== */
+
+/* (base tokens above are the editorial theme) */
+
+/* ==========================================================================
+   02 · MINIMALISM — near-monochrome, hairline rules, no elevation. All the
+   hierarchy comes from scale and empty space. Orange appears twice on the
+   whole page, so when it does appear it means something.
+   ========================================================================== */
+
+.spec[data-theme='minimal'] {
+  --s-bg: #ffffff;
+  --s-bg-2: #ffffff;
+  --s-surface: #ffffff;
+  --s-surface-2: #f7f7f7;
+  --s-ink: #111111;
+  --s-muted: #6b6b6b;
+  --s-faint: #9a9a9a;
+  --s-line: #e8e8e8;
+  --s-dark: #111111;
+  --s-accent-tint: #fafafa;
+  --s-r: 4px;
+  --s-r-lg: 4px;
+  --s-shadow: none;
+  --s-shadow-lg: none;
+  --s-display-weight: 600;
+  --s-display-spacing: -0.03em;
+  --s-display-case: none;
+  --s-pad: clamp(4rem, 2.5rem + 7vw, 9rem);
+}
+
+.spec[data-theme='minimal'] .spec__eyebrow {
+  color: var(--s-faint);
+}
+
+.spec[data-theme='minimal'] .spec__eyebrow::before {
+  background: var(--s-line);
+  width: 1.5rem;
+  height: 1px;
+}
+
+.spec[data-theme='minimal'] .spec__title,
+.spec[data-theme='minimal'] .spec__h2 {
+  line-height: 1.08;
+}
+
+.spec[data-theme='minimal'] .spec__title em {
+  color: var(--s-ink);
+  border-bottom: 2px solid var(--s-accent);
+}
+
+.spec[data-theme='minimal'] .spec__rail-row,
+.spec[data-theme='minimal'] .spec__tier,
+.spec[data-theme='minimal'] .spec__person {
+  border: 0;
+  border-top: 1px solid var(--s-line);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.spec[data-theme='minimal'] .spec__rail-row--top,
+.spec[data-theme='minimal'] .spec__tier--3 {
+  background: transparent;
+  color: var(--s-ink);
+}
+
+.spec[data-theme='minimal'] .spec__tier--3 .spec__tier-blurb {
+  color: var(--s-muted);
+}
+
+.spec[data-theme='minimal'] .spec__tier--2,
+.spec[data-theme='minimal'] .spec__tier--3 {
+  margin-top: 0;
+}
+
+.spec[data-theme='minimal'] .spec__tier-bar {
+  display: none;
+}
+
+.spec[data-theme='minimal'] .spec__budget {
+  background: transparent;
+  padding: 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--s-line);
+}
+
+.spec[data-theme='minimal'] .spec__budget-value {
+  color: var(--s-ink);
+  font-weight: 500;
+}
+
+.spec[data-theme='minimal'] .spec__ticks li::before {
+  background: var(--s-line);
+}
+
+/* Pill buttons even here — minimalism drops ornament, not roundness */
+.spec[data-theme='minimal'] .spec__btn {
+  font-weight: 600;
+}
+
+.spec[data-theme='minimal'] .spec__btn--primary {
+  box-shadow: none;
+}
+
+.spec[data-theme='minimal'] .spec__person-link {
+  background: transparent;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.spec[data-theme='minimal'] .spec__avatar {
+  filter: saturate(0);
+}
+
+.spec[data-theme='minimal'] .spec__person:hover .spec__avatar {
+  filter: none;
+}
+
+.spec[data-theme='minimal'] .spec__panel {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   03 · GLASSMORPHISM — a saturated gradient field behind frosted panels.
+   Depth comes from blur and translucency rather than shadow.
+   ========================================================================== */
+
+.spec[data-theme='glass'] {
+  --s-bg: #10131d;
+  --s-bg-2: transparent;
+  --s-surface: rgba(255, 255, 255, 0.08);
+  --s-surface-2: rgba(255, 255, 255, 0.1);
+  --s-ink: #f3f5fb;
+  --s-muted: rgba(243, 245, 251, 0.68);
+  --s-faint: rgba(243, 245, 251, 0.46);
+  --s-line: rgba(255, 255, 255, 0.16);
+  --s-dark: rgba(255, 255, 255, 0.06);
+  --s-accent-tint: rgba(243, 111, 32, 0.18);
+  --s-r: 20px;
+  --s-r-lg: 28px;
+  --s-shadow: 0 8px 32px -12px rgba(0, 0, 0, 0.5);
+  --s-shadow-lg: 0 24px 60px -20px rgba(0, 0, 0, 0.6);
+  --s-border: 1px solid rgba(255, 255, 255, 0.16);
+
+  position: relative;
+  isolation: isolate;
+}
+
+/* The colour field the glass sits on — without it, glass is just grey */
+.spec[data-theme='glass']::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(48% 46% at 12% 8%, rgba(243, 111, 32, 0.65), transparent 62%),
+    radial-gradient(44% 44% at 86% 14%, rgba(88, 86, 214, 0.6), transparent 62%),
+    radial-gradient(52% 50% at 68% 88%, rgba(20, 160, 190, 0.5), transparent 62%),
+    linear-gradient(160deg, #171b28, #0d1017);
+}
+
+.spec[data-theme='glass'] .spec__nav,
+.spec[data-theme='glass'] .spec__section {
+  background: transparent;
+}
+
+.spec[data-theme='glass'] .spec__rail-row,
+.spec[data-theme='glass'] .spec__tier,
+.spec[data-theme='glass'] .spec__person,
+.spec[data-theme='glass'] .spec__panel {
+  backdrop-filter: blur(22px) saturate(1.6);
+  -webkit-backdrop-filter: blur(22px) saturate(1.6);
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.spec[data-theme='glass'] .spec__rail-row--top,
+.spec[data-theme='glass'] .spec__tier--3 {
+  background: rgba(243, 111, 32, 0.2);
+  border-color: rgba(255, 173, 122, 0.42);
+  color: #fff;
+}
+
+.spec[data-theme='glass'] .spec__tier--3 .spec__tier-blurb,
+.spec[data-theme='glass'] .spec__panel-text {
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.spec[data-theme='glass'] .spec__apply {
+  background: transparent;
+}
+
+.spec[data-theme='glass'] .spec__budget {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.spec[data-theme='glass'] .spec__btn--primary {
+  background: rgba(243, 111, 32, 0.92);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 34px -10px rgba(243, 111, 32, 0.8);
+}
+
+.spec[data-theme='glass'] .spec__btn--ghost,
+.spec[data-theme='glass'] .spec__nav > .spec__btn--sm {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+.spec[data-theme='glass'] .spec__budget-value,
+.spec[data-theme='glass'] .spec__rail-val {
+  color: #ffc09a;
+}
+
+/* ==========================================================================
+   04 · BENTO GRID — no long scrolling sections. Content is packed into a
+   modular grid of varied-size tiles, dense and scannable.
+   ========================================================================== */
+
+.spec[data-theme='bento'] {
+  --s-bg: #eceef3;
+  --s-bg-2: #eceef3;
+  --s-surface: #ffffff;
+  --s-surface-2: #f1f3f8;
+  --s-r: 20px;
+  --s-r-lg: 26px;
+  --s-shadow: 0 1px 2px rgba(18, 21, 28, 0.05);
+  --s-border: 1px solid transparent;
+  --s-pad: clamp(1rem, 0.5rem + 1.5vw, 1.5rem);
+  --s-gutter: clamp(1rem, 0.5rem + 1.5vw, 1.5rem);
+}
+
+.spec[data-theme='bento'] .spec__nav {
+  margin: 1.25rem 1.25rem 0;
+  padding: 1rem 1.5rem;
+  background: var(--s-surface);
+  border: 0;
+  border-radius: var(--s-r);
+}
+
+.spec[data-theme='bento'] .spec__hero,
+.spec[data-theme='bento'] .spec__section,
+.spec[data-theme='bento'] .spec__apply {
+  margin: 1.25rem;
+  padding: clamp(1.75rem, 1.25rem + 2vw, 2.75rem);
+  border-radius: var(--s-r-lg);
+  background: var(--s-surface);
+}
+
+.spec[data-theme='bento'] .spec__hero {
+  background: linear-gradient(150deg, #fff, #fdf1e9);
+}
+
+.spec[data-theme='bento'] .spec__apply {
+  background: var(--s-dark);
+}
+
+/* Tiles of deliberately unequal weight — the bento signature */
+.spec[data-theme='bento'] .spec__tiers {
+  gap: 0.875rem;
+}
+
+@media (min-width: 880px) {
+  .spec[data-theme='bento'] .spec__tiers {
+    grid-template-columns: repeat(6, 1fr);
+    grid-auto-rows: minmax(0, auto);
+  }
+
+  .spec[data-theme='bento'] .spec__tier--1 {
+    grid-column: span 2;
+  }
+
+  .spec[data-theme='bento'] .spec__tier--2 {
+    grid-column: span 2;
+    margin-top: 0;
+  }
+
+  .spec[data-theme='bento'] .spec__tier--3 {
+    grid-column: span 2;
+    margin-top: 0;
+  }
+}
+
+.spec[data-theme='bento'] .spec__tier,
+.spec[data-theme='bento'] .spec__person,
+.spec[data-theme='bento'] .spec__rail-row {
+  background: var(--s-surface-2);
+  border: 0;
+  border-radius: var(--s-r);
+  box-shadow: none;
+}
+
+.spec[data-theme='bento'] .spec__tier--2 {
+  background: linear-gradient(155deg, #fff3ea, #ffe6d6);
+}
+
+.spec[data-theme='bento'] .spec__tier--3,
+.spec[data-theme='bento'] .spec__rail-row--top {
+  background: linear-gradient(155deg, #262d39, #12151c);
+  color: #fff;
+}
+
+.spec[data-theme='bento'] .spec__people {
+  gap: 0.875rem;
+}
+
+.spec[data-theme='bento'] .spec__tier-bar {
+  display: none;
+}
+
+.spec[data-theme='bento'] .spec__budget {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.spec[data-theme='bento'] .spec__tier--3 .spec__budget {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ==========================================================================
+   05 · NEO BRUTALISM — flat fills, thick outlines, hard offset shadows.
+   Loud and unmistakable. Radius kept soft so it reads current, not retro.
+   ========================================================================== */
+
+.spec[data-theme='brutal'] {
+  --s-bg: #ffe9d6;
+  --s-bg-2: #fff8ef;
+  --s-surface: #ffffff;
+  --s-surface-2: #ffe9d6;
+  --s-ink: #16130f;
+  --s-muted: #4a423a;
+  --s-faint: #7c7166;
+  --s-line: #16130f;
+  --s-dark: #16130f;
+  --s-accent-tint: #ffd9bd;
+  --s-r: 14px;
+  --s-r-lg: 18px;
+  --s-r-pill: 999px;
+  --s-shadow: 5px 5px 0 #16130f;
+  --s-shadow-lg: 9px 9px 0 #16130f;
+  --s-border: 2.5px solid #16130f;
+  --s-display-spacing: -0.02em;
+}
+
+.spec[data-theme='brutal'] .spec__nav {
+  border-bottom: 2.5px solid var(--s-ink);
+}
+
+.spec[data-theme='brutal'] .spec__rail-row,
+.spec[data-theme='brutal'] .spec__tier,
+.spec[data-theme='brutal'] .spec__person,
+.spec[data-theme='brutal'] .spec__panel {
+  border: 2.5px solid var(--s-ink);
+  box-shadow: var(--s-shadow);
+}
+
+.spec[data-theme='brutal'] .spec__tier--2 {
+  background: #ffd9bd;
+}
+
+.spec[data-theme='brutal'] .spec__tier--3 {
+  background: var(--s-accent);
+  color: var(--s-ink);
+  box-shadow: var(--s-shadow-lg);
+}
+
+.spec[data-theme='brutal'] .spec__tier--3 .spec__tier-level,
+.spec[data-theme='brutal'] .spec__tier--3 .spec__tier-blurb {
+  color: rgba(22, 19, 15, 0.78);
+}
+
+.spec[data-theme='brutal'] .spec__tier--3 .spec__budget {
+  background: #fff;
+}
+
+.spec[data-theme='brutal'] .spec__tier--3 .spec__budget-value {
+  color: var(--s-ink);
+}
+
+.spec[data-theme='brutal'] .spec__tier-bar {
+  height: 0;
+}
+
+.spec[data-theme='brutal'] .spec__btn {
+  border: 2.5px solid var(--s-ink);
+  box-shadow: 4px 4px 0 var(--s-ink);
+  border-radius: 999px;
+}
+
+.spec[data-theme='brutal'] .spec__btn:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--s-ink);
+}
+
+.spec[data-theme='brutal'] .spec__btn--ghost,
+.spec[data-theme='brutal'] .spec__nav > .spec__btn--sm {
+  background: #fff;
+}
+
+.spec[data-theme='brutal'] .spec__rail-row--top {
+  background: var(--s-accent);
+  color: var(--s-ink);
+}
+
+.spec[data-theme='brutal'] .spec__rail-row--top .spec__rail-tag,
+.spec[data-theme='brutal'] .spec__rail-row--top .spec__rail-val {
+  color: var(--s-ink);
+}
+
+.spec[data-theme='brutal'] .spec__panel {
+  background: #fff;
+  color: var(--s-ink);
+}
+
+.spec[data-theme='brutal'] .spec__panel-text {
+  color: var(--s-muted);
+}
+
+.spec[data-theme='brutal'] .spec__apply .spec__lede {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.spec[data-theme='brutal'] .spec__chip,
+.spec[data-theme='brutal'] .spec__person-link {
+  border: 2px solid var(--s-ink);
+}
+
+/* ==========================================================================
+   06 · SOFT UI (NEUMORPHISM) — one background colour throughout, surfaces
+   extruded from it with paired light and dark shadows. Quiet and tactile.
+   ========================================================================== */
+
+.spec[data-theme='soft'] {
+  --s-bg: #e8ebf2;
+  --s-bg-2: #e8ebf2;
+  --s-surface: #e8ebf2;
+  --s-surface-2: #e8ebf2;
+  --s-ink: #3a4258;
+  --s-muted: #6b7489;
+  --s-faint: #949cb0;
+  --s-line: transparent;
+  --s-dark: #dfe3ec;
+  --s-ink-invert: #3a4258;
+  --s-accent-tint: #e8ebf2;
+  --s-r: 22px;
+  --s-r-lg: 30px;
+  --s-shadow: 8px 8px 18px #c8cdd9, -8px -8px 18px #ffffff;
+  --s-shadow-lg: 14px 14px 30px #c5cad6, -14px -14px 30px #ffffff;
+  --s-border: 0px solid transparent;
+  --s-display-weight: 800;
+}
+
+.spec[data-theme='soft'] .spec__nav {
+  border-bottom: 0;
+  box-shadow: 0 8px 18px -14px #b9bfcc;
+}
+
+.spec[data-theme='soft'] .spec__rail-row,
+.spec[data-theme='soft'] .spec__tier,
+.spec[data-theme='soft'] .spec__person,
+.spec[data-theme='soft'] .spec__panel {
+  background: var(--s-surface);
+  border: 0;
+  box-shadow: var(--s-shadow);
+}
+
+.spec[data-theme='soft'] .spec__rail-row--top,
+.spec[data-theme='soft'] .spec__tier--3 {
+  color: var(--s-ink);
+  box-shadow: var(--s-shadow-lg);
+}
+
+.spec[data-theme='soft'] .spec__tier--3 .spec__tier-blurb,
+.spec[data-theme='soft'] .spec__panel-text {
+  color: var(--s-muted);
+}
+
+.spec[data-theme='soft'] .spec__tier-bar {
+  display: none;
+}
+
+/* Pressed-in wells for the figures */
+.spec[data-theme='soft'] .spec__budget {
+  background: var(--s-surface);
+  box-shadow: inset 5px 5px 11px #ccd1dd, inset -5px -5px 11px #ffffff;
+}
+
+.spec[data-theme='soft'] .spec__apply {
+  background: var(--s-bg);
+  color: var(--s-ink);
+}
+
+.spec[data-theme='soft'] .spec__apply .spec__lede {
+  color: var(--s-muted);
+}
+
+.spec[data-theme='soft'] .spec__btn {
+  box-shadow: 6px 6px 14px #c8cdd9, -6px -6px 14px #ffffff;
+  color: var(--s-ink);
+  background: var(--s-surface);
+}
+
+.spec[data-theme='soft'] .spec__btn--primary {
+  background: linear-gradient(140deg, #ff9350, #f36f20);
+  color: #fff;
+  box-shadow: 6px 6px 16px #cdb0a0, -6px -6px 16px #ffffff;
+}
+
+.spec[data-theme='soft'] .spec__btn:hover {
+  box-shadow: inset 4px 4px 10px #ccd1dd, inset -4px -4px 10px #ffffff;
+  transform: none;
+}
+
+.spec[data-theme='soft'] .spec__person-link,
+.spec[data-theme='soft'] .spec__chip {
+  box-shadow: inset 3px 3px 7px #ccd1dd, inset -3px -3px 7px #ffffff;
+}
+
+.spec[data-theme='soft'] .spec__rule {
+  background: #d3d8e3;
+}
+
+/* ==========================================================================
+   07 · AI-FIRST INTERFACE — the page behaves like an assistant surface.
+   Dark canvas, gradient-lit edges, monospace metadata, suggestion chips.
+   ========================================================================== */
+
+.spec[data-theme='ai'] {
+  --s-bg: #08090d;
+  --s-bg-2: #0b0d13;
+  --s-surface: #101319;
+  --s-surface-2: #171b24;
+  --s-ink: #eef1f8;
+  --s-muted: #98a1b5;
+  --s-faint: #626b7f;
+  --s-line: #1e232e;
+  --s-dark: #101319;
+  --s-accent-tint: rgba(243, 111, 32, 0.14);
+  --s-r: 16px;
+  --s-r-lg: 22px;
+  --s-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04);
+  --s-shadow-lg: 0 30px 70px -30px rgba(243, 111, 32, 0.4);
+  --s-border: 1px solid #1e232e;
+  --s-display-spacing: -0.03em;
+}
+
+/* Gradient-lit top edge — the "generated" tell */
+.spec[data-theme='ai'] .spec__tier,
+.spec[data-theme='ai'] .spec__panel,
+.spec[data-theme='ai'] .spec__person {
+  position: relative;
+  background:
+    linear-gradient(var(--s-surface), var(--s-surface)) padding-box,
+    linear-gradient(150deg, rgba(243, 111, 32, 0.5), rgba(88, 86, 214, 0.35) 45%, #1e232e 75%)
+      border-box;
+  border: 1px solid transparent;
+}
+
+.spec[data-theme='ai'] .spec__tier--3 {
+  box-shadow: var(--s-shadow-lg);
+}
+
+.spec[data-theme='ai'] .spec__tier-bar {
+  background: linear-gradient(90deg, var(--s-accent), rgba(88, 86, 214, 0.9), transparent);
+  height: 2px;
+}
+
+.spec[data-theme='ai'] .spec__tier-level,
+.spec[data-theme='ai'] .spec__budget-label,
+.spec[data-theme='ai'] .spec__person-id,
+.spec[data-theme='ai'] .spec__rail-tag {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.spec[data-theme='ai'] .spec__eyebrow {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.spec[data-theme='ai'] .spec__eyebrow::before {
+  background: linear-gradient(90deg, var(--s-accent), transparent);
+}
+
+.spec[data-theme='ai'] .spec__rail-row {
+  background: var(--s-surface);
+  border: 1px solid var(--s-line);
+}
+
+.spec[data-theme='ai'] .spec__rail-row--top {
+  background: linear-gradient(120deg, rgba(243, 111, 32, 0.18), rgba(88, 86, 214, 0.14));
+  border-color: rgba(243, 111, 32, 0.4);
+}
+
+.spec[data-theme='ai'] .spec__budget {
+  background: var(--s-surface-2);
+}
+
+.spec[data-theme='ai'] .spec__apply {
+  background: radial-gradient(80% 120% at 78% 0%, rgba(243, 111, 32, 0.18), transparent 62%),
+    var(--s-bg-2);
+}
+
+/* Suggestion chips — the assistant affordance */
+.spec[data-theme='ai'] .spec__actions::after {
+  content: 'Suggested · What does Level 2 require? · How is the bonus paid?';
+  display: block;
+  flex-basis: 100%;
+  margin-top: 0.5rem;
+  padding: 0.625rem 1rem;
+  border-radius: var(--s-r-pill);
+  border: 1px dashed rgba(243, 111, 32, 0.4);
+  background: var(--s-accent-tint);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: #ffb489;
+}
+
+.spec[data-theme='ai'] .spec__btn--ghost,
+.spec[data-theme='ai'] .spec__nav > .spec__btn--sm {
+  box-shadow: inset 0 0 0 1px var(--s-line);
+  background: var(--s-surface);
+  color: var(--s-ink);
+}
+
+.spec[data-theme='ai'] .spec__btn--primary {
+  background: linear-gradient(120deg, #ff9350, #f36f20 60%, #c9490c);
+}
+
+.spec[data-theme='ai'] .spec__person-link {
+  background: var(--s-surface-2);
+  color: var(--s-muted);
+}
+
+/* ==========================================================================
+   08 · SPATIAL / LAYERED UI — content sits on planes at different depths.
+   Perspective, overlap and long soft shadows do the organising work.
+   ========================================================================== */
+
+.spec[data-theme='spatial'] {
+  --s-bg: #0e1017;
+  --s-bg-2: #12151f;
+  --s-surface: rgba(255, 255, 255, 0.055);
+  --s-surface-2: rgba(255, 255, 255, 0.09);
+  --s-ink: #f2f4fa;
+  --s-muted: rgba(242, 244, 250, 0.66);
+  --s-faint: rgba(242, 244, 250, 0.42);
+  --s-line: rgba(255, 255, 255, 0.1);
+  --s-dark: rgba(255, 255, 255, 0.05);
+  --s-accent-tint: rgba(243, 111, 32, 0.16);
+  --s-r: 20px;
+  --s-r-lg: 26px;
+  --s-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.9);
+  --s-shadow-lg: 0 60px 110px -40px rgba(0, 0, 0, 0.95);
+  --s-border: 1px solid rgba(255, 255, 255, 0.12);
+
+  position: relative;
+  isolation: isolate;
+}
+
+.spec[data-theme='spatial']::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(46% 40% at 22% 6%, rgba(243, 111, 32, 0.32), transparent 64%),
+    radial-gradient(40% 38% at 84% 30%, rgba(60, 90, 160, 0.34), transparent 64%),
+    linear-gradient(170deg, #141826, #08090e);
+}
+
+.spec[data-theme='spatial'] .spec__nav,
+.spec[data-theme='spatial'] .spec__section,
+.spec[data-theme='spatial'] .spec__apply {
+  background: transparent;
+}
+
+/* The plane stack: each tier sits at a different depth */
+.spec[data-theme='spatial'] .spec__tiers {
+  perspective: 1600px;
+}
+
+.spec[data-theme='spatial'] .spec__tier,
+.spec[data-theme='spatial'] .spec__rail-row,
+.spec[data-theme='spatial'] .spec__person,
+.spec[data-theme='spatial'] .spec__panel {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--s-shadow);
+  transform-style: preserve-3d;
+  transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 420ms ease;
+}
+
+@media (min-width: 880px) {
+  .spec[data-theme='spatial'] .spec__tier--1 {
+    transform: translateZ(-70px) translateY(22px) rotateY(7deg);
+  }
+
+  .spec[data-theme='spatial'] .spec__tier--2 {
+    transform: translateZ(0);
+    margin-top: 0;
+  }
+
+  .spec[data-theme='spatial'] .spec__tier--3 {
+    transform: translateZ(60px) translateY(-16px) rotateY(-7deg);
+    margin-top: 0;
+    box-shadow: var(--s-shadow-lg);
+  }
+
+  .spec[data-theme='spatial'] .spec__tier:hover {
+    transform: translateZ(90px) translateY(-8px) rotateY(0deg);
+    box-shadow: var(--s-shadow-lg);
+  }
+}
+
+.spec[data-theme='spatial'] .spec__tier--3 {
+  background: linear-gradient(150deg, rgba(243, 111, 32, 0.24), rgba(255, 255, 255, 0.05));
+  border-color: rgba(255, 173, 122, 0.36);
+}
+
+.spec[data-theme='spatial'] .spec__rail-row--top {
+  background: linear-gradient(130deg, rgba(243, 111, 32, 0.28), rgba(255, 255, 255, 0.05));
+  border-color: rgba(255, 173, 122, 0.36);
+}
+
+.spec[data-theme='spatial'] .spec__rail-row {
+  transform: translateX(calc(var(--i, 0) * 10px));
+}
+
+.spec[data-theme='spatial'] .spec__budget {
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.spec[data-theme='spatial'] .spec__budget-value,
+.spec[data-theme='spatial'] .spec__rail-val {
+  color: #ffbe97;
+}
+
+.spec[data-theme='spatial'] .spec__person:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: var(--s-shadow-lg);
+}
+
+.spec[data-theme='spatial'] .spec__btn--ghost,
+.spec[data-theme='spatial'] .spec__nav > .spec__btn--sm {
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(12px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spec[data-theme='spatial'] .spec__tier,
+  .spec[data-theme='spatial'] .spec__person {
+    transform: none !important;
+    transition: none;
+  }
+}
