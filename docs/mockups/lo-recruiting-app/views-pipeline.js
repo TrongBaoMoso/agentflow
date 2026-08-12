@@ -31,7 +31,7 @@ function vPipeline() {
     <div class="vswitch">${views.map(([v, l]) => `<button class="${S.view === v ? 'on' : ''}" onclick="setView('${v}')">${l}${fav === v ? ' ⭐' : ''}</button>`).join('')}</div>
     <button class="fav ${fav === S.view ? 'on' : ''}" title="Đặt làm favorite view" onclick="actFav()">⭐</button>
     <span class="chip grey">Default (admin): ${CONFIG.defaultView[S.role]}</span>
-    ${S.role === 'recruiter' ? `<span class="chip grey click" onclick="toast('🌙 Nurture list — mở table lọc stage=NURTURE (demo gộp trong Table).')">🌙 Nurture (${CANDIDATES.filter((c) => c.stage === 'NURTURE').length})</span>` : ''}
+    ${S.role === 'recruiter' ? `<span class="chip grey click" onclick="go('nurture')">🌙 Nurture (${CANDIDATES.filter((c) => c.stage === 'NURTURE').length})</span>` : ''}
     <button class="btn primary" style="margin-left:auto" onclick="mAddLead()">＋ Add lead</button>
   </div>`;
   const body = { kanban: vKanban, table: vTable, focus: vFocus, funnel: vFunnel }[S.view]();
@@ -44,8 +44,8 @@ function vKanban() {
   const s0col = `<div class="colk" style="max-width:200px">
       <h3>S0 · Kho <span class="cnt">102.715</span></h3>
       <div class="gate-note">Danh bạ (RLO cũ) — chưa ai đụng, CHƯA có owner, CHƯA có SLA</div>
-      <div class="lockmsg" style="opacity:.8;text-align:left;padding:12px">Không vẽ card ở đây (kanban vô nghĩa với 100k dòng) — làm việc qua <b>Table + filter/bulk</b>.<br><br>
-      Sang S1 bằng 1 trong 2 cách, bật/tắt trong Settings (Q34):<br>• <b>máy chia</b> (auto-assign)<br>• <b>recruiter tự Claim</b></div>
+      <div class="lockmsg" style="opacity:.8;text-align:left;padding:12px">Không vẽ card ở đây (kanban vô nghĩa với 100k dòng) — làm việc ở màn <b class="click" onclick="go('kho')" style="cursor:pointer;text-decoration:underline">🗄 Kho</b>.<br><br>
+      Sang S1 bằng (bật/tắt trong Settings — Q34):<br>• <b>máy chia</b> (auto-assign)<br>• <b>Claim</b> tay<br>• hoặc <b>Call luôn → tự claim</b></div>
     </div>`;
   const cols = s0col + STAGES.filter((s) => s.id !== 'S7').map((st) => {
     const locked = !r.stages.includes(st.id);
@@ -236,6 +236,7 @@ function vDrawer(c) {
   if (S.role === 'recruiter' && c.stage === 'S4' && (!c.offer || c.offer.status === 'NONE')) foot.push(`<button class="btn primary" style="flex:1" onclick="actAdvance('${c.id}')">Request offer approval →</button>`);
   if (S.role === 'manager' && c.offer?.status === 'REQUESTED') foot.push(`<button class="btn green" style="flex:1" onclick="actApprove('${c.id}');closeC()">Approve offer (band ${c.offer.band})</button>`);
   if (S.role === 'hr' && c.offer?.status === 'APPROVED') foot.push(`<button class="btn primary" style="flex:1" onclick="actDraftOffer('${c.id}');closeC()">Soạn & gửi offer</button>`);
+  if (!c.nmls) foot.push(`<button class="btn ghost" onclick="mNmls('${c.id}')">＋ Nhập NMLS (enrich)</button>`);
   foot.push(`<button class="btn ghost" onclick="actContact('${c.id}','call')">📞 Call</button>`);
   foot.push('<button class="btn ghost" onclick="closeC()">Đóng</button>');
   return `<div class="overlay" onclick="if(event.target===this)closeC()">

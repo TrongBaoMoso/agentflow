@@ -53,6 +53,7 @@ function setSim(v) {
 function visibleCands() {
   const r = role();
   return CANDIDATES.filter((c) => {
+    if (c.stage === 'ARCHIVED' || c.stage === 'S0') return false; // kho có màn riêng (vKho); archived ra khỏi mọi list
     if (r.rows === 'referred') return c.referredBy === r.user || c.referredBy === 'david';
     if (c.stage === 'NURTURE') return r.rows !== 'referred' && (r.rows === 'all' || c.owner === r.user);
     if (!r.stages.includes(c.stage)) return false;
@@ -89,9 +90,9 @@ function slaChip(c) {
 }
 
 function stageChip(c) {
-  const map = { S1: 'orange', S2: 'grey', S3: 'blue', S4: 'green', S5: 'amber', S6: 'green', S7: 'green', NURTURE: 'grey' };
+  const map = { S0: 'grey', S1: 'orange', S2: 'grey', S3: 'blue', S4: 'green', S5: 'amber', S6: 'green', S7: 'green', NURTURE: 'grey', ARCHIVED: 'grey' };
   const st = STAGES.find((s) => s.id === c.stage);
-  return `<span class="chip ${map[c.stage] || 'grey'}">${c.stage === 'NURTURE' ? '🌙 Nurture' : c.stage + ' · ' + st.name}</span>`;
+  return `<span class="chip ${map[c.stage] || 'grey'}">${c.stage === 'NURTURE' ? '🌙 Nurture' : c.stage === 'ARCHIVED' ? '🗑 Archived' : c.stage === 'S0' ? 'S0 · Kho' : c.stage + ' · ' + st.name}</span>`;
 }
 
 const fmtVol = (c) => (c.vol == null ? '—' : `$${c.vol}M · ${c.units}u`);
@@ -133,13 +134,66 @@ function hrStatusChip(c) {
 
 /* ---------- ACTIONS (mọi nút bấm gọi vào đây) ---------- */
 
+function actClaim(id) {
+  const c = C(id);
+  c.owner = role().user; c.stage = 'S1'; c.hot = null; c.claimMin = null;
+  c.slaMin = CONFIG.sla.find((p) => p.id === 'touch').hours * 60;
+  addTl(c, `Claim bởi ${me().name} → S1 · đồng hồ first-touch CÁ NHÂN bắt đầu (đồng hồ chờ-nhận của team dừng)`);
+  toast(`🙋 <b>${esc(c.name)}</b> là của bạn — vào S1, first-touch SLA chạy. Xem ở Today.`);
+  render();
+}
+
 function actContact(id, kind) {
   const c = C(id);
   const via = { call: 'Call qua Zoom Phone', sms: 'SMS qua Zoom service', email: 'Email' }[kind];
+  if (c.stage === 'S0') {
+    c.owner = role().user; c.stage = 'S1'; c.hot = null; c.claimMin = null;
+    addTl(c, `AUTO-CLAIM bởi ${me().name} — hành động đầu tiên tự gắn owner (không chặn, không vô chủ)`);
+  } else if (c.owner && c.owner !== role().user && S.role === 'recruiter') {
+    toast(`⚠️ <b>${esc(c.name)}</b> đang thuộc <b>${USERS[c.owner]?.name}</b> — hoạt động của bạn vẫn ghi vào feed chung để cả hai thấy (chống gọi trùng).`);
+  }
   addTl(c, `${via} bởi ${me().name} — activity log tự ghi`);
   if (c.stage === 'S1') { c.stage = 'S2'; c.slaMin = null; addTl(c, 'First touch ✓ → tự chuyển S2 · Contacted (SLA dừng)'); }
   toast(`📞 <b>${esc(c.name)}</b> — ${via}. Activity log tự ghi → SLA tự tính, không khai tay.`);
   render();
+  if (kind === 'call' && S.role === 'recruiter' && ['S2', 'S3'].includes(c.stage)) mOutcome(id);
+}
+
+/* Kết quả cú gọi — mọi lead phải rẽ nhánh (S2+ luôn có next-step) */
+function actOutcome(id, kind, val) {
+  const c = C(id);
+  if (kind === 'next') { c.followUp = c.followUp || 'Follow-up đã đặt sau cú gọi'; addTl(c, 'Outcome: quan tâm — follow-up đặt, giữ pipeline'); toast('✅ Follow-up đặt — sẽ nổi lên Today đúng hẹn.'); }
+  if (kind === 'nurtureDate') { c.stage = 'NURTURE'; c.nurtureUntil = val; c.slaMin = null; addTl(c, `Outcome: hẹn lại ${val} → NURTURE, wake-up task tự tạo đúng ngày`); toast(`📅 Vào Nurture — wake-up <b>${esc(val)}</b> tự nổi ở Today, không cần nhớ.`); }
+  if (kind === 'nurture') { c.stage = 'NURTURE'; c.nurtureSince = 'hôm nay'; c.slaMin = null; addTl(c, 'Outcome: chưa muốn, không hẹn → NURTURE, cadence mặc định tự nhắc'); toast('🌙 Vào Nurture — cadence config tự nhắc, inbound là tự dừng.'); }
+  if (kind === 'noanswer') { c.followUp = 'Gọi lại — không bắt máy (retry tự tạo)'; addTl(c, 'Outcome: không bắt máy → task gọi lại tự tạo theo cadence'); toast('📵 Task gọi lại tự tạo.'); }
+  if (kind === 'archive') { c.stage = 'ARCHIVED'; c.archiveReason = val; c.slaMin = null; addTl(c, `Outcome: ARCHIVE — lý do "${val}" (không xoá; lý do = suppression thì mọi kênh tự chặn)`); toast(`🗑 Archived — lý do "<b>${esc(val)}</b>" lưu audit. Record còn đó, re-source sau được.`); }
+  closeModal(); render();
+}
+
+/* Nhập NMLS vào record có sẵn → enrich (gate S3→S4) */
+function actNmls(id, nmls) {
+  const c = C(id);
+  c.nmls = nmls.trim();
+  addTl(c, `${me().name} nhập NMLS ${c.nmls} — enrichment queued (zero-click)`);
+  closeModal(); render();
+  toast(`⚡ NMLS lưu — đang kéo Modex…`);
+  setTimeout(() => { simulateEnrich(c); render(); }, 2200);
+}
+
+function simulateEnrich(c) {
+  if (S.sim === 'modexDown') {
+    c.enrichFail = 'Modex webhook down — hệ thống tự retry, không mất record';
+    addTl(c, '⚠ Enrichment LỖI: Modex down → hàng retry tự động');
+    toast(`⚠ <b>${esc(c.name)}</b>: enrichment lỗi (Modex down) — tự retry.`);
+  } else if (c.nmls.endsWith('0')) {
+    c.enrichFail = 'Modex unmatched — NMLS không khớp, cần verify tay';
+    addTl(c, '⚠ Modex UNMATCHED → task verify tay tự tạo');
+    toast(`⚠ <b>${esc(c.name)}</b>: Modex unmatched — task verify tay tự tạo.`);
+  } else {
+    c.vol = 12.7; c.units = 29; c.since22 = 63; c.licensed = '4 năm'; c.score = 77; c.enrichFail = null;
+    addTl(c, '⚡ Modex payload về (webhook) — production tự điền, không ai gõ tay');
+    toast(`⚡ <b>${esc(c.name)}</b> enriched: 63 loans since 2022 (Modex webhook). Zero-click.`);
+  }
 }
 
 function actAdvance(id) {
@@ -152,9 +206,17 @@ function actAdvance(id) {
   if (next === 'S4' && !c.nmls) { toast(`🚫 Gate S3→S4: <b>${esc(c.name)}</b> chưa có NMLS — nhập NMLS để verify trước.`); return; }
   if (next === 'S5') {
     if (!c.offer || c.offer.status === 'NONE') {
-      c.offer = { status: 'REQUESTED', band: suggestBand(c), waitDays: 0, requestedBy: role().user };
-      addTl(c, `Request offer approval (band ${c.offer.band}) → chờ manager duyệt`);
-      toast(`✍️ Gate S4→S5: đã tạo <b>offer request</b> band ${c.offer.band} — chờ Manager duyệt (xem role Manager).`);
+      const band = suggestBand(c);
+      if (CONFIG.offerApproval === 'auto') {
+        c.offer = { status: 'APPROVED', band, waitDays: 0, requestedBy: role().user, auto: true };
+        c.stage = 'S5';
+        addTl(c, `Offer AUTO-APPROVED band ${band} theo band rule (config offer_approval=auto) → thẳng bàn HR, không chờ ai`);
+        toast(`⚙️ Gate S4→S5: <b>AUTO approve</b> band ${band} theo rule — sang thẳng Offer desk của HR. (Đổi sang "Manager duyệt" trong Settings nếu muốn có người gác.)`);
+        render(); return;
+      }
+      c.offer = { status: 'REQUESTED', band, waitDays: 0, requestedBy: role().user };
+      addTl(c, `Request offer approval (band ${band}) → chờ manager duyệt (config offer_approval=manager)`);
+      toast(`✍️ Gate S4→S5: đã tạo <b>offer request</b> band ${band} — chờ Manager duyệt (xem role Manager).`);
       render(); return;
     }
     if (c.offer.status === 'REQUESTED') { toast(`⏳ <b>${esc(c.name)}</b>: offer request đang chờ Manager duyệt — recruiter không tự qua gate này được.`); return; }
@@ -387,6 +449,14 @@ function actSaveSla(id, val) {
   render();
 }
 
+function actSaveOfferMode(v) {
+  CONFIG.offerApproval = v;
+  toast(v === 'auto'
+    ? '⚙️ Offer approval → <b>AUTO</b>: band rule tự duyệt, S4→S5 không chờ ai. Lệch band/RSU vẫn cần người.'
+    : '⚙️ Offer approval → <b>Manager duyệt</b>: mọi request xếp hàng ở màn Exceptions.');
+  render();
+}
+
 function actSaveDefaultView(rk, v) {
   CONFIG.defaultView[rk] = v;
   toast(`⚙️ Default view của role <b>${esc(ROLES[rk]?.label || rk)}</b> → <b>${esc(v)}</b>.`);
@@ -444,7 +514,7 @@ function render() {
   const screens = {
     today: vToday, pipeline: vPipeline, exceptions: vExceptions, hrq: vHrQueue,
     licq: vLicQueue, onbq: vOnbBoard, accq: vAccQueue, portal: vPortal, settings: vSettings,
-    statuses: vStatuses,
+    statuses: vStatuses, kho: vKho, nurture: vNurture,
   };
   const body = (screens[S.screen] || vToday)();
   app.innerHTML = `

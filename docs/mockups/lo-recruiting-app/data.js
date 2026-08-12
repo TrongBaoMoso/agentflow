@@ -45,6 +45,7 @@ const CONFIG = {
   ],
   defaultView: { recruiter: 'today', manager: 'exceptions', hr: 'hrq', licensing: 'licq', onboarding: 'onbq', accounting: 'accq', referrer: 'portal' },
   favoriteViews: {}, // per-role user override — set bằng nút ⭐
+  offerApproval: 'auto', // 'auto' = band rule tự duyệt · 'manager' = chờ Manager (đổi trong Settings — dynamic, không chốt cứng)
 };
 
 /* ---- Role lens: ai thấy gì (row-level + field-level) ---- */
@@ -53,14 +54,14 @@ const ROLES = {
     user: 'brayan', label: 'Recruiter', icon: '🎯',
     landing: 'Việc hôm nay của TÔI — lead của mình + team',
     rules: ['Thấy: lead của mình / team', 'Comp: chỉ thấy band gợi ý', 'Không sửa số comp cuối'],
-    nav: [['today', '☀️ Today'], ['pipeline', '📊 Pipeline'], ['portal', null], ['settings', null]],
+    nav: [['today', '☀️ Today'], ['kho', '🗄 Kho (S0)'], ['pipeline', '📊 Pipeline'], ['nurture', '🌙 Nurture'], ['portal', null], ['settings', null]],
     stages: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7'], seeComp: 'band', rows: 'own',
   },
   manager: {
     user: 'tracy', label: 'Manager', icon: '🧭',
     landing: 'Chỉ NGOẠI LỆ: trễ SLA, nghẽn, chờ duyệt — mọi thứ êm thì màn hình trống',
     rules: ['Thấy: toàn team, mọi stage', 'Comp: xem & duyệt', 'Quyền riêng: reassign, duyệt offer, Settings'],
-    nav: [['exceptions', '🚨 Exceptions'], ['pipeline', '📊 Pipeline'], ['statuses', '🧬 Status model (draft)'], ['settings', '⚙️ Settings']],
+    nav: [['exceptions', '🚨 Exceptions'], ['pipeline', '📊 Pipeline'], ['kho', '🗄 Kho (S0)'], ['statuses', '🧬 Status model (draft)'], ['settings', '⚙️ Settings']],
     stages: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7'], seeComp: 'full', rows: 'all',
   },
   hr: {
@@ -284,6 +285,40 @@ const CANDIDATES = [
     wakeUp: 'Tự hẹn “hỏi lại tháng 8” — hôm nay đến hẹn',
     caseNote: 'Wake-up đúng hẹn tháng 8 — chính cô ấy xin thế.',
     timeline: [['Feb 20', 'Trade show — “đang bận refi pipeline, hỏi lại tháng 8”'], ['Aug 3', 'Wake-up task tự tạo']],
+  },
+
+  /* ---- S0 · KHO — CHƯA có owner. Cold (danh bạ Modex) vs HOT (tự giơ tay → đồng hồ chờ-nhận của TEAM) ---- */
+  {
+    id: 'omar', name: 'Omar Haddad', av: 'OH', color: '#2E7D57',
+    nmls: '1988420', company: 'Rate.com', city: 'Chicago, IL', st: 'IL',
+    stage: 'S0', source: 'Modex List', owner: null, cold: true,
+    vol: 29.8, units: 66, since22: 161, licensed: '9 năm', score: 88,
+    caseNote: 'COLD — nằm kho từ đợt import Feb, điểm cao nhất kho. Không đồng hồ; recruiter đi "săn" thì Claim.',
+    timeline: [['Feb 10', 'Import Modex list (batch TMC) — vào kho, chưa có owner']],
+  },
+  {
+    id: 'wanda', name: 'Wanda Perez', av: 'WP', color: '#7C5CBF',
+    nmls: '2455091', company: 'UWM Retail', city: 'Miami, FL', st: 'FL',
+    stage: 'S0', source: 'Modex List', owner: null, cold: true,
+    vol: 14.2, units: 31, since22: 74, licensed: '6 năm', score: 79,
+    caseNote: 'COLD — danh bạ Modex, chưa ai đụng.',
+    timeline: [['Feb 10', 'Import Modex list — vào kho']],
+  },
+  {
+    id: 'nina', name: 'Nina Volkov', av: 'NV', color: '#B45309',
+    nmls: '', company: '—', city: 'Seattle, WA', st: 'WA',
+    stage: 'S0', source: 'Event · Webinar', owner: null, hot: true, claimMin: 150,
+    vol: null, units: null, score: null,
+    caseNote: 'HOT — vừa đăng ký webinar, CHƯA ai nhận. Đồng hồ chờ-nhận của cả TEAM đang chạy (không phải của cá nhân nào).',
+    timeline: [['Hôm nay', 'Đăng ký webinar “Comp that makes sense” → vào khay chờ nhận, đồng hồ team 4h chạy']],
+  },
+  {
+    id: 'raj', name: 'Raj Patel', av: 'RJ', color: '#0E7490',
+    nmls: '2237761', company: 'NEXA', city: 'Phoenix, AZ', st: 'AZ',
+    stage: 'S0', source: 'Self-apply', owner: null, hot: true, claimMin: 35,
+    vol: 7.6, units: 18, since22: 41, licensed: '3 năm', score: 72,
+    caseNote: 'HOT — tự apply 3,5h trước, còn 35 phút là bể SLA chờ-nhận (4h). Không ai nhận nữa → tự leo lên màn Exceptions của Manager.',
+    timeline: [['Hôm nay', 'Self-apply qua website → khay chờ nhận']],
   },
 ];
 

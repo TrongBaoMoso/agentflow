@@ -34,7 +34,7 @@ function vToday() {
       <div class="sec-h">🔥 New leads — first touch SLA <span class="cnt">${newLeads.length}</span><span class="hint">auto-assigned · SLA ${CONFIG.sla[1].hours}h (admin đổi trong Settings)</span></div>
       ${newLeads.map((c) => cRow(c,
         `<span class="chip ${c.source === 'Referral' ? 'blue' : c.source === 'Self-apply' ? 'grey' : 'orange'}">${c.source}</span> &nbsp;
-         ${c.vol != null ? `<b>$${c.vol}M</b> · ${c.units} units (12m)` : c.enrichFail ? `<span class="chip red">⚠ ${esc(c.enrichFail)}</span>` : 'No NMLS data — <b>hỏi & nhập NMLS để enrich</b>'} &nbsp;${slaChip(c)}`,
+         ${c.vol != null ? fmtProd(c) : c.enrichFail ? `<span class="chip red">⚠ ${esc(c.enrichFail)}</span>` : `<span class="chip amber click" onclick="event.stopPropagation();mNmls('${c.id}')">No NMLS — ＋ hỏi & nhập để enrich</span>`} &nbsp;${slaChip(c)}`,
         contactBtns(c))).join('') || '<div class="empty">Không còn lead chờ first touch — Call/SMS xong là tự chuyển S2 ✓</div>'}
     </div>
     <div class="card">
@@ -313,6 +313,13 @@ function vSettings() {
     <table class="set-tbl"><tr><th>Policy</th><th>Áp dụng</th><th>Target</th><th>Cảnh báo</th><th>Khi vi phạm</th></tr>${sla}</table></div>
   <div class="card"><div class="sec-h">🖥 Default view theo role <span class="hint">admin đặt default · user override bằng ⭐ favorite trong Pipeline</span></div>
     <table class="set-tbl"><tr><th>Role</th><th>Default view (admin)</th><th>Favorite (user override)</th></tr>${dv}</table></div>
+  <div class="card"><div class="sec-h">✍️ Offer approval <span class="hint">dynamic — không chốt cứng "phải có người duyệt"</span></div>
+    <table class="set-tbl"><tr><th>Chế độ</th><th>Nghĩa là</th></tr>
+      <tr><td><select onchange="actSaveOfferMode(this.value)">
+        <option value="auto" ${CONFIG.offerApproval === 'auto' ? 'selected' : ''}>AUTO — band rule tự duyệt</option>
+        <option value="manager" ${CONFIG.offerApproval === 'manager' ? 'selected' : ''}>Manager duyệt từng offer</option>
+      </select></td>
+      <td>AUTO: đúng band theo rule → S4→S5 tự chạy, không chờ ai (nghẽn "đợi duyệt 4 ngày" biến mất). Chỉ cần người khi LỆCH chuẩn: đổi band tay, comp ngoài rule, RSU. Manager: mọi offer xếp hàng ở Exceptions.</td></tr></table></div>
   <div class="card"><div class="sec-h">💰 Comp bands <span class="hint">placeholder — giá trị thật chờ anh Thuận/HR chốt</span></div>
     <table class="set-tbl"><tr><th>Band</th><th>Tiêu chí (volume→band mapping)</th><th></th></tr>${bands}</table></div>
   <p class="src-note">Thử đổi SLA "First touch" từ 24 → 2 giờ rồi quay lại Today: chip đếm giờ ăn theo config, không hardcode (yêu cầu 04/08: admin đổi 4h→2h không cần deploy).</p>`;
