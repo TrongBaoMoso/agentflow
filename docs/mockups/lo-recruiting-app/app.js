@@ -96,6 +96,41 @@ function stageChip(c) {
 
 const fmtVol = (c) => (c.vol == null ? '—' : `$${c.vol}M · ${c.units}u`);
 
+/* Production theo lens (D31/R22): Recruiter chỉ thấy "loans since 2022";
+   vol/units vẫn lưu + vẫn vào snapshot offer cho HR/Manager */
+function fmtProd(c) {
+  if (role().seeComp === 'band') return c.since22 != null ? `<b>${c.since22}</b> loans since 2022` : '—';
+  return c.vol == null ? '—' : `<b>$${c.vol}M</b> · ${c.units}u (12m)`;
+}
+
+/* ---------- 6 ĐÈN TÍN HIỆU (derive từ state — không phải status mới) ---------- */
+function candLights(c) {
+  const inOnb = ['S6', 'S7'].includes(c.stage);
+  const signed = c.offer?.status === 'SIGNED' || inOnb;
+  const hv = c.hrVerify;
+  const hrDone = hv ? hv.todos && hv.docs : c.stage === 'S7';
+  const hrStarted = hv ? hv.todos || hv.docs : inOnb;
+  return [
+    { k: 'PAID',      on: !!c.paid,  src: 'tự động — PayPal verify' },
+    { k: 'SIGNED',    on: signed,    src: 'tự động — document-esign event' },
+    { k: 'LICENSED',  on: !!c.nmls,  src: 'GIẢ ĐỊNH: tay/CSV — Phase 2 NMLS reconcile' },
+    { k: 'SPONSORED', on: c.licensing ? c.licensing.status === 'OK' : c.stage === 'S7', src: 'Licensing đánh dấu theo bang' },
+    { k: 'HR',        on: hrDone, half: hrStarted && !hrDone, src: 'HR app event · fallback: 2 nút verify' },
+    { k: 'ACCOUNT',   on: !!c.accountCreated || c.stage === 'S7', src: 'user-service báo account tạo xong' },
+  ];
+}
+function lightsBar(c, sm) {
+  return `<span class="lights ${sm ? 'sm' : ''}">${candLights(c).map((l) =>
+    `<i class="lt ${l.on ? 'on' : l.half ? 'half' : ''}" title="${l.k} — ${esc(l.src)}">${sm ? '' : l.k}</i>`).join('')}</span>`;
+}
+/* HR status 5 giá trị cũ → 3 trạng thái DERIVE (không ai bấm tay) */
+function hrStatusChip(c) {
+  const l = candLights(c).find((x) => x.k === 'HR');
+  return l.on ? '<span class="chip green">HR: Xong ✓</span>'
+    : l.half ? '<span class="chip amber">HR: Đang chạy</span>'
+    : '<span class="chip grey">HR: Chưa bắt đầu</span>';
+}
+
 /* ---------- ACTIONS (mọi nút bấm gọi vào đây) ---------- */
 
 function actContact(id, kind) {
@@ -201,6 +236,50 @@ function actTick(id, dept, idx) {
     addTl(c, '🎉 Checklist 100% → TỰ chuyển S7 Active · attribution đóng băng · bonus clock chạy');
     toast(`🎉 <b>${esc(c.name)}</b> đủ 100% checklist → tự chuyển <b>S7 Active</b>. Đổi role <b>Referring LO</b> xem card của David đổi theo!`);
   }
+  render();
+}
+
+/* HR verify 2 nút (fallback khi HR app chưa bắn event) — thiết kế "ổ cắm trước, phích sau" */
+function actHrVerify(id, type) {
+  const c = C(id);
+  c.hrVerify = c.hrVerify || { todos: false, docs: false };
+  c.hrVerify[type] = true;
+  const lbl = type === 'todos' ? 'To-dos (courses…)' : 'Documents (W-9, Remote Policy…)';
+  addTl(c, `HR verify ${lbl} ✓ bởi ${me().name} — sau này HR app bắn event là tự tick, không cần bấm`);
+  if (c.hrVerify.todos && c.hrVerify.docs) addTl(c, 'Đèn HR bật ✓ (derive từ 2 verify — không có status "HR completed" bấm tay)');
+  toast(`✅ Verify <b>${lbl}</b> cho ${esc(C(id).name)}. Đây là nút FALLBACK — khi hr.loanfactory.com bắn event, đèn tự bật.`);
+  render();
+}
+
+/* Override tạo account vượt cổng (D35) — role Onboarding, bắt buộc lý do, HR app không cần biết là ngoại lệ */
+function actOverride(id) {
+  const c = C(id);
+  openModal(`<div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal">
+    <div class="mh">⚡ Tạo account vượt cổng — ${esc(c.name)}</div>
+    <form onsubmit="event.preventDefault();actOverrideGo('${id}',this.reason.value)">
+      <div class="mb">
+        <p style="font-size:12px;color:var(--ink-2)">Bỏ qua điều kiện chưa đủ (đèn chưa xanh hết) và gửi request tạo account sang HR app ngay.
+        <b>HR app không cần biết đây là ngoại lệ</b> — nó chỉ nhận data và báo HR member tạo account (D35).
+        Lý do bắt buộc + ghi audit; chỉ role <b>Onboarding</b> có nút này.</p>
+        <div class="fld"><label>Lý do override *</label><input name="reason" placeholder="Vd: CEO approve — start gấp ngày 15/08" required autofocus></div>
+      </div>
+      <div class="mf"><button type="button" class="btn ghost" onclick="closeModal()">Cancel</button>
+      <button type="submit" class="btn primary">Gửi request tạo account</button></div>
+    </form></div></div>`);
+}
+function actOverrideGo(id, reason) {
+  const c = C(id);
+  c.accountCreated = true;
+  addTl(c, `⚡ OVERRIDE tạo account bởi ${me().name} — lý do: "${reason}" · audit ghi · request đẩy sang HR app (data thường, không nhãn ngoại lệ)`);
+  closeModal();
+  toast(`⚡ Request tạo account cho <b>${esc(c.name)}</b> đã sang HR app kèm lý do (audit). Đèn ACCOUNT sẽ bật khi user-service báo xong.`);
+  render();
+}
+
+/* NMLS Reconcile (Phase 2 concept) — import CSV report từ NMLS, đối soát với app */
+function actReconcile() {
+  S.reconciled = true;
+  toast('🔄 Đã nạp <b>Individual Roster CSV</b> (NMLS report) — đối soát chạy: khớp thì im lặng, lệch thì thành task.');
   render();
 }
 
@@ -365,6 +444,7 @@ function render() {
   const screens = {
     today: vToday, pipeline: vPipeline, exceptions: vExceptions, hrq: vHrQueue,
     licq: vLicQueue, onbq: vOnbBoard, accq: vAccQueue, portal: vPortal, settings: vSettings,
+    statuses: vStatuses,
   };
   const body = (screens[S.screen] || vToday)();
   app.innerHTML = `

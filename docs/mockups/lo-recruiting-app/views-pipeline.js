@@ -8,7 +8,7 @@ function vLogin() {
     const r = ROLES[k], u = USERS[r.user];
     return `<div class="rolecard" onclick="login('${k}')">
       <div class="rc-top"><div class="av" style="background:${u.color}">${u.av}</div>
-        <div><h3>${u.name}</h3><div class="rt">${r.icon} ${r.label}${['tracy', 'david'].includes(r.user) ? ' · tên placeholder' : ''}</div></div>
+        <div><h3>${u.name}</h3><div class="rt">${r.icon} ${r.label}${r.user === 'david' ? ' · tên placeholder' : ''}</div></div>
       </div>
       <p>${r.landing}</p>
       <div class="tags">${r.rules.slice(0, 2).map((x) => `<span class="chip ${x.includes('🔒') || x.includes('Không') ? 'amber' : 'green'}">${x}</span>`).join('')}</div>
@@ -58,6 +58,7 @@ function vKanban() {
           ${c.enrichFail ? '<span class="chip red">⚠ enrich lỗi</span>' : ''}
           ${c.vol >= 100 ? '<span class="chip orange">High producer</span>' : ''}
         </div>
+        ${['S4', 'S5', 'S6'].includes(st.id) ? lightsBar(c, true) : ''}
       </div>`).join('');
     return `<div class="colk ${locked ? 'col-locked' : ''}">
       <h3>${st.id} · ${st.name} <span class="cnt">${locked ? '🔒' : cands.length}</span></h3>
@@ -83,7 +84,7 @@ function vTable() {
       <td class="cname" onclick="openC('${c.id}')"><b>${esc(c.name)}</b><small>${c.nmls ? 'NMLS ' + c.nmls : 'NMLS —'} · ${esc(c.city)}</small></td>
       <td>${stageChip(c)}</td>
       <td>${c.source}</td>
-      <td><b>${fmtVol(c)}</b></td>
+      <td>${fmtProd(c)}</td>
       <td>${c.slaMin != null ? slaChip(c) : esc(c.followUp || c.caseNote?.slice(0, 42) + '…' || '—')}</td>
       <td>${USERS[c.owner]?.name || '—'}</td>
       <td>${compView(c)}</td>
@@ -95,7 +96,7 @@ function vTable() {
     </div>
     ${bulk}
     <div class="card"><div class="tblwrap"><table class="tbl">
-      <tr><th></th><th>Candidate</th><th>Stage</th><th>Source</th><th>Production (12m)</th><th>SLA / Next task</th><th>Owner</th><th>Comp (lens!)</th></tr>
+      <tr><th></th><th>Candidate</th><th>Stage</th><th>Source</th><th>Production (lens: Re thấy loans since 2022 — R22)</th><th>SLA / Next task</th><th>Owner</th><th>Comp (lens!)</th></tr>
       ${rows}
     </table></div>
     <div class="pager">1–${cands.length} of <b>&nbsp;${cands.length} (demo) · 4,812 (thật)&nbsp;</b><span style="margin-left:auto">Tick checkbox → bulk bar hiện ra · cột Comp đổi theo role</span></div></div>
@@ -130,8 +131,10 @@ function vFocus() {
       </div>
       <div class="fc-body">
         <div class="facts">
-          <div class="fact"><b>${cur.vol != null ? '$' + cur.vol + 'M' : '?'}</b>Volume 12m</div>
-          <div class="fact"><b>${cur.units ?? '?'}</b>Units 12m</div>
+          ${role().seeComp === 'band'
+            ? `<div class="fact"><b>${cur.since22 ?? '?'}</b>Loans since 2022</div>`
+            : `<div class="fact"><b>${cur.vol != null ? '$' + cur.vol + 'M' : '?'}</b>Volume 12m</div>
+               <div class="fact"><b>${cur.units ?? '?'}</b>Units 12m</div>`}
           <div class="fact"><b>${cur.licensed || '?'}</b>Licensed</div>
           <div class="fact"><b>${cur.source}</b>Source</div>
           <div class="fact"><b>${esc((cur.timeline?.length || 0) + ' sự kiện')}</b>Lịch sử</div>
@@ -206,12 +209,17 @@ function vDrawer(c) {
     </div>` : '';
   const prod = c.vol != null ? `<div class="vcard">
       <div class="vh">${c.verified ? '✅ Verified production' : '📈 Production (chưa verify)'} <span class="fresh">${S.sim === 'modexDown' && c.verified ? '⚠ Modex down — dùng as-of ' + c.verified : c.verified ? 'Modex · ' + c.verified : 'nguồn: list import'}</span></div>
-      <div class="vgrid">
+      ${r.seeComp === 'band'
+        ? `<div class="vgrid" style="grid-template-columns:1fr 1fr">
+        <div class="vcell"><b>${c.since22 ?? '—'}</b><span>LOANS SINCE 2022</span></div>
+        <div class="vcell"><b>${c.licensed || '—'}</b><span>LICENSED</span></div>
+      </div><div style="padding:0 12px 10px;font-size:11px;color:var(--ink-3)">Volume/units ẩn với Recruiter (R22 — Re chỉ dùng loans since 2022); vẫn lưu &amp; vẫn đóng băng vào snapshot offer cho HR/Manager (D31)</div>`
+        : `<div class="vgrid">
         <div class="vcell"><b>$${c.vol}M</b><span>VOLUME (12M)</span></div>
         <div class="vcell"><b>${c.units}</b><span>UNITS (12M)</span></div>
         <div class="vcell"><b>${c.avgLoan || '—'}</b><span>AVG LOAN</span></div>
         <div class="vcell"><b>${c.licensed || '—'}</b><span>LICENSED</span></div>
-      </div>${mix}</div>`
+      </div>${mix}`}</div>`
     : `<div class="vcard"><div class="vh" style="background:var(--amber-soft);color:var(--amber)">⚠️ Chưa có production data</div>
       <div style="padding:12px;font-size:12px;color:var(--ink-2)">Chưa có NMLS → chưa enrich được. Nhập NMLS là Modex data tự về (zero-click).</div></div>`;
   const comp = `<div class="comp"><h5>💰 Comp</h5><div class="band">${compView(c)}</div>
@@ -229,7 +237,8 @@ function vDrawer(c) {
       <div class="dr-head"><div class="top">
         <div class="av" style="width:42px;height:42px;border-radius:50%;background:${c.color};color:#fff;display:grid;place-items:center;font-weight:700">${c.av}</div>
         <div><h2>${esc(c.name)}</h2><div class="sub">${c.nmls ? 'NMLS ' + c.nmls + ' · ' : ''}${esc(c.company)} · ${esc(c.city)}</div>
-          <div style="margin-top:5px">${stageChip(c)} <span class="chip grey">${c.source}</span></div></div>
+          <div style="margin-top:5px">${stageChip(c)} <span class="chip grey">${c.source}</span></div>
+          ${['S4', 'S5', 'S6', 'S7'].includes(c.stage) ? '<div style="margin-top:7px">' + lightsBar(c) + '</div>' : ''}</div>
         ${c.score ? `<div class="score"><b>${c.score}</b><span>MODEX SCORE</span></div>` : ''}
         <button class="dr-x" onclick="closeC()">✕</button>
       </div></div>

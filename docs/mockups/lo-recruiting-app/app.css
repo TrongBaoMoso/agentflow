@@ -261,3 +261,17 @@ button{font-family:inherit}
 .toast{background:#1F2430;color:#fff;border-radius:10px;padding:10px 18px;font-size:12.5px;box-shadow:0 8px 24px rgba(31,36,48,.35);animation:pop .18s ease-out;max-width:560px}
 .toast b{color:#FFB27D}
 @keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ---- 6 đèn tín hiệu (derive) ---- */
+.lights { display: inline-flex; gap: 4px; align-items: center; vertical-align: middle; }
+.lights .lt {
+  font-style: normal; font-size: 9px; font-weight: 700; letter-spacing: .04em;
+  padding: 2px 6px; border-radius: 999px; background: var(--line-2, #E8E4DC);
+  color: var(--ink-3, #8A93A2); border: 1px solid transparent; cursor: default;
+}
+.lights .lt.on { background: var(--green-soft, #E3F2E8); color: var(--green, #2E7D57); border-color: var(--green, #2E7D57); }
+.lights .lt.half { background: var(--amber-soft, #FBF0DC); color: var(--amber, #B45309); border-color: var(--amber, #B45309); }
+.lights.sm { margin-top: 6px; }
+.lights.sm .lt { width: 8px; height: 8px; padding: 0; border-radius: 50%; }
+.lights.sm .lt.on { background: var(--green, #2E7D57); }
+.lights.sm .lt.half { background: var(--amber, #B45309); }

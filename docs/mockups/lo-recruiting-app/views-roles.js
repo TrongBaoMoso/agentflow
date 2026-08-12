@@ -147,7 +147,29 @@ function vHrQueue() {
   ${signed.length ? `<div class="card"><div class="sec-h">✅ Vừa ký — đã tự sang S6 <span class="cnt">${signed.length}</span></div>
     ${signed.map((c) => `<div class="row">${rowWho(c)}<div class="meta"><span class="chip green">Signed ✓</span> → tự chuyển S6 · checklist tự mở — không ai chuyển tay</div>
     <div class="acts"><button class="btn sm ghost" onclick="openC('${c.id}')">Xem hồ sơ</button></div></div>`).join('')}</div>` : ''}
+  ${vHrLights()}
   <p class="src-note">HR không hỏi "ai tới lượt tôi?" — qua gate S4 là tự hiện. Thử bấm "(demo: ứng viên ký)" cho Trent → rồi đổi role Onboarding xem checklist mở.</p>`;
+}
+
+/* ---------- HR · 6 ĐÈN + VERIFY (fallback trước khi HR app bắn event) ---------- */
+function vHrLights() {
+  const onb = simE(CANDIDATES.filter((c) => ['S6', 'S7'].includes(c.stage) && c.checklist));
+  return `<div class="card">
+    <div class="sec-h">🚥 Đang onboarding — đèn tín hiệu & verify <span class="cnt">${onb.length}</span>
+      <span class="hint">PAID/SIGNED tự bật · đèn HR: chờ hr.loanfactory.com bắn event — tạm thời 2 nút verify</span></div>
+    ${onb.map((c) => {
+      const hv = c.hrVerify || { todos: false, docs: false };
+      return `<div class="row">${rowWho(c)}
+      <div class="meta">${lightsBar(c)} &nbsp;${hrStatusChip(c)}</div>
+      <div class="acts">
+        <button class="btn sm ${hv.todos ? 'ghost' : 'green'}" ${hv.todos ? 'disabled' : ''} onclick="actHrVerify('${c.id}','todos')">${hv.todos ? 'To-dos ✓' : 'Verify To-dos'}</button>
+        <button class="btn sm ${hv.docs ? 'ghost' : 'green'}" ${hv.docs ? 'disabled' : ''} onclick="actHrVerify('${c.id}','docs')">${hv.docs ? 'Documents ✓' : 'Verify Documents'}</button>
+      </div></div>`;
+    }).join('') || '<div class="empty">Chưa ai trong onboarding</div>'}
+    <div style="padding:10px 16px 14px;font-size:12px;color:var(--ink-2)">
+      <span class="chip amber">GIẢ ĐỊNH</span> Nội dung To-dos (Compliance Courses…) & Documents (W-9, Remote Work Policy, Passport/GC, Cyber Security)
+      lấy từ 13 ảnh chụp flow HR thật — chờ Q11/Q12 chốt danh sách chính thức. Khi HR app có outbound event, 2 nút này biến mất — đèn tự bật ("ổ cắm trước, phích sau").</div>
+  </div>`;
 }
 
 /* ---------- LICENSING QUEUE ---------- */
@@ -172,6 +194,20 @@ function vLicQueue() {
       <div class="meta"><span class="chip blue">${esc(c.licRelay.q)}</span> → trả lời: <b>${esc(c.licRelay.a)}</b></div>
       <div class="acts"><button class="btn sm primary" onclick="actAnswerRelay('${c.id}')">Gửi trả lời</button></div></div>`).join('')
     || '<div class="empty">Không có câu hỏi chờ — câu trả lời đã relay cho recruiter ✓</div>'}
+  </div>
+  <div class="card">
+    <div class="sec-h">🔄 NMLS Reconcile <span class="chip amber">Phase 2 — concept</span>
+      <span class="hint">NMLS không có API — nhưng có report CSV. Nhập vào, máy đối soát thay người dò</span></div>
+    ${S.reconciled ? `
+      <div class="row"><div class="meta"><span class="chip green">✓ 2.591 record khớp</span> app = NMLS — không việc gì phải làm</div></div>
+      <div class="row"><div class="who" onclick="openC('dana')"><div class="av" style="background:#5B6472">DW</div><b>Dana Whitfield</b></div>
+        <div class="meta"><span class="chip red">LỆCH</span> App: SC sponsorship <b>pending</b> · NMLS roster: <b>không có</b> SC → đúng như app, không lệch thật — auto-clear</div></div>
+      <div class="row"><div class="who"><div class="av" style="background:#8A5A44">MK</div><b>Mark Keller</b></div>
+        <div class="meta"><span class="chip red">LỆCH</span> NMLS: license TX <b>expired 07/31</b> · app vẫn ghi Licensed → task tự tạo cho Licensing</div>
+        <div class="acts"><button class="btn sm primary" onclick="toast('Task mở trên hồ sơ — sửa xong thì lần reconcile sau tự sạch.')">Mở task</button></div></div>
+      <div class="row"><div class="meta" style="font-size:12px;color:var(--ink-2)">Nguồn file: NMLS portal → REPORTS → <b>Individual Active License Items</b> (CSV, sinh async). Phase 3 (nếu đáng tiền): mua NMLS B2B bulk file — Quarterly $10k/năm → tự động hoàn toàn.</div></div>`
+    : `<div class="row"><div class="meta">Kéo file CSV report từ NMLS portal vào đây — máy so từng dòng với sponsorship/license trong app: khớp thì im, lệch thì thành task có chủ.</div>
+      <div class="acts"><button class="btn sm primary" onclick="actReconcile()">⬆ Nhập Individual Roster CSV (demo)</button></div></div>`}
   </div>
   <div class="card">
     <div class="sec-h">🔒 Field-level RBAC — demo<span class="hint">cùng hồ sơ Dana, Licensing thấy khác HR</span></div>
@@ -201,20 +237,21 @@ function vOnbBoard() {
       <div class="meta">${depts}</div>
       <div class="acts" style="flex-direction:column">
         <button class="btn sm primary" onclick="actNudge('${c.id}','Licensing')">Nhắc phòng kẹt</button>
+        ${c.accountCreated ? '<button class="btn sm ghost" disabled>Account ✓</button>' : `<button class="btn sm ghost" title="Bỏ qua điều kiện chưa đủ — cần lý do, ghi audit (D35)" onclick="actOverride('${c.id}')">⚡ Tạo account vượt cổng</button>`}
         <button class="btn sm ghost" onclick="openC('${c.id}')">Hồ sơ 360</button></div></div>`;
   }).join('');
   return `<div class="card">
-    <div class="sec-h">🎓 Đang onboarding <span class="cnt">${onb.length}</span><span class="hint">4 phòng song song — click ▸ mở checklist, tick trực tiếp</span></div>
+    <div class="sec-h">🎓 Đang onboarding <span class="cnt">${onb.length}</span><span class="hint">4 phòng song song — click ▸ mở checklist, tick trực tiếp · <span class="chip amber">GIẢ ĐỊNH</span> nội dung checklist chờ Q11/Q12</span></div>
     ${rows || '<div class="empty">Không ai đang onboarding — HR cho ký offer là hồ sơ xuất hiện ở đây</div>'}
   </div>
-  <p class="src-note">Mỗi phòng tick việc của mình, coordinator nhìn chỗ đỏ. Thử tick nốt "First-file shadow" của Louis → 100% tự chuyển S7 + card của David Park (Referring LO) đổi theo.</p>`;
+  <p class="src-note">Mỗi phòng tick việc của mình, coordinator nhìn chỗ đỏ. Nút <b>⚡ vượt cổng</b> chỉ role Onboarding có — lý do bắt buộc, HR app nhận request như thường (D35). Thử tick nốt "First-file shadow" của Louis → 100% tự chuyển S7 + card của David Park (Referring LO) đổi theo.</p>`;
 }
 
 /* ---------- ACCOUNTING · PAYOUT ---------- */
 function vAccQueue() {
   const bonuses = simE(CANDIDATES.filter((c) => c.bonus));
   return `<div class="card">
-    <div class="sec-h">💵 Referral bonus <span class="cnt">${bonuses.length}</span><span class="hint">chín sau 60 ngày từ ngày join — luật kế thừa §8.4</span></div>
+    <div class="sec-h">💵 Referral bonus <span class="cnt">${bonuses.length}</span><span class="hint">chín sau 60 ngày từ ngày join — luật kế thừa §8.4 · <span class="chip amber">GIẢ ĐỊNH</span> mốc "ngày join" chờ Q13; job chạy HẰNG NGÀY (không đợi thứ Bảy) chờ Q29</span></div>
     ${bonuses.length ? bonuses.map((c) => {
       const b = c.bonus;
       const referrer = b.referrer ? USERS[b.referrer].name : b.referrerName;
