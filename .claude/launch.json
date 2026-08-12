@@ -2,6 +2,20 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "lfh-coach-policy",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-coach-policy",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3022"
+      ],
+      "port": 3022
+    },
+    {
       "name": "loal-pkyp",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
@@ -14,6 +28,20 @@
         "3051"
       ],
       "port": 3051
+    },
+    {
+      "name": "loal-rr-batch2",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/loal-rr-notes-batch2",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "3052"
+      ],
+      "port": 3052
     },
     {
       "name": "lol-frontend",
@@ -228,6 +256,135 @@
         "3021"
       ],
       "port": 3021
+    },
+    {
+      "name": "lo-homepage-farrell",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/lo-homepage",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3000"
+      ],
+      "port": 3000
+    },
+    {
+      "name": "lfh-drop-dallas",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-drop-dallas",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3023"
+      ],
+      "port": 3023
+    },
+    {
+      "name": "lo-programs-v3",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "3025",
+        "--directory",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-v3/public"
+      ],
+      "port": 3025
+    },
+    {
+      "name": "lo-programs-static",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8914",
+        "--directory",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-v4/public/lo-programs"
+      ],
+      "port": 8914
+    },
+    {
+      "name": "lo-programs-v7",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "3042",
+        "--directory",
+        "/Users/apple/Projects/agentflow/docs/mockups/lo-programs-v7"
+      ],
+      "port": 3042
+    },
+    {
+      "name": "moso-aid-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/moso-aid",
+        "run",
+        "dev"
+      ],
+      "port": 5001
+    },
+    {
+      "name": "lfh-lo-programs",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-lo-programs-fe",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3055"
+      ],
+      "port": 3055
+    },
+    {
+      "name": "lfh-lo-programs-start",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-lo-programs-fe",
+        "run",
+        "start",
+        "--",
+        "-p",
+        "3056"
+      ],
+      "port": 3056
+    },
+    {
+      "name": "lfh-preview-bar",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-preview-bar",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3028"
+      ],
+      "port": 3028
+    },
+    {
+      "name": "lo-programs-gallery",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8917",
+        "--directory",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-lo-programs-fe/public/lo-programs"
+      ],
+      "port": 8917
     }
   ]
 }
