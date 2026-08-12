@@ -2,6 +2,20 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "lo-homepage-debug",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/lo-homepage",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3061"
+      ],
+      "port": 3061
+    },
+    {
       "name": "lfh-coach-policy",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
@@ -396,6 +410,19 @@
         "dev"
       ],
       "port": 3000
+    },
+    {
+      "name": "lfh-parity2",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3078"
+      ],
+      "cwd": "/Users/apple/Projects/agentflow/.worktrees/lfh-lo-programs-fe",
+      "port": 3078
     }
   ]
 }
