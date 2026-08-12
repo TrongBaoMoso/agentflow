@@ -41,7 +41,13 @@ function vPipeline() {
 /* ---------- KANBAN ---------- */
 function vKanban() {
   const r = role();
-  const cols = STAGES.filter((s) => s.id !== 'S7').map((st) => {
+  const s0col = `<div class="colk" style="max-width:200px">
+      <h3>S0 · Kho <span class="cnt">102.715</span></h3>
+      <div class="gate-note">Danh bạ (RLO cũ) — chưa ai đụng, CHƯA có owner, CHƯA có SLA</div>
+      <div class="lockmsg" style="opacity:.8;text-align:left;padding:12px">Không vẽ card ở đây (kanban vô nghĩa với 100k dòng) — làm việc qua <b>Table + filter/bulk</b>.<br><br>
+      Sang S1 bằng 1 trong 2 cách, bật/tắt trong Settings (Q34):<br>• <b>máy chia</b> (auto-assign)<br>• <b>recruiter tự Claim</b></div>
+    </div>`;
+  const cols = s0col + STAGES.filter((s) => s.id !== 'S7').map((st) => {
     const locked = !r.stages.includes(st.id);
     const cands = locked ? [] : visibleCands().filter((c) => c.stage === st.id);
     const cardsH = cands.map((c) => `
