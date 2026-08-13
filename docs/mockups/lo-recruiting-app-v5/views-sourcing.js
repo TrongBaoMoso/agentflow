@@ -94,11 +94,13 @@ function mOutcome(id) {
     <div class="mh">📋 Kết quả cú gọi — ${esc(c.name)}</div>
     <div class="mb">
       <p style="font-size:12px;color:var(--ink-2)">Luật "S2+ luôn có bước kế tiếp" nằm ở đây: <b>không đóng được modal mà chưa chọn</b>. Mọi lead rẽ nhánh tại chỗ này — không còn lead "nói chuyện xong rồi thôi".</p>
+      <div class="fld"><label>📝 Ghi chú cuộc gọi — NÊN ghi (lưu vào thread hồ sơ dạng INTERNAL: ứng viên không thấy, cả team đọc lại được — D29/D36; hệ cũ: ghi giấy hoặc không gì cả)</label>
+        <textarea id="outNote" rows="2" placeholder="Vd: quan tâm comp P3+, vợ chuyển việc tháng 10 — gọi lại giữa tháng 8…" style="width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;resize:vertical"></textarea></div>
       <button class="btn ghost w" onclick="actOutcome('${id}','next')">✅ Quan tâm — đặt follow-up, giữ trong pipeline</button>
-      <button class="btn ghost w" onclick="mNurtureDate('${id}')">📅 Hẹn lại CÓ ngày → Nurture + wake-up đúng ngày</button>
+      <button class="btn ghost w" onclick="S.outNote=($('outNote')||{}).value;mNurtureDate('${id}')">📅 Hẹn lại CÓ ngày → Nurture + wake-up đúng ngày</button>
       <button class="btn ghost w" onclick="actOutcome('${id}','nurture')">🌙 Chưa muốn, KHÔNG hẹn → Nurture, cadence mặc định tự nhắc</button>
       <button class="btn ghost w" onclick="actOutcome('${id}','noanswer')">📵 Không bắt máy → task gọi lại tự tạo</button>
-      <button class="btn ghost w" onclick="mArchive('${id}')">🗑 Không quan tâm → Archive + lý do (không xoá — re-source sau được)</button>
+      <button class="btn ghost w" onclick="S.outNote=($('outNote')||{}).value;mArchive('${id}')">🗑 Không quan tâm → Archive + lý do (không xoá — re-source sau được)</button>
     </div></div></div>`);
 }
 
@@ -110,6 +112,18 @@ function mNurtureDate(id) {
         <p style="font-size:11.5px;color:var(--ink-3)">Đúng ngày này, wake-up task tự nổi lên Today của bạn — không cần nhớ, không cần ghi giấy.</p></div>
       <div class="mf"><button type="button" class="btn ghost" onclick="mOutcome('${id}')">← Quay lại</button>
         <button type="submit" class="btn primary">Vào Nurture</button></div>
+    </form></div></div>`);
+}
+
+/* Dời hạn follow-up — task KHÔNG mất, chỉ đổi ngày (hệ cũ: dời lịch = tự nhớ trong đầu) */
+function mResched(id) {
+  openModal(`<div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal">
+    <div class="mh">📅 Dời follow-up — ${esc(C(id).name)}</div>
+    <form onsubmit="event.preventDefault();actResched('${id}',this.d.value)">
+      <div class="mb"><div class="fld"><label>Dời đến ngày</label><input type="date" name="d" required autofocus></div>
+        <p style="font-size:11.5px;color:var(--ink-3)">Task giữ nguyên nội dung — chỉ đổi hạn; đúng ngày lại tự nổi lên Today. Khác với Done: Done = việc này xong và phải chọn next-step mới.</p></div>
+      <div class="mf"><button type="button" class="btn ghost" onclick="closeModal()">Cancel</button>
+        <button type="submit" class="btn primary">Dời lịch</button></div>
     </form></div></div>`);
 }
 

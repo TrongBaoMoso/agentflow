@@ -14,6 +14,8 @@ const S = {
   log: [],             // hoạt động phát sinh trong phiên demo
   sim: 'normal',       // giả lập trạng thái: normal | quiet | modexDown | esignDown
   thread: null,        // v5: thread đang mở trong màn Conversations
+  scriptFor: null,     // v5.1: row đang mở panel 📜 call script (D39 — cạnh nút gọi, mặc định gập)
+  outNote: null,       // v5.1: ghi chú cuộc gọi tạm giữ khi chuyển sub-modal (hẹn ngày / archive)
   pivotSel: null,      // v5: ô đang drill trong Dashboard quá hạn
   funAxis: 'team',     // v5: trục KPI — person | team | company (D30)
   funPeriod: 'month',  // v5: mốc KPI — day | week | month (D30)
@@ -147,6 +149,19 @@ const capReached = () => ownedOpen() >= CONFIG.maxOpen;
 /* v5: suppression (D18) — SMS bị chặn theo KÊNH */
 const smsBlocked = (c) => !!c.suppressedSms;
 
+/* ❓ Q&A phòng ban — 1 mảng asks/hồ sơ dùng chung mọi phòng; câu hỏi = entry INTERNAL trên cùng sổ hội thoại (D29) */
+const asksOf = (c) => c.asks || [];
+const deptPendingAsks = (dept) => CANDIDATES.filter((c) => asksOf(c).some((a) => a.to === dept && !a.answered));
+
+/* 📜 Call script theo status — panel gập CẠNH NÚT GỌI (D39); nguồn = template CALL_SCRIPT đang ACTIVE (D26) */
+function callScript(c, open) {
+  const sc = TEMPLATES.find((t) => t.type === 'CALL_SCRIPT' && t.stage === c.stage && t.status === 'ACTIVE')
+    || TEMPLATES.find((t) => t.type === 'CALL_SCRIPT' && t.status === 'ACTIVE');
+  return sc ? `<details class="script"${open ? ' open' : ''}><summary>📜 Call script — ${sc.stage} (mặc định gập — D39)</summary>
+    <div>${esc(sc.body)}<br><small style="color:var(--ink-3)">template "${esc(sc.name)}" · sửa trong 📨 Templates (vòng đời D26) — Re mới cần, Re cũ đã thuộc thì cứ để gập</small></div></details>` : '';
+}
+function actScript(id) { S.scriptFor = S.scriptFor === id ? null : id; render(); }
+
 function actClaim(id) {
   const c = C(id);
   if (capReached()) { toast(`🚫 Trần capacity: bạn đang ôm <b>${ownedOpen()}/${CONFIG.maxOpen}</b> lead (max_open — config D24). Xử lý bớt hoặc nhờ Manager nâng trần trong Settings.`); return; }
@@ -178,9 +193,16 @@ function actContact(id, kind) {
   if (kind === 'call' && S.role === 'recruiter' && ['S2', 'S3'].includes(c.stage)) mOutcome(id);
 }
 
-/* Kết quả cú gọi — mọi lead phải rẽ nhánh (S2+ luôn có next-step) */
+/* Kết quả cú gọi — mọi lead phải rẽ nhánh (S2+ luôn có next-step) + 📝 ghi chú lưu vào thread hồ sơ */
 function actOutcome(id, kind, val) {
   const c = C(id);
+  const note = (($('outNote') && $('outNote').value.trim()) || S.outNote || '').trim();
+  S.outNote = null;
+  if (note) {
+    addTl(c, `📝 Ghi chú cuộc gọi: "${note}" — lưu vào thread hồ sơ (INTERNAL, ứng viên không thấy — cả team đọc được, D29/D36)`);
+    const t = typeof THREADS !== 'undefined' ? THREADS.find((x) => x.cand === id) : null;
+    if (t) t.msgs.push({ dir: 'note', kind: 'INTERNAL', who: role().user, when: 'bây giờ', text: '🔒 (INTERNAL) 📝 Note sau cú gọi: ' + note });
+  }
   if (kind === 'next') { c.followUp = c.followUp || 'Follow-up đã đặt sau cú gọi'; addTl(c, 'Outcome: quan tâm — follow-up đặt, giữ pipeline'); toast('✅ Follow-up đặt — sẽ nổi lên Today đúng hẹn.'); }
   if (kind === 'nurtureDate') { c.stage = 'NURTURE'; c.nurtureUntil = val; c.slaMin = null; addTl(c, `Outcome: hẹn lại ${val} → NURTURE, wake-up task tự tạo đúng ngày`); toast(`📅 Vào Nurture — wake-up <b>${esc(val)}</b> tự nổi ở Today, không cần nhớ.`); }
   if (kind === 'nurture') { c.stage = 'NURTURE'; c.nurtureSince = 'hôm nay'; c.slaMin = null; addTl(c, 'Outcome: chưa muốn, không hẹn → NURTURE, cadence mặc định tự nhắc'); toast('🌙 Vào Nurture — cadence config tự nhắc, inbound là tự dừng.'); }
@@ -368,12 +390,46 @@ function actNudge(id, dept) {
   toast(`📣 Đã nhắc phòng <b>${esc(dept)}</b> về ${esc(C(id).name)} — in-app + Slack, không cần email qua lại.`);
 }
 
-function actAnswerRelay(id) {
+/* Trả lời câu hỏi từ recruiter — GENERIC theo phòng (Licensing/HR/Onboarding/Accounting), không riêng Licensing */
+function actAnswerRelay(id, dept = 'LICENSING') {
   const c = C(id);
-  c.licRelay.answered = true;
-  addTl(c, `Licensing trả lời: "${c.licRelay.a}" → task relay tự tạo cho recruiter ${USERS[c.owner].name}`);
-  toast(`📨 Đã gửi trả lời cho recruiter <b>${USERS[c.owner].name}</b>. Đổi role Recruiter: follow-up "Relay câu trả lời" xuất hiện.`);
+  const a = asksOf(c).find((x) => x.to === dept && !x.answered);
+  if (!a) return;
+  a.a = a.a || {
+    HR: 'W-2 đi comp plan chuẩn + benefits; 1099 chỉ cho Independent LO — HR gửi bảng so sánh (demo)',
+    ONBOARDING: 'Checklist ~7–10 ngày làm việc nếu giấy tờ đủ (demo)',
+    ACCOUNTING: 'Referral bonus chín sau 60 ngày, trả vào kỳ payroll kế tiếp (demo)',
+  }[dept] || 'Đã trả lời (demo)';
+  a.answered = true;
+  addTl(c, `${dept} trả lời: "${a.a}" → task relay tự tạo cho recruiter ${USERS[c.owner].name}; Q&A lưu vĩnh viễn trên hồ sơ`);
+  toast(`📨 Đã gửi trả lời cho recruiter <b>${USERS[c.owner].name}</b>. Đổi role Recruiter: follow-up "Relay câu trả lời" xuất hiện trên Today.`);
   render();
+}
+
+/* Follow-up: Reschedule = đổi hạn (task không mất) · Done = xong việc → bắt chọn next-step (luật S2+) */
+function actResched(id, d) {
+  const c = C(id);
+  c.followUpDue = d;
+  addTl(c, `Follow-up dời đến ${d} — task giữ nguyên, đúng ngày tự nổi lại Today (không ai phải nhớ)`);
+  closeModal();
+  toast(`📅 Đã dời đến <b>${esc(d)}</b> — task không rơi mất, đúng ngày tự nổi lên Today.`);
+  render();
+}
+function actFuDone(id) {
+  const c = C(id);
+  const relayA = asksOf(c).find((a) => a.answered && !a.relayed);
+  if (relayA) { // task relay: đọc câu trả lời cho ứng viên xong là done — Q&A vẫn nằm trên hồ sơ
+    relayA.relayed = true;
+    addTl(c, `Relay hoàn tất: đã đọc câu trả lời của ${relayA.to} cho ứng viên ✓ (Q&A lưu vĩnh viễn trên hồ sơ)`);
+    toast(`✓ Relay xong — hỏi & đáp vẫn đọc lại được trong mục "❓ Hỏi đáp phòng ban" trên hồ sơ.`);
+    render();
+    return;
+  }
+  c.followUp = null; c.followUpDue = null;
+  addTl(c, 'Follow-up done ✓ — luật "S2+ luôn có next-step": phải chọn bước kế tiếp ngay');
+  render();
+  mOutcome(id);
+  toast('✓ Done — chọn next-step ngay trong modal (S2+ không có lead "xong rồi thôi").');
 }
 
 function actLicDone(id) {

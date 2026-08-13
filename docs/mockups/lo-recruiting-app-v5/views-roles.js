@@ -11,7 +11,7 @@ const rowWho = (c) => `<div class="who" onclick="openC('${c.id}')">
 function vToday() {
   const mine = visibleCands();
   const newLeads = simE(mine.filter((c) => c.stage === 'S1' && c.slaMin != null && c.slaMin >= 0));
-  const followUps = simE(mine.filter((c) => c.followUp || (c.licRelay && c.licRelay.answered)));
+  const followUps = simE(mine.filter((c) => c.followUp || asksOf(c).some((a) => a.answered && !a.relayed)));
   const signals = simE(mine.filter((c) => c.signal && c.stage === 'NURTURE'));
   const wakeups = simE(mine.filter((c) => c.wakeUp));
   const offers = simE(mine.filter((c) => c.offer?.status === 'VIEWED'));
@@ -23,8 +23,11 @@ function vToday() {
        <div style="padding:0 16px 14px;font-size:12.5px;color:var(--ink-2)">Đây là trạng thái đích của Today view: việc tự tìm đến bạn, hết việc = màn hình nói rõ "xong rồi" thay vì bảng trống vô hồn. Gợi ý lúc rảnh: mở 🌙 Nurture xem ai sắp wake-up.</div></div>`
     : '';
   const kpi = (n, l, alert) => `<div class="kpi ${alert ? 'alert' : ''}"><b>${n}</b><span>${l}</span></div>`;
-  const cRow = (c, extra, acts) => `<div class="row">${rowWho(c)}<div class="meta">${extra}</div><div class="acts">${acts}</div></div>`;
-  const contactBtns = (c) => `<button class="btn sm green" onclick="actContact('${c.id}','call')">Call</button>
+  /* 📜 D39 — nút cạnh Call mở panel script (mặc định gập, bấm là bung full-width ngay dưới row) */
+  const scriptBtn = (c) => `<button class="btn sm ghost" onclick="actScript('${c.id}')" title="📜 Call script theo status — cạnh nút gọi, mặc định gập (D39)">📜</button>`;
+  const cRow = (c, extra, acts) => `<div class="row">${rowWho(c)}<div class="meta">${extra}</div><div class="acts">${acts}</div></div>
+    ${S.scriptFor === c.id ? `<div style="padding:0 16px 10px">${callScript(c, true)}</div>` : ''}`;
+  const contactBtns = (c) => `<button class="btn sm green" onclick="actContact('${c.id}','call')">Call</button>${scriptBtn(c)}
     ${smsBlocked(c)
       ? '<button class="btn sm ghost" disabled title="⛔ STOP_SMS — suppression list (TCPA, D18)">SMS ⛔</button>'
       : `<button class="btn sm ghost" onclick="actContact('${c.id}','sms')">SMS</button>`}
@@ -41,12 +44,16 @@ function vToday() {
     </div>
     <div class="card">
       <div class="sec-h">📞 Follow-ups hôm nay <span class="cnt">${followUps.length}</span><span class="hint">từ next-step bạn đã hẹn + relay từ phòng khác</span></div>
-      ${followUps.map((c) => cRow(c,
-        (c.licRelay?.answered ? `Licensing đã trả lời: “<b>${esc(c.licRelay.a)}</b>” → relay cho ứng viên` : `“${esc(c.followUp)}”`)
-        + (c.cadence ? ` · <span class="chip amber" title="Cadence D23/D24 — bậc ${CONFIG.cadence.tiers.join('/')} ngày, config">⏲ ${esc(c.cadence.label)}</span> <span class="chip grey" title="Luật Q35 — lead trả lời là chuỗi tự dừng">inbound = dừng chuỗi</span>` : ''),
-        `<button class="btn sm green" onclick="actContact('${c.id}','call')">Call now</button>
-         <button class="btn sm ghost" onclick="toast('Đã dời lịch — task giữ nguyên, không rơi mất.')">Reschedule</button>
-         <button class="btn sm ghost" onclick="toast('Done ✓ — nhớ đặt next-step (rule: S2+ luôn có next-step).')">Done</button>`)).join('') || '<div class="empty">Chưa có follow-up đến hạn</div>'}
+      ${followUps.map((c) => {
+        const relayA = asksOf(c).find((a) => a.answered && !a.relayed); // câu trả lời phòng ban chưa relay → task
+        return cRow(c,
+          (relayA ? `<b>${relayA.to}</b> đã trả lời: “<b>${esc(relayA.a)}</b>” → relay cho ứng viên` : `“${esc(c.followUp)}”`)
+          + (c.followUpDue ? ` · <span class="chip grey">dời → ${esc(c.followUpDue)}</span>` : '')
+          + (c.cadence ? ` · <span class="chip amber" title="Cadence D23/D24 — bậc ${CONFIG.cadence.tiers.join('/')} ngày, config">⏲ ${esc(c.cadence.label)}</span> <span class="chip grey" title="Luật Q35 — lead trả lời là chuỗi tự dừng">inbound = dừng chuỗi</span>` : ''),
+          `<button class="btn sm green" onclick="actContact('${c.id}','call')">Call now</button>${scriptBtn(c)}
+           <button class="btn sm ghost" onclick="mResched('${c.id}')" title="Đổi hạn — task không mất, đúng ngày tự nổi lại">Reschedule</button>
+           <button class="btn sm ghost" onclick="actFuDone('${c.id}')" title="Xong việc này — luật S2+ bắt chọn next-step ngay">Done</button>`);
+      }).join('') || '<div class="empty">Chưa có follow-up đến hạn</div>'}
     </div>
     <div class="card">
       <div class="sec-h">📡 Signals — Modex monthly refresh <span class="cnt">${signals.length}</span><span class="hint">nurture list tự canh mình</span></div>
@@ -130,9 +137,19 @@ function vHrQueue() {
   const toDraft = simE(CANDIDATES.filter((c) => c.offer?.status === 'APPROVED'));
   const tracking = simE(CANDIDATES.filter((c) => ['SENT', 'VIEWED'].includes(c.offer?.status)));
   const signed = simE(CANDIDATES.filter((c) => c.offer?.status === 'SIGNED'));
+  const hrAsks = simE(deptPendingAsks('HR')); // cùng cơ chế queue câu hỏi như Licensing — mọi phòng đều có
   const down = S.sim === 'esignDown';
   const dis = down ? 'disabled title="e-sign service down — tạm khoá"' : '';
   return `
+  ${hrAsks.length ? `<div class="card">
+    <div class="sec-h">❓ Câu hỏi từ recruiter <span class="cnt">${hrAsks.length}</span><span class="hint">hỏi trong app — trả lời là relay tự nổi lên Today của Re; Q&A lưu trên hồ sơ</span></div>
+    ${hrAsks.map((c) => {
+      const a = asksOf(c).find((x) => x.to === 'HR' && !x.answered);
+      return `<div class="row">${rowWho(c)}
+      <div class="meta"><span class="chip blue">${esc(a.q)}</span> · hỏi bởi ${esc(USERS[a.by]?.name || 'Re')} · ${esc(a.at)}</div>
+      <div class="acts"><button class="btn sm primary" onclick="actAnswerRelay('${c.id}','HR')">Gửi trả lời</button></div></div>`;
+    }).join('')}
+  </div>` : ''}
   ${down ? `<div class="card alertcard"><div class="in"><b>⚠ document-esign không phản hồi</b> (health check fail 3 lần liên tiếp) — nút soạn/gửi/nhắc tạm khoá để không mất offer vào hư không.
     Offer đã gửi vẫn ký được phía ứng viên; trạng thái viewed/signed sẽ <b>tự đồng bộ lại</b> khi service hồi. Không cần làm gì tay.</div></div>` : ''}
   <div class="card">
@@ -188,7 +205,7 @@ function vHrLights() {
 /* ---------- LICENSING QUEUE ---------- */
 function vLicQueue() {
   const queue = simE(CANDIDATES.filter((c) => c.stage === 'S6' && c.licensing));
-  const relays = simE(CANDIDATES.filter((c) => c.licRelay && !c.licRelay.answered));
+  const relays = simE(deptPendingAsks('LICENSING'));
   return `
   <div class="card">
     <div class="sec-h">📋 Hàng đợi licensing <span class="cnt">${queue.length}</span><span class="hint">luật bang tự bật cờ — không cần nhớ 50 bang</span></div>
@@ -203,9 +220,12 @@ function vLicQueue() {
   </div>
   <div class="card">
     <div class="sec-h">❓ Câu hỏi từ recruiter (pre-check trước offer) <span class="cnt">${relays.length}</span><span class="hint">hỏi trong app — không email qua lại</span></div>
-    ${relays.map((c) => `<div class="row">${rowWho(c)}
-      <div class="meta"><span class="chip blue">${esc(c.licRelay.q)}</span> → trả lời: <b>${esc(c.licRelay.a)}</b></div>
-      <div class="acts"><button class="btn sm primary" onclick="actAnswerRelay('${c.id}')">Gửi trả lời</button></div></div>`).join('')
+    ${relays.map((c) => {
+      const a = asksOf(c).find((x) => x.to === 'LICENSING' && !x.answered);
+      return `<div class="row">${rowWho(c)}
+      <div class="meta"><span class="chip blue">${esc(a.q)}</span> → trả lời: <b>${esc(a.a || '(soạn tại đây — demo điền sẵn)')}</b></div>
+      <div class="acts"><button class="btn sm primary" onclick="actAnswerRelay('${c.id}','LICENSING')">Gửi trả lời</button></div></div>`;
+    }).join('')
     || '<div class="empty">Không có câu hỏi chờ — câu trả lời đã relay cho recruiter ✓</div>'}
   </div>
   <div class="card">

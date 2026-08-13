@@ -49,7 +49,9 @@ function vComms() {
         <div><h2>${esc(c.name)}</h2><div class="sub">${stageChip(c)} · owner: <b>${USERS[sel.ownerOverride || c.owner]?.name || '—'}</b></div></div>
         <button class="btn sm ghost" style="margin-left:auto" onclick="openC('${c.id}')">Hồ sơ 360 →</button>
       </div>
-      <div class="fc-body" style="gap:8px">${msgs}</div>
+      <div class="fc-body" style="gap:8px">${msgs}
+      ${c && asksOf(c).length ? `<div class="msg sys">❓ Hỏi đáp phòng ban — nội bộ, CÙNG sổ hội thoại này (D29); ứng viên không thấy</div>
+      ${asksOf(c).map((a) => `<div class="msg internal"><b>🔒 ${esc(USERS[a.by]?.name || 'Re')} → ${a.to} (Q&A nội bộ)</b>“${esc(a.q)}”<br>${a.answered ? `↳ <b>${a.to}:</b> “${esc(a.a)}”` : '↳ ⏳ chờ ' + a.to + ' trả lời'}<small>${esc(a.at)}</small></div>`).join('')}` : ''}</div>
       <div class="fc-foot" style="flex-wrap:wrap">
         <input id="replyBox" placeholder="Trả lời ngay từ đây (SMS/email theo kênh của tin cuối)…" style="flex:1;min-width:220px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font:inherit">
         <button class="btn primary sm" onclick="actReply('${sel.cand}', false)">Gửi</button>

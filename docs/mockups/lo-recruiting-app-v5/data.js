@@ -168,6 +168,11 @@ const CANDIDATES = [
     vol: 41.2, units: 96, since22: 233, licensed: '9 năm', score: 88, verifySrc: 'MODEX',
     labels: ['Webinar Feb'], cadence: { tier: 2, label: 'bậc 2/4 — nhắc sau 5 ngày', due: 'hôm nay' },
     followUp: 'Sent comp sheet — check nếu đã mở, mời Zoom',
+    /* Lịch sử Q&A nhiều phòng trên 1 hồ sơ: Licensing đã trả lời & relay xong · HR còn treo — Re mở hồ sơ đọc lại được hết */
+    asks: [
+      { to: 'LICENSING', q: 'TX sponsorship transfer mất bao lâu?', a: 'TX nhanh — 3–5 ngày làm việc sau khi nộp', answered: true, relayed: true, at: 'Aug 1', by: 'brayan' },
+      { to: 'HR', q: 'Ứng viên hỏi W-2 vs 1099 — khác gì về comp plan & benefits?', a: '', answered: false, at: 'Aug 3', by: 'brayan' },
+    ],
     caseNote: 'Đã gửi comp sheet — follow-up hôm nay để mời Zoom.',
     timeline: [['Jul 31', 'First call — quan tâm, xin comp sheet'], ['Aug 1', 'Email comp sheet (tracked)'], ['Aug 3', 'Task follow-up đến hạn']],
   },
@@ -202,7 +207,8 @@ const CANDIDATES = [
     nmls: '1990254', company: 'Fairway', city: 'San Jose, CA', st: 'CA',
     stage: 'S3', source: 'Event · Webinar', owner: 'brayan',
     vol: 12.6, units: 28, since22: 68, licensed: '6 năm', score: 80,
-    licRelay: { q: 'CA: DRE license — cần corporate filing gì không?', a: 'DRE cần thêm corporate filing, ~3 tuần', answered: false },
+    /* ❓ Q&A phòng ban — 1 mảng chung cho MỌI phòng (Licensing/HR/Onboarding/Accounting), lưu vĩnh viễn trên hồ sơ */
+    asks: [{ to: 'LICENSING', q: 'CA: DRE license — cần corporate filing gì không?', a: 'DRE cần thêm corporate filing, ~3 tuần', answered: false, at: 'Jul 30', by: 'brayan' }],
     caseNote: 'Đang chờ câu trả lời DRE (CA) từ Licensing — recruiter hỏi TRƯỚC khi offer, khỏi bể kèo sau.',
     timeline: [['Jul 29', 'Webinar Q&A — hỏi về California DRE'], ['Jul 30', 'Recruiter gửi câu hỏi cho Licensing (in-app, không email)']],
   },

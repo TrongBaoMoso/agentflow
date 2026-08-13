@@ -160,12 +160,7 @@ function vFocus() {
             <button class="btn sm ghost" onclick="actAI('${cur.id}','rewrite')">Viết lại</button>
           </div></div>` : ''}
       </div>
-      ${(() => { // 📜 call script theo status — expand/collapse cạnh nút gọi, MẶC ĐỊNH GẬP (D39)
-        const sc = TEMPLATES.find((t) => t.type === 'CALL_SCRIPT' && t.stage === cur.stage && t.status === 'ACTIVE')
-          || TEMPLATES.find((t) => t.type === 'CALL_SCRIPT' && t.status === 'ACTIVE');
-        return sc ? `<details class="script"><summary>📜 Call script — ${sc.stage} (bấm mở · mặc định gập — D39)</summary>
-          <div>${esc(sc.body)}<br><small style="color:var(--ink-3)">template "${esc(sc.name)}" · sửa trong 📨 Templates (vòng đời D26) — Re mới cần, Re cũ đã thuộc thì cứ để gập</small></div></details>` : '';
-      })()}
+      ${callScript(cur) /* 📜 D39 — panel gập cạnh nút gọi; helper dùng chung với Today + hồ sơ 360 */}
       <div class="fc-foot">
         <button class="btn green" onclick="actContact('${cur.id}','call')">📞 Call</button>
         ${smsBlocked(cur)
@@ -264,9 +259,8 @@ function vDrawer(c) {
   if (S.role === 'hr' && c.offer?.status === 'APPROVED') foot.push(`<button class="btn primary" style="flex:1" onclick="actDraftOffer('${c.id}');closeC()">Soạn & gửi offer</button>`);
   if (!c.nmls) foot.push(`<button class="btn ghost" onclick="mNmls('${c.id}')">＋ Nhập NMLS (enrich)</button>`);
   if (S.role === 'recruiter' && ['S2', 'S3', 'S4'].includes(c.stage)) {
-    foot.push(c.licRelay
-      ? `<button class="btn ghost" disabled title="Câu hỏi đã gửi: ${esc(c.licRelay.q)}">❓ ${c.licRelay.answered ? 'Licensing đã trả lời ✓' : 'Đã hỏi Licensing — chờ'}</button>`
-      : `<button class="btn ghost" onclick="mAskLic('${c.id}')">❓ Hỏi Licensing</button>`);
+    // Hỏi được MỌI phòng (Licensing/HR/Onboarding/Accounting), hỏi nhiều lần — lịch sử nằm ở mục ❓ bên trên
+    foot.push(`<button class="btn ghost" onclick="mAsk('${c.id}')">❓ Hỏi phòng ban${asksOf(c).some((a) => !a.answered) ? ' <span class="chip amber" style="font-size:10px">⏳ ' + asksOf(c).filter((a) => !a.answered).length + ' chờ</span>' : ''}</button>`);
   }
   foot.push(`<button class="btn ghost" onclick="actContact('${c.id}','call')">📞 Call</button>`);
   foot.push('<button class="btn ghost" onclick="closeC()">Đóng</button>');
@@ -287,6 +281,10 @@ function vDrawer(c) {
         ${dupBanner(c)}
         <div style="font-size:12.5px;color:var(--ink-2)">📌 <b>Case:</b> ${esc(c.caseNote || '')}</div>
         ${prod}${comp}
+        ${asksOf(c).length ? `<div class="tl"><h5>❓ Hỏi đáp phòng ban — nội bộ; MỌI role mở hồ sơ đều đọc được (cùng sổ với 💬 Conversations, D29)</h5>
+          ${asksOf(c).map((a) => `<div class="tl-item"><span class="t">${esc(a.at)}</span><span><b>${esc(USERS[a.by]?.name || 'Re')} → ${a.to}</b>: “${esc(a.q)}”<br>
+            ${a.answered ? `↳ <b>${a.to} trả lời:</b> “${esc(a.a)}”${a.relayed ? ' <span class="chip green" style="font-size:10px">đã relay cho ứng viên ✓</span>' : ' <span class="chip blue" style="font-size:10px">chờ Re relay</span>'}` : `↳ <span class="chip amber">⏳ chờ ${a.to} trả lời</span>`}</span></div>`).join('')}</div>` : ''}
+        ${callScript(c) /* 📜 D39 — call script theo status ngay trong hồ sơ, cạnh nút 📞 Call ở footer */}
         <div class="tl"><h5>Timeline (mới nhất trên cùng — mọi action tự ghi)</h5>${tl}</div>
       </div>
       <div class="dr-foot">${foot.join('')}</div>
@@ -294,27 +292,37 @@ function vDrawer(c) {
   </div>`;
 }
 
-/* ---------- ❓ HỎI LICENSING (pre-check trước offer — relay 2 chiều trong app) ---------- */
-function mAskLic(id) {
+/* ---------- ❓ HỎI PHÒNG BAN (generic — Licensing/HR/Onboarding/Accounting; relay 2 chiều trong app) ---------- */
+function mAsk(id) {
   const c = C(id);
+  const asked = asksOf(c);
   openModal(`<div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal">
-    <div class="mh">❓ Hỏi phòng Licensing — về ${esc(c.name)} (${esc(c.st) || 'bang ?'})</div>
-    <form onsubmit="event.preventDefault();actAskLic('${id}',this.q.value)">
+    <div class="mh">❓ Hỏi phòng ban — về ${esc(c.name)} (${esc(c.st) || 'bang ?'})</div>
+    <form onsubmit="event.preventDefault();actAsk('${id}',this.dept.value,this.q.value)">
       <div class="mb">
-        <div class="fld"><label>Câu hỏi (đi thẳng vào queue của Licensing, KHÔNG email qua lại)</label>
+        <div class="fld"><label>Hỏi phòng nào? (câu hỏi đi thẳng vào queue của phòng đó — KHÔNG email qua lại)</label>
+          <select name="dept">
+            <option value="LICENSING">📜 Licensing — luật bang, sponsorship, DRE/NMLS</option>
+            <option value="HR">🧑‍💼 HR — comp plan, W-2/1099, benefits</option>
+            <option value="ONBOARDING">📦 Onboarding — checklist, timeline nhập môn</option>
+            <option value="ACCOUNTING">💵 Accounting — payroll, referral bonus</option>
+          </select></div>
+        <div class="fld"><label>Câu hỏi</label>
           <input name="q" placeholder="Vd: CA — DRE license có cần corporate filing gì thêm không?" required autofocus></div>
-        <p style="font-size:11.5px;color:var(--ink-3)">Hỏi TRƯỚC khi offer để khỏi bể kèo sau. Licensing trả lời → task relay tự nổi lên <b>Today</b> của bạn, kèm nguyên văn câu trả lời để đọc lại cho ứng viên. Cả hỏi lẫn đáp đều nằm trên hồ sơ — người sau đọc được.</p>
+        <p style="font-size:11.5px;color:var(--ink-3)">Hỏi TRƯỚC khi offer để khỏi bể kèo sau. Phòng trả lời → task relay tự nổi lên <b>Today</b> của bạn kèm nguyên văn câu trả lời. Cả hỏi lẫn đáp lưu vĩnh viễn ở mục <b>"❓ Hỏi đáp phòng ban"</b> trên hồ sơ — Re/ReM/mọi phòng mở hồ sơ đều đọc lại được toàn bộ lịch sử (Q1 hỏi Licensing, Q2 hỏi HR…).</p>
+        ${asked.length ? `<p style="font-size:11.5px;color:var(--ink-3)">Đã hỏi trước đó: ${asked.map((a) => `<span class="chip ${a.answered ? 'green' : 'amber'}">${a.to} ${a.answered ? '✓' : '⏳'}</span>`).join(' ')}</p>` : ''}
       </div>
       <div class="mf"><button type="button" class="btn ghost" onclick="closeModal()">Cancel</button>
         <button type="submit" class="btn primary">Gửi câu hỏi</button></div>
     </form></div></div>`);
 }
-function actAskLic(id, q) {
+function actAsk(id, dept, q) {
   const c = C(id);
-  c.licRelay = { q, a: 'DRE cần thêm corporate filing, ~3 tuần (demo)', answered: false };
-  addTl(c, `❓ ${me().name} gửi câu hỏi cho Licensing: "${q}" — vào queue "Câu hỏi từ recruiter" của phòng Licensing`);
+  const demoA = { LICENSING: 'DRE cần thêm corporate filing, ~3 tuần (demo)' }[dept] || '';
+  c.asks = asksOf(c).concat([{ to: dept, q, a: demoA, answered: false, at: 'hôm nay', by: role().user }]);
+  addTl(c, `❓ ${me().name} gửi câu hỏi cho ${dept}: "${q}" — vào queue "Câu hỏi từ recruiter" của phòng ${dept}; Q&A lưu vĩnh viễn trên hồ sơ`);
   closeModal();
-  toast(`❓ Câu hỏi đã vào queue của <b>Licensing (Dung Nguyễn)</b>. Đổi role Licensing → thấy mục "Câu hỏi từ recruiter"; họ bấm "Gửi trả lời" là follow-up relay nổi lên Today của bạn.`);
+  toast(`❓ Câu hỏi đã vào queue của <b>${dept}</b>. Đổi sang role phòng đó → mục "Câu hỏi từ recruiter"; họ bấm "Gửi trả lời" là follow-up relay nổi lên Today của bạn.`);
   render();
 }
 
