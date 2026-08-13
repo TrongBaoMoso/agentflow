@@ -263,6 +263,11 @@ function vDrawer(c) {
   if (S.role === 'manager' && c.offer?.status === 'REQUESTED') foot.push(`<button class="btn green" style="flex:1" onclick="actApprove('${c.id}');closeC()">Approve offer (band ${c.offer.band})</button>`);
   if (S.role === 'hr' && c.offer?.status === 'APPROVED') foot.push(`<button class="btn primary" style="flex:1" onclick="actDraftOffer('${c.id}');closeC()">Soạn & gửi offer</button>`);
   if (!c.nmls) foot.push(`<button class="btn ghost" onclick="mNmls('${c.id}')">＋ Nhập NMLS (enrich)</button>`);
+  if (S.role === 'recruiter' && ['S2', 'S3', 'S4'].includes(c.stage)) {
+    foot.push(c.licRelay
+      ? `<button class="btn ghost" disabled title="Câu hỏi đã gửi: ${esc(c.licRelay.q)}">❓ ${c.licRelay.answered ? 'Licensing đã trả lời ✓' : 'Đã hỏi Licensing — chờ'}</button>`
+      : `<button class="btn ghost" onclick="mAskLic('${c.id}')">❓ Hỏi Licensing</button>`);
+  }
   foot.push(`<button class="btn ghost" onclick="actContact('${c.id}','call')">📞 Call</button>`);
   foot.push('<button class="btn ghost" onclick="closeC()">Đóng</button>');
   return `<div class="overlay" onclick="if(event.target===this)closeC()">
@@ -287,6 +292,30 @@ function vDrawer(c) {
       <div class="dr-foot">${foot.join('')}</div>
     </div>
   </div>`;
+}
+
+/* ---------- ❓ HỎI LICENSING (pre-check trước offer — relay 2 chiều trong app) ---------- */
+function mAskLic(id) {
+  const c = C(id);
+  openModal(`<div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal">
+    <div class="mh">❓ Hỏi phòng Licensing — về ${esc(c.name)} (${esc(c.st) || 'bang ?'})</div>
+    <form onsubmit="event.preventDefault();actAskLic('${id}',this.q.value)">
+      <div class="mb">
+        <div class="fld"><label>Câu hỏi (đi thẳng vào queue của Licensing, KHÔNG email qua lại)</label>
+          <input name="q" placeholder="Vd: CA — DRE license có cần corporate filing gì thêm không?" required autofocus></div>
+        <p style="font-size:11.5px;color:var(--ink-3)">Hỏi TRƯỚC khi offer để khỏi bể kèo sau. Licensing trả lời → task relay tự nổi lên <b>Today</b> của bạn, kèm nguyên văn câu trả lời để đọc lại cho ứng viên. Cả hỏi lẫn đáp đều nằm trên hồ sơ — người sau đọc được.</p>
+      </div>
+      <div class="mf"><button type="button" class="btn ghost" onclick="closeModal()">Cancel</button>
+        <button type="submit" class="btn primary">Gửi câu hỏi</button></div>
+    </form></div></div>`);
+}
+function actAskLic(id, q) {
+  const c = C(id);
+  c.licRelay = { q, a: 'DRE cần thêm corporate filing, ~3 tuần (demo)', answered: false };
+  addTl(c, `❓ ${me().name} gửi câu hỏi cho Licensing: "${q}" — vào queue "Câu hỏi từ recruiter" của phòng Licensing`);
+  closeModal();
+  toast(`❓ Câu hỏi đã vào queue của <b>Licensing (Dung Nguyễn)</b>. Đổi role Licensing → thấy mục "Câu hỏi từ recruiter"; họ bấm "Gửi trả lời" là follow-up relay nổi lên Today của bạn.`);
+  render();
 }
 
 /* ---------- 🧊 SNAPSHOT OFFER (D37) — căn cứ duyệt bị đóng băng ---------- */

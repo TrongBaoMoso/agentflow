@@ -180,7 +180,8 @@ function vHrLights() {
     }).join('') || '<div class="empty">Chưa ai trong onboarding</div>'}
     <div style="padding:10px 16px 14px;font-size:12px;color:var(--ink-2)">
       <span class="chip amber">GIẢ ĐỊNH</span> Nội dung To-dos (Compliance Courses…) & Documents (W-9, Remote Work Policy, Passport/GC, Cyber Security)
-      lấy từ 13 ảnh chụp flow HR thật — chờ Q11/Q12 chốt danh sách chính thức. Khi HR app có outbound event, 2 nút này biến mất — đèn tự bật ("ổ cắm trước, phích sau").</div>
+      lấy từ 13 ảnh chụp flow HR thật — chờ Q11/Q12 chốt danh sách chính thức. Khi HR app có outbound event, 2 nút này biến mất — đèn tự bật ("ổ cắm trước, phích sau").<br>
+      <b>Tạo account:</b> đường THƯỜNG là tự động — automation rule "PAID + SIGNED + 1-1 done → gửi request tạo account sang HR app" (xem ⚡ Automation rules của Manager); HR app báo HR member, tạo xong thì user-service bắn event → đèn ACCOUNT bật. HR KHÔNG phải canh thủ công như "CREATE NEW ASSOCIATES" hệ cũ. Nút ⚡ vượt cổng bên Onboarding chỉ dành cho ngoại lệ.</div>
   </div>`;
 }
 

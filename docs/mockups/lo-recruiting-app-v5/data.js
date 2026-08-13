@@ -441,6 +441,7 @@ const AUTORULES = [
   { id: 'r4', on: true,  prio: 'Normal', when: 'Đèn HR = Xong', then: 'Tạo việc "Setup Call với người mới" → Recruiting', src: 'Escalation Desk: ticket 14' },
   { id: 'r5', on: true,  prio: 'Normal', when: 'Checklist onboarding 100% (S7)', then: 'Tạo việc "Training + gán Support Specialist" → LO Support', src: 'Escalation Desk: ticket 08 + 00-LO Support' },
   { id: 'r6', on: false, prio: 'High',   when: 'Đồng hồ chờ-nhận kho HOT bể (quá 4h không ai claim)', then: 'Alert lên Exceptions của Manager', src: 'rule MỚI — hệ cũ không có khái niệm chờ-nhận' },
+  { id: 'r7', on: true,  prio: 'High',   when: 'PAID + SIGNED + 1-1 done', then: 'GỬI REQUEST TẠO ACCOUNT sang HR app (kèm data ứng viên) — user-service báo xong → đèn ACCOUNT tự bật', src: 'thay bước HR bấm tay "CREATE NEW ASSOCIATES" của hệ cũ; đường thường TỰ ĐỘNG, nút ⚡ override chỉ là ngoại lệ (D35)' },
 ];
 
 /* ---- 🧾 Audit log (D38) ---- */
