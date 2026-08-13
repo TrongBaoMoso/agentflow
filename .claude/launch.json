@@ -423,6 +423,58 @@
       ],
       "cwd": "/Users/apple/Projects/agentflow/.worktrees/lfh-lo-programs-fe",
       "port": 3078
+    },
+    {
+      "name": "lo-restricted-domain",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lo-restricted-domain",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3071"
+      ],
+      "port": 3071
+    },
+    {
+      "name": "lfh-lo-prefill",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-lo-prefill",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3025"
+      ],
+      "port": 3025
+    },
+    {
+      "name": "lo-recruiting-mockup",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "3043",
+        "--directory",
+        "/Users/apple/Projects/agentflow/docs/mockups/lo-recruiting-app"
+      ],
+      "port": 3043
+    },
+    {
+      "name": "lo-recruiting-mockup-v5",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "3044",
+        "--directory",
+        "/Users/apple/Projects/agentflow/docs/mockups/lo-recruiting-app-v5"
+      ],
+      "port": 3044
     }
   ]
 }

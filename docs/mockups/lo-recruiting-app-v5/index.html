@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LF Recruit v5 — Interactive prototype (đủ 10 màn còn thiếu theo MOCKUP-AUDIT)</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<div class="mock-bar">
+  <b>INTERACTIVE PROTOTYPE · LF Recruit — BẢN v5</b>
+  <span>Mới so với v4: 💬 Hội thoại · 📨 Templates · 🎥 Webinar · ⚡ Automation rules · 📈 Dashboard quá hạn · 🧾 Audit · ⛔ Chặn liên hệ · 🔀 gộp trùng · 🏷 nhãn · ⏲ cadence · 🧊 snapshot · trần capacity · search thật. (Bản v4 cũ giữ nguyên ở thư mục <i>lo-recruiting-app/</i> để so sánh.)</span>
+  <span class="sp">
+    <select class="mock-btn" onchange="setSim(this.value)" title="Giả lập trạng thái hệ thống — xem empty/error states">
+      <option value="normal">Trạng thái: bình thường</option>
+      <option value="quiet">🎉 Ngày vắng — mọi queue trống</option>
+      <option value="modexDown">💥 Sự cố: Modex webhook down</option>
+      <option value="esignDown">💥 Sự cố: e-sign service down</option>
+    </select>
+    <button class="mock-btn" onclick="logout()">⇦ Đổi role</button>
+    <button class="mock-btn" onclick="resetDemo()">↺ Reset demo</button>
+  </span>
+</div>
+
+<div id="app"></div>
+<div id="modal" style="display:none"></div>
+<div id="toasts"></div>
+
+<script src="data.js"></script>
+<script src="views-pipeline.js"></script>
+<script src="views-roles.js"></script>
+<script src="views-status.js"></script>
+<script src="views-sourcing.js"></script>
+<script src="views-comms.js"></script>
+<script src="views-growth.js"></script>
+<script src="views-admin2.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
