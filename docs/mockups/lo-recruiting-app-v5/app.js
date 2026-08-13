@@ -193,17 +193,21 @@ function actContact(id, kind) {
   if (kind === 'call' && S.role === 'recruiter' && ['S2', 'S3'].includes(c.stage)) mOutcome(id);
 }
 
+/* 📝 Ghi chú cuộc gọi — dùng chung cho modal Kết quả + modal Next-step; lưu timeline + thread INTERNAL */
+function saveCallNote(c) {
+  const note = (($('outNote') && $('outNote').value.trim()) || S.outNote || '').trim();
+  S.outNote = null;
+  if (!note) return;
+  addTl(c, `📝 Ghi chú cuộc gọi: "${note}" — lưu vào thread hồ sơ (INTERNAL, ứng viên không thấy — cả team đọc được, D29/D36)`);
+  const t = typeof THREADS !== 'undefined' ? THREADS.find((x) => x.cand === c.id) : null;
+  if (t) t.msgs.push({ dir: 'note', kind: 'INTERNAL', who: role().user, when: 'bây giờ', text: '🔒 (INTERNAL) 📝 Note sau cú gọi: ' + note });
+}
+
 /* Kết quả cú gọi — mọi lead phải rẽ nhánh (S2+ luôn có next-step) + 📝 ghi chú lưu vào thread hồ sơ */
 function actOutcome(id, kind, val) {
   const c = C(id);
-  const note = (($('outNote') && $('outNote').value.trim()) || S.outNote || '').trim();
-  S.outNote = null;
-  if (note) {
-    addTl(c, `📝 Ghi chú cuộc gọi: "${note}" — lưu vào thread hồ sơ (INTERNAL, ứng viên không thấy — cả team đọc được, D29/D36)`);
-    const t = typeof THREADS !== 'undefined' ? THREADS.find((x) => x.cand === id) : null;
-    if (t) t.msgs.push({ dir: 'note', kind: 'INTERNAL', who: role().user, when: 'bây giờ', text: '🔒 (INTERNAL) 📝 Note sau cú gọi: ' + note });
-  }
-  if (kind === 'next') { c.followUp = c.followUp || 'Follow-up đã đặt sau cú gọi'; addTl(c, 'Outcome: quan tâm — follow-up đặt, giữ pipeline'); toast('✅ Follow-up đặt — sẽ nổi lên Today đúng hẹn.'); }
+  saveCallNote(c);
+  /* nhánh "quan tâm" KHÔNG còn ở đây — nó đi qua mNextStep/actNextStep: recruiter tự quyết bước kế tiếp */
   if (kind === 'nurtureDate') { c.stage = 'NURTURE'; c.nurtureUntil = val; c.slaMin = null; addTl(c, `Outcome: hẹn lại ${val} → NURTURE, wake-up task tự tạo đúng ngày`); toast(`📅 Vào Nurture — wake-up <b>${esc(val)}</b> tự nổi ở Today, không cần nhớ.`); }
   if (kind === 'nurture') { c.stage = 'NURTURE'; c.nurtureSince = 'hôm nay'; c.slaMin = null; addTl(c, 'Outcome: chưa muốn, không hẹn → NURTURE, cadence mặc định tự nhắc'); toast('🌙 Vào Nurture — cadence config tự nhắc, inbound là tự dừng.'); }
   if (kind === 'noanswer') { c.followUp = 'Gọi lại — không bắt máy (retry tự tạo)'; addTl(c, 'Outcome: không bắt máy → task gọi lại tự tạo theo cadence'); toast('📵 Task gọi lại tự tạo.'); }
@@ -404,6 +408,43 @@ function actAnswerRelay(id, dept = 'LICENSING') {
   addTl(c, `${dept} trả lời: "${a.a}" → task relay tự tạo cho recruiter ${USERS[c.owner].name}; Q&A lưu vĩnh viễn trên hồ sơ`);
   toast(`📨 Đã gửi trả lời cho recruiter <b>${USERS[c.owner].name}</b>. Đổi role Recruiter: follow-up "Relay câu trả lời" xuất hiện trên Today.`);
   render();
+}
+
+/* ✅ Quan tâm → RECRUITER QUYẾT ĐỊNH bước kế tiếp (Bao 13/08) — mỗi lựa chọn = đúng 1 task có hạn */
+function actNextStep(id, kind) {
+  const c = C(id);
+  saveCallNote(c);
+  const d = ($('nsDate') && $('nsDate').value) || '';
+  c.followUpDue = d || null;
+  const when = d ? ` — hạn ${d}` : ' — hạn mặc định: ngày mai';
+  if (kind === 'callnext') {
+    c.followUp = 'Cuộc gọi/Zoom kế tiếp đã hẹn';
+    addTl(c, `Next-step (Re chọn): hẹn gọi/Zoom kế tiếp${when} — task tự nổi Today đúng hạn`);
+    toast(`📞 Task "gọi/Zoom kế tiếp" đặt${when} — đúng ngày tự nổi lên Today, kèm 📜 script theo stage.`);
+  }
+  if (kind === 'sendinfo') {
+    c.followUp = 'Đã gửi comp sheet — check đã mở chưa, mời bước kế';
+    addTl(c, `Next-step (Re chọn): gửi comp sheet/info package bằng template ACTIVE (D26)${when} — email tracked, task check tự tạo`);
+    toast(`📄 Gửi bằng template ACTIVE — email có tracking mở/click; task "check đã mở chưa" đặt${when}.`);
+  }
+  if (kind === 'meet11') {
+    c.meeting = c.meeting || { status: 'invited', on: d || 'chờ book', via: 'Calendly' };
+    c.followUp = 'Đã gửi link book 1-1 — theo dõi booking';
+    addTl(c, `Next-step (Re chọn): mời book 1-1 qua Calendly${when} — chip 🗓 lên hồ sơ; ứng viên book là trạng thái tự đổi (Q39: Calendly vs GCal đang chờ chốt)`);
+    toast(`🗓 Link 1-1 đã gửi — ứng viên book là chip 🗓 trên hồ sơ tự đổi. Task theo dõi đặt${when}.`);
+  }
+  if (kind === 'verify') {
+    closeModal(); render();
+    mNmls(id);
+    toast(`🔢 Xin NMLS ngay trong cú gọi — nhập xong là Modex tự kéo production (zero-click), mở cổng S3→S4.`);
+    return;
+  }
+  if (kind === 's3') {
+    if (c.stage === 'S2') { c.stage = 'S3'; addTl(c, 'Next-step (Re chọn): đủ độ chín → chuyển S3 · Engaged (đã trao đổi 2 chiều, hỏi sâu comp)'); }
+    c.followUp = c.followUp || 'S3: đào sâu comp expectations — chuẩn bị verify';
+    toast(`⬆ <b>${esc(c.name)}</b> sang S3 · Engaged — bước kế: xin NMLS để verify, rồi mới nói số.`);
+  }
+  closeModal(); render();
 }
 
 /* Follow-up: Reschedule = đổi hạn (task không mất) · Done = xong việc → bắt chọn next-step (luật S2+) */

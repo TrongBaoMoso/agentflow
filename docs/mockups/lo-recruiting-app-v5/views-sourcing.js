@@ -96,12 +96,32 @@ function mOutcome(id) {
       <p style="font-size:12px;color:var(--ink-2)">Luật "S2+ luôn có bước kế tiếp" nằm ở đây: <b>không đóng được modal mà chưa chọn</b>. Mọi lead rẽ nhánh tại chỗ này — không còn lead "nói chuyện xong rồi thôi".</p>
       <div class="fld"><label>📝 Ghi chú cuộc gọi — NÊN ghi (lưu vào thread hồ sơ dạng INTERNAL: ứng viên không thấy, cả team đọc lại được — D29/D36; hệ cũ: ghi giấy hoặc không gì cả)</label>
         <textarea id="outNote" rows="2" placeholder="Vd: quan tâm comp P3+, vợ chuyển việc tháng 10 — gọi lại giữa tháng 8…" style="width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font:inherit;resize:vertical"></textarea></div>
-      <button class="btn ghost w" onclick="actOutcome('${id}','next')">✅ Quan tâm — đặt follow-up, giữ trong pipeline</button>
+      <button class="btn ghost w" onclick="S.outNote=($('outNote')||{}).value;mNextStep('${id}')">✅ Quan tâm → BẠN chọn bước kế tiếp (gọi tiếp / gửi info / 1-1 / verify / lên S3)</button>
       <button class="btn ghost w" onclick="S.outNote=($('outNote')||{}).value;mNurtureDate('${id}')">📅 Hẹn lại CÓ ngày → Nurture + wake-up đúng ngày</button>
       <button class="btn ghost w" onclick="actOutcome('${id}','nurture')">🌙 Chưa muốn, KHÔNG hẹn → Nurture, cadence mặc định tự nhắc</button>
       <button class="btn ghost w" onclick="actOutcome('${id}','noanswer')">📵 Không bắt máy → task gọi lại tự tạo</button>
       <button class="btn ghost w" onclick="S.outNote=($('outNote')||{}).value;mArchive('${id}')">🗑 Không quan tâm → Archive + lý do (không xoá — re-source sau được)</button>
     </div></div></div>`);
+}
+
+/* ✅ QUAN TÂM → RECRUITER QUYẾT ĐỊNH bước kế tiếp (yêu cầu Bao 13/08) — không có "Interested" nằm chờ
+   Hệ cũ: chọn status "Interested but thinking"/"Want to join" xong… hết — 0 người nằm trong 2 status đó.
+   App mới: "quan tâm" KHÔNG phải trạng thái để nằm; nó bắt buộc đổi thành 1 next-step cụ thể có hạn. */
+function mNextStep(id) {
+  const c = C(id);
+  openModal(`<div class="modal-bg"><div class="modal">
+    <div class="mh">✅ ${esc(c.name)} QUAN TÂM — bạn quyết định bước kế tiếp</div>
+    <div class="mb">
+      <p style="font-size:12px;color:var(--ink-2)">Mỗi lựa chọn sinh đúng <b>1 task có hạn</b> trên Today — "quan tâm" không phải chỗ nằm. Chọn theo độ chín của lead:</p>
+      <div class="fld"><label>Hạn / ngày hẹn (bỏ trống = ngày mai)</label><input type="date" id="nsDate"></div>
+      <button class="btn ghost w" onclick="actNextStep('${id}','callnext')">📞 Hẹn cuộc gọi / Zoom kế tiếp → task đúng ngày, script theo stage nằm cạnh nút gọi</button>
+      <button class="btn ghost w" onclick="actNextStep('${id}','sendinfo')">📄 Gửi comp sheet / info package (template ACTIVE) → task "check đã mở chưa" tự tạo</button>
+      <button class="btn ghost w" onclick="actNextStep('${id}','meet11')">🗓 Mời book 1-1 (Calendly) → chip 🗓 lên hồ sơ + task theo dõi booking</button>
+      ${!c.nmls ? `<button class="btn ghost w" onclick="actNextStep('${id}','verify')">🔢 Xin NMLS để verify production → nhập là Modex tự kéo (zero-click), mở cổng S3→S4</button>` : ''}
+      ${c.stage === 'S2' ? `<button class="btn ghost w" onclick="actNextStep('${id}','s3')">⬆ Đủ độ chín (đã 2 chiều, hỏi sâu comp) → chuyển S3 · Engaged</button>` : ''}
+    </div>
+    <div class="mf"><button type="button" class="btn ghost" onclick="mOutcome('${id}')">← Quay lại kết quả gọi</button></div>
+  </div></div>`);
 }
 
 function mNurtureDate(id) {
