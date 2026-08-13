@@ -151,6 +151,8 @@ button{font-family:inherit}
 .ai{border:1px solid var(--line);border-radius:12px;overflow:hidden}
 .ai .aih{display:flex;align-items:center;gap:8px;background:var(--blue-soft);color:var(--blue);padding:9px 13px;font-weight:700;font-size:12.5px}
 .ai .aih .rg{margin-left:auto;font-weight:500;font-size:11px}
+.ai .aictx{display:flex;flex-wrap:wrap;gap:5px;align-items:center;padding:9px 13px 0}
+.ai .aictx small{flex-basis:100%;color:var(--ink-3);font-size:10.5px;line-height:1.5;margin-top:3px}
 .ai .aib{padding:12px 14px;font-size:12.5px;color:var(--ink-2);font-style:italic}
 .ai .aif{display:flex;gap:8px;padding:0 14px 12px}
 .fc-foot{padding:14px 22px;border-top:1px solid var(--line);display:flex;gap:9px;background:#FCFAF8;align-items:center;border-radius:0 0 var(--r) var(--r);flex-wrap:wrap}

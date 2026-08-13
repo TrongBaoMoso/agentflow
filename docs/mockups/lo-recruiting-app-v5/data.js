@@ -122,6 +122,8 @@ const CANDIDATES = [
     slaMin: 220, // còn 3h40m
     caseNote: 'Lead mới từ Modex list — chưa từng liên hệ. Đồng hồ SLA first-touch đang chạy. ⚠ Kho có 1 bản NGHI TRÙNG (cùng NMLS).',
     ai: '“Hi Kaprice, this is Brayan with Loan Factory. Saw you closed 41 loans in your first year at Imperium — that’s a serious start. LOs at your volume usually keep 40–60% more per file on our comp plan. Worth a 10-minute call this week?”',
+    /* idea CEO 13/08: AI soạn từ NGUỒN NGỮ CẢNH — lead lạnh lần đầu liên hệ nên chỉ có Modex, không bịa thêm */
+    aiCtx: [{ k: 'MODEX', l: 'Modex: 41 loans năm đầu · $18.2M/96u' }],
     timeline: [['Aug 3', 'Lead tạo từ Modex list import (batch TMC) — auto-assign Brayan']],
   },
   {
@@ -174,6 +176,15 @@ const CANDIDATES = [
       { to: 'HR', q: 'Ứng viên hỏi W-2 vs 1099 — khác gì về comp plan & benefits?', a: '', answered: false, at: 'Aug 3', by: 'brayan' },
     ],
     caseNote: 'Đã gửi comp sheet — follow-up hôm nay để mời Zoom.',
+    /* idea CEO 13/08: lead ẤM — AI đọc lịch sử cú gọi + note recruiter + email tracking + webinar để soạn câu MỞ LỜI CÓ TRÍ NHỚ */
+    ai: '“Chad — last call you asked how our comp handles files over $800K; the sheet I sent covers it on page 2, and I saw you opened it this morning. You also stayed through the branch-manager Q&A at our Feb webinar — want 15 minutes with him directly?”',
+    aiCtx: [
+      { k: 'CALL', l: 'Cú gọi Jul 31 — quan tâm, xin comp sheet' },
+      { k: 'NOTE', l: 'Note 31/07: “hỏi comp cho file >$800K”' },
+      { k: 'EMAIL', l: 'Comp sheet Aug 1 — đã mở sáng nay (tracked)' },
+      { k: 'WEBINAR', l: 'Webinar Feb — xem tới hết phần Q&A' },
+      { k: 'MODEX', l: 'Modex $41.2M/96u' },
+    ],
     timeline: [['Jul 31', 'First call — quan tâm, xin comp sheet'], ['Aug 1', 'Email comp sheet (tracked)'], ['Aug 3', 'Task follow-up đến hạn']],
   },
   {
@@ -222,6 +233,11 @@ const CANDIDATES = [
     offer: { status: 'REQUESTED', band: 'P4', waitDays: 2, requestedBy: 'brayan', snapshot: { vol: 103.85, units: 138, source: 'MODEX', asOf: 'Aug 1' } },
     caseNote: 'Verified fresh (Aug 1). Offer request band P4 đang chờ manager duyệt — 2 ngày.',
     ai: '“Roger — following up on our Zoom. With $103.8M across 138 units you’d sit in our top comp tier. I’ve asked my manager to fast-track your offer; expect the package this week.”',
+    aiCtx: [
+      { k: 'MEETING', l: '1-1 đã họp Jul 28 (Calendly)' },
+      { k: 'CALL', l: 'Zoom Jul 28 với branch manager — notes đính kèm' },
+      { k: 'MODEX', l: 'Verified $103.85M/138u (as-of Aug 1)' },
+    ],
     timeline: [['Jul 24', 'First call — quan tâm comp structure'], ['Jul 28', 'Zoom với branch manager — notes đính kèm'], ['Jul 30', 'Brayan nhập NMLS → auto-add vào synced list'], ['Aug 1', 'Verified — Modex payload về (webhook), card tự cập nhật'], ['Aug 1', 'Brayan bấm Request offer approval → chờ Tracy']],
   },
   {

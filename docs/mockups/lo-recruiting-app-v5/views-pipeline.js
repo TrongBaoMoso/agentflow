@@ -152,7 +152,11 @@ function vFocus() {
         </div>
         <div style="font-size:12.5px;color:var(--ink-2)">📌 <b>Case:</b> ${esc(cur.caseNote || '')}</div>
         ${cur.ai ? `<div class="ai">
-          <div class="aih">✨ AI gợi ý mở lời <span class="rg">soạn từ data Modex — sửa được trước khi gửi</span></div>
+          <div class="aih">✨ AI gợi ý mở lời <span class="rg">${cur.aiCtx ? `soạn từ ${cur.aiCtx.length} nguồn ngữ cảnh — sửa được trước khi gửi` : 'soạn từ data Modex — sửa được trước khi gửi'}</span></div>
+          ${cur.aiCtx ? `<div class="aictx">
+            ${cur.aiCtx.map((s) => `<span class="chip ${{ MODEX: 'green', CALL: 'blue', NOTE: 'amber', EMAIL: 'blue', WEBINAR: 'grey', MEETING: 'blue' }[s.k] || 'grey'}" title="Nguồn ngữ cảnh AI dùng — bấm vào record gốc trên hồ sơ để đối chiếu">${{ MODEX: '🧲', CALL: '📞', NOTE: '📝', EMAIL: '✉️', WEBINAR: '🎥', MEETING: '🗓' }[s.k] || '·'} ${esc(s.l)}</span>`).join(' ')}
+            <small>AI đọc: <b>các cú gọi trước · note recruiter (INTERNAL) · email tracking · điểm danh webinar · trạng thái 1-1</b> (idea CEO 13/08) — nguồn nào KHÔNG có thì không nhắc tới, không bịa. ${cur.aiCtx.length === 1 ? 'Lead lạnh lần đầu liên hệ → chỉ có Modex.' : 'Lead ấm → câu mở lời có "trí nhớ", không chào như người lạ.'}</small>
+          </div>` : ''}
           <div class="aib">${esc(cur.ai)}</div>
           <div class="aif">
             <button class="btn sm ghost" onclick="actAI('${cur.id}','short')">Đổi giọng: ngắn hơn</button>
