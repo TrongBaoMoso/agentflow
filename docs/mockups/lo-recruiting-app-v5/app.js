@@ -427,6 +427,11 @@ function actNextStep(id, kind) {
     addTl(c, `Next-step (Re chọn): gửi comp sheet/info package bằng template ACTIVE (D26)${when} — email tracked, task check tự tạo`);
     toast(`📄 Gửi bằng template ACTIVE — email có tracking mở/click; task "check đã mở chưa" đặt${when}.`);
   }
+  if (kind === 'webinar') { // CEO 14/08 #4/#11: "quan tâm nhưng muốn dự webinar trước rồi mới tính"
+    c.followUp = 'Đã mời webinar — hỏi cảm nhận sau buổi';
+    addTl(c, `Next-step (Re chọn): mời tham gia webinar kế tiếp${when} — tham dự là điểm danh tự ghi vào hồ sơ (D40); task "hỏi cảm nhận sau webinar" tự tạo`);
+    toast(`🎥 Đã gửi mời webinar — ứng viên tham dự là điểm danh tự ghi (D40); task hỏi cảm nhận đặt${when}.`);
+  }
   if (kind === 'meet11') {
     c.meeting = c.meeting || { status: 'invited', on: d || 'chờ book', via: 'Calendly' };
     c.followUp = 'Đã gửi link book 1-1 — theo dõi booking';
