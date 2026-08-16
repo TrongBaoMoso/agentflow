@@ -106,7 +106,8 @@ function vTemplates() {
   <div class="card">
     <div class="sec-h">📨 Thư viện template — email · SMS · call script, THEO STATUS <span class="cnt">${TEMPLATES.length}</span>
       <span class="hint">vòng đời DRAFT → IN_REVIEW → ACTIVE → RETIRED (D26) · role hiện tại ${isApprover ? 'CÓ' : 'KHÔNG có'} quyền duyệt</span>
-      <button class="btn sm primary" style="margin-left:auto" onclick="toast('＋ Template mới vào DRAFT — bạn dùng nháp của mình được ngay, nhưng muốn cả team dùng thì nộp duyệt.')">＋ Tạo template</button></div>
+      <button class="btn sm ghost" style="margin-left:auto" onclick="toast('✨ AI viết BẢN NHÁP theo yêu cầu bạn gõ — não = ai-router của AI team (không tự cắm model riêng), giữ nguyên biến \${first_name}… → kết quả vẫn là DRAFT, phải nộp duyệt mới ACTIVE (D26). Máy không bao giờ gửi bản chưa duyệt.')">✨ AI viết nháp</button>
+      <button class="btn sm primary" onclick="toast('＋ Template mới vào DRAFT — bạn dùng nháp của mình được ngay, nhưng muốn cả team dùng thì nộp duyệt.')">＋ Tạo template</button></div>
     ${rows}
   </div>
   <p class="src-note">Đây là "<b>ngôn ngữ tuyển dụng của công ty</b>" — 1 trong 5 thứ hệ cũ làm ĐÚNG phải bê sang (EVIDENCE §5); chỗ hỏng duy nhất của hệ cũ là nó nằm trong trang settings mà nửa công ty mở được.

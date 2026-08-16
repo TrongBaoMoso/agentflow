@@ -40,8 +40,12 @@ function vKho() {
   </div>
   <div class="card">
     <div class="sec-h">🧊 COLD — danh bạ Modex, đi "săn" chủ động <span class="cnt">${cold.length} (demo) · 102.715 (thật)</span>
-      <span class="hint">không đồng hồ — không ai cam kết gọi 102k người; filter + sort điểm rồi Claim con mồi ngon</span></div>
-    ${cold.map(row).join('') || '<div class="empty">trống</div>'}
+      <span class="hint">CEO #6: biết ai GIỎI trước rồi mới bỏ công — mặc định top producer lên đầu</span>
+      <span style="margin-left:auto;display:flex;gap:6px">
+        <button class="btn sm ${(S.khoSort || 'prod') === 'prod' ? 'primary' : 'ghost'}" onclick="S.khoSort='prod';render()">Sort: production ↓</button>
+        <button class="btn sm ${S.khoSort === 'new' ? 'primary' : 'ghost'}" onclick="S.khoSort='new';render()">Mới import</button>
+      </span></div>
+    ${((S.khoSort || 'prod') === 'prod' ? [...cold].sort((a, b) => (b.since22 || b.vol || 0) - (a.since22 || a.vol || 0)) : cold).map(row).join('') || '<div class="empty">trống</div>'}
     <div style="padding:10px 16px 14px"><button class="btn sm ghost" onclick="actImport()">⬆ Import list (CSV / Modex)</button></div>
   </div>
   <div class="card">
@@ -136,6 +140,7 @@ function mNextStep(id) {
       <button class="btn ghost w" onclick="actNextStep('${id}','meet11')">🗓 Mời book 1-1 (Calendly) → chip 🗓 lên hồ sơ + task theo dõi booking</button>
       ${!c.nmls ? `<button class="btn ghost w" onclick="actNextStep('${id}','verify')">🔢 Xin NMLS để verify production → nhập là Modex tự kéo (zero-click), mở cổng S3→S4</button>` : ''}
       ${c.stage === 'S2' ? `<button class="btn ghost w" onclick="actNextStep('${id}','s3')">⬆ Đủ độ chín (đã 2 chiều, hỏi sâu comp) → chuyển S3 · Engaged</button>` : ''}
+      <button class="btn ghost w" style="border-color:var(--green)" onclick="actNextStep('${id}','join')">🚀 Muốn join LUÔN (kể cả "gọi 1 phát ăn ngay") → verify NMLS → request offer → manager duyệt band → offer + link e-sign tự gửi</button>
     </div>
     <div class="mf"><button type="button" class="btn ghost" onclick="mOutcome('${id}')">← Quay lại kết quả gọi</button></div>
   </div></div>`);

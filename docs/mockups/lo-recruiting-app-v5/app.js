@@ -427,6 +427,16 @@ function actNextStep(id, kind) {
     addTl(c, `Next-step (Re chọn): gửi comp sheet/info package bằng template ACTIVE (D26)${when} — email tracked, task check tự tạo`);
     toast(`📄 Gửi bằng template ACTIVE — email có tracking mở/click; task "check đã mở chưa" đặt${when}.`);
   }
+  if (kind === 'join') { // CEO #12: chốt deal — fast-track (kể cả cú gọi đầu), vẫn qua đủ 2 cổng: NMLS verify + manager duyệt band
+    closeModal();
+    if (!c.nmls) { mNmls(id); toast('🚀 Fast-track "muốn join": cần <b>verify NMLS</b> trước (nhập là Modex tự kéo production) — verify xong bấm lại để request offer.'); return; }
+    if (c.stage === 'S2' || c.stage === 'S3') c.stage = 'S4';
+    c.offer = c.offer || { status: 'REQUESTED', band: 'P3', waitDays: 0, requestedBy: c.owner, note: 'fast-track — LO nói muốn join' };
+    c.followUp = 'Offer requested — chờ manager duyệt band';
+    addTl(c, 'Fast-track "muốn join" (Re chọn): request offer → manager duyệt band → hệ thống tự gửi offer + link đăng ký/e-sign; ký + đóng fee = cổng S6 · Joined mở, sang Onboarding');
+    toast(`🚀 Request offer đã gửi manager duyệt (đổi role Manager xem mục "Offer requests chờ duyệt"). Duyệt xong → offer + link e-sign tự tới <b>${esc(c.name)}</b>; ký + đóng fee là cổng S6 mở.`);
+    render(); return;
+  }
   if (kind === 'webinar') { // CEO 14/08 #4/#11: "quan tâm nhưng muốn dự webinar trước rồi mới tính"
     c.followUp = 'Đã mời webinar — hỏi cảm nhận sau buổi';
     addTl(c, `Next-step (Re chọn): mời tham gia webinar kế tiếp${when} — tham dự là điểm danh tự ghi vào hồ sơ (D40); task "hỏi cảm nhận sau webinar" tự tạo`);

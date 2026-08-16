@@ -42,28 +42,50 @@ function vToday() {
          ${c.vol != null ? fmtProd(c) : c.enrichFail ? `<span class="chip red">⚠ ${esc(c.enrichFail)}</span>` : `<span class="chip amber click" onclick="event.stopPropagation();mNmls('${c.id}')">No NMLS — ＋ hỏi & nhập để enrich</span>`} &nbsp;${slaChip(c)}`,
         contactBtns(c))).join('') || '<div class="empty">Không còn lead chờ first touch — Call/SMS xong là tự chuyển S2 ✓</div>'}
     </div>
-    <div class="card">
-      <div class="sec-h">📞 Follow-ups hôm nay <span class="cnt">${followUps.length}</span><span class="hint">từ next-step bạn đã hẹn + relay từ phòng khác</span></div>
-      ${followUps.map((c) => {
+    ${(() => {
+      /* Feedback CEO #1 (15/08): toggle demo — Signals để card riêng (hiện tại) vs gộp vào follow-ups
+         thành "Hôm nay cần chạm" (đề xuất). Bản gộp: mỗi dòng mang chip LÝ DO (📅 bạn hẹn / 🌙 wake-up /
+         📡 signal); việc CÓ HẠN nằm trên, signal là THỜI CƠ (không deadline) nên xếp cuối. */
+      const merged = !!S.mergeSignals;
+      const fuRows = followUps.map((c) => {
         const relayA = asksOf(c).find((a) => a.answered && !a.relayed); // câu trả lời phòng ban chưa relay → task
         return cRow(c,
-          (relayA ? `<b>${relayA.to}</b> đã trả lời: “<b>${esc(relayA.a)}</b>” → relay cho ứng viên` : `“${esc(c.followUp)}”`)
+          (merged ? '<span class="chip blue" title="Từ next-step bạn đã hẹn">📅 bạn hẹn</span> ' : '')
+          + (relayA ? `<b>${relayA.to}</b> đã trả lời: “<b>${esc(relayA.a)}</b>” → relay cho ứng viên` : `“${esc(c.followUp)}”`)
           + (c.followUpDue ? ` · <span class="chip grey">dời → ${esc(c.followUpDue)}</span>` : '')
           + (c.cadence ? ` · <span class="chip amber" title="Cadence D23/D24 — bậc ${CONFIG.cadence.tiers.join('/')} ngày, config">⏲ ${esc(c.cadence.label)}</span> <span class="chip grey" title="Luật Q35 — lead trả lời là chuỗi tự dừng">inbound = dừng chuỗi</span>` : ''),
           `<button class="btn sm green" onclick="actContact('${c.id}','call')">Call now</button>${scriptBtn(c)}
            <button class="btn sm ghost" onclick="mResched('${c.id}')" title="Đổi hạn — task không mất, đúng ngày tự nổi lại">Reschedule</button>
            <button class="btn sm ghost" onclick="actFuDone('${c.id}')" title="Xong việc này — luật S2+ bắt chọn next-step ngay">Done</button>`);
-      }).join('') || '<div class="empty">Chưa có follow-up đến hạn</div>'}
+      }).join('');
+      const sigRows = signals.map((c) => cRow(c,
+        (merged ? '<span class="chip orange" title="Máy phát hiện từ đợt Modex refresh — thời cơ, không phải deadline">📡 signal Modex</span> ' : '')
+        + `<span class="chip red">${esc(c.signal.split(':')[0])}</span> ${esc(c.signal.split('—')[0].split(':').slice(1).join(':'))} — cửa sổ vàng`,
+        `<button class="btn sm primary" onclick="actReengage('${c.id}')">Re-engage</button>
+         <button class="btn sm ghost" onclick="toast('Dismissed — signal này không bắn lại.')">Dismiss</button>`)).join('');
+      const wakeRows = wakeups.map((c) => cRow(c,
+        (merged ? `<span class="chip grey">🌙 wake-up đúng hẹn</span> ${esc(c.wakeUp)}` : `🌙 ${esc(c.wakeUp)}`),
+        `<button class="btn sm primary" onclick="actReengage('${c.id}')">Re-engage</button>
+         <button class="btn sm ghost" onclick="openC('${c.id}')">Mở hồ sơ</button>`)).join('');
+      const toggleBar = `<div class="card" style="display:flex;align-items:center;gap:8px;padding:9px 16px;font-size:12px;color:var(--ink-2);flex-wrap:wrap">
+        📡 Vị trí Signals — toggle để demo (feedback CEO #1):
+        <button class="btn sm ${merged ? 'ghost' : 'primary'}" onclick="S.mergeSignals=false;render()">Card riêng (hiện tại)</button>
+        <button class="btn sm ${merged ? 'primary' : 'ghost'}" onclick="S.mergeSignals=true;render()">Gộp vào follow-ups (đề xuất)</button></div>`;
+      return merged ? `${toggleBar}
+    <div class="card">
+      <div class="sec-h">📞 Hôm nay cần chạm <span class="cnt">${followUps.length + signals.length + wakeups.length}</span><span class="hint">một danh sách người-cũ duy nhất — chip nói VÌ SAO ở đây; việc có hạn trên, thời cơ (signal) cuối</span></div>
+      ${fuRows}${wakeRows}${sigRows}${!(fuRows || wakeRows || sigRows) ? '<div class="empty">Hôm nay chưa có ai cần chạm</div>' : ''}
+    </div>` : `${toggleBar}
+    <div class="card">
+      <div class="sec-h">📞 Follow-ups hôm nay <span class="cnt">${followUps.length}</span><span class="hint">từ next-step bạn đã hẹn + relay từ phòng khác</span></div>
+      ${fuRows || '<div class="empty">Chưa có follow-up đến hạn</div>'}
     </div>
     <div class="card">
-      <div class="sec-h">📡 Signals — Modex monthly refresh <span class="cnt">${signals.length}</span><span class="hint">nurture list tự canh mình</span></div>
-      ${signals.map((c) => cRow(c, `<span class="chip red">${esc(c.signal.split(':')[0])}</span> ${esc(c.signal.split('—')[0].split(':').slice(1).join(':'))} — cửa sổ vàng`,
-        `<button class="btn sm primary" onclick="actReengage('${c.id}')">Re-engage</button>
-         <button class="btn sm ghost" onclick="toast('Dismissed — signal này không bắn lại.')">Dismiss</button>`)).join('') || '<div class="empty">Không có signal mới</div>'}
-      ${wakeups.map((c) => cRow(c, `🌙 ${esc(c.wakeUp)}`,
-        `<button class="btn sm primary" onclick="actReengage('${c.id}')">Re-engage</button>
-         <button class="btn sm ghost" onclick="openC('${c.id}')">Mở hồ sơ</button>`)).join('')}
-    </div>
+      <div class="sec-h">📡 Signals — Modex monthly refresh <span class="cnt">${signals.length}</span><span class="hint">nurture list tự canh mình — máy DIFF bản tháng mới vs bản cũ: đổi công ty / volume tăng</span></div>
+      ${sigRows || '<div class="empty">Không có signal mới</div>'}
+      ${wakeRows}
+    </div>`;
+    })()}
     <div class="card">
       <div class="sec-h">✍️ Offers awaiting signature <span class="cnt">${offers.length}</span></div>
       ${offers.map((c) => cRow(c, `<span class="chip amber">Viewed — chưa ký · ${c.offer.stallDays}d</span> ${esc(c.offer.viewedNote || '')} · band ${c.offer.band}`,
