@@ -425,20 +425,6 @@
       "port": 3078
     },
     {
-      "name": "lo-restricted-domain",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "--prefix",
-        "/Users/apple/Projects/agentflow/.worktrees/lo-restricted-domain",
-        "run",
-        "dev",
-        "--",
-        "-p",
-        "3071"
-      ],
-      "port": 3071
-    },
-    {
       "name": "lfh-lo-prefill",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
