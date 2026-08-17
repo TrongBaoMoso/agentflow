@@ -430,15 +430,16 @@ const THREADS = [
   ]},
 ];
 
-/* ---- 📨 Templates (D26): vòng đời DRAFT → IN_REVIEW → ACTIVE → RETIRED ---- */
+/* ---- 📨 Templates (D26 + CEO #25): vòng đời DRAFT → IN_REVIEW → ACTIVE → RETIRED
+   scope 3 cấp (CEO #25): PERSONAL (của mình, dùng ngay không cần duyệt) · TEAM · COMPANY (cần TEMPLATE_APPROVE) ---- */
 const TEMPLATES = [
-  { id: 't1', type: 'EMAIL', stage: 'S1', name: 'Intro — first touch', status: 'ACTIVE', by: 'Victoria Pham', updated: 'Jul 12', body: 'Hi ${first_name}, this is ${sender} with Loan Factory. Saw you closed ${loans_since_2022} loans since 2022…' },
-  { id: 't2', type: 'SMS', stage: 'S1', name: 'Intro SMS ngắn', status: 'ACTIVE', by: 'Victoria Pham', updated: 'Jul 12', body: '${first_name} — ${sender} @ Loan Factory. 10 phút tuần này nói chuyện comp? ${calendly_link}' },
-  { id: 't3', type: 'CALL_SCRIPT', stage: 'S2', name: 'Script comp talk (S2 · Contacted)', status: 'ACTIVE', by: 'Victoria Pham', updated: 'Jun 30', body: 'Mở lời: nhắc production của họ (loans since 2022). Điểm chốt: 250bps · 100% commission · fee structure minh bạch · referral bonus. KHÔNG hứa số comp cụ thể — đó là việc của offer. Chốt: mời Zoom 15 phút / gửi comp sheet.' },
-  { id: 't4', type: 'CALL_SCRIPT', stage: 'S3', name: 'Script objection-handling (S3 · Engaged)', status: 'ACTIVE', by: 'Victoria Pham', updated: 'Jun 30', body: '"Tôi đang ổn ở chỗ cũ" → hỏi họ giữ được bao nhiêu mỗi file. "Sợ đổi LOS" → kể onboarding 4 phòng song song, có checklist. Chốt: xin NMLS để verify số thật.' },
-  { id: 't5', type: 'EMAIL', stage: 'S2', name: 'Comp sheet follow-up v2', status: 'IN_REVIEW', by: 'Brayan Suarez', updated: 'hôm qua', body: '(bản Brayan viết lại, thêm bảng so sánh net-per-file) — chờ duyệt' },
-  { id: 't6', type: 'SMS', stage: 'NURTURE', name: 'Wake-up nhẹ nhàng', status: 'DRAFT', by: 'Brayan Suarez', updated: 'hôm nay', body: '${first_name}, hẹn "${nurture_note}" của mình tới rồi — tình hình bên đó sao rồi? ☕' },
-  { id: 't7', type: 'EMAIL', stage: 'S5', name: 'Offer reminder (bản 2024)', status: 'RETIRED', by: '—', updated: 'Feb 2', body: '(đã thay bằng flow nhắc tự động của document-esign)' },
+  { id: 't1', type: 'EMAIL', stage: 'S1', scope: 'COMPANY', name: 'Intro — first touch', status: 'ACTIVE', by: 'Victoria Pham', updated: 'Jul 12', body: 'Hi ${first_name}, this is ${sender} with Loan Factory. Saw you closed ${loans_since_2022} loans since 2022…' },
+  { id: 't2', type: 'SMS', stage: 'S1', scope: 'COMPANY', name: 'Intro SMS ngắn', status: 'ACTIVE', by: 'Victoria Pham', updated: 'Jul 12', body: '${first_name} — ${sender} @ Loan Factory. 10 phút tuần này nói chuyện comp? ${calendly_link}' },
+  { id: 't3', type: 'CALL_SCRIPT', stage: 'S2', scope: 'COMPANY', name: 'Script comp talk (S2 · Contacted)', status: 'ACTIVE', by: 'Victoria Pham', updated: 'Jun 30', body: 'Mở lời: nhắc production của họ (loans since 2022). Điểm chốt: 250bps · 100% commission · fee structure minh bạch · referral bonus. KHÔNG hứa số comp cụ thể — đó là việc của offer. Chốt: mời Zoom 15 phút / gửi comp sheet.' },
+  { id: 't4', type: 'CALL_SCRIPT', stage: 'S3', scope: 'COMPANY', name: 'Script objection-handling (S3 · Engaged)', status: 'ACTIVE', by: 'Victoria Pham', updated: 'Jun 30', body: '"Tôi đang ổn ở chỗ cũ" → hỏi họ giữ được bao nhiêu mỗi file. "Sợ đổi LOS" → kể onboarding 4 phòng song song, có checklist. Chốt: xin NMLS để verify số thật.' },
+  { id: 't5', type: 'EMAIL', stage: 'S2', scope: 'TEAM', name: 'Comp sheet follow-up v2', status: 'IN_REVIEW', by: 'Brayan Suarez', updated: 'hôm qua', body: '(bản Brayan viết lại, thêm bảng so sánh net-per-file) — chờ duyệt để cả team dùng' },
+  { id: 't6', type: 'SMS', stage: 'NURTURE', scope: 'PERSONAL', name: 'Wake-up nhẹ nhàng (nháp của tôi)', status: 'DRAFT', by: 'Brayan Suarez', updated: 'hôm nay', body: '${first_name}, hẹn "${nurture_note}" của mình tới rồi — tình hình bên đó sao rồi? ☕' },
+  { id: 't7', type: 'EMAIL', stage: 'S5', scope: 'COMPANY', name: 'Offer reminder (bản 2024)', status: 'RETIRED', by: '—', updated: 'Feb 2', body: '(đã thay bằng flow nhắc tự động của document-esign)' },
 ];
 
 /* ---- 🎥 Webinar (D40): điểm danh tự động qua Meet API, CSV fallback ---- */

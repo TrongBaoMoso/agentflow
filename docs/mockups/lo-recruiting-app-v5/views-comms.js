@@ -85,17 +85,24 @@ function vTemplates() {
     ACTIVE: '<span class="chip green">ACTIVE</span>', RETIRED: '<span class="chip grey" style="opacity:.55">RETIRED</span>',
   }[s]);
   const typeIcon = { EMAIL: '✉️ Email', SMS: '💬 SMS', CALL_SCRIPT: '📜 Call script' };
+  /* vá 17/08 (CEO #25): 3 cấp template — cá nhân dùng ngay không cần duyệt; team/công ty mới cần TEMPLATE_APPROVE */
+  const scopeChip = (sc) => ({
+    PERSONAL: '<span class="chip amber" title="Cá nhân — chỉ mình bạn thấy & dùng, KHÔNG cần duyệt (CEO #25)">🙋 cá nhân</span>',
+    TEAM: '<span class="chip blue" title="Team — cả team dùng, cần duyệt">👥 team</span>',
+    COMPANY: '<span class="chip green" title="Công ty — mọi recruiter dùng, cần TEMPLATE_APPROVE">🏢 công ty</span>',
+  }[sc || 'COMPANY']);
   const rows = TEMPLATES.map((t) => {
     const acts = [];
     if (t.status === 'ACTIVE') acts.push(`<button class="btn sm primary" onclick="toast('📤 Gửi bằng template ACTIVE — ai cũng gửi được, không cần chờ duyệt (D26). Biến \\'${'$'}{first_name}\\'… tự điền.')">Dùng để gửi</button>`);
-    if (t.status === 'DRAFT') acts.push(`<button class="btn sm ghost" onclick="actTpl('${t.id}','IN_REVIEW')">Nộp duyệt →</button>`);
+    if (t.status === 'DRAFT' && t.scope === 'PERSONAL') acts.push(`<button class="btn sm primary" onclick="toast('📤 Nháp CÁ NHÂN — bạn dùng ngay không cần ai duyệt (CEO #25). Muốn cả team dùng thì Nộp duyệt để nâng cấp scope.')">Dùng ngay (cá nhân)</button>`);
+    if (t.status === 'DRAFT') acts.push(`<button class="btn sm ghost" onclick="actTpl('${t.id}','IN_REVIEW')">Nộp duyệt → team/công ty</button>`);
     if (t.status === 'IN_REVIEW') acts.push(isApprover
       ? `<button class="btn sm green" onclick="actTpl('${t.id}','ACTIVE')">✓ Duyệt → ACTIVE</button>`
       : `<button class="btn sm ghost" disabled title="Cần quyền TEMPLATE_APPROVE — role này không có">Chờ duyệt (khoá)</button>`);
     if (t.status === 'ACTIVE' && isApprover) acts.push(`<button class="btn sm ghost" onclick="actTpl('${t.id}','RETIRED')">Retire</button>`);
     return `<div class="row" style="align-items:flex-start">
       <div style="flex:1;min-width:0">
-        <b>${typeIcon[t.type]} — ${esc(t.name)}</b> <span class="chip blue">${t.stage}</span> ${stChip(t.status)}
+        <b>${typeIcon[t.type]} — ${esc(t.name)}</b> <span class="chip blue">${t.stage}</span> ${scopeChip(t.scope)} ${stChip(t.status)}
         <div style="font-size:12px;color:var(--ink-2);margin-top:4px">${esc(t.body)}</div>
         <small style="color:var(--ink-3)">sửa cuối: ${esc(t.by)} · ${esc(t.updated)}</small>
       </div>
@@ -111,8 +118,9 @@ function vTemplates() {
     ${rows}
   </div>
   <p class="src-note">Đây là "<b>ngôn ngữ tuyển dụng của công ty</b>" — 1 trong 5 thứ hệ cũ làm ĐÚNG phải bê sang (EVIDENCE §5); chỗ hỏng duy nhất của hệ cũ là nó nằm trong trang settings mà nửa công ty mở được.
-  Luật D26: ai cũng <b>gửi</b> được template ACTIVE (Re không bị chờ duyệt để làm việc hằng ngày) — chỉ vai có quyền TEMPLATE_APPROVE mới <b>phát hành</b> bản mới (không có 12 dị bản email công ty chạy ngoài tự nhiên).
-  Call script ở đây chính là nguồn cho panel 📜 cạnh nút gọi (D39 — xem Focus mode).</p>`;
+  <b>3 cấp scope (CEO #25):</b> 🙋 cá nhân (nháp riêng — dùng ngay, không cần duyệt) · 👥 team · 🏢 công ty (hai cấp này cần TEMPLATE_APPROVE khi phát hành).
+  Luật D26: ai cũng <b>gửi</b> được template ACTIVE (Re không bị chờ duyệt để làm việc hằng ngày) — chỉ vai có quyền TEMPLATE_APPROVE mới <b>phát hành</b> bản team/công ty (không có 12 dị bản email chạy ngoài tự nhiên).
+  Call script ở đây chính là nguồn cho panel 📜 cạnh nút gọi (D39 — xem Focus mode trên Today).</p>`;
 }
 
 function actTpl(id, to) {

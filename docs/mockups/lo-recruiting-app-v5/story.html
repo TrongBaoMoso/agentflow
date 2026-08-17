@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LF Recruit — Câu chuyện 1 trang</title>
+<style>
+  /* Trang story tĩnh cho CEO (feedback 14/08 #7) — tự chứa, gửi riêng file này là đọc được */
+  :root { --ink:#1c2330; --ink2:#4b5568; --ink3:#8a93a2; --line:#e5e8ee; --green:#2e7d57; --amber:#b45309;
+          --red:#d93025; --blue:#1d4ed8; --orange:#e8570e; --cream:#faf6ef; --soft:#f4f6f9; }
+  * { box-sizing:border-box; margin:0; }
+  body { font:14px/1.62 -apple-system, "Segoe UI", Roboto, sans-serif; color:var(--ink); background:#fff; padding:34px 20px 60px; }
+  .page { max-width:880px; margin:0 auto; }
+  h1 { font-size:26px; letter-spacing:-.4px; }
+  .sub { color:var(--ink2); margin:6px 0 26px; font-size:14.5px; }
+  h2 { font-size:17px; margin:34px 0 4px; }
+  h2 small { color:var(--ink3); font-weight:500; font-size:12px; }
+  .lead { color:var(--ink2); margin-bottom:14px; font-size:13.5px; }
+  .chip { display:inline-block; padding:2px 9px; border-radius:99px; font-size:11.5px; font-weight:600; background:var(--soft); color:var(--ink2); }
+  .chip.g{background:#e7f2ec;color:var(--green)} .chip.a{background:#fbf0e3;color:var(--amber)}
+  .chip.r{background:#fdeceb;color:var(--red)} .chip.b{background:#e9eefc;color:var(--blue)} .chip.o{background:#fdeee2;color:var(--orange)}
+  .tl { border-left:3px solid var(--line); margin:14px 0 0 10px; padding-left:0; }
+  .step { position:relative; padding:0 0 20px 26px; }
+  .step::before { content:""; position:absolute; left:-9px; top:5px; width:13px; height:13px; border-radius:50%; background:#fff; border:3px solid var(--ink3); }
+  .step.hl::before { border-color:var(--green); background:var(--green); }
+  .step b.t { display:block; font-size:14px; }
+  .step .who { font-size:11.5px; color:var(--ink3); font-weight:600; text-transform:uppercase; letter-spacing:.4px; }
+  .step p { color:var(--ink2); font-size:13px; margin-top:3px; }
+  .machine { background:var(--cream); border:1px solid #eee3cd; border-radius:8px; padding:7px 11px; font-size:12.5px; color:var(--ink2); margin-top:6px; }
+  .machine b { color:var(--amber); }
+  .day { border:1px solid var(--line); border-radius:10px; overflow:hidden; margin-top:12px; }
+  .day .row { display:flex; gap:14px; padding:11px 16px; border-top:1px solid var(--line); }
+  .day .row:first-child { border-top:0; }
+  .day .clock { flex:0 0 58px; font-weight:700; color:var(--ink3); font-size:12.5px; padding-top:2px; }
+  .day .row div:last-child { flex:1; }
+  .day p { color:var(--ink2); font-size:12.5px; }
+  .grid3 { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:12px; margin-top:12px; }
+  .cardx { border:1px solid var(--line); border-radius:10px; padding:12px 14px; }
+  .cardx h3 { font-size:13.5px; margin-bottom:4px; }
+  .cardx p { font-size:12.5px; color:var(--ink2); }
+  .foot { margin-top:36px; padding-top:14px; border-top:1px solid var(--line); font-size:12px; color:var(--ink3); }
+  @media print { body{padding:0} }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>LF Recruit — toàn bộ câu chuyện trong 1 trang</h1>
+  <p class="sub">Hành trình một ứng viên từ danh bạ tới đồng nghiệp, và một ngày làm việc của recruiter.
+  Nguyên tắc xuyên suốt: <b>việc tự tìm đến người, máy làm phần máy giỏi, người chỉ làm phần cần người.</b></p>
+
+  <h2>Phần 1 — Hành trình của Kaprice <small>(một ứng viên, 8 chặng, 5 phòng ban — không ai chuyển tay)</small></h2>
+  <p class="lead">Mỗi chặng có một "cổng": chưa đủ điều kiện thì không qua được — nên số liệu funnel luôn thật.</p>
+  <div class="tl">
+    <div class="step"><span class="who">S0 · Kho — chưa ai đụng</span><b class="t">Kaprice nằm trong 102.715 dòng danh bạ Modex</b>
+      <p>Kho sort sẵn theo production: người giỏi nổi lên đầu — recruiter chọn đúng "con mồi" trước khi bỏ công.</p>
+      <div class="machine">🤖 Máy đã làm: import theo đợt (báo rõ bao nhiêu dòng vào/trùng/lỗi) · kéo hồ sơ production từ Modex về sẵn.</div></div>
+    <div class="step"><span class="who">S1 · New — recruiter Brayan nhận</span><b class="t">Brayan bấm Claim (hoặc Call luôn — máy tự claim)</b>
+      <p>Từ giây này lead CÓ CHỦ và có đồng hồ SLA. Không còn cảnh 2 người gọi trùng 1 lead, hay 96,8% kho không ai đụng.</p></div>
+    <div class="step"><span class="who">S2 · Contacted — cú gọi đầu</span><b class="t">Gọi xong, app hỏi đúng 2 câu: ① họ thế nào? ② bước kế tiếp là gì?</b>
+      <p>"Quan tâm" không phải chỗ nằm — bắt buộc đổi thành 1 việc có hạn: gửi comp sheet / mời webinar / book 1-1 / xin NMLS… Ai bận thì vào 🌙 Nurture, đến hẹn tự nổi lại.</p>
+      <div class="machine">🤖 Call script nằm cạnh nút gọi · AI soạn câu mở lời từ đúng lịch sử người này (không bịa) · ghi chú lưu vào hồ sơ, cả team đọc lại được.</div></div>
+    <div class="step"><span class="who">S3 · Engaged — có qua có lại</span><b class="t">Kaprice hỏi ngược về comp, dự webinar — quan hệ 2 chiều thật</b>
+      <p>Câu hỏi luật bang? Brayan hỏi Licensing NGAY TRONG APP — câu trả lời tự quay về Today của anh, lưu vĩnh viễn trên hồ sơ.</p></div>
+    <div class="step"><span class="who">S4 · Verified — số thật</span><b class="t">Có NMLS → Modex xác nhận production, không ai gõ tay</b>
+      <p>Số liệu mang nhãn nguồn + ngày chụp. Cổng ra: data phải tươi (≤90 ngày).</p></div>
+    <div class="step"><span class="who">S5 · Offer — tiền bạc rõ ràng</span><b class="t">Brayan request offer → manager duyệt band → hệ thống TỰ gửi offer + link e-sign</b>
+      <p>Căn cứ duyệt bị "đóng băng" vào offer — sau này ai hỏi "duyệt band này dựa trên số nào" đều truy được. Ứng viên mở mà chưa ký? App thấy và nhắc chase.</p></div>
+    <div class="step hl"><span class="who">S6 · Onboarding — cổng Joined</span><b class="t">Ký thật + đóng fee = qua cổng. Checklist 4 phòng tự mở, chạy song song</b>
+      <p>Licensing / HR / IT / Accounting mỗi phòng tick việc của mình; chỗ nào kẹt thì đỏ lên — không ai phải hỏi "tới lượt tôi chưa?".</p></div>
+    <div class="step hl"><span class="who">S7 · Active — đồng nghiệp</span><b class="t">Checklist 100% → tự chuyển Active. Người giới thiệu thấy tiến độ suốt hành trình</b>
+      <p>Bonus giới thiệu tự chín sau 60 ngày, đủ điều kiện nút trả mới hiện, trả rồi khoá vĩnh viễn — không trả trùng.</p></div>
+  </div>
+
+  <h2>Phần 2 — Một ngày của Brayan (recruiter) <small>không mở bảng 106 nghìn dòng lần nào</small></h2>
+  <div class="day">
+    <div class="row"><div class="clock">8:30</div><div><b>Mở app → tab ☀️ Today.</b>
+      <p>Banner: "Hôm qua bạn còn 2 việc chưa xong" — việc trễ KHÔNG biến mất, tự lăn sang hôm nay kèm tuổi trễ. Máy nhắc — manager không phải đi nhắc từng người.</p></div></div>
+    <div class="row"><div class="clock">8:35</div><div><b>Bấm ▶ Bắt đầu — Focus mode.</b>
+      <p>App xếp sẵn hàng: lead SLA gấp trước, follow-up đến hẹn, rồi tới "thời cơ". Mỗi người một màn: đã nói mấy lần, lần trước nói gì, script cạnh nút gọi, AI gợi ý mở lời. Gọi xong → 2 câu hỏi → người kế tiếp.</p></div></div>
+    <div class="row"><div class="clock">10:00</div><div><b>Card 📡 Signals: "Peter Lawson vừa ĐỔI CÔNG TY".</b>
+      <p>Không phải Modex báo — máy tự so bản refresh tháng này với tháng trước và phát hiện. LO vừa rời company là lúc dễ rủ nhất — nurture list tự canh mình.</p></div></div>
+    <div class="row"><div class="clock">11:30</div><div><b>Card ✍️ Offers chờ ký: "Trent mở offer 3 lần, dừng ở trang comp, 5 ngày chưa ký".</b>
+      <p>Mét cuối của deal. Mở-mà-không-ký = có lấn cấn (đang so offer khác?) → gọi xử lý, không nhắc suông.</p></div></div>
+    <div class="row"><div class="clock">14:00</div><div><b>Quá tải? Tự chuyển bớt lead cho Seth — không cần manager duyệt.</b>
+      <p>Người nhận được notify kèm đủ lịch sử. Ai nghỉ ốm thì manager mở coverage view xử lý thay — hành động vẫn ghi đúng tên người làm.</p></div></div>
+    <div class="row"><div class="clock">17:00</div><div><b>Hết ngày — không ghi report tay.</b>
+      <p>Mọi cú click đã tự thành số liệu: SLA, funnel, việc trễ. Manager xem Reports theo tuần/tháng; màn Exceptions của họ trống nghĩa là mọi thứ đang chạy êm.</p></div></div>
+  </div>
+
+  <h2>Phần 3 — Máy làm gì sau lưng <small>(để người chỉ làm phần cần người)</small></h2>
+  <div class="grid3">
+    <div class="cardx"><h3>🧲 Dữ liệu tự về</h3><p>Nhập NMLS là production tự kéo từ Modex (zero-click). Refresh định kỳ; máy tự diff để bắn signal đổi công ty / volume tăng.</p></div>
+    <div class="cardx"><h3>⏱ Kỷ luật tự động</h3><p>SLA đếm ngược, trễ tự leo lên Exceptions. Cadence nhắc theo bậc (config được, không hardcode). Lead trả lời là chuỗi tự dừng.</p></div>
+    <div class="cardx"><h3>🔒 Đúng người đúng việc</h3><p>Cùng MỘT kho hồ sơ, mỗi role một ống kính: Licensing không thấy tiền, Accounting không thấy pipeline, recruiter chỉ thấy band.</p></div>
+    <div class="cardx"><h3>📨 Một giọng nói công ty</h3><p>Template email/SMS/script 3 cấp (cá nhân · team · công ty). AI viết nháp — nhưng bản chưa duyệt thì máy không bao giờ gửi.</p></div>
+    <div class="cardx"><h3>🧾 Mọi thứ truy được</h3><p>Ai làm gì, duyệt dựa trên số nào, vì sao archive — đều có vết. Không có hành động "biến mất trong im lặng".</p></div>
+    <div class="cardx"><h3>🔌 Tích hợp, không tự chế</h3><p>Hội thoại đi qua Omni service · call qua Zoom · e-sign qua document-esign · AI qua ai-router — recruiting chỉ build phần recruiting.</p></div>
+  </div>
+
+  <p class="foot">LF Recruit v5 · trang tóm tắt tĩnh theo yêu cầu 14/08 (điểm 7) — bản bấm được: mở <b>index.html</b> cùng thư mục (port 3044). Số liệu hệ cũ trích từ recruiting-be/docs/EVIDENCE.md.</p>
+</div>
+</body>
+</html>

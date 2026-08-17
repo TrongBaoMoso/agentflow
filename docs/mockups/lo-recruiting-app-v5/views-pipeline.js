@@ -25,7 +25,8 @@ function vLogin() {
 /* ---------- PIPELINE (view switcher + 4 views) ---------- */
 function vPipeline() {
   const r = role();
-  const views = [['kanban', 'Kanban'], ['table', 'Table'], ['focus', 'Focus'], ['funnel', 'Funnel']];
+  /* vá 17/08 (#17): Focus dời sang Today (nút ▶ Bắt đầu) — Pipeline chỉ còn chế độ NHÌN */
+  const views = [['kanban', 'Kanban'], ['table', 'Table'], ['funnel', 'Funnel']];
   const fav = CONFIG.favoriteViews[S.role];
   const sw = `<div class="toolrow">
     <div class="vswitch">${views.map(([v, l]) => `<button class="${S.view === v ? 'on' : ''}" onclick="setView('${v}')">${l}${fav === v ? ' ⭐' : ''}</button>`).join('')}</div>
@@ -34,7 +35,7 @@ function vPipeline() {
     ${S.role === 'recruiter' ? `<span class="chip grey click" onclick="go('nurture')">🌙 Nurture (${CANDIDATES.filter((c) => c.stage === 'NURTURE').length})</span>` : ''}
     <button class="btn primary" style="margin-left:auto" onclick="mAddLead()">＋ Add lead</button>
   </div>`;
-  const body = { kanban: vKanban, table: vTable, focus: vFocus, funnel: vFunnel }[S.view]();
+  const body = ({ kanban: vKanban, table: vTable, funnel: vFunnel }[S.view] || vKanban)();
   return sw + body;
 }
 
@@ -47,10 +48,11 @@ function vKanban() {
       <div class="lockmsg" style="opacity:.8;text-align:left;padding:12px">Không vẽ card ở đây (kanban vô nghĩa với 100k dòng) — làm việc ở màn <b class="click" onclick="go('kho')" style="cursor:pointer;text-decoration:underline">🗄 Kho</b>.<br><br>
       Sang S1 bằng (bật/tắt trong Settings — Q34):<br>• <b>máy chia</b> (auto-assign)<br>• <b>Claim</b> tay<br>• hoặc <b>Call luôn → tự claim</b></div>
     </div>`;
+  const TOPN = 3; // vá 17/08 (#16): kanban chỉ vẽ top-N mỗi cột — 200 card/cột thì xem ở Table
   const cols = s0col + STAGES.filter((s) => s.id !== 'S7').map((st) => {
     const locked = !r.stages.includes(st.id);
     const cands = locked ? [] : visibleCands().filter((c) => c.stage === st.id);
-    const cardsH = cands.map((c) => `
+    const cardsH = cands.slice(0, TOPN).map((c) => `
       <div class="kcard ${S.sel === c.id ? 'sel' : ''}" onclick="openC('${c.id}')">
         ${st.id !== 'S6' ? `<button class="adv" title="Chuyển stage kế (check gate)" onclick="event.stopPropagation();actAdvance('${c.id}')">→</button>` : ''}
         <b>${esc(c.name)}</b>
@@ -65,14 +67,21 @@ function vKanban() {
           ${c.vol >= 100 ? '<span class="chip orange">High producer</span>' : ''}
         </div>
         ${['S4', 'S5', 'S6'].includes(st.id) ? lightsBar(c, true) : ''}
-      </div>`).join('');
+      </div>`).join('')
+      + (cands.length > TOPN ? `<div class="lockmsg click" style="cursor:pointer;opacity:.85" onclick="setView('table')">＋ ${cands.length - TOPN} nữa — xem tất cả → Table<br><small>(#16: kanban không vẽ 200 card/cột)</small></div>` : '');
     return `<div class="colk ${locked ? 'col-locked' : ''}">
       <h3>${st.id} · ${st.name} <span class="cnt">${locked ? '🔒' : cands.length}</span></h3>
       <div class="gate-note">${st.note}</div>
       ${locked ? '<div class="lockmsg">🔒 Ngoài lens của role này<br>(view ≠ permission)</div>' : cardsH || '<div class="lockmsg" style="opacity:.6">trống</div>'}
     </div>`;
   }).join('');
-  return `<div class="board">${cols}</div>
+  /* vá 17/08 (#14): CEO muốn thấy Nurture ở pipeline view — dải cạnh kanban, KHÔNG thêm cột (nurture không phải stage) */
+  const nurt = CANDIDATES.filter((c) => c.stage === 'NURTURE');
+  const nurtureStrip = ['recruiter', 'manager'].includes(S.role) ? `<div class="card" style="display:flex;align-items:center;gap:8px;padding:9px 16px;font-size:12.5px;flex-wrap:wrap;margin-bottom:10px">
+    🌙 <b>Nurture (${nurt.length})</b> — nằm cạnh kanban, không phải cột (CEO #14):
+    ${nurt.slice(0, 3).map((c) => `<span class="chip ${c.signal ? 'red' : c.wakeUp ? 'amber' : 'grey'} click" onclick="openC('${c.id}')">${esc(c.name.split(' ')[0])} · ${c.signal ? '📡 signal' : c.wakeUp ? '⏰ đến hẹn' : 'từ ' + esc(c.nurtureSince || '—')}</span>`).join(' ')}
+    <button class="btn sm ghost" style="margin-left:auto" onclick="go('nurture')">Mở Nurture →</button></div>` : '';
+  return `${nurtureStrip}<div class="board">${cols}</div>
   <p class="src-note">Click card → hồ sơ 360 · nút <b>→</b> chuyển stage (gate tự chặn: S3→S4 cần NMLS, S4→S5 cần manager duyệt). Cột 🔒 = ngoài lens của role.</p>`;
 }
 
@@ -136,7 +145,8 @@ function vFocus() {
     <div class="card fcard">
       <div class="fc-head">
         <div class="av" style="background:${cur.color}">${cur.av}</div>
-        <div><h2>${esc(cur.name)}</h2><div class="sub">${cur.nmls ? 'NMLS ' + cur.nmls + ' · ' : ''}${esc(cur.company)} · ${esc(cur.city)}</div></div>
+        <div><h2>${esc(cur.name)}</h2><div class="sub">${cur.nmls ? 'NMLS ' + cur.nmls + ' · ' : ''}${esc(cur.company)} · ${esc(cur.city)}</div>
+          <div style="margin-top:5px">${talkBadge(cur)}</div></div>
         <div class="why"><span class="chip ${cur.slaMin < 0 ? 'red' : 'amber'}">${why}</span>
         <div style="font-size:11px;color:var(--ink-3);margin-top:4px">Vì sao người này lên đầu queue</div></div>
       </div>
@@ -256,7 +266,14 @@ function vDrawer(c) {
       ${c.offer?.snapshot && r.seeComp === 'full' ? ` <span class="chip blue click" onclick="mSnapshot('${c.id}')" title="D37 — căn cứ duyệt bị đóng băng lúc submit">🧊 Xem snapshot offer</span>` : ''}</div>
       ${r.seeComp === 'none' ? '<p>Field-level RBAC: role này không cần thấy tiền cho việc của mình (least-privilege).</p>'
       : '<p>Snapshot số liệu đóng băng vào offer để audit. ' + (r.seeComp === 'band' ? 'Số cuối chỉ HR sửa.' : 'Bạn có quyền sửa/duyệt.') + '</p>'}</div>`;
-  const tl = (c.timeline || []).slice().reverse().map(([t, x]) => `<div class="tl-item"><span class="t">${t}</span><span>${esc(x)}</span></div>`).join('');
+  /* vá 17/08 (#22): timeline mặc định GỌN — dòng tóm tắt + 3 mục gần nhất; "xem đầy đủ" mới xổ */
+  const tlAll = (c.timeline || []).slice().reverse();
+  const tlItem = ([t, x]) => `<div class="tl-item"><span class="t">${t}</span><span>${esc(x)}</span></div>`;
+  const tlTxtAll = tlAll.map(([, x]) => x).join(' · ');
+  const tlN = (re) => (tlTxtAll.match(re) || []).length;
+  const tlSum = tlAll.length ? `<div class="tl-item" style="color:var(--ink-2)"><span class="t">∑</span><span><b>${tlAll.length} sự kiện</b> · ${tlN(/call|cú gọi|zoom|gọi/gi)} chạm thoại · ${tlN(/email|sms/gi)} email·SMS — entry máy ghi lặp được gộp (CEO #22)</span></div>` : '';
+  const tl = tlSum + tlAll.slice(0, 3).map(tlItem).join('')
+    + (tlAll.length > 3 ? `<details><summary style="cursor:pointer;font-size:11.5px;color:var(--ink-3);padding:5px 0">xem đầy đủ — còn ${tlAll.length - 3} mục cũ hơn ▾</summary>${tlAll.slice(3).map(tlItem).join('')}</details>` : '');
   const foot = [];
   if (S.role === 'recruiter' && c.stage === 'S4' && (!c.offer || c.offer.status === 'NONE')) foot.push(`<button class="btn primary" style="flex:1" onclick="actAdvance('${c.id}')">Request offer approval →</button>`);
   if (S.role === 'manager' && c.offer?.status === 'REQUESTED') foot.push(`<button class="btn green" style="flex:1" onclick="actApprove('${c.id}');closeC()">Approve offer (band ${c.offer.band})</button>`);
@@ -265,6 +282,10 @@ function vDrawer(c) {
   if (S.role === 'recruiter' && ['S2', 'S3', 'S4'].includes(c.stage)) {
     // Hỏi được MỌI phòng (Licensing/HR/Onboarding/Accounting), hỏi nhiều lần — lịch sử nằm ở mục ❓ bên trên
     foot.push(`<button class="btn ghost" onclick="mAsk('${c.id}')">❓ Hỏi phòng ban${asksOf(c).some((a) => !a.answered) ? ' <span class="chip amber" style="font-size:10px">⏳ ' + asksOf(c).filter((a) => !a.answered).length + ' chờ</span>' : ''}</button>`);
+  }
+  if (S.role === 'recruiter' && c.owner === role().user && ['S1', 'S2', 'S3', 'S4', 'S5'].includes(c.stage)) {
+    // vá 17/08 (#33a): quá tải → tự chuyển cho peer, không cần manager
+    foot.push(`<button class="btn ghost" onclick="mTransfer('${c.id}')" title="Peer transfer (#33a) — tự san việc khi quá tải, notify người nhận, audit ghi">↔ Chuyển</button>`);
   }
   foot.push(`<button class="btn ghost" onclick="actContact('${c.id}','call')">📞 Call</button>`);
   foot.push('<button class="btn ghost" onclick="closeC()">Đóng</button>');
@@ -283,6 +304,7 @@ function vDrawer(c) {
       </div></div>
       <div class="dr-body">
         ${dupBanner(c)}
+        ${journeyStrip(c)}
         <div style="font-size:12.5px;color:var(--ink-2)">📌 <b>Case:</b> ${esc(c.caseNote || '')}</div>
         ${prod}${comp}
         ${asksOf(c).length ? `<div class="tl"><h5>❓ Hỏi đáp phòng ban — nội bộ; MỌI role mở hồ sơ đều đọc được (cùng sổ với 💬 Conversations, D29)</h5>

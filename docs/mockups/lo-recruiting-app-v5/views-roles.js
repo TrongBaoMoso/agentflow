@@ -9,6 +9,13 @@ const rowWho = (c) => `<div class="who" onclick="openC('${c.id}')">
 
 /* ---------- RECRUITER · TODAY ---------- */
 function vToday() {
+  /* vá 17/08 (#17 — Phương Nguyên/CEO): Focus = chế độ LÀM của chính Today. Bấm ▶ là chạy queue tại chỗ. */
+  if (S.todayFocus) {
+    return `<div class="toolrow" style="margin-bottom:10px">
+      <button class="btn ghost" onclick="S.todayFocus=false;render()">← Về danh sách Today</button>
+      <span class="chip grey">Focus dời từ Pipeline sang Today (#17) — cùng queue, chế độ LÀM lần lượt · <i>J</i> next · <i>K</i> back · <i>Enter</i> gọi</span>
+    </div>` + vFocus();
+  }
   const mine = visibleCands();
   const newLeads = simE(mine.filter((c) => c.stage === 'S1' && c.slaMin != null && c.slaMin >= 0));
   const followUps = simE(mine.filter((c) => c.followUp || asksOf(c).some((a) => a.answered && !a.relayed)));
@@ -22,7 +29,29 @@ function vToday() {
     ? `<div class="card" style="background:var(--green-soft);border-color:var(--green)"><div class="sec-h" style="border:0;color:var(--green)">🎉 Sạch việc — mọi SLA đạt, không follow-up quá hạn</div>
        <div style="padding:0 16px 14px;font-size:12.5px;color:var(--ink-2)">Đây là trạng thái đích của Today view: việc tự tìm đến bạn, hết việc = màn hình nói rõ "xong rồi" thay vì bảng trống vô hồn. Gợi ý lúc rảnh: mở 🌙 Nurture xem ai sắp wake-up.</div></div>`
     : '';
-  const kpi = (n, l, alert) => `<div class="kpi ${alert ? 'alert' : ''}"><b>${n}</b><span>${l}</span></div>`;
+  /* vá 17/08 (#29): KPI card = quick-action filter — bấm là lọc danh sách bên trái, bấm lại là bỏ lọc */
+  const F = S.todayFilter;
+  const show = (k) => !F || F === k;
+  const kpi = (n, l, alert, key) => `<div class="kpi ${alert ? 'alert' : ''}" title="Bấm để lọc Today theo nhóm này (#29)"
+    style="cursor:pointer${F === key ? ';outline:2px solid #1D4ED8;border-radius:8px' : ''}"
+    onclick="S.todayFilter=S.todayFilter==='${key}'?null:'${key}';render()"><b>${n}</b><span>${l}</span></div>`;
+  const filterBar = F ? `<div class="card" style="display:flex;align-items:center;gap:8px;padding:8px 16px;font-size:12px;color:var(--ink-2)">
+    Đang lọc theo KPI: <b>${{ sla: '⏱ SLA gấp', due: '📞 Due today', wake: '📡 Wake-ups & signals', offer: '✍️ Offer pending' }[F]}</b>
+    <button class="btn sm ghost" onclick="S.todayFilter=null;render()">✕ Bỏ lọc</button></div>` : '';
+  /* vá 17/08 (#27/#31): rollover — task hôm qua KHÔNG biến mất, máy nhắc thay manager; missed-log nuôi Reports */
+  const rollover = (S.role === 'recruiter' && !S.rolloverDismissed && S.sim !== 'quiet') ? `
+    <div class="card" style="border-left:4px solid var(--amber)">
+      <div class="sec-h" style="border:0">⏮ Hôm qua bạn còn 2 việc chưa xong <span class="hint">rollover giữ nguyên TUỔI TRỄ — máy nhắc, manager không đi nhắc tay (CEO #27/#31); bản ghi vào missed-log cho Reports</span>
+        <button class="btn sm ghost" style="margin-left:auto" onclick="S.rolloverDismissed=true;render()">Đã hiểu</button></div>
+      <div class="row">${rowWho(C('chad'))}<div class="meta">Follow-up comp sheet — <span class="chip amber">trễ 1 ngày (rollover)</span></div>
+        <div class="acts"><button class="btn sm green" onclick="actContact('chad','call')">Call now</button></div></div>
+      <div class="row">${rowWho(C('joseph'))}<div class="meta">Gọi sau closing thứ Sáu — <span class="chip red">trễ 2 ngày</span></div>
+        <div class="acts"><button class="btn sm green" onclick="actContact('joseph','call')">Call now</button></div></div>
+    </div>` : '';
+  /* vá 17/08 (#17): nút vào Focus mode ngay trên Today */
+  const focusBar = S.role === 'recruiter' ? `<div class="card" style="display:flex;align-items:center;gap:10px;padding:10px 16px;flex-wrap:wrap">
+    <button class="btn primary" onclick="S.todayFocus=true;S.focusIdx=0;render()">▶ Bắt đầu — Focus mode (${focusQueue().length} việc)</button>
+    <span style="font-size:12px;color:var(--ink-2)">Xử lý lần lượt, không chọn việc — Focus dời từ Pipeline sang đây (#17). Pipeline giữ Kanban/Table/Funnel (chế độ NHÌN).</span></div>` : '';
   /* 📜 D39 — nút cạnh Call mở panel script (mặc định gập, bấm là bung full-width ngay dưới row) */
   const scriptBtn = (c) => `<button class="btn sm ghost" onclick="actScript('${c.id}')" title="📜 Call script theo status — cạnh nút gọi, mặc định gập (D39)">📜</button>`;
   const cRow = (c, extra, acts) => `<div class="row">${rowWho(c)}<div class="meta">${extra}</div><div class="acts">${acts}</div></div>
@@ -34,14 +63,14 @@ function vToday() {
     <button class="btn sm ghost" onclick="actContact('${c.id}','email')">Email</button>`;
   return `
   <div class="cols"><div class="col-main">
-    ${simBanner}
-    <div class="card">
+    ${simBanner}${rollover}${focusBar}${filterBar}
+    ${show('sla') ? `<div class="card">
       <div class="sec-h">🔥 New leads — first touch SLA <span class="cnt">${newLeads.length}</span><span class="hint">auto-assigned · SLA ${CONFIG.sla[1].hours}h (admin đổi trong Settings)</span></div>
       ${newLeads.map((c) => cRow(c,
         `<span class="chip ${c.source === 'Referral' ? 'blue' : c.source === 'Self-apply' ? 'grey' : 'orange'}">${c.source}</span> &nbsp;
          ${c.vol != null ? fmtProd(c) : c.enrichFail ? `<span class="chip red">⚠ ${esc(c.enrichFail)}</span>` : `<span class="chip amber click" onclick="event.stopPropagation();mNmls('${c.id}')">No NMLS — ＋ hỏi & nhập để enrich</span>`} &nbsp;${slaChip(c)}`,
         contactBtns(c))).join('') || '<div class="empty">Không còn lead chờ first touch — Call/SMS xong là tự chuyển S2 ✓</div>'}
-    </div>
+    </div>` : ''}
     ${(() => {
       /* Feedback CEO #1 (15/08): toggle demo — Signals để card riêng (hiện tại) vs gộp vào follow-ups
          thành "Hôm nay cần chạm" (đề xuất). Bản gộp: mỗi dòng mang chip LÝ DO (📅 bạn hẹn / 🌙 wake-up /
@@ -71,27 +100,28 @@ function vToday() {
         📡 Vị trí Signals — toggle để demo (feedback CEO #1):
         <button class="btn sm ${merged ? 'ghost' : 'primary'}" onclick="S.mergeSignals=false;render()">Card riêng (hiện tại)</button>
         <button class="btn sm ${merged ? 'primary' : 'ghost'}" onclick="S.mergeSignals=true;render()">Gộp vào follow-ups (đề xuất)</button></div>`;
+      if (!show('due') && !show('wake')) return '';
       return merged ? `${toggleBar}
     <div class="card">
       <div class="sec-h">📞 Hôm nay cần chạm <span class="cnt">${followUps.length + signals.length + wakeups.length}</span><span class="hint">một danh sách người-cũ duy nhất — chip nói VÌ SAO ở đây; việc có hạn trên, thời cơ (signal) cuối</span></div>
       ${fuRows}${wakeRows}${sigRows}${!(fuRows || wakeRows || sigRows) ? '<div class="empty">Hôm nay chưa có ai cần chạm</div>' : ''}
     </div>` : `${toggleBar}
-    <div class="card">
+    ${show('due') ? `<div class="card">
       <div class="sec-h">📞 Follow-ups hôm nay <span class="cnt">${followUps.length}</span><span class="hint">từ next-step bạn đã hẹn + relay từ phòng khác</span></div>
       ${fuRows || '<div class="empty">Chưa có follow-up đến hạn</div>'}
-    </div>
-    <div class="card">
+    </div>` : ''}
+    ${show('wake') ? `<div class="card">
       <div class="sec-h">📡 Signals — Modex monthly refresh <span class="cnt">${signals.length}</span><span class="hint">nurture list tự canh mình — máy DIFF bản tháng mới vs bản cũ: đổi công ty / volume tăng</span></div>
       ${sigRows || '<div class="empty">Không có signal mới</div>'}
       ${wakeRows}
-    </div>`;
+    </div>` : ''}`;
     })()}
-    <div class="card">
-      <div class="sec-h">✍️ Offers awaiting signature <span class="cnt">${offers.length}</span></div>
+    ${show('offer') ? `<div class="card">
+      <div class="sec-h">✍️ Offers awaiting signature <span class="cnt">${offers.length}</span><span class="hint">mét cuối của deal — mở mà không ký = có lấn cấn; sort theo ngày chờ, quá ngưỡng leo Exceptions</span></div>
       ${offers.map((c) => cRow(c, `<span class="chip amber">Viewed — chưa ký · ${c.offer.stallDays}d</span> ${esc(c.offer.viewedNote || '')} · band ${c.offer.band}`,
         `<button class="btn sm primary" onclick="actRemind('${c.id}')">Send reminder</button>
          <button class="btn sm ghost" onclick="actContact('${c.id}','call')">Call</button>`)).join('') || '<div class="empty">Không có offer đang chờ ký</div>'}
-    </div>
+    </div>` : ''}
   </div>
   <div class="rail">
     <div class="card"><h4>My funnel — tuần này</h4>
@@ -100,8 +130,8 @@ function vToday() {
       <div class="funnel-line"><span>Moved to Engaged</span><b>6</b></div>
       <div class="funnel-line"><span>Verified</span><b>3</b></div>
       <div class="funnel-line"><span>Offers ký</span><b>1</b></div></div>
-    <div class="card"><h4>KPIs</h4><div style="display:flex;gap:8px;flex-wrap:wrap">
-      ${kpi(newLeads.filter((c) => c.slaMin < 300).length, 'SLA gấp', true)}${kpi(followUps.length, 'Due today')}${kpi(signals.length + wakeups.length, 'Wake-ups')}${kpi(offers.length, 'Offer pending')}</div></div>
+    <div class="card"><h4>KPIs <span class="chip grey" style="font-weight:500">bấm = lọc (#29)</span></h4><div style="display:flex;gap:8px;flex-wrap:wrap">
+      ${kpi(newLeads.filter((c) => c.slaMin < 300).length, 'SLA gấp', true, 'sla')}${kpi(followUps.length, 'Due today', false, 'due')}${kpi(signals.length + wakeups.length, 'Wake-ups', false, 'wake')}${kpi(offers.length, 'Offer pending', false, 'offer')}</div></div>
     <div class="card" style="background:var(--cream)"><h4>⚡ Zero-click enrichment</h4>
       <p style="font-size:12px;color:var(--ink-2)">Nhập NMLS là đủ — production tự về từ Modex. Thử: <b>＋ Add lead</b> trong Pipeline, điền NMLS bất kỳ.</p></div>
   </div></div>
@@ -125,6 +155,27 @@ function vExceptions() {
         ${c.owner === 'nocha' ? `<button class="btn sm ghost" onclick="toast('⚙️ Routing rule: skip owner đang OOO — sửa trong Settings (demo).')">Sửa routing</button>` : ''}
       </div></div>`).join('') || '<div class="empty">Không còn lead trễ SLA — team đang chạy đúng nhịp 🎉</div>'}
   </div>
+  ${(() => {
+    /* vá 17/08 (#33 case B): người NGHỈ → manager mở coverage view xử lý thay — KHÔNG cần login-as.
+       Hành động ghi tên manager + note "coverage cho X" (trung thực với audit hơn impersonation). */
+    const cov = CANDIDATES.filter((c) => c.owner === 'nocha' && !['S0', 'S7', 'ARCHIVED'].includes(c.stage));
+    return `<div class="card">
+    <div class="sec-h">🧑‍🤝‍🧑 Coverage — người đang nghỉ <span class="cnt">1</span>
+      <span class="hint">OOO từ HR app webhook / đánh dấu tay — auto-assign đã skip; việc đang ôm xử lý tại đây (#33 case B, không login-as)</span></div>
+    <div class="row"><div class="who"><div class="av" style="background:${USERS.nocha.color}">NK</div>
+      <div><b>Nocha Kelly</b><small>🌙 OOO đến 10/8 — nguồn: HR app webhook</small></div></div>
+      <div class="meta">đang ôm <b>${cov.length}</b> lead active · routing đã tự skip từ lúc OOO bật</div>
+      <div class="acts"><button class="btn sm ghost" onclick="toast('📦 Bulk reassign toàn bộ workload của Nocha — chia đều cho người còn tay (tôn trọng trần capacity). Nocha quay lại thì KHÔNG tự lấy lại — tránh giật việc giữa chừng.')">Chia đều cho team</button></div></div>
+    ${cov.map((c) => `<div class="row">${rowWho(c)}
+      <div class="meta">${stageChip(c)} ${slaChip(c)} · việc đang treo: ${esc(c.followUp || c.caseNote?.slice(0, 48) + '…' || '—')}</div>
+      <div class="acts">
+        <button class="btn sm primary" onclick="toast('📞 Gọi thay — activity ghi: Victoria Pham (coverage cho Nocha Kelly). Đúng tên người làm, audit không mù như login-as hệ cũ.')">Xử lý thay</button>
+        <select class="select" style="padding:4px 8px;font-size:11.5px" onchange="if(this.value)actReassign('${c.id}',this.value)">
+          <option value="">Reassign ▾</option>
+          ${['brayan', 'seth'].map((u) => `<option value="${u}">${USERS[u].name}</option>`).join('')}</select>
+      </div></div>`).join('')}
+  </div>`;
+  })()}
   <div class="card">
     <div class="sec-h">✍️ Offer requests chờ duyệt <span class="cnt">${requests.length}</span><span class="hint">nghẽn lớn nhất tháng — S4→S5 giảm 18đ</span></div>
     ${requests.map((c) => `<div class="row">${rowWho(c)}

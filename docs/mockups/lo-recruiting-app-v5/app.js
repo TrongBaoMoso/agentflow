@@ -19,6 +19,9 @@ const S = {
   pivotSel: null,      // v5: ô đang drill trong Dashboard quá hạn
   funAxis: 'team',     // v5: trục KPI — person | team | company (D30)
   funPeriod: 'month',  // v5: mốc KPI — day | week | month (D30)
+  todayFocus: false,   // vá 17/08 (#17): Focus = chế độ LÀM của Today — bật từ nút ▶ trên Today
+  todayFilter: null,   // vá 17/08 (#29): KPI card bấm được → lọc danh sách Today (sla|due|wake|offer)
+  rolloverDismissed: false, // vá 17/08 (#27/#31): banner "hôm qua còn N việc" — ẩn sau khi bấm Đã hiểu
 };
 
 /* ---------- helpers ---------- */
@@ -504,6 +507,65 @@ function actPay(id) {
   render();
 }
 
+/* 🆕/🔁 vá 17/08 (#21) — Focus card nói rõ: lần đầu nói chuyện hay lần thứ N, lần trước nói gì */
+function talkBadge(c) {
+  const talks = (c.timeline || []).filter(([, x]) => /first call|cú gọi|zoom|re-engage call|call —|sms intro|first touch/i.test(x));
+  if (!talks.length) return '<span class="chip green" title="Chưa từng nói chuyện — mở lời như người mới, đừng giả vờ quen">🆕 lần đầu liên hệ</span>';
+  const last = talks[talks.length - 1];
+  return `<span class="chip blue" title="Máy đếm từ timeline — không ai phải nhớ">🔁 lần ${talks.length + 1} · lần trước: ${esc(String(last[1]).slice(0, 52))}</span>`;
+}
+
+/* 🧭 vá 17/08 (#19a — Bao duyệt) — dải Journey tóm tắt trên hồ sơ 360: máy tự ghi, không ai điền.
+   Khi Omni service sẵn sàng, events gửi/mở/reply của họ trộn thêm vào đây (câu hỏi 8 gửi anh Khải, §24). */
+function journeyStrip(c) {
+  const order = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7'];
+  const cur = c.stage === 'NURTURE' ? -1 : order.indexOf(c.stage);
+  const pips = order.map((s, i) => `<span class="chip ${i < cur ? 'green' : i === cur ? 'blue' : 'grey'}"${i > cur && cur >= 0 ? ' style="opacity:.4"' : ''}>${i < cur ? '✓' : ''}${s}</span>`).join('<span style="color:var(--ink-3);font-size:10px">→</span>');
+  const tlTxt = (c.timeline || []).map(([, x]) => x).join(' · ');
+  const n = (re) => (tlTxt.match(re) || []).length;
+  const counts = [
+    `📞 ${n(/call|cú gọi|zoom|gọi/gi)} chạm thoại`,
+    `✉️ ${n(/email|sms/gi)} email·SMS`,
+    c.meeting ? `🗓 1-1 ${c.meeting.status === 'done' ? 'đã họp ✓' : 'đã book'}` : null,
+    /webinar/i.test(tlTxt) ? '🎥 webinar ✓' : null,
+    c.offer && c.offer.status !== 'NONE' ? `✍️ offer ${c.offer.status}` : null,
+  ].filter(Boolean).join(' &nbsp;·&nbsp; ');
+  return `<div class="card" style="padding:10px 12px;display:flex;flex-direction:column;gap:6px;margin:0">
+    <div style="font-size:11px;color:var(--ink-3)"><b>🧭 Journey</b> — CEO #19: toàn bộ hành trình máy tự ghi (structured events)${c.stage === 'NURTURE' ? ' · đang 🌙 Nurture (ngoài dòng chính, chờ wake-up/signal)' : ''}</div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center">${pips}</div>
+    <div style="font-size:12px;color:var(--ink-2)">${counts}</div></div>`;
+}
+
+/* ↔ vá 17/08 (#33a) — peer TỰ chuyển task/candidate cho đồng nghiệp cùng cấp, manager không đứng giữa */
+function mTransfer(id) {
+  const c = C(id);
+  openModal(`<div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal">
+    <div class="mh">↔ Chuyển cho đồng nghiệp — ${esc(c.name)}</div>
+    <form onsubmit="event.preventDefault();actTransfer('${id}',this.peer.value,this.why.value)">
+      <div class="mb">
+        <div class="fld"><label>Chuyển cho ai? (peer cùng cấp — CEO #33: quá tải thì tự san việc, không cần manager duyệt)</label>
+          <select name="peer">
+            <option value="seth">Seth August — outside recruiter</option>
+            <option value="luis">Luis Ortega</option>
+            <option value="nocha" disabled>Nocha Kelly — 🌙 OOO đến 10/8 (máy tự loại)</option>
+          </select></div>
+        <div class="fld"><label>Lý do (không bắt buộc — vào activity log)</label><input name="why" placeholder="Vd: tuần này tôi full 3 buổi 1-1"></div>
+        <p style="font-size:11.5px;color:var(--ink-3)">Người nhận được notify + lead hiện lên Today của họ với đủ lịch sử. Khác OOO (case B): người NGHỈ thì manager mở coverage view xử lý thay — xem màn Exceptions của Manager.</p>
+      </div>
+      <div class="mf"><button type="button" class="btn ghost" onclick="closeModal()">Cancel</button>
+        <button type="submit" class="btn primary">Chuyển</button></div>
+    </form></div></div>`);
+}
+function actTransfer(id, toUser, why) {
+  const c = C(id);
+  const from = c.owner;
+  c.owner = toUser;
+  addTl(c, `↔ ${USERS[from]?.name || '—'} tự chuyển cho ${USERS[toUser].name} (peer transfer #33a) — lý do: "${why || 'san tải'}" · notify người nhận · audit ghi`);
+  closeModal();
+  toast(`↔ Đã chuyển <b>${esc(c.name)}</b> cho <b>${USERS[toUser].name}</b> — họ nhận notify, lead nổi lên Today của họ kèm đủ lịch sử. Audit ghi ai chuyển, vì sao.`);
+  render();
+}
+
 function actReengage(id) {
   const c = C(id);
   c.stage = 'S2'; c.nurtureSince = null;
@@ -634,6 +696,7 @@ function focusQueue() {
 /* ---------- navigation ---------- */
 function login(rk) {
   S.role = rk; S.sel = null; S.tableChecked = []; S.focusIdx = 0; S.focusDone = [];
+  S.todayFocus = false; S.todayFilter = null;
   S.screen = CONFIG.defaultView[rk] || role().nav[0][0];
   if (S.screen === 'pipeline') S.view = CONFIG.favoriteViews[rk] || 'kanban';
   render();
@@ -699,9 +762,10 @@ function vLens() {
   </div>`;
 }
 
-/* keyboard: focus mode J/K/Enter */
+/* keyboard: focus mode J/K/Enter — vá 17/08 (#17): Focus giờ sống trong Today */
 document.addEventListener('keydown', (e) => {
-  if (!S.role || S.screen !== 'pipeline' || S.view !== 'focus' || S.sel) return;
+  const inFocus = (S.screen === 'today' && S.todayFocus) || (S.screen === 'pipeline' && S.view === 'focus');
+  if (!S.role || !inFocus || S.sel) return;
   if (e.key === 'j' || e.key === 'J') { actFocusNext(true); }
   if (e.key === 'k' || e.key === 'K') { if (S.focusIdx > 0) { S.focusIdx--; render(); } }
   if (e.key === 'Enter') { const c = focusQueue()[S.focusIdx]; if (c) actContact(c.id, 'call'); }
