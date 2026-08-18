@@ -131,6 +131,24 @@ days later judges what the applicant actually submitted. A second application
 (Level 2 then Level 3) produces a second snapshot, so growth between them is
 readable at no extra cost.
 
+**What a self-reported row asks for: a link and a number. Nothing else.** The
+network and the `audience_label` are derived from the URL's host — LinkedIn
+counts connections, Facebook friends, Instagram/TikTok/X followers, YouTube
+subscribers — using the host patterns already in
+`lf-homepage/src/shared/constants/social-links.ts`. An unrecognised host is
+filed as `others` and keeps its hostname rather than being rejected.
+
+The client therefore sends only `{ url, audience_count }` per self-reported row,
+and **moso-aid re-derives `network` and `audience_label` from the URL rather than
+trusting what the browser sent** — a payload claiming LinkedIn for a Facebook
+link would put a false provenance next to a real number, which is the one thing
+this block cannot afford.
+
+Validation: a row needs both halves or neither. One half filled is an error that
+blocks submit (the applicant sees which half is missing); an entirely empty row
+is discarded silently, being a row they decided against. There is no save step
+and no per-row cancel — the rows are the form.
+
 **Editability.** `ally` and `moso_profile` rows are read-only, including their
 URLs — a wrong link is fixed in ALLY, which stays the single source of truth,
 and the form deep-links there. Self-added rows accept **both** a URL and a
@@ -264,13 +282,29 @@ considered and **declined** for this change. Social data exists only on Level
 Form `ambassador-apply` **v2** (a new version document; v1 stays immutable so
 existing applications keep validating against what they were shown):
 
+> **Correction to an earlier draft of this spec.** It had `current_role` added to
+> the ambassador form as a required select. That was wrong twice over. v7 —
+> the approved mockup, whose header records it as "Duyen's copy + form feedback
+> applied" — states inline: *"Role is no longer asked in the form — it comes from
+> the Loan Factory directory, same as name/email/NMLS (Duyen 2026-08-10)"*, and
+> `grep -c "Your role" v7/ambassador.html` returns 0. The catalog agrees: only
+> `lo-recruiter-apply` carries `current_role`. moso-aid's own model comments the
+> same decision: *"role comes from the directory, never from a form field — per
+> program-owner feedback"*. The ambassador form does not ask for role.
+
 | Field | Change |
 |---|---|
-| `current_role` | **added** (select, required). Options: `loan_officer`, `team_leader`, `corporate_coach`, `branch_manager`, `operations_support` |
+| `current_role` | **not added.** Stays absent from `ambassador-apply`; role continues to come from the directory into `user.role` |
 | `social_profiles` | **added** (new field type, `required: false`, `visible_when.level_rank_gte: 2`) |
 | `connections_range` | kept, `required: false`, conditional per §6 |
 | `linkedin`, `other_social` | **removed** — superseded by the social block |
 | `why`, `experience` | unchanged |
+
+`corporate_coach` — the fifth role option requested — belongs to
+`lo-recruiter-apply`, the only form that asks for role. That form's
+`current_role` options become `loan_officer`, `team_leader`, `corporate_coach`,
+`branch_manager`, `operations_support`, and `corporate_coach` is prefilled from
+`is_corporate_coach` on the profile. This does not touch the ambassador form.
 
 The `social_profiles` form field is a **declaration**, not a data container: it
 tells the FE this program collects profiles from rank 2 up (so a program owner
@@ -339,11 +373,72 @@ zero-scroll cannot be guaranteed:
 | `current_role` + `connections_range` on one row | two short selects share a line |
 | `experience` behind a `+ add detail (optional)` disclosure | reclaims ~96px from an optional question |
 
-Height budget, common path (signed in, 3 channels, entered from a hero Level 2
-card): header 52 + level chip 24 + role/connections 62 + social block 154 + why
-96 + disclosure 28 = **416** body, plus a **112** sticky footer ≈ **580px**.
-`90vh` on a 1440×900 display is 810px. Entering from the generic CTA (cards
-instead of the chip) is ≈660px. Six channels scrolls the body; the footer holds.
+Heights, measured in the browser at a 720px modal width rather than estimated —
+an earlier draft of this section put the common path at 580px and compared it
+against *screen* height, and both were wrong:
+
+| Path | Modal | Needs viewport |
+|---|---|---|
+| From Get started, Level 1 chosen (ALLY panel) | 514px | 572px |
+| From a Level 2 card: chip, social table, why, experience | 803px | 893px |
+
+The panel is capped at `90vh`, so a path fits without scrolling only when the
+**viewport** is at least height / 0.9. A 1440×900 laptop leaves roughly 810px of
+viewport after browser chrome — about 729px of usable panel — so the second path
+scrolls by ~75px. Closing that would mean cutting the `why` textarea or the
+experience field, which are the application. **The promise is therefore the
+sticky footer, not the absence of scroll**: Submit is always on screen, and
+because the measured rows sit in a table (32px per row, not 59px) the remaining
+scroll is short and independent of how many channels ALLY reports.
+
+Two defects found by measuring rather than looking, both fixed: the row separator
+was `--gray-1`, which is also the read-only row background, so the line was
+invisible exactly where rows needed telling apart (now `--gray-2`); and the
+modal body's `overflow-y: auto` made `overflow-x` compute to `auto`, so a table
+whose min-content exceeded the panel clipped the right edge of every row — the
+table now uses `table-layout: fixed` with an ellipsised URL column inside its own
+scroll container, the body is `overflow-x: hidden`, and its grid children carry
+`min-width: 0` so a wide child scrolls its own box instead of stretching the row.
+
+## 9a. Admin listing
+
+Columns: applicant (avatar, name, NMLS, email) · applied for · holds now ·
+**Network** · **Social** · submitted · status · actions.
+
+- **No audience column.** The numbers belong next to the link they came from,
+  where a manager is one click from verifying them; a bare total in a cell
+  invites being read as a score.
+- **Social** shows one icon per profile, undifferentiated. Hover or keyboard
+  focus opens a popover listing every profile with its network, link, count and
+  provenance (`ALLY · measured 18 Aug` or `LO input`). The popover is
+  `position: fixed` and appended to `<body>`: rendered inside the cell it would
+  be clipped by the table's own `overflow-x`.
+- **Network** is `answers.connections_range` — the column the shipped console
+  already has (`ApplicationsTable.tsx`), called "Reach / experience" in v1
+  because the same table served the recruiter program, where the equivalent
+  answer is `recruiting_experience_years`. It gains a provenance subline:
+  `derived from ALLY` or `self-declared`. A Level 1 row has no form and so no
+  answer; the cell says `no form at Level 1` rather than showing a blank that
+  reads like a bug.
+- **Submitted** shows both the date and the age (`Aug 16, 2026` / `2 days ago`).
+  The shipped console shows only the date; v1 showed only the age.
+- CSV keeps `measured_total` and `claimed_total` as separate columns. Sorting is
+  offered on the measured column only.
+
+## 9b. Items awaiting the program owner
+
+Marked `[PROPOSAL]` in the mockup, following v7's own convention. Each changes a
+decision Duyen made, so none may be treated as settled:
+
+1. `social_profiles` table replacing the approved `linkedin` and `other_social`
+   text fields.
+2. `connections_range` becoming conditional — she approved it as always
+   required.
+3. Applicants listing profiles themselves at all (link + number), which no
+   version of the form has asked for.
+
+Everything else in this spec is either already approved in v7 or already shipped
+in the catalog.
 
 ## 10. Non-goals
 
