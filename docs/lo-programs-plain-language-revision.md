@@ -125,9 +125,39 @@ been met yet, whatever they eventually say.
 
 ---
 
-## 4. Status
+## 4. Revision round two — Bao's review, 20 Aug 2026
 
-- Copy and layout: done, in the mockup, verified on desktop and at 375px.
+The first pass answered the comprehension problem but lost design the live page already had. Seven
+points came back on the Ambassador page; all seven are in the mockup now.
+
+1. **"LO" is never abbreviated.** Every reader-facing mention is now "Loan Officer" in full —
+   "Loan Officer Ambassador Program", "Senior Loan Officer Ambassador", "Producing Loan Officer
+   Recruiter". Code identifiers (`lo-programs`, `LoProgramsShared`, `lo_recruiter`) keep `lo`.
+2. **The hero's right half is no longer empty.** The side rail from the live page is back, carrying
+   the three budget figures for a visitor — and, once signed in, the viewer's own application
+   status: in at Level 1 / waiting on leadership / approved / not approved. Status belongs in the
+   first screen, not at the foot of the page. The preview toolbar switches between the five viewers.
+3. **Each level keeps its own colour through the comparison table.** Level 1 neutral, Level 2 orange
+   tint, Level 3 dark — the same escalation the three cards had. The budget figure is now the large
+   type and "per month" is small and muted underneath, instead of both running together on one line.
+4. **The Level 2 / Level 3 approval criteria are cards, always open.** The expander is gone. The
+   only part of this program anyone has to be approved for should not be behind a click.
+5. **The team-leader band is a balanced two-column split on ink**, matching the live page — heading
+   left, the two callouts right, instead of one narrow column with dead space beside it.
+6. Unchanged from round one and staying: the two-program chooser, the three-step "whole program"
+   block, and the glossary.
+7. **The closing CTA was broken** — the section carried `.apply` without `band band--ink`, so it had
+   no band padding and `.apply__inner`'s two-column grid split the centred copy in half. It is now
+   the same `closer` layout the live page uses: copy left, button right, on ink.
+
+---
+
+## 5. Status
+
+- Copy and layout: done, in the mockup, verified on desktop (1440) and at 375px, no console errors,
+  no sideways scroll. Mobile keeps the level colour-coding when the table stacks.
 - Awaiting: Thuan's approval on direction, plus the three interviews above.
+- Recruiter page: only the two shared fixes are in (Loan Officer spelled out, CTA band). Its own
+  design review is a separate round.
 - Not yet done: implementation in `lf-homepage` (i18n keys across 5 locales + section components),
   and translation of the new copy into es / vi / zh / he.

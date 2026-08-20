@@ -3,13 +3,13 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Producing LO Recruiter — plain-language revision | Loan Factory</title>
+    <title>Producing Loan Officer Recruiter — plain-language revision | Loan Factory</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;450;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="programs.css?v=2" />
-    <link rel="stylesheet" href="v2.css?v=1" />
+    <link rel="stylesheet" href="v2.css?v=2" />
   </head>
   <body>
     <!-- Preview toolbar — review chrome only, removed before implementation. -->
@@ -22,7 +22,7 @@
         </nav>
         <div class="pv-row">
           <div class="pv-id">
-            <h1>Producing LO Recruiter — plain-language revision</h1>
+            <h1>Producing Loan Officer Recruiter — plain-language revision</h1>
             <p>
               Same role, same numbers, same bonus scale. Rewritten so the two things people misread —
               who the 12 loans belong to, and what the $30,000 actually is — cannot be misread.
@@ -71,7 +71,7 @@
           <div class="pick reveal">
             <a class="pick__card" href="v2-ambassador.html">
               <span class="pick__who">You work at Loan Factory</span>
-              <span class="pick__name">LO Ambassador Program</span>
+              <span class="pick__name">Loan Officer Ambassador Program</span>
               <span class="pick__text">
                 Keep doing your job. Refer loan officers you already know, on the side. We pay you a
                 bonus for each one who joins.
@@ -80,7 +80,7 @@
             </a>
             <span class="pick__card" aria-current="page">
               <span class="pick__who">You want recruiting to be your job</span>
-              <span class="pick__name">Producing LO Recruiter</span>
+              <span class="pick__name">Producing Loan Officer Recruiter</span>
               <span class="pick__text">
                 A full-time role. All day, every day, finding experienced loan officers and bringing
                 them over. Paid on results, every month.
@@ -369,15 +369,18 @@
       </section>
 
       <!-- ========================================================== cta -- -->
-      <section class="apply" id="apply">
-        <div class="shell apply__inner reveal">
-          <p class="eyebrow eyebrow--center">Join the team</p>
-          <h2 class="h1">Think you can bring in producers?</h2>
-          <p class="lede" style="margin: 1.25rem auto 0; max-width: 55ch">
-            Your application goes to the recruiting team lead. Expect a real conversation about how
-            you would go about it before anything is decided.
-          </p>
-          <div class="hero__cta" style="justify-content: center; margin-top: 2rem">
+      <section class="band band--ink apply" id="apply">
+        <div class="shell closer">
+          <div class="reveal">
+            <p class="eyebrow">Join the team</p>
+            <h2 class="h1">Think you can bring<br />in producers?</h2>
+            <p class="lede" style="color: rgba(250, 249, 248, 0.72); margin-top: 1.25rem">
+              Your application goes to the recruiting team lead. Expect a real conversation about how
+              you would go about it before anything is decided.
+            </p>
+          </div>
+
+          <div class="reveal" data-reveal-delay="120">
             <a class="btn btn--primary" href="#"><span>Apply now</span></a>
           </div>
         </div>
@@ -432,6 +435,6 @@
       }
       document.getElementById('bonus-rows').innerHTML = rows.join('')
     </script>
-    <script src="v2.js?v=1"></script>
+    <script src="v2.js?v=2"></script>
   </body>
 </html>
