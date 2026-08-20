@@ -152,7 +152,50 @@ points came back on the Ambassador page; all seven are in the mockup now.
 
 ---
 
-## 5. Status
+## 5. Shipped — Ambassador page, lf-homepage
+
+Branch `feature/ambassador-plain-language`, cut from `origin/production`.
+
+**Both versions are live.** The new page is `/ambassador-program`; the page as it read before
+this revision is kept at `/ambassador-program-v1` so the two can be compared side by side.
+The old route is `noindex` with its canonical pointing at the real URL, and it is registered in
+`RELEASE_PAGES` so it resolves on staging and production. Delete that route once the comparison
+is done.
+
+**How the old page is frozen.** The new page owns the `AmbassadorProgramPage` i18n namespace; the
+copy that was in it moved verbatim to `AmbassadorProgramLegacyPage`, which only the v1 route reads.
+So a later edit to the live page's wording cannot drift the comparison copy, and vice versa. The
+two shared components that take a namespace (`StatusPanel`, `PrimaryCta`) accept the legacy one too.
+
+**Sections**, in the order a reader asks the questions:
+
+| Section | What it is |
+|---|---|
+| `HeroSection` | New headline and lede; keeps the level rail for visitors and the viewer's own status panel once signed in. The rail's money column now puts the unit under the figure. |
+| `PickSection` | New — the two-program chooser. |
+| `FirstStepsSection` | New — the three things you do, with the live ALLY switch state on step one, then the statement separating bonus money from budget money. |
+| `LevelsSection` | Rewritten — one four-row comparison table with per-level colour, then the Level 2 / Level 3 approval criteria as cards (apply buttons moved into those cards). |
+| `TeamLeaderSection` | Same split-on-ink layout; benefit callout now leads, warning follows. |
+| `DirectorySection` | Unchanged (shared component). |
+| `GlossarySection` | New — six terms. |
+| `CtaSection` | New copy, same closer layout. |
+
+**CSS.** New components (`.pick`, `.first`, `.big`, `.plain`, `.crit`, `.gloss`) appended to
+`src/styles/lo-programs.css`. The few rules that restyle an existing component — the hero rail's
+money column and the ink band's split ratio — are scoped to a `.lop--plain` modifier on the new
+page's `<main>`, because the Recruiter page and the frozen v1 page share that stylesheet and must
+not shift.
+
+**One copy correction.** The mockup's pending-status panel said a decision is emailed within 3–5
+business days. The shipped behaviour is that the decision appears on the page and nothing is
+emailed, which is what the production copy already said — so the implementation uses the true
+version and the mockup was corrected to match.
+
+**i18n.** 122 keys × 5 locales (en / es / vi / zh / he), all written, none machine-placeholdered.
+
+---
+
+## 6. Status
 
 - Copy and layout: done, in the mockup, verified on desktop (1440) and at 375px, no console errors,
   no sideways scroll. Mobile keeps the level colour-coding when the table stacks.

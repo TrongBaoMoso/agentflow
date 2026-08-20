@@ -461,6 +461,110 @@
         "/Users/apple/Projects/agentflow/docs/mockups/lo-recruiting-app-v5"
       ],
       "port": 3044
+    },
+    {
+      "name": "lfh-lo-socials",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-lo-socials",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3045"
+      ],
+      "port": 3045
+    },
+    {
+      "name": "recruiting-fe",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
+      "cwd": "recruiting-fe",
+      "port": 3000
+    },
+    {
+      "name": "lfh-lo-final",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-lo-final",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3019"
+      ],
+      "port": 3019
+    },
+    {
+      "name": "lo-recruiter-mockup",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "3046",
+        "--directory",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-lo-final/docs/mockups"
+      ],
+      "port": 3046
+    },
+    {
+      "name": "lfh-lo-dir",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-lo-dir",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3061"
+      ],
+      "port": 3061
+    },
+    {
+      "name": "lfh-lo-prov",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-lo-prov",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3062"
+      ],
+      "port": 3062
+    },
+    {
+      "name": "lo-programs-v2",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "3070",
+        "--directory",
+        "/Users/apple/Projects/agentflow/docs/mockups/lo-programs"
+      ],
+      "port": 3070
+    },
+    {
+      "name": "lfh-ambassador-v2",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-ambassador-v2",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "3105"
+      ],
+      "port": 3105
     }
   ]
 }
