@@ -243,7 +243,39 @@ noticing.
 
 ---
 
-## 7. Status
+## 7. Fix — the calculator shipped unstyled
+
+Bao caught it on staging: the "What it pays" section rendered with no card, a raw
+browser slider, and the five slider ticks run together as one string — `096192288360+`.
+
+**Cause.** `.calc`, `.calc__slider`, `.calc__scale`, `.calc__out*` and `.more` existed only in the
+mockup stylesheet (`docs/mockups/lo-programs/v2.css`). When the Ambassador page was implemented I
+ported the components *that page* needed (`.pick`, `.first`, `.big`, `.plain`, `.crit`, `.gloss`) and
+then, for the Recruiter page, checked that `.bonus`, `.targets` and `.qual` were already in
+`src/styles/lo-programs.css` — they were, because the old page used them. The calculator was new to
+production, so nothing of it was there, and the markup fell back to browser defaults.
+
+**Why the verification missed it.** Every check was a computed-style probe of a thing I had
+changed — the rail suffix, the marked row, the ink band — plus screenshots of the hero. The one
+section built from scratch was never looked at. A probe confirms a property; it does not notice a
+component that has no properties at all.
+
+**The check that would have caught it, now run on both pages:** collect every class name the page's
+JSX renders and assert each one matches a rule in the production stylesheet. On the Recruiter page it
+returned the nine `calc*` classes plus `more`. On the Ambassador page it returned nothing, so that
+page is clean.
+
+Fixed by porting the calculator block into `src/styles/lo-programs.css` (scoped `.lop--plain`), with
+the range track and thumb drawn explicitly rather than left to `accent-color`, so the control looks
+the same in every browser instead of only in the one it was checked in.
+
+**Also, per Bao:** the published bonus table is no longer behind a disclosure. It renders in full,
+directly under the calculator, on the page and in the mockup — someone deciding whether to take this
+job should not have to click to see what it pays.
+
+---
+
+## 8. Status
 
 - Copy and layout: done, in the mockup, verified on desktop (1440) and at 375px, no console errors,
   no sideways scroll. Mobile keeps the level colour-coding when the table stacks.

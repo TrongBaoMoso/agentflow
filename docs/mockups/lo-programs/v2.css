@@ -790,9 +790,9 @@
   color: var(--orange-deep);
 }
 
-/* The table sits inside a disclosure on this page, so it needs its own top gap
-   and must not inherit the disclosure body's small type. */
-.more__body .bonus {
-  margin-top: 0.25rem;
-  font-size: 1rem;
+/* The scale follows the calculator in the same band, so it needs its own
+   separation from it. It is not behind a disclosure: a reader deciding whether
+   to take the job should not have to click to see what it pays. */
+.calc + .note + .bonus {
+  margin-top: clamp(1.75rem, 1rem + 2vw, 2.5rem);
 }

@@ -9,7 +9,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="programs.css?v=2" />
-    <link rel="stylesheet" href="v2.css?v=3" />
+    <link rel="stylesheet" href="v2.css?v=4" />
   </head>
   <body data-auth="anon">
     <!-- Preview toolbar — review chrome only, removed before implementation. -->
@@ -368,10 +368,7 @@
             closed 48 or more loans last year. One ordinary hire on its own does not trigger it.
           </p>
 
-          <details class="more reveal">
-            <summary>Show the full published bonus table</summary>
-            <div class="more__body">
-              <div class="bonus">
+          <div class="bonus reveal">
                 <div class="bonus__grid">
                   <div class="bonus__col">
                     <div class="bonus__table-wrap">
@@ -406,13 +403,11 @@
                     </div>
                   </div>
                 </div>
-                <p class="bonus__foot">
-                  Every whole 12 loans is $1,000, and it stops at $30,000. The row the slider above
-                  lands on is marked.
-                </p>
-              </div>
-            </div>
-          </details>
+            <p class="bonus__foot">
+              Every whole 12 loans is $1,000, and it stops at $30,000. The row the slider above
+              lands on is marked.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -610,6 +605,6 @@
       slider.addEventListener('input', markRow)
       markRow()
     </script>
-    <script src="v2.js?v=3"></script>
+    <script src="v2.js?v=4"></script>
   </body>
 </html>
