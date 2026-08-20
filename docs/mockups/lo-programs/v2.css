@@ -495,8 +495,8 @@
    5. The team-leader band is a two-column split on ink, balanced left/right.
    ========================================================================== */
 
-/* Screen-reader-only label for the empty corner cell of the table head. */
-.u-hide {
+/* Screen-reader-only: table headings that carry no visible text. */
+.u-sr {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -754,4 +754,45 @@
   .plain tbody .lv1::before {
     color: var(--gray-5);
   }
+}
+
+/* ==========================================================================
+   v2.2 — Recruiter page feedback pass, 20 Aug 2026
+   ========================================================================== */
+
+/* The rail's money row carries "one-time" under the figure, because "$30,000"
+   next to a monthly number is exactly the misreading this page exists to fix. */
+.rail__value small {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.rail__row--3 .rail__value {
+  color: var(--orange-soft);
+}
+
+.rail__row--3 .rail__value small {
+  color: rgba(245, 246, 249, 0.55);
+}
+
+/* The row the calculator lands on, marked in the published table. Hover already
+   uses the tint, so the marked row needs the heavier treatment. */
+.bonus tbody tr.is-hit {
+  background: var(--orange-tint);
+  box-shadow: inset 3px 0 0 var(--orange);
+}
+
+.bonus tbody tr.is-hit td:last-child {
+  color: var(--orange-deep);
+}
+
+/* The table sits inside a disclosure on this page, so it needs its own top gap
+   and must not inherit the disclosure body's small type. */
+.more__body .bonus {
+  margin-top: 0.25rem;
+  font-size: 1rem;
 }

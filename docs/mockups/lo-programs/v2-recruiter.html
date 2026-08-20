@@ -9,9 +9,9 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="programs.css?v=2" />
-    <link rel="stylesheet" href="v2.css?v=2" />
+    <link rel="stylesheet" href="v2.css?v=3" />
   </head>
-  <body>
+  <body data-auth="anon">
     <!-- Preview toolbar — review chrome only, removed before implementation. -->
     <div class="pv">
       <div class="shell">
@@ -27,6 +27,10 @@
               Same role, same numbers, same bonus scale. Rewritten so the two things people misread —
               who the 12 loans belong to, and what the $30,000 actually is — cannot be misread.
             </p>
+          </div>
+          <div class="pv-states">
+            <span class="pv-lab">Viewing the page as</span>
+            <div class="pv-switch" role="group" aria-label="Viewer"></div>
           </div>
         </div>
       </div>
@@ -54,8 +58,142 @@
             </div>
 
             <div class="hero__cta">
-              <a class="btn btn--primary" href="#apply"><span>Apply now</span></a>
+              <!-- This role hires from outside Loan Factory, so a visitor is offered
+                   the form itself rather than a sign-in wall. -->
+              <a class="btn btn--primary" data-state="anon lo-new" href="#apply"
+                ><span>Apply now</span></a
+              >
+              <a class="btn btn--primary" data-state="lo-pending" href="#"
+                ><span>Email the team lead</span></a
+              >
+              <a class="btn btn--primary" data-state="lo-rejected" href="#apply"
+                ><span>Apply for the next cohort</span></a
+              >
+              <a class="btn btn--primary" data-state="lo-approved" href="#"
+                ><span>See your recruiter profile</span></a
+              >
               <a class="btn btn--ghost" href="#pay"><span>See what it pays</span></a>
+            </div>
+          </div>
+
+          <!-- Side rail. Same job as the live page: a visitor sees the three
+               numbers that decide whether this job is worth reading about, and a
+               signed-in applicant sees where their own application stands — in
+               the first screen, not at the foot of the page. -->
+          <div class="rise rise--2">
+            <!-- Public: the three numbers, with the $30,000 named as what it is -->
+            <div data-state="anon">
+              <ul class="rail">
+                <li class="rail__row">
+                  <span class="rail__num">MIN</span>
+                  <span class="rail__label">Hires you have to make every month</span>
+                  <span class="rail__value">2</span>
+                </li>
+                <li class="rail__row">
+                  <span class="rail__num">GOOD</span>
+                  <span class="rail__label">What a good month looks like</span>
+                  <span class="rail__value">5&ndash;7</span>
+                </li>
+                <li class="rail__row rail__row--3">
+                  <span class="rail__num">MAX</span>
+                  <span class="rail__label">Biggest bonus on the published scale</span>
+                  <span class="rail__value">$30,000<small>one-time</small></span>
+                </li>
+              </ul>
+              <p class="rail__caption">
+                The first two are hires per month. The $30,000 is the largest one-time bonus on the
+                scale — paid once for one month's hires. It is not a salary, and it is not paid again
+                every month for the same people.
+              </p>
+            </div>
+
+            <!-- Signed in, has not applied -->
+            <div data-state="lo-new">
+              <div class="panel panel--accent">
+                <div class="panel__head">
+                  <span class="status-dot status-dot--ok" aria-hidden="true"></span>
+                  <h2 class="panel__title">You can apply today</h2>
+                </div>
+                <p class="panel__text">
+                  Your application goes to the recruiting team lead. If it looks like a fit, they
+                  will want a real conversation about how you would go about it before anything is
+                  decided.
+                </p>
+                <div class="panel__cta">
+                  <a class="btn btn--primary btn--block" href="#apply">
+                    <span>Apply now</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Submitted, waiting on the team lead -->
+            <div data-state="lo-pending">
+              <div class="panel">
+                <div class="panel__head">
+                  <span class="status-dot status-dot--pending" aria-hidden="true"></span>
+                  <h2 class="panel__title">The team lead is reading your application</h2>
+                </div>
+                <p class="panel__text">
+                  Nothing is needed from you right now. The next step shows up on this page — check
+                  back here; nothing is emailed to you.
+                </p>
+                <div class="panel__meta">
+                  <div><span>You applied for</span> <b>Producing Loan Officer Recruiter</b></div>
+                  <div><span>Sent</span> <b>5 August 2026</b></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hired -->
+            <div data-state="lo-approved">
+              <div class="panel panel--accent">
+                <div class="panel__head">
+                  <span class="status-dot status-dot--ok" aria-hidden="true"></span>
+                  <h2 class="panel__title">You are on the recruiting team</h2>
+                </div>
+                <p class="panel__text">
+                  Approved 6 August 2026. Your name is on the public list of recruiters, and your
+                  first 60 days start now.
+                </p>
+                <div class="panel__self">
+                  <span class="avatar avatar--lg avatar--a" aria-hidden="true">JM</span>
+                  <div>
+                    <p class="panel__self-name">Jordan Mackey</p>
+                    <p class="panel__self-nmls">NMLS #1492003</p>
+                    <p style="margin-top: 0.4375rem">
+                      <span class="badge badge--l2">Recruiter</span>
+                    </p>
+                  </div>
+                </div>
+                <div class="panel__meta">
+                  <div><span>First 60 days end</span> <b>5 October 2026</b></div>
+                  <div><span>What you need by then</span> <b>3 qualifying hires</b></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Not this round — a next step, not a dead end -->
+            <div data-state="lo-rejected">
+              <div class="panel">
+                <div class="panel__head">
+                  <span class="status-dot status-dot--no" aria-hidden="true"></span>
+                  <h2 class="panel__title">Not this round</h2>
+                </div>
+                <p class="panel__text">
+                  The team lead wanted more direct outbound recruiting behind the application. This
+                  is not a permanent no — talk to them about what they want to see next time.
+                </p>
+                <div class="panel__meta">
+                  <div><span>Next cohort opens</span> <b>November 2026</b></div>
+                  <div><span>Open to you right now</span> <b>Ambassador Program</b></div>
+                </div>
+                <div class="panel__cta">
+                  <a class="btn btn--ghost btn--block" href="v2-ambassador.html">
+                    <span>Look at the Ambassador Program</span>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -135,7 +273,7 @@
       </section>
 
       <!-- ======================================================= numbers -- -->
-      <section class="band band--white" id="numbers">
+      <section class="band band--ink" id="numbers">
         <div class="shell">
           <div class="reveal" style="max-width: 62ch">
             <p class="eyebrow">What you have to hit</p>
@@ -233,19 +371,45 @@
           <details class="more reveal">
             <summary>Show the full published bonus table</summary>
             <div class="more__body">
-              <div class="bonus__table-wrap" style="margin-top: 0.75rem">
-                <table>
-                  <caption class="muted">Loans closed by your hires (last 12 months) → your one-time bonus</caption>
-                  <thead>
-                    <tr>
-                      <th scope="col">Loans closed</th>
-                      <th scope="col">Your bonus</th>
-                      <th scope="col">Loans closed</th>
-                      <th scope="col">Your bonus</th>
-                    </tr>
-                  </thead>
-                  <tbody id="bonus-rows"></tbody>
-                </table>
+              <div class="bonus">
+                <div class="bonus__grid">
+                  <div class="bonus__col">
+                    <div class="bonus__table-wrap">
+                      <table>
+                        <caption class="u-sr">
+                          Loans your hires closed, 12 to 180, and the bonus each total pays
+                        </caption>
+                        <thead>
+                          <tr>
+                            <th scope="col">Loans your hires<br />closed (12 mo.)</th>
+                            <th scope="col">Your one-time<br />bonus</th>
+                          </tr>
+                        </thead>
+                        <tbody id="bonus-rows-1"></tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="bonus__col">
+                    <div class="bonus__table-wrap">
+                      <table>
+                        <caption class="u-sr">
+                          Loans your hires closed, 192 to 360, and the bonus each total pays
+                        </caption>
+                        <thead>
+                          <tr>
+                            <th scope="col">Loans your hires<br />closed (12 mo.)</th>
+                            <th scope="col">Your one-time<br />bonus</th>
+                          </tr>
+                        </thead>
+                        <tbody id="bonus-rows-2"></tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <p class="bonus__foot">
+                  Every whole 12 loans is $1,000, and it stops at $30,000. The row the slider above
+                  lands on is marked.
+                </p>
               </div>
             </div>
           </details>
@@ -416,25 +580,36 @@
       slider.addEventListener('input', render)
       render()
 
-      // Full table, two columns of 15 rows so it reads down rather than scrolls.
-      const rows = []
-      for (let i = 1; i <= 15; i += 1) {
-        const a = i * BONUS_STEP_LOANS
-        const b = (i + 15) * BONUS_STEP_LOANS
-        rows.push(
-          '<tr><td>' +
-            a +
-            '+</td><td><b>' +
-            money(bonusFor(a)) +
-            '</b></td><td>' +
-            b +
-            '+</td><td><b>' +
-            money(bonusFor(b)) +
-            '</b></td></tr>'
-        )
+      // Two tables of 15 rows, same layout the live page uses, both generated from
+      // the expression above so the table and the calculator can never disagree.
+      const fill = (id, from) => {
+        const rows = []
+        for (let i = from; i < from + 15; i += 1) {
+          const loans = i * BONUS_STEP_LOANS
+          rows.push(
+            '<tr data-loans="' + loans + '"><td>' + loans + '+</td><td>' + money(bonusFor(loans)) + '</td></tr>'
+          )
+        }
+        document.getElementById(id).innerHTML = rows.join('')
       }
-      document.getElementById('bonus-rows').innerHTML = rows.join('')
+      fill('bonus-rows-1', 1)
+      fill('bonus-rows-2', 16)
+
+      // Marking the row the slider lands on is what ties the two representations
+      // together: the arithmetic above and the published scale are one thing.
+      const bonusRows = [...document.querySelectorAll('.bonus tbody tr')]
+
+      const markRow = () => {
+        const loans = Number(slider.value)
+        const step = Math.min(Math.floor(loans / BONUS_STEP_LOANS), 30) * BONUS_STEP_LOANS
+        bonusRows.forEach((row) => {
+          row.classList.toggle('is-hit', Number(row.dataset.loans) === step)
+        })
+      }
+
+      slider.addEventListener('input', markRow)
+      markRow()
     </script>
-    <script src="v2.js?v=2"></script>
+    <script src="v2.js?v=3"></script>
   </body>
 </html>
