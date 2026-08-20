@@ -193,6 +193,19 @@ version and the mockup was corrected to match.
 
 **i18n.** 122 keys × 5 locales (en / es / vi / zh / he), all written, none machine-placeholdered.
 
+**Empty roster hides itself.** "Meet our ambassadors" used to hold its place with a panel saying
+the first members were being approved — a heading, a subtitle and an explanation in exchange for no
+information. `DirectorySection` now returns nothing when no member is on the roster, and nothing
+while the fetch is in flight (appearing and then vanishing would move everything below it). The
+empty-state copy and its CSS are deleted rather than left unreachable. This is a shared component,
+so the Recruiter page and the frozen v1 page get the same behaviour.
+
+One consequence on the frozen page: v1's hero carries an always-visible "Meet Our Ambassadors"
+ghost button, so with an empty roster that button now scrolls nowhere. It was left as is rather
+than edited, because v1 exists to show the old page unchanged. On the new page and the Recruiter
+page the only link to the roster is in the approved-member state, and an approved member is on the
+roster by definition.
+
 ---
 
 ## 6. Status
