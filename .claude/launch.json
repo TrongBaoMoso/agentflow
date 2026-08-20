@@ -579,6 +579,34 @@
         "3081"
       ],
       "port": 3081
+    },
+    {
+      "name": "lfh-recruiter-v2",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-recruiter-v2",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "3106"
+      ],
+      "port": 3106
+    },
+    {
+      "name": "lo-captcha",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lo-captcha",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3082"
+      ],
+      "port": 3082
     }
   ]
 }

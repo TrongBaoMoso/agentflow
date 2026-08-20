@@ -208,7 +208,42 @@ roster by definition.
 
 ---
 
-## 6. Status
+## 6. Shipped — Recruiter page, lf-homepage
+
+Branch `feature/recruiter-plain-language`, cut from `origin/production` (which by then already
+carried the Ambassador page). Same arrangement as the Ambassador half: the new page is
+`/lo-recruiter-program`, the page it replaces stays at `/lo-recruiter-program-v1` (noindex,
+canonical on the real URL, registered in `RELEASE_PAGES`), and the frozen copy lives in a
+`RecruiterProgramLegacyPage` namespace so neither version can drift the other.
+
+Three of the review points turned out to be true of the mockup only — production had already
+solved them: the hero rail and status panel were there, the four target cards were already on an
+ink band, and the closing CTA already used the `closer` layout. What the implementation actually
+changes is the copy, the section order, and two new things:
+
+| Section | What it is |
+|---|---|
+| `HeroSection` | New headline (the old one, "Recruit producers. Get paid per unit.", read as piecework on the reader's own loans). The rail's money row now reads `$30,000` with **one-time** under it, and the caption says outright that it is not a salary — the hero closes that misreading instead of leaving it to a later section. |
+| `PickSection` | New — the two-program chooser, mirror of the Ambassador one. |
+| `CountsSection` | The 12-loan ownership rule promoted to the largest statement on the page, above the two qualify/route cards. |
+| `StandardsSection` | The four numbers, on ink, new copy. |
+| `PaySection` | New — the scale stated as one sentence of arithmetic, then a slider seeded with a real two-hire month (30 + 18 = 48 → $4,000), then the published table behind a disclosure with the row the slider lands on marked. Table and figure are both derived from one expression, so they cannot disagree. |
+| `ProcessSection` | Five steps, new copy. |
+| `GlossarySection` | New — six terms, including "unit" and "one-time bonus". |
+| `CtaSection` | New copy, same closer layout. |
+
+`BonusCalculator` is the page's only client component; the trigger note is rendered on the server
+and passed in, because it carries rich text and sits between the two slider-driven parts.
+
+**i18n.** 113 keys × 5 locales, written by hand.
+
+**One process note.** Another session was editing the Ambassador worktree while this work started,
+so the Recruiter change was done in its own worktree. Worth doing by default rather than on
+noticing.
+
+---
+
+## 7. Status
 
 - Copy and layout: done, in the mockup, verified on desktop (1440) and at 375px, no console errors,
   no sideways scroll. Mobile keeps the level colour-coding when the table stacks.
