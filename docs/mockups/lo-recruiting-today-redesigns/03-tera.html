@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Today — kiểu Tera+ LOS (enterprise)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============ DS 03 — tera-fe: Inter, sidebar đen #16191F + wash cam, cream hairline #ece6d8, acc #e35a0d, button 4px ============ */
+:root{
+  --acc:#e35a0d; --acc-soft:#ffefe2; --acc-ink:#9a3b05; --primary:#f36f20; --primary-6:#f36814;
+  --ink:#15171c; --ink-soft:#2b2f38; --ink-mute:#616a78; --ink-faint:#9aa1ad;
+  --line:#ece6d8; --line-soft:#f1ece0; --line-strong:#e0d8c6;
+  --gray-0:#f8f9fa; --gray-1:#f1f3f5; --gray-3:#dee2e6; --gray-5:#adb5bd;
+  --ok:#16a34a; --ok-soft:#dcfce7; --ok-ink:#14622f;
+  --warn:#ca8a04; --warn-soft:#fef6d9; --warn-ink:#7a5306;
+  --bad:#dc2626; --bad-soft:#fce4e4; --bad-ink:#8c1717;
+  --gray-soft:#eeede6; --gray-ink:#5a6170;
+  --sh-sm:0 1px 2px rgba(20,22,28,.05),0 1px 1px rgba(20,22,28,.03);
+  --sh-md:0 1px 2px rgba(20,22,28,.05),0 10px 24px -14px rgba(20,22,28,.16);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',Helvetica,Arial,sans-serif;background:var(--gray-0);color:var(--ink);font-size:13.5px;line-height:1.5}
+button{font-family:inherit;cursor:pointer}
+.app{display:flex;min-height:100vh}
+
+/* sidebar đen — chữ ký tera-fe */
+.side{width:246px;flex:none;background:#16191F;color:rgba(255,255,255,.62);display:flex;flex-direction:column;padding:14px 12px;position:relative}
+.side::before{content:'';position:absolute;inset:0;background:radial-gradient(120% 60% at 50% -10%,rgba(243,111,35,.10),transparent 60%);pointer-events:none}
+.brand{display:flex;align-items:center;gap:10px;padding:6px 10px 18px;font-weight:800;font-size:15px;letter-spacing:1.5px;color:#fff}
+.brand .sq{width:30px;height:30px;border-radius:8px;background:var(--primary-6);display:grid;place-items:center;font-size:12px;font-weight:800;box-shadow:0 3px 10px -2px rgba(227,90,13,.6)}
+.snav{display:flex;flex-direction:column;gap:2px}
+.snav a{display:flex;align-items:center;gap:11px;text-decoration:none;color:rgba(255,255,255,.62);font-weight:500;font-size:13px;padding:9px 12px;border-radius:9px;position:relative}
+.snav a:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.85)}
+.snav a.on{background:rgba(255,255,255,.10);color:#fff;font-weight:600}
+.snav a.on::before{content:'';position:absolute;left:-12px;top:6px;bottom:6px;width:3px;border-radius:0 3px 3px 0;background:var(--primary-6)}
+.side .foot{margin-top:auto;padding:12px 10px;font-size:11px;color:rgba(255,255,255,.32)}
+
+.body{flex:1;min-width:0;display:flex;flex-direction:column}
+.hd{height:60px;background:#fff;border-bottom:1px solid var(--gray-3);display:flex;align-items:center;gap:16px;padding:0 24px}
+.crumb{font-size:12px;color:var(--ink-mute)}
+.crumb b{color:var(--ink);font-weight:600}
+.hd .right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.search{width:250px;border:1px solid var(--gray-3);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--ink-faint);background:#fff}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--primary);color:#fff;display:grid;place-items:center;font-weight:700;font-size:12px}
+
+.wrap{padding:22px 26px;max-width:1320px}
+.ph{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.ph h1{font-size:22px;font-weight:700;letter-spacing:-.01em}
+.ph p{font-size:12.5px;color:var(--ink-mute);margin-top:2px}
+.ph .cta{margin-left:auto}
+
+/* KPI band — số fw800 tabular, chữ ký tera */
+.kband{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.kcard{background:#fff;border:1px solid var(--line);border-radius:11px;padding:14px 16px;cursor:pointer;box-shadow:var(--sh-sm);transition:all .15s ease}
+.kcard:hover{transform:translateY(-2px);box-shadow:var(--sh-md)}
+.kcard.on{border-color:var(--acc);background:var(--acc-soft)}
+.kcard span{font-size:11px;font-weight:600;color:var(--ink-mute);text-transform:uppercase;letter-spacing:.04em}
+.kcard b{display:block;font-size:27px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin-top:4px}
+.kcard.alert b{color:var(--bad)}
+.kcard small{font-size:11px;color:var(--ink-faint)}
+
+/* section header — gray callout */
+.scall{display:flex;align-items:center;gap:10px;background:var(--gray-1);border:1px solid var(--gray-3);border-radius:8px;padding:10px 16px;margin-bottom:12px;font-weight:600;font-size:13px}
+.scall .cnt{background:#fff;border:1px solid var(--gray-3);border-radius:6px;padding:0 8px;font-size:11px;font-weight:700;color:var(--ink-mute)}
+.scall .hint{margin-left:auto;font-weight:400;font-size:11.5px;color:var(--ink-mute)}
+
+.cols{display:flex;gap:18px;align-items:flex-start}
+.main{flex:1;min-width:0}
+.rail{flex:0 0 280px;display:flex;flex-direction:column;gap:14px}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh-sm);margin-bottom:18px;overflow:hidden}
+.row{display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid var(--line-soft);transition:background .15s}
+.row:last-child{border-bottom:0}
+.row:hover{background:#fdfbf7}
+.who{flex:0 0 240px;display:flex;gap:11px;align-items:center}
+.who .av{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;font-size:12px;font-weight:700;color:#fff;flex:none}
+.who b{display:block;font-size:13px;font-weight:600}
+.who small{color:var(--ink-mute);font-size:11.5px}
+.meta{flex:1;min-width:0;color:var(--ink-mute);font-size:12.5px}
+.meta b{color:var(--ink);font-weight:600}
+.acts{display:flex;gap:7px;flex:none}
+
+/* button 4px + physical feedback — chữ ký tera */
+.btn{border:0;border-radius:4px;padding:7px 14px;font-size:12px;font-weight:600;box-shadow:var(--sh-sm);transition:box-shadow .15s ease,transform .15s ease,border-color .15s ease}
+.btn:hover{box-shadow:var(--sh-md);transform:translateY(-1px)}
+.btn:active{transform:translateY(0) scale(.98)}
+.btn.pri{background:var(--acc);color:#fff}
+.btn.grn{background:var(--ok);color:#fff}
+.btn.gho{background:#fff;border:1.5px solid var(--gray-3);color:var(--ink-soft)}
+.btn.gho:hover{border-color:var(--gray-5)}
+
+.chip{display:inline-flex;align-items:center;gap:4px;border-radius:6px;padding:3px 9px;font-size:11px;font-weight:600;white-space:nowrap}
+.chip.or{background:var(--acc-soft);color:var(--acc-ink)}
+.chip.bl{background:#dcebfa;color:#0b4a8f}
+.chip.gy{background:var(--gray-soft);color:var(--gray-ink)}
+.chip.rd{background:var(--bad-soft);color:var(--bad-ink)}
+.chip.am{background:var(--warn-soft);color:var(--warn-ink)}
+.chip.gn{background:var(--ok-soft);color:var(--ok-ink)}
+
+.roll{border-left:3px solid var(--warn)}
+
+/* rail */
+.rail .card{margin:0}
+.rail .in{padding:14px 16px}
+.rail h4{font-size:12px;font-weight:700;margin-bottom:10px;color:var(--ink-soft)}
+.fline{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-mute);padding:6px 0;border-bottom:1px dashed var(--line-soft)}
+.fline:last-child{border:0}
+.fline b{color:var(--ink);font-variant-numeric:tabular-nums;font-weight:700}
+.promo{background:linear-gradient(135deg,#fffaf6,var(--acc-soft));border-color:var(--line-strong)}
+.promo p{font-size:12px;color:var(--ink-mute);line-height:1.6}
+.note{padding:6px 18px 14px;color:var(--ink-faint);font-size:11.5px}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><div class="sq">LF</div>RECRUIT</div>
+    <nav class="snav">
+      <a class="on" href="#">☀️ Today</a>
+      <a href="#">📋 Pipeline</a>
+      <a href="#">🌙 Nurture</a>
+      <a href="#">💬 Conversations</a>
+      <a href="#">📈 Reports</a>
+      <a href="#">⚙️ Settings</a>
+    </nav>
+    <div class="foot">Tera+ platform · v1.0</div>
+  </aside>
+
+  <div class="body">
+    <div class="hd">
+      <div class="crumb">Recruiting / <b>Today</b></div>
+      <div class="right"><input class="search" placeholder="Tìm ứng viên, NMLS, công ty…"><div class="avatar">BS</div></div>
+    </div>
+
+    <div class="wrap">
+      <div class="ph">
+        <div><h1>Today</h1><p>Thứ Năm 21/08 · Brayan Suarez (Inside Recruiter) · 8 việc tự tìm đến bạn</p></div>
+        <button class="btn pri cta">▶ Focus mode (6 việc)</button>
+      </div>
+
+      <div class="kband">
+        <div class="kcard alert on"><span>SLA gấp</span><b>2</b><small>&lt; 5h còn lại · bấm = lọc</small></div>
+        <div class="kcard"><span>Due today</span><b>2</b><small>follow-up đến hạn</small></div>
+        <div class="kcard"><span>Wake-ups</span><b>2</b><small>signals + đúng hẹn</small></div>
+        <div class="kcard"><span>Offer pending</span><b>1</b><small>chờ chữ ký</small></div>
+      </div>
+
+      <div class="cols">
+        <div class="main">
+
+          <div class="card roll">
+            <div class="scall" style="border:0;border-radius:0;background:var(--warn-soft)">⏮ Hôm qua còn 2 việc chưa xong<span class="hint">rollover giữ nguyên tuổi trễ — máy nhắc thay manager</span></div>
+            <div class="row"><div class="who"><div class="av" style="background:#5f3dc4">CB</div><div><b>Chad Boulder</b><small>Motto Mortgage</small></div></div>
+              <div class="meta">Follow-up comp sheet <span class="chip am">trễ 1 ngày</span></div>
+              <div class="acts"><button class="btn grn">Call now</button></div></div>
+            <div class="row"><div class="who"><div class="av" style="background:#2b8a3e">JT</div><div><b>Joseph Tran</b><small>Homebridge</small></div></div>
+              <div class="meta">Gọi sau closing thứ Sáu <span class="chip rd">trễ 2 ngày</span></div>
+              <div class="acts"><button class="btn grn">Call now</button></div></div>
+          </div>
+
+          <div class="scall">🔥 New leads — first touch SLA <span class="cnt">3</span><span class="hint">auto-assigned · SLA 24h</span></div>
+          <div class="card">
+            <div class="row">
+              <div class="who"><div class="av" style="background:#e8590c">SC</div><div><b>Sarah Chen</b><small>Prosperity Home Loans · Austin, TX</small></div></div>
+              <div class="meta"><span class="chip or">Modex</span> <b>$18M</b> · 32 units 12mo · <span class="chip am">⏱ SLA 2h14m</span></div>
+              <div class="acts"><button class="btn grn">Call</button><button class="btn gho">📜</button><button class="btn gho">SMS</button><button class="btn gho">Email</button></div>
+            </div>
+            <div class="row">
+              <div class="who"><div class="av" style="background:#1971c2">MR</div><div><b>Marcus Reyes</b><small>Fairway Independent · Brooklyn, NY</small></div></div>
+              <div class="meta"><span class="chip bl">Referral</span> <span class="chip am">No NMLS — ＋ nhập để enrich</span> · SLA 5h02m</div>
+              <div class="acts"><button class="btn grn">Call</button><button class="btn gho">📜</button><button class="btn gho">SMS</button><button class="btn gho">Email</button></div>
+            </div>
+            <div class="row">
+              <div class="who"><div class="av" style="background:#087f5b">DP</div><div><b>Dana Patel</b><small>Self-apply · Chicago, IL</small></div></div>
+              <div class="meta"><span class="chip gy">Self-apply</span> <b>$9.5M</b> · 21 units 12mo · <span class="chip rd">⏱ SLA 42 phút</span></div>
+              <div class="acts"><button class="btn grn">Call</button><button class="btn gho">📜</button><button class="btn gho">SMS</button><button class="btn gho">Email</button></div>
+            </div>
+          </div>
+
+          <div class="scall">📞 Follow-ups hôm nay <span class="cnt">2</span><span class="hint">next-step bạn đã hẹn + relay từ phòng khác</span></div>
+          <div class="card">
+            <div class="row">
+              <div class="who"><div class="av" style="background:#5f3dc4">CB</div><div><b>Chad Boulder</b><small>Motto Mortgage · Greenville, SC</small></div></div>
+              <div class="meta"><b>Licensing</b> đã trả lời: “<b>SC yêu cầu 75mi — OK theo branch Greenville</b>” → relay</div>
+              <div class="acts"><button class="btn grn">Call now</button><button class="btn gho">📜</button><button class="btn gho">Reschedule</button><button class="btn gho">Done</button></div>
+            </div>
+            <div class="row">
+              <div class="who"><div class="av" style="background:#c2255c">MR</div><div><b>Mia Rodriguez</b><small>CrossCountry · Miami, FL</small></div></div>
+              <div class="meta">“Hỏi lại về comp sheet gửi thứ Hai” · <span class="chip am">⏲ cadence 3/7/14</span> <span class="chip gy">inbound = dừng chuỗi</span></div>
+              <div class="acts"><button class="btn grn">Call now</button><button class="btn gho">📜</button><button class="btn gho">Reschedule</button><button class="btn gho">Done</button></div>
+            </div>
+          </div>
+
+          <div class="scall">📡 Signals — Modex refresh <span class="cnt">2</span><span class="hint">máy DIFF bản tháng mới vs cũ — thời cơ</span></div>
+          <div class="card">
+            <div class="row">
+              <div class="who"><div class="av" style="background:#e03131">KW</div><div><b>Kaprice Wilson</b><small>Movement Mortgage · Phoenix, AZ</small></div></div>
+              <div class="meta"><span class="chip rd">Đổi công ty</span> vừa rời Movement Mortgage — cửa sổ vàng</div>
+              <div class="acts"><button class="btn pri">Re-engage</button><button class="btn gho">Dismiss</button></div>
+            </div>
+            <div class="row">
+              <div class="who"><div class="av" style="background:#0b7285">RB</div><div><b>Ryan Brooks</b><small>Guild Mortgage · Denver, CO</small></div></div>
+              <div class="meta"><span class="chip gn">Volume +40%</span> $6.2M → <b>$8.7M</b> qua refresh tháng 8</div>
+              <div class="acts"><button class="btn pri">Re-engage</button><button class="btn gho">Dismiss</button></div>
+            </div>
+          </div>
+
+          <div class="scall">✍️ Offers awaiting signature <span class="cnt">1</span><span class="hint">mở mà không ký = có lấn cấn</span></div>
+          <div class="card">
+            <div class="row">
+              <div class="who"><div class="av" style="background:#2b8a3e">JT</div><div><b>Joseph Tran</b><small>Homebridge · San Jose, CA</small></div></div>
+              <div class="meta"><span class="chip am">Viewed — chưa ký · 3d</span> mở 4 lần, dừng ở trang comp · band <b>B2</b></div>
+              <div class="acts"><button class="btn pri">Send reminder</button><button class="btn gho">Call</button></div>
+            </div>
+            <div class="note">Quá 5 ngày sẽ leo Exceptions cho manager — bạn không phải tự nhớ.</div>
+          </div>
+        </div>
+
+        <aside class="rail">
+          <div class="card"><div class="in">
+            <h4>My funnel — tuần này</h4>
+            <div class="fline"><span>New leads</span><b>14</b></div>
+            <div class="fline"><span>First touch trong SLA</span><b>92%</b></div>
+            <div class="fline"><span>Moved to Engaged</span><b>6</b></div>
+            <div class="fline"><span>Verified</span><b>3</b></div>
+            <div class="fline"><span>Offers ký</span><b>1</b></div>
+          </div></div>
+          <div class="card promo"><div class="in">
+            <h4 style="color:var(--acc-ink)">⚡ Zero-click enrichment</h4>
+            <p>Nhập NMLS là đủ — production tự về từ Modex. Thử <b>＋ Add lead</b> trong Pipeline.</p>
+          </div></div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

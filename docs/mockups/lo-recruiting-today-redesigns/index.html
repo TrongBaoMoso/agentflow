@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Today page — chọn design system</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700;800&family=Geist+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Public Sans',sans-serif;background:#faf9f7;color:#201e1b;font-size:14px;line-height:1.55;padding:40px 32px 80px}
+.wrap{max-width:1180px;margin:0 auto}
+h1{font-size:28px;font-weight:800;letter-spacing:-.02em}
+.sub{color:#6e6a63;margin:8px 0 30px;max-width:760px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:18px}
+.dcard{background:#fff;border:1px solid #e9e7e2;border-radius:16px;padding:22px 24px;text-decoration:none;color:inherit;display:block;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 1px 2px rgba(32,30,27,.04),0 8px 24px -16px rgba(32,30,27,.14);transition:all .15s}
+.dcard:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(32,30,27,.05),0 18px 40px -20px rgba(32,30,27,.2)}
+.num{font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:.12em;color:#787269;text-transform:uppercase}
+h2{font-size:17px;font-weight:700;margin:6px 0 4px}
+.src{font-size:12px;color:#6e6a63;margin-bottom:12px}
+.sw{display:flex;gap:6px;margin-bottom:12px}
+.sw i{width:26px;height:26px;border-radius:7px;border:1px solid rgba(0,0,0,.06)}
+.vibe{font-size:12.5px;color:#6e6a63;line-height:1.6;margin-bottom:12px}
+.tag{display:inline-block;font-size:10.5px;font-weight:700;border-radius:99px;padding:3px 10px;margin-right:5px}
+.tag.f{background:#fbeae0;color:#ad4a1b}
+.tag.g{background:#f2f0ec;color:#6e6a63}
+.reco{outline:2px solid #e4642a;outline-offset:2px}
+.note{margin-top:34px;padding:18px 22px;background:#fef4ee;border:1px solid #f6d9c6;border-radius:14px;font-size:13px;color:#6e6a63}
+.note b{color:#ad4a1b}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Today page — 6 kiểu design system</h1>
+  <p class="sub">Cùng một nội dung (SLA leads · follow-ups · signals · offers · rail KPI), mỗi file một ngôn ngữ thiết kế trích từ codebase LoanFactory thật. Mở từng kiểu, chọn 1 — bộ token của kiểu đó sẽ thành design system của recruiting-fe.</p>
+
+  <div class="grid">
+    <a class="dcard" href="01-homepage.html">
+      <div class="num">01 · lf-homepage / lo-homepage</div>
+      <h2>LF Marketing</h2>
+      <div class="src">Montserrat · cam #f36f20 · trắng tinh</div>
+      <div class="sw"><i style="background:#f36f20"></i><i style="background:#fff0e2"></i><i style="background:#2e2e2e"></i><i style="background:#fff"></i><i style="background:#dee2e6"></i></div>
+      <p class="vibe">Thoáng, to, tự tin — button pill UPPERCASE, card 16-24px, shadow mềm. Đẹp kiểu website, nhưng hơi tốn chỗ cho app làm việc cả ngày.</p>
+      <span class="tag g">airy</span><span class="tag g">pill uppercase</span>
+    </a>
+
+    <a class="dcard" href="02-lfiq.html">
+      <div class="num">02 · lf-iq</div>
+      <h2>LF-IQ Dashboard</h2>
+      <div class="src">Montserrat 13px · nền #FAFAFA · cam #F97316 accent</div>
+      <div class="sw"><i style="background:#F97316"></i><i style="background:#FFF7ED"></i><i style="background:#111827"></i><i style="background:#FAFAFA"></i><i style="background:#E5E7EB"></i></div>
+      <p class="vibe">Mật độ cao nhất — card 8px phẳng, chip pastel tí hon, stat card bấm-là-lọc, hover cam nhạt. Chuẩn "công cụ", team đã quen mắt từ lf-iq.</p>
+      <span class="tag g">dense</span><span class="tag g">stat-filter</span>
+    </a>
+
+    <a class="dcard" href="03-tera.html">
+      <div class="num">03 · tera-fe</div>
+      <h2>Tera+ LOS</h2>
+      <div class="src">Inter · sidebar đen #16191F · acc #e35a0d · hairline cream</div>
+      <div class="sw"><i style="background:#16191F"></i><i style="background:#e35a0d"></i><i style="background:#ffefe2"></i><i style="background:#f8f9fa"></i><i style="background:#ece6d8"></i></div>
+      <p class="vibe">Enterprise nghiêm túc — rail đen wash cam, KPI số 27px fw800, nút 4px có phản hồi vật lý (nhấc lên khi hover, nhún khi bấm). Đồng bộ với LOS.</p>
+      <span class="tag g">dark rail</span><span class="tag g">physical buttons</span>
+    </a>
+
+    <a class="dcard" href="04-account.html">
+      <div class="num">04 · account-fe / recruiting-fe</div>
+      <h2>LF Account</h2>
+      <div class="src">Public Sans · cream #faf9f7 · accent #e4642a · token --lf-*</div>
+      <div class="sw"><i style="background:#e4642a"></i><i style="background:#fbeae0"></i><i style="background:#201e1b"></i><i style="background:#faf9f7"></i><i style="background:#eceae6"></i></div>
+      <p class="vibe">Ấm, điềm tĩnh kiểu Google Account — card "lit top edge", nav pill tint, dark mode có sẵn. Đây chính là skeleton recruiting-fe đang ship → rẻ nhất để hiện thực.</p>
+      <span class="tag f">đã có trong repo</span><span class="tag g">dark-mode ready</span>
+    </a>
+
+    <a class="dcard" href="05-loal.html">
+      <div class="num">05 · life-of-a-loan</div>
+      <h2>LoaL Editorial</h2>
+      <div class="src">Geist + Instrument Serif italic · bloom cam · pill 999px</div>
+      <div class="sw"><i style="background:#f36f20"></i><i style="background:#fff2e8"></i><i style="background:#161422"></i><i style="background:#fbfaf7"></i><i style="background:#d97706"></i></div>
+      <p class="vibe">Cá tính nhất — nav capsule kính nổi, headline serif italic, eyebrow mono, hairline .5px, bloom cam sau lưng. Đẹp "wow" nhưng đậm chất trình diễn hơn chất công cụ.</p>
+      <span class="tag g">editorial</span><span class="tag g">glass</span>
+    </a>
+
+    <a class="dcard reco" href="06-mix.html">
+      <div class="num">06 · MIX — đề xuất</div>
+      <h2>LF Recruit Blend ⭐</h2>
+      <div class="src">Nền Account + mật độ LF-IQ + garnish LoaL + nút Tera</div>
+      <div class="sw"><i style="background:#e4642a"></i><i style="background:#fbeae0"></i><i style="background:#201e1b"></i><i style="background:#faf9f7"></i><i style="background:#b7791f"></i></div>
+      <p class="vibe">Token --lf-* của Account (có sẵn trong recruiting-fe, dark-mode ready) + stat-filter &amp; chip đặc của LF-IQ + eyebrow mono / serif italic của LoaL + phản hồi vật lý nút bấm của Tera.</p>
+      <span class="tag f">recommended</span><span class="tag f">rẻ nhất để code</span><span class="tag g">có cá tính</span>
+    </a>
+  </div>
+
+  <div class="note">
+    <b>Cách xem:</b> mở từng card, so cạnh nhau ở cùng độ rộng. Chi tiết token (hex, font, radius, shadow, quirks của từng repo) nằm trong <b>DESIGN-SYSTEMS.md</b> cùng thư mục. Chọn xong 1 kiểu, bước tiếp theo là port token đó vào <b>recruiting-fe</b> thành theme + bộ primitive (Button/Card/Chip/Row/StatCard) rồi code full flow trên nền đó.
+  </div>
+</div>
+</body>
+</html>
