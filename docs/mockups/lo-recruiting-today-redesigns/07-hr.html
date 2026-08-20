@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Today — kiểu HR Center (ai-hr-fe)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============ DS 07 — ai-hr-fe "HR Center": hairline console, Inter, 1 card/màn, hero band đào, nút pill ============ */
+:root{
+  --canvas:#f4f6f9; --surface:#fff; --surface-2:#f1f3f5; --surface-3:#e9ecef;
+  --border:#e0e3e8; --border-2:#d3d8de; --border-3:#bfc6cf;
+  --text:#1f2329; --text-2:#5b626b; --text-3:#696f79;
+  --accent:#f36f20; --accent-strong:#df520f; --accent-soft:#fff3e8; --accent-soft-2:#ffe1cc;
+  --green:#267f37; --green-soft:#e8f6ec; --red:#d62020; --red-soft:#fdeced;
+  --amber:#e8930c; --amber-soft:#fff5e2; --blue:#1970bf; --blue-soft:#e7f2fc;
+  --grape:#9c36b5; --grape-soft:#f7ecfb; --teal:#0b7b71; --teal-soft:#e3f5f2;
+  --r-chip:6px; --r-input:12px; --r-card-sm:14px; --r-card:16px; --r-pill:32px;
+  --sh-card:0 1px 2px rgba(16,24,40,.04),0 2px 10px rgba(16,24,40,.05);
+  --sh-input:0 1px 2px rgba(16,24,40,.04),0 3px 10px rgba(16,24,40,.05);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',ui-sans-serif,system-ui,sans-serif;background:var(--surface);color:var(--text);
+  font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;min-width:1180px}
+button{font-family:inherit;cursor:pointer;border:0;background:none}
+.app{display:flex;height:100vh;overflow:hidden}
+
+/* sidebar — bg-surface, tách bằng hairline (không đổi tông) */
+.side{width:248px;flex:none;border-right:1px solid var(--border);background:var(--surface);display:flex;flex-direction:column}
+.brand{height:60px;display:flex;align-items:center;gap:10px;padding:0 18px;border-bottom:1px solid var(--border)}
+.brand .sq{width:30px;height:30px;border-radius:9px;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;font-size:12px}
+.brand b{font-size:15px;font-weight:700}
+.brand small{display:block;font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--accent-strong)}
+.snav{padding:12px 10px;display:flex;flex-direction:column;gap:2px}
+.snav a{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--text);font-weight:600;font-size:15px;
+  padding:9px 12px;border-radius:12px}
+.snav a:hover:not(.on){background:var(--surface-2)}
+.snav a.on{background:var(--accent-soft);color:var(--accent-strong)}
+.snav .n{margin-left:auto;height:18px;min-width:18px;border-radius:12px;background:var(--accent);color:#fff;
+  font-size:13px;font-weight:700;display:grid;place-items:center;padding:0 5px;font-variant-numeric:tabular-nums}
+.side .foot{margin-top:auto;padding:14px 18px;border-top:1px solid var(--border);display:flex;gap:10px;align-items:center;font-size:13.5px;color:var(--text-2)}
+.avatar{border-radius:50%;color:#fff;display:grid;place-items:center;font-weight:600;background:var(--accent)}
+.side .foot .avatar{width:32px;height:32px;font-size:12px}
+
+/* topbar 60px — trang được đặt tên MỘT lần ở đây */
+.bodyc{flex:1;min-width:0;display:flex;flex-direction:column}
+.top{height:60px;flex:none;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border);background:var(--surface);padding:0 22px}
+.crumb{font-size:13.5px;color:var(--text-3)}
+.crumb b{color:var(--text);font-size:18px;font-weight:700;letter-spacing:-.01em}
+.searchbtn{margin-left:auto;display:flex;align-items:center;gap:10px;width:360px;height:38px;border-radius:var(--r-pill);
+  border:1px solid var(--border-2);background:var(--surface);padding:0 8px 0 14px;color:var(--text-3);font-size:14px;box-shadow:var(--sh-input)}
+.searchbtn kbd{margin-left:auto;font-size:12px;background:var(--surface-2);border-radius:6px;padding:1px 7px;color:var(--text-3)}
+.top .avatar{width:32px;height:32px;font-size:12px}
+
+/* main scroller — canvas nhẹ hơn surface? (light: cùng surface, hairline tách) */
+main{flex:1;overflow:auto;background:var(--canvas);padding:24px 36px 80px}
+.screen{max-width:1240px;margin:0 auto}
+
+/* hero band đào — chữ ký TasksScreen */
+.hero{border:1px solid var(--accent-soft-2);background:var(--accent-soft);border-radius:var(--r-card);
+  padding:20px 24px;display:flex;align-items:center;gap:22px;margin-bottom:16px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;right:-60px;top:-70px;width:230px;height:230px;border-radius:50%;
+  background:radial-gradient(circle,rgba(243,111,32,.18),transparent 65%)}
+.hero .avatar{width:52px;height:52px;font-size:17px;background:var(--green);flex:none}
+.hero .t{min-width:0}
+.hero h2{font-size:20px;font-weight:700;letter-spacing:-.01em}
+.hero h2 .hl{color:var(--accent-strong);font-variant-numeric:tabular-nums}
+.hero p{font-size:14.5px;color:var(--text-2);margin-top:2px}
+.hero .facts{display:flex;gap:24px;margin-left:20px}
+.hero .fact span{display:block;font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3)}
+.hero .fact b{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums}
+.hero .fact b.hot{color:var(--red)}
+.hero .do{margin-left:auto;display:flex;gap:8px;position:relative}
+
+/* buttons — pill 3 chiều cao */
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:var(--r-pill);font-weight:600;transition:background .15s;white-space:nowrap}
+.btn:focus-visible{outline:2px solid var(--accent-strong);outline-offset:2px}
+.btn.pri{height:40px;background:var(--accent);color:#fff;padding:0 18px;font-size:15px}
+.btn.pri:hover{background:var(--accent-strong)}
+.btn.gho{height:36px;background:var(--surface);border:1px solid var(--border-2);color:var(--text-2);padding:0 16px;font-size:14px;font-weight:500}
+.btn.gho:hover{background:var(--surface-2)}
+.btn.soft{height:36px;background:var(--accent-soft);border:1px solid var(--accent-soft-2);color:var(--accent-strong);padding:0 16px;font-size:14px}
+.btn.rw{height:32px;border-radius:12px;border:1px solid var(--border-2);background:var(--surface);color:var(--text);padding:0 12px;font-size:14px}
+.btn.rw:hover{background:var(--surface-2)}
+.btn.rw.go{background:var(--green);border-color:var(--green);color:#fff}
+.btn.rw.go:hover{background:#1e6a2d}
+.btn.icon{height:32px;width:32px;border-radius:12px;border:1px solid var(--border-2);background:var(--surface);color:var(--text-3);justify-content:center;padding:0}
+
+/* KPI strip — stat filter pills kiểu HR */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.stat{border:1px solid var(--border);background:var(--surface);border-radius:var(--r-card-sm);box-shadow:var(--sh-card);
+  padding:13px 16px;text-align:left;display:flex;align-items:center;gap:12px}
+.stat.on{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft),var(--sh-card)}
+.stat b{font-size:28px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1}
+.stat.badv b{color:var(--red)}
+.stat .t span{display:block;font-size:14px;font-weight:600}
+.stat .t small{font-size:12.5px;color:var(--text-3)}
+
+/* MỘT panel lớn = cả màn (chữ ký TablePanel) */
+.panel{border:1px solid var(--border);background:var(--surface);border-radius:var(--r-card);box-shadow:var(--sh-card);overflow:hidden}
+.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:20px 22px 14px}
+.panel-head h1{font-size:28px;font-weight:700;letter-spacing:-.01em;line-height:1.15;display:flex;align-items:center;gap:10px}
+.countPill{font-variant-numeric:tabular-nums;border:1px solid var(--accent-soft-2);background:var(--accent-soft);color:var(--accent-strong);
+  border-radius:99px;padding:2px 10px;font-size:13px;font-weight:600}
+.panel-head p{font-size:14.5px;color:var(--text-3);margin-top:3px}
+.toolbar{display:flex;gap:10px;padding:0 22px 16px;flex-wrap:wrap}
+.fpill{height:36px;display:inline-flex;align-items:center;gap:8px;border-radius:var(--r-pill);border:1px solid var(--border-2);
+  background:var(--surface);padding:0 16px;font-size:14px;font-weight:500;color:var(--text-2)}
+.fpill.on{border-color:var(--accent-soft-2);background:var(--accent-soft);color:var(--accent-strong);font-weight:600}
+.fpill .b{height:18px;min-width:18px;border-radius:99px;background:var(--accent);color:#fff;font-size:12px;font-weight:700;display:grid;place-items:center;padding:0 5px}
+
+/* group head + fake-table rows */
+.ghead{display:flex;align-items:center;gap:10px;border-top:1px solid var(--border);background:var(--surface);padding:11px 22px;font-size:13px;font-weight:600;color:var(--text-2)}
+.ghead .ic{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-size:13px;flex:none}
+.ghead .cnt{font-variant-numeric:tabular-nums;color:var(--text-3);font-weight:500}
+.ghead .hint{margin-left:auto;font-weight:400;font-size:13px;color:var(--text-3)}
+.row{display:grid;grid-template-columns:236px minmax(0,1fr) 84px 152px;align-items:center;gap:12px;
+  border-top:1px solid var(--border);padding:11px 22px;min-height:58px;cursor:pointer;transition:background .15s}
+.row:hover{background:var(--accent-soft)}
+.who{display:flex;gap:11px;align-items:center;min-width:0}
+.who .avatar{width:36px;height:36px;font-size:13px;flex:none}
+.who b{display:block;font-size:14.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.who small{display:block;font-size:13px;color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ctx{display:flex;align-items:center;gap:9px;min-width:0;font-size:14.5px;color:var(--text-2)}
+.ctx .txt{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ctx b{color:var(--text);font-weight:600}
+.due{text-align:right;font-size:13px;color:var(--text-3);font-variant-numeric:tabular-nums;white-space:nowrap}
+.due.warn{color:var(--amber);font-weight:600}
+.due.hot{color:var(--red);font-weight:600}
+.act{display:flex;justify-content:flex-end;gap:7px}
+
+/* chips — pill + dot 1.5 */
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:99px;padding:2px 10px;font-size:13px;font-weight:500;white-space:nowrap;flex:none}
+.chip i{width:6px;height:6px;border-radius:50%;font-style:normal}
+.chip.or{background:var(--accent-soft);color:var(--accent-strong)}.chip.or i{background:var(--accent)}
+.chip.bl{background:var(--blue-soft);color:var(--blue)}.chip.bl i{background:var(--blue)}
+.chip.gy{background:var(--surface-3);color:var(--text-2)}.chip.gy i{background:var(--text-3)}
+.chip.rd{background:var(--red-soft);color:var(--red)}.chip.rd i{background:var(--red)}
+.chip.am{background:var(--amber-soft);color:var(--amber)}.chip.am i{background:var(--amber)}
+.chip.gn{background:var(--green-soft);color:var(--green)}.chip.gn i{background:var(--green)}
+
+/* footer trong panel */
+.pfoot{border-top:1px solid var(--border);padding:13px 22px;display:flex;align-items:center;justify-content:space-between;font-size:14px;color:var(--text-3)}
+.pfoot b{color:var(--text);font-variant-numeric:tabular-nums}
+
+/* rail phải */
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
+.mini{border:1px solid var(--border);background:var(--surface);border-radius:var(--r-card-sm);box-shadow:var(--sh-card);padding:16px 18px;margin-bottom:12px}
+.eyebrow{font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);margin-bottom:10px}
+.fline{display:flex;justify-content:space-between;font-size:14px;color:var(--text-2);padding:6px 0;border-bottom:1px solid var(--surface-2)}
+.fline:last-child{border:0}
+.fline b{font-variant-numeric:tabular-nums;color:var(--text)}
+.mini.tip{background:var(--accent-soft);border-color:var(--accent-soft-2)}
+.mini.tip p{font-size:13.5px;color:var(--text-2);line-height:1.55}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><div class="sq">LF</div><div><b>LF Recruit</b><small>Recruiting Center</small></div></div>
+    <nav class="snav">
+      <a class="on" href="#">☀️ Today <span class="n">8</span></a>
+      <a href="#">📋 Pipeline</a>
+      <a href="#">🌙 Nurture</a>
+      <a href="#">💬 Conversations</a>
+      <a href="#">📈 Reports</a>
+      <a href="#">⚙️ Settings</a>
+    </nav>
+    <div class="foot"><div class="avatar">BS</div><div><b style="font-size:14px;color:var(--text)">Brayan Suarez</b><br>Inside Recruiter</div></div>
+  </aside>
+
+  <div class="bodyc">
+    <div class="top">
+      <span class="crumb">Recruiting › <b>Today</b></span>
+      <button class="searchbtn">🔎 Tìm ứng viên, NMLS, công ty… <kbd>⌘ /</kbd></button>
+      <div class="avatar">BS</div>
+    </div>
+
+    <main><div class="screen">
+
+      <div class="hero">
+        <div class="avatar">DP</div>
+        <div class="t">
+          <h2>Bắt đầu từ <span class="hl">Dana Patel</span> — SLA còn <span class="hl">42 phút</span></h2>
+          <p>Self-apply · Chicago, IL — lead gấp nhất trong 8 việc hôm nay của bạn.</p>
+        </div>
+        <div class="facts">
+          <div class="fact"><span>Production 12mo</span><b>$9.5M · 21u</b></div>
+          <div class="fact"><span>Stage</span><b>S1 · New</b></div>
+          <div class="fact"><span>First touch</span><b class="hot">42 phút</b></div>
+        </div>
+        <div class="do"><button class="btn pri">📞 Call ngay</button><button class="btn gho">📜 Script</button></div>
+      </div>
+
+      <div class="stats">
+        <button class="stat badv on"><b>2</b><span class="t"><span>SLA gấp</span><small>&lt; 5h còn lại</small></span></button>
+        <button class="stat"><b>2</b><span class="t"><span>Due today</span><small>follow-up đến hạn</small></span></button>
+        <button class="stat"><b>2</b><span class="t"><span>Wake-ups</span><small>signals + đúng hẹn</small></span></button>
+        <button class="stat"><b>1</b><span class="t"><span>Offer pending</span><small>chờ chữ ký</small></span></button>
+      </div>
+
+      <div class="grid2">
+        <div class="panel">
+          <div class="panel-head">
+            <div>
+              <h1>Việc của tôi <span class="countPill">8</span></h1>
+              <p>Thứ Năm 21/08 · việc tự tìm đến bạn — không cần đi tuần bảng 106k dòng</p>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button class="btn gho">Export</button>
+              <button class="btn pri" style="height:36px;font-size:14px">▶ Focus mode</button>
+            </div>
+          </div>
+          <div class="toolbar">
+            <button class="fpill on">Tất cả <span class="b">8</span></button>
+            <button class="fpill">Có hạn hôm nay</button>
+            <button class="fpill">Thời cơ</button>
+            <button class="fpill">Rollover</button>
+          </div>
+
+          <div class="ghead"><span class="ic" style="background:var(--red-soft)">🔥</span>New leads — first touch <span class="cnt">· 2</span><span class="hint">SLA 24h · Call/SMS xong tự chuyển S2</span></div>
+          <div class="row">
+            <div class="who"><div class="avatar" style="background:var(--accent)">SC</div><div><b>Sarah Chen</b><small>Prosperity Home Loans · Austin, TX</small></div></div>
+            <div class="ctx"><span class="chip or"><i></i>Modex</span><span class="txt"><b>$18M</b> · 32 units 12mo — enrichment tự điền đủ</span></div>
+            <div class="due warn">2h 14m</div>
+            <div class="act"><button class="btn rw go">Call</button><button class="btn icon">⋯</button></div>
+          </div>
+          <div class="row">
+            <div class="who"><div class="avatar" style="background:var(--blue)">MR</div><div><b>Marcus Reyes</b><small>Fairway Independent · Brooklyn, NY</small></div></div>
+            <div class="ctx"><span class="chip bl"><i></i>Referral</span><span class="txt">Chưa có NMLS — hỏi trong cú gọi rồi nhập để enrich</span></div>
+            <div class="due">5h 02m</div>
+            <div class="act"><button class="btn rw go">Call</button><button class="btn icon">⋯</button></div>
+          </div>
+
+          <div class="ghead"><span class="ic" style="background:var(--amber-soft)">⏮</span>Rollover từ hôm qua <span class="cnt">· 2</span><span class="hint">giữ nguyên tuổi trễ — máy nhắc thay manager</span></div>
+          <div class="row">
+            <div class="who"><div class="avatar" style="background:var(--grape)">CB</div><div><b>Chad Boulder</b><small>Motto Mortgage · Greenville, SC</small></div></div>
+            <div class="ctx"><span class="chip am"><i></i>trễ 1 ngày</span><span class="txt">Follow-up comp sheet đã gửi</span></div>
+            <div class="due warn">hôm qua</div>
+            <div class="act"><button class="btn rw go">Call now</button><button class="btn icon">⋯</button></div>
+          </div>
+          <div class="row">
+            <div class="who"><div class="avatar" style="background:var(--green)">JT</div><div><b>Joseph Tran</b><small>Homebridge · San Jose, CA</small></div></div>
+            <div class="ctx"><span class="chip rd"><i></i>trễ 2 ngày</span><span class="txt">Gọi sau closing thứ Sáu như đã hứa</span></div>
+            <div class="due hot">2 ngày</div>
+            <div class="act"><button class="btn rw go">Call now</button><button class="btn icon">⋯</button></div>
+          </div>
+
+          <div class="ghead"><span class="ic" style="background:var(--blue-soft)">📞</span>Follow-ups hôm nay <span class="cnt">· 2</span><span class="hint">next-step bạn đã hẹn + relay từ phòng khác</span></div>
+          <div class="row">
+            <div class="who"><div class="avatar" style="background:var(--grape)">CB</div><div><b>Chad Boulder</b><small>Motto Mortgage · Greenville, SC</small></div></div>
+            <div class="ctx"><span class="chip bl"><i></i>relay</span><span class="txt"><b>Licensing</b>: “SC yêu cầu 75mi — OK theo branch Greenville” → báo lại ứng viên</span></div>
+            <div class="due">hôm nay</div>
+            <div class="act"><button class="btn rw go">Call now</button><button class="btn icon">⋯</button></div>
+          </div>
+          <div class="row">
+            <div class="who"><div class="avatar" style="background:#b3548f">MR</div><div><b>Mia Rodriguez</b><small>CrossCountry · Miami, FL</small></div></div>
+            <div class="ctx"><span class="chip am"><i></i>cadence 3/7/14</span><span class="txt">Hỏi lại về comp sheet gửi thứ Hai — inbound là chuỗi tự dừng</span></div>
+            <div class="due">hôm nay</div>
+            <div class="act"><button class="btn rw go">Call now</button><button class="btn icon">⋯</button></div>
+          </div>
+
+          <div class="ghead"><span class="ic" style="background:var(--teal-soft)">📡</span>Signals — Modex refresh <span class="cnt">· 2</span><span class="hint">máy DIFF bản tháng mới vs cũ — thời cơ</span></div>
+          <div class="row">
+            <div class="who"><div class="avatar" style="background:var(--red)">KW</div><div><b>Kaprice Wilson</b><small>Movement Mortgage · Phoenix, AZ</small></div></div>
+            <div class="ctx"><span class="chip rd"><i></i>đổi công ty</span><span class="txt">Vừa rời Movement Mortgage — cửa sổ vàng để chạm lại</span></div>
+            <div class="due">tuần này</div>
+            <div class="act"><button class="btn rw">Re-engage</button><button class="btn icon">⋯</button></div>
+          </div>
+          <div class="row">
+            <div class="who"><div class="avatar" style="background:var(--teal)">RB</div><div><b>Ryan Brooks</b><small>Guild Mortgage · Denver, CO</small></div></div>
+            <div class="ctx"><span class="chip gn"><i></i>volume +40%</span><span class="txt">$6.2M → <b>$8.7M</b> qua đợt refresh tháng 8</span></div>
+            <div class="due">tuần này</div>
+            <div class="act"><button class="btn rw">Re-engage</button><button class="btn icon">⋯</button></div>
+          </div>
+
+          <div class="ghead"><span class="ic" style="background:var(--grape-soft)">✍️</span>Offers chờ ký <span class="cnt">· 1</span><span class="hint">quá 5 ngày leo Exceptions cho manager</span></div>
+          <div class="row">
+            <div class="who"><div class="avatar" style="background:var(--green)">JT</div><div><b>Joseph Tran</b><small>Homebridge · San Jose, CA</small></div></div>
+            <div class="ctx"><span class="chip am"><i></i>viewed · chưa ký</span><span class="txt">Mở 4 lần, dừng ở trang comp · band <b>B2</b></span></div>
+            <div class="due warn">3 ngày</div>
+            <div class="act"><button class="btn rw">Remind</button><button class="btn icon">⋯</button></div>
+          </div>
+
+          <div class="pfoot"><span>Hiển thị <b>1–9</b> trong <b>9</b> việc hôm nay</span><span>Xong việc nào, việc đó tự rời danh sách ✓</span></div>
+        </div>
+
+        <aside>
+          <div class="mini">
+            <div class="eyebrow">My funnel — tuần này</div>
+            <div class="fline"><span>New leads</span><b>14</b></div>
+            <div class="fline"><span>First touch trong SLA</span><b>92%</b></div>
+            <div class="fline"><span>Moved to Engaged</span><b>6</b></div>
+            <div class="fline"><span>Verified</span><b>3</b></div>
+            <div class="fline"><span>Offers ký</span><b>1</b></div>
+          </div>
+          <div class="mini tip">
+            <div class="eyebrow" style="color:var(--accent-strong)">⚡ Zero-click enrichment</div>
+            <p>Nhập NMLS là đủ — production tự về từ Modex. Thử <b>＋ Add lead</b> trong Pipeline.</p>
+          </div>
+        </aside>
+      </div>
+
+    </div></main>
+  </div>
+</div>
+</body>
+</html>

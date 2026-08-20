@@ -11,7 +11,9 @@
 body{font-family:'Public Sans',sans-serif;background:#faf9f7;color:#201e1b;font-size:14px;line-height:1.55;padding:40px 32px 80px}
 .wrap{max-width:1180px;margin:0 auto}
 h1{font-size:28px;font-weight:800;letter-spacing:-.02em}
-.sub{color:#6e6a63;margin:8px 0 30px;max-width:760px}
+.sub{color:#6e6a63;margin:8px 0 10px;max-width:800px}
+.uxnote{background:#fff;border:1px solid #e9e7e2;border-radius:14px;padding:14px 20px;font-size:13px;color:#6e6a63;margin-bottom:28px;max-width:800px}
+.uxnote b{color:#201e1b}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:18px}
 .dcard{background:#fff;border:1px solid #e9e7e2;border-radius:16px;padding:22px 24px;text-decoration:none;color:inherit;display:block;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 1px 2px rgba(32,30,27,.04),0 8px 24px -16px rgba(32,30,27,.14);transition:all .15s}
@@ -22,7 +24,7 @@ h2{font-size:17px;font-weight:700;margin:6px 0 4px}
 .sw{display:flex;gap:6px;margin-bottom:12px}
 .sw i{width:26px;height:26px;border-radius:7px;border:1px solid rgba(0,0,0,.06)}
 .vibe{font-size:12.5px;color:#6e6a63;line-height:1.6;margin-bottom:12px}
-.tag{display:inline-block;font-size:10.5px;font-weight:700;border-radius:99px;padding:3px 10px;margin-right:5px}
+.tag{display:inline-block;font-size:10.5px;font-weight:700;border-radius:99px;padding:3px 10px;margin-right:5px;margin-bottom:4px}
 .tag.f{background:#fbeae0;color:#ad4a1b}
 .tag.g{background:#f2f0ec;color:#6e6a63}
 .reco{outline:2px solid #e4642a;outline-offset:2px}
@@ -32,16 +34,21 @@ h2{font-size:17px;font-weight:700;margin:6px 0 4px}
 </head>
 <body>
 <div class="wrap">
-  <h1>Today page — 6 kiểu design system</h1>
-  <p class="sub">Cùng một nội dung (SLA leads · follow-ups · signals · offers · rail KPI), mỗi file một ngôn ngữ thiết kế trích từ codebase LoanFactory thật. Mở từng kiểu, chọn 1 — bộ token của kiểu đó sẽ thành design system của recruiting-fe.</p>
+  <h1>Today page — 9 kiểu design system</h1>
+  <p class="sub">Cùng MỘT thiết kế UX (xem <b>UX-SPEC.md</b>), mỗi file khoác ngôn ngữ thiết kế của một app LoanFactory thật — token trích từ code, không bịa.</p>
+  <div class="uxnote">
+    <b>UX chung của mọi bản:</b> ① hero "Next up" trả lời <i>làm gì trước</i> trong 1 giây · ② 4 stat-filter bấm-là-lọc ·
+    ③ mỗi hàng đúng 1 nút hành động chính + menu ⋯ (không bày 4 nút) · ④ grid cột cứng, 1 dòng, truncate — không gãy dòng ·
+    ⑤ cột hạn tabular căn phải, đỏ khi gấp.
+  </div>
 
   <div class="grid">
     <a class="dcard" href="01-homepage.html">
-      <div class="num">01 · lf-homepage / lo-homepage</div>
+      <div class="num">01 · lf-homepage / lo-homepage / lf-borrower-portal</div>
       <h2>LF Marketing</h2>
-      <div class="src">Montserrat · cam #f36f20 · trắng tinh</div>
+      <div class="src">Montserrat · cam #f36f20 · trắng · pill UPPERCASE</div>
       <div class="sw"><i style="background:#f36f20"></i><i style="background:#fff0e2"></i><i style="background:#2e2e2e"></i><i style="background:#fff"></i><i style="background:#dee2e6"></i></div>
-      <p class="vibe">Thoáng, to, tự tin — button pill UPPERCASE, card 16-24px, shadow mềm. Đẹp kiểu website, nhưng hơi tốn chỗ cho app làm việc cả ngày.</p>
+      <p class="vibe">Thoáng, to, tự tin — chào hỏi lớn, card 16-24px, nút pill viết hoa. Đẹp kiểu website, hơi tốn chỗ cho app cày cả ngày.</p>
       <span class="tag g">airy</span><span class="tag g">pill uppercase</span>
     </a>
 
@@ -50,7 +57,7 @@ h2{font-size:17px;font-weight:700;margin:6px 0 4px}
       <h2>LF-IQ Dashboard</h2>
       <div class="src">Montserrat 13px · nền #FAFAFA · cam #F97316 accent</div>
       <div class="sw"><i style="background:#F97316"></i><i style="background:#FFF7ED"></i><i style="background:#111827"></i><i style="background:#FAFAFA"></i><i style="background:#E5E7EB"></i></div>
-      <p class="vibe">Mật độ cao nhất — card 8px phẳng, chip pastel tí hon, stat card bấm-là-lọc, hover cam nhạt. Chuẩn "công cụ", team đã quen mắt từ lf-iq.</p>
+      <p class="vibe">Mật độ cao nhất — card 8px phẳng, chip pastel tí hon viết hoa, hero ring cam. Chuẩn "công cụ", team đã quen mắt từ lf-iq.</p>
       <span class="tag g">dense</span><span class="tag g">stat-filter</span>
     </a>
 
@@ -59,7 +66,7 @@ h2{font-size:17px;font-weight:700;margin:6px 0 4px}
       <h2>Tera+ LOS</h2>
       <div class="src">Inter · sidebar đen #16191F · acc #e35a0d · hairline cream</div>
       <div class="sw"><i style="background:#16191F"></i><i style="background:#e35a0d"></i><i style="background:#ffefe2"></i><i style="background:#f8f9fa"></i><i style="background:#ece6d8"></i></div>
-      <p class="vibe">Enterprise nghiêm túc — rail đen wash cam, KPI số 27px fw800, nút 4px có phản hồi vật lý (nhấc lên khi hover, nhún khi bấm). Đồng bộ với LOS.</p>
+      <p class="vibe">Enterprise nghiêm túc — rail đen wash cam, KPI fw800, nút 4px có phản hồi vật lý. Đồng bộ với LOS.</p>
       <span class="tag g">dark rail</span><span class="tag g">physical buttons</span>
     </a>
 
@@ -68,7 +75,7 @@ h2{font-size:17px;font-weight:700;margin:6px 0 4px}
       <h2>LF Account</h2>
       <div class="src">Public Sans · cream #faf9f7 · accent #e4642a · token --lf-*</div>
       <div class="sw"><i style="background:#e4642a"></i><i style="background:#fbeae0"></i><i style="background:#201e1b"></i><i style="background:#faf9f7"></i><i style="background:#eceae6"></i></div>
-      <p class="vibe">Ấm, điềm tĩnh kiểu Google Account — card "lit top edge", nav pill tint, dark mode có sẵn. Đây chính là skeleton recruiting-fe đang ship → rẻ nhất để hiện thực.</p>
+      <p class="vibe">Ấm, điềm tĩnh kiểu Google Account — card lit-edge, nav pill tint, dark mode + contrast test có sẵn. Đây là skeleton recruiting-fe đang ship.</p>
       <span class="tag f">đã có trong repo</span><span class="tag g">dark-mode ready</span>
     </a>
 
@@ -77,8 +84,35 @@ h2{font-size:17px;font-weight:700;margin:6px 0 4px}
       <h2>LoaL Editorial</h2>
       <div class="src">Geist + Instrument Serif italic · bloom cam · pill 999px</div>
       <div class="sw"><i style="background:#f36f20"></i><i style="background:#fff2e8"></i><i style="background:#161422"></i><i style="background:#fbfaf7"></i><i style="background:#d97706"></i></div>
-      <p class="vibe">Cá tính nhất — nav capsule kính nổi, headline serif italic, eyebrow mono, hairline .5px, bloom cam sau lưng. Đẹp "wow" nhưng đậm chất trình diễn hơn chất công cụ.</p>
+      <p class="vibe">Cá tính nhất — nav capsule kính nổi, headline serif italic, eyebrow mono, hairline .5px, bloom cam sau lưng.</p>
       <span class="tag g">editorial</span><span class="tag g">glass</span>
+    </a>
+
+    <a class="dcard" href="07-hr.html">
+      <div class="num">07 · ai-hr-fe</div>
+      <h2>HR Center</h2>
+      <div class="src">Inter · canvas #f4f6f9 · accent #f36f20/#df520f · 1 panel/màn</div>
+      <div class="sw"><i style="background:#f36f20"></i><i style="background:#fff3e8"></i><i style="background:#1f2329"></i><i style="background:#f4f6f9"></i><i style="background:#e0e3e8"></i></div>
+      <p class="vibe">Console hairline tĩnh lặng — cả màn sống trong MỘT panel (head + filter pills + rows + footer), hero band đào, nút pill, hover đào. Token system kỷ luật nhất org (có checker).</p>
+      <span class="tag g">one-panel screen</span><span class="tag g">token luật</span>
+    </a>
+
+    <a class="dcard" href="08-ally.html">
+      <div class="num">08 · ally-frontend-platform / tenant</div>
+      <h2>Ally Console</h2>
+      <div class="src">Inter · dark-first #0c1018 · cam #fb8a3c · glow shadow</div>
+      <div class="sw"><i style="background:#0c1018"></i><i style="background:#fb8a3c"></i><i style="background:#11161f"></i><i style="background:#ffedd5"></i><i style="background:#232a37"></i></div>
+      <p class="vibe">Back-office tối blue-slate ấm cam cháy — header section CAM ĐẶC viết hoa (chữ ký Ally), sticker pill pastel, hero glow cam. Kiểu "phòng điều hành ban đêm".</p>
+      <span class="tag g">dark-first</span><span class="tag g">orange headers</span>
+    </a>
+
+    <a class="dcard" href="09-callcenter.html">
+      <div class="num">09 · callcenter</div>
+      <h2>Command Center</h2>
+      <div class="src">Manrope + Space Grotesk · oklch cam #E85E00 · island + rail nổi</div>
+      <div class="sw"><i style="background:#E85E00"></i><i style="background:#0A121D"></i><i style="background:#F2F5F9"></i><i style="background:#FCFEFF"></i><i style="background:#D5DBE3"></i></div>
+      <p class="vibe">Sidebar tối NỔI (bo 16px, cách mép 12px) + content island trên nền atmospheric 2 radial. Nút compact h-32, card ring thay border. Hiện đại nhất về "khí quyển".</p>
+      <span class="tag g">floating rail</span><span class="tag g">atmospheric</span>
     </a>
 
     <a class="dcard reco" href="06-mix.html">
@@ -86,13 +120,15 @@ h2{font-size:17px;font-weight:700;margin:6px 0 4px}
       <h2>LF Recruit Blend ⭐</h2>
       <div class="src">Nền Account + mật độ LF-IQ + garnish LoaL + nút Tera</div>
       <div class="sw"><i style="background:#e4642a"></i><i style="background:#fbeae0"></i><i style="background:#201e1b"></i><i style="background:#faf9f7"></i><i style="background:#b7791f"></i></div>
-      <p class="vibe">Token --lf-* của Account (có sẵn trong recruiting-fe, dark-mode ready) + stat-filter &amp; chip đặc của LF-IQ + eyebrow mono / serif italic của LoaL + phản hồi vật lý nút bấm của Tera.</p>
+      <p class="vibe">Token --lf-* của Account (có sẵn trong recruiting-fe, dark-mode ready) + stat-filter &amp; chip đặc của LF-IQ + eyebrow mono / serif italic của LoaL + phản hồi vật lý nút Tera.</p>
       <span class="tag f">recommended</span><span class="tag f">rẻ nhất để code</span><span class="tag g">có cá tính</span>
     </a>
   </div>
 
   <div class="note">
-    <b>Cách xem:</b> mở từng card, so cạnh nhau ở cùng độ rộng. Chi tiết token (hex, font, radius, shadow, quirks của từng repo) nằm trong <b>DESIGN-SYSTEMS.md</b> cùng thư mục. Chọn xong 1 kiểu, bước tiếp theo là port token đó vào <b>recruiting-fe</b> thành theme + bộ primitive (Button/Card/Chip/Row/StatCard) rồi code full flow trên nền đó.
+    <b>Không làm variant riêng:</b> lf-borrower-portal (copy hệ 01) · loan-factory-career-portal (landing một-lần từ AI Studio) ·
+    agent-room (dev tool, không có token) · loanfactory-mobile-app (React Native, cam #F37026 — ghi trong doc) · document-esign (BE, template in).
+    Chi tiết token đầy đủ + quirks từng repo: <b>DESIGN-SYSTEMS.md</b>. Chọn xong 1 kiểu → port token vào <b>recruiting-fe</b> thành theme + bộ primitive rồi code full flow.
   </div>
 </div>
 </body>
