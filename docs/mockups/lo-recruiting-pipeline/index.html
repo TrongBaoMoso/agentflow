@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pipeline — mockup MIX v6 (LF Recruit)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============ MIX v6 tokens — y hệt 06-mix.html (Today đã duyệt 21/08) ============ */
+:root{
+  --accent:#f97316; --accent-hover:#ea580c; --accent-deep:#c2410c; --accent-tint:#ffedd5; --accent-tint-2:#fff7ed; --accent-tint-4:#fed7aa;
+  --blue:#3b82f6; --blue-tint:#eff6ff; --blue-deep:#1d4ed8;
+  --green:#10b981; --green-tint:#ecfdf5; --green-deep:#059669;
+  --gold:#d97706; --gold-tint:#fef3c7;
+  --red:#dc2626; --red-tint:#fee2e2;
+  --app-bg:#faf9f7; --surface:#fff; --text:#201e1b; --muted:#6e6a63; --faint:#8a857c;
+  --border:#eceae6; --border-2:#e9e7e2; --border-4:#e4e1dc; --hover:#f2f0ec; --input-bg:#fbfaf8;
+  --lift:inset 0 1px 0 rgba(255,255,255,.6);
+  --sh-card:0 1px 2px rgba(32,30,27,.04),0 8px 24px -16px rgba(32,30,27,.14);
+  --sh-raised:0 2px 4px rgba(32,30,27,.05),0 18px 40px -20px rgba(32,30,27,.2);
+  --mono:'Public Sans',Helvetica,Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Public Sans',Helvetica,Arial,sans-serif;background:var(--app-bg);color:var(--text);font-size:13.5px;line-height:1.5;min-width:1180px}
+button{font-family:inherit;cursor:pointer;border:0;background:none}
+select,input[type=text]{font-family:inherit;font-size:12.5px;color:var(--text);background:var(--input-bg);border:1px solid var(--border-4);border-radius:9px;padding:7px 10px}
+select:focus,input[type=text]:focus{outline:2px solid var(--accent-tint-4);border-color:var(--accent)}
+.app{display:flex;min-height:calc(100vh - 60px)}
+
+/* header + sidebar: copy nguyên shell MIX */
+.top{position:sticky;top:0;z-index:70;height:60px;display:flex;align-items:center;gap:14px;background:var(--surface);border-bottom:1px solid var(--border-2);padding:0 20px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;flex:none}
+.brand em{font-style:normal;font-weight:800;color:var(--accent-deep)}
+.brand .sq{width:32px;height:32px;border-radius:9px;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;font-size:12px;box-shadow:0 3px 10px -2px rgba(249,115,22,.5)}
+.gsearch{width:420px;margin-left:26px;display:flex;align-items:center;gap:9px;height:38px;border-radius:10px;border:1px solid var(--border-4);background:var(--input-bg);padding:0 14px;color:var(--faint);font-size:13px}
+.gsearch kbd{margin-left:auto;font-size:11px;background:var(--hover);border-radius:6px;padding:1px 7px;color:var(--faint)}
+.tright{margin-left:auto;display:flex;align-items:center;gap:14px}
+.uprof{display:flex;align-items:center;gap:10px;font-size:13px;line-height:1.25;padding:5px 6px;border-radius:10px;cursor:pointer}
+.uprof:hover{background:var(--hover)}
+.uprof b{display:block;font-weight:600}
+.uprof small{color:var(--faint);font-size:11.5px}
+.uprof .avatar{width:32px;height:32px;font-size:11.5px}
+.bell{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;border:1px solid transparent;color:var(--muted);font-size:15px}
+.bell:hover{border-color:var(--border-4);background:var(--surface)}
+.side{width:220px;flex:none;background:var(--surface);border-right:1px solid var(--border-2);display:flex;flex-direction:column;padding:14px 12px;position:sticky;top:60px;height:calc(100vh - 60px)}
+.snav.bottom{margin-top:auto;border-top:1px solid var(--border);padding-top:8px}
+.slabel{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--faint);padding:12px 14px 6px;display:flex;align-items:center;gap:7px}
+.slabel::before{content:'';width:14px;height:2px;background:var(--accent)}
+.snav a{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--muted);font-weight:500;font-size:13.5px;padding:9px 14px;border-radius:10px;margin-bottom:1px}
+.nico{width:18px;height:18px;flex:none;color:var(--faint)}
+.nico svg{width:100%;height:100%}
+.snav a.on .nico{color:var(--accent-deep)}
+.snav a:hover:not(.on){background:var(--hover)}
+.snav a.on{background:var(--accent-tint);color:var(--accent-deep);font-weight:600}
+.snav .n{margin-left:auto;font-family:var(--mono);font-size:10px;background:var(--accent);color:#fff;border-radius:99px;padding:1px 7px}
+.avatar{border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700}
+.bic{width:16px;height:16px;flex:none}
+.bic svg{width:100%;height:100%}
+.body{flex:1;min-width:0;position:relative}
+.body::before{content:'';position:absolute;inset:0 0 auto 0;height:22rem;pointer-events:none;background:radial-gradient(64rem 22rem at 50% -6%,rgba(249,115,22,.06),transparent 70%)}
+.wrap{padding:28px 40px 64px;max-width:1600px;position:relative}
+.ph{display:flex;align-items:flex-end;gap:16px;margin-bottom:18px}
+.ph .crumb{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--faint);display:block;margin-bottom:6px}
+.ph h1{font-size:24px;font-weight:700;letter-spacing:-.02em}
+.ph h1 em{font-style:normal;font-weight:800;color:var(--accent-deep)}
+.ph .cta{margin-left:auto;background:var(--accent);color:#fff;border-radius:9px;padding:11px 22px;font-size:13.5px;font-weight:600;box-shadow:0 6px 16px -6px rgba(249,115,22,.55);transition:all .15s ease}
+.ph .cta:hover{background:var(--accent-hover);transform:translateY(-1px)}
+.ph .cta small{display:block;font-size:10.5px;font-weight:400;opacity:.85;margin-top:1px}
+
+/* ===== stage strip — 8 ô, đọc từ cross-tab D42: số to = ACTIVE (đang ở), phụ chú = đã-qua/rớt ===== */
+.sstrip{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin-bottom:12px}
+.sbox{background:var(--surface);border:1px solid var(--border-2);border-radius:12px;padding:9px 12px 8px;text-align:left;box-shadow:var(--lift),var(--sh-card);transition:all .15s ease;position:relative;overflow:hidden}
+.sbox:hover{transform:translateY(-1px);box-shadow:var(--lift),var(--sh-raised)}
+.sbox.on{box-shadow:0 0 0 2px var(--accent),var(--sh-card)}
+.sbox .sk{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);display:flex;gap:6px;align-items:center}
+.sbox .sk i{font-style:normal;font-weight:700;color:var(--accent-deep)}
+.sbox b{display:block;font-size:22px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em;margin:1px 0 0}
+.sbox small{display:block;font-size:10px;color:var(--faint);white-space:nowrap}
+.sbox small em{font-style:normal;color:var(--red)}
+.sbox .rail{position:absolute;inset:auto 0 0 0;height:3px;background:var(--hover)}
+.sbox .rail i{display:block;height:100%;background:var(--accent)}
+
+/* ===== toolbar filter — URL là nguồn sự thật ===== */
+.toolbar{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.vswitch{display:flex;background:var(--surface);border:1px solid var(--border-2);border-radius:10px;padding:3px;gap:2px}
+.vswitch button{padding:6px 14px;border-radius:8px;font-size:12.5px;font-weight:500;color:var(--muted)}
+.vswitch button.on{background:var(--accent-tint);color:var(--accent-deep);font-weight:600}
+.vswitch button.soon{opacity:.45;cursor:not-allowed}
+.tsearch{display:flex;align-items:center;gap:7px;background:var(--input-bg);border:1px solid var(--border-4);border-radius:9px;padding:0 10px;height:33px;width:250px;color:var(--faint)}
+.tsearch input{border:0;background:none;outline:none;flex:1;padding:0;font-size:12.5px;color:var(--text)}
+.tgl{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:500;color:var(--muted);border:1px solid var(--border-4);background:var(--surface);border-radius:9px;padding:6px 12px;transition:all .15s}
+.tgl.on{background:var(--red-tint);border-color:var(--red);color:var(--red);font-weight:600}
+.urlbar{font-family:var(--mono);font-size:10.5px;color:var(--faint);background:var(--hover);border-radius:8px;padding:5px 12px;margin-bottom:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.urlbar b{color:var(--accent-deep);font-weight:600}
+
+/* ===== bulk bar + bảng ===== */
+.bulk{display:flex;align-items:center;gap:8px;background:var(--text);color:#fff;border-radius:11px;padding:8px 14px;margin-bottom:10px;font-size:12.5px}
+.bulk .btn{background:rgba(255,255,255,.12);color:#fff}
+.bulk .btn:hover{background:rgba(255,255,255,.22);transform:none}
+.bulk small{margin-left:auto;opacity:.55;font-size:11px}
+.card{background:var(--surface);border:1px solid var(--border-2);border-radius:14px;box-shadow:var(--lift),var(--sh-card);overflow:hidden}
+table{width:100%;border-collapse:collapse}
+th{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);text-align:left;font-weight:600;padding:10px 12px;border-bottom:1px solid var(--border);white-space:nowrap;background:var(--input-bg)}
+td{padding:8px 12px;border-bottom:1px solid var(--border);font-size:12.5px;vertical-align:middle}
+tr:last-child td{border-bottom:0}
+tbody tr{cursor:pointer;transition:background .12s}
+tbody tr:hover{background:var(--accent-tint-2)}
+.cname{display:flex;gap:10px;align-items:center;min-width:0}
+.cname .avatar{width:30px;height:30px;font-size:10.5px;flex:none}
+.cname b{display:block;font-size:13px;font-weight:600;white-space:nowrap}
+.cname small{display:block;color:var(--faint);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:230px}
+.num{font-variant-numeric:tabular-nums;font-family:var(--mono);font-size:12px;white-space:nowrap}
+.dim{color:var(--faint)}
+.chip{display:inline-flex;align-items:center;border-radius:99px;padding:2px 9px;font-size:10.5px;font-weight:600;white-space:nowrap}
+.chip.mono{font-family:var(--mono);font-weight:500;letter-spacing:.03em;font-size:9.5px;text-transform:uppercase}
+.chip.or{background:var(--accent-tint);color:var(--accent-deep)}
+.chip.bl{background:var(--blue-tint);color:var(--blue-deep)}
+.chip.gy{background:var(--hover);color:var(--muted)}
+.chip.rd{background:var(--red-tint);color:var(--red)}
+.chip.am{background:var(--gold-tint);color:var(--gold)}
+.chip.gn{background:var(--green-tint);color:var(--green-deep)}
+.owner{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:500;white-space:nowrap}
+.owner .avatar{width:22px;height:22px;font-size:9px}
+.btn{border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;transition:all .15s ease;white-space:nowrap}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:scale(.97)}
+.btn.pri{background:var(--accent);color:#fff;box-shadow:0 4px 12px -4px rgba(249,115,22,.5)}
+.btn.pri:hover{background:var(--accent-hover)}
+.btn.gho{background:var(--surface);border:1px solid var(--border-4);color:var(--text)}
+.btn.gho:hover{background:var(--hover)}
+.btn.dots{padding:7px 9px;color:var(--muted);border:1px solid transparent}
+.btn.dots:hover{border-color:var(--border-4);background:var(--surface)}
+.pager{display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:12px;color:var(--muted);border-top:1px solid var(--border);background:var(--input-bg)}
+.pager b{font-variant-numeric:tabular-nums}
+.pager .pg{margin-left:auto;display:flex;gap:4px}
+.pager .pg button{width:28px;height:28px;border-radius:8px;border:1px solid var(--border-4);background:var(--surface);font-size:12px;color:var(--muted)}
+.pager .pg button.on{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+.note{font-size:11.5px;color:var(--faint);margin-top:14px;line-height:1.7}
+.note b{color:var(--muted)}
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;border-radius:12px;padding:11px 20px;font-size:12.5px;box-shadow:var(--sh-raised);opacity:0;transition:opacity .2s;pointer-events:none;z-index:99;max-width:640px}
+.toast.on{opacity:1}
+.toast b{color:var(--accent-tint-4)}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><div class="sq">LF</div>LF <em>Recruit</em></div>
+  <div class="gsearch"><span class="bic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20.5 20.5 15 15"/></svg></span> Tìm ứng viên, NMLS, công ty… <kbd>⌘ K</kbd></div>
+  <div class="tright">
+    <button class="bell" title="Thông báo"><span class="bic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5a2 2 0 1 1 4 0 7 7 0 0 1 4 6v3.2a3.8 3.8 0 0 0 1.8 2.8H4.2A3.8 3.8 0 0 0 6 14.2V11a7 7 0 0 1 4-6"/><path d="M9.5 17.5v.5a2.5 2.5 0 0 0 5 0v-.5"/></svg></span></button>
+    <div class="uprof"><div class="avatar">BS</div><div><b>Brayan Suarez</b><small>Inside Recruiter</small></div></div>
+  </div>
+</header>
+
+<div class="app">
+  <aside class="side">
+    <div class="slabel">Thường dùng</div>
+    <nav class="snav">
+      <a href="#"><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"/></svg></span>Today <span class="n">11</span></a>
+      <a class="on" href="#"><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="12" rx="1.5"/><rect x="14" y="4" width="6" height="8" rx="1.5"/></svg></span>Pipeline</a>
+      <a href="#"><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a7.5 7.5 0 0 0 8.3 12.4A9 9 0 1 1 12 3z"/></svg></span>Nurture</a>
+      <a href="#"><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-5l-5 3v-3H6a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3z"/><path d="M8 9h8M8 13h5"/></svg></span>Conversations</a>
+      <a href="#"><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V11M10 20V5M16 20v-7M4 20h16.5"/></svg></span>Reports</a>
+    </nav>
+    <nav class="snav bottom">
+      <div class="slabel">Cấu hình</div>
+      <a href="#"><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5 5l2.1 2.1M16.9 16.9L19 19M19 5l-2.1 2.1M7.1 16.9L5 19"/></svg></span>Settings</a>
+      <a href="#"><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M15.5 4.8a3.5 3.5 0 0 1 0 6.4"/><path d="M17.5 14.7a6 6 0 0 1 3.5 5.3"/></svg></span>Team &amp; quyền</a>
+    </nav>
+  </aside>
+
+  <div class="body"><div class="wrap">
+
+    <div class="ph">
+      <div>
+        <span class="crumb">Pipeline · toàn kho — 7.230 hồ sơ (import viet18 20/08)</span>
+        <h1>Cả kho trong <em>một cái bảng</em></h1>
+      </div>
+      <button class="cta" onclick="toast('＋ Add lead — chỉ 4 field, không có bức tường 5-field như hệ cũ. Có NMLS là Modex enrich tự chạy.')">＋ Add lead<small>4 field · NMLS tự enrich</small></button>
+    </div>
+
+    <!-- Stage strip: đọc từ cross-tab by_stage_status (D42). Số TO = ACTIVE (đang ở & còn sống). -->
+    <div class="sstrip" id="sstrip"></div>
+
+    <div class="toolbar">
+      <div class="vswitch">
+        <button class="on">Table</button>
+        <button class="soon" title="D11 — 4 view chung một ống kính quyền; Kanban/Funnel là lát sau">Kanban ·soon</button>
+        <button class="soon" title="Funnel cho manager — lát sau">Funnel ·soon</button>
+      </div>
+      <div class="tsearch"><span class="bic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20.5 20.5 15 15"/></svg></span><input id="q" placeholder="Tên, NMLS, công ty…" oninput="S.q=this.value;render()"></div>
+      <select id="fstatus" onchange="S.status=this.value;render()">
+        <option value="ALL">Tất cả status</option>
+        <option value="ACTIVE" selected>ACTIVE — còn sống</option>
+        <option value="NURTURE">NURTURE — ủ lại</option>
+        <option value="ARCHIVED">ARCHIVED — đã rớt/lưu kho</option>
+        <option value="BLOCKED">BLOCKED</option>
+      </select>
+      <select id="fsource" onchange="S.source=this.value;render()">
+        <option value="ALL">Tất cả nguồn</option>
+        <option>IMPORT</option><option>MODEX</option><option>REFERRAL</option><option>MANUAL</option><option>EVENT</option>
+      </select>
+      <button class="tgl" id="tglUnowned" onclick="S.unowned=!S.unowned;render()">
+        <span class="bic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M6 20a6 6 0 0 1 12 0"/><path d="M3 3l18 18"/></svg></span>
+        Chưa có người phụ trách
+      </button>
+      <select style="margin-left:auto" title="pageSize — tên field chuẩn của mọi list">
+        <option>25 / trang</option><option selected>50 / trang</option><option>100 / trang</option>
+      </select>
+    </div>
+
+    <div class="urlbar" id="urlbar"></div>
+
+    <div class="bulk" id="bulk" style="display:none">
+      <b id="bulkN">0 selected</b>
+      <button class="btn" onclick="toast('Bulk assign owner — quyền CANDIDATE_TRANSFER (manager). Ai được gán sẽ thấy họ trên Today.')">Assign owner ▾</button>
+      <button class="btn" onclick="toast('Export CSV theo filter hiện tại.')">Export CSV</button>
+      <button class="btn" onclick="toast('Bulk Archive — bắt lý do, ghi audit từng record (D27).')">Archive…</button>
+      <small>Hành động phá huỷ hỗ trợ bulk từ ngày đầu (D27) — nút chỉ render khi có quyền</small>
+    </div>
+
+    <div class="card">
+      <table>
+        <thead><tr>
+          <th style="width:34px"><input type="checkbox" onclick="toggleAll(this.checked)"></th>
+          <th>Ứng viên</th><th>Nguồn</th><th>Stage</th><th>Status</th>
+          <th style="text-align:right">Production 12mo</th><th>Người phụ trách</th><th>Chạm gần nhất</th><th style="width:150px"></th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <div class="pager"><span id="pgtotal"></span>
+        <span class="dim">· filter/sort/trang nằm trong URL — share link là người khác thấy đúng view</span>
+        <span class="pg"><button class="on">1</button><button onclick="toast('Phân trang thật do BE trả — mockup chỉ vẽ trang 1.')">2</button><button onclick="toast('Phân trang thật do BE trả — mockup chỉ vẽ trang 1.')">3</button><button onclick="toast('Phân trang thật do BE trả — mockup chỉ vẽ trang 1.')">…</button></span>
+      </div>
+    </div>
+
+    <p class="note">
+      <b>Quy ước đọc số (D42):</b> số TO trên ô stage = <b>đang ở & còn sống</b> (ô ACTIVE của cross-tab); dòng nhỏ = đã đi tới đây (mọi status) · <em style="color:var(--red)">rớt</em> = ARCHIVED đậu lại ở stage đó. Không bao giờ dán nhãn "đang ở" lên số cộng cả hàng — bài học "At offer 1.644" hôm 21/08.<br>
+      <b>Claim</b> trên hàng vô chủ = nhận về Today của mình (S0 tự lên S1, ghi sổ chủ quyền D45). Hàng đã có chủ: menu ⋯ có <b>↔ Transfer</b> — chủ tự nhường thì tự do, gán lại của người khác cần quyền manager (D44). <b>Gọi/nhắn thẳng người vô chủ cũng tự nhận</b> (D43 — interact = assign).<br>
+      <b>Chưa có người phụ trách</b> là view thường trực: vớt người "đã nói chuyện dở mà vô chủ" từ hệ cũ (recruiter nghỉ việc thì để trống chủ — spec 19/08).
+    </p>
+
+  </div></div>
+</div>
+<div class="toast" id="toastEl"></div>
+
+<script>
+/* ===== Cross-tab THẬT từ staging import (đo 22/08) — {stage: {ACTIVE, NURTURE, ARCHIVED, BLOCKED}} ===== */
+const XTAB = {
+  S0:{A:5060,N:0,R:6,B:0},  S1:{A:14,N:0,R:0,B:0}, S2:{A:2,N:0,R:0,B:0}, S3:{A:1,N:0,R:0,B:0},
+  S4:{A:0,N:0,R:0,B:0},     S5:{A:378,N:44,R:1222,B:0}, S6:{A:323,N:0,R:0,B:0}, S7:{A:180,N:0,R:0,B:0}
+};
+const SNAME = {S0:'Kho',S1:'Lead mới',S2:'Đang trao đổi',S3:'Đã xác minh',S4:'Hẹn 1-1',S5:'Offer',S6:'Đã gia nhập',S7:'Đã onboard'};
+
+/* ===== 16 hàng mẫu — người THẬT trong DB staging (tên/NMLS/production đúng như import) ===== */
+const ROWS = [
+  {n:'Daphni Hagen', c:'Homeowners Financial Group USA', nmls:'203875', st:'AZ', prod:218.0, u:545, stage:'S1', status:'ACTIVE', src:'IMPORT', owner:'BS', last:'hôm nay'},
+  {n:'Dustin Hawks', c:'Guild Mortgage Company', nmls:'—', st:'', prod:null, u:null, stage:'S1', status:'ACTIVE', src:'IMPORT', owner:'BS', last:'chưa chạm', hot:1},
+  {n:'Han Nguyen', c:'', nmls:'1901076', st:'CA', prod:null, u:null, stage:'S1', status:'ACTIVE', src:'IMPORT', owner:'BS', last:'hôm nay'},
+  {n:'Mary —', c:'', nmls:'—', st:'', prod:null, u:null, stage:'S2', status:'ACTIVE', src:'IMPORT', owner:'IR', last:'hệ cũ: in_progress'},
+  {n:'Testing Receive LO Stop', c:'', nmls:'—', st:'', prod:null, u:null, stage:'S2', status:'ACTIVE', src:'IMPORT', owner:'T2', last:'hệ cũ: in_progress'},
+  {n:'Kimothy Lee', c:'loanDepot.com, LLC', nmls:'—', st:'', prod:8.4, u:28, stage:'S5', status:'ACTIVE', src:'IMPORT', owner:null, last:'—'},
+  {n:'Jason Quigley', c:'', nmls:'—', st:'', prod:1.0, u:4, stage:'S5', status:'ACTIVE', src:'IMPORT', owner:null, last:'—'},
+  {n:'GINGER DOUD', c:'C2 Financial Corporation', nmls:'—', st:'CA', prod:0, u:0, stage:'S5', status:'ACTIVE', src:'IMPORT', owner:null, last:'—'},
+  {n:'Lorraine Purchaser', c:'Evolve Bank & Trust', nmls:'332464', st:'', prod:17.5, u:31, stage:'S5', status:'ARCHIVED', src:'IMPORT', owner:null, last:'hệ cũ: denied_by_LO'},
+  {n:'Abe Loevy', c:'BSD Funding, LLC', nmls:'2153849', st:'', prod:null, u:null, stage:'S1', status:'ACTIVE', src:'IMPORT', owner:'BS', last:'chưa chạm', hot:1},
+  {n:'Grant Horwitz', c:'E Mortgage Capital', nmls:'2005545', st:'', prod:null, u:null, stage:'S1', status:'ACTIVE', src:'IMPORT', owner:'BS', last:'chưa chạm', hot:1},
+  {n:'Mike Fittante', c:'', nmls:'—', st:'', prod:null, u:null, stage:'S0', status:'ACTIVE', src:'IMPORT', owner:null, last:'—'},
+  {n:'David Testtt', c:'', nmls:'—', st:'', prod:null, u:null, stage:'S0', status:'ACTIVE', src:'IMPORT', owner:null, last:'—'},
+  {n:'Suzi Hehe', c:'', nmls:'—', st:'', prod:null, u:null, stage:'S0', status:'ACTIVE', src:'IMPORT', owner:null, last:'—'},
+  {n:'Hien Test Level 1', c:'', nmls:'7148', st:'', prod:0.04, u:6, stage:'S5', status:'ACTIVE', src:'IMPORT', owner:null, last:'—'},
+  {n:'Hòa Trương', c:'', nmls:'—', st:'', prod:null, u:null, stage:'S5', status:'ARCHIVED', src:'IMPORT', owner:null, last:'hệ cũ: archived'},
+];
+const OWNERS = {BS:['Brayan S.','var(--accent)'], IR:['(legacy) ironman55','#7c5cbf'], T2:['(legacy) test2660','#3a7a8c']};
+
+const S = {stage:null, status:'ACTIVE', source:'ALL', unowned:false, q:'', checked:new Set()};
+
+function initials(n){ return n.split(' ').filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
+function fmtProd(r){ if(r.prod==null) return '<span class="dim">—</span>'; const v=r.prod>=1?('$'+r.prod.toFixed(1)+'M'):('$'+Math.round(r.prod*1000)+'K'); return '<b>'+v+'</b>'+(r.u!=null?' · '+r.u+'u':''); }
+
+function renderStrip(){
+  document.getElementById('sstrip').innerHTML = Object.keys(XTAB).map(k=>{
+    const x=XTAB[k], ever=x.A+x.N+x.R+x.B, pct=ever?Math.round(x.A/ever*100):0;
+    return `<button class="sbox ${S.stage===k?'on':''}" onclick="S.stage=S.stage==='${k}'?null:'${k}';render()">
+      <span class="sk"><i>${k}</i>${SNAME[k]}</span><b>${x.A.toLocaleString('vi')}</b>
+      <small>đã tới ${ever.toLocaleString('vi')}${x.R?` · <em>rớt ${x.R.toLocaleString('vi')}</em>`:''}${x.N?` · ủ ${x.N}`:''}</small>
+      <span class="rail"><i style="width:${pct}%"></i></span></button>`;
+  }).join('');
+}
+
+function rows(){
+  return ROWS.filter(r =>
+    (!S.stage || r.stage===S.stage) &&
+    (S.status==='ALL' || r.status===S.status) &&
+    (S.source==='ALL' || r.src===S.source) &&
+    (!S.unowned || !r.owner) &&
+    (!S.q || (r.n+' '+r.nmls+' '+r.c).toLowerCase().includes(S.q.toLowerCase()))
+  );
+}
+
+function render(){
+  renderStrip();
+  const list = rows();
+  document.getElementById('tglUnowned').className = 'tgl'+(S.unowned?' on':'');
+  document.getElementById('tbody').innerHTML = list.map((r,i)=>{
+    const ow = r.owner ? `<span class="owner"><span class="avatar" style="background:${OWNERS[r.owner][1]}">${r.owner}</span>${OWNERS[r.owner][0]}</span>`
+                       : `<span class="dim">— chưa ai</span>`;
+    const act = r.owner
+      ? `<button class="btn dots" onclick="event.stopPropagation();toast('⋯ menu: <b>↔ Transfer</b> (chủ tự nhường = tự do · gán lại của người khác cần quyền manager — D44) · mở hồ sơ 360 · log activity.')">⋯</button>`
+      : `<button class="btn pri" onclick="event.stopPropagation();claim(${ROWS.indexOf(r)})">Claim</button><button class="btn dots" onclick="event.stopPropagation();toast('⋯: mở hồ sơ 360 · log activity. Gọi/nhắn thẳng cũng TỰ nhận chủ (D43).')">⋯</button>`;
+    const statusChip = {ACTIVE:'gn',NURTURE:'am',ARCHIVED:'gy',BLOCKED:'rd'}[r.status];
+    return `<tr onclick="toast('Click hàng = mở hồ sơ 360 (drawer) — lát sau.')">
+      <td onclick="event.stopPropagation()"><input type="checkbox" ${S.checked.has(r.n)?'checked':''} onclick="check('${r.n.replace(/'/g,"\\'")}',this.checked)"></td>
+      <td><span class="cname"><span class="avatar" style="background:${r.owner?OWNERS[r.owner][1]:'var(--faint)'}">${initials(r.n)}</span><span><b>${r.n}${r.hot?' <span class="chip rd" style="font-size:9px;vertical-align:2px">chưa chạm</span>':''}</b><small>${r.nmls!=='—'?'NMLS '+r.nmls+' · ':''}${r.c||'—'}${r.st?' · '+r.st:''}</small></span></span></td>
+      <td><span class="chip gy mono">${r.src}</span></td>
+      <td><span class="chip or mono">${r.stage} · ${SNAME[r.stage]}</span></td>
+      <td><span class="chip ${statusChip}">${r.status}</span></td>
+      <td class="num" style="text-align:right">${fmtProd(r)}</td>
+      <td>${ow}</td>
+      <td class="dim" style="white-space:nowrap">${r.last}</td>
+      <td style="text-align:right">${act}</td>
+    </tr>`;
+  }).join('') || `<tr><td colspan="9" style="text-align:center;padding:34px;color:var(--faint)">Không có hồ sơ khớp filter — thử bỏ bớt điều kiện.</td></tr>`;
+
+  /* tổng THẬT theo filter (mockup chỉ vẽ mẫu vài hàng của trang 1) */
+  const totalReal = S.stage ? Object.entries(XTAB[S.stage]).reduce((s,[k,v])=> s + (S.status==='ALL'||{A:'ACTIVE',N:'NURTURE',R:'ARCHIVED',B:'BLOCKED'}[k]===S.status ? v:0),0)
+    : Object.values(XTAB).reduce((s,x)=> s + (S.status==='ALL'?x.A+x.N+x.R+x.B:{ACTIVE:x.A,NURTURE:x.N,ARCHIVED:x.R,BLOCKED:x.B}[S.status]),0);
+  document.getElementById('pgtotal').innerHTML = `1–50 / <b>${totalReal.toLocaleString('vi')} hồ sơ</b> khớp filter <span class="dim">(bảng đang vẽ ${list.length} hàng mẫu)</span>`;
+
+  const p = new URLSearchParams();
+  if(S.stage) p.set('stage',S.stage);
+  if(S.status!=='ACTIVE') p.set('status',S.status);
+  if(S.source!=='ALL') p.set('source',S.source);
+  if(S.unowned) p.set('owner','none');
+  if(S.q) p.set('q',S.q);
+  p.set('pageSize','50');
+  document.getElementById('urlbar').innerHTML = `URL là nguồn sự thật → <b>/pipeline?${p.toString()}</b>`;
+
+  const bulk = document.getElementById('bulk');
+  bulk.style.display = S.checked.size?'flex':'none';
+  document.getElementById('bulkN').textContent = S.checked.size+' selected';
+}
+
+function check(n,on){ on?S.checked.add(n):S.checked.delete(n); render(); }
+function toggleAll(on){ S.checked = on? new Set(rows().map(r=>r.n)) : new Set(); render(); }
+function claim(i){
+  const r = ROWS[i];
+  r.owner='BS';
+  if(r.stage==='S0'){ XTAB.S0.A--; XTAB.S1.A++; r.stage='S1'; }
+  r.last='vừa xong';
+  toast(`✅ Đã nhận <b>${r.n}</b> — ${r.stage==='S1'?'S0 → S1, ':''}lên <b>Today</b> của bạn ngay. Ghi sổ chủ quyền: CLAIM (D45).`);
+  render();
+}
+let toastT;
+function toast(msg){ const el=document.getElementById('toastEl'); el.innerHTML=msg; el.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>el.classList.remove('on'),4200); }
+render();
+</script>
+</body>
+</html>
