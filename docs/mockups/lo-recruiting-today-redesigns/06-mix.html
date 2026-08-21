@@ -26,21 +26,36 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Public Sans',Helvetica,Arial,sans-serif;background:var(--app-bg);color:var(--text);font-size:13.5px;line-height:1.5;min-width:1180px}
 button{font-family:inherit;cursor:pointer;border:0;background:none}
-.app{display:flex;min-height:100vh}
+.app{display:flex;min-height:calc(100vh - 60px)}
 
-/* ---- sidebar (Account: pill tint active) ---- */
-.side{width:232px;flex:none;background:var(--surface);border-right:1px solid var(--border-2);display:flex;flex-direction:column;padding:16px 12px;position:sticky;top:0;height:100vh}
-.brand{display:flex;align-items:center;gap:10px;padding:4px 12px 20px;font-weight:700;font-size:15px}
+/* ---- header bar: logo + global search + profile (feedback Bao 21/08) ---- */
+.top{position:sticky;top:0;z-index:70;height:60px;display:flex;align-items:center;gap:14px;
+  background:var(--surface);border-bottom:1px solid var(--border-2);padding:0 20px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;flex:none}
 .brand em{font-style:normal;font-weight:800;color:var(--accent-deep)}
-.brand .sq{width:30px;height:30px;border-radius:9px;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;font-size:11.5px;box-shadow:0 3px 10px -2px rgba(249,115,22,.5)}
+.brand .sq{width:32px;height:32px;border-radius:9px;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;font-size:12px;box-shadow:0 3px 10px -2px rgba(249,115,22,.5)}
+.gsearch{width:420px;margin-left:26px;display:flex;align-items:center;gap:9px;height:38px;border-radius:10px;
+  border:1px solid var(--border-4);background:var(--input-bg);padding:0 14px;color:var(--faint);font-size:13px}
+.gsearch kbd{margin-left:auto;font-size:11px;background:var(--hover);border-radius:6px;padding:1px 7px;color:var(--faint)}
+.tright{margin-left:auto;display:flex;align-items:center;gap:14px}
+.uprof{display:flex;align-items:center;gap:10px;font-size:13px;line-height:1.25;padding:5px 6px;border-radius:10px;cursor:pointer}
+.uprof:hover{background:var(--hover)}
+.uprof b{display:block;font-weight:600}
+.uprof small{color:var(--faint);font-size:11.5px}
+.uprof .avatar{width:32px;height:32px;font-size:11.5px}
+.bell{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;border:1px solid transparent;color:var(--muted);font-size:15px}
+.bell:hover{border-color:var(--border-4);background:var(--surface)}
+
+/* ---- sidebar: CHỈ tab điều hướng — thường dùng trên, cấu hình ghim đáy ---- */
+.side{width:220px;flex:none;background:var(--surface);border-right:1px solid var(--border-2);display:flex;flex-direction:column;
+  padding:14px 12px;position:sticky;top:60px;height:calc(100vh - 60px)}
+.snav.bottom{margin-top:auto;border-top:1px solid var(--border);padding-top:8px}
 .slabel{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--faint);padding:12px 14px 6px;display:flex;align-items:center;gap:7px}
 .slabel::before{content:'';width:14px;height:2px;background:var(--accent)}
 .snav a{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--muted);font-weight:500;font-size:13.5px;padding:9px 14px;border-radius:10px;margin-bottom:1px}
 .snav a:hover:not(.on){background:var(--hover)}
 .snav a.on{background:var(--accent-tint);color:var(--accent-deep);font-weight:600}
 .snav .n{margin-left:auto;font-family:var(--mono);font-size:10px;background:var(--accent);color:#fff;border-radius:99px;padding:1px 7px}
-.side .foot{margin-top:auto;display:flex;align-items:center;gap:10px;padding:10px 12px;border-top:1px solid var(--border);font-size:12px;color:var(--muted)}
-.side .foot .avatar{width:30px;height:30px;font-size:11px}
 .avatar{border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700}
 
 /* ---- body ---- */
@@ -151,22 +166,30 @@ button{font-family:inherit;cursor:pointer;border:0;background:none}
 </style>
 </head>
 <body>
+<header class="top">
+  <div class="brand"><div class="sq">LF</div>LF <em>Recruit</em></div>
+  <div class="gsearch">🔎 Tìm ứng viên, NMLS, công ty… <kbd>⌘ K</kbd></div>
+  <div class="tright">
+    <button class="bell" title="Thông báo">🔔</button>
+    <div class="uprof"><div class="avatar">BS</div><div><b>Brayan Suarez</b><small>Inside Recruiter</small></div></div>
+  </div>
+</header>
+
 <div class="app">
   <aside class="side">
-    <div class="brand"><div class="sq">LF</div>LF <em>Recruit</em></div>
-    <div class="slabel">Làm việc</div>
+    <div class="slabel">Thường dùng</div>
     <nav class="snav">
       <a class="on" href="#">☀️ Today <span class="n">8</span></a>
       <a href="#">📋 Pipeline</a>
       <a href="#">🌙 Nurture</a>
       <a href="#">💬 Conversations</a>
-    </nav>
-    <div class="slabel">Quản trị</div>
-    <nav class="snav">
       <a href="#">📈 Reports</a>
-      <a href="#">⚙️ Settings</a>
     </nav>
-    <div class="foot"><div class="avatar">BS</div><div>Brayan Suarez<br><span style="color:var(--faint);font-size:11px">Inside Recruiter</span></div></div>
+    <nav class="snav bottom">
+      <div class="slabel">Cấu hình</div>
+      <a href="#">⚙️ Settings</a>
+      <a href="#">👥 Team & quyền</a>
+    </nav>
   </aside>
 
   <div class="body"><div class="wrap">
