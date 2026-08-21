@@ -41,7 +41,7 @@ Với mình, gói trong một câu:
 
 Hai nửa, phải đúng cả hai:
 
-| | |
+| Hai nửa | Nghĩa là gì |
 |---|---|
 | **Họ đại diện mình công khai** | Đăng về Loan Factory cho network của chính họ, trên tài khoản của chính họ, dưới tên của chính họ — 2–3 lần/tuần. Ở bậc senior thì host webinar và đứng ra ở event. Cái đặt lên bàn là danh tiếng của họ, không chỉ danh bạ. |
 | **Mình chi tiền cho họ** | Tới $500/tháng ở Level 2, tới $1,000 ở Level 3, cộng thuê bao dữ liệu Loan Officer, công cụ LinkedIn, và danh sách top producer ở lender khác. Tiền công ty đứng sau tên một cá nhân. |

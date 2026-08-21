@@ -40,7 +40,7 @@ For us, in one line:
 
 Two halves, and both have to be true:
 
-| | |
+| The two halves | What each one means |
 |---|---|
 | **They represent us in public** | They post about Loan Factory to their own network, on their own accounts, under their own name — 2–3 times a week. At the senior level they host webinars and stand up at events. Their reputation is on the line, not just their contact list. |
 | **We fund them** | Up to $500 a month at Level 2, up to $1,000 at Level 3, plus their loan officer data subscription, LinkedIn tools, and lists of top producers at other lenders. Company money behind a private individual's name. |
