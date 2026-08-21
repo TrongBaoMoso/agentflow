@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kho HOT / COLD — mockup D46 (LF Recruit)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============ MIX v6 tokens — y hệt 06-mix.html + pipeline mockup đã duyệt ============ */
+:root{
+  --accent:#f97316; --accent-hover:#ea580c; --accent-deep:#c2410c; --accent-tint:#ffedd5; --accent-tint-2:#fff7ed; --accent-tint-4:#fed7aa;
+  --blue:#3b82f6; --blue-tint:#eff6ff; --blue-deep:#1d4ed8;
+  --green:#10b981; --green-tint:#ecfdf5; --green-deep:#059669;
+  --gold:#d97706; --gold-tint:#fef3c7;
+  --red:#dc2626; --red-tint:#fee2e2;
+  --app-bg:#faf9f7; --surface:#fff; --text:#201e1b; --muted:#6e6a63; --faint:#8a857c;
+  --border:#eceae6; --border-2:#e9e7e2; --border-4:#e4e1dc; --hover:#f2f0ec; --input-bg:#fbfaf8;
+  --lift:inset 0 1px 0 rgba(255,255,255,.6);
+  --sh-card:0 1px 2px rgba(32,30,27,.04),0 8px 24px -16px rgba(32,30,27,.14);
+  --sh-raised:0 2px 4px rgba(32,30,27,.05),0 18px 40px -20px rgba(32,30,27,.2);
+  --mono:'Public Sans',Helvetica,Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Public Sans',Helvetica,Arial,sans-serif;background:var(--app-bg);color:var(--text);font-size:13.5px;line-height:1.5;min-width:1180px}
+button{font-family:inherit;cursor:pointer;border:0;background:none}
+select,input[type=text]{font-family:inherit;font-size:12.5px;color:var(--text);background:var(--input-bg);border:1px solid var(--border-4);border-radius:9px;padding:7px 10px}
+select:focus,input[type=text]:focus{outline:2px solid var(--accent-tint-4);border-color:var(--accent)}
+.app{display:flex;min-height:calc(100vh - 60px)}
+.top{position:sticky;top:0;z-index:70;height:60px;display:flex;align-items:center;gap:14px;background:var(--surface);border-bottom:1px solid var(--border-2);padding:0 20px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;flex:none}
+.brand em{font-style:normal;font-weight:800;color:var(--accent-deep)}
+.brand .sq{width:32px;height:32px;border-radius:9px;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;font-size:12px;box-shadow:0 3px 10px -2px rgba(249,115,22,.5)}
+.gsearch{width:420px;margin-left:26px;display:flex;align-items:center;gap:9px;height:38px;border-radius:10px;border:1px solid var(--border-4);background:var(--input-bg);padding:0 14px;color:var(--faint);font-size:13px}
+.gsearch kbd{margin-left:auto;font-size:11px;background:var(--hover);border-radius:6px;padding:1px 7px;color:var(--faint)}
+.tright{margin-left:auto;display:flex;align-items:center;gap:14px}
+.uprof{display:flex;align-items:center;gap:10px;font-size:13px;line-height:1.25;padding:5px 6px;border-radius:10px;cursor:pointer}
+.uprof:hover{background:var(--hover)}
+.uprof b{display:block;font-weight:600}
+.uprof small{color:var(--faint);font-size:11.5px}
+.uprof .avatar{width:32px;height:32px;font-size:11.5px}
+.bell{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;border:1px solid transparent;color:var(--muted);font-size:15px}
+.bell:hover{border-color:var(--border-4);background:var(--surface)}
+.side{width:220px;flex:none;background:var(--surface);border-right:1px solid var(--border-2);display:flex;flex-direction:column;padding:14px 12px;position:sticky;top:60px;height:calc(100vh - 60px)}
+.snav.bottom{margin-top:auto;border-top:1px solid var(--border);padding-top:8px}
+.slabel{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--faint);padding:12px 14px 6px;display:flex;align-items:center;gap:7px}
+.slabel::before{content:'';width:14px;height:2px;background:var(--accent)}
+.snav a{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--muted);font-weight:500;font-size:13.5px;padding:9px 14px;border-radius:10px;margin-bottom:1px;cursor:pointer}
+.nico{width:18px;height:18px;flex:none;color:var(--faint)}
+.nico svg{width:100%;height:100%}
+.snav a.on .nico{color:var(--accent-deep)}
+.snav a:hover:not(.on){background:var(--hover)}
+.snav a.on{background:var(--accent-tint);color:var(--accent-deep);font-weight:600}
+.snav .n{margin-left:auto;font-family:var(--mono);font-size:10px;background:var(--accent);color:#fff;border-radius:99px;padding:1px 7px}
+.snav .n.rd{background:var(--red)}
+.avatar{border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700}
+.bic{width:16px;height:16px;flex:none}
+.bic svg{width:100%;height:100%}
+.body{flex:1;min-width:0;position:relative}
+.body::before{content:'';position:absolute;inset:0 0 auto 0;height:22rem;pointer-events:none;background:radial-gradient(64rem 22rem at 50% -6%,rgba(249,115,22,.06),transparent 70%)}
+.wrap{padding:28px 40px 64px;max-width:1500px;position:relative}
+.ph{display:flex;align-items:flex-end;gap:16px;margin-bottom:14px}
+.ph .crumb{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--faint);display:block;margin-bottom:6px}
+.ph h1{font-size:24px;font-weight:700;letter-spacing:-.02em}
+.ph h1 em{font-style:normal;font-weight:800;color:var(--accent-deep)}
+.ph .cta{margin-left:auto;background:var(--accent);color:#fff;border-radius:9px;padding:11px 22px;font-size:13.5px;font-weight:600;box-shadow:0 6px 16px -6px rgba(249,115,22,.55);transition:all .15s ease}
+.ph .cta:hover{background:var(--accent-hover);transform:translateY(-1px)}
+.ph .cta small{display:block;font-size:10.5px;font-weight:400;opacity:.85;margin-top:1px}
+.rolechip{display:inline-flex;align-items:center;gap:6px;border-radius:99px;font-size:10.5px;font-weight:600;padding:3px 10px;background:var(--blue-tint);color:var(--blue-deep);vertical-align:3px;margin-left:8px}
+.rolechip.hot{background:var(--accent-tint);color:var(--accent-deep)}
+
+/* banner giải thích luật của page */
+.expl{background:var(--surface);border:1px solid var(--border-2);border-left:3px solid var(--accent);border-radius:12px;padding:11px 16px;font-size:12.5px;color:var(--muted);margin-bottom:14px;box-shadow:var(--lift),var(--sh-card)}
+.expl b{color:var(--text)}
+.expl .cfg{font-family:var(--mono);font-size:10.5px;background:var(--hover);border-radius:6px;padding:1px 7px;color:var(--accent-deep)}
+
+/* stat row */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.stat{background:var(--surface);border:1px solid var(--border-2);border-radius:12px;padding:11px 14px;box-shadow:var(--lift),var(--sh-card);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.stat span{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);line-height:1.5;max-width:60%}
+.stat b{font-size:24px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.stat b small{font-size:12px;font-weight:600;color:var(--faint)}
+.stat.alert{border-color:var(--red);background:linear-gradient(0deg,var(--red-tint) -80%,var(--surface) 60%)}
+.stat.alert b{color:var(--red)}
+
+/* section trong page HOT */
+.sec{background:var(--surface);border:1px solid var(--border-2);border-radius:14px;box-shadow:var(--lift),var(--sh-card);overflow:hidden;margin-bottom:14px}
+.sech{display:flex;align-items:center;gap:9px;padding:11px 16px;border-bottom:1px solid var(--border);background:var(--input-bg);font-weight:600;font-size:13px}
+.sech .n{font-family:var(--mono);font-size:10px;background:var(--hover);border-radius:99px;padding:1px 8px;color:var(--muted)}
+.sech small{margin-left:auto;font-weight:400;font-size:11.5px;color:var(--faint)}
+table{width:100%;border-collapse:collapse}
+th{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);text-align:left;font-weight:600;padding:9px 12px;border-bottom:1px solid var(--border);white-space:nowrap;background:var(--input-bg)}
+td{padding:8px 12px;border-bottom:1px solid var(--border);font-size:12.5px;vertical-align:middle}
+tr:last-child td{border-bottom:0}
+tbody tr{transition:background .12s}
+tbody tr:hover{background:var(--accent-tint-2)}
+.cname{display:flex;gap:10px;align-items:center;min-width:0}
+.cname .avatar{width:30px;height:30px;font-size:10.5px;flex:none}
+.cname b{display:block;font-size:13px;font-weight:600;white-space:nowrap}
+.cname small{display:block;color:var(--faint);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:250px}
+.num{font-variant-numeric:tabular-nums;font-family:var(--mono);font-size:12px;white-space:nowrap}
+.dim{color:var(--faint)}
+.chip{display:inline-flex;align-items:center;gap:5px;border-radius:99px;padding:2px 9px;font-size:10.5px;font-weight:600;white-space:nowrap}
+.chip.mono{font-family:var(--mono);font-weight:500;letter-spacing:.03em;font-size:9.5px;text-transform:uppercase}
+.chip.or{background:var(--accent-tint);color:var(--accent-deep)}
+.chip.bl{background:var(--blue-tint);color:var(--blue-deep)}
+.chip.gy{background:var(--hover);color:var(--muted)}
+.chip.rd{background:var(--red-tint);color:var(--red)}
+.chip.am{background:var(--gold-tint);color:var(--gold)}
+.chip.gn{background:var(--green-tint);color:var(--green-deep)}
+.sla{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.btn{border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;transition:all .15s ease;white-space:nowrap}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:scale(.97)}
+.btn.pri{background:var(--accent);color:#fff;box-shadow:0 4px 12px -4px rgba(249,115,22,.5)}
+.btn.pri:hover{background:var(--accent-hover)}
+.btn.gho{background:var(--surface);border:1px solid var(--border-4);color:var(--text)}
+.btn.gho:hover{background:var(--hover)}
+.btn.grn{background:var(--green-deep);color:#fff;box-shadow:0 4px 12px -4px rgba(5,150,105,.45)}
+.toolbar{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.tsearch{display:flex;align-items:center;gap:7px;background:var(--input-bg);border:1px solid var(--border-4);border-radius:9px;padding:0 10px;height:33px;width:250px;color:var(--faint)}
+.tsearch input{border:0;background:none;outline:none;flex:1;padding:0;font-size:12.5px;color:var(--text)}
+.tgl{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:500;color:var(--muted);border:1px solid var(--border-4);background:var(--surface);border-radius:9px;padding:6px 12px;transition:all .15s}
+.tgl.on{background:var(--accent-tint);border-color:var(--accent);color:var(--accent-deep);font-weight:600}
+.urlbar{font-family:var(--mono);font-size:10.5px;color:var(--faint);background:var(--hover);border-radius:8px;padding:5px 12px;margin-bottom:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.urlbar b{color:var(--accent-deep);font-weight:600}
+.pager{display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:12px;color:var(--muted);border-top:1px solid var(--border);background:var(--input-bg)}
+.note{font-size:11.5px;color:var(--faint);margin-top:14px;line-height:1.7}
+.note b{color:var(--muted)}
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;border-radius:12px;padding:11px 20px;font-size:12.5px;box-shadow:var(--sh-raised);opacity:0;transition:opacity .2s;pointer-events:none;z-index:99;max-width:680px}
+.toast.on{opacity:1}
+.toast b{color:var(--accent-tint-4)}
+.page{display:none}
+.page.on{display:block}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><div class="sq">LF</div>LF <em>Recruit</em></div>
+  <div class="gsearch"><span class="bic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20.5 20.5 15 15"/></svg></span> Tìm ứng viên, NMLS, công ty… <kbd>⌘ K</kbd></div>
+  <div class="tright">
+    <button class="bell" title="Thông báo"><span class="bic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 5a2 2 0 1 1 4 0 7 7 0 0 1 4 6v3.2a3.8 3.8 0 0 0 1.8 2.8H4.2A3.8 3.8 0 0 0 6 14.2V11a7 7 0 0 1 4-6"/><path d="M9.5 17.5v.5a2.5 2.5 0 0 0 5 0v-.5"/></svg></span></button>
+    <div class="uprof"><div class="avatar">BS</div><div><b>Brayan Suarez</b><small id="uprole">giữ cả 2 role — thấy cả 2 kho</small></div></div>
+  </div>
+</header>
+
+<div class="app">
+  <aside class="side">
+    <div class="slabel">Thường dùng</div>
+    <nav class="snav">
+      <a onclick="toast('Today — đã code thật (mockup 06-mix duyệt 21/08).')"><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"/></svg></span>Today <span class="n">12</span></a>
+      <a id="navhot" class="on" onclick="go('hot')"><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c1 3-2 4.5-2 7a4 4 0 0 0 8 .5C19.5 13 21 15 21 17a7 7 0 0 1-14 0c0-5 4-6.5 5-14z"/></svg></span>Kho HOT <span class="n rd" id="hotN">4</span></a>
+      <a id="navcold" onclick="go('cold')"><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M4 6l16 12M20 6L4 18M12 5l-2-2M12 5l2-2M12 19l-2 2M12 19l2 2"/></svg></span>Kho COLD</a>
+      <a onclick="toast('Pipeline — đã code thật (mockup duyệt 22/08): cả kho mọi stage trong một bảng.')"><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="12" rx="1.5"/><rect x="14" y="4" width="6" height="8" rx="1.5"/></svg></span>Pipeline</a>
+      <a onclick="toast('Nurture — lát sau.')"><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a7.5 7.5 0 0 0 8.3 12.4A9 9 0 1 1 12 3z"/></svg></span>Nurture</a>
+      <a onclick="toast('Reports — lát sau (CEO #35: tách Report vs Action).')"><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V11M10 20V5M16 20v-7M4 20h16.5"/></svg></span>Reports</a>
+    </nav>
+    <nav class="snav bottom">
+      <div class="slabel">Cấu hình</div>
+      <a onclick="toast('Settings — SLA, cadence, trần capacity… đều là config (D24), không hardcode.')"><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5 5l2.1 2.1M16.9 16.9L19 19M19 5l-2.1 2.1M7.1 16.9L5 19"/></svg></span>Settings</a>
+      <a onclick="toast('Team & quyền — 2 role mới theo D46: LO Support (HOT) + Officer Recruiter (COLD).')"><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M15.5 4.8a3.5 3.5 0 0 1 0 6.4"/><path d="M17.5 14.7a6 6 0 0 1 3.5 5.3"/></svg></span>Team &amp; quyền</a>
+    </nav>
+  </aside>
+
+  <div class="body"><div class="wrap">
+
+  <!-- ================================== PAGE 1: KHO HOT ================================== -->
+  <div class="page on" id="pgHot">
+    <div class="ph">
+      <div>
+        <span class="crumb">Kho HOT · lead TỰ GIƠ TAY · inbound — speed-to-lead là vua</span>
+        <h1>Lead nóng — <em>tính bằng đồng hồ</em><span class="rolechip hot">role: LO Support (D46)</span></h1>
+      </div>
+      <button class="cta" onclick="toast('＋ Add lead thủ công — 4 field, NMLS tự enrich. Dùng chung modal với Pipeline.')">＋ Add lead<small>4 field · NMLS tự enrich</small></button>
+    </div>
+
+    <div class="expl">
+      <b>Luật của kho này:</b> lead xuất hiện là <b>đồng hồ TEAM chạy ngay</b> — chờ-nhận
+      <span class="cfg">hot.first_touch_sla = 4h</span> (config D24, không hardcode). Quá hạn → tự leo lên
+      <b>Exceptions của Manager</b>, không chìm im lặng. Nhận việc bằng <b>Claim</b> — hoặc bấm
+      <b>Gọi luôn</b>: interact = assign, máy tự gắn chủ (D43). Mọi recruiter thấy CÙNG danh sách này.
+    </div>
+
+    <div class="stats">
+      <div class="stat"><span>Chờ nhận</span><b id="stWait">4</b></div>
+      <div class="stat alert"><span>Quá SLA — đã leo Exceptions</span><b>1</b></div>
+      <div class="stat"><span>First-touch median hôm nay</span><b>22<small>m</small></b></div>
+      <div class="stat"><span>Team nhận hôm nay</span><b>9</b></div>
+    </div>
+
+    <div class="urlbar">URL là nguồn sự thật → <b>/inbox/hot</b> <span class="dim">— page riêng, KHÔNG phải section trong Kho chung (D46)</span></div>
+
+    <div class="sec">
+      <div class="sech">🔥 Webinar <span class="n">2</span><small>điểm danh tự động từ Google Meet (D40) — ai xem hết Q&amp;A là lead nóng nhất</small></div>
+      <table><tbody id="tbWebinar"></tbody></table>
+    </div>
+    <div class="sec">
+      <div class="sech">✋ Self-apply <span class="n">1</span><small>tự điền form ứng tuyển trên site — nóng nhất trong mọi nguồn</small></div>
+      <table><tbody id="tbSelf"></tbody></table>
+    </div>
+    <div class="sec">
+      <div class="sech">🤝 Referral <span class="n">1</span><small>LO trong công ty giới thiệu — bonus chín sau 60 ngày (rule §8)</small></div>
+      <table><tbody id="tbRef"></tbody></table>
+    </div>
+
+    <p class="note">
+      <b>Vì sao page riêng (D46 — CEO #37):</b> HOT là nghề <b>inbound</b> — tốc độ phản hồi quyết định tất cả, KPI = first-touch time.
+      COLD là nghề <b>outbound</b> — chọn đúng con mồi quyết định tất cả, KPI = số cuộc chạm chất lượng. Trộn chung một màn là
+      recruiter luôn bị kho 5.059 người lạnh đè mất 4 người nóng đang đếm ngược.<br>
+      <b>Data thật:</b> staging import 20/08 chưa có nguồn HOT nào (toàn IMPORT/Modex) — 4 hàng trên là demo.
+      Nguồn thật đến từ: điểm danh webinar (D40) · form self-apply · referral. Hàng demo vẫn theo đúng contract:
+      SLA còn lại đếm từ <span class="cfg">created_at</span>, không phải từ lúc mở màn.
+    </p>
+  </div>
+
+  <!-- ================================== PAGE 2: KHO COLD ================================== -->
+  <div class="page" id="pgCold">
+    <div class="ph">
+      <div>
+        <span class="crumb">Kho COLD · danh bạ Modex — đi săn chủ động · outbound</span>
+        <h1>Biết ai <em>giỏi</em> trước, rồi mới bỏ công<span class="rolechip">role: Officer Recruiter (D46)</span></h1>
+      </div>
+      <button class="cta" onclick="toast('⬆ Import list (CSV / Modex) — mỗi đợt = 1 dòng import_batches, kết quả TỪNG ĐỢT không im lặng.')">⬆ Import list<small>CSV / Modex</small></button>
+    </div>
+
+    <div class="expl">
+      <b>Luật của kho này:</b> KHÔNG có đồng hồ — người trong kho lạnh không chờ ai. Việc của Officer Recruiter là
+      <b>lọc đúng con mồi</b> (CEO #6: biết ai GIỎI trước rồi mới bỏ công) rồi Claim / Gọi-tự-claim (D43). Bạn đang ôm
+      <b>12/13</b> <span class="cfg">today.max_open = 13</span> (config D24) — chạm trần thì nhả bớt hoặc xin nâng trần.
+      Chỉ số production: Recruiter chỉ thấy <b>Loans since 2022</b> — volume $ ẩn theo D31, vẫn nằm trong offer snapshot cho Manager/HR.
+    </div>
+
+    <div class="stats">
+      <div class="stat"><span>Vô chủ trong kho</span><b>5.059</b></div>
+      <div class="stat"><span>Bạn đang ôm (trần config)</span><b>12<small>/13</small></b></div>
+      <div class="stat"><span>Import gần nhất — 20/08</span><b>7.230<small> dòng</small></b></div>
+      <div class="stat"><span>Nghi trùng chờ gộp</span><b>3</b></div>
+    </div>
+
+    <div class="toolbar">
+      <div class="tsearch"><span class="bic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20.5 20.5 15 15"/></svg></span><input placeholder="Tên, NMLS, công ty…" oninput="toast('Search đánh vào toàn kho COLD — filter nằm trong URL.')"></div>
+      <select onchange="toast('Filter theo state — có license đúng bang mình cần sponsor.')"><option>Mọi state</option><option>AZ</option><option>CA</option><option>FL</option><option>TX</option></select>
+      <button class="tgl on" onclick="toast('Toggle: chỉ hiện người có NMLS (enrich được từ Modex).')">Có NMLS</button>
+      <select onchange="toast('Sort mặc định: Loans since 2022 giảm dần — top producer lên đầu (CEO #6).')"><option>Sort: Loans since 2022 ↓</option><option>Mới import trước</option><option>Theo state</option></select>
+      <select style="margin-left:auto" title="pageSize"><option>25 / trang</option><option selected>50 / trang</option></select>
+    </div>
+
+    <div class="urlbar">URL là nguồn sự thật → <b>/inbox/cold?nmls=has&amp;sort=loans_since_2022,desc&amp;pageSize=50</b></div>
+
+    <div class="sec">
+      <table>
+        <thead><tr>
+          <th>Ứng viên</th><th style="text-align:right">Loans since 2022</th><th>State</th><th>Nguồn / đợt</th><th>Ghi chú kho</th><th style="width:210px"></th>
+        </tr></thead>
+        <tbody id="tbCold"></tbody>
+      </table>
+      <div class="pager"><span>1–50 / <b>5.059 người vô chủ</b> khớp filter <span class="dim">(bảng vẽ 6 hàng mẫu — người thật trong DB staging)</span></span></div>
+    </div>
+
+    <div class="sec">
+      <div class="sech">⬆ Đợt import — kết quả TỪNG ĐỢT, không im lặng<small>bài học hệ cũ: import xong báo count = 0 dù có ghi dữ liệu → không ai biết thành hay bại</small></div>
+      <table>
+        <thead><tr><th>Đợt</th><th>Nguồn</th><th style="text-align:right">Dòng</th><th style="text-align:right">Tạo mới</th><th style="text-align:right">Cập nhật</th><th style="text-align:right">Bị guard chặn ghi đè</th><th style="text-align:right">Lỗi</th><th>Trạng thái</th></tr></thead>
+        <tbody>
+          <tr><td class="num">20/08 14:32</td><td><span class="chip gy mono">viet18 staging</span></td><td class="num" style="text-align:right">7.230</td><td class="num" style="text-align:right">7.230</td><td class="num" style="text-align:right">0</td><td class="num" style="text-align:right">0</td><td class="num" style="text-align:right">0</td><td><span class="chip gn">HOÀN TẤT</span></td></tr>
+          <tr><td class="num">(kế tiếp)</td><td><span class="chip gy mono">viet18 re-import</span></td><td class="num dim" style="text-align:right">—</td><td class="num dim" style="text-align:right">—</td><td class="num dim" style="text-align:right">—</td><td class="num dim" style="text-align:right">guard 21/08: row có tiến độ NGƯỜI làm → đóng băng stage/owner</td><td class="num dim" style="text-align:right">—</td><td><span class="chip am">CHỜ COOKIE</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="note">
+      <b>Cột "Loans since 2022"</b> là chỉ số DUY NHẤT Recruiter thấy (CEO — Q46; volume $/units ẩn theo D31).
+      Số trong mockup là demo: payload Modex hiện chỉ trả số tổng hợp, "since 2022" cần danh sách giao dịch kèm ngày — Q46b còn treo,
+      cột này trống tới khi có data thật, KHÔNG thay bằng volume.<br>
+      <b>Nghi TRÙNG</b> = merge queue (dedup là quy trình, không phải unique constraint — spec data model §9.10).
+      <b>Claim</b> = nhận về Today (S0→S1, ghi sổ chủ quyền D45); <b>Gọi luôn</b> = tự claim (D43).
+    </p>
+  </div>
+
+  </div></div>
+</div>
+<div class="toast" id="toastEl"></div>
+
+<script>
+/* ===== HOT demo rows — staging chưa có nguồn HOT, hàng demo theo đúng contract SLA ===== */
+const HOT = [
+  {sec:'tbWebinar', n:'Nina Volkov', sub:'Seattle, WA · chưa có NMLS — ＋ nhập để enrich', ev:'Webinar 20/08 · xem hết Q&A', left:150, hotness:'nóng'},
+  {sec:'tbWebinar', n:'Marcus Reyes', sub:'NMLS 1076215 · Brooklyn, NY', ev:'Webinar 20/08 · hỏi về comp', left:35, hotness:'rất nóng'},
+  {sec:'tbSelf',    n:'Raj Patel', sub:'NMLS 2237761 · Phoenix, AZ', ev:'Self-apply hôm nay 09:12', left:-40, hotness:'QUÁ HẠN'},
+  {sec:'tbRef',     n:'Amy Tran', sub:'NMLS 1988420 · Houston, TX', ev:'Referral bởi LO Kevin Vu', left:210, hotness:'nóng'},
+];
+/* ===== COLD rows — người THẬT trong DB staging (S0 vô chủ); loans2022 = demo chờ Q46b ===== */
+const COLD = [
+  {n:'Mike Fittante', sub:'chưa có NMLS', l22:161, st:'—', batch:'20/08', note:''},
+  {n:'Daphni Hagen', sub:'NMLS 203875 · Homeowners Financial Group', l22:118, st:'AZ', batch:'20/08', note:''},
+  {n:'Han Nguyen', sub:'NMLS 1901076', l22:96, st:'CA', batch:'20/08', note:'nghi TRÙNG — gộp?'},
+  {n:'Abe Loevy', sub:'NMLS 2153849 · BSD Funding, LLC', l22:74, st:'—', batch:'20/08', note:''},
+  {n:'Grant Horwitz', sub:'NMLS 2005545 · E Mortgage Capital', l22:52, st:'—', batch:'20/08', note:''},
+  {n:'Suzi Hehe', sub:'chưa có NMLS', l22:null, st:'—', batch:'20/08', note:'chưa enrich được'},
+];
+function initials(n){ return n.split(' ').filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
+function slaChip(m){
+  if(m<0) return `<span class="chip rd sla">⏰ QUÁ HẠN ${-m}m — đã leo Exceptions</span>`;
+  const h=Math.floor(m/60), mm=m%60;
+  return `<span class="chip ${m<60?'rd':'am'} sla">⏱ TEAM chờ nhận — còn ${h?h+'h':''}${mm}m</span>`;
+}
+function hotRow(r,i){
+  return `<tr>
+    <td style="width:280px"><span class="cname"><span class="avatar" style="background:var(--faint)">${initials(r.n)}</span><span><b>${r.n}</b><small>${r.sub}</small></span></span></td>
+    <td><span class="chip bl mono">${r.ev}</span></td>
+    <td>${slaChip(r.left)}</td>
+    <td style="text-align:right;white-space:nowrap">
+      <button class="btn pri" onclick="claimHot(${i},false)">Claim</button>
+      <button class="btn grn" onclick="claimHot(${i},true)">📞 Gọi — tự claim</button>
+    </td>
+  </tr>`;
+}
+function coldRow(r,i){
+  return `<tr>
+    <td style="width:300px"><span class="cname"><span class="avatar" style="background:var(--faint)">${initials(r.n)}</span><span><b>${r.n}</b><small>${r.sub}</small></span></span></td>
+    <td class="num" style="text-align:right">${r.l22==null?'<span class="dim">— chờ Modex (Q46b)</span>':'<b>'+r.l22+'</b> loans'}</td>
+    <td class="num">${r.st}</td>
+    <td><span class="chip gy mono">IMPORT · ${r.batch}</span></td>
+    <td>${r.note?`<span class="chip am">⚠ ${r.note}</span>`:'<span class="chip gy mono">cold — không đồng hồ</span>'}</td>
+    <td style="text-align:right;white-space:nowrap">
+      <button class="btn pri" onclick="claimCold(${i},false)">Claim</button>
+      <button class="btn grn" onclick="claimCold(${i},true)">📞 Gọi — tự claim</button>
+    </td>
+  </tr>`;
+}
+function render(){
+  ['tbWebinar','tbSelf','tbRef'].forEach(id=>{ document.getElementById(id).innerHTML = HOT.map((r,i)=>({r,i})).filter(x=>x.r.sec===id && !x.r.claimed).map(x=>hotRow(x.r,x.i)).join('') || `<tr><td class="dim" style="padding:16px">Sạch — không ai chờ. Đồng hồ chỉ chạy khi có lead mới.</td></tr>`; });
+  document.getElementById('tbCold').innerHTML = COLD.map((r,i)=>({r,i})).filter(x=>!x.r.claimed).map(x=>coldRow(x.r,x.i)).join('');
+  const left = HOT.filter(r=>!r.claimed).length;
+  document.getElementById('hotN').textContent = left;
+  document.getElementById('stWait').textContent = left;
+}
+function claimHot(i,call){
+  HOT[i].claimed=true;
+  toast(`✅ ${call?'Gọi <b>'+HOT[i].n+'</b> — interact = assign (D43), máy':'Đã nhận <b>'+HOT[i].n+'</b> —'} gắn bạn làm chủ + lên <b>Today</b>. Đồng hồ SLA của lead này DỪNG — first-touch được ghi vào KPI team.`);
+  render();
+}
+function claimCold(i,call){
+  COLD[i].claimed=true;
+  toast(`✅ ${call?'Gọi <b>'+COLD[i].n+'</b> — tự claim (D43)':'Đã nhận <b>'+COLD[i].n+'</b>'} — S0 → S1, ghi sổ chủ quyền (D45), lên <b>Today</b>. Đang ôm 13/13 — chạm trần config là nút Claim khoá lại.`);
+  render();
+}
+function go(p){
+  document.getElementById('pgHot').className = 'page'+(p==='hot'?' on':'');
+  document.getElementById('pgCold').className = 'page'+(p==='cold'?' on':'');
+  document.getElementById('navhot').className = p==='hot'?'on':'';
+  document.getElementById('navcold').className = p==='cold'?'on':'';
+  document.getElementById('uprole').textContent = p==='hot' ? 'đang xem bằng role: LO Support' : 'đang xem bằng role: Officer Recruiter';
+}
+let toastT;
+function toast(msg){ const el=document.getElementById('toastEl'); el.innerHTML=msg; el.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>el.classList.remove('on'),4600); }
+render();
+</script>
+</body>
+</html>
