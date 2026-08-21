@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Today — bản MIX (đề xuất cho LF Recruit)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ============ MIX v2 — UX-SPEC v2 trên nền token Account (--lf-*) + mật độ LF-IQ + garnish LoaL + nút Tera ============ */
 :root{
@@ -19,8 +19,8 @@
   --lift:inset 0 1px 0 rgba(255,255,255,.6);
   --sh-card:0 1px 2px rgba(32,30,27,.04),0 8px 24px -16px rgba(32,30,27,.14);
   --sh-raised:0 2px 4px rgba(32,30,27,.05),0 18px 40px -20px rgba(32,30,27,.2);
-  --mono:'Geist Mono',ui-monospace,Menlo,monospace;
-  --serif:'Instrument Serif','Times New Roman',serif;
+  /* 1 font duy nhất (feedback Bao 21/08) — nhấn nhá bằng màu/đậm, micro-label giữ uppercase+tracking */
+  --mono:'Public Sans',Helvetica,Arial,sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Public Sans',Helvetica,Arial,sans-serif;background:var(--app-bg);color:var(--text);font-size:13.5px;line-height:1.5;min-width:1180px}
@@ -30,7 +30,7 @@ button{font-family:inherit;cursor:pointer;border:0;background:none}
 /* ---- sidebar (Account: pill tint active) ---- */
 .side{width:232px;flex:none;background:var(--surface);border-right:1px solid var(--border-2);display:flex;flex-direction:column;padding:16px 12px;position:sticky;top:0;height:100vh}
 .brand{display:flex;align-items:center;gap:10px;padding:4px 12px 20px;font-weight:700;font-size:15px}
-.brand em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--accent-deep)}
+.brand em{font-style:normal;font-weight:800;color:var(--accent-deep)}
 .brand .sq{width:30px;height:30px;border-radius:9px;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;font-size:11.5px;box-shadow:0 3px 10px -2px rgba(228,100,42,.5)}
 .slabel{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--faint);padding:12px 14px 6px;display:flex;align-items:center;gap:7px}
 .slabel::before{content:'';width:14px;height:2px;background:var(--accent)}
@@ -46,13 +46,13 @@ button{font-family:inherit;cursor:pointer;border:0;background:none}
 .body{flex:1;min-width:0;position:relative}
 .body::before{content:'';position:absolute;inset:0 0 auto 0;height:22rem;pointer-events:none;
   background:radial-gradient(64rem 22rem at 50% -6%,rgba(228,100,42,.06),transparent 70%)}
-.wrap{padding:28px 32px 64px;max-width:1200px;position:relative}
+.wrap{padding:28px 40px 64px;max-width:1600px;position:relative}
 
 /* header */
 .ph{display:flex;align-items:center;gap:16px;margin-bottom:20px}
 .ph .crumb{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--faint);display:block;margin-bottom:6px}
 .ph h1{font-size:24px;font-weight:700;letter-spacing:-.02em}
-.ph h1 em{font-family:var(--serif);font-style:italic;font-weight:400;color:var(--accent-deep)}
+.ph h1 em{font-style:normal;font-weight:800;color:var(--accent-deep)}
 .ph .cta{margin-left:auto;background:var(--accent);color:#fff;border-radius:9px;padding:11px 22px;font-size:13.5px;font-weight:600;
   box-shadow:0 6px 16px -6px rgba(228,100,42,.55);transition:all .15s ease}
 .ph .cta:hover{background:var(--accent-hover);transform:translateY(-1px)}
@@ -73,15 +73,15 @@ button{font-family:inherit;cursor:pointer;border:0;background:none}
 .stat .ic{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;font-size:15px;flex:none}
 
 /* NEXT UP hero */
-.next{background:var(--surface);border:1px solid var(--border-2);border-left:4px solid var(--red);border-radius:14px;
-  box-shadow:var(--lift),var(--sh-raised);margin-bottom:18px;padding:16px 20px;display:flex;align-items:center;gap:18px}
+.next{background:linear-gradient(120deg,var(--accent-tint),var(--surface) 58%);border:2px solid var(--accent);border-radius:18px;
+  box-shadow:var(--lift),var(--sh-raised);margin-bottom:20px;padding:22px 28px;display:flex;align-items:center;gap:20px}
 .next .tag{position:absolute;margin-top:-34px;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:var(--red);text-transform:uppercase}
-.next .avatar{width:52px;height:52px;font-size:17px;background:var(--green)}
-.next .id b{display:block;font-size:17px;font-weight:700;letter-spacing:-.01em}
-.next .id small{color:var(--muted);font-size:12.5px}
-.next .facts{display:flex;gap:26px;margin-left:26px}
+.next .avatar{width:60px;height:60px;font-size:20px;background:var(--green)}
+.next .id b{display:block;font-size:21px;font-weight:800;letter-spacing:-.02em;white-space:nowrap}
+.next .id small{color:var(--muted);font-size:13px}
+.next .facts{display:flex;gap:34px;margin-left:30px}
 .next .fact span{display:block;font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-bottom:3px}
-.next .fact b{font-size:14.5px;font-weight:700;font-variant-numeric:tabular-nums}
+.next .fact b{font-size:17px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
 .next .fact b.urgent{color:var(--red)}
 .next .do{margin-left:auto;display:flex;align-items:center;gap:8px}
 .btn{border-radius:8px;padding:8px 16px;font-size:12.5px;font-weight:600;transition:all .15s ease;white-space:nowrap}
@@ -92,14 +92,14 @@ button{font-family:inherit;cursor:pointer;border:0;background:none}
 .btn.grn{background:var(--green);color:#fff}.btn.grn:hover{background:var(--green-deep)}
 .btn.gho{background:var(--surface);border:1px solid var(--border-4);color:var(--text)}
 .btn.gho:hover{background:var(--hover)}
-.btn.big{padding:12px 24px;font-size:14px;border-radius:10px}
+.btn.big{padding:14px 28px;font-size:15px;border-radius:11px}
 .btn.dots{padding:8px 10px;color:var(--muted);border:1px solid transparent}
 .btn.dots:hover{border-color:var(--border-4);background:var(--surface)}
 
 /* layout cột */
-.cols{display:flex;gap:18px;align-items:flex-start}
+.cols{display:flex;gap:24px;align-items:flex-start}
 .main{flex:1;min-width:0}
-.rail{flex:0 0 264px;display:flex;flex-dire-ction:column;display:flex;flex-direction:column;gap:12px;position:sticky;top:24px}
+.rail{flex:0 0 304px;display:flex;flex-dire-ction:column;display:flex;flex-direction:column;gap:12px;position:sticky;top:24px}
 
 /* section card + queue row grid */
 .card{background:var(--surface);border:1px solid var(--border-2);border-radius:14px;box-shadow:var(--lift),var(--sh-card);margin-bottom:14px;overflow:hidden}
@@ -107,7 +107,7 @@ button{font-family:inherit;cursor:pointer;border:0;background:none}
 .sec-h .cnt{font-family:var(--mono);background:var(--hover);color:var(--muted);border-radius:99px;padding:1px 8px;font-size:10.5px}
 .sec-h .hint{margin-left:auto;font-weight:400;color:var(--faint);font-size:11px}
 
-.row{display:grid;grid-template-columns:270px minmax(0,1fr) 96px 158px;align-items:center;gap:14px;
+.row{display:grid;grid-template-columns:290px minmax(0,1fr) 110px 170px;align-items:center;gap:14px;
   padding:9px 18px;border-bottom:1px solid var(--border);min-height:54px;cursor:pointer;transition:background .15s}
 .row:last-child{border-bottom:0}
 .row:hover{background:var(--accent-tint-2)}
@@ -146,7 +146,7 @@ button{font-family:inherit;cursor:pointer;border:0;background:none}
 .bar i{display:block;height:100%;border-radius:3px;background:var(--accent)}
 .promo{background:linear-gradient(158deg,var(--accent-tint-2),var(--surface) 74%)}
 .promo p{font-size:12px;color:var(--muted);line-height:1.55}
-.promo em{font-family:var(--serif);font-style:italic;color:var(--accent-deep)}
+.promo em{font-style:normal;font-weight:700;color:var(--accent-deep)}
 </style>
 </head>
 <body>
