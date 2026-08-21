@@ -109,8 +109,23 @@ Lấy gì từ đâu (lý do):
 
 ---
 
-## Bước tiếp theo sau khi chọn
+## ĐÃ CHỐT (Bao 21/08/2026): bản MIX — các quyết định qua 5 vòng review
 
-1. Port token kiểu đã chọn vào `recruiting-fe` (theme Mantine + CSS vars — với kiểu 04/06 thì token đã nằm sẵn trong `global.css`)
-2. Dựng bộ primitive: `AppSidebar`, `SectionCard`, `RowItem`, `Chip`, `StatCard`, `EmptyState`
+1. **1 font duy nhất** — Public Sans; nhấn bằng màu `--accent-deep` + fw800, KHÔNG serif/mono riêng
+2. **Palette vivid** (thay cam đất/xanh rêu của account-fe): accent `#f97316`/hover `#ea580c`/ink `#c2410c`/tint `#ffedd5`·`#fff7ed`; green `#10b981`/`#059669`; blue `#3b82f6`; amber `#d97706`; red `#dc2626`
+3. **App shell**: header bar 60px (logo · global search ⌘K · chuông · user profile) + sidebar CHỈ tab điều hướng — nhóm "Thường dùng" trên, "Cấu hình" ghim đáy
+4. **Stat card**: icon tile + label bên trái, CON SỐ đứng độc lập bên phải (margin-left auto)
+5. **Icon**: `@tabler/icons-react` (mockup dùng inline SVG cùng style stroke-2 round)
+6. Layout full-width max 1600px, hero Next-up viền cam 2px + tint gradient
+
+## Quy ước code khi port vào recruiting-fe (Bao chốt 21/08)
+
+- **Libs**: tham chiếu `lf-iq/package.json` + `tera-fe/package.json` — Mantine, `@tabler/icons-react`, TanStack Query, react-hook-form, date-fns/dayjs. Không tự thêm lib lạ khi 2 repo này đã có tương đương
+- **Form**: react-hook-form; field components port từ **`tera-fe/src/shared/fields/`** (TextInputField, SelectField, PhoneInputField, DateField, MultiSelectField, CheckboxField, RadioField, SegmentedField, DropZoneField, AddressAutocompleteField… ~28 field + useFieldDefault/useDirtyIndicatorStyle)
+- **Hooks**: tái dùng pattern từ **`lf-iq/src/hooks/`** — `modal/useModal.tsx`, `useToast.tsx`, `useUrlParams.ts`, `search-params.ts` (URL là single source of truth cho filter — khớp memory feedback_url_as_source_pattern)
+
+## Bước tiếp theo
+
+1. Port token MIX vào `recruiting-fe` (theme Mantine 8 + CSS vars trên nền `--lf-*` sẵn có, đổi giá trị sang palette vivid)
+2. Dựng bộ primitive: `AppHeader`, `AppSidebar`, `SectionCard`, `QueueRow`, `Chip`, `StatCard`, `EmptyState` + port fields/hooks nêu trên
 3. Code full flow trên nền primitive — các trang sau tự ra dáng
