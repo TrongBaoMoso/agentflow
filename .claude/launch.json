@@ -477,13 +477,13 @@
       "port": 3045
     },
     {
-      "name": "recruiting-fe",
+      "name": "recruit-fe",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
         "run",
         "dev"
       ],
-      "cwd": "recruiting-fe",
+      "cwd": "recruit-fe",
       "port": 3000
     },
     {
@@ -607,6 +607,78 @@
         "3082"
       ],
       "port": 3082
+    },
+    {
+      "name": "today-redesigns",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "3046",
+        "--directory",
+        "/Users/apple/Projects/agentflow/docs/mockups/lo-recruiting-today-redesigns"
+      ],
+      "port": 3046
+    },
+    {
+      "name": "lfh-lc-gate",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-lc-gate",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "3021"
+      ],
+      "port": 3021
+    },
+    {
+      "name": "recruit-fe-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
+      "cwd": "/Users/apple/Projects/agentflow/recruit-fe",
+      "port": 3000
+    },
+    {
+      "name": "pipeline-mockup",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "3047",
+        "--directory",
+        "docs/mockups/lo-recruiting-pipeline"
+      ],
+      "port": 3047
+    },
+    {
+      "name": "kho-mockup",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "3048",
+        "--directory",
+        "docs/mockups/lo-recruiting-kho"
+      ],
+      "port": 3048
+    },
+    {
+      "name": "outcome-v2-mockup",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "3049",
+        "--directory",
+        "docs/mockups/lo-recruiting-outcome-v2"
+      ],
+      "port": 3049
     }
   ]
 }
