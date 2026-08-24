@@ -175,10 +175,11 @@ tbody tr:hover{background:var(--accent-tint-2)}
     </div>
 
     <div class="expl">
-      <b>Luật của kho này:</b> lead xuất hiện là <b>đồng hồ TEAM chạy ngay</b> — chờ-nhận
-      <span class="cfg">hot.first_touch_sla = 4h</span> (config D24, không hardcode). Quá hạn → tự leo lên
-      <b>Exceptions của Manager</b>, không chìm im lặng. Nhận việc bằng <b>Claim</b> — hoặc bấm
-      <b>Gọi luôn</b>: interact = assign, máy tự gắn chủ (D43). Mọi recruiter thấy CÙNG danh sách này.
+      <b>Luật của kho này:</b> lead xuất hiện là <b>đồng hồ TEAM chạy ngay</b> — chờ-nhận theo
+      <span class="cfg">sla.first_touch_hours = 24</span> (số THẬT trong DB, V007 seed — config D24).
+      Nếu HOT cần SLA gắt hơn: <span class="cfg">hot.first_touch_sla</span> là <b>key mới, chưa tồn tại</b>.
+      Quá hạn → tự leo lên <b>Exceptions của Manager</b>, không chìm im lặng. Nhận việc bằng <b>Claim</b> —
+      hoặc bấm <b>Gọi luôn</b>: interact = assign, máy tự gắn chủ (D43). Mọi recruiter thấy CÙNG danh sách này.
     </div>
 
     <!-- B3 (QC 22/08): HOT là hàng đợi DÙNG CHUNG — mọi stat đều phạm vi TEAM, khai thẳng trên nhãn.
@@ -227,14 +228,15 @@ tbody tr:hover{background:var(--accent-tint-2)}
 
     <div class="expl">
       <b>Luật của kho này:</b> KHÔNG có đồng hồ — người trong kho lạnh không chờ ai. Việc của Officer Recruiter là
-      <b>lọc đúng con mồi</b> (CEO #6: biết ai GIỎI trước rồi mới bỏ công) rồi Claim / Gọi-tự-claim (D43). Trần đang ôm xem stat "BẠN · đang ôm"
-      (<span class="cfg">today.max_open = 13</span>, config D24) — chạm trần là nút Claim khoá + hiện "Xin nâng trần".
+      <b>lọc đúng con mồi</b> (CEO #6: biết ai GIỎI trước rồi mới bỏ công) rồi Claim / Gọi-tự-claim (D43). Stat "BẠN · đang ôm" là con số trần trụi —
+      <b>không chặn ai</b>: trần <span class="cfg">capacity.max_open_candidates = 50</span> (số thật, V007 seed)
+      là công tắc 3 nấc Tắt/Cảnh báo/Chặn, <b>mặc định TẮT</b> (D47 — Victoria chưa ép KPI).
       Chỉ số production: Recruiter chỉ thấy <b>Loans since 2022</b> — volume $ ẩn theo D31, vẫn nằm trong offer snapshot cho Manager/HR.
     </div>
 
     <div class="stats">
       <div class="stat"><span>TEAM · vô chủ trong kho</span><b>5.059</b></div>
-      <div class="stat"><span>BẠN · đang ôm (trần config)</span><b><span id="stOwn">12</span><small>/13</small></b></div>
+      <div class="stat"><span>BẠN · đang ôm</span><b><span id="stOwn">12</span></b></div>
       <div class="stat"><span>TEAM · import gần nhất — 20/08</span><b>7.230<small> dòng</small></b></div>
       <div class="stat" style="cursor:pointer" onclick="toast('⚠ <b>Merge queue</b> — màn review gộp trùng (BACKLOG): xem 2 hồ sơ cạnh nhau, chọn survivor. Data model sẵn: candidate_merges + merged_into_id.')"><span>TEAM · nghi trùng chờ gộp ↗</span><b>3</b></div>
     </div>
@@ -243,11 +245,11 @@ tbody tr:hover{background:var(--accent-tint-2)}
       <div class="tsearch"><span class="bic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20.5 20.5 15 15"/></svg></span><input placeholder="Tên, NMLS, công ty…" oninput="toast('Search đánh vào toàn kho COLD — filter nằm trong URL.')"></div>
       <select onchange="toast('Filter theo state — có license đúng bang mình cần sponsor.')"><option>Mọi state</option><option>AZ</option><option>CA</option><option>FL</option><option>TX</option></select>
       <button class="tgl on" onclick="toast('Toggle: chỉ hiện người có NMLS (enrich được từ Modex).')">Có NMLS</button>
-      <select onchange="toast('Sort mặc định: Loans since 2022 giảm dần — top producer lên đầu (CEO #6).')"><option>Sort: Loans since 2022 ↓</option><option>Mới import trước</option><option>Theo state</option></select>
+      <select onchange="toast('D48: sort mặc định = MỚI IMPORT TRƯỚC (createdDate) và bản thân nó là config — Q46b có data thì flip sang Loans since 2022 không cần deploy. KHÔNG sort ngầm theo field ẩn (D31: thứ tự chính là dữ liệu).')"><option>Sort: mới import trước</option><option disabled>Loans since 2022 ↓ — chờ Q46b</option><option>Theo state</option></select>
       <select style="margin-left:auto" title="pageSize"><option>25 / trang</option><option selected>50 / trang</option></select>
     </div>
 
-    <div class="urlbar">URL là nguồn sự thật → <b>/inbox/cold?nmls=has&amp;sort=loans_since_2022,desc&amp;pageSize=50</b></div>
+    <div class="urlbar">URL là nguồn sự thật → <b>/inbox/cold?nmls=has&amp;sort=createdDate,desc&amp;pageSize=50</b> <span class="dim">— sort mặc định là config (D48)</span></div>
 
     <div class="sec">
       <table>
@@ -275,10 +277,14 @@ tbody tr:hover{background:var(--accent-tint-2)}
       Số trong mockup là demo: payload Modex hiện chỉ trả số tổng hợp, "since 2022" cần danh sách giao dịch kèm ngày — Q46b còn treo,
       cột này trống tới khi có data thật, KHÔNG thay bằng volume.
       <b>Enrich khoá theo NMLS</b> — hàng chưa có NMLS không bao giờ có số, hiển thị "chờ Modex" và
-      <b>chìm xuống cuối</b> khi sort theo loans (QC 22/08 — đừng để hàng không kiểm chứng được ngồi đỉnh).<br>
-      <b>Trần đang ôm (đề xuất — chờ Bao gật):</b> chạm <span class="cfg">today.max_open</span> → Claim/Gọi-tự-claim
-      của COLD khoá + nút <b>"Xin nâng trần"</b> gửi Manager duyệt (config per-người, D24). <b>HOT được miễn trần</b>
-      trong mockup này — lead nóng không nên bị trần chặn khi cả team đang đua đồng hồ; nếu Bao muốn trần chặn cả HOT thì nói khi duyệt.<br>
+      <b>chìm xuống cuối</b> khi sort theo loans (QC 22/08 — đừng để hàng không kiểm chứng được ngồi đỉnh).
+      <b>Sort mặc định = "mới import trước"</b> và là config (D48); <b>cấm sort ngầm</b> theo field ẩn —
+      thứ tự chính là dữ liệu, sort theo volume ẩn là D31 vô hiệu kiểu tinh vi.<br>
+      <b>Trần đang ôm (D47):</b> <span class="cfg">capacity.max_open_candidates = 50</span> (số thật V007) là công tắc
+      <b>3 nấc Tắt / Cảnh báo / Chặn — mặc định TẮT</b> (Victoria chưa ép KPI, 22/08). Nấc Tắt vẫn hiện
+      "bạn đang ôm N" cho recruiter + Manager — soi gương, mầm KPI, không ép ai. Số là CHUNG cả team;
+      trần ≠ KPI (Brayan 20 call vs Luis 5 là KPI — đo ở màn Reports, không phải chỗ này).
+      HOT <b>không miễn trần</b>: nếu nấc Chặn bật mà HOT cần rộng hơn → trần riêng <span class="cfg">hot.max_open</span> (key mới, chưa tồn tại).<br>
       <b>Nghi TRÙNG</b> → <b>Merge queue</b> (màn review gộp — BACKLOG; dedup là quy trình, không phải unique constraint — §9.10).
       <b>Claim</b> = nhận về Today (S0→S1, ghi sổ chủ quyền D45); <b>Gọi luôn</b> = tự claim (D43).
     </p>
@@ -308,10 +314,10 @@ const COLD = [
   {n:'Mike Fittante', sub:'chưa có NMLS — ＋ nhập để enrich', l22:null, st:'—', batch:'20/08', note:''},
   {n:'Suzi Hehe', sub:'chưa có NMLS — ＋ nhập để enrich', l22:null, st:'—', batch:'20/08', note:''},
 ];
-/* B5 (QC 22/08): hành vi Ở MÉP của trần max_open — đề xuất chờ Bao gật khi duyệt:
-   chạm trần → Claim/Gọi-tự-claim trên COLD khoá lại + hiện nút "Xin nâng trần" (gửi Manager).
-   Câu hỏi kèm: trần có chặn cả HOT không, hay lead nóng được miễn? (mockup này: HOT miễn) */
-const CAP = 13; let OWNED = 12;
+/* D47 (24/08): trần capacity.max_open_candidates = 50 là công tắc 3 nấc, MẶC ĐỊNH TẮT —
+   mockup này KHÔNG khoá nút, không "xin nâng trần"; chỉ hiện con số "đang ôm" trần trụi
+   (nấc 1 = soi gương, mầm KPI). Nấc Cảnh báo/Chặn xây cùng màn Settings/Reports. */
+let OWNED = 12;
 function initials(n){ return n.split(' ').filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
 function slaChip(m){
   /* B2 (QC 22/08): "leo Exceptions" phải là ĐIỂM ĐẾN nhìn thấy được, không phải nhãn suông —
@@ -332,11 +338,7 @@ function hotRow(r,i){
   </tr>`;
 }
 function coldRow(r,i){
-  const atCap = OWNED >= CAP;
-  const act = atCap
-    ? `<button class="btn gho" disabled style="opacity:.55;cursor:not-allowed" title="Trần đang ôm ${CAP}/${CAP} (config today.max_open) — nhả bớt hoặc xin nâng">Trần ${CAP}/${CAP}</button>
-       <button class="btn gho" onclick="event.stopPropagation();toast('📨 Đã gửi yêu cầu <b>nâng trần</b> cho Manager (kèm lý do + số đang ôm). Manager duyệt là config nâng cho riêng bạn — không ai sửa code (D24).')">Xin nâng trần</button>`
-    : `<button class="btn pri" onclick="claimCold(${i},false)">Claim</button>
+  const act = `<button class="btn pri" onclick="claimCold(${i},false)">Claim</button>
        <button class="btn grn" onclick="claimCold(${i},true)">📞 Gọi — tự claim</button>`;
   return `<tr>
     <td style="width:300px"><span class="cname"><span class="avatar" style="background:var(--faint)">${initials(r.n)}</span><span><b>${r.n}</b><small>${r.sub}</small></span></span></td>
@@ -358,14 +360,12 @@ function render(){
 }
 function claimHot(i,call){
   HOT[i].claimed=true; OWNED++;
-  toast(`✅ ${call?'Gọi <b>'+HOT[i].n+'</b> — interact = assign (D43), máy':'Đã nhận <b>'+HOT[i].n+'</b> —'} gắn bạn làm chủ + lên <b>Today</b>. Đồng hồ SLA của lead này DỪNG — first-touch được ghi vào KPI team. (HOT được miễn trần — đề xuất, xem note)`);
+  toast(`✅ ${call?'Gọi <b>'+HOT[i].n+'</b> — interact = assign (D43), máy':'Đã nhận <b>'+HOT[i].n+'</b> —'} gắn bạn làm chủ + lên <b>Today</b>. Đồng hồ SLA của lead này DỪNG — first-touch được ghi vào KPI team.`);
   render();
 }
 function claimCold(i,call){
-  if(OWNED>=CAP) return;
   COLD[i].claimed=true; OWNED++;
-  const capMsg = OWNED>=CAP ? ` Bạn vừa <b>chạm trần ${CAP}/${CAP}</b> — nút Claim của COLD khoá lại, muốn nhận thêm thì nhả bớt hoặc bấm "Xin nâng trần".` : '';
-  toast(`✅ ${call?'Gọi <b>'+COLD[i].n+'</b> — tự claim (D43)':'Đã nhận <b>'+COLD[i].n+'</b>'} — S0 → S1, ghi sổ chủ quyền (D45), lên <b>Today</b>.${capMsg}`);
+  toast(`✅ ${call?'Gọi <b>'+COLD[i].n+'</b> — tự claim (D43)':'Đã nhận <b>'+COLD[i].n+'</b>'} — S0 → S1, ghi sổ chủ quyền (D45), lên <b>Today</b>. Số "đang ôm" nhích lên — không chặn (trần 3 nấc đang TẮT, D47).`);
   render();
 }
 function go(p){
