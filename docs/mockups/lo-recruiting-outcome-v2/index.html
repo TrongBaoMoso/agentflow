@@ -42,8 +42,8 @@
   <div class="note">
     <b>Hành vi mới (#3):</b> bấm Call chỉ mở dialer (Zoom Phone) + log touch như cũ. Wizard <b>không</b> nhảy ra ngay. Thay vào đó hero/row hiện <b>strip màu vàng "chưa có kết quả"</b> — lì, không ghi thì không biến mất. Wizard mở qua 2 đường, không cần thao tác thừa:
     <ul>
-      <li><b>Tự động:</b> khi bạn quay lại tab (window refocus) — thời điểm sát nhất với "vừa cúp máy" mà FE biết được hôm nay. Sau này Zoom webhook <code>call-finished</code> thay thế, mở đúng lúc cúp máy thật.</li>
-      <li><b>Chủ động:</b> bấm "Log result" trên strip (dùng khi refocus bị bỏ qua / muốn ghi muộn).</li>
+      <li><b>Tự động (refocus):</b> bấm Call → OS nhảy sang app Zoom Phone → tab browser bị che/mất focus. Gọi xong, recruiter Cmd-Tab về browser → sự kiện <code>visibilitychange/focus</code> nổ → FE thấy "có cú gọi đang chờ kết quả" → mở wizard. Guard: chỉ auto-mở khi đã rời tab đủ lâu (~15s — alt-tab thoáng qua không tính) và mỗi cú gọi chỉ auto-mở 1 lần. Sau này Zoom webhook <code>call-finished</code> thay thế, mở đúng lúc cúp máy thật.</li>
+      <li><b>Chủ động:</b> bấm "Log result" trên strip — đường dự phòng khi không có refocus (gọi bằng điện thoại bàn/di động, không rời tab) hoặc muốn ghi muộn.</li>
     </ul>
     Tổng thao tác bắt buộc của recruiter: <b>0 click thêm</b> (auto-open) — nút chỉ là đường dự phòng.
   </div>
@@ -71,13 +71,13 @@
     <div class="row">
       <div class="who"><div class="avatar sm">PB</div><div><b>Phill Becraft</b><small>Guild Mortgage Company LLC</small></div></div>
       <div class="ctx">S1 · New lead — NMLS 903912</div>
-      <div class="due warn" id="demoRowDue" title="Send info · Tue 25/08 · 3:00 PM">Send info · 25/08 · 3:00 PM</div>
+      <div class="due warn" id="demoRowDue" title="Send info · Tue 25/08, hẹn 3:00 PM — chưa tới giờ">Send info · 25/08<span class="t-badge">⏰ 3:00 PM</span></div>
       <div class="acts"><span>📞</span><span>💬</span><span>✉️</span><span>⋯</span></div>
     </div>
     <div class="row">
       <div class="who"><div class="avatar sm">DH</div><div><b>Daphni Hagen</b><small>Homeowners Financial Group</small></div></div>
       <div class="ctx">S1 · New lead — NMLS 203875</div>
-      <div class="due hot" title="Call · hôm nay — đến hạn, nổi đầu queue">Call · today ⚑</div>
+      <div class="due hot" title="Call hôm nay, hẹn 10:00 AM — đã tới giờ, gọi ngay">Call · today<span class="t-badge hot">⏰ 10:00 AM</span></div>
       <div class="acts"><span>📞</span><span>💬</span><span>✉️</span><span>⋯</span></div>
     </div>
     <div class="row">
@@ -88,7 +88,12 @@
     </div>
   </div>
   <div class="note">
-    <b>Label chip mới:</b> <code>Verb · ngày [· giờ]</code> — "Call · 25/08 · 3:00 PM", "Send info · 25/08", "Webinar · 25/08", "Retry · 26/08", "Wake-up · today". Đến hạn = đỏ + nổi đầu queue (đã chạy từ D50); giờ chỉ hiện khi recruiter có đặt.
+    <b>Label chip mới:</b> <code>Verb · ngày</code> + <b>giờ tách thành BADGE riêng</b> (feedback 24/08: recruiter phải để ý giờ hẹn, đừng gọi sớm). Badge 2 trạng thái:
+    <ul>
+      <li><b>Amber ⏰ 3:00 PM</b> = hôm nay có hẹn giờ nhưng <b>chưa tới giờ</b> — hàng vẫn trên Today nhưng đừng gọi vội (candidate đã dặn "3h chiều hãy gọi").</li>
+      <li><b>Đỏ ⏰ 10:00 AM</b> = <b>đã tới / quá giờ hẹn</b> — gọi ngay. Trong bucket "due hôm nay", hàng có giờ đã tới xếp trên hàng chưa tới giờ.</li>
+    </ul>
+    Không đặt giờ thì không có badge — chip chỉ còn "Send info · 25/08". Badge cũng hiện y hệt trên FollowUpStrip của hero.
   </div>
 </section>
 
