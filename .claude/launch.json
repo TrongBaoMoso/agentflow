@@ -679,6 +679,17 @@
         "docs/mockups/lo-recruiting-outcome-v2"
       ],
       "port": 3049
+    },
+    {
+      "name": "permissions-mockup",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "3049"
+      ],
+      "cwd": "/Users/apple/Projects/agentflow/docs/mockups/lo-recruiting-permissions",
+      "port": 3049
     }
   ]
 }

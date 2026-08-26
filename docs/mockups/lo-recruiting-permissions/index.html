@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Permissions + Discovery + Profile — mockup (LF Recruit)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============ MIX v6 tokens — y hệt 06-mix.html / pipeline / kho đã duyệt ============ */
+:root{
+  --accent:#f97316; --accent-hover:#ea580c; --accent-deep:#c2410c; --accent-tint:#ffedd5; --accent-tint-2:#fff7ed; --accent-tint-4:#fed7aa;
+  --blue:#3b82f6; --blue-tint:#eff6ff; --blue-deep:#1d4ed8;
+  --green:#10b981; --green-tint:#ecfdf5; --green-deep:#059669;
+  --gold:#d97706; --gold-tint:#fef3c7;
+  --red:#dc2626; --red-tint:#fee2e2; --red-deep:#b91c1c;
+  --app-bg:#faf9f7; --surface:#fff; --text:#201e1b; --muted:#6e6a63; --faint:#8a857c;
+  --border:#eceae6; --border-2:#e9e7e2; --border-4:#e4e1dc; --hover:#f2f0ec; --input-bg:#fbfaf8;
+  --lift:inset 0 1px 0 rgba(255,255,255,.6);
+  --sh-card:0 1px 2px rgba(32,30,27,.04),0 8px 24px -16px rgba(32,30,27,.14);
+  --sh-raised:0 2px 4px rgba(32,30,27,.05),0 18px 40px -20px rgba(32,30,27,.2);
+  --sh-pop:0 4px 8px rgba(32,30,27,.06),0 24px 56px -20px rgba(32,30,27,.28);
+  --mono:'Public Sans',Helvetica,Arial,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Public Sans',Helvetica,Arial,sans-serif;background:var(--app-bg);color:var(--text);font-size:13.5px;line-height:1.5;min-width:1180px}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+select,input[type=text]{font-family:inherit;font-size:12.5px;color:var(--text);background:var(--input-bg);border:1px solid var(--border-4);border-radius:9px;padding:7px 10px}
+select:focus,input[type=text]:focus{outline:2px solid var(--accent-tint-4);border-color:var(--accent)}
+.app{display:flex;min-height:calc(100vh - 60px)}
+
+/* ── header ─────────────────────────────────────────────────────────── */
+.top{position:sticky;top:0;z-index:70;height:60px;display:flex;align-items:center;gap:14px;background:var(--surface);border-bottom:1px solid var(--border-2);padding:0 20px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;flex:none}
+.brand em{font-style:normal;font-weight:800;color:var(--accent-deep)}
+.brand .sq{width:32px;height:32px;border-radius:9px;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;font-size:12px;box-shadow:0 3px 10px -2px rgba(249,115,22,.5)}
+.gsearch{width:400px;margin-left:26px;display:flex;align-items:center;gap:9px;height:38px;border-radius:10px;border:1px solid var(--border-4);background:var(--input-bg);padding:0 14px;color:var(--faint);font-size:13px}
+.gsearch kbd{margin-left:auto;font-size:11px;background:var(--hover);border-radius:6px;padding:1px 7px;color:var(--faint)}
+.tright{margin-left:auto;display:flex;align-items:center;gap:8px;position:relative}
+.ticon{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;border:1px solid transparent;color:var(--muted)}
+.ticon:hover{border-color:var(--border-4);background:var(--surface)}
+.ticon.on{background:var(--accent-tint);color:var(--accent-deep);border-color:var(--accent-tint-4)}
+.ticon svg{width:19px;height:19px}
+.uprof{display:flex;align-items:center;gap:10px;font-size:13px;line-height:1.25;padding:5px 8px 5px 6px;border-radius:10px}
+.uprof:hover{background:var(--hover)}
+.uprof b{display:block;font-weight:600}
+.uprof small{color:var(--faint);font-size:11.5px}
+.avatar{border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;flex:none}
+.uprof .avatar{width:32px;height:32px;font-size:11.5px}
+
+/* ── sidebar ────────────────────────────────────────────────────────── */
+.side{width:220px;flex:none;background:var(--surface);border-right:1px solid var(--border-2);display:flex;flex-direction:column;padding:14px 12px;position:sticky;top:60px;height:calc(100vh - 60px)}
+.snav.bottom{margin-top:auto;border-top:1px solid var(--border);padding-top:8px}
+.slabel{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--faint);padding:12px 14px 6px;display:flex;align-items:center;gap:7px}
+.slabel::before{content:'';width:14px;height:2px;background:var(--accent)}
+.snav a{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--muted);font-weight:500;font-size:13.5px;padding:9px 14px;border-radius:10px;margin-bottom:1px;cursor:pointer}
+.snav a:hover:not(.on){background:var(--hover)}
+.snav a.on{background:var(--accent-tint);color:var(--accent-deep);font-weight:600}
+.nico{width:18px;height:18px;flex:none;color:var(--faint)}
+.nico svg{width:100%;height:100%}
+.snav a.on .nico{color:var(--accent-deep)}
+
+/* ── page ───────────────────────────────────────────────────────────── */
+.body{flex:1;min-width:0;position:relative}
+.body::before{content:'';position:absolute;inset:0 0 auto 0;height:22rem;pointer-events:none;background:radial-gradient(64rem 22rem at 50% -6%,rgba(249,115,22,.06),transparent 70%)}
+.wrap{padding:28px 40px 64px;max-width:1500px;position:relative}
+.ph{display:flex;align-items:flex-end;gap:16px;margin-bottom:18px}
+.ph .crumb{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--faint);display:block;margin-bottom:6px}
+.ph h1{font-size:24px;font-weight:700;letter-spacing:-.02em}
+.ph h1 em{font-style:normal;font-weight:800;color:var(--accent-deep)}
+.ph .cta{margin-left:auto;background:var(--accent);color:#fff;border-radius:9px;padding:11px 20px;font-size:13.5px;font-weight:600;box-shadow:0 6px 16px -6px rgba(249,115,22,.55)}
+.ph .cta:hover{background:var(--accent-hover)}
+.card{background:var(--surface);border:1px solid var(--border-2);border-radius:14px;box-shadow:var(--sh-card);margin-bottom:16px;overflow:hidden}
+.sech{display:flex;align-items:center;gap:9px;padding:11px 18px;border-bottom:1px solid var(--border);font-weight:600;font-size:13px}
+.sech .ic{display:inline-flex;color:var(--accent-deep)}
+.sech .ic svg{width:15px;height:15px}
+.sech .hint{margin-left:auto;font-weight:400;color:var(--faint);font-size:11.5px}
+.cnt{background:var(--hover);color:var(--muted);border-radius:99px;padding:1px 8px;font-size:10.5px}
+
+/* ── table ──────────────────────────────────────────────────────────── */
+table{width:100%;border-collapse:collapse}
+thead th{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);text-align:left;padding:9px 18px;border-bottom:1px solid var(--border);font-weight:600;background:var(--input-bg)}
+tbody td{padding:11px 18px;border-bottom:1px solid var(--border);vertical-align:middle}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--accent-tint-2)}
+.person{display:flex;align-items:center;gap:10px}
+.person .avatar{width:30px;height:30px;font-size:11px}
+.person b{font-weight:600;display:block}
+.person small{color:var(--faint);font-size:11.5px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{display:inline-flex;align-items:center;gap:5px;border-radius:99px;font-size:10.5px;font-weight:600;padding:3px 9px;background:var(--blue-tint);color:var(--blue-deep);white-space:nowrap}
+.chip.ad{background:var(--red-tint);color:var(--red-deep)}
+.chip.rc{background:var(--accent-tint);color:var(--accent-deep)}
+.chip.mg{background:var(--green-tint);color:var(--green-deep)}
+.chip.ro{background:var(--hover);color:var(--muted)}
+.chip.add{background:var(--green-tint);color:var(--green-deep)}
+.chip.blk{background:var(--red-tint);color:var(--red-deep);text-decoration:line-through}
+.tnum{font-variant-numeric:tabular-nums;white-space:nowrap}
+.dim{color:var(--faint)}
+.act{text-align:right;white-space:nowrap}
+.btn{border:1px solid var(--border-4);background:var(--surface);border-radius:8px;padding:5px 11px;font-size:12px;font-weight:600;color:var(--muted)}
+.btn:hover{border-color:var(--accent);color:var(--accent-deep);background:var(--accent-tint-2)}
+.btn.danger:hover{border-color:var(--red);color:var(--red-deep);background:var(--red-tint)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn[disabled]:hover{border-color:var(--border-4);color:var(--muted);background:var(--surface)}
+
+/* ── popovers ───────────────────────────────────────────────────────── */
+.pop{position:absolute;top:46px;right:0;width:340px;background:var(--surface);border:1px solid var(--border-2);border-radius:16px;box-shadow:var(--sh-pop);z-index:90;display:none;overflow:hidden}
+.pop.show{display:block}
+.pop.disc{width:322px;right:52px}
+.pophead{display:flex;align-items:flex-start;justify-content:space-between;padding:14px 18px 0}
+.pophead .em{font-size:14px;font-weight:600;color:#3c3833;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pophead .sub{font-size:12.5px;color:var(--faint)}
+.popx{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:var(--faint);flex:none}
+.popx:hover{background:var(--hover)}
+.popid{display:flex;flex-direction:column;align-items:center;padding:12px 18px 18px}
+.popid .avatar{width:72px;height:72px;font-size:24px;box-shadow:0 0 0 1px var(--border-2)}
+.popid .hi{font-size:20px;font-weight:600;letter-spacing:-.3px;margin:10px 0 4px}
+.popid .role{font-size:12px;color:var(--muted);margin-bottom:14px}
+.popid .manage{border:1px solid #dcd8d1;background:var(--surface);border-radius:22px;height:42px;padding:0 22px;color:var(--accent-deep);font-weight:600;font-size:13px;display:inline-flex;align-items:center;gap:8px}
+.popid .manage:hover{background:var(--accent-tint-2)}
+.popsec{padding:14px 18px;border-top:1px solid var(--border)}
+.popsec .lbl{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.popsec .lbl svg{width:14px;height:14px;color:var(--accent-deep)}
+.popsec .lbl .pill{margin-left:auto;background:var(--accent-tint);color:var(--accent-deep);border-radius:20px;padding:1px 9px;font-size:10.5px}
+.applist{display:flex;flex-direction:column;gap:2px;max-height:196px;overflow-y:auto}
+.approw{display:flex;align-items:center;gap:11px;padding:7px 8px;border-radius:10px;cursor:pointer;text-align:left;width:100%}
+.approw:hover{background:var(--hover)}
+.tile{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;color:#fff;font-weight:700;font-size:12px;flex:none;border:1px solid rgba(0,0,0,.06)}
+.approw .nm{min-width:0;flex:1}
+.approw .nm b{display:block;font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.approw .nm small{color:var(--faint);font-size:11.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+.approw .go{color:var(--faint);flex:none}
+.approw .go svg{width:15px;height:15px}
+.popfoot{background:#f4f2ef;padding:11px 18px;display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);cursor:pointer}
+.popfoot:hover{color:var(--red-deep)}
+.popfoot svg{width:16px;height:16px}
+.wgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.wtile{display:flex;flex-direction:column;align-items:center;gap:7px;padding:11px 6px;border-radius:12px;cursor:pointer;text-align:center}
+.wtile:hover{background:var(--hover)}
+.wtile .tile{width:44px;height:44px;border-radius:12px;font-size:14px}
+.wtile span{font-size:11.5px;font-weight:500;line-height:1.25}
+.wtile.pend .tile{opacity:.5}
+.wtile.pend span{color:var(--faint)}
+
+/* ── drawer (grant editor) ──────────────────────────────────────────── */
+.scrim{position:fixed;inset:0;background:rgba(32,30,27,.34);z-index:100;display:none}
+.scrim.show{display:block}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:600px;background:var(--surface);z-index:101;box-shadow:var(--sh-pop);display:none;flex-direction:column}
+.drawer.show{display:flex}
+.dh{display:flex;align-items:center;gap:12px;padding:18px 22px;border-bottom:1px solid var(--border)}
+.dh .avatar{width:42px;height:42px;font-size:14px}
+.dh b{font-size:16px;font-weight:700;display:block}
+.dh small{color:var(--faint);font-size:12px}
+.dh .x{margin-left:auto;width:34px;height:34px;border-radius:9px;display:grid;place-items:center;color:var(--faint)}
+.dh .x:hover{background:var(--hover)}
+.dbody{flex:1;overflow-y:auto;padding:20px 22px}
+.dsec{margin-bottom:22px}
+.dsec > h3{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-bottom:4px}
+.dsec > .why{font-size:12px;color:var(--muted);margin-bottom:11px}
+.roleopt{display:flex;align-items:flex-start;gap:11px;padding:11px 13px;border:1px solid var(--border-4);border-radius:11px;margin-bottom:7px;cursor:pointer;background:var(--input-bg)}
+.roleopt:hover{border-color:var(--accent-tint-4);background:var(--accent-tint-2)}
+.roleopt.on{border-color:var(--accent);background:var(--accent-tint-2);box-shadow:0 0 0 3px var(--accent-tint)}
+.roleopt input{margin-top:3px;accent-color:var(--accent-hover);width:15px;height:15px;flex:none}
+.roleopt .rt{min-width:0}
+.roleopt .rt b{display:block;font-weight:600;margin-bottom:2px}
+.roleopt .rt small{color:var(--muted);font-size:11.5px;display:block;line-height:1.45}
+.roleopt .n{margin-left:auto;flex:none;font-family:var(--mono);font-size:10px;color:var(--faint);background:var(--hover);border-radius:99px;padding:2px 8px}
+.effect{background:var(--input-bg);border:1px solid var(--border-4);border-radius:11px;padding:13px}
+.effect .hd{display:flex;align-items:baseline;gap:8px;margin-bottom:9px}
+.effect .hd b{font-size:12.5px;font-weight:600}
+.effect .hd small{color:var(--faint);font-size:11.5px;margin-left:auto}
+.permgrid{display:flex;flex-wrap:wrap;gap:5px}
+.hrow{display:flex;gap:11px;padding:9px 0;border-bottom:1px solid var(--border);font-size:12.5px}
+.hrow:last-child{border-bottom:0}
+.hrow .when{font-variant-numeric:tabular-nums;color:var(--faint);flex:none;width:104px;font-size:11.5px}
+.hrow .what{flex:1;min-width:0}
+.hrow .who{color:var(--faint);font-size:11.5px;flex:none}
+.hrow .arrow{color:var(--faint)}
+.df{border-top:1px solid var(--border);padding:14px 22px;display:flex;align-items:center;gap:10px;background:var(--input-bg)}
+.df .save{background:var(--accent);color:#fff;border-radius:9px;padding:10px 20px;font-weight:600;font-size:13px;box-shadow:0 6px 16px -6px rgba(249,115,22,.55)}
+.df .save:hover{background:var(--accent-hover)}
+.df .ghost{border:1px solid var(--border-4);border-radius:9px;padding:10px 16px;font-weight:600;font-size:13px;color:var(--muted);background:var(--surface)}
+.df .revoke{margin-left:auto;color:var(--red-deep);font-weight:600;font-size:12.5px;border:1px solid var(--red-tint);background:var(--red-tint);border-radius:9px;padding:10px 16px}
+.df .revoke:hover{background:#fecaca}
+.df .revoke[disabled]{opacity:.5;cursor:not-allowed}
+.note{display:flex;gap:9px;padding:11px 13px;border-radius:11px;font-size:12.5px;line-height:1.5;margin-bottom:16px}
+.note.info{background:var(--blue-tint);color:#1e40af}
+.note.warn{background:var(--gold-tint);color:#92400e}
+.note.dang{background:var(--red-tint);color:var(--red-deep)}
+.note svg{width:16px;height:16px;flex:none;margin-top:1px}
+.legend{padding:14px 18px;font-size:12px;color:var(--muted);border-top:1px solid var(--border);background:var(--input-bg);display:flex;flex-wrap:wrap;gap:16px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.toolbar{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.toolbar .grow{flex:1}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ HEADER ══════════════ -->
+<div class="top">
+  <div class="brand"><span class="sq">LF</span>LF&nbsp;<em>Recruit</em></div>
+  <div class="gsearch">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    Tìm candidate, NMLS, công ty…<kbd>⌘ K</kbd>
+  </div>
+  <div class="tright">
+    <button class="ticon" title="Thông báo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+    </button>
+    <!-- Discovery = waffle, BÊN TRÁI avatar (HEADER_APP_LAUNCHER.md) -->
+    <button class="ticon" id="discBtn" title="Discovery" aria-label="Discovery" onclick="toggle('disc')">
+      <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="5" r="2"/><circle cx="12" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="12" cy="19" r="2"/><circle cx="19" cy="19" r="2"/></svg>
+    </button>
+    <button class="uprof" onclick="toggle('prof')">
+      <span class="avatar">BT</span>
+      <span style="text-align:left"><b>Bao Trinh</b><small>Admin</small></span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;color:var(--faint)"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+
+    <!-- ── Discovery popover ── -->
+    <div class="pop disc" id="disc">
+      <div class="pophead">
+        <div><div class="em">Discovery</div><div class="sub">Ứng dụng trong hệ sinh thái</div></div>
+        <button class="popx" onclick="toggle('disc')" aria-label="Đóng">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="popsec" style="border-top:0;padding-top:4px">
+        <div class="lbl">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6M12 16v6M2 12h6M16 12h6"/></svg>
+          Yêu thích <span class="pill">4</span>
+          <button class="btn" style="margin-left:8px;padding:2px 8px" title="Sắp xếp">✎</button>
+        </div>
+        <div class="wgrid">
+          <button class="wtile"><span class="tile" style="background:#B24E1E">LL</span><span>Loan Life</span></button>
+          <button class="wtile"><span class="tile" style="background:#3E6B48">LF</span><span>LF IQ</span></button>
+          <button class="wtile"><span class="tile" style="background:#4338CA">T</span><span>Tera</span></button>
+          <button class="wtile"><span class="tile" style="background:#B7791F">HR</span><span>AI HR</span></button>
+        </div>
+      </div>
+      <div class="popsec">
+        <div class="lbl">Tất cả ứng dụng</div>
+        <div class="wgrid">
+          <button class="wtile"><span class="tile" style="background:#2B6CB0">AL</span><span>Ally</span></button>
+          <button class="wtile"><span class="tile" style="background:#8A3FFC">CC</span><span>Call Center</span></button>
+          <button class="wtile pend"><span class="tile" style="background:#6B4A2F">DE</span><span>Document<br>e-Sign</span></button>
+        </div>
+      </div>
+      <div class="legend" style="border-top:1px solid var(--border);font-size:11.5px">
+        Ô mờ = chưa kết nối; bấm sẽ đi qua luồng public-user rồi mới vào app.
+      </div>
+    </div>
+
+    <!-- ── Profile popover (theo PROFILE_POPUP_PROMPT.md) ── -->
+    <div class="pop" id="prof">
+      <div class="pophead">
+        <div><div class="em">bao.trinh@loanfactory.com</div><div class="sub">Managed by Loan Factory</div></div>
+        <button class="popx" onclick="toggle('prof')" aria-label="Đóng">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="popid">
+        <span class="avatar">BT</span>
+        <div class="hi">Hi, Bao</div>
+        <div class="role">Admin · LF Recruit</div>
+        <button class="manage">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:16px;height:16px"><circle cx="12" cy="8" r="3.2"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/></svg>
+          Quản lý tài khoản
+        </button>
+      </div>
+      <div class="popsec">
+        <div class="lbl">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7 0l1-1a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-1 1a5 5 0 0 0 7 7l1-1"/></svg>
+          Ứng dụng đã kết nối <span class="pill">6</span>
+        </div>
+        <div class="applist">
+          <button class="approw"><span class="tile" style="background:#B24E1E">LL</span><span class="nm"><b>Loan Life</b><small>Vòng đời khoản vay</small></span><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M17 7H8M17 7v9"/></svg></span></button>
+          <button class="approw"><span class="tile" style="background:#3E6B48">LF</span><span class="nm"><b>LF IQ</b><small>Homeowner insights</small></span><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M17 7H8M17 7v9"/></svg></span></button>
+          <button class="approw"><span class="tile" style="background:#4338CA">T</span><span class="nm"><b>Tera</b><small>Loan origination</small></span><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M17 7H8M17 7v9"/></svg></span></button>
+          <button class="approw"><span class="tile" style="background:#B7791F">HR</span><span class="nm"><b>AI HR</b><small>Tuyển dụng nội bộ</small></span><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M17 7H8M17 7v9"/></svg></span></button>
+          <button class="approw"><span class="tile" style="background:#2B6CB0">AL</span><span class="nm"><b>Ally</b><small>Social &amp; marketing</small></span><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M17 7H8M17 7v9"/></svg></span></button>
+          <button class="approw"><span class="tile" style="background:#8A3FFC">CC</span><span class="nm"><b>Call Center</b><small>Điện thoại &amp; ghi âm</small></span><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M17 7H8M17 7v9"/></svg></span></button>
+        </div>
+      </div>
+      <button class="popfoot">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></svg>
+        Đăng xuất khỏi mọi ứng dụng Loan Factory
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+  <!-- ══════════════ SIDEBAR ══════════════ -->
+  <aside class="side">
+    <div class="slabel">Thường dùng</div>
+    <nav class="snav">
+      <a><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>Today</a>
+      <a><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v5H4zM4 13h16v7H4z"/></svg></span>Kho HOT</a>
+      <a><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v5H4zM4 13h16v7H4z"/></svg></span>Kho COLD</a>
+      <a><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg></span>Pipeline</a>
+      <a><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 3 9 16H3z"/><path d="M12 9v5"/></svg></span>Exceptions</a>
+      <a><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V9M10 20V4M16 20v-7M22 20H2"/></svg></span>Reports</a>
+    </nav>
+    <div class="snav bottom">
+      <div class="slabel">Cấu hình</div>
+      <a><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h5"/></svg></span>Templates</a>
+      <a><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="8" r="4"/><circle cx="16" cy="16" r="4"/></svg></span>Duplicates</a>
+      <a><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="18" cy="18" r="2"/></svg></span>Audit</a>
+      <a class="on"><span class="nico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>Permissions</a>
+    </div>
+  </aside>
+
+  <!-- ══════════════ PAGE ══════════════ -->
+  <main class="body"><div class="wrap">
+    <div class="ph">
+      <div>
+        <span class="crumb">Permissions · ai được làm gì trong app này</span>
+        <h1>Quyền là của <em>app này</em>, không phải của token</h1>
+      </div>
+      <button class="ph cta" style="margin-left:auto" onclick="openDrawer('new')">+ Cấp quyền cho người mới</button>
+    </div>
+
+    <div class="note info">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg>
+      <div>SSO trả lời <b>“bạn là ai”</b>; bảng này trả lời <b>“bạn được làm gì”</b>. Không có dòng ở đây = không vào được app (403), kể cả khi login thành công.
+      Khoá tra cứu là <b>user_id</b> central — không phải account_id, hai thứ khác nhau.</div>
+    </div>
+
+    <div class="toolbar">
+      <input type="text" placeholder="Tìm theo tên hoặc email…" style="width:280px">
+      <select><option>Mọi vai trò</option><option>ADMIN</option><option>MANAGER</option><option>RECRUITER</option><option>HR</option><option>LICENSING</option><option>ONBOARDING</option><option>ACCOUNTING</option></select>
+      <select><option>Mọi trạng thái</option><option>Có override</option><option>Không nhận việc được</option></select>
+      <span class="grow"></span>
+      <button class="btn">⭳ Export CSV</button>
+    </div>
+
+    <div class="card">
+      <div class="sech">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>
+        Người có quyền trong LF Recruit <span class="cnt">7</span>
+        <span class="hint">Bấm một hàng để sửa · sổ cái ghi lại mọi lần đổi</span>
+      </div>
+      <table>
+        <thead><tr>
+          <th style="width:26%">Người</th>
+          <th style="width:22%">Vai trò</th>
+          <th style="width:22%">Điều chỉnh riêng</th>
+          <th style="width:11%">Nhận việc?</th>
+          <th style="width:11%">Đổi lần cuối</th>
+          <th></th>
+        </tr></thead>
+        <tbody>
+          <tr onclick="openDrawer('luis')">
+            <td><div class="person"><span class="avatar" style="background:#B24E1E">LT</span><span><b>Luis Testcase</b><small>luis7522333@viet18.com</small></span></div></td>
+            <td><div class="chips"><span class="chip rc">RECRUITER</span></div></td>
+            <td class="dim">—</td>
+            <td><span class="chip mg">Có</span></td>
+            <td class="tnum dim">26/08 10:57</td>
+            <td class="act"><button class="btn">Sửa</button></td>
+          </tr>
+          <tr onclick="openDrawer('nocha')">
+            <td><div class="person"><span class="avatar" style="background:#3E6B48">NH</span><span><b>Nocha Hien</b><small>test4591872@test.com</small></span></div></td>
+            <td><div class="chips"><span class="chip rc">RECRUITER</span><span class="chip mg">MANAGER</span></div></td>
+            <td class="dim">—</td>
+            <td><span class="chip mg">Có</span></td>
+            <td class="tnum dim">26/08 10:57</td>
+            <td class="act"><button class="btn">Sửa</button></td>
+          </tr>
+          <tr onclick="openDrawer('ken')">
+            <td><div class="person"><span class="avatar" style="background:#4338CA">KC</span><span><b>Ken Customer</b><small>test10990305@test.com</small></span></div></td>
+            <td><div class="chips"><span class="chip">HR</span></div></td>
+            <td><div class="chips"><span class="chip add">+ CANDIDATE_UPDATE</span></div></td>
+            <td><span class="chip ro">Không</span></td>
+            <td class="tnum dim">26/08 10:57</td>
+            <td class="act"><button class="btn">Sửa</button></td>
+          </tr>
+          <tr onclick="openDrawer('chu')">
+            <td><div class="person"><span class="avatar" style="background:#B7791F">CC</span><span><b>Chu Con Gi Nua</b><small>chuconginua@viet18.com</small></span></div></td>
+            <td><div class="chips"><span class="chip">LICENSING</span></div></td>
+            <td class="dim">—</td>
+            <td><span class="chip ro">Không</span></td>
+            <td class="tnum dim">26/08 10:57</td>
+            <td class="act"><button class="btn">Sửa</button></td>
+          </tr>
+          <tr onclick="openDrawer('maria')">
+            <td><div class="person"><span class="avatar" style="background:#8A3FFC">MT</span><span><b>Maria Testcase</b><small>m123123aria@test.com</small></span></div></td>
+            <td><div class="chips"><span class="chip">ONBOARDING</span></div></td>
+            <td class="dim">—</td>
+            <td><span class="chip ro">Không</span></td>
+            <td class="tnum dim">26/08 10:57</td>
+            <td class="act"><button class="btn">Sửa</button></td>
+          </tr>
+          <tr onclick="openDrawer('acc')">
+            <td><div class="person"><span class="avatar" style="background:#C53030">AR</span><span><b>Admin Request</b><small>admingiftrequestor@viet18.com</small></span></div></td>
+            <td><div class="chips"><span class="chip">ACCOUNTING</span></div></td>
+            <td><div class="chips"><span class="chip blk">− OFFER_READ</span></div></td>
+            <td><span class="chip ro">Không</span></td>
+            <td class="tnum dim">26/08 10:57</td>
+            <td class="act"><button class="btn">Sửa</button></td>
+          </tr>
+          <tr onclick="openDrawer('me')">
+            <td><div class="person"><span class="avatar">BT</span><span><b>Bao Trinh</b><small>bao.trinh@loanfactory.com</small></span></div></td>
+            <td><div class="chips"><span class="chip ad">ADMIN</span></div></td>
+            <td class="dim">—</td>
+            <td><span class="chip mg">Có</span></td>
+            <td class="tnum dim">26/08 09:37</td>
+            <td class="act"><button class="btn" disabled title="Bạn là người quản quyền cuối cùng — không thu hồi được">Sửa</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="legend">
+        <span><span class="chip add">+ PERMISSION</span> thêm riêng cho một người</span>
+        <span><span class="chip blk">− PERMISSION</span> chặn riêng, kể cả khi vai trò có</span>
+        <span><b>Nhận việc?</b> = có <code>CANDIDATE_CLAIM</code> → mới xuất hiện trong menu “giao cho”</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sech">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span>
+        Vai trò &amp; quyền kèm theo <span class="cnt">7</span>
+        <span class="hint">Chỉ đọc ở V1 — sửa vai trò là việc của Admin qua migration</span>
+      </div>
+      <table>
+        <thead><tr><th style="width:16%">Vai trò</th><th style="width:9%">Số quyền</th><th>Làm được gì</th></tr></thead>
+        <tbody>
+          <tr><td><span class="chip ad">ADMIN</span></td><td class="tnum">tất cả</td><td class="dim">Wildcard <code>*</code> — kể cả quản quyền (RBAC_MANAGE)</td></tr>
+          <tr><td><span class="chip mg">MANAGER</span></td><td class="tnum">19</td><td>Mọi thứ của recruiter + giao việc, gộp trùng, duyệt offer, duyệt template, Reports cả team, xem Audit</td></tr>
+          <tr><td><span class="chip rc">RECRUITER</span></td><td class="tnum">12</td><td>Nhận việc, gọi/SMS/email, đẩy stage, xin offer, lưu trữ, tạo template riêng</td></tr>
+          <tr><td><span class="chip">HR</span></td><td class="tnum">3</td><td class="dim">Chỉ đọc: candidate · hoạt động · offer</td></tr>
+          <tr><td><span class="chip">ONBOARDING</span></td><td class="tnum">3</td><td class="dim">Chỉ đọc: candidate · hoạt động · offer</td></tr>
+          <tr><td><span class="chip">ACCOUNTING</span></td><td class="tnum">3</td><td class="dim">Chỉ đọc: candidate · hoạt động · offer</td></tr>
+          <tr><td><span class="chip">LICENSING</span></td><td class="tnum">2</td><td class="dim">Chỉ đọc: candidate · hoạt động</td></tr>
+        </tbody>
+      </table>
+      <div class="legend">
+        Hệ cũ cấp quyền <b>theo từng người</b> trên 82 công tắc rời — đo được 2 / 5 / 14 / 15 / 30 / 74 quyền cho 6 người cùng làm tuyển dụng.
+        Ở đây vai trò là mặc định, điều chỉnh riêng là ngoại lệ <em>có ghi sổ</em>.
+      </div>
+    </div>
+  </div></main>
+</div>
+
+<!-- ══════════════ DRAWER: sửa quyền một người ══════════════ -->
+<div class="scrim" id="scrim" onclick="closeDrawer()"></div>
+<aside class="drawer" id="drawer">
+  <div class="dh">
+    <span class="avatar" style="background:#3E6B48">NH</span>
+    <div><b>Nocha Hien</b><small>test4591872@test.com · user_id 33396e4b…b6fb8</small></div>
+    <button class="x" onclick="closeDrawer()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:17px;height:17px"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <div class="dbody">
+    <div class="dsec">
+      <h3>Vai trò</h3>
+      <p class="why">Chọn nhiều được — quyền hiệu lực là <b>hợp</b> của các vai trò.</p>
+      <label class="roleopt on"><input type="checkbox" checked><span class="rt"><b>RECRUITER</b><small>Nhận việc, gọi/SMS/email, đẩy stage, xin offer</small></span><span class="n">12</span></label>
+      <label class="roleopt on"><input type="checkbox" checked><span class="rt"><b>MANAGER</b><small>Thêm: giao việc, gộp trùng, duyệt offer/template, Reports cả team, Audit</small></span><span class="n">19</span></label>
+      <label class="roleopt"><input type="checkbox"><span class="rt"><b>HR</b><small>Chỉ đọc</small></span><span class="n">3</span></label>
+      <label class="roleopt"><input type="checkbox"><span class="rt"><b>LICENSING</b><small>Chỉ đọc</small></span><span class="n">2</span></label>
+      <label class="roleopt"><input type="checkbox"><span class="rt"><b>ONBOARDING</b><small>Chỉ đọc</small></span><span class="n">3</span></label>
+      <label class="roleopt"><input type="checkbox"><span class="rt"><b>ACCOUNTING</b><small>Chỉ đọc</small></span><span class="n">3</span></label>
+      <label class="roleopt"><input type="checkbox"><span class="rt"><b>ADMIN</b><small>Tất cả, kể cả quản quyền</small></span><span class="n">*</span></label>
+    </div>
+
+    <div class="dsec">
+      <h3>Điều chỉnh riêng cho người này</h3>
+      <p class="why">Ngoại lệ, không phải cách cấp quyền chính. Mỗi dòng ở đây là một câu cần trả lời được khi rà soát: <em>vì sao riêng người này khác?</em></p>
+      <div class="effect" style="margin-bottom:9px">
+        <div class="hd"><b>+ Thêm quyền</b><small>ngoài vai trò</small></div>
+        <div class="permgrid"><span class="chip ro">chưa có · + thêm</span></div>
+      </div>
+      <div class="effect">
+        <div class="hd"><b>− Chặn quyền</b><small>kể cả khi vai trò có</small></div>
+        <div class="permgrid"><span class="chip ro">chưa có · + thêm</span></div>
+      </div>
+    </div>
+
+    <div class="dsec">
+      <h3>Quyền hiệu lực <span style="text-transform:none;letter-spacing:0;color:var(--muted);font-weight:400">— cái app thật sự kiểm</span></h3>
+      <p class="why">hợp(vai trò) ∪ thêm − chặn. Đây là thứ quyết định mỗi request, không phải danh sách bên trên.</p>
+      <div class="effect">
+        <div class="hd"><b>19 quyền</b><small>tự tính lại khi bạn tick</small></div>
+        <div class="permgrid">
+          <span class="chip mg">CANDIDATE_READ</span><span class="chip mg">CANDIDATE_CREATE</span><span class="chip mg">CANDIDATE_UPDATE</span>
+          <span class="chip mg">CANDIDATE_CLAIM</span><span class="chip mg">CANDIDATE_TRANSITION</span><span class="chip mg">CANDIDATE_TRANSFER</span>
+          <span class="chip mg">CANDIDATE_ARCHIVE</span><span class="chip mg">CANDIDATE_MERGE</span><span class="chip mg">ACTIVITY_READ</span>
+          <span class="chip mg">ACTIVITY_LOG</span><span class="chip mg">SUPPRESSION_MANAGE</span><span class="chip mg">OFFER_READ</span>
+          <span class="chip mg">OFFER_REQUEST</span><span class="chip mg">OFFER_APPROVE</span><span class="chip mg">TEMPLATE_CREATE</span>
+          <span class="chip mg">TEMPLATE_APPROVE</span><span class="chip mg">REPORT_TEAM</span><span class="chip mg">AUDIT_VIEW</span>
+          <span class="chip mg">LABEL_MANAGE</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dsec">
+      <h3>Sổ cái — ai đổi gì, lúc nào</h3>
+      <p class="why">Append-only. Sống lâu hơn cả grant: thu hồi rồi thì đây là bằng chứng duy nhất quyền đó từng tồn tại.</p>
+      <div class="hrow"><span class="when">26/08 10:57</span><span class="what">chưa có quyền <span class="arrow">→</span> <b>RECRUITER, MANAGER</b></span><span class="who">Migration:V030</span></div>
+      <div class="hrow"><span class="when">—</span><span class="what dim">Các bước trước khi có sổ cái: không biết (ghi <code>PRE_LEDGER</code>, không dựng lại lịch sử)</span><span class="who"></span></div>
+    </div>
+  </div>
+
+  <div class="df">
+    <button class="save">Lưu</button>
+    <button class="ghost" onclick="closeDrawer()">Huỷ</button>
+    <button class="revoke">Thu hồi toàn bộ quyền</button>
+  </div>
+</aside>
+
+<script>
+function toggle(id){
+  ['disc','prof'].forEach(k=>{ const el=document.getElementById(k); if(k===id) el.classList.toggle('show'); else el.classList.remove('show'); });
+}
+document.addEventListener('click', e=>{
+  if(!e.target.closest('.tright')) ['disc','prof'].forEach(k=>document.getElementById(k).classList.remove('show'));
+});
+function openDrawer(){ document.getElementById('scrim').classList.add('show'); document.getElementById('drawer').classList.add('show'); }
+function closeDrawer(){ document.getElementById('scrim').classList.remove('show'); document.getElementById('drawer').classList.remove('show'); }
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeDrawer(); ['disc','prof'].forEach(k=>document.getElementById(k).classList.remove('show')); }});
+</script>
+</body>
+</html>
