@@ -216,6 +216,20 @@ tbody tr:hover{background:var(--accent-tint-2)}
 .reqbox textarea:focus{outline:none;border-color:#b9c9d8;box-shadow:0 0 0 3px rgba(62,107,72,.08)}
 .reqbox .hint{margin-top:5px;font-size:11px;color:var(--muted)}
 .save[disabled]{opacity:.45;cursor:not-allowed}
+
+/* — vá 27/08 (vòng 2): hạn theo từng role (D80), role chốt-chưa-seed (D46), guard tự-khoá-cửa (D69) — */
+.chip .til{font-weight:500;opacity:.75;margin-left:4px;font-size:9.5px}
+.notseeded{position:relative}
+.pend{display:inline-flex;align-items:center;gap:4px;border-radius:5px;font-size:9.5px;font-weight:700;
+  padding:2px 6px;background:#fff6e8;color:#8a5a12;box-shadow:inset 0 0 0 1px #f0dcbb;margin-left:6px;
+  text-transform:uppercase;letter-spacing:.04em}
+.roleopt .until{display:flex;align-items:center;gap:6px;margin-top:6px;padding-top:6px;
+  border-top:1px dashed var(--line);font-size:11px;color:var(--muted)}
+.roleopt .until input[type=date]{font:inherit;font-size:11.5px;padding:3px 6px;border-radius:6px;
+  border:1px solid var(--line);background:#fff;color:var(--ink)}
+.guard{margin-top:9px;font-size:11px;line-height:1.5;color:var(--muted)}
+.guard b{color:#a4442c}
+.revoke[disabled]{opacity:.45;cursor:not-allowed}
 </style>
 </head>
 <body>
@@ -353,7 +367,7 @@ tbody tr:hover{background:var(--accent-tint-2)}
 
     <div class="toolbar">
       <input type="text" placeholder="Tìm theo tên hoặc email…" style="width:280px">
-      <select><option>Mọi vai trò</option><option>ADMIN</option><option>MANAGER</option><option>RECRUITER</option><option>HR</option><option>LICENSING</option><option>ONBOARDING</option><option>ACCOUNTING</option></select>
+      <select><option>Mọi vai trò</option><option>ADMIN</option><option>MANAGER</option><option>RECRUITER</option><option>LO_SUPPORT (chưa seed)</option><option>OFFICER_RECRUITER (chưa seed)</option><option>HR</option><option>LICENSING</option><option>ONBOARDING</option><option>ACCOUNTING</option></select>
       <select><option>Mọi trạng thái</option><option>Có override</option><option>Không nhận việc được</option></select>
       <span class="grow"></span>
       <button class="btn">⭳ Export CSV</button>
@@ -385,7 +399,7 @@ tbody tr:hover{background:var(--accent-tint-2)}
           </tr>
           <tr onclick="openDrawer('nocha')">
             <td><div class="person"><span class="avatar" style="background:#3E6B48">NH</span><span><b>Nocha Hien</b><small>test4591872@test.com</small></span></div></td>
-            <td><div class="chips"><span class="chip rc">RECRUITER</span><span class="chip mg">MANAGER</span></div></td>
+            <td><div class="chips"><span class="chip rc">RECRUITER</span><span class="chip mg">MANAGER<span class="til">đến 31/12</span></span></div></td>
             <td class="dim">—</td>
             <td><span class="chip mg">Có</span></td>
             <td class="tnum dim">26/08 10:57</td>
@@ -452,6 +466,8 @@ tbody tr:hover{background:var(--accent-tint-2)}
           <tr><td><span class="chip ad">ADMIN</span></td><td class="tnum">tất cả</td><td><span class="seat s2">Ghế đầy</span><span class="seatnote">Quản trị hệ thống + quản quyền.</span></td><td class="dim">Wildcard <code>*</code> — kể cả quản quyền (RBAC_MANAGE)</td></tr>
           <tr><td><span class="chip mg">MANAGER</span></td><td class="tnum">19</td><td><span class="seat s2">Ghế đầy</span><span class="seatnote">Toàn cục trong V1 — chỉ có <b>một</b> manager thật (D79). Chưa có scope theo team.</span></td><td>Mọi thứ của recruiter + giao việc, gộp trùng, duyệt offer, duyệt template, Reports cả team, xem Audit</td></tr>
           <tr><td><span class="chip rc">RECRUITER</span></td><td class="tnum">12</td><td><span class="seat s2">Ghế đầy</span><span class="seatnote">Đây là app của họ. Sống trong Today / Pipeline.</span></td><td>Nhận việc, gọi/SMS/email, đẩy stage, xin offer, lưu trữ, tạo template riêng</td></tr>
+          <tr><td><span class="chip rc">LO_SUPPORT</span><span class="pend">chưa seed</span></td><td class="tnum dim">—</td><td><span class="seat s2">Ghế đầy</span><span class="seatnote"><b>Đã chốt 22/08 (D46)</b> nhưng chưa có trong DB — bead <code>p7v2</code>. Tách người thật: inbound.</span></td><td>Như RECRUITER, nhưng workspace = <b>Kho HOT</b> (lead tự giơ tay) + SLA đồng hồ team. <span class="dim">Số quyền chốt cùng lúc seed.</span></td></tr>
+          <tr><td><span class="chip rc">OFFICER_RECRUITER</span><span class="pend">chưa seed</span></td><td class="tnum dim">—</td><td><span class="seat s2">Ghế đầy</span><span class="seatnote"><b>Đã chốt 22/08 (D46)</b> nhưng chưa có trong DB — bead <code>p7v2</code>. Tách người thật: outbound.</span></td><td>Như RECRUITER, nhưng workspace = <b>Kho COLD</b> (danh bạ Modex đi săn), <b>không</b> đồng hồ. <span class="dim">Số quyền chốt cùng lúc seed.</span></td></tr>
           <tr><td><span class="chip">HR</span></td><td class="tnum">3</td><td><span class="seat s0">Không ghế</span><span class="seatnote"><b>Không có account trong V1</b> (D77). Việc đến bằng link / omni / app HR. Vai trò giữ trong bảng (luật #8), nhưng không có grant ⇒ mọi endpoint 403.</span></td><td class="dim">Không đăng nhập app này. Nhận việc ở nơi khác.</td></tr>
           <tr><td><span class="chip">ONBOARDING</span></td><td class="tnum">3</td><td><span class="seat s1">Ghế hẹp</span><span class="seatnote">Chỉ hồ sơ <b>có item mở gửi phòng họ</b> (D78) + cổng ngoại lệ tạo account sớm — bắt buộc ghi lý do, có audit (D35).</span></td><td class="dim">Đọc + đóng item của phòng mình; ngoại lệ tạo account sớm (có lý do)</td></tr>
           <tr><td><span class="chip">ACCOUNTING</span></td><td class="tnum">3</td><td><span class="seat s0">Không ghế</span><span class="seatnote"><b>Không có account trong V1</b> (D77). Referral payout chạy trên export, không mở pipeline.</span></td><td class="dim">Không đăng nhập app này. Nhận việc ở nơi khác.</td></tr>
@@ -481,8 +497,12 @@ tbody tr:hover{background:var(--accent-tint-2)}
     <div class="dsec">
       <h3>Vai trò</h3>
       <p class="why">Chọn nhiều được — quyền hiệu lực là <b>hợp</b> của các vai trò.</p>
-      <label class="roleopt on"><input type="checkbox" checked><span class="rt"><b>RECRUITER</b><small>Nhận việc, gọi/SMS/email, đẩy stage, xin offer</small></span><span class="n">12</span></label>
-      <label class="roleopt on"><input type="checkbox" checked><span class="rt"><b>MANAGER</b><small>Thêm: giao việc, gộp trùng, duyệt offer/template, Reports cả team, Audit</small></span><span class="n">19</span></label>
+      <label class="roleopt on"><input type="checkbox" checked><span class="rt"><b>RECRUITER</b><small>Nhận việc, gọi/SMS/email, đẩy stage, xin offer</small>
+        <span class="until">Hết hạn vai trò này: <input type="date"> <span>— để trống = vĩnh viễn</span></span></span><span class="n">12</span></label>
+      <label class="roleopt on"><input type="checkbox" checked><span class="rt"><b>MANAGER</b><small>Thêm: giao việc, gộp trùng, duyệt offer/template, Reports cả team, Audit</small>
+        <span class="until">Hết hạn vai trò này: <input type="date" value="2026-12-31"> <span>— để trống = vĩnh viễn</span></span></span><span class="n">19</span></label>
+      <label class="roleopt notseeded"><input type="checkbox" disabled><span class="rt"><b>LO_SUPPORT</b><span class="pend">chưa seed</span><small>Kho HOT — lead tự giơ tay (webinar/self-apply/referral), SLA đồng hồ team</small></span><span class="n">—</span></label>
+      <label class="roleopt notseeded"><input type="checkbox" disabled><span class="rt"><b>OFFICER_RECRUITER</b><span class="pend">chưa seed</span><small>Kho COLD — danh bạ Modex đi săn, không đồng hồ</small></span><span class="n">—</span></label>
       <label class="roleopt"><input type="checkbox"><span class="rt"><b>HR</b><small>Chỉ đọc</small></span><span class="n">3</span></label>
       <label class="roleopt"><input type="checkbox"><span class="rt"><b>LICENSING</b><small>Chỉ đọc</small></span><span class="n">2</span></label>
       <label class="roleopt"><input type="checkbox"><span class="rt"><b>ONBOARDING</b><small>Chỉ đọc</small></span><span class="n">3</span></label>
@@ -535,6 +555,7 @@ tbody tr:hover{background:var(--accent-tint-2)}
     <div class="dsec">
       <h3>Sổ cái — ai đổi gì, lúc nào</h3>
       <p class="why">Append-only. Sống lâu hơn cả grant: thu hồi rồi thì đây là bằng chứng duy nhất quyền đó từng tồn tại.</p>
+      <div class="hrow"><span class="when">27/08 09:14</span><span class="what"><b>RECRUITER, MANAGER</b> <span class="arrow">→</span> <b>RECRUITER, MANAGER<span class="til">đến 31/12</span></b> <em style="color:var(--muted)">· lý do: kiêm quản lý tạm khi team sáp nhập — Victoria duyệt</em></span><span class="who">bao.trinh</span></div>
       <div class="hrow"><span class="when">26/08 10:57</span><span class="what">chưa có quyền <span class="arrow">→</span> <b>RECRUITER, MANAGER</b></span><span class="who">Migration:V030</span></div>
       <div class="hrow"><span class="when">—</span><span class="what dim">Các bước trước khi có sổ cái: không biết (ghi <code>PRE_LEDGER</code>, không dựng lại lịch sử)</span><span class="who"></span></div>
     </div>
@@ -545,6 +566,11 @@ tbody tr:hover{background:var(--accent-tint-2)}
     <button class="ghost" onclick="closeDrawer()">Huỷ</button>
     <button class="revoke">Thu hồi toàn bộ quyền</button>
   </div>
+  <p class="guard" style="padding:0 18px 14px">
+    <b>Không tự khoá cửa được:</b> người đang đăng nhập không thu hồi được quyền của <b>chính mình</b>,
+    và không bỏ tick được vai trò cuối cùng còn giữ <code>RBAC_MANAGE</code> của hệ thống (D69).
+    Thu hồi là <b>DELETE thật</b> — không phải đổi sang vai trò khác — và dòng thu hồi vẫn nằm lại sổ cái.
+  </p>
 </aside>
 
 <script>
