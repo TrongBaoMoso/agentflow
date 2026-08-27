@@ -225,8 +225,10 @@ tbody tr:hover{background:var(--accent-tint-2)}
   text-transform:uppercase;letter-spacing:.04em}
 .roleopt .until{display:flex;align-items:center;gap:6px;margin-top:6px;padding-top:6px;
   border-top:1px dashed var(--line);font-size:11px;color:var(--muted)}
-.roleopt .until input[type=date]{font:inherit;font-size:11.5px;padding:3px 6px;border-radius:6px;
-  border:1px solid var(--line);background:#fff;color:var(--ink)}
+.roleopt .until input[type=date]{font:inherit;font-size:11.5px;padding:3px 7px;border-radius:6px;
+  border:1px solid var(--line);background:#fff;color:var(--ink);
+  /* .roleopt input{width:15px;height:15px;flex:none} là style của CHECKBOX — phải gỡ tường minh */
+  width:auto;height:auto;min-width:126px;flex:0 0 auto;margin-top:0;accent-color:auto}
 .guard{margin-top:9px;font-size:11px;line-height:1.5;color:var(--muted)}
 .guard b{color:#a4442c}
 .revoke[disabled]{opacity:.45;cursor:not-allowed}
@@ -457,7 +459,7 @@ tbody tr:hover{background:var(--accent-tint-2)}
     <div class="card">
       <div class="sech">
         <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span>
-        Vai trò &amp; quyền kèm theo <span class="cnt">7</span>
+        Vai trò &amp; quyền kèm theo <span class="cnt">9</span>
         <span class="hint">Chỉ đọc ở V1 — sửa vai trò là việc của Admin qua migration</span>
       </div>
       <table>
@@ -475,7 +477,7 @@ tbody tr:hover{background:var(--accent-tint-2)}
         </tbody>
       </table>
       <div class="legend">
-        Hệ cũ cấp quyền <b>theo từng người</b> trên 82 công tắc rời — đo được 2 / 5 / 14 / 15 / 30 / 74 quyền cho 6 người cùng làm tuyển dụng.
+        <b>RECRUITER · LO_SUPPORT · OFFICER_RECRUITER sống song song</b> (D86) — không thay thế nhau, không migrate ai đang giữ <code>RECRUITER</code>; một người giữ được cả hai kho. Số quyền của 2 role mới để trống vì <b>chưa chốt</b>: hai chỗ phải quyết lúc seed là <code>CANDIDATE_IMPORT</code> (nghiêng COLD) và quyền xem <b>Exceptions</b> (nghiêng HOT). Nếu cuối cùng cả ba có bộ quyền y hệt nhau thì cái phân biệt chúng là workspace/KPI — tức <em>ai làm việc gì</em>, không phải <em>ai được làm gì</em> — và phần đó không nên nằm trong RBAC.<br><br>Hệ cũ cấp quyền <b>theo từng người</b> trên 82 công tắc rời — đo được 2 / 5 / 14 / 15 / 30 / 74 quyền cho 6 người cùng làm tuyển dụng.
         Ở đây vai trò là mặc định, điều chỉnh riêng là ngoại lệ <em>có ghi sổ</em>.
       </div>
     </div>
