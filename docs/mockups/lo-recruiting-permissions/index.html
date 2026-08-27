@@ -449,7 +449,7 @@ tbody tr:hover{background:var(--accent-tint-2)}
 
     <div class="toolbar">
       <input type="text" placeholder="Tìm theo tên hoặc email…" style="width:280px">
-      <select><option>Mọi vai trò</option><option>ADMIN</option><option>MANAGER</option><option>RECRUITER</option><option>LO_SUPPORT (chưa seed)</option><option>OFFICER_RECRUITER (chưa seed)</option><option>HR</option><option>LICENSING</option><option>ONBOARDING</option><option>ACCOUNTING</option></select>
+      <select><option>Mọi vai trò</option><option>ADMIN</option><option>MANAGER</option><option>RECRUITER</option><option>LO_SUPPORT</option><option>OFFICER_RECRUITER</option><option>HR</option><option>LICENSING</option><option>ONBOARDING</option><option>ACCOUNTING</option></select>
       <select><option>Mọi trạng thái</option><option>Có override</option><option>Không nhận việc được</option></select>
       <span class="grow"></span>
       <button class="btn">⭳ Export CSV</button>
@@ -566,8 +566,8 @@ tbody tr:hover{background:var(--accent-tint-2)}
           <tr><td><span class="chip ad">ADMIN</span></td><td class="tnum">tất cả</td><td><span class="seat s2">Ghế đầy</span><span class="seatnote">Quản trị hệ thống + quản quyền.</span></td><td class="dim">Wildcard <code>*</code> — kể cả quản quyền (RBAC_MANAGE)</td></tr>
           <tr><td><span class="chip mg">MANAGER</span></td><td class="tnum">19</td><td><span class="seat s2">Ghế đầy</span><span class="seatnote">Toàn cục trong V1 — chỉ có <b>một</b> manager thật (D79). Chưa có scope theo team.</span></td><td>Mọi thứ của recruiter + giao việc, gộp trùng, duyệt offer, duyệt template, Reports cả team, xem Audit</td></tr>
           <tr><td><span class="chip rc">RECRUITER</span></td><td class="tnum">12</td><td><span class="seat s2">Ghế đầy</span><span class="seatnote">Đây là app của họ. Sống trong Today / Pipeline.</span></td><td>Nhận việc, gọi/SMS/email, đẩy stage, xin offer, lưu trữ, tạo template riêng</td></tr>
-          <tr><td><span class="chip rc">LO_SUPPORT</span><span class="pend">chưa seed</span></td><td class="tnum dim">—</td><td><span class="seat s2">Ghế đầy</span><span class="seatnote"><b>Đã chốt 22/08 (D46)</b> nhưng chưa có trong DB — bead <code>p7v2</code>. Tách người thật: inbound.</span></td><td>Như RECRUITER, nhưng workspace = <b>Kho HOT</b> (lead tự giơ tay) + SLA đồng hồ team. <span class="dim">Số quyền chốt cùng lúc seed.</span></td></tr>
-          <tr><td><span class="chip rc">OFFICER_RECRUITER</span><span class="pend">chưa seed</span></td><td class="tnum dim">—</td><td><span class="seat s2">Ghế đầy</span><span class="seatnote"><b>Đã chốt 22/08 (D46)</b> nhưng chưa có trong DB — bead <code>p7v2</code>. Tách người thật: outbound.</span></td><td>Như RECRUITER, nhưng workspace = <b>Kho COLD</b> (danh bạ Modex đi săn), <b>không</b> đồng hồ. <span class="dim">Số quyền chốt cùng lúc seed.</span></td></tr>
+          <tr><td><span class="chip rc">LO_SUPPORT</span></td><td class="tnum">12</td><td><span class="seat s2">Ghế đầy</span><span class="seatnote"><b>Seed 27/08 — V036</b> (D46 chốt 22/08). Tách người thật: inbound.</span></td><td>Đúng 12 quyền của RECRUITER — workspace = <b>Kho HOT</b> (lead tự giơ tay) + SLA đồng hồ team. <span class="dim">Khác nhau ở kho, KHÔNG ở quyền (D90).</span></td></tr>
+          <tr><td><span class="chip rc">OFFICER_RECRUITER</span></td><td class="tnum">12</td><td><span class="seat s2">Ghế đầy</span><span class="seatnote"><b>Seed 27/08 — V036</b> (D46 chốt 22/08). Tách người thật: outbound.</span></td><td>Đúng 12 quyền của RECRUITER — workspace = <b>Kho COLD</b> (danh bạ Modex đi săn), <b>không</b> đồng hồ. <span class="dim">KHÔNG có IMPORT_RUN: nó là cổng migration MOSO, không phải import lead (D90).</span></td></tr>
           <tr><td><span class="chip">HR</span></td><td class="tnum">3</td><td><span class="seat s0">Không ghế</span><span class="seatnote"><b>Không có account trong V1</b> (D77). Việc đến bằng link / omni / app HR. Vai trò giữ trong bảng (luật #8), nhưng không có grant ⇒ mọi endpoint 403.</span></td><td class="dim">Không đăng nhập app này. Nhận việc ở nơi khác.</td></tr>
           <tr><td><span class="chip">ONBOARDING</span></td><td class="tnum">3</td><td><span class="seat s1">Ghế hẹp</span><span class="seatnote">Chỉ hồ sơ <b>có item mở gửi phòng họ</b> (D78) + cổng ngoại lệ tạo account sớm — bắt buộc ghi lý do, có audit (D35).</span></td><td class="dim">Đọc + đóng item của phòng mình; ngoại lệ tạo account sớm (có lý do)</td></tr>
           <tr><td><span class="chip">ACCOUNTING</span></td><td class="tnum">3</td><td><span class="seat s0">Không ghế</span><span class="seatnote"><b>Không có account trong V1</b> (D77). Referral payout chạy trên export, không mở pipeline.</span></td><td class="dim">Không đăng nhập app này. Nhận việc ở nơi khác.</td></tr>
@@ -601,8 +601,8 @@ tbody tr:hover{background:var(--accent-tint-2)}
         <span class="until">Hết hạn vai trò này: <input type="date"> <span>— để trống = vĩnh viễn</span></span></span><span class="n">12</span></label>
       <label class="roleopt on"><input type="checkbox" checked onchange="renderPerms()"><span class="rt"><b>MANAGER</b><small>Thêm: giao việc, gộp trùng, duyệt offer/template, Reports cả team, Audit</small>
         <span class="until">Hết hạn vai trò này: <input type="date" value="2026-12-31"> <span>— để trống = vĩnh viễn</span></span></span><span class="n">19</span></label>
-      <label class="roleopt notseeded"><input type="checkbox" disabled><span class="rt"><b>LO_SUPPORT</b><span class="pend">chưa seed</span><small>Kho HOT — lead tự giơ tay (webinar/self-apply/referral), SLA đồng hồ team</small></span><span class="n">—</span></label>
-      <label class="roleopt notseeded"><input type="checkbox" disabled><span class="rt"><b>OFFICER_RECRUITER</b><span class="pend">chưa seed</span><small>Kho COLD — danh bạ Modex đi săn, không đồng hồ</small></span><span class="n">—</span></label>
+      <label class="roleopt notseeded"><input type="checkbox" disabled><span class="rt"><b>LO_SUPPORT</b><small>Kho HOT — lead tự giơ tay (webinar/self-apply/referral), SLA đồng hồ team</small></span><span class="n">—</span></label>
+      <label class="roleopt notseeded"><input type="checkbox" disabled><span class="rt"><b>OFFICER_RECRUITER</b><small>Kho COLD — danh bạ Modex đi săn, không đồng hồ</small></span><span class="n">—</span></label>
       <label class="roleopt"><input type="checkbox" onchange="renderPerms()"><span class="rt"><b>HR</b><small>Chỉ đọc</small></span><span class="n">3</span></label>
       <label class="roleopt"><input type="checkbox" onchange="renderPerms()"><span class="rt"><b>LICENSING</b><small>Chỉ đọc</small></span><span class="n">2</span></label>
       <label class="roleopt"><input type="checkbox" onchange="renderPerms()"><span class="rt"><b>ONBOARDING</b><small>Chỉ đọc</small></span><span class="n">3</span></label>
@@ -765,7 +765,9 @@ const PGROUPS = [
     'ACTIVITY_READ','ACTIVITY_LOG','SUPPRESSION_MANAGE']},
   {code:'OFF', name:'Offer', desc:'Xin và duyệt offer', perms:['OFFER_READ','OFFER_REQUEST','OFFER_APPROVE']},
   {code:'TPL', name:'Template', desc:'Soạn và duyệt mẫu tin', perms:['TEMPLATE_CREATE','TEMPLATE_APPROVE']},
-  {code:'IMP', name:'Nhập liệu', desc:'Import danh sách (Modex/CSV)', perms:['IMPORT_RUN']},
+  // IMPORT_RUN gate đúng MỘT endpoint: POST /api/v1/admin/import/moso — cổng nhập MIGRATION
+  // (đã nạp 7.221 dòng), KHÔNG phải "import một danh sách lead". Đừng cấp cho role recruiter.
+  {code:'IMP', name:'Nhập liệu', desc:'Chạy chunk migration MOSO — ADMIN', perms:['IMPORT_RUN']},
   {code:'RPT', name:'Báo cáo & audit', desc:'Số liệu toàn team, nhật ký', perms:['REPORT_ALL','AUDIT_VIEW']},
   {code:'ADM', name:'Quản trị', desc:'Label, cấu hình, quản quyền', perms:['LABEL_MANAGE','SETTINGS_MANAGE','RBAC_MANAGE']},
 ];
@@ -779,7 +781,12 @@ const ROLE_DEFAULTS = {
   ONBOARDING:['CANDIDATE_READ','ACTIVITY_READ','OFFER_READ'],
   ACCOUNTING:['CANDIDATE_READ','ACTIVITY_READ','OFFER_READ'],
   LICENSING:['CANDIDATE_READ','ACTIVITY_READ'],
-  LO_SUPPORT:[], OFFICER_RECRUITER:[],   // chưa seed — D86
+  // V036 (27/08): seed đúng 12 quyền của RECRUITER. Quyền là TRỤC SAI của việc tách
+  // HOT/COLD — /inbox/hot gate CANDIDATE_READ, y như danh sách COLD (D90).
+  LO_SUPPORT:['CANDIDATE_READ','CANDIDATE_CREATE','CANDIDATE_UPDATE','CANDIDATE_CLAIM','CANDIDATE_TRANSITION',
+              'CANDIDATE_ARCHIVE','ACTIVITY_READ','ACTIVITY_LOG','SUPPRESSION_MANAGE','OFFER_READ','OFFER_REQUEST','TEMPLATE_CREATE'],
+  OFFICER_RECRUITER:['CANDIDATE_READ','CANDIDATE_CREATE','CANDIDATE_UPDATE','CANDIDATE_CLAIM','CANDIDATE_TRANSITION',
+              'CANDIDATE_ARCHIVE','ACTIVITY_READ','ACTIVITY_LOG','SUPPRESSION_MANAGE','OFFER_READ','OFFER_REQUEST','TEMPLATE_CREATE'],
 };
 const ALL_PERMS = PGROUPS.flatMap(g=>g.perms);
 ROLE_DEFAULTS.ADMIN = ALL_PERMS;   // wildcard '*' trong rbac_roles
