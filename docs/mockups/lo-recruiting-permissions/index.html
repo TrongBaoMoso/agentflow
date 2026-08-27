@@ -232,6 +232,49 @@ tbody tr:hover{background:var(--accent-tint-2)}
 .guard{margin-top:9px;font-size:11px;line-height:1.5;color:var(--muted)}
 .guard b{color:#a4442c}
 .revoke[disabled]{opacity:.45;cursor:not-allowed}
+
+/* — vá 27/08 (vòng 3): ma trận quyền 4 trạng thái, port từ LoaL
+     life-of-a-loan/src/pages/config/_components/PermissionsTab/UserDetailDrawer/permission-state.ts — */
+.pmhead{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:6px}
+.effcount{font-size:11.5px;font-weight:700;color:var(--muted);white-space:nowrap}
+.legend2{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0}
+.lg{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:99px}
+.lg::before{content:"";width:9px;height:9px;border-radius:3px;border:1.5px solid}
+.lg.rl{background:var(--blue-tint,#eef3f8);color:#39607f}.lg.rl::before{background:#4a7fa8;border-color:#4a7fa8}
+.lg.ad{background:#eef5ef;color:#2f6b3f}.lg.ad::before{background:#3E6B48;border-color:#3E6B48}
+.lg.bl{background:#fdf1ee;color:#a4442c}.lg.bl::before{background:transparent;border-color:#a4442c}
+.lg.of{background:var(--hover);color:var(--muted)}.lg.of::before{background:transparent;border-color:#c9c3b8}
+.psearch{width:100%;box-sizing:border-box;font:inherit;font-size:12.5px;padding:7px 11px;border-radius:9px;
+  border:1px solid var(--line);background:#fff;color:var(--ink);margin-bottom:9px}
+.psearch:focus{outline:none;border-color:#b9c9d8}
+.pgrp{border:1px solid var(--line);border-radius:10px;margin-bottom:7px;overflow:hidden;background:#fff}
+.pgrp>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:9px;padding:9px 11px;
+  background:var(--hover)}
+.pgrp>summary::-webkit-details-marker{display:none}
+.pgrp .car{transition:transform .15s;font-size:10px;color:var(--muted)}
+.pgrp[open] .car{transform:rotate(90deg)}
+.pgrp .gname{font-size:12.5px;font-weight:700;color:var(--ink)}
+.pgrp .gdesc{font-size:11px;color:var(--muted);font-weight:400;margin-left:6px}
+.pgrp .gcount{margin-left:auto;font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap}
+.pgrp .bar{width:52px;height:4px;border-radius:99px;background:#e6e1d8;overflow:hidden;flex:none}
+.pgrp .bar i{display:block;height:100%;background:#4a7fa8}
+.prows{display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;padding:9px 11px}
+.prow{display:flex;align-items:center;gap:8px;padding:4px 5px;border-radius:7px;cursor:pointer;
+  border:none;background:none;font:inherit;text-align:left;width:100%}
+.prow:hover{background:var(--hover)}
+.pbox{width:15px;height:15px;border-radius:4px;border:1.5px solid;flex:none;display:grid;place-items:center;
+  font-size:10px;line-height:1;color:#fff;font-weight:900}
+.prow.s-role .pbox{background:#4a7fa8;border-color:#4a7fa8}
+.prow.s-add  .pbox{background:#3E6B48;border-color:#3E6B48}
+.prow.s-blocked .pbox{background:#fff;border-color:#a4442c;color:#a4442c}
+.prow.s-off  .pbox{background:#fff;border-color:#cfc8bc}
+.prow .pcode{font-size:11.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.prow.s-blocked .pcode{color:#a4442c;text-decoration:line-through}
+.prow.s-off .pcode{color:var(--muted)}
+.prow .noRole{margin-left:auto;font-size:9px;font-weight:700;color:#8a5a12;background:#fff6e8;
+  padding:1px 5px;border-radius:4px;text-transform:uppercase}
+.selall{font-size:10.5px;font-weight:700;color:#39607f;background:none;border:none;cursor:pointer;padding:2px 4px}
+.selall:hover{text-decoration:underline}
 </style>
 </head>
 <body>
@@ -499,16 +542,16 @@ tbody tr:hover{background:var(--accent-tint-2)}
     <div class="dsec">
       <h3>Vai trò</h3>
       <p class="why">Chọn nhiều được — quyền hiệu lực là <b>hợp</b> của các vai trò.</p>
-      <label class="roleopt on"><input type="checkbox" checked><span class="rt"><b>RECRUITER</b><small>Nhận việc, gọi/SMS/email, đẩy stage, xin offer</small>
+      <label class="roleopt on"><input type="checkbox" checked onchange="renderPerms()"><span class="rt"><b>RECRUITER</b><small>Nhận việc, gọi/SMS/email, đẩy stage, xin offer</small>
         <span class="until">Hết hạn vai trò này: <input type="date"> <span>— để trống = vĩnh viễn</span></span></span><span class="n">12</span></label>
-      <label class="roleopt on"><input type="checkbox" checked><span class="rt"><b>MANAGER</b><small>Thêm: giao việc, gộp trùng, duyệt offer/template, Reports cả team, Audit</small>
+      <label class="roleopt on"><input type="checkbox" checked onchange="renderPerms()"><span class="rt"><b>MANAGER</b><small>Thêm: giao việc, gộp trùng, duyệt offer/template, Reports cả team, Audit</small>
         <span class="until">Hết hạn vai trò này: <input type="date" value="2026-12-31"> <span>— để trống = vĩnh viễn</span></span></span><span class="n">19</span></label>
       <label class="roleopt notseeded"><input type="checkbox" disabled><span class="rt"><b>LO_SUPPORT</b><span class="pend">chưa seed</span><small>Kho HOT — lead tự giơ tay (webinar/self-apply/referral), SLA đồng hồ team</small></span><span class="n">—</span></label>
       <label class="roleopt notseeded"><input type="checkbox" disabled><span class="rt"><b>OFFICER_RECRUITER</b><span class="pend">chưa seed</span><small>Kho COLD — danh bạ Modex đi săn, không đồng hồ</small></span><span class="n">—</span></label>
-      <label class="roleopt"><input type="checkbox"><span class="rt"><b>HR</b><small>Chỉ đọc</small></span><span class="n">3</span></label>
-      <label class="roleopt"><input type="checkbox"><span class="rt"><b>LICENSING</b><small>Chỉ đọc</small></span><span class="n">2</span></label>
-      <label class="roleopt"><input type="checkbox"><span class="rt"><b>ONBOARDING</b><small>Chỉ đọc</small></span><span class="n">3</span></label>
-      <label class="roleopt"><input type="checkbox"><span class="rt"><b>ACCOUNTING</b><small>Chỉ đọc</small></span><span class="n">3</span></label>
+      <label class="roleopt"><input type="checkbox" onchange="renderPerms()"><span class="rt"><b>HR</b><small>Chỉ đọc</small></span><span class="n">3</span></label>
+      <label class="roleopt"><input type="checkbox" onchange="renderPerms()"><span class="rt"><b>LICENSING</b><small>Chỉ đọc</small></span><span class="n">2</span></label>
+      <label class="roleopt"><input type="checkbox" onchange="renderPerms()"><span class="rt"><b>ONBOARDING</b><small>Chỉ đọc</small></span><span class="n">3</span></label>
+      <label class="roleopt"><input type="checkbox" onchange="renderPerms()"><span class="rt"><b>ACCOUNTING</b><small>Chỉ đọc</small></span><span class="n">3</span></label>
       <div class="danger-zone">
         <div class="dzh">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width:13px;height:13px"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
@@ -520,37 +563,23 @@ tbody tr:hover{background:var(--accent-tint-2)}
     </div>
 
     <div class="dsec">
-      <h3>Điều chỉnh riêng cho người này</h3>
-      <p class="why">Ngoại lệ, không phải cách cấp quyền chính. Mỗi dòng ở đây là một câu cần trả lời được khi rà soát: <em>vì sao riêng người này khác?</em></p>
-      <div class="effect" style="margin-bottom:9px">
-        <div class="hd"><b>+ Thêm quyền</b><small>ngoài vai trò</small></div>
-        <div class="permgrid"><span class="chip ro">chưa có · + thêm</span></div>
+      <div class="pmhead">
+        <h3 style="margin:0">Quyền — mặc định theo vai trò, bấm để đổi</h3>
+        <span class="effcount" id="effcount">— / 22 hiệu lực</span>
       </div>
-      <div class="effect">
-        <div class="hd"><b>− Chặn quyền</b><small>kể cả khi vai trò có</small></div>
-        <div class="permgrid"><span class="chip ro">chưa có · + thêm</span></div>
+      <p class="why">Đây là <b>toàn bộ danh mục</b>, đã tick sẵn theo vai trò ở trên. Bấm một ô là ra
+        <b>điều chỉnh riêng</b>: tick thêm = <span class="lg ad">thêm</span>, bỏ tick cái vai trò có =
+        <span class="lg bl">chặn</span>. Không có danh sách override viết tay — nó là <em>hệ quả</em> của việc bấm.</p>
+      <div class="legend2">
+        <span class="lg rl">Từ vai trò</span><span class="lg ad">Thêm riêng</span>
+        <span class="lg bl">Chặn riêng</span><span class="lg of">Chưa cấp</span>
       </div>
-      <div class="reqbox">
-        <label for="ovreason">Lý do<span class="req">*</span> — bắt buộc khi có bất kỳ điều chỉnh riêng nào</label>
+      <input class="psearch" id="psearch" type="search" placeholder="Tìm quyền… (vd: offer, merge, audit)" oninput="renderPerms()">
+      <div id="pmgroups"></div>
+      <div class="reqbox" id="reasonbox" hidden>
+        <label for="ovreason">Lý do<span class="req">*</span> — bắt buộc vì đang có <b id="ovcount">0</b> điều chỉnh riêng</label>
         <textarea id="ovreason" placeholder="Ví dụ: kiêm recruiting tới 31/12 do team sáp nhập — Victoria duyệt 26/08" oninput="syncSave()"></textarea>
-        <p class="hint">Đi thẳng vào sổ cái bên dưới cùng với thay đổi. Không có lý do thì <b>Lưu</b> khoá — vì một dòng ngoại lệ không giải thích được là một dòng không rà soát được, và sáu tháng sau không ai dám gỡ.</p>
-      </div>
-    </div>
-
-    <div class="dsec">
-      <h3>Quyền hiệu lực <span style="text-transform:none;letter-spacing:0;color:var(--muted);font-weight:400">— cái app thật sự kiểm</span></h3>
-      <p class="why">hợp(vai trò) ∪ thêm − chặn. Đây là thứ quyết định mỗi request, không phải danh sách bên trên.</p>
-      <div class="effect">
-        <div class="hd"><b>19 quyền</b><small>tự tính lại khi bạn tick</small></div>
-        <div class="permgrid">
-          <span class="chip mg">CANDIDATE_READ</span><span class="chip mg">CANDIDATE_CREATE</span><span class="chip mg">CANDIDATE_UPDATE</span>
-          <span class="chip mg">CANDIDATE_CLAIM</span><span class="chip mg">CANDIDATE_TRANSITION</span><span class="chip mg">CANDIDATE_TRANSFER</span>
-          <span class="chip mg">CANDIDATE_ARCHIVE</span><span class="chip mg">CANDIDATE_MERGE</span><span class="chip mg">ACTIVITY_READ</span>
-          <span class="chip mg">ACTIVITY_LOG</span><span class="chip mg">SUPPRESSION_MANAGE</span><span class="chip mg">OFFER_READ</span>
-          <span class="chip mg">OFFER_REQUEST</span><span class="chip mg">OFFER_APPROVE</span><span class="chip mg">TEMPLATE_CREATE</span>
-          <span class="chip mg">TEMPLATE_APPROVE</span><span class="chip mg">REPORT_ALL</span><span class="chip mg">AUDIT_VIEW</span>
-          <span class="chip mg">LABEL_MANAGE</span>
-        </div>
+        <p class="hint">Đi thẳng vào sổ cái cùng với thay đổi. Trùng vai trò thì <b>không</b> sinh override, nên ô này chỉ hiện khi thật sự có ngoại lệ.</p>
       </div>
     </div>
 
@@ -565,6 +594,7 @@ tbody tr:hover{background:var(--accent-tint-2)}
 
   <div class="df">
     <button class="save">Lưu</button>
+    <button class="ghost" onclick="resetPerms()">Đặt lại</button>
     <button class="ghost" onclick="closeDrawer()">Huỷ</button>
     <button class="revoke">Thu hồi toàn bộ quyền</button>
   </div>
@@ -576,19 +606,126 @@ tbody tr:hover{background:var(--accent-tint-2)}
 </aside>
 
 <script>
+/* ── Ma trận quyền: port thẳng model của LoaL (permission-state.ts) ──────────
+   state = role | add | blocked | off
+     checked = (roleDefault ∪ ADD) − BLOCK          <- computeInitialChecked
+     role    = checked && inRole                     <- getPermissionRowState
+     add     = checked && !inRole
+     blocked = !checked && inRole
+     off     = !checked && !inRole
+   overrides KHÔNG viết tay: chúng là diff giữa `checked` và `roleDefault`
+   (buildOverridesDiff). Trùng vai trò => không sinh override nào.
+   Bộ quyền mặc định dưới đây đọc THẲNG từ rbac_roles của DB local 27/08
+   (35 migration), không phải bịa: MANAGER 19 · RECRUITER 12 · HR/ONB/ACC 3 · LIC 2.
+   3 quyền không thuộc role nào: IMPORT_RUN · SETTINGS_MANAGE · RBAC_MANAGE. */
+const PGROUPS = [
+  {code:'CAND', name:'Ứng viên', desc:'Hồ sơ + vòng đời', perms:[
+    'CANDIDATE_READ','CANDIDATE_CREATE','CANDIDATE_UPDATE','CANDIDATE_CLAIM',
+    'CANDIDATE_TRANSITION','CANDIDATE_TRANSFER','CANDIDATE_ARCHIVE','CANDIDATE_MERGE']},
+  {code:'ACT', name:'Hoạt động & liên lạc', desc:'Timeline, gọi/SMS/email, chặn liên lạc', perms:[
+    'ACTIVITY_READ','ACTIVITY_LOG','SUPPRESSION_MANAGE']},
+  {code:'OFF', name:'Offer', desc:'Xin và duyệt offer', perms:['OFFER_READ','OFFER_REQUEST','OFFER_APPROVE']},
+  {code:'TPL', name:'Template', desc:'Soạn và duyệt mẫu tin', perms:['TEMPLATE_CREATE','TEMPLATE_APPROVE']},
+  {code:'IMP', name:'Nhập liệu', desc:'Import danh sách (Modex/CSV)', perms:['IMPORT_RUN']},
+  {code:'RPT', name:'Báo cáo & audit', desc:'Số liệu toàn team, nhật ký', perms:['REPORT_ALL','AUDIT_VIEW']},
+  {code:'ADM', name:'Quản trị', desc:'Label, cấu hình, quản quyền', perms:['LABEL_MANAGE','SETTINGS_MANAGE','RBAC_MANAGE']},
+];
+const ROLE_DEFAULTS = {
+  RECRUITER:['CANDIDATE_READ','CANDIDATE_CREATE','CANDIDATE_UPDATE','CANDIDATE_CLAIM','CANDIDATE_TRANSITION',
+             'CANDIDATE_ARCHIVE','ACTIVITY_READ','ACTIVITY_LOG','SUPPRESSION_MANAGE','OFFER_READ','OFFER_REQUEST','TEMPLATE_CREATE'],
+  MANAGER:['CANDIDATE_READ','CANDIDATE_CREATE','CANDIDATE_UPDATE','CANDIDATE_CLAIM','CANDIDATE_TRANSITION',
+           'CANDIDATE_TRANSFER','CANDIDATE_ARCHIVE','CANDIDATE_MERGE','ACTIVITY_READ','ACTIVITY_LOG','SUPPRESSION_MANAGE',
+           'OFFER_READ','OFFER_REQUEST','OFFER_APPROVE','TEMPLATE_CREATE','TEMPLATE_APPROVE','REPORT_ALL','AUDIT_VIEW','LABEL_MANAGE'],
+  HR:['CANDIDATE_READ','ACTIVITY_READ','OFFER_READ'],
+  ONBOARDING:['CANDIDATE_READ','ACTIVITY_READ','OFFER_READ'],
+  ACCOUNTING:['CANDIDATE_READ','ACTIVITY_READ','OFFER_READ'],
+  LICENSING:['CANDIDATE_READ','ACTIVITY_READ'],
+  LO_SUPPORT:[], OFFICER_RECRUITER:[],   // chưa seed — D86
+};
+const ALL_PERMS = PGROUPS.flatMap(g=>g.perms);
+ROLE_DEFAULTS.ADMIN = ALL_PERMS;   // wildcard '*' trong rbac_roles
+let CHECKED = null;   // Set<string> — working set
+
+function selectedRoles(){
+  return [...document.querySelectorAll('.dsec .roleopt input[type=checkbox]:checked')]
+    .map(cb=>cb.closest('.roleopt').querySelector('.rt b').textContent.trim());
+}
+function roleDefault(){
+  const out=new Set();
+  selectedRoles().forEach(r=>(ROLE_DEFAULTS[r]||[]).forEach(p=>out.add(p)));
+  return out;
+}
+/** buildOverridesDiff: checked−role => ADD, role−checked => BLOCK */
+function overridesDiff(){
+  const rd=roleDefault(), add=[], block=[];
+  CHECKED.forEach(c=>{ if(!rd.has(c)) add.push(c); });
+  rd.forEach(c=>{ if(!CHECKED.has(c)) block.push(c); });
+  return {add, block};
+}
+function seedChecked(){ CHECKED = new Set(roleDefault()); }   // computeInitialChecked, chưa có override
+
+function rowState(code){
+  const inRole=roleDefault().has(code), on=CHECKED.has(code);
+  if(on&&inRole) return 'role'; if(on&&!inRole) return 'add';
+  if(!on&&inRole) return 'blocked'; return 'off';
+}
+function togglePerm(code){ CHECKED.has(code)?CHECKED.delete(code):CHECKED.add(code); renderPerms(); }
+function toggleGroup(gcode){
+  const g=PGROUPS.find(x=>x.code===gcode);
+  const allOn=g.perms.every(c=>CHECKED.has(c));
+  g.perms.forEach(c=>allOn?CHECKED.delete(c):CHECKED.add(c));
+  renderPerms();
+}
+const GLYPH={role:'✓',add:'✓',blocked:'✕',off:''};
+function renderPerms(){
+  if(!CHECKED) seedChecked();
+  const host=document.getElementById('pmgroups'); if(!host) return;
+  const q=(document.getElementById('psearch')||{}).value||'';
+  const rd=roleDefault(); const nq=q.trim().toUpperCase();
+  const open=new Set([...host.querySelectorAll('details[open]')].map(d=>d.dataset.g));
+  host.innerHTML = PGROUPS.map(g=>{
+    const perms=g.perms.filter(c=>!nq||c.includes(nq)||g.name.toUpperCase().includes(nq));
+    if(!perms.length) return '';
+    const on=g.perms.filter(c=>CHECKED.has(c)).length;
+    const pct=Math.round(on/g.perms.length*100);
+    const isOpen = nq ? true : (open.size? open.has(g.code) : true);
+    return `<details class="pgrp" data-g="${g.code}"${isOpen?' open':''}>
+      <summary><span class="car">▶</span><span><span class="gname">${g.name}</span><span class="gdesc">${g.desc}</span></span>
+      <span class="bar"><i style="width:${pct}%"></i></span><span class="gcount">${on}/${g.perms.length}</span></summary>
+      <div class="prows">
+        <button class="selall" style="grid-column:1/-1;justify-self:start" onclick="toggleGroup('${g.code}')">
+          ${on===g.perms.length?'Bỏ tick cả nhóm':'Tick cả nhóm'}</button>
+        ${perms.map(c=>{const st=rowState(c);
+          return `<button class="prow s-${st}" onclick="togglePerm('${c}')" aria-pressed="${CHECKED.has(c)}">
+            <span class="pbox">${GLYPH[st]}</span><span class="pcode">${c}</span>
+            ${rd.has(c)?'':(CHECKED.has(c)?'<span class="noRole">thêm riêng</span>':'')}</button>`;}).join('')}
+      </div></details>`;
+  }).join('') || '<p class="why">Không có quyền nào khớp.</p>';
+  const {add,block}=overridesDiff(); const nOv=add.length+block.length;
+  document.getElementById('effcount').textContent = `${CHECKED.size} / ${ALL_PERMS.length} hiệu lực`
+    + (nOv?` · ${nOv} điều chỉnh riêng`:'');
+  const rb=document.getElementById('reasonbox'); rb.hidden = nOv===0;
+  document.getElementById('ovcount').textContent = nOv;
+  syncSave();
+}
+function resetPerms(){ seedChecked(); const r=document.getElementById('ovreason'); if(r) r.value=''; renderPerms(); }
+</script>
+<script>
 // vá 27/08 — ADMIN phải xác nhận rõ ràng, không tick nhầm được
 function confirmAdmin(cb){
   if(!cb.checked){ cb.closest('.roleopt').classList.remove('on'); return; }
   const ok = confirm('Cấp ADMIN cho Nocha Hien?\n\nADMIN bỏ qua mọi kiểm quyền, GỒM CẢ quyền cấp quyền cho người khác — người này sẽ tự sửa được quyền của chính mình.\n\nCần lý do trong ô bên dưới, và thay đổi sẽ vào sổ cái vĩnh viễn.');
   if(ok){ cb.closest('.roleopt').classList.add('on'); }
   else { cb.checked = false; }
-  syncSave();
+  renderPerms();
 }
 // Lưu khoá tới khi có lý do (chỉ minh hoạ trạng thái, không validate thật)
 function syncSave(){
-  const btn = document.querySelector('.df .save');
+  const btn = document.querySelector('.df .save'); if(!btn) return;
   const reason = (document.getElementById('ovreason')||{}).value || '';
-  if(btn) btn.disabled = reason.trim().length < 8;
+  const nOv = (typeof CHECKED!=='undefined' && CHECKED) ? (()=>{const o=overridesDiff();return o.add.length+o.block.length;})() : 0;
+  // D35: lý do bắt buộc, nhưng CHỈ khi thật sự có ngoại lệ — trùng vai trò thì không sinh override
+  btn.disabled = nOv > 0 && reason.trim().length < 8;
 }
 function toggle(id){
   ['disc','prof'].forEach(k=>{ const el=document.getElementById(k); if(k===id) el.classList.toggle('show'); else el.classList.remove('show'); });
@@ -596,10 +733,10 @@ function toggle(id){
 document.addEventListener('click', e=>{
   if(!e.target.closest('.tright')) ['disc','prof'].forEach(k=>document.getElementById(k).classList.remove('show'));
 });
-function openDrawer(){ document.getElementById('scrim').classList.add('show'); document.getElementById('drawer').classList.add('show'); }
+function openDrawer(){ document.getElementById('scrim').classList.add('show'); document.getElementById('drawer').classList.add('show'); renderPerms(); }
 function closeDrawer(){ document.getElementById('scrim').classList.remove('show'); document.getElementById('drawer').classList.remove('show'); }
 document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeDrawer(); ['disc','prof'].forEach(k=>document.getElementById(k).classList.remove('show')); }});
-syncSave();
+renderPerms();
 </script>
 </body>
 </html>
