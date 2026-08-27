@@ -193,6 +193,29 @@ tbody tr:hover{background:var(--accent-tint-2)}
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .toolbar{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .toolbar .grow{flex:1}
+
+/* — vá 27/08: ba mức chạm app (D76/D77/D78), khối ADMIN tách riêng, lý do bắt buộc — */
+.seat{display:inline-flex;align-items:center;gap:5px;border-radius:6px;font-size:10.5px;font-weight:700;
+  padding:3px 8px;white-space:nowrap;letter-spacing:.01em}
+.seat.s0{background:#f4f2ee;color:#7b7466;box-shadow:inset 0 0 0 1px #e3ded4}
+.seat.s1{background:#eef3f8;color:#39607f;box-shadow:inset 0 0 0 1px #d5e2ee}
+.seat.s2{background:#eef5ef;color:#3E6B48;box-shadow:inset 0 0 0 1px #d6e6d9}
+.seatnote{display:block;margin-top:3px;font-size:11px;color:var(--muted);line-height:1.45}
+.danger-zone{margin-top:12px;border-radius:9px;padding:11px 12px;background:#fdf6f4;
+  box-shadow:inset 0 0 0 1px #f0d9d2}
+.danger-zone .dzh{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.05em;color:#a4442c;margin-bottom:7px}
+.danger-zone .dzwhy{font-size:11.5px;color:#8a5a4a;line-height:1.5;margin:7px 0 0}
+.reqbox{margin-top:10px}
+.reqbox label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;color:var(--muted);margin-bottom:5px}
+.reqbox label .req{color:#a4442c;margin-left:3px}
+.reqbox textarea{width:100%;box-sizing:border-box;border-radius:8px;padding:8px 10px;font:inherit;
+  font-size:12.5px;line-height:1.5;resize:vertical;min-height:52px;background:#fff;
+  border:1px solid var(--line);color:var(--ink)}
+.reqbox textarea:focus{outline:none;border-color:#b9c9d8;box-shadow:0 0 0 3px rgba(62,107,72,.08)}
+.reqbox .hint{margin-top:5px;font-size:11px;color:var(--muted)}
+.save[disabled]{opacity:.45;cursor:not-allowed}
 </style>
 </head>
 <body>
@@ -424,15 +447,15 @@ tbody tr:hover{background:var(--accent-tint-2)}
         <span class="hint">Chỉ đọc ở V1 — sửa vai trò là việc của Admin qua migration</span>
       </div>
       <table>
-        <thead><tr><th style="width:16%">Vai trò</th><th style="width:9%">Số quyền</th><th>Làm được gì</th></tr></thead>
+        <thead><tr><th style="width:14%">Vai trò</th><th style="width:8%">Số quyền</th><th style="width:29%">Team này chạm app kiểu nào</th><th>Làm được gì</th></tr></thead>
         <tbody>
-          <tr><td><span class="chip ad">ADMIN</span></td><td class="tnum">tất cả</td><td class="dim">Wildcard <code>*</code> — kể cả quản quyền (RBAC_MANAGE)</td></tr>
-          <tr><td><span class="chip mg">MANAGER</span></td><td class="tnum">19</td><td>Mọi thứ của recruiter + giao việc, gộp trùng, duyệt offer, duyệt template, Reports cả team, xem Audit</td></tr>
-          <tr><td><span class="chip rc">RECRUITER</span></td><td class="tnum">12</td><td>Nhận việc, gọi/SMS/email, đẩy stage, xin offer, lưu trữ, tạo template riêng</td></tr>
-          <tr><td><span class="chip">HR</span></td><td class="tnum">3</td><td class="dim">Chỉ đọc: candidate · hoạt động · offer</td></tr>
-          <tr><td><span class="chip">ONBOARDING</span></td><td class="tnum">3</td><td class="dim">Chỉ đọc: candidate · hoạt động · offer</td></tr>
-          <tr><td><span class="chip">ACCOUNTING</span></td><td class="tnum">3</td><td class="dim">Chỉ đọc: candidate · hoạt động · offer</td></tr>
-          <tr><td><span class="chip">LICENSING</span></td><td class="tnum">2</td><td class="dim">Chỉ đọc: candidate · hoạt động</td></tr>
+          <tr><td><span class="chip ad">ADMIN</span></td><td class="tnum">tất cả</td><td><span class="seat s2">Ghế đầy</span><span class="seatnote">Quản trị hệ thống + quản quyền.</span></td><td class="dim">Wildcard <code>*</code> — kể cả quản quyền (RBAC_MANAGE)</td></tr>
+          <tr><td><span class="chip mg">MANAGER</span></td><td class="tnum">19</td><td><span class="seat s2">Ghế đầy</span><span class="seatnote">Toàn cục trong V1 — chỉ có <b>một</b> manager thật (D79). Chưa có scope theo team.</span></td><td>Mọi thứ của recruiter + giao việc, gộp trùng, duyệt offer, duyệt template, Reports cả team, xem Audit</td></tr>
+          <tr><td><span class="chip rc">RECRUITER</span></td><td class="tnum">12</td><td><span class="seat s2">Ghế đầy</span><span class="seatnote">Đây là app của họ. Sống trong Today / Pipeline.</span></td><td>Nhận việc, gọi/SMS/email, đẩy stage, xin offer, lưu trữ, tạo template riêng</td></tr>
+          <tr><td><span class="chip">HR</span></td><td class="tnum">3</td><td><span class="seat s0">Không ghế</span><span class="seatnote"><b>Không có account trong V1</b> (D77). Việc đến bằng link / omni / app HR. Vai trò giữ trong bảng (luật #8), nhưng không có grant ⇒ mọi endpoint 403.</span></td><td class="dim">Không đăng nhập app này. Nhận việc ở nơi khác.</td></tr>
+          <tr><td><span class="chip">ONBOARDING</span></td><td class="tnum">3</td><td><span class="seat s1">Ghế hẹp</span><span class="seatnote">Chỉ hồ sơ <b>có item mở gửi phòng họ</b> (D78) + cổng ngoại lệ tạo account sớm — bắt buộc ghi lý do, có audit (D35).</span></td><td class="dim">Đọc + đóng item của phòng mình; ngoại lệ tạo account sớm (có lý do)</td></tr>
+          <tr><td><span class="chip">ACCOUNTING</span></td><td class="tnum">3</td><td><span class="seat s0">Không ghế</span><span class="seatnote"><b>Không có account trong V1</b> (D77). Referral payout chạy trên export, không mở pipeline.</span></td><td class="dim">Không đăng nhập app này. Nhận việc ở nơi khác.</td></tr>
+          <tr><td><span class="chip">LICENSING</span></td><td class="tnum">2</td><td><span class="seat s1">Ghế hẹp</span><span class="seatnote">Hồ sơ có <b>item mở</b> HOẶC <b>LF đã từng sponsor</b> (D76) — theo quan hệ, không theo đồng hồ. Là <b>người ghi</b> status NMLS nên không thể không-ghế.</span></td><td class="dim">Đọc + hàng đợi Sponsorship; lật trạng thái NMLS <em>bằng chính hành động</em> (D85)</td></tr>
         </tbody>
       </table>
       <div class="legend">
@@ -464,7 +487,14 @@ tbody tr:hover{background:var(--accent-tint-2)}
       <label class="roleopt"><input type="checkbox"><span class="rt"><b>LICENSING</b><small>Chỉ đọc</small></span><span class="n">2</span></label>
       <label class="roleopt"><input type="checkbox"><span class="rt"><b>ONBOARDING</b><small>Chỉ đọc</small></span><span class="n">3</span></label>
       <label class="roleopt"><input type="checkbox"><span class="rt"><b>ACCOUNTING</b><small>Chỉ đọc</small></span><span class="n">3</span></label>
-      <label class="roleopt"><input type="checkbox"><span class="rt"><b>ADMIN</b><small>Tất cả, kể cả quản quyền</small></span><span class="n">*</span></label>
+      <div class="danger-zone">
+        <div class="dzh">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width:13px;height:13px"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+          Không cùng loại với các vai trò trên
+        </div>
+        <label class="roleopt"><input type="checkbox" onchange="confirmAdmin(this)"><span class="rt"><b>ADMIN</b><small>Wildcard <code>*</code> — bỏ qua mọi kiểm quyền, <b>gồm cả quyền cấp quyền cho người khác</b></small></span><span class="n">*</span></label>
+        <p class="dzwhy">Tick sáu ô trên là cộng thêm việc. Tick ô này là <b>bỏ cổng</b> — người này tự cấp được quyền cho chính mình và cho người khác, nên nó không nằm chung danh sách. Hệ cũ để <code>PAM_GRANT_PERMISSION</code> lẫn trong 82 công tắc phẳng, và HR kết thúc với 74 quyền mà không ai quyết định điều đó.</p>
+      </div>
     </div>
 
     <div class="dsec">
@@ -477,6 +507,11 @@ tbody tr:hover{background:var(--accent-tint-2)}
       <div class="effect">
         <div class="hd"><b>− Chặn quyền</b><small>kể cả khi vai trò có</small></div>
         <div class="permgrid"><span class="chip ro">chưa có · + thêm</span></div>
+      </div>
+      <div class="reqbox">
+        <label for="ovreason">Lý do<span class="req">*</span> — bắt buộc khi có bất kỳ điều chỉnh riêng nào</label>
+        <textarea id="ovreason" placeholder="Ví dụ: kiêm recruiting tới 31/12 do team sáp nhập — Victoria duyệt 26/08" oninput="syncSave()"></textarea>
+        <p class="hint">Đi thẳng vào sổ cái bên dưới cùng với thay đổi. Không có lý do thì <b>Lưu</b> khoá — vì một dòng ngoại lệ không giải thích được là một dòng không rà soát được, và sáu tháng sau không ai dám gỡ.</p>
       </div>
     </div>
 
@@ -491,7 +526,7 @@ tbody tr:hover{background:var(--accent-tint-2)}
           <span class="chip mg">CANDIDATE_ARCHIVE</span><span class="chip mg">CANDIDATE_MERGE</span><span class="chip mg">ACTIVITY_READ</span>
           <span class="chip mg">ACTIVITY_LOG</span><span class="chip mg">SUPPRESSION_MANAGE</span><span class="chip mg">OFFER_READ</span>
           <span class="chip mg">OFFER_REQUEST</span><span class="chip mg">OFFER_APPROVE</span><span class="chip mg">TEMPLATE_CREATE</span>
-          <span class="chip mg">TEMPLATE_APPROVE</span><span class="chip mg">REPORT_TEAM</span><span class="chip mg">AUDIT_VIEW</span>
+          <span class="chip mg">TEMPLATE_APPROVE</span><span class="chip mg">REPORT_ALL</span><span class="chip mg">AUDIT_VIEW</span>
           <span class="chip mg">LABEL_MANAGE</span>
         </div>
       </div>
@@ -513,6 +548,20 @@ tbody tr:hover{background:var(--accent-tint-2)}
 </aside>
 
 <script>
+// vá 27/08 — ADMIN phải xác nhận rõ ràng, không tick nhầm được
+function confirmAdmin(cb){
+  if(!cb.checked){ cb.closest('.roleopt').classList.remove('on'); return; }
+  const ok = confirm('Cấp ADMIN cho Nocha Hien?\n\nADMIN bỏ qua mọi kiểm quyền, GỒM CẢ quyền cấp quyền cho người khác — người này sẽ tự sửa được quyền của chính mình.\n\nCần lý do trong ô bên dưới, và thay đổi sẽ vào sổ cái vĩnh viễn.');
+  if(ok){ cb.closest('.roleopt').classList.add('on'); }
+  else { cb.checked = false; }
+  syncSave();
+}
+// Lưu khoá tới khi có lý do (chỉ minh hoạ trạng thái, không validate thật)
+function syncSave(){
+  const btn = document.querySelector('.df .save');
+  const reason = (document.getElementById('ovreason')||{}).value || '';
+  if(btn) btn.disabled = reason.trim().length < 8;
+}
 function toggle(id){
   ['disc','prof'].forEach(k=>{ const el=document.getElementById(k); if(k===id) el.classList.toggle('show'); else el.classList.remove('show'); });
 }
@@ -522,6 +571,7 @@ document.addEventListener('click', e=>{
 function openDrawer(){ document.getElementById('scrim').classList.add('show'); document.getElementById('drawer').classList.add('show'); }
 function closeDrawer(){ document.getElementById('scrim').classList.remove('show'); document.getElementById('drawer').classList.remove('show'); }
 document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeDrawer(); ['disc','prof'].forEach(k=>document.getElementById(k).classList.remove('show')); }});
+syncSave();
 </script>
 </body>
 </html>
