@@ -686,10 +686,40 @@
       "runtimeArgs": [
         "-m",
         "http.server",
-        "3049"
+        "3050",
+        "--directory",
+        "/Users/apple/Projects/agentflow/docs/mockups/lo-recruiting-permissions"
       ],
-      "cwd": "/Users/apple/Projects/agentflow/docs/mockups/lo-recruiting-permissions",
-      "port": 3049
+      "cwd": "/Users/apple/Projects/agentflow",
+      "port": 3050
+    },
+    {
+      "name": "lfh-today-rates",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-today-rates",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3042"
+      ],
+      "port": 3042
+    },
+    {
+      "name": "lo-today-rates",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lo-today-rates",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3043"
+      ],
+      "port": 3043
     }
   ]
 }
