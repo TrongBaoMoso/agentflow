@@ -275,6 +275,43 @@ tbody tr:hover{background:var(--accent-tint-2)}
   padding:1px 5px;border-radius:4px;text-transform:uppercase}
 .selall{font-size:10.5px;font-weight:700;color:#39607f;background:none;border:none;cursor:pointer;padding:2px 4px}
 .selall:hover{text-decoration:underline}
+
+/* — vá 27/08 (vòng 4): bulk bar + picker, port LoaL BulkActionBar / CentralUserPickerModal — */
+.selcell{width:34px;text-align:center}
+.selcell input{width:15px;height:15px;accent-color:var(--accent-hover);cursor:pointer}
+.selfmark{color:var(--muted);font-size:13px;cursor:help}
+.bulkbar{display:none;align-items:center;gap:11px;padding:9px 13px;background:#fdf6ee;
+  box-shadow:inset 0 0 0 1px #f0dcbb;border-radius:10px;margin:0 0 2px}
+.bulkbar.on{display:flex}
+.bulkbar .bcount{font-size:12.5px;font-weight:700;color:#8a5a12;white-space:nowrap}
+.bulkbar .bnames{font-size:11.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.bulkbar select{font:inherit;font-size:12px;padding:5px 8px;border-radius:8px;border:1px solid var(--line);background:#fff}
+.bulkbar .bx{background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px;line-height:1;padding:2px 5px}
+.bulkbar .brm{font-size:12px;font-weight:700;color:#a4442c;background:none;border:none;cursor:pointer}
+.bulkbar .brm:hover{text-decoration:underline}
+.mdl{position:fixed;inset:0;background:rgba(30,26,20,.42);display:none;place-items:center;z-index:60}
+.mdl.on{display:grid}
+.mdlbox{background:#fff;border-radius:14px;width:min(620px,92vw);max-height:86vh;display:flex;flex-direction:column;
+  box-shadow:0 24px 60px rgba(0,0,0,.22);overflow:hidden}
+.mdlbox header{padding:15px 18px 11px;border-bottom:1px solid var(--line)}
+.mdlbox h3{margin:0 0 3px;font-size:15px}
+.mdlbox .sub{font-size:11.5px;color:var(--muted);line-height:1.5}
+.mdlbody{padding:13px 18px;overflow:auto;flex:1}
+.mdlbody input[type=search]{width:100%;box-sizing:border-box;font:inherit;font-size:12.5px;padding:8px 11px;
+  border-radius:9px;border:1px solid var(--line);margin-bottom:10px}
+.crow{display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:9px;cursor:pointer}
+.crow:hover{background:var(--hover)}
+.crow input{width:15px;height:15px;accent-color:var(--accent-hover)}
+.crow .cav{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:#fff;
+  font-size:10.5px;font-weight:700;flex:none}
+.crow .cnm{font-size:12.5px;font-weight:600}
+.crow .cem{font-size:11px;color:var(--muted)}
+.crow .has{margin-left:auto;font-size:9.5px;font-weight:700;color:var(--muted);background:var(--hover);
+  padding:2px 6px;border-radius:5px;text-transform:uppercase}
+.mdlfoot{padding:12px 18px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.mdlfoot .fcount{font-size:12px;color:var(--muted);flex:1}
+.warnsrc{margin:0 0 10px;padding:9px 11px;border-radius:9px;background:#fff6e8;
+  box-shadow:inset 0 0 0 1px #f0dcbb;font-size:11.5px;line-height:1.55;color:#8a5a12}
 </style>
 </head>
 <body>
@@ -401,7 +438,7 @@ tbody tr:hover{background:var(--accent-tint-2)}
         <span class="crumb">Permissions · ai được làm gì trong app này</span>
         <h1>Quyền là của <em>app này</em>, không phải của token</h1>
       </div>
-      <button class="ph cta" style="margin-left:auto" onclick="openDrawer('new')">+ Cấp quyền cho người mới</button>
+      <button class="ph cta" style="margin-left:auto" onclick="openPick()">+ Cấp quyền cho người mới</button>
     </div>
 
     <div class="note info">
@@ -424,9 +461,20 @@ tbody tr:hover{background:var(--accent-tint-2)}
         Người có quyền trong LF Recruit <span class="cnt">7</span>
         <span class="hint">Bấm một hàng để sửa · sổ cái ghi lại mọi lần đổi</span>
       </div>
+      <div class="bulkbar" id="bulkbar">
+        <span class="bcount" id="bcount">0 người</span>
+        <span class="bnames" id="bnames"></span>
+        <select id="brole" onchange="bulkRole()">
+          <option value="">Đổi vai trò thành…</option>
+          <option>RECRUITER</option><option>MANAGER</option><option>HR</option>
+          <option>LICENSING</option><option>ONBOARDING</option><option>ACCOUNTING</option>
+        </select>
+        <button class="brm" onclick="bulkRemove()">Thu hồi quyền</button>
+        <button class="bx" onclick="clearSel()" aria-label="Bỏ chọn">×</button>
+      </div>
       <table>
         <thead><tr>
-          <th style="width:26%">Người</th>
+          <th style="width:34px"><input type="checkbox" id="selall" onchange="toggleAllRows(this)" aria-label="Chọn tất cả"></th><th style="width:24%">Người</th>
           <th style="width:22%">Vai trò</th>
           <th style="width:22%">Điều chỉnh riêng</th>
           <th style="width:11%">Nhận việc?</th>
@@ -435,6 +483,7 @@ tbody tr:hover{background:var(--accent-tint-2)}
         </tr></thead>
         <tbody>
           <tr onclick="openDrawer('luis')">
+            <td class="selcell" onclick="event.stopPropagation()"><input type="checkbox" class="rowsel" data-id="luis" onchange="syncBulk()" aria-label="Chọn"></td>
             <td><div class="person"><span class="avatar" style="background:#B24E1E">LT</span><span><b>Luis Testcase</b><small>luis7522333@viet18.com</small></span></div></td>
             <td><div class="chips"><span class="chip rc">RECRUITER</span></div></td>
             <td class="dim">—</td>
@@ -443,6 +492,7 @@ tbody tr:hover{background:var(--accent-tint-2)}
             <td class="act"><button class="btn">Sửa</button></td>
           </tr>
           <tr onclick="openDrawer('nocha')">
+            <td class="selcell" onclick="event.stopPropagation()"><input type="checkbox" class="rowsel" data-id="nocha" onchange="syncBulk()" aria-label="Chọn"></td>
             <td><div class="person"><span class="avatar" style="background:#3E6B48">NH</span><span><b>Nocha Hien</b><small>test4591872@test.com</small></span></div></td>
             <td><div class="chips"><span class="chip rc">RECRUITER</span><span class="chip mg">MANAGER<span class="til">đến 31/12</span></span></div></td>
             <td class="dim">—</td>
@@ -451,6 +501,7 @@ tbody tr:hover{background:var(--accent-tint-2)}
             <td class="act"><button class="btn">Sửa</button></td>
           </tr>
           <tr onclick="openDrawer('ken')">
+            <td class="selcell" onclick="event.stopPropagation()"><input type="checkbox" class="rowsel" data-id="ken" onchange="syncBulk()" aria-label="Chọn"></td>
             <td><div class="person"><span class="avatar" style="background:#4338CA">KC</span><span><b>Ken Customer</b><small>test10990305@test.com</small></span></div></td>
             <td><div class="chips"><span class="chip">HR</span></div></td>
             <td><div class="chips"><span class="chip add">+ CANDIDATE_UPDATE</span></div></td>
@@ -459,6 +510,7 @@ tbody tr:hover{background:var(--accent-tint-2)}
             <td class="act"><button class="btn">Sửa</button></td>
           </tr>
           <tr onclick="openDrawer('chu')">
+            <td class="selcell" onclick="event.stopPropagation()"><input type="checkbox" class="rowsel" data-id="chu" onchange="syncBulk()" aria-label="Chọn"></td>
             <td><div class="person"><span class="avatar" style="background:#B7791F">CC</span><span><b>Chu Con Gi Nua</b><small>chuconginua@viet18.com</small></span></div></td>
             <td><div class="chips"><span class="chip">LICENSING</span></div></td>
             <td class="dim">—</td>
@@ -467,6 +519,7 @@ tbody tr:hover{background:var(--accent-tint-2)}
             <td class="act"><button class="btn">Sửa</button></td>
           </tr>
           <tr onclick="openDrawer('maria')">
+            <td class="selcell" onclick="event.stopPropagation()"><input type="checkbox" class="rowsel" data-id="maria" onchange="syncBulk()" aria-label="Chọn"></td>
             <td><div class="person"><span class="avatar" style="background:#8A3FFC">MT</span><span><b>Maria Testcase</b><small>m123123aria@test.com</small></span></div></td>
             <td><div class="chips"><span class="chip">ONBOARDING</span></div></td>
             <td class="dim">—</td>
@@ -475,6 +528,7 @@ tbody tr:hover{background:var(--accent-tint-2)}
             <td class="act"><button class="btn">Sửa</button></td>
           </tr>
           <tr onclick="openDrawer('acc')">
+            <td class="selcell" onclick="event.stopPropagation()"><input type="checkbox" class="rowsel" data-id="acc" onchange="syncBulk()" aria-label="Chọn"></td>
             <td><div class="person"><span class="avatar" style="background:#C53030">AR</span><span><b>Admin Request</b><small>admingiftrequestor@viet18.com</small></span></div></td>
             <td><div class="chips"><span class="chip">ACCOUNTING</span></div></td>
             <td><div class="chips"><span class="chip blk">− OFFER_READ</span></div></td>
@@ -483,6 +537,7 @@ tbody tr:hover{background:var(--accent-tint-2)}
             <td class="act"><button class="btn">Sửa</button></td>
           </tr>
           <tr onclick="openDrawer('me')">
+            <td class="selcell" onclick="event.stopPropagation()"><span class="selfmark" title="Không chọn được chính mình — D69 chống tự khoá cửa">—</span></td>
             <td><div class="person"><span class="avatar">BT</span><span><b>Bao Trinh</b><small>bao.trinh@loanfactory.com</small></span></div></td>
             <td><div class="chips"><span class="chip ad">ADMIN</span></div></td>
             <td class="dim">—</td>
@@ -605,6 +660,90 @@ tbody tr:hover{background:var(--accent-tint-2)}
   </p>
 </aside>
 
+<script>
+/* ── Bulk bar + picker: port LoaL BulkActionBar / CentralUserPickerModal ─────
+   Luật mang theo cùng UI, không chỉ mang hình:
+   1. Hàng của CHÍNH NGƯỜI ĐANG ĐĂNG NHẬP không chọn được -> họ luôn sống sót
+      qua batch của chính mình (D69 chống tự khoá cửa).
+   2. KHÔNG đoán LAST_ADMIN ở client: đếm admin phía client là số cũ ngay khi
+      có admin khác đang thao tác. Server trả 409, client chỉ hiển thị.
+   3. Chọn key theo userId trong Set, KHÔNG theo chỉ số hàng -> sống qua phân
+      trang và tìm lại.
+   4. Bulk chỉ cấp/đổi VAI TRÒ. Tinh chỉnh từng quyền ở drawer — một lượt bulk
+      không bao giờ đẻ ra override. */
+const MAX_NAMES = 3;
+const PICKED = new Set();          // userId, sống qua tìm kiếm
+const DIRECTORY = [               // giả lập danh bạ trung tâm
+  {id:'u1', n:'Brayan Suarez',  e:'brayan@loanfactory.com',        c:'#B24E1E', has:'RECRUITER'},
+  {id:'u2', n:'Seth August',    e:'seth.august@loanfactory.com',   c:'#3E6B48', has:null},
+  {id:'u3', n:'Victoria Tran',  e:'victoria@loanfactory.com',      c:'#4338CA', has:null},
+  {id:'u4', n:'Y Ngo',          e:'y.ngo@loanfactory.com',         c:'#8a5a12', has:'LICENSING'},
+  {id:'u5', n:'Miley Dau',      e:'miley.dau@loanfactory.com',     c:'#a4442c', has:null},
+  {id:'u6', n:'Rosaline Pham',  e:'rosaline.pham@loanfactory.com', c:'#39607f', has:null},
+];
+function selectedRows(){ return [...document.querySelectorAll('.rowsel:checked')]; }
+function rowName(cb){ return cb.closest('tr').querySelector('.person b').textContent.trim(); }
+function syncBulk(){
+  const sel = selectedRows(), bar = document.getElementById('bulkbar');
+  bar.classList.toggle('on', sel.length>0);
+  if(!sel.length) return;
+  document.getElementById('bcount').textContent = sel.length + ' người';
+  const names = sel.map(rowName);
+  document.getElementById('bnames').textContent = names.length<=MAX_NAMES
+    ? names.join(' · ')
+    : names.slice(0,MAX_NAMES).join(' · ') + ' · +' + (names.length-MAX_NAMES) + ' người nữa';
+  const all = document.querySelectorAll('.rowsel').length;
+  document.getElementById('selall').checked = sel.length===all;
+}
+function toggleAllRows(cb){ document.querySelectorAll('.rowsel').forEach(x=>{x.checked=cb.checked}); syncBulk(); }
+function clearSel(){ document.querySelectorAll('.rowsel').forEach(x=>x.checked=false);
+  document.getElementById('selall').checked=false; syncBulk(); }
+function bulkRole(){
+  const sel=document.getElementById('brole'), n=selectedRows().length;
+  if(!sel.value||!n) return;
+  alert(`Đổi vai trò ${n} người thành ${sel.value}.\n\nMột lời gọi duy nhất, CÙNG endpoint với modal thêm người `
+   +`— assign / đổi vai trò / thu hồi là một thao tác server trên 1..N người, không có đường ghi thứ hai.\n\n`
+   +`Bulk chỉ đổi VAI TRÒ, không đụng điều chỉnh riêng của ai.`);
+  sel.value='';
+}
+function bulkRemove(){
+  const n=selectedRows().length; if(!n) return;
+  alert(`Thu hồi quyền ${n} người.\n\nHàng của bạn không chọn được nên bạn luôn sống sót qua batch của chính mình (D69).\n\n`
+   +`Nếu batch này lấy đi người ADMIN cuối cùng, SERVER trả 409 LAST_ADMIN — client không đoán trước, `
+   +`vì số admin đếm ở client là số cũ ngay khi có admin khác đang thao tác.`);
+}
+/* ── picker ─────────────────────────────────────────────────────────────── */
+function openPick(){ PICKED.clear(); document.getElementById('psearch2').value='';
+  document.getElementById('prole').value=''; document.getElementById('pickmdl').classList.add('on'); renderPick(); }
+function closePick(){ document.getElementById('pickmdl').classList.remove('on'); }
+function togglePick(id){ PICKED.has(id)?PICKED.delete(id):PICKED.add(id); renderPick(); }
+function renderPick(){
+  const q=(document.getElementById('psearch2').value||'').trim().toLowerCase();
+  const rows=DIRECTORY.filter(u=>!q||u.n.toLowerCase().includes(q)||u.e.toLowerCase().includes(q));
+  document.getElementById('picklist').innerHTML = rows.length? rows.map(u=>`
+    <label class="crow" onclick="event.preventDefault();togglePick('${u.id}')">
+      <input type="checkbox" ${PICKED.has(u.id)?'checked':''} tabindex="-1">
+      <span class="cav" style="background:${u.c}">${u.n.split(' ').slice(0,2).map(w=>w[0]).join('')}</span>
+      <span><span class="cnm">${u.n}</span><br><span class="cem">${u.e}</span></span>
+      ${u.has?`<span class="has">đã có · ${u.has}</span>`:''}
+    </label>`).join('') : '<p class="sub">Không tìm thấy ai khớp.</p>';
+  syncPick();
+}
+function syncPick(){
+  const role=document.getElementById('prole').value;
+  document.getElementById('fcount').textContent = PICKED.size
+    ? `Đã chọn ${PICKED.size} người` + (PICKED.size>MAX_NAMES?' (giữ nguyên khi bạn tìm lại)':'')
+    : 'Chưa chọn ai';
+  document.getElementById('paddbtn').disabled = !(PICKED.size>0 && role);
+}
+function doAdd(){
+  const role=document.getElementById('prole').value;
+  alert(`Cấp ${role} cho ${PICKED.size} người trong MỘT lời gọi.\n\n`
+   +`Phải chọn vai trò thì nút Thêm mới mở — chính chỗ đó buộc người cấp phải QUYẾT vai trò, `
+   +`thay vì khoá nút "Cấp quyền cho người mới" ở ngoài.\n\nĐiều chỉnh riêng thì vào drawer từng người.`);
+  closePick();
+}
+</script>
 <script>
 /* ── Ma trận quyền: port thẳng model của LoaL (permission-state.ts) ──────────
    state = role | add | blocked | off
@@ -738,5 +877,33 @@ function closeDrawer(){ document.getElementById('scrim').classList.remove('show'
 document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeDrawer(); ['disc','prof'].forEach(k=>document.getElementById(k).classList.remove('show')); }});
 renderPerms();
 </script>
+
+<div class="mdl" id="pickmdl" onclick="if(event.target===this)closePick()">
+  <div class="mdlbox" role="dialog" aria-modal="true" aria-label="Cấp quyền cho người mới">
+    <header>
+      <h3>Cấp quyền cho người mới</h3>
+      <p class="sub">Tìm trong <b>danh bạ trung tâm</b> — cả người <em>chưa</em> có quyền trong app này.
+        Chọn nhiều được; một lượt cấp <b>một vai trò</b> cho cả nhóm. Tinh chỉnh từng người thì vào drawer.</p>
+    </header>
+    <div class="mdlbody">
+      <p class="warnsrc"><b>Phụ thuộc chưa có:</b> hôm nay <code>GET /users</code> của recruit-be đọc từ
+        <code>rbac_grants</code> — tức <b>chỉ thấy người đã có quyền</b>. Muốn tìm được người chưa có,
+        cần endpoint danh bạ trung tâm (LoaL đã có <code>getCentralUsers</code> qua moso-aid).
+        Màn này vẽ đích đến; nguồn dữ liệu là một bead riêng.</p>
+      <input type="search" id="psearch2" placeholder="Tìm theo tên hoặc email công ty…" oninput="renderPick()">
+      <div id="picklist"></div>
+    </div>
+    <div class="mdlfoot">
+      <span class="fcount" id="fcount">Chưa chọn ai</span>
+      <select id="prole" onchange="syncPick()">
+        <option value="">Chọn vai trò…</option>
+        <option>RECRUITER</option><option>MANAGER</option><option>HR</option>
+        <option>LICENSING</option><option>ONBOARDING</option><option>ACCOUNTING</option>
+      </select>
+      <button class="ghost" onclick="closePick()">Huỷ</button>
+      <button class="save" id="paddbtn" disabled onclick="doAdd()">Thêm</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
