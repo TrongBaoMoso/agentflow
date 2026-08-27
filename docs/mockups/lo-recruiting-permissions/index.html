@@ -596,11 +596,10 @@ tbody tr:hover{background:var(--accent-tint-2)}
   <div class="dbody">
     <div class="dsec">
       <h3>Vai trò</h3>
+        <p class="sub">Hạn theo từng vai trò: <b>đã rút 27/08</b> — DB không có cột hạn, và Bao chốt đây chỉ là tính năng nâng cao. Đừng vẽ lại ô ngày ở đây.</p>
       <p class="why">Chọn nhiều được — quyền hiệu lực là <b>hợp</b> của các vai trò.</p>
-      <label class="roleopt on"><input type="checkbox" checked onchange="renderPerms()"><span class="rt"><b>RECRUITER</b><small>Nhận việc, gọi/SMS/email, đẩy stage, xin offer</small>
-        <span class="until">Hết hạn vai trò này: <input type="date"> <span>— để trống = vĩnh viễn</span></span></span><span class="n">12</span></label>
-      <label class="roleopt on"><input type="checkbox" checked onchange="renderPerms()"><span class="rt"><b>MANAGER</b><small>Thêm: giao việc, gộp trùng, duyệt offer/template, Reports cả team, Audit</small>
-        <span class="until">Hết hạn vai trò này: <input type="date" value="2026-12-31"> <span>— để trống = vĩnh viễn</span></span></span><span class="n">19</span></label>
+      <label class="roleopt on"><input type="checkbox" checked onchange="renderPerms()"><span class="rt"><b>RECRUITER</b><small>Nhận việc, gọi/SMS/email, đẩy stage, xin offer</small></span><span class="n">12</span></label>
+      <label class="roleopt on"><input type="checkbox" checked onchange="renderPerms()"><span class="rt"><b>MANAGER</b><small>Thêm: giao việc, gộp trùng, duyệt offer/template, Reports cả team, Audit</small></span><span class="n">19</span></label>
       <label class="roleopt notseeded"><input type="checkbox" disabled><span class="rt"><b>LO_SUPPORT</b><small>Kho HOT — lead tự giơ tay (webinar/self-apply/referral), SLA đồng hồ team</small></span><span class="n">—</span></label>
       <label class="roleopt notseeded"><input type="checkbox" disabled><span class="rt"><b>OFFICER_RECRUITER</b><small>Kho COLD — danh bạ Modex đi săn, không đồng hồ</small></span><span class="n">—</span></label>
       <label class="roleopt"><input type="checkbox" onchange="renderPerms()"><span class="rt"><b>HR</b><small>Chỉ đọc</small></span><span class="n">3</span></label>

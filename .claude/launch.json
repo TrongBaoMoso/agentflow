@@ -2,6 +2,20 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "lo-bpg-attest",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lo-bpg-attest",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3062"
+      ],
+      "port": 3062
+    },
+    {
       "name": "lo-homepage-debug",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
@@ -720,6 +734,33 @@
         "3043"
       ],
       "port": 3043
+    },
+    {
+      "name": "lfh-tech-advisor",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-tech-advisor",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "3021"
+      ],
+      "port": 3021
+    },
+    {
+      "name": "recruit-fe-live",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "3061"
+      ],
+      "cwd": ".worktrees/recruit-fe-live",
+      "port": 3061
     }
   ]
 }
