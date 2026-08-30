@@ -761,6 +761,18 @@
       ],
       "cwd": ".worktrees/recruit-fe-live",
       "port": 3061
+    },
+    {
+      "name": "lfh-mockups",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "3057",
+        "--directory",
+        "/Users/apple/Projects/agentflow/lf-homepage/docs/mockups"
+      ],
+      "port": 3057
     }
   ]
 }

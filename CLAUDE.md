@@ -292,6 +292,7 @@ To onboard a new file: have the owner share with `lfiq-sync-bot@lfiq-automation.
 - Never work on blocked tasks — `bd ready` ensures this
 - If blocked: `bd update <id> --status blocked --reason "why"`
 - Always push before closing a task
+- Before reading/diagnosing ANY repo, `git fetch` first and read the latest base branch (`master`/`main`/`release`/`develop`/`pro`/`production` — whichever the repo uses). The local checkout is often many commits behind `origin` and will cause misdiagnosis; when a string/symbol isn't found locally, re-check on `origin/<base>` before concluding it doesn't exist. Base worktrees on `origin/<base>`, not a stale local ref.
 
 ## Beads Commands
 

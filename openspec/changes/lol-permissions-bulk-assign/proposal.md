@@ -39,7 +39,7 @@ only people an admin deliberately granted. `VIEWER` stops being assignable: it i
 are in when nothing was granted, so the assignable set becomes `ADMIN` / `EDITOR`.
 
 **B. One bulk grant endpoint, `1..N` users.** `POST /admin/user-grants/bulk` with
-`{ user_ids, action: 'ASSIGN' | 'REMOVE', roles?, overrides? }` — a single `bulkWrite`, a
+`{ userIds, action: 'ASSIGN' | 'REMOVE', roles?, overrides? }` — a single `bulkWrite`, a
 single `correlationId` for the whole batch, guardrails evaluated before any write. It serves
 add-users, change-role, and remove-access, for one person or many, through one code path.
 
