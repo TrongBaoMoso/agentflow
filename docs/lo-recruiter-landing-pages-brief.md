@@ -575,3 +575,76 @@ quyết định đó không hoãn được sang sau.
 - §10 Phase 0 "slug lấy từ `Admin.url`" — **đúng cho P1-có-LO, sai cho P2**. Xem B.4.
 - Phụ lục A "MOSO đã có sẵn slug, đừng tự dựng registry" — **đúng một nửa**. Có sẵn, nhưng chỉ cho
   loan originator / real estate agent. Xem B.2.
+
+## B.7 Đếm trên production 31/08 — con số quyết định
+
+Nguồn: `GET www.loanfactory.com/api/webplus/v1/5716104026521600/getAdmins` — chính endpoint
+`fetchAdmins()` mà `/register-loan-officer` đang dùng. Lọc `active && !is_broker && !is_unassigned`.
+
+| | Số |
+|---|---|
+| Associate active, không phải broker | 2.988 |
+| **Recruiter (inside 9 + outside 3)** | **12** |
+| … đồng thời là loan officer → **có** slug | **2** |
+| … không phải loan officer → **không** slug | **10** |
+
+Và mức độ phổ quát của quy tắc `should_have_domain`:
+
+| | Có `Admin.url` |
+|---|---|
+| `is_loan_originator` = true (2.687 người) | 2.685 — **99,93 %** |
+| `is_loan_originator` = false (301 người) | **0** |
+
+**Đối chứng dương** (bắt buộc, nếu không thì "0" đứng chung chỗ với "payload không trả field đó"):
+2.685 hàng trong chính payload ấy CÓ mang `url`. Vậy số 0 là **vắng mặt thật**.
+
+⇒ Quy tắc ở B.2 không phải xu hướng, nó là tuyệt đối: **ngoài loan originator ra, không ai có slug.**
+
+### Hệ quả 1 — cho quyết định B4
+
+`Admin.url` phủ được **2 trong 12** recruiter hiện tại (17 %). 10 người còn lại phải cấp tay dù
+chọn phương án nào. Xem B.8.
+
+### Hệ quả 2 — định lượng cho `agentflow-mxm6(a)`
+
+Dropdown *"Referral recruiter"* dựng bên trong `if (… && admin.is_loan_originator)` nên nó hiện
+đúng **2 trong 12** recruiter. **10 người vô hình** — ứng viên do họ tuyển không có đường nào khai
+đúng tên người giới thiệu. Con số này đóng nốt phần còn thiếu của acceptance criteria bead đó.
+
+## B.8 So B4-a và B4-b theo số thật
+
+Điểm mấu chốt: **B4-a không thay thế được đường cấp tay, nó chỉ cộng thêm vào.**
+
+| | B4-a — dùng `Admin.url` | B4-b — slug riêng của hệ tuyển dụng |
+|---|---|---|
+| Phủ được ngay | 2/12 | 12/12 |
+| Recruiter thuần | vẫn phải cấp tay | cùng một đường |
+| Recruiter tương lai (P2, full-time) | vẫn phải cấp tay | cùng một đường |
+| Số cơ chế phải nuôi | **2** + một luật phân xử cái nào thắng | **1** |
+| Dạng URL | `/join/sethaugust` | `/join/seth-august` |
+| Chống trùng | MOSO lo, nhưng chỉ cho nhánh có slug | ta lo, trong bảng của ta |
+| Đổi tên giữ link cũ | có `previous_urls`, nhưng ta vẫn phải tự tra | ta tự quyết — hoặc **bất biến**, xem dưới |
+
+Ba thứ B4-a phải trả thêm mà nhìn qua không thấy:
+
+1. **Hai nguồn slug trong cùng một namespace `/join/<x>`** → phải chống trùng chéo giữa slug tay
+   và `Admin.url`, và phải có luật khi một recruiter *về sau* được bật cờ LO: `Admin.url` đột nhiên
+   xuất hiện — link cũ đổi hay giữ? Câu này không có câu trả lời nào không đau.
+2. **Link marketing bị buộc vào slug cá nhân của LO.** `Admin.url` là tài sản thương hiệu, LO đổi
+   được. Link in trên card / gửi mass email / dán QR mà đổi theo là hỏng. B4-b cho phép chọn
+   **slug bất biến** — với link theo dõi thì bất biến là *tính năng*, không phải hạn chế.
+3. **Lối tắt "bật `is_loan_originator` cho recruiter để lấy slug" là bẫy, đừng đi.** Đọc
+   `Admin.java` `beforeSave`: bật cờ đó kéo theo khởi tạo GMB onboarding (2143), gán escrow mặc
+   định + `ensureDefaultClosingFee` (2265-2271), **kiểm tra MLO compensation có thể `throw` chặn
+   luôn lệnh lưu** (2286-2291), set `ca_dre_licenses` và đồng bộ `RealEstateService` (2293-2305).
+   Tức là đẩy một nhân viên tuyển dụng vào toàn bộ đường ống vận hành của loan officer, để đổi lấy
+   một chuỗi ký tự.
+
+Một điều chỉnh so với ghi chú trước: nỗi lo *"phải xin MOSO reserve `join`/`apply` trong
+`pageSections()`"* nhẹ hơn tôi viết. `/join/<slug>` và `/<slug>` là hai độ sâu khác nhau; ai đó
+có slug `join` sẽ chiếm `/join` (một đoạn), **không** phá `/join/<slug>`. Vẫn nên reserve cho sạch,
+nhưng nó không còn là điều kiện chặn.
+
+**Khuyến nghị: B4-b.** Không phải vì nó đẹp hơn, mà vì đằng nào cũng phải xây đường cấp tay cho
+10/12 người hôm nay và cho toàn bộ P2 ngày mai — xây một lần dùng cho tất cả, hơn là nuôi hai cơ
+chế song song rồi phải nhớ ai thuộc nhánh nào.
