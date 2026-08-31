@@ -1028,3 +1028,71 @@ Ba hướng xử, phải chốt trước khi mở link ra ngoài:
 | **Quyết cách xử D.6** | ❌ **phải chốt trước khi phát link** |
 | `lo_labels` để biết đến từ trang nào | ❌ Phase 2 — MOSO |
 | Dropdown bỏ sót 10/12 recruiter | ❌ `agentflow-mxm6`, việc riêng |
+
+---
+
+# Phụ lục E — 31/08 chiều: Phương chốt first-touch. Một khuyến nghị của tôi bị rút.
+
+## E.1 Quy tắc
+
+Bao thuật lại từ Phuong Nguyen: **first-touch**. LO điền form qua nguồn nào **trước** thì nguồn đó
+được tính công.
+
+Ví dụ của Phương: LO đăng ký webinar qua **domain công ty** trước, sau đó recruiter mới mời →
+**vẫn tính công ty**. Lý do vận hành: công ty có đội (Victoria, Brayan — sắp đổi tên thành
+department kiểu `LO_SUPPORT`) nhận lead công ty và **gọi ngay** sau khi LO submit. Đội đó đã làm
+việc thật trên lead đó.
+
+## E.2 Hệ quả 1 — y60m không còn là bug về quy công
+
+Phụ lục D.6 gọi "FK `recruiter` không được ghi đè khi hồ sơ đã tồn tại" là bug. **Theo quy tắc
+trên thì đó là hành vi ĐÚNG.** MOSO đang thi hành first-touch, chỉ là không ai viết ra.
+
+Bead `agentflow-y60m` hạ **P1 → P2** và **không còn chặn** việc phát link.
+
+## E.3 Hệ quả 2 — khuyến nghị (b) của tôi SAI, đã rút trước khi code
+
+D.6 khuyến nghị: *"chuyển khối quy công sang `beforeSave`, chỉ set khi FK đang rỗng."*
+
+Sai, vì nó dựa trên một giả định tôi chưa kiểm: rằng **FK rỗng = chưa ai sở hữu**. Theo Phương,
+trên một hồ sơ `interested` **đã tồn tại**, FK rỗng nghĩa là **lead của công ty** — đội LO_SUPPORT
+sở hữu nó. Điền recruiter vào chỗ đó không phải "vá ca chưa ai sở hữu", mà là **lấy lead công ty
+gán cho cá nhân** — vi phạm đúng cái first-touch vừa chốt.
+
+Đây là kiểu sai nguy hiểm: bản vá chạy đúng về kỹ thuật, test xanh, và **âm thầm chuyển tiền
+thưởng sai người**. Không cổng nào bắt được, vì nó làm đúng thứ nó được bảo làm.
+
+## E.4 Lỗi còn lại — thu hẹp, và ĐỔI CHIỀU sửa
+
+`beforeSave:829-841` vẫn cho lượt gửi sau ghi đè **ba field mô tả**, trong khi FK giữ nguyên:
+
+| Field | Sau lượt gửi thứ hai | Sự thật |
+|---|---|---|
+| `referred_source` | `recruiter` | công ty |
+| `referred_by` | email recruiter mới | — |
+| `added_by_referrer_label` | "Referred by \<recruiter\>" | — |
+| **`recruiter`** (FK) | **rỗng — giữ nguyên** | ✅ đúng |
+
+Một hồ sơ **công ty sở hữu** lại mang nhãn tên một recruiter. Recruiter mở ra tưởng của mình; báo
+cáo nhóm theo `referred_source` đếm nó là recruiter-sourced trong khi FK nói không phải ai cả.
+
+⇒ Hướng sửa đúng **không phải** "cho FK cập nhật" mà là **"chặn ba field kia cập nhật"** khi hồ sơ
+đã tồn tại — tức thi hành first-touch cho **đủ**, thay vì nửa vời như hiện nay (bảo vệ FK, bỏ mặc
+ba field mô tả).
+
+## E.5 Vì sao quy tắc áp được sạch, không có ca mơ hồ
+
+`RegisterInterestedLoanOfficer.java:35` khử trùng **chỉ trong `recruiting_type = interested`**.
+Kho 106k RLO nhập máy từ Modex (`recruiting_type = recruiting`) **không đụng tới**.
+
+Nên mọi ca trùng đều là **một lần tự điền form trước đó = một cú chạm thật**. Không phát sinh câu
+hỏi khó "một bản ghi do máy nhập có tính là cú chạm không" — ca đó không tồn tại ở đây.
+
+## E.6 Ghi thêm về phạm vi
+
+Bao cho biết **ambassador-program và lo-recruiter-program sẽ nằm trong scope của recruit app**
+(`recruit-be` / `recruit-fe`), không ở lại lf-homepage mãi.
+
+Ý nghĩa khi thiết kế tiếp: phần **logic** (đơn, duyệt, hạ bậc, quy công, roster) nên coi là **tạm
+trú** ở lf-homepage/moso-aid, sẽ dời sang recruit app. Phần **trang marketing công khai** thì ở
+lại. Đừng khoá cứng logic vào lf-homepage.
