@@ -314,3 +314,44 @@ tính chuyện chốt vòng hiện tại rồi bắt đầu session mới có t�
    Kèm theo: **tên "CHECK" hiện MƠ HỒ** — `agentflow-be` (`73097213`, sock 28110) là ghế thật giữ
    context; `agentflow-check` (`34274283`, sock 54480) là bản resume cũ vẫn đang sống. Mọi verdict
    điều phối phải ghi kèm sessionId, không ghi tên.
+
+21. **Xếp loại phép đo theo HƯỚNG nó sai, không theo việc nó có sai hay không.** (luật DEV rút,
+   tôi chốt — nó thay thế cách ghi "danh sách các bẫy đo")
+   *Một phép lệch-an-toàn sai 10 lần vẫn dùng được; một phép lệch-phá-hủy sai 1 lần thì không.*
+   Đêm 31/08, bốn phép đo trên cùng câu hỏi "nhánh nào xoá được" của `origin/recruit-be`:
+   | phép | đáp số | hướng sai |
+   |---|---|---|
+   | `git cherry` (patch-id) | 0/8 còn việc ⇒ xoá cả 8 | **PHÁ HỦY** — 7 nhánh có nội dung thật |
+   | diff các file nhánh đã sửa | 8/8 còn việc | an toàn (đích đã đi tiếp nên file khác) |
+   | ancestry HOẶC tree trùng khít | 97 xoá / 8 giữ | an toàn (giới hạn **dưới** của số xoá được) |
+   | merge-tree, base chọn theo hậu tố `-rel` | 96 xoá / 9 giữ | an toàn (2 false-keep) |
+   | merge-tree, thử **cả hai** base | **98 xoá / 7 giữ** | đúng |
+   Chỉ phép đầu có hình dạng chết người. Trước khi trình một con số, hỏi: *sai theo hướng này thì
+   mất việc, hay chỉ giữ thừa?* Con số "gọn gàng" đầu tiên mình có thường là phép lệch-phá-hủy.
+
+22. **Độc lập phải là độc lập VỀ PHƯƠNG PHÁP, không chỉ độc lập về người — "không kích hoạt ≠
+   không tồn tại".** Đây là lỗ hổng nằm ngay trong quy trình 3 ghế này.
+   31/08: hai lượt đo của hai phiên khác nhau ra **cùng bộ 7 nhánh**, tôi gọi đó là "hai lượt đo
+   độc lập cùng khớp". DEV tự khai: script của nó có **cùng bug** chọn base theo hậu tố
+   `endswith('-rel')`, chỉ **không kích hoạt** vì đầu vào 8 nhánh của nó không chứa ca `-release`
+   (`chore/rename-recruit-release`, `fix/wrmc-public-webhook-release` — nhánh dòng release đặt tên
+   `-release`, bị đem gộp thử vào `master` rồi xung đột ⇒ false-keep).
+   Sự trùng khớp đó là **cùng gốc**, không phải xác nhận. **Ba ghế cùng APPROVE không có giá trị
+   nếu ba ghế dùng chung một phép đo hỏng.** Khi ghi verdict, ghi cả *phép đo đã dùng*; khi hai
+   verdict khớp nhau, hỏi trước "hai bên có dùng chung phép đo không" rồi mới gọi là xác nhận.
+   Kèm: **heuristic đọc ý nghĩa từ TÊN (nhánh, method, file) là một phép đo, và nó hỏng im lặng.**
+   Cùng họ với luật 17 (`@DisplayName` vs tên method).
+
+23. **Phép trừ phải khớp tại đúng cái TIP mình đem ship, không phải tại lúc mình đo.**
+   `ulae`: LEAD đóng sổ phép trừ ở `43241a3` (339 = +4, đúng **tại commit đó**), rồi làm **thêm một
+   commit** vá lỗ coverage DEV tìm ra — commit đó đổi `@Test` → `@ParameterizedTest` +
+   `@ValueSource(booleans={true,false})` = **+1 lượt chạy** → tip thật 340 = **+5** (số CHECK đo).
+   Không ai đo sai; phép trừ **đóng rồi bị commit sau mở lại**, và con số đã đóng sổ được relay đi
+   như con số cuối. Bổ sung cho luật 16: sau commit CUỐI CÙNG, đo lại; verdict ghi kèm sha.
+
+24. **"0 commit ahead" có HAI nghĩa: nhánh rỗng, và nhánh đã merge.** Phân biệt rẻ:
+   `git log --grep='#<PR>' origin/<base>` — có merge commit thì là nghĩa thứ hai.
+   31/08 CHECK đo `origin/fix/import-null-never-erases` ra 0 commit và đọc thành *"nhánh rỗng, di
+   chứng vụ push nhánh rỗng"*, rồi đề nghị "cherry-pick 3 commit sang master-side khi hết freeze" —
+   tức **áp lại việc đã merge** (`57f61b6` = Merge PR #198). Cùng họ
+   [[feedback_zero_needs_positive_control]]: hai nguyên nhân cho một số 0 trông y hệt nhau.
