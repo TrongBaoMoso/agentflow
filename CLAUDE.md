@@ -220,9 +220,9 @@ These integrations are **permanently configured** at user level. Don't say "I ca
 
 ### Google Workspace (Sheets / Docs / Drive) — Full CRUD
 
-- Auth: Service Account at `GOOGLE_APPLICATION_CREDENTIALS=$HOME/.config/gcloud/lfiq-sa.json`
-- SA email: `lfiq-sync-bot@lfiq-automation.iam.gserviceaccount.com`
-- GCP project: `lfiq-automation` (under `loanfactory.com` org)
+- Auth: **KEYLESS SA impersonation** (since 2026-08-31, DevOps request — the downloadable JSON key was revoked & deleted). Flow: gcloud ADC of `bao.trinh@loanfactory.com` → IAM Credentials mints short-lived token for the SA. If ADC expires: `gcloud auth login --update-adc`.
+- SA email: `lfiq-sync-bot@lfiq-automation.iam.gserviceaccount.com` (kept keyless; endgame pending DevOps = replace with company-internal OAuth client)
+- GCP project: `lfiq-automation` (standalone, NOT inside the loanfactory.com GCP org — flagged by DevOps 31/08)
 - Helper script: **`python3 ~/.config/gcloud/gws.py <cmd>`** — covers everything
 - Drive MCP (`mcp__*__read_file_content` etc.) is **read-only** — bypass it for any write; use `gws.py` instead
 - Verify: `python3 ~/.config/gcloud/gws.py auth-test`
