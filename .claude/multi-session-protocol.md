@@ -1,6 +1,17 @@
 # Multi-session review protocol (agentflow)
 
-## Danh bạ — **khoá theo session id, KHÔNG theo tên**
+## Danh bạ — khoá theo session id, và khi id trùng thì theo **PID**
+
+> **Session id KHÔNG còn là khoá duy nhất.** `claude --resume <id>` sinh một tiến trình THỨ HAI đọc cùng
+> transcript trong khi tiến trình cũ **chưa chết** — nên gửi đúng session id vẫn có thể trúng nhầm tiến trình.
+> Đo thật 31/08 09:2x: `73097213` có pid **28110** (terminal, 00:55) và pid **97292** (Claude.app, 09:11),
+> cùng tên `agentflow-be`, **cả hai đang chạy**. Nguy hiểm không dừng ở ghi trùng một `.jsonl`: hai tiến trình
+> cùng danh tính CHECK nghĩa là **hai verdict trên cùng một PR**.
+> Luật: với mọi id xuất hiện nhiều hơn một dòng trong `~/.claude/sessions`, **`kill -0 <pid>` từng cái và chọn
+> tiến trình có registry mtime mới nhất**; ghi PID vào danh bạ, không chỉ ghi id. Phát hiện bởi LEAD 31/08.
+>
+> **Ghế CHECK hiện tại = pid 28110** (HOST chỉ định 31/08 09:25): nó giữ toàn bộ luồng review #204/#205 và
+> registry của nó vẫn tự cập nhật (09:23), còn 97292 không hoạt động gì kể từ lúc mở. Không bắn sang 97292.
 
 Tên peer churn theo phút (đo thật 2026-08-28: `agentflow-4e` → `agentflow-1d`, `agentflow-c3` → `agentflow-53`,
 `agentflow-bf` → `agentflow-66`). **Tên là thứ phái sinh, phải resolve lại ngay trước mỗi lần gửi.**
