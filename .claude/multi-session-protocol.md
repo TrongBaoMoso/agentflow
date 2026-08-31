@@ -117,6 +117,27 @@ câu hỏi không khởi động lại vòng, CHECK đo rồi trả lời.
 Không tự đoán rồi làm tiếp — nêu rõ 2-3 phương án kèm trade-off cho user chọn.
 
 
+## Ghi chú trạng thái đi TRONG PR ship việc (chốt 31/08, Bao duyệt)
+
+**Ghi chú trạng thái / hậu kiểm (`SELF-TEST.md`, `BACKLOG`, `DECISIONS`, doc "đã fix cái gì") phải nằm
+TRONG chính PR ship việc đó — không tách thành commit riêng, không tách thành PR riêng.**
+
+Căn cứ đo (recruit-be, 20-31/08, 114 mốc merge trên release):
+- Đúng **4 file** từng lệch giữa `master` và `release` trong cả đời repo, **toàn bộ là docs**; `src/` **0 mốc lệch**.
+- File "nóng" (sửa liên tục) **tự lành trong vòng vài giờ** — 83 cặp master↔release: p50 0 phút, p95 2 phút,
+  max **39 phút**. Không ai quên chúng.
+- Lớp gây **cả hai sự cố dài** là **ghi chú hậu kiểm đi thành đơn vị riêng**: `SELF-TEST.md` lệch 41 mốc /
+  5 ngày, `INGEST` 23 mốc. Hai nguyên nhân: một do **push thẳng**, một do **mở PR master mà quên PR `-rel`**.
+  **Kỷ luật gom-push KHÔNG chạm được cả hai** — đừng tưởng luật push đã vá xong chuyện này.
+
+Vì sao quy ước này sống được dù **không có gì cưỡng chế**: nó **cùng chiều với sự lười** — gộp ghi chú vào
+PR sẵn có dễ hơn mở PR riêng. Quên thì cũng không tệ hơn hôm nay. Đây là điểm khác biệt với một quy ước
+phải-nhớ-mới-làm (loại đó là lời hứa, xem `mutation-check-before-trusting-green`).
+
+**Chưa dựng cổng máy nào cho việc này.** Spec detector so-đầu-nhánh-theo-TUỔI để trên giấy; chỉ dựng khi
+phép đo lại sau 7 ngày (bead `agentflow-ymzt`, defer) thấy tái phát, hoặc khi Bao yêu cầu sớm. Giá thật của
+nó không nhỏ: cần credential + đường push riêng cho CI.
+
 ## Kỷ luật push lên repo org (chốt 31/08, Bao)
 
 **Account `TrongBaoMoso` đã bị remove khỏi org MỘT LẦN ngày 29/08 vì spam commit/noti.** Đây không phải
