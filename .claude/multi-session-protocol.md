@@ -9,7 +9,7 @@ Gửi vào tên cũ trả "not reachable" — đó KHÔNG có nghĩa session đ�
 | Vai | Session id (khoá bất biến) |
 |---|---|
 | **DEV** — ra solution đầu, code sau khi được duyệt | `f282aafb-4743-4fcd-ae7e-cff1291df025` |
-| **LEAD** — PO/PM/Tech Lead, review chéo DEV | `725a7bc4-3db7-413c-ba31-71ae7bfc0b9c` |
+| **LEAD** — PO/PM/Tech Lead, review chéo DEV | `725a7bc4-3db7-413c-ba31-71ae7bfc0b9c` (31/08 tên `agentflow-d3`; tên cũ `agentflow-c7` **đã bị session `fb55f383` chiếm** — gửi theo tên đó là trúng nhầm phiên) |
 | **CHECK** — kiểm tra chéo cả DEV lẫn LEAD, góc nhìn độc lập | `73097213-64c1-43dd-b4a4-4967910886b9` (khôi phục 31/08 01:00, **id giữ nguyên, 58,2 MB context còn nguyên**; tên hiện tại `agentflow-be`) |
 | **PROGRESS** — đánh giá tiến độ (ngoài vòng review) | `bbf416be-d5d2-4fb4-8c48-dba660959014` |
 | **HOST** — cửa escalate về user (đồng-HOST, gửi song song cả hai) | `d7596c2a-254f-4398-96b4-3686132dddd7` và `7f54cf67-3cd1-415b-8027-ee351041df34` |
@@ -36,6 +36,19 @@ for a in json.load(sys.stdin): print(a.get('sessionId'), '->', a.get('name'))"
 > `claude --resume <id>`** — khi đó resume **không fork**, id giữ nguyên và context còn nguyên (đo thật: ghế
 > CHECK 57,8 MB → 58,2 MB). `--resume --bg` thì ngược lại, fork ra id mới và chỉ mang ~8% (57,8 → 4,7 MB).
 > Hai ghế `--bg` hỏng (`34274283`, `6f4f24c2`) đã phải bỏ vì bẫy này.
+
+> **Hai chế độ hỏng của danh bạ, đo thật 31/08 09:14 — cả hai đều IM LẶNG.**
+> 1. **Tên bị phiên khác chiếm.** `agentflow-c7` — tên LEAD dùng suốt 12 vòng review `9a4s` — giờ thuộc về
+>    session `fb55f383`, còn LEAD (`725a7bc4`) đã đổi thành `agentflow-d3`. Gửi "cho `agentflow-c7`" lúc này là
+>    **trúng nhầm phiên, và phiên đó vẫn nhận, vẫn trả lời** — không có lỗi nào báo rằng bạn gửi nhầm. Đây là lý do
+>    danh bạ khoá theo session id: tên không chỉ *trôi*, nó bị **tái cấp cho người khác**.
+> 2. **Hai tiến trình sống trên CÙNG một session id.** `73097213` có pid 28110 (`claude --resume`, terminal, từ
+>    00:55) và pid 97292 (Claude.app `--resume=`, mở lúc 09:11) — cùng tên `agentflow-be`, cùng ghi vào một
+>    `.jsonl`. Gửi vào nhầm cái thì ghế kia không nhận, và người gửi sẽ tưởng **họ im lặng**. Phân biệt bằng
+>    `ps -p <pid> -o command=`, không bằng tên. Protocol đã có luật "resume xong phải retire bản thừa" — luật
+>    đúng, chỉ là không có gì cưỡng chế nó.
+>
+> Hệ quả thực hành: **`ps -p <pid>` trước khi kết luận một ghế im lặng**, và resolve id ngay trước mỗi lần gửi.
 
 ## Khi nào áp dụng
 
