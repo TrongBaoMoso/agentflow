@@ -475,3 +475,103 @@ xử first-touch vs last-touch ở §6.
 
 **Ràng buộc phải tuân:** field lấy `labels.get(0)`, nên nhãn trang recruiter phải là **phần tử đầu
 tiên**, hoặc tốt nhất là nhãn duy nhất.
+
+---
+
+# Phụ lục B — Đo trên production 31/08: Seth là NGOẠI LỆ, không phải mẫu đại diện
+
+Viết sau khi Bao hỏi thẳng: *"Tại sao là chạy thật với 1 recruiter vậy? … recruiter này chưa có
+(chưa tuyển được hoặc chưa có account chính thức trong MOSO)"*. Câu hỏi đúng. Đề xuất Phase 0 cũ
+(chạy thật với Seth) dựa trên một giả định chưa ai đo. Đo rồi thì giả định đó **sai**.
+
+## B.1 Phép đo
+
+`curl https://www.loanfactory.com/<slug>`, so `<title>` và số byte:
+
+| Người | Vai trò trong MOSO | Kết quả |
+|---|---|---|
+| Seth August | Loan Officer **+** Outside recruiter | `/sethaugust` → *"…From Seth August"*, 1.102.178 byte — **trang thật** |
+| Brayan Suarez | Inside recruiter | → trang chủ marketing |
+| Miley Dau | Onboarding specialist | → trang chủ |
+| Dave Hoang | HR | → trang chủ |
+| Rosaline Pham | Accounting | → trang chủ |
+| Dung Nguyen | Licensing | → trang chủ |
+
+**Đối chứng âm** (bắt buộc, nếu không thì "ra trang chủ" đứng chung chỗ với "phép đo hỏng"):
+`/zzzznobody999` cũng ra trang chủ, **1.249.518 byte — trùng khít 5 dòng dưới**. Vậy 5 dòng đó
+thật sự KHÔNG có slug, không phải curl sai.
+
+Đối chứng dương thứ hai: `/jeremymcdonald` (slug lấy từ docstring
+`lo-homepage/src/shared/utils/lo-domain.ts:36`) ra đúng trang Jeremy McDonald, 781.182 byte.
+
+## B.2 Nguyên nhân trong code — không phải ngẫu nhiên
+
+`Admin.java:1136`:
+
+```java
+should_have_domain = (role.isLoanOriginator() || role.isRealEstateAgent()
+        || (role.isOriginatorAssistant() && có originator_assistant_nmls))
+        && !role.isBrokerOrAssistant();
+```
+
+`RECRUITER` / `OUT_SOURCING_RECRUITER` **không nằm trong danh sách**. Sinh slug tự động ở
+`Admin.java:1843` gác sau `should_have_domain` → recruiter thuần không bao giờ được cấp slug.
+
+Seth có slug **vì anh ấy là loan officer**, không phải vì anh ấy là recruiter.
+
+## B.3 Hệ quả: P2 cũng sẽ không có slug
+
+Hai quần thể khác nhau, đừng gộp:
+
+- **P1** — recruiter đã có trong MOSO hôm nay. Có `Admin` + `unique_id`. Đa số **không** có slug.
+- **P2** — recruiter tuyển được từ `/lo-recruiter-program`. Chưa có account. Đây là quần thể Bao
+  đang nói tới.
+
+Copy của chính trang tuyển (`RecruiterProgramV3Page.hero`) nói rõ P2 là ai:
+*"A full-time job at Loan Factory" · "Recruiting loan officers is the whole job." · "Full-time
+role, not a side program."*
+
+⇒ P2 là recruiter **toàn thời gian, không phải LO** ⇒ role `RECRUITER`/`OUT_SOURCING_RECRUITER`
+⇒ theo B.2, **không có slug**. Cùng cái hố với đa số P1.
+
+Nói cách khác: Phase 0 chạy với Seth chứng minh đường ống chạy được trên **đúng một người mà
+chương trình này không nhắm tới**. Nó không nói gì về người mà ta thật sự sẽ phục vụ.
+
+## B.4 Slug thật không có gạch nối
+
+`Admin.java:1845`: `(first_name.replaceAll("[\\W_]","") + last_name.replaceAll("[\\W_]","")).toLowerCase()`
+
+⇒ Seth = `sethaugust`, không phải `seth-august`. Đã xác nhận bằng curl (B.1).
+
+Mockup và §4 đang vẽ `/join/seth-august` ⇒ **không khớp `Admin.url`**. Chỉ có hai lối, không có
+lối thứ ba:
+
+- **B4-a — dùng thẳng `Admin.url`:** URL thành `loanfactory.com/join/sethaugust`. Xấu hơn, nhưng
+  MIỄN PHÍ: đã có sinh tự động, đã có chống trùng `ReservedPageUrls`, đã có `previous_urls` giữ
+  link cũ khi đổi tên. Nhược: recruiter thuần **không có giá trị này** (B.2) → vẫn phải cấp tay.
+- **B4-b — slug riêng của hệ tuyển dụng:** `seth-august` đẹp hơn và cấp được cho cả người chưa
+  có `Admin`. Nhược: đúng thứ Phụ lục A khuyên tránh — slug thứ hai phải tự sinh, tự chống trùng,
+  tự giữ alias khi đổi tên, và **tự đồng bộ** khi `Admin.url` đổi.
+
+Ghi chú: A khuyên tránh B4-b vì tưởng `Admin.url` phủ hết. B.2 cho thấy nó **không** phủ hết đúng
+quần thể mục tiêu — nên lời khuyên đó phải đọc lại, không áp dụng máy móc.
+
+## B.5 Phase 0 sửa lại
+
+Không lấy một người. Lấy **hai**, để cả hai hình dạng đều bị chạm:
+
+1. **Seth (`sethaugust`)** — có `Admin` + `unique_id` + slug. Đường dễ. Chứng minh: link → trang →
+   form → attribution về đúng `referred_by`/`referred_source` trong MOSO.
+2. **Một recruiter thuần** (Brayan là ứng viên sẵn có) — có `Admin` + `unique_id`, **không** slug.
+   Đường thật. Chứng minh: cấp slug bằng cách nào, và attribution có còn về đúng chỗ không khi
+   người này không phải LO — nhớ đây chính là defect `agentflow-mxm6(a)`: dropdown "Referral
+   recruiter" đang **bỏ sót** hẳn nhóm này.
+
+Chỉ khi (2) chạy được thì mới nói được gì về P2. Và làm (2) buộc phải chốt B4-a hay B4-b — nên
+quyết định đó không hoãn được sang sau.
+
+## B.6 Đã sửa lại nhận định nào
+
+- §10 Phase 0 "slug lấy từ `Admin.url`" — **đúng cho P1-có-LO, sai cho P2**. Xem B.4.
+- Phụ lục A "MOSO đã có sẵn slug, đừng tự dựng registry" — **đúng một nửa**. Có sẵn, nhưng chỉ cho
+  loan originator / real estate agent. Xem B.2.
