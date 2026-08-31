@@ -140,7 +140,13 @@ phải-nhớ-mới-làm (loại đó là lời hứa, xem `mutation-check-before
 lần/12 ngày), mà file nóng **tự lành trong vài giờ**. Hai sự cố dài đều rơi vào file LẠNH.
 ⇒ Khi gặp ca này: chờ PR code kế tiếp rồi gom vào (giữ cả chữ lẫn tinh thần), hoặc mở PR docs riêng và
 **ghi lý do vào bead** — kẻo người sau thấy PR docs-only đầu tiên sau khi ra quy ước lại là của chính người
-đề xuất quy ước mà không biết vì sao. Tuyệt đối KHÔNG nong nội dung lạ vào một PR đã được review duyệt.
+đề xuất quy ước mà không biết vì sao. Tuyệt đối KHÔNG nong nội dung lạ vào một PR đã được review duyệt. Lý do KHÔNG phải "nội dung
+không liên quan" (yếu, tranh luận được, và người sau sẽ tranh luận "liên quan đủ mà") — lý do là **CHỮ KÝ
+ĐÃ ĐÓNG**: approve ký vào NỘI DUNG, nên thêm nội dung là mở lại một lượt review đã đóng mà không ai biết,
+và chữ ký cũ vẫn nằm đó, giờ nói dối. Xem `review-approve-content-not-sha`.
+**Ngoại lệ duy nhất, có phép thử:** *nội dung thêm vào có bị chính diff này làm SAI ĐI không?* Có ⇒ sửa nó
+THUỘC thay đổi, phải đi cùng PR (ca javadoc `HotItemResponse` 31/08: LEAD bác đúng lời hoãn của DEV). Không
+⇒ chờ PR khác.
 
 **Chưa dựng cổng máy nào cho việc này.** Spec detector so-đầu-nhánh-theo-TUỔI để trên giấy; chỉ dựng khi
 phép đo lại sau 7 ngày (bead `agentflow-ymzt`, defer) thấy tái phát, hoặc khi Bao yêu cầu sớm. Giá thật của
