@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>/join/&lt;slug&gt; — recruiter landing page mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;450;500;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --orange:#f36f20; --orange-soft:#ff9350; --orange-deep:#d45a10; --orange-tint:#fff2e9;
+  --ink:#12151c; --ink-2:#1b2029; --ink-3:#262d39; --paper:#f5f6f9; --white:#fff;
+  --gray-1:#eef0f5; --gray-2:#e1e4ec; --gray-3:#c4c9d6; --gray-5:#798194; --gray-6:#545c6d;
+  --success:#16a34a; --danger:#e5484d; --info:#3b82f6;
+  --r-xs:8px; --r-sm:12px; --r-md:18px; --r-lg:24px; --r-full:999px;
+  --shadow-sm:0 1px 2px rgba(18,21,28,.04),0 6px 16px -10px rgba(18,21,28,.16);
+  --shadow-md:0 2px 6px rgba(18,21,28,.05),0 22px 44px -26px rgba(18,21,28,.32);
+  --shadow-lg:0 4px 12px rgba(18,21,28,.06),0 40px 80px -36px rgba(18,21,28,.45);
+  --h1:clamp(1.9rem,1.1rem + 2.9vw,3.25rem); --h2:clamp(1.4rem,1rem + 1.7vw,2.2rem);
+  --h3:clamp(1.05rem,.95rem + .6vw,1.35rem); --body:clamp(.9375rem,.9rem + .2vw,1.0625rem);
+  --small:.8125rem; --micro:.6875rem;
+  --band:clamp(3rem,2.2rem + 3vw,5.5rem); --gutter:clamp(1.1rem,.7rem + 2vw,3rem);
+  --shell:1180px; --ease:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:'Montserrat',-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;
+  font-size:var(--body);line-height:1.6;font-weight:450;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,p,ul,ol,figure{margin:0}
+ul{padding:0;list-style:none}
+a{color:inherit}
+.shell{width:min(100% - 2*var(--gutter),var(--shell));margin-inline:auto}
+
+/* ---------- reviewer chrome (not part of the page) ---------- */
+.rev{background:var(--ink);color:#e6e9f0;padding:1.1rem 0 1.4rem}
+.rev__row{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between}
+.rev__tag{font-size:var(--micro);letter-spacing:.14em;text-transform:uppercase;color:var(--orange-soft);font-weight:700}
+.rev__note{font-size:var(--small);color:#98a0b0;max-width:62ch;margin-top:.35rem}
+.switch{display:inline-flex;background:rgba(255,255,255,.08);border-radius:var(--r-full);padding:4px;gap:2px}
+.switch button{appearance:none;border:0;background:transparent;color:#c8cdd8;font:inherit;font-size:var(--small);
+  font-weight:600;padding:.5rem 1rem;border-radius:var(--r-full);cursor:pointer;transition:all .2s var(--ease)}
+.switch button[aria-pressed="true"]{background:var(--orange);color:#fff;box-shadow:0 8px 20px -10px rgba(243,111,32,.9)}
+.switch button:hover:not([aria-pressed="true"]){color:#fff}
+
+/* fake browser bar — makes the URL concrete */
+.urlbar{margin-top:1rem;background:#20252f;border:1px solid #333a47;border-radius:var(--r-md);
+  padding:.6rem .8rem;display:flex;align-items:center;gap:.7rem;font-size:var(--small)}
+.dots{display:flex;gap:.35rem;flex:none}
+.dots i{width:10px;height:10px;border-radius:50%;background:#3d4553;display:block}
+.urlbar__url{flex:1;background:#161a22;border-radius:var(--r-full);padding:.4rem .9rem;color:#9aa3b2;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.78rem;overflow-x:auto;white-space:nowrap}
+.urlbar__url b{color:#fff;font-weight:700}
+.urlbar__url em{color:var(--orange-soft);font-style:normal}
+
+/* ---------- page ---------- */
+.page{background:var(--white);border-radius:var(--r-lg) var(--r-lg) 0 0;overflow:hidden;
+  box-shadow:var(--shadow-lg);margin-top:-.6rem;position:relative}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--gray-1)}
+.logo{font-weight:900;letter-spacing:-.02em;font-size:1.05rem}
+.logo span{color:var(--orange)}
+.bar__cta{font-size:var(--small);font-weight:600;color:var(--gray-6)}
+
+/* hero */
+.hero{padding:var(--band) 0 calc(var(--band) * .8);
+  background:linear-gradient(168deg,#fff 0%,var(--orange-tint) 55%,#fff 100%)}
+.hero__grid{display:grid;gap:2.5rem;grid-template-columns:1fr;align-items:center}
+@media(min-width:900px){.hero__grid{grid-template-columns:1.15fr .85fr;gap:3.5rem}}
+.eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-size:var(--micro);letter-spacing:.13em;
+  text-transform:uppercase;font-weight:800;color:var(--orange-deep);background:#fff;
+  border:1px solid #ffd9be;border-radius:var(--r-full);padding:.4rem .85rem}
+.hero h1{font-size:var(--h1);line-height:1.08;font-weight:800;letter-spacing:-.025em;margin-top:1.1rem;text-wrap:balance}
+.hero h1 em{font-style:normal;color:var(--orange-deep)}
+.hero__sub{margin-top:1rem;color:var(--gray-6);max-width:46ch;font-size:1.05rem}
+.hero__ctas{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.75rem}
+.btn{appearance:none;border:0;font:inherit;font-weight:700;cursor:pointer;text-decoration:none;
+  padding:.9rem 1.5rem;border-radius:var(--r-full);display:inline-flex;align-items:center;gap:.5rem;
+  transition:transform .25s var(--ease),box-shadow .25s var(--ease)}
+.btn--pri{background:var(--orange);color:#fff;box-shadow:0 14px 34px -14px rgba(243,111,32,.75)}
+.btn--pri:hover{transform:translateY(-2px);box-shadow:0 20px 44px -14px rgba(243,111,32,.85)}
+.btn--ghost{background:#fff;color:var(--ink);border:1px solid var(--gray-2);box-shadow:var(--shadow-sm)}
+.btn--ghost:hover{transform:translateY(-2px);border-color:var(--gray-3)}
+.btn--sm{padding:.65rem 1.1rem;font-size:var(--small)}
+
+/* recruiter card in hero */
+.rcard{background:#fff;border:1px solid var(--gray-2);border-radius:var(--r-lg);padding:1.5rem;
+  box-shadow:var(--shadow-md);position:relative}
+.rcard::before{content:"";position:absolute;inset:-1px -1px auto -1px;height:5px;
+  background:linear-gradient(90deg,var(--orange),var(--orange-soft));border-radius:var(--r-lg) var(--r-lg) 0 0}
+.rcard__top{display:flex;gap:1rem;align-items:center}
+.avatar{width:76px;height:76px;border-radius:50%;flex:none;object-fit:cover;
+  background:linear-gradient(140deg,var(--orange-soft),var(--orange-deep));
+  display:grid;place-items:center;color:#fff;font-weight:800;font-size:1.5rem;letter-spacing:-.02em}
+.rcard__name{font-weight:800;font-size:1.15rem;letter-spacing:-.01em}
+.rcard__role{font-size:var(--small);color:var(--gray-5);font-weight:600}
+.rcard__meta{margin-top:1.1rem;padding-top:1.1rem;border-top:1px solid var(--gray-1);display:grid;gap:.6rem}
+.rcard__meta div{display:flex;justify-content:space-between;gap:1rem;font-size:var(--small)}
+.rcard__meta dt{color:var(--gray-5)}
+.rcard__meta dd{margin:0;font-weight:650;text-align:right}
+.rcard__acts{display:flex;gap:.5rem;margin-top:1.2rem}
+.rcard__acts .btn{flex:1;justify-content:center}
+
+/* number strip */
+.strip{background:var(--ink);color:#fff;padding:calc(var(--band)*.7) 0}
+.strip__head{font-size:var(--micro);letter-spacing:.14em;text-transform:uppercase;color:var(--orange-soft);font-weight:800}
+.strip__grid{display:grid;gap:1.5rem;grid-template-columns:repeat(2,1fr);margin-top:1.5rem}
+@media(min-width:820px){.strip__grid{grid-template-columns:repeat(4,1fr)}}
+.stat b{display:block;font-size:clamp(1.6rem,1.1rem + 1.8vw,2.4rem);font-weight:850;letter-spacing:-.03em;line-height:1.05}
+.stat span{display:block;font-size:var(--small);color:#98a0b0;margin-top:.35rem}
+
+/* sections */
+.sec{padding:var(--band) 0}
+.sec--tint{background:var(--paper)}
+.sec__kicker{font-size:var(--micro);letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:var(--orange-deep)}
+.sec h2{font-size:var(--h2);font-weight:800;letter-spacing:-.02em;margin-top:.6rem;text-wrap:balance;max-width:22ch}
+.sec__lead{margin-top:.8rem;color:var(--gray-6);max-width:60ch}
+
+/* compare */
+.cmp{margin-top:2rem;border:1px solid var(--gray-2);border-radius:var(--r-md);overflow-x:auto;background:#fff}
+.cmp table{width:100%;min-width:540px;border-collapse:collapse;font-size:var(--small)}
+.cmp th,.cmp td{padding:.9rem 1rem;text-align:left;border-bottom:1px solid var(--gray-1);vertical-align:top}
+.cmp thead th{background:var(--gray-1);font-weight:750;font-size:var(--micro);letter-spacing:.08em;text-transform:uppercase;color:var(--gray-6)}
+.cmp thead th:last-child{background:var(--orange-tint);color:var(--orange-deep)}
+.cmp td:last-child{background:#fffaf6;font-weight:650}
+.cmp tr:last-child td{border-bottom:0}
+
+/* steps */
+.steps{counter-reset:s;display:grid;gap:.9rem;margin-top:2rem}
+.step{counter-increment:s;display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:start;
+  background:#fff;border:1px solid var(--gray-2);border-radius:var(--r-md);padding:1.05rem 1.2rem}
+.step::before{content:counter(s);width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;
+  display:grid;place-items:center;font-size:.8rem;font-weight:800}
+.step--money{border-color:#ffd0ae;background:var(--orange-tint)}
+.step--money::before{background:var(--orange)}
+.step b{display:block;font-weight:700}
+.step p{font-size:var(--small);color:var(--gray-6);margin-top:.2rem}
+
+/* form */
+.formwrap{display:grid;gap:2rem;grid-template-columns:1fr}
+@media(min-width:960px){.formwrap{grid-template-columns:1fr .95fr;gap:3rem;align-items:start}}
+.form{background:#fff;border:1px solid var(--gray-2);border-radius:var(--r-lg);padding:1.6rem;box-shadow:var(--shadow-md)}
+.form h3{font-size:var(--h3);font-weight:800;letter-spacing:-.015em}
+.form__hint{font-size:var(--small);color:var(--gray-5);margin-top:.35rem}
+.fields{display:grid;gap:.9rem;margin-top:1.3rem}
+.two{display:grid;gap:.9rem;grid-template-columns:1fr 1fr}
+label{display:block;font-size:var(--small);font-weight:650;margin-bottom:.35rem}
+.inp{width:100%;padding:.72rem .9rem;border:1px solid var(--gray-2);border-radius:var(--r-sm);
+  background:#fff;font:inherit;font-size:var(--small);color:var(--ink)}
+.inp::placeholder{color:var(--gray-3)}
+.inp:focus{outline:2px solid var(--orange);outline-offset:1px;border-color:var(--orange)}
+.inp--lock{background:var(--gray-1);color:var(--gray-6);cursor:not-allowed}
+.lockrow{position:relative}
+.lockbadge{position:absolute;right:.6rem;top:2.05rem;font-size:var(--micro);font-weight:750;color:var(--gray-5);
+  background:#fff;border:1px solid var(--gray-2);border-radius:var(--r-full);padding:.15rem .5rem}
+.consent{display:flex;gap:.6rem;align-items:flex-start;font-size:var(--micro);color:var(--gray-5);line-height:1.5}
+.consent input{margin-top:.15rem;flex:none;accent-color:var(--orange)}
+.form .btn--pri{width:100%;justify-content:center;margin-top:1.1rem}
+
+/* stepper preview (mode 2) */
+.stepper{display:grid;gap:0;margin-top:1.3rem}
+.stp{display:grid;grid-template-columns:auto 1fr;gap:.9rem;padding:.7rem 0;align-items:center}
+.stp i{width:26px;height:26px;border-radius:50%;border:2px solid var(--gray-2);display:grid;place-items:center;
+  font-style:normal;font-size:.72rem;font-weight:800;color:var(--gray-3);background:#fff}
+.stp--now i{border-color:var(--orange);background:var(--orange);color:#fff}
+.stp--now b{color:var(--ink)}
+.stp b{font-size:var(--small);font-weight:700;color:var(--gray-5);display:block}
+.stp span{font-size:var(--micro);color:var(--gray-5)}
+.stp--pay b{color:var(--orange-deep)}
+
+/* aside proof */
+.aside{display:grid;gap:1rem}
+.quote{background:var(--ink-2);color:#e8ebf1;border-radius:var(--r-md);padding:1.4rem}
+.quote p{font-size:1.02rem;line-height:1.55;font-weight:500}
+.quote footer{margin-top:.9rem;font-size:var(--small);color:#98a0b0}
+.tick{background:#fff;border:1px solid var(--gray-2);border-radius:var(--r-md);padding:1.2rem 1.3rem}
+.tick li{display:flex;gap:.6rem;font-size:var(--small);padding:.4rem 0;color:var(--gray-6)}
+.tick li::before{content:"✓";color:var(--success);font-weight:800;flex:none}
+
+/* faq */
+.faq{margin-top:2rem;border-top:1px solid var(--gray-2)}
+.faq details{border-bottom:1px solid var(--gray-2)}
+.faq summary{cursor:pointer;padding:1.05rem 0;font-weight:700;font-size:.98rem;list-style:none;
+  display:flex;justify-content:space-between;gap:1rem;align-items:center}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--orange);font-weight:800;font-size:1.2rem;flex:none}
+.faq details[open] summary::after{content:"–"}
+.faq p{padding-bottom:1.1rem;color:var(--gray-6);font-size:var(--small);max-width:70ch}
+
+/* page footer */
+.pfoot{background:var(--ink);color:#8d95a5;padding:2rem 0;font-size:var(--micro);line-height:1.7}
+.pfoot strong{color:#c8cdd8}
+
+/* annotation panel */
+.ann{background:#0f1218;color:#d7dbe4;padding:var(--band) 0}
+.ann h2{font-size:var(--h2);font-weight:800;letter-spacing:-.02em;color:#fff;max-width:24ch}
+.ann__lead{color:#98a0b0;margin-top:.8rem;max-width:66ch}
+.ann__grid{display:grid;gap:1rem;grid-template-columns:1fr;margin-top:2rem}
+@media(min-width:900px){.ann__grid{grid-template-columns:repeat(3,1fr)}}
+.acard{background:#171b23;border:1px solid #262c37;border-radius:var(--r-md);padding:1.3rem}
+.acard b{display:block;color:var(--orange-soft);font-size:var(--micro);letter-spacing:.12em;text-transform:uppercase;font-weight:800}
+.acard h3{font-size:1rem;font-weight:750;color:#fff;margin-top:.5rem}
+.acard p{font-size:var(--small);color:#98a0b0;margin-top:.5rem}
+.acard code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.74rem;color:#ffb583;
+  background:#0c0f14;border:1px solid #262c37;border-radius:6px;padding:.1rem .35rem}
+.flow{margin-top:2rem;background:#171b23;border:1px solid #262c37;border-radius:var(--r-md);padding:1.4rem;overflow-x:auto}
+.flow pre{margin:0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.76rem;line-height:1.85;color:#aab2c0;white-space:pre}
+.flow pre b{color:#fff}
+.flow pre em{color:var(--orange-soft);font-style:normal}
+.hide{display:none !important}
+</style>
+</head>
+<body>
+
+<!-- ============ reviewer chrome ============ -->
+<header class="rev">
+  <div class="shell">
+    <div class="rev__row">
+      <div>
+        <div class="rev__tag">Mockup for review · not the live site</div>
+        <div class="rev__note">Landing page riêng của một recruiter. Bấm hai nút bên phải để xem hai loại link.
+          Mọi con số trên trang lấy từ copy đã duyệt của <code>/loan-officer</code> và <code>/register-loan-officer</code>.</div>
+      </div>
+      <div class="switch" role="group" aria-label="Chọn loại link">
+        <button id="btn-lead" aria-pressed="true">Link 1 — gửi đại trà</button>
+        <button id="btn-apply" aria-pressed="false">Link 2 — gửi LO chuyên nghiệp</button>
+      </div>
+    </div>
+    <div class="urlbar">
+      <span class="dots"><i></i><i></i><i></i></span>
+      <span class="urlbar__url">https://<b>www.loanfactory.com</b>/join/<em id="url-slug">seth-august</em><em id="url-tail"></em></span>
+    </div>
+  </div>
+</header>
+
+<!-- ============ the page ============ -->
+<main class="page">
+  <div class="shell">
+    <div class="bar">
+      <div class="logo">LOAN<span>FACTORY</span></div>
+      <div class="bar__cta">Recruiting · <strong id="bar-name">Seth August</strong></div>
+    </div>
+  </div>
+
+  <!-- hero -->
+  <section class="hero">
+    <div class="shell hero__grid">
+      <div>
+        <span class="eyebrow">Personal invitation</span>
+        <h1 id="hero-h1">I'm Seth. I help loan officers move to <em>Loan Factory</em> — and I walk you through every step.</h1>
+        <p class="hero__sub" id="hero-sub">Keep 100% of your commission minus a flat $595 a file. No desk fee. No monthly fee.
+          No software subscriptions. Let's find out in ten minutes whether this is better than where you are now.</p>
+        <div class="hero__ctas">
+          <a class="btn btn--pri" href="#form" id="hero-cta">Talk to me first →</a>
+          <a class="btn btn--ghost" href="#how">See how joining works</a>
+        </div>
+      </div>
+
+      <aside class="rcard">
+        <div class="rcard__top">
+          <div class="avatar">SA</div>
+          <div>
+            <div class="rcard__name">Seth August</div>
+            <div class="rcard__role">Outside Recruiter · Loan Factory</div>
+          </div>
+        </div>
+        <dl class="rcard__meta">
+          <div><dt>Covers</dt><dd>Hawaii · California</dd></div>
+          <div><dt>Speaks</dt><dd>English</dd></div>
+          <div><dt>Usually replies</dt><dd>Within 1 business hour</dd></div>
+        </dl>
+        <div class="rcard__acts">
+          <a class="btn btn--pri btn--sm" href="#">Book 15 min</a>
+          <a class="btn btn--ghost btn--sm" href="#">Text me</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 60-second numbers -->
+  <section class="strip">
+    <div class="shell">
+      <div class="strip__head">The whole offer in 60 seconds</div>
+      <div class="strip__grid">
+        <div class="stat"><b>100%</b><span>commission, minus a flat fee of $595 per file</span></div>
+        <div class="stat"><b>$500</b><span>in-house processing per closed loan — others charge $700–$1,100</span></div>
+        <div class="stat"><b>$0</b><span>desk fee, monthly fee, software fee. Save $1,000+/month</span></div>
+        <div class="stat"><b>48</b><span>states licensed · company leads in 42 of them</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- compare -->
+  <section class="sec">
+    <div class="shell">
+      <div class="sec__kicker">What actually changes</div>
+      <h2>The same loan, closed from a different desk.</h2>
+      <p class="sec__lead">Nothing here is a pitch you have to take on trust — every line is a number you can check
+        against your last twelve months.</p>
+      <div class="cmp">
+        <table>
+          <thead><tr><th>&nbsp;</th><th>Most brokerages</th><th>Loan Factory</th></tr></thead>
+          <tbody>
+            <tr><td><b>Your split</b></td><td>Negotiated, tiered, reviewed yearly</td><td>100% minus a flat $595 per file</td></tr>
+            <tr><td><b>Monthly cost to sit there</b></td><td>Desk fee, tech fee, junk fees</td><td>None</td></tr>
+            <tr><td><b>Processing</b></td><td>$700–$1,100, third-party</td><td>$500, in-house, one dedicated processor</td></tr>
+            <tr><td><b>Software</b></td><td>You subscribe: CRM, pricing, POS</td><td>TERA, built in-house, free to you</td></tr>
+            <tr><td><b>Leads</b></td><td>Yours to find</td><td>Company + Facebook leads in 42 states (limited; free lead that closes splits 50/50)</td></tr>
+            <tr><td><b>Employment</b></td><td>Usually one option</td><td>1099 or W2 · up to 250bps</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- how joining works -->
+  <section class="sec sec--tint" id="how">
+    <div class="shell">
+      <div class="sec__kicker">No surprises</div>
+      <h2>How joining works, including what it costs.</h2>
+      <p class="sec__lead">Seven steps. The only money that leaves your pocket is on step three, and it is
+        <b>$100, one time</b>. We say it here rather than at the end.</p>
+      <ol class="steps">
+        <li class="step"><div><b>Fill out your information</b><p>Licensing, states, how you want to be paid. About 15 minutes.</p></div></li>
+        <li class="step"><div><b>We call you</b><p>The team walks through the details, then sends your offer and the agreement to review.</p></div></li>
+        <li class="step step--money"><div><b>Pay the $100 one-time startup fee</b><p>One time. Not monthly. Nothing else is charged to join.</p></div></li>
+        <li class="step"><div><b>Give Loan Factory access to your NMLS record</b><p>So licensing can act on your behalf.</p></div></li>
+        <li class="step"><div><b>licensing@loanfactory.com sponsors you</b><p>In each state you asked us to sponsor.</p></div></li>
+        <li class="step"><div><b>Review and sign the LO Agreement</b><p>Read it with your own eyes. Ask me anything before you sign.</p></div></li>
+        <li class="step"><div><b>HR onboards you</b><p>Account created, orientation done, full access to loanfactory.com — and you start.</p></div></li>
+      </ol>
+      <p class="sec__lead" style="margin-top:1.5rem;font-size:var(--small)">
+        <b>Who can join:</b> newly licensed, or 2+ loans closed in the past year. Subject to background check and
+        management approval.</p>
+    </div>
+  </section>
+
+  <!-- form -->
+  <section class="sec" id="form">
+    <div class="shell">
+      <div class="sec__kicker" id="form-kicker">Start here</div>
+      <h2 id="form-h2">Tell me where you are, and I'll tell you straight whether this is worth your time.</h2>
+      <div class="formwrap" style="margin-top:2rem">
+
+        <!-- ---- MODE 1: lead ---- -->
+        <div class="form" id="form-lead">
+          <h3>Six questions. That's the whole thing.</h3>
+          <p class="form__hint">No fee, no agreement, no NMLS access at this stage. I'll call or text you back.</p>
+          <div class="fields">
+            <div class="two">
+              <div><label for="fn">First name</label><input class="inp" id="fn" placeholder="Marcus" /></div>
+              <div><label for="ln">Last name</label><input class="inp" id="ln" placeholder="Reyes" /></div>
+            </div>
+            <div><label for="em">Email</label><input class="inp" id="em" placeholder="marcus@example.com" /></div>
+            <div><label for="ph">Mobile</label><input class="inp" id="ph" placeholder="(555) 012-3456" /></div>
+            <div><label for="st">Which state(s) do you originate in?</label><input class="inp" id="st" placeholder="Start typing a state…" /></div>
+            <div><label for="nm">NMLS number <span style="font-weight:450;color:var(--gray-5)">— optional, leave blank if you're not licensed yet</span></label>
+              <input class="inp" id="nm" placeholder="e.g. 1076215" /></div>
+
+            <div class="lockrow">
+              <label for="rb">Who told you about Loan Factory?</label>
+              <input class="inp inp--lock" id="rb" value="Seth August — Outside Recruiter" readonly />
+              <span class="lockbadge">from this page</span>
+            </div>
+
+            <label class="consent"><input type="checkbox" />
+              I agree to be contacted by Loan Factory and its officers/employees by phone, text and email.
+              Message &amp; data rates may apply. I can reply STOP at any time.</label>
+          </div>
+          <button class="btn btn--pri">Send it to Seth</button>
+        </div>
+
+        <!-- ---- MODE 2: apply ---- -->
+        <div class="form hide" id="form-apply">
+          <h3>Your application — all the way through.</h3>
+          <p class="form__hint">Same form the whole company uses. You can stop at any point and come back to
+            exactly where you left off using the link we email you.</p>
+
+          <div class="stepper">
+            <div class="stp stp--now"><i>1</i><div><b>Before you begin</b><span>Licensing, tech and production requirements — read once, tick once</span></div></div>
+            <div class="stp"><i>2</i><div><b>Your information</b><span>Identity, address, licensed states, states to sponsor, target compensation, social profiles</span></div></div>
+            <div class="stp stp--pay"><i>3</i><div><b>Pay the $100 one-time startup fee</b><span>The only payment in this process</span></div></div>
+            <div class="stp"><i>4</i><div><b>Review &amp; sign the LO Agreement</b><span>E-signature</span></div></div>
+            <div class="stp"><i>5</i><div><b>Give NMLS access</b><span>So licensing can sponsor you</span></div></div>
+          </div>
+
+          <div class="fields" style="margin-top:1.4rem">
+            <div class="two">
+              <div><label for="fn2">First name</label><input class="inp" id="fn2" placeholder="Marcus" /></div>
+              <div><label for="ln2">Last name</label><input class="inp" id="ln2" placeholder="Reyes" /></div>
+            </div>
+            <div><label for="em2">Email</label><input class="inp" id="em2" placeholder="marcus@example.com" /></div>
+            <div class="lockrow">
+              <label for="rb2">Who told you about Loan Factory?</label>
+              <input class="inp inp--lock" id="rb2" value="Seth August — Outside Recruiter" readonly />
+              <span class="lockbadge">from this page</span>
+            </div>
+            <label class="consent"><input type="checkbox" />
+              I have read the requirements above and confirm I meet them.</label>
+          </div>
+          <button class="btn btn--pri">Continue to my information →</button>
+        </div>
+
+        <!-- aside -->
+        <div class="aside">
+          <blockquote class="quote">
+            <p>"I moved four files with me and closed the first one eleven days after my license was sponsored.
+              The part nobody tells you is how much time you get back when you stop paying for five tools."</p>
+            <footer>— Loan Officer, joined 2025 · placeholder, to be replaced with a real, approved quote</footer>
+          </blockquote>
+          <ul class="tick">
+            <li>Your pipeline moves with you — we help you plan it</li>
+            <li>Licensing sponsors you in each state you name</li>
+            <li>One dedicated processor, who calls you on approval</li>
+            <li>Free training at every level</li>
+            <li>Refer another Loan Officer and take cash or RSUs</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- faq -->
+  <section class="sec sec--tint">
+    <div class="shell">
+      <div class="sec__kicker">Before you ask me</div>
+      <h2>The five questions I get every week.</h2>
+      <div class="faq">
+        <details open><summary>How long does the license sponsorship take?</summary>
+          <p>It starts the day you give us NMLS access, and the timeline is the state's, not ours. I'll tell you
+            what to expect for your specific states on our call rather than quote you an average that may not apply.</p></details>
+        <details><summary>What does "100% commission" really mean?</summary>
+          <p>You keep the commission on the file, minus a flat $595 per file, and $500 for in-house processing on a
+            closed loan. There is no split, no tier, and no annual renegotiation.</p></details>
+        <details><summary>Is the $100 startup fee the only cost?</summary>
+          <p>It is the only fee to join, and it is one time. There is no desk fee, no monthly fee and no software
+            subscription — the platform is built in-house and is free to you.</p></details>
+        <details><summary>What happens to the loans I have in process?</summary>
+          <p>They stay where they are until they close. We plan the timing of your move around them, which is most of
+            what my first call with you is about.</p></details>
+        <details><summary>I'm not licensed yet. Should I still send this?</summary>
+          <p>Yes. Newly licensed officers are eligible. Leave the NMLS field blank and I'll tell you the order to do
+            things in.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <footer class="pfoot">
+    <div class="shell">
+      <strong>Loan Factory</strong> · Equal Housing Opportunity · NMLS #### · Licensed in 48 states.<br />
+      This page is published by Loan Factory and presented by a member of its recruiting team. All compensation
+      figures describe the standard Loan Officer agreement and are subject to background check and management
+      approval. <em>[Compliance to supply final disclosure block before launch.]</em>
+    </div>
+  </footer>
+</main>
+
+<!-- ============ annotation for reviewers ============ -->
+<section class="ann">
+  <div class="shell">
+    <div class="sec__kicker" style="color:var(--orange-soft)">For the reviewers, not for the visitor</div>
+    <h2>What this page is, in three sentences.</h2>
+    <p class="ann__lead">One page per recruiter. The URL already knows who sent the visitor, so the "who told you about
+      Loan Factory" field is filled in and locked — the candidate cannot change it and the recruiter cannot lose the
+      credit. Everything else on the page is the copy we already publish on <code>/loan-officer</code>.</p>
+
+    <div class="ann__grid">
+      <div class="acard">
+        <b>The link is the identity</b>
+        <h3>Two links, one page</h3>
+        <p><code>/join/seth-august</code> is the one he posts on Facebook — six questions, no fee.
+           <code>/join/seth-august/apply</code> is the one he emails a professional he has already spoken to — the
+           full application including the $100 step. Different links so he never sends the wrong one, and so the two
+           funnels can be measured apart.</p>
+      </div>
+      <div class="acard">
+        <b>Attribution</b>
+        <h3>Stamped by the page, not typed by the visitor</h3>
+        <p>Submitting sends <code>referred_source = recruiter</code> and <code>referred_by = seth.august@loanfactory.com</code>,
+           plus a label <code>Recruiter page · seth-august</code>. The email is the join key HR will use later, so
+           nothing has to be reconciled by hand.</p>
+      </div>
+      <div class="acard">
+        <b>Before HR creates accounts</b>
+        <h3>The URL never has to change</h3>
+        <p>Today the slug is mapped to the recruiter in a small registry we own. When HR issues the real account, we
+           fill in the account key in that registry. The link on his business card keeps working, and past leads
+           still point at him.</p>
+      </div>
+    </div>
+
+    <div class="flow">
+      <pre><b>Link 1 — mass</b>   www.loanfactory.com/join/<em>seth-august</em>
+                  └─ 6 fields ─→ lead saved ─→ returns a resume key
+                                   └─ later: Seth emails …/register-loan-officer?key=<em>&lt;key&gt;</em>
+                                      and the candidate picks up exactly where they stopped
+
+<b>Link 2 — pro</b>    www.loanfactory.com/join/<em>seth-august</em>/apply
+                  └─ full application ─→ $100 fee ─→ agreement ─→ NMLS access
+
+<b>Both write</b>     one LORecruiting record  ·  referred_source=<em>recruiter</em>
+                  referred_by=<em>seth.august@loanfactory.com</em>
+                  lo_labels=[<em>"Recruiter page · seth-august"</em>]</pre>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var lead = document.getElementById('btn-lead'),
+      apply = document.getElementById('btn-apply'),
+      fLead = document.getElementById('form-lead'),
+      fApply = document.getElementById('form-apply'),
+      tail = document.getElementById('url-tail'),
+      kicker = document.getElementById('form-kicker'),
+      h2 = document.getElementById('form-h2'),
+      cta = document.getElementById('hero-cta'),
+      sub = document.getElementById('hero-sub');
+
+  function set(mode) {
+    var isLead = mode === 'lead';
+    lead.setAttribute('aria-pressed', String(isLead));
+    apply.setAttribute('aria-pressed', String(!isLead));
+    fLead.classList.toggle('hide', !isLead);
+    fApply.classList.toggle('hide', isLead);
+    tail.textContent = isLead ? '' : '/apply';
+    kicker.textContent = isLead ? 'Start here' : 'Your application';
+    h2.textContent = isLead
+      ? "Tell me where you are, and I'll tell you straight whether this is worth your time."
+      : "You've decided. Let's get you licensed and onboarded.";
+    cta.textContent = isLead ? 'Talk to me first →' : 'Start my application →';
+    sub.textContent = isLead
+      ? "Keep 100% of your commission minus a flat $595 a file. No desk fee. No monthly fee. No software subscriptions. Let's find out in ten minutes whether this is better than where you are now."
+      : "Keep 100% of your commission minus a flat $595 a file. You can stop at any step and come back to the same place — nothing you type is lost.";
+  }
+  lead.addEventListener('click', function () { set('lead'); });
+  apply.addEventListener('click', function () { set('apply'); });
+})();
+</script>
+</body>
+</html>

@@ -773,6 +773,18 @@
         "/Users/apple/Projects/agentflow/lf-homepage/docs/mockups"
       ],
       "port": 3057
+    },
+    {
+      "name": "join-slug-mockup",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "3058",
+        "--directory",
+        "/Users/apple/Projects/agentflow/docs/mockups/lo-recruiter-join"
+      ],
+      "port": 3058
     }
   ]
 }
