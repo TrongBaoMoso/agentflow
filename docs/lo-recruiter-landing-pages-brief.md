@@ -326,3 +326,147 @@ trang.
 **Đo lường (làm từ Phase 0):** mỗi trang phải có phễu riêng — *lượt xem → bắt đầu điền → submit
 → vào được*. Đó mới là con số dùng để đánh giá recruiter, và cũng là con số trả lời được câu
 "link đại trà có đáng làm không".
+
+---
+
+# PHỤ LỤC A — Đọc hệ cũ (packs / moso / base / moso-configuration), 31/08/2026
+
+> Đọc trên `origin/master` sau khi `git fetch` cả 4 repo. Kết luận: **§3 của brief này (tự dựng sổ
+> đăng ký slug) là THỪA.** Hệ cũ đã có sẵn toàn bộ vòng đời slug, khoá định danh, và thậm chí một
+> link giới thiệu cá nhân **đang chạy trên production**.
+
+## A.1 Link giới thiệu cá nhân — ĐÃ CÓ, ĐANG CHẠY
+
+```java
+// packs/loan/.../client/view/InviteALoanOfficerForm.java:240
+public static String loanOfficerInviteUrl() {
+  return Core.baseUrl() + "/loan-officer?ref=" + App.currentUser().get(Admin.unique_id);
+}
+```
+
+Có nút copy, và màn hình **"My Loan Officer Referrals"**
+(`moso/src/main/java/com/lenderrate/client/view/interested_loan_officer/MyLoanOfficerReferrals.java:54`).
+Thông báo khi copy (`LoanMessages.properties:832`):
+
+> *"You can now share this link on any social media platform to invite other loan officers. The
+> system will automatically recognize you as the referrer, ensuring that you receive credit for
+> any loan officers who join through your link."*
+
+Tức là **lời hứa đã được đưa ra với người dùng rồi**. Việc của chúng ta không phải phát minh link,
+mà là **cho cái link đó một trang tử tế và một chế độ thứ hai**.
+
+## A.2 "Unique key" HR sẽ cấp — chính là Associate ID, đã tồn tại
+
+```java
+// packs/loan/.../shared/entity/Admin.java:310
+Field<Long> unique_id = TYPE.f("unique_id", "Associate ID", true, LongType.instance()).track();
+```
+
+Mọi Admin đều có. Seth August = `1004403`, Brayan Suarez = `1002273`, Miley Dau = `1002783`.
+Ai đã có account thì **đã có khoá rồi** — không cần chờ, không cần bịa khoá tạm. Bài toán "chưa có
+account" chỉ còn đúng với recruiter hoàn toàn mới chưa được tạo Admin.
+
+## A.3 Vòng đời slug — đã build đầy đủ, đúng y hệt thiết kế §3.1
+
+`HasMyPage.url`, cài trên `Admin`, `Branch`, `PartnerAgent`, `Agent`:
+
+| Thứ tôi đề xuất tự làm ở §3 | Hệ cũ đã có |
+|---|---|
+| Sinh slug từ tên | `Admin.beforeCreated` tự sinh, đụng thì lấy email local-part, vẫn đụng thì thêm hậu tố ngẫu nhiên (`Admin.java:1845-1858`) |
+| Chống trùng | `ReservedPageUrls.isTaken()` — soát route token, Template, Branch active, Admin active, PartnerAgent (`ReservedPageUrls.java`) |
+| Đổi slug mà link cũ vẫn chạy | `previous_urls` giữ mọi slug cũ + tự invalidate cache (`Admin.java:1991-2006`) |
+| Người dùng tự chọn slug trùng | Ném lỗi rõ: *"This link is already in use. Please choose another one."* |
+
+→ **Không dựng registry mới.** Dùng `Admin.url` làm slug và `Admin.unique_id` làm khoá.
+
+## A.4 Dạng URL mà hệ cũ đã chọn cho trang hành động cá nhân
+
+```java
+// packs/loan/.../server/op/partner_agent/ReferralAgentInvitationOp.java:35
+String inviteUrl = Server.baseUrl()
+        + (partnerUser.hasValue(PartnerAgent.url) ? "/" + partnerUser.get(PartnerAgent.url) : "")
+        + "/apply?partner_email=" + ... ;
+```
+
+Tức là **`/<slug-người>/<hành-động>`** — slug trước, hành động sau. Đây là tiền lệ trong nhà cho
+cuộc tranh luận `/join/<slug>` hay `/<slug>/join`.
+
+## A.5 Giới hạn quyết định: `/<slug>` chỉ phục vụ người là loan originator
+
+```java
+// packs/loan/.../shared/entity/Admin.java:1136
+should_have_domain = (role.isLoanOriginator() || role.isRealEstateAgent()
+        || (role.isOriginatorAssistant() && hasValue(originator_assistant_nmls)))
+        && !role.isBrokerOrAssistant();
+```
+
+`AdminPages.findRoot` chỉ nhận admin `active && should_have_domain && !is_pending_loan_officer`,
+và cả nhánh này còn bị chặn bởi cờ cấu hình `associate_landing_page`.
+
+→ Seth August (Loan Officer + Outside recruiter) **có** trang `/seth-august`.
+→ Một inside recruiter thuần, không phải LO, **không có** — dù vẫn có slug làm giá trị.
+
+Đây là lý do quyết định cho việc chọn dạng URL ở A.6.
+
+## A.6 Hai phương án URL, và khuyến nghị
+
+| | **A. `/seth-august/join` + `/seth-august/apply`** | **B. `/join/seth-august` + `/apply/seth-august`** |
+|---|---|---|
+| Giống tiền lệ trong nhà | ✅ đúng `ReferralAgentInvitationOp` | ✖ dạng mới |
+| Vòng đời slug | ✅ miễn phí, MOSO lo hết | ✅ vẫn dùng `Admin.url`, chỉ khác chỗ đặt |
+| Chạy cho recruiter KHÔNG phải LO | ✖ **không** (`should_have_domain`) | ✅ có |
+| Nằm ở repo nào | **lo-homepage** (MOSO route `/<slug>` đẩy sang đó qua `x-base-path`) | **lf-homepage** — nơi đã có `/loan-officer`, `/register-loan-officer`, `/lo-recruiter-program` |
+| Việc phải làm thêm | bật `should_have_domain`/`associate_landing_page` cho recruiter | đăng ký `join` + `apply` vào `pageSections()` để không ai bị slug trùng |
+
+**Khuyến nghị: B.** Lý do duy nhất nhưng đủ mạnh — nhóm cần trang này nhất (inside recruiter,
+outside recruiter không phải LO) chính là nhóm mà phương án A loại ra. Toàn bộ nội dung tuyển LO
+cũng đang nằm ở lf-homepage.
+
+**Việc bắt buộc kèm theo B:** thêm `join` và `apply` vào `Server.appConfig().pageSections()` bên
+MOSO. Không làm, một ngày nào đó có người tên trùng được tự sinh slug `join` và chiếm mất route.
+
+## A.7 Một lỗi đang tồn tại, nên báo dù có làm dự án này hay không
+
+Nút copy ở A.1 phát cho **mọi associate** link `/loan-officer?ref=<unique_id>` kèm lời hứa "hệ
+thống sẽ tự nhận ra bạn là người giới thiệu". Nhưng phía lf-homepage:
+
+```ts
+// loan-officer/_sections/GetInTouchSection/WebinarForm/index.tsx:260
+const refLO = dataProps.loanOfficers.find((lo) => lo.unique_id === refKey)
+if (refLO) { setValue('referred_source', REFERRED_VALUES.LOAN_OFFICER); ... }
+```
+
+và `loanOfficers` chỉ gồm admin thoả `!is_broker && active && is_loan_originator`
+(`loan-officer/page.tsx:184`), còn mảng `recruiters` được dựng **không kèm `unique_id`**
+(`register-loan-officer/page.tsx:113`).
+
+Hệ quả, hai mức:
+
+1. **Recruiter không phải loan originator** → không có trong `loanOfficers` → link im lặng không
+   ghi nhận gì. Lời hứa trong thông báo là sai.
+2. **Recruiter là loan originator** → có ghi nhận, nhưng luôn bị đóng dấu
+   `referred_source = loan_officer`, không bao giờ là `recruiter`. Bên MOSO nó rơi vào
+   *Word of Mouth / Current LF LO* thay vì *Word of Mouth / Company Recruiter* — sai ô báo cáo.
+
+Cần xác minh trên dữ liệu thật rồi mở ticket riêng.
+
+## A.8 Quà mới có từ hôm qua — dùng ngay được
+
+`packs` master `18153ee957` (merge 31/08) thêm vào `LORecruiting`:
+
+```java
+Field<Date>   last_registration_at    // KHI nào một lượt đăng ký công khai tới
+Field<String> last_registration_event  // = lo_labels.get(0), tức NHÃN ĐẦU TIÊN client gửi
+```
+
+Chỉ `RegisterInterestedLoanOfficer` (đường form công khai) mới đóng dấu; admin sửa tay trong back
+office đi qua `SaveOp` thường nên **không** chạm vào.
+
+Ý nghĩa cho dự án này: **tốt hơn hẳn đề xuất §3.3 (dựa vào `lo_labels`).** `lo_labels` là danh sách
+unique, không thứ tự, nên đăng ký lại lần hai không đổi gì. Còn `last_registration_event` là
+một-giá-trị-mới-nhất-thắng. Nếu trang gửi `lo_labels: ["Recruiter page · seth-august"]` thì ta có
+ngay **"lần gần nhất người này giơ tay là qua trang của ai, lúc nào"** — chính là dữ liệu để phân
+xử first-touch vs last-touch ở §6.
+
+**Ràng buộc phải tuân:** field lấy `labels.get(0)`, nên nhãn trang recruiter phải là **phần tử đầu
+tiên**, hoặc tốt nhất là nhãn duy nhất.
