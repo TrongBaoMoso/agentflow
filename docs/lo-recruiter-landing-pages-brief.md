@@ -836,3 +836,195 @@ Cái thứ hai là chỗ **duy nhất** trong toàn bộ thiết kế này cần
 | Quy công `referred_source` + `referred_by` → FK `recruiter` | **MOSO** | **Không — đã có sẵn** |
 | Thêm `lo_labels` để biết đến từ trang nào | MOSO | Không — Phase 2 |
 | Sửa dropdown bỏ sót 10/12 recruiter | lf-homepage + lo-homepage | Riêng, `agentflow-mxm6` |
+
+---
+
+# Phụ lục D — Workflow đầy đủ: trang recruiter chạy thế nào, từ cú click tới lúc MOSO ghi công
+
+Mọi khẳng định dưới đây đọc từ code trên `origin/master` ngày 31/08, không suy đoán.
+
+## D.1 Toàn cảnh — hai link, một hồ sơ
+
+Recruiter cầm **hai đường link**, cùng trỏ về **một người** (chính họ), khác nhau ở chỗ **đi sâu tới đâu**:
+
+```
+                 ┌─ /join/seth-august   (Link 1 — thu gom)   → form ngắn, 6 ô, không thu tiền
+recruiter  ──────┤
+                 └─ /apply/seth-august  (Link 2 — xử lý)     → stepper 4 bước, có trả phí $100
+                                   │
+                                   ▼
+                    cùng POST registerLoanOfficer
+                                   │
+                                   ▼
+                    MOSO RegisterInterestedLoanOfficer
+                                   │
+                    khử trùng THEO EMAIL → một hồ sơ LORecruiting duy nhất
+```
+
+Điểm mấu chốt để hiểu cả thiết kế: **hai link không tạo hai loại dữ liệu.** `WebPlusAPI.java:1171`
+(`registerWebinar`) và `:2121` (`registerLoanOfficer`) **cùng gọi một op** —
+`RegisterInterestedLoanOfficer`. Nên một người vào bằng Link 1 hôm nay, quay lại bằng Link 2 tháng
+sau, vẫn là **một hồ sơ được điền dày thêm**, không phải hai bản ghi rời.
+
+## D.2 Recruiter cầm gì trong tay
+
+| | Link 1 — `/join/<slug>` | Link 2 — `/apply/<slug>` |
+|---|---|---|
+| Dùng khi | rải đại trà: post Facebook, email blast, group Zalo | gửi đích danh một LO đã nói chuyện rồi |
+| Người nhận | chưa biết Loan Factory là gì | đã muốn chuyển, cần làm thủ tục |
+| Mục tiêu | **lấy được thông tin liên lạc** | **đưa họ qua hết quy trình** |
+| Form | 6 ô, xong trong ~40 giây | 4 bước: thông tin → trả phí $100 → ký thoả thuận → cấp quyền NMLS |
+| Có thu tiền không | **Không** | Có, $100 một lần |
+
+Slug lấy từ local-part của `company_email` (Phụ lục C.3), nên HR tạo account xong là link **có ngay**,
+không phải cấu hình gì thêm.
+
+## D.3 Trang có nội dung gì
+
+Cả hai link dùng **chung một khung trang**, chỉ khác phần form ở cuối. Thứ tự các khối đi theo đúng
+thứ tự câu hỏi trong đầu người đọc:
+
+| # | Khối | Trả lời câu hỏi ngầm | Nguồn dữ liệu |
+|---|---|---|---|
+| 1 | **Hero cá nhân hoá** — ảnh, tên, chức danh, văn phòng, ngôn ngữ của recruiter | *"Ai đang mời tôi?"* | `getAdmins`: `avatar`, `full_name`, `title`, `office_location`, `preferred_languages` |
+| 2 | **Dải số 60 giây** — $500/khoản vay đã đóng, tiết kiệm $1.000+/tháng, cấp phép 48 bang | *"Có đáng đọc tiếp không?"* | copy đã duyệt trong `messages/en.json` |
+| 3 | **Bảng so sánh** — Loan Factory vs nơi họ đang làm | *"Hơn chỗ tôi ở chỗ nào?"* | copy đã duyệt |
+| 4 | **7 bước gia nhập** — phí $100 tách hẳn thành một bước riêng, nói rõ | *"Tôi phải làm gì, và có mất tiền không?"* | `RegisterLoanOfficerPage.onboard_process_*` |
+| 5 | **Form** | — | xem D.4 |
+| 6 | **Bằng chứng** — số lender, số bang, điều kiện tham gia | *"Có thật không?"* | copy đã duyệt |
+| 7 | **FAQ** | phản đối thường gặp | copy đã duyệt |
+
+Ba nguyên tắc nội dung, rút từ chính chương trình:
+
+- **Không giấu phí.** Bước trả $100 để nguyên một khối riêng, không nhét vào chân trang. Người đọc
+  biết trước thì tỉ lệ bỏ giữa chừng ở bước 2 giảm; giấu đi thì họ bỏ đúng lúc tốn công nhất.
+- **Cá nhân hoá là recruiter, không phải công ty.** Khác biệt duy nhất giữa trang của Seth và trang
+  của Bảo Trịnh là khối 1 và ô ẩn quy công. Mọi con số về sản phẩm phải giống hệt nhau — recruiter
+  **không** được tự sửa số liệu, nếu không sẽ có 12 phiên bản sự thật.
+- **Link 1 không được hứa nhiều hơn nó làm.** Nút phải ghi rõ đại ý *"Gửi thông tin — chưa cam kết
+  gì"*, chứ không phải "Apply now", vì form này không đưa họ vào quy trình.
+
+## D.4 Khi LO bấm Submit — chuyện gì xảy ra, theo từng lớp
+
+### Lớp 1 — trên trình duyệt (lf-homepage)
+
+1. Trang đã biết mình thuộc recruiter nào (giải slug từ D.2) nên nắm sẵn `company_email` của người đó.
+2. Form nhét thêm **hai ô ẩn** vào payload:
+   ```
+   referred_source = "recruiter"
+   referred_by     = "seth.august@loanfactory.com"
+   ```
+3. Hai ô này được **khoá** (`setIsDisabledRefer(true)`, `BasicInfoForm/index.tsx:300-346` — cơ chế
+   này **đã tồn tại**, hiện đang dùng cho tham số prefill). Ứng viên không sửa được, cũng không vô
+   tình chọn nhầm người trong dropdown.
+4. Với Link 1, bật cờ `waive_startup_fee` → bước trả phí biến mất khỏi thanh tiến trình:
+   `visibleRealSteps = STEP_MENU.filter(s => !(s.id === 1 && waive_startup_fee))`
+   (`RegisterLoanOfficerForms/index.tsx:642` — **đã tồn tại**, không phải viết mới).
+
+### Lớp 2 — MOSO nhận (`WebPlusAPI.registerLoanOfficer`, `:2121`)
+
+```java
+if (Strings.isEmpty(key)) → RegisterInterestedLoanOfficer   // lần gửi ĐẦU
+else                      → SaveOp                          // các bước sau
+```
+
+Lần đầu chưa có `key`, nên đi vào op đầy đủ. FE nhận lại `key` trong response và nạp lại trang với
+`?key=<key>` (`index.tsx:521-527`) → **hồ sơ dở dang quay lại làm tiếp được**. Đây chính là cây cầu
+miễn phí giữa Link 1 và Link 2.
+
+### Lớp 3 — op `RegisterInterestedLoanOfficer` (118 dòng, đọc hết)
+
+Theo đúng thứ tự:
+
+1. **Khử trùng theo email** — tìm `LORecruiting` mới nhất có `recruiting_type = interested` và cùng
+   `email`; thấy thì **dùng lại `key` cũ** thay vì tạo hồ sơ mới.
+2. **`stampRegistration`** — ghi `last_registration_at` và `last_registration_event = lo_labels[0]`.
+3. **`normalizeReferredSource`** — quy giá trị cũ về mô hình hai tầng hiện hành. Đã kiểm:
+   `recruiter` rơi vào nhánh `default: return source` → **giữ nguyên**, không bị đổi.
+4. Lưu, rồi xếp hàng `EnsureLORecruiterOp`, và gửi email `webinar_registration` nếu chưa
+   `ready_to_join`.
+
+### Lớp 4 — entity `LORecruiting` tự quy công (`beforeCreated`, `:669-678`)
+
+```java
+if (referred_source == recruiter && có referred_by) {
+  find(Admin).whereEquals(company_email, referred_by)
+             .whereEquals(active, true).whereEquals(is_lock, false)
+             .filter(a -> a.get(role).isAnyRecruiter())      // KHÔNG đòi is_loan_originator
+             .findFirst()
+             .ifPresent(a -> bean.set(recruiter, a.keyName()));   // FK thật
+}
+```
+
+Và `beforeSave:843-846` suy ra `referred_section = referred_source.section()` → `recruiter` thuộc
+**`word_of_mouth`**. Vậy hồ sơ nằm đúng ô **Word of Mouth → Company Recruiter**.
+
+## D.5 Kết quả cuối cùng trên một hồ sơ
+
+| Trường | Giá trị | Ai ghi |
+|---|---|---|
+| `referred_source` | `recruiter` | FE gửi, op giữ nguyên |
+| `referred_section` | `word_of_mouth` | `beforeSave` suy ra |
+| `referred_by` | `seth.august@loanfactory.com` | FE gửi |
+| **`recruiter`** (FK → Admin) | key của Seth | `beforeCreated` tra ra |
+| `added_by_referrer_label` | `"Referred by Seth August"` | `beforeSave:829-841` |
+| `last_registration_at` / `_event` | thời điểm + nhãn trang | `stampRegistration` |
+
+FK `recruiter` mới là thứ báo cáo và tiền thưởng chạy trên đó. Hai trường kia là **chữ**, dùng để
+người đọc hiểu, không dùng để tính.
+
+## D.6 ⚠️ Rủi ro lớn nhất: ứng viên ĐÃ CÓ trong hệ thống
+
+Khối quy công ở D.4 nằm trong **`beforeCreated`** (`:617-709`), **không** phải `beforeSave`. Kiểm
+toàn file: cả 4 lệnh ghi FK `recruiter` (`:657`, `:664`, `:677`, `:679`) đều nằm trong
+`beforeCreated`. **`beforeSave` không ghi FK này một lần nào.**
+
+Ghép với bước khử trùng ở Lớp 3:
+
+> Nếu email đó **đã có** một hồ sơ `interested`, op dùng lại `key` cũ → hoá ra là lệnh **update** →
+> `beforeCreated` **không chạy** → **FK `recruiter` giữ nguyên giá trị cũ (thường là rỗng).**
+
+Chỗ độc: `beforeSave:829` **vẫn** cập nhật nhãn chữ thành `"Referred by Seth August"`.
+
+**Nên màn hình nói một đằng, dữ liệu tính tiền nói một nẻo.** Recruiter mở hồ sơ, thấy tên mình,
+tưởng đã được ghi công — trong khi báo cáo nhóm theo FK `recruiter` không đếm họ. Không có lỗi nào
+bắn ra, không có log nào ghi lại.
+
+Ba điều cần nói rõ về rủi ro này:
+
+1. **Nó trả lời luôn câu first-touch / last-touch mà tôi từng định đi hỏi Seth/Victoria.** Hệ thống
+   **đã** là first-touch, ngầm định, và ghi không nhất quán. Đây là mô tả hiện trạng, không phải một
+   lựa chọn ai đó từng cân nhắc.
+2. **Phạm vi hẹp hơn nghe tưởng.** Khử trùng chỉ so trong `recruiting_type = interested`, nên kho
+   106k RLO (`recruited`) không đụng tới. Chỉ dính người **từng điền form quan tâm trước đây**.
+3. **Chưa đo được số.** Muốn biết nặng nhẹ phải đếm trên production: trong các hồ sơ `interested`
+   hiện có, bao nhiêu cái có `referred_by` mà FK `recruiter` rỗng. Chưa làm — **đừng đoán**.
+
+Ba hướng xử, phải chốt trước khi mở link ra ngoài:
+
+- **(a) Không làm gì** — chấp nhận first-touch. Rẻ nhất, nhưng phải **bỏ nhãn chữ** đi, nếu không
+  thì đang nói dối recruiter.
+- **(b) Sửa MOSO** — chuyển khối quy công sang `beforeSave` với điều kiện *chỉ set khi FK đang rỗng*.
+  Giữ first-touch nhưng vá được ca "chưa ai sở hữu". Đây là thay đổi MOSO **duy nhất** tôi nghĩ đáng
+  làm cho dự án này.
+- **(c) Last-touch** — luôn ghi đè. **Không khuyến nghị**: hai recruiter sẽ giành nhau bằng cách gửi
+  lại link, và điều đó biến thành tiền.
+
+## D.7 Cái gì đã có sẵn, cái gì phải xây
+
+| Mảnh | Trạng thái |
+|---|---|
+| Op nhận đăng ký, khử trùng theo email | ✅ có |
+| Quy công `referred_by` → FK `recruiter`, không đòi LO | ✅ có (`beforeCreated:669`) |
+| Giá trị `referred_source = recruiter`, xếp vào Word of Mouth | ✅ có |
+| Hai ô `referred_source` + `referred_by` trong payload | ✅ có (`moso-types.ts:1481`) |
+| Prefill + khoá ô quy công | ✅ có (`BasicInfoForm:300-346`) |
+| Ẩn bước trả phí cho Link 1 | ✅ có (`waive_startup_fee`, `index.tsx:642`) |
+| Hồ sơ dở dang làm tiếp bằng `?key=` | ✅ có (`index.tsx:521-527`) |
+| Slug cho recruiter | ✅ có — local-part `company_email` (C.3) |
+| Thông tin recruiter để render trang | ✅ có — `getAdmins` (C.2) |
+| **Trang `/join/[slug]` + `/apply/[slug]`** | ❌ **phải xây** — lf-homepage |
+| **Endpoint hẹp `GET /api/recruiters`** | ❌ nên xây — moso-aid (tránh 16,5 MB, C.4) |
+| **Quyết cách xử D.6** | ❌ **phải chốt trước khi phát link** |
+| `lo_labels` để biết đến từ trang nào | ❌ Phase 2 — MOSO |
+| Dropdown bỏ sót 10/12 recruiter | ❌ `agentflow-mxm6`, việc riêng |
