@@ -278,3 +278,39 @@ tính chuyện chốt vòng hiện tại rồi bắt đầu session mới có t�
    "test không chạy" — trong khi chúng chạy và pass. Grep theo display name. Cùng họ với
    `BUILD SUCCESSFUL` 0 test (mục 13): **công cụ đo hỏng trông y hệt kết quả xấu**; cả hai lần lối
    thoát đều là *tự nghi con số trước khi tin nó*.
+
+18. **PUSH FREEZE (Bao, 31/08/2026) — ngừng push mọi repo `LoanFactory-Inc` tới khi Bao mở lại.**
+   Nguyên nhân: DevOps (anh Khải) cảnh báo account `TrongBaoMoso` spam commit/noti; 29/08 account
+   đã bị remove khỏi org một lần vì việc này. Commit local vẫn bình thường.
+   Bốn luật push VĨNH VIỄN (áp cả sau khi mở lại): (1) gom đủ **1 feature / 1 nhóm việc** mới push —
+   không push mỗi round phản biện (thứ bị chặn là chuỗi PR lắt nhắt cho cùng một bead, kiểu 6 PR
+   #180–#185 cho `fm6n`); (2) squash trước khi mở PR; (3) không tạo/xoá nhánh vụn trên repo org;
+   (4) mọi trao đổi giữa các phiên (docs, verdict, beads) dồn vào `TrongBaoMoso/agentflow`.
+   **Luật 1 KHÔNG có nghĩa gộp nhiều feature vào một PR.** `recruit-be` theo GitLab Flow hai dòng,
+   feature phải land độc lập vào `master` VÀ `release`; gộp rồi squash một lần sẽ làm hai dòng lệch
+   nhau khó gỡ. Hình đúng: **mỗi feature = 1 commit squash × 2 PR**.
+   **`git push --delete` cũng là push** → nằm trong freeze. Luật 3 là luật cho hành vi tương lai,
+   nó KHÔNG cấp phép cho một đợt dọn hồi tố mà chính đợt dọn đó lại là thứ DevOps phàn nàn.
+   Đo 31/08: origin/recruit-be có **105 nhánh feature**, **97 đã land**, 8 chưa. Dọn = việc của Bao.
+   **Chiều dỡ freeze đắt hơn chiều áp freeze** (luật DEV đề, tôi chốt): lệnh CẤM thì tuân thủ ngay
+   không đòi xác thực; lệnh CHO PHÉP thì đòi **nguyên văn lời Bao** trước khi làm.
+   Hệ quả cho vai PROGRESS: "đã push / đã mở PR" **không còn là mốc hoàn thành hợp lệ**.
+   Mốc mới = commit local + đo xong + có verdict.
+
+19. **Trạng thái sau compact là TIN ĐỒN, không phải số đo — kể cả khi nó từng đúng.**
+   31/08 tôi (HOST) nói `ulae` "chưa push, chưa mở PR" và relay cho 3 phiên. Đo lại: `ulae` = PR
+   **#198/#199 merged 30/08 23:36 giờ VN**, cùng `9a4s` #202/#203, `4758` #204/#205, `ymzt` #206 —
+   **5 việc đã merge**, trong đó 4 việc merge sau lúc bản tóm tắt của tôi được chốt. Đây là lần
+   **thứ hai trong hai ngày** cùng một hình dạng lỗi (lần một: "beads lệch repo" từ snapshot cũ).
+   Luật: bản tóm tắt compact chỉ nói *cái gì đã từng đúng*, và trạng thái repo của một dự án 3 phiên
+   cùng chạy có **tuổi thọ tính bằng phút**. Trước mỗi tin relay chạm trạng thái: đo lại, hoặc nói
+   "theo bản tóm tắt của tôi (có thể đã cũ)". Đừng bao giờ relay trạng thái như đã đo.
+
+20. **Ghi lại MỐC CHẾT của một ghế, không chỉ ghi "đã chết".**
+   LEAD `725a7bc4` còn sống dưới tên `agentflow-d3` (socket 62012) và **tự ký RE-APPROVE** cho
+   #204/#205 vài phút trước khi rơi khỏi `~/.claude/sessions`. Nếu chỉ ghi "LEAD đã chết", người
+   kiểm sau này thấy ghế trống suốt và kết luận sai rằng những APPROVE đó do người khác tự diễn
+   giải. Cùng họ với "tên là địa chỉ tại thời điểm đọc, không phải danh tính".
+   Kèm theo: **tên "CHECK" hiện MƠ HỒ** — `agentflow-be` (`73097213`, sock 28110) là ghế thật giữ
+   context; `agentflow-check` (`34274283`, sock 54480) là bản resume cũ vẫn đang sống. Mọi verdict
+   điều phối phải ghi kèm sessionId, không ghi tên.
