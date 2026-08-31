@@ -134,6 +134,14 @@ Vì sao quy ước này sống được dù **không có gì cưỡng chế**: n
 PR sẵn có dễ hơn mở PR riêng. Quên thì cũng không tệ hơn hôm nay. Đây là điểm khác biệt với một quy ước
 phải-nhớ-mới-làm (loại đó là lời hứa, xem `mutation-check-before-trusting-green`).
 
+**LỖ ĐÃ BIẾT của quy ước này, khai trước cho khỏi ngộ nhận:** một bản ghi QUYẾT ĐỊNH (GOTCHAS, DECISIONS)
+đôi khi **không có PR việc nào để đi kèm** — nó không sinh ra từ một thay đổi code nào cả. Quy ước không phủ
+được ca đó. Nhưng mô hình tần suất nói vì sao nó **không gây hại**: những file đó là file NÓNG (GOTCHAS 16
+lần/12 ngày), mà file nóng **tự lành trong vài giờ**. Hai sự cố dài đều rơi vào file LẠNH.
+⇒ Khi gặp ca này: chờ PR code kế tiếp rồi gom vào (giữ cả chữ lẫn tinh thần), hoặc mở PR docs riêng và
+**ghi lý do vào bead** — kẻo người sau thấy PR docs-only đầu tiên sau khi ra quy ước lại là của chính người
+đề xuất quy ước mà không biết vì sao. Tuyệt đối KHÔNG nong nội dung lạ vào một PR đã được review duyệt.
+
 **Chưa dựng cổng máy nào cho việc này.** Spec detector so-đầu-nhánh-theo-TUỔI để trên giấy; chỉ dựng khi
 phép đo lại sau 7 ngày (bead `agentflow-ymzt`, defer) thấy tái phát, hoặc khi Bao yêu cầu sớm. Giá thật của
 nó không nhỏ: cần credential + đường push riêng cho CI.
