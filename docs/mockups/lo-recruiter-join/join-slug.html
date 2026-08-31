@@ -227,7 +227,7 @@ label{display:block;font-size:var(--small);font-weight:650;margin-bottom:.35rem}
     </div>
     <div class="urlbar">
       <span class="dots"><i></i><i></i><i></i></span>
-      <span class="urlbar__url">https://<b>www.loanfactory.com</b>/join/<em id="url-slug">seth-august</em><em id="url-tail"></em></span>
+      <span class="urlbar__url">https://<b>www.loanfactory.com</b>/<em id="url-verb">join</em>/<em id="url-slug">seth-august</em></span>
     </div>
   </div>
 </header>
@@ -468,9 +468,9 @@ label{display:block;font-size:var(--small);font-weight:650;margin-bottom:.35rem}
         <b>The link is the identity</b>
         <h3>Two links, one page</h3>
         <p><code>/join/seth-august</code> is the one he posts on Facebook — six questions, no fee.
-           <code>/join/seth-august/apply</code> is the one he emails a professional he has already spoken to — the
-           full application including the $100 step. Different links so he never sends the wrong one, and so the two
-           funnels can be measured apart.</p>
+           <code>/apply/seth-august</code> is the one he emails a professional he has already spoken to — the
+           full application including the $100 step. Two verbs, same depth, so neither link is the awkward one —
+           and the two funnels can be measured apart.</p>
       </div>
       <div class="acard">
         <b>Attribution</b>
@@ -482,19 +482,20 @@ label{display:block;font-size:var(--small);font-weight:650;margin-bottom:.35rem}
       <div class="acard">
         <b>Before HR creates accounts</b>
         <h3>The URL never has to change</h3>
-        <p>Today the slug is mapped to the recruiter in a small registry we own. When HR issues the real account, we
-           fill in the account key in that registry. The link on his business card keeps working, and past leads
-           still point at him.</p>
+        <p>The slug is <code>Admin.url</code>, which MOSO already generates for every account and keeps unique.
+           Rename him and MOSO keeps the old slug resolving (<code>previous_urls</code>), so the link on his
+           business card never dies. The identity is his Associate ID — <code>unique_id</code> — which also
+           already exists.</p>
       </div>
     </div>
 
     <div class="flow">
-      <pre><b>Link 1 — mass</b>   www.loanfactory.com/join/<em>seth-august</em>
+      <pre><b>Link 1 — mass</b>   www.loanfactory.com/<em>join</em>/seth-august
                   └─ 6 fields ─→ lead saved ─→ returns a resume key
                                    └─ later: Seth emails …/register-loan-officer?key=<em>&lt;key&gt;</em>
                                       and the candidate picks up exactly where they stopped
 
-<b>Link 2 — pro</b>    www.loanfactory.com/join/<em>seth-august</em>/apply
+<b>Link 2 — pro</b>    www.loanfactory.com/<em>apply</em>/seth-august
                   └─ full application ─→ $100 fee ─→ agreement ─→ NMLS access
 
 <b>Both write</b>     one LORecruiting record  ·  referred_source=<em>recruiter</em>
@@ -510,7 +511,7 @@ label{display:block;font-size:var(--small);font-weight:650;margin-bottom:.35rem}
       apply = document.getElementById('btn-apply'),
       fLead = document.getElementById('form-lead'),
       fApply = document.getElementById('form-apply'),
-      tail = document.getElementById('url-tail'),
+      verb = document.getElementById('url-verb'),
       kicker = document.getElementById('form-kicker'),
       h2 = document.getElementById('form-h2'),
       cta = document.getElementById('hero-cta'),
@@ -522,7 +523,7 @@ label{display:block;font-size:var(--small);font-weight:650;margin-bottom:.35rem}
     apply.setAttribute('aria-pressed', String(!isLead));
     fLead.classList.toggle('hide', !isLead);
     fApply.classList.toggle('hide', isLead);
-    tail.textContent = isLead ? '' : '/apply';
+    verb.textContent = isLead ? 'join' : 'apply';
     kicker.textContent = isLead ? 'Start here' : 'Your application';
     h2.textContent = isLead
       ? "Tell me where you are, and I'll tell you straight whether this is worth your time."

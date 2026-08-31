@@ -102,7 +102,9 @@ do khác nhau:
 - **identity** đổi khi HR tạo account thật → nhưng dữ liệu cũ phải nối liền được.
 
 Nếu dùng slug làm khoá thì đổi tên = mất attribution. Nếu dùng khoá làm URL thì được
-`/join/rp_7f3a91c2` — không ai dán cái đó lên Facebook. Best practice của vanity URL nói rõ:
+`/join/rp_7f3a91c2` — không ai dán cái đó lên Facebook. (Phụ lục A.3: MOSO đã tách sẵn hai thứ này —
+`Admin.url` là slug, `Admin.unique_id` là khoá — nên phần dựng registry ở §3.2 chỉ còn là bảng
+hiển thị ảnh/tiểu sử, không phải nơi sinh khoá.) Best practice của vanity URL nói rõ:
 URL phải sạch, gần với ngôn ngữ nói, **và không được đổi thường xuyên** vì nó phá QR và bản in
 ([Bitly](https://bitly.com/blog/vanity-url-best-practices/), [Linemark PURL guide](https://www.linemark.com/personalized-urls-purls-for-direct-mail-the-2026-strategic-guide/)).
 
@@ -180,10 +182,11 @@ riêng.
 |---|---|---|
 | `/loan-officer?ref=<id>` (dùng luôn cái đã có) | 0 dòng code mới | Không dán được lên FB/QR, không cá nhân hoá được hero, `?` vi phạm best practice vanity URL |
 | `/recruiter/<slug>` | Rõ ràng | Đọc như trang *về* recruiter, trong khi độc giả là **ứng viên** |
-| **`/join/<slug>`** ✅ | Động từ đúng với hành động, ngắn, dễ đọc qua điện thoại | Cần đăng ký segment mới |
+| **`/join/<slug>` + `/apply/<slug>`** ✅ | Động từ đúng với hành động, ngắn, dễ đọc qua điện thoại, hai link đối xứng | Cần đăng ký 2 segment vào `pageSections()` |
 | `<slug>.loanfactory.com` | Sang | DNS + cert + middleware cho từng người — quá sức cho V1 |
 
-**Đề xuất: `/join/<slug>` (Loại 1) và `/join/<slug>/apply` (Loại 2).**
+**CHỐT (31/08, sau khi đọc hệ cũ — xem Phụ lục A.6): `/join/<slug>` (Loại 1) và `/apply/<slug>` (Loại 2).**
+Hai động từ, cùng một tầng, không có đuôi — nên không link nào là link hạng hai.
 
 Chế độ là thuộc tính **của cái link**, không phải của trang. Hai path riêng để (a) recruiter
 copy đúng link mà không phải nhớ tham số, (b) analytics tách sạch hai phễu, (c) không ai vô
@@ -197,7 +200,7 @@ nhau mà để Google index là tự tạo duplicate content. Các trang `-v1`/`
 
 ## 5. Hai chế độ form
 
-| | **Loại 1 — Lead** `/join/<slug>` | **Loại 2 — Apply** `/join/<slug>/apply` |
+| | **Loại 1 — Lead** `/join/<slug>` | **Loại 2 — Apply** `/apply/<slug>` |
 |---|---|---|
 | Gửi cho ai | Đại trà: post FB, email blast, group | LO chuyên nghiệp đã nói chuyện rồi |
 | Mục tiêu | Lấy được cách liên lạc + đủ để chấm nóng/lạnh | Chạy hết quy trình, kể cả trả phí |
@@ -205,7 +208,7 @@ nhau mà để Google index là tự tạo duplicate content. Các trang `-v1`/`
 | Dùng lại | `GetInTouchSection` của `/loan-officer` | `RegisterLoanOfficerForms` nguyên vẹn |
 | Ghi vào | `registerWebinar` → LORecruiting | `registerLoanOfficer` → LORecruiting |
 | Sau khi submit | Cảm ơn + đề nghị đặt lịch với recruiter | Đúng luồng hiện tại |
-| Đường lên | Nút "I'm ready to join" → mang toàn bộ field sang `/apply` (cơ chế đã có) | — |
+| Đường lên | Nút "I'm ready to join" → mang toàn bộ field sang `/apply/<slug>` (cơ chế đã có) | — |
 
 ### 5.1 Cảnh báo về số field của Loại 1
 
@@ -302,7 +305,7 @@ có miễn không · pipeline đang dở thì sao · NMLS chuyển ra sao.
 |---|---|
 | **HR** | Khoá chính thức của recruiter là `unique_id` hay `company_email`? Recruiter ngoài (Seth) có được cấp email `@loanfactory.com` không, và bao giờ? |
 | **Seth / Victoria** | First-touch hay last-touch? Cửa sổ bao lâu? Lead trùng đã có chủ thì xử sao? |
-| **Thuan** | Trang này thuộc `lf-homepage` (www.loanfactory.com/join/…) hay `lo-homepage`? |
+| **Thuan** | Trang này thuộc `lf-homepage` (www.loanfactory.com/join/…) hay `lo-homepage`? — Phụ lục A.6 đã trả lời bằng kỹ thuật: lf-homepage, vì `/<slug>` của MOSO loại mất recruiter không phải LO. Vẫn cần Thuan xác nhận về mặt sản phẩm. |
 | **MOSO dev** | Cho `registerLoanOfficer` từ lf-homepage gửi kèm `lo_labels` (+ `utm_campaign`) — API đã nhận, chỉ FE chưa gửi. |
 
 ---
@@ -310,7 +313,9 @@ có miễn không · pipeline đang dở thì sao · NMLS chuyển ra sao.
 ## 10. Lộ trình
 
 **Phase 0 — chạy được trong vài ngày, không cần backend mới**
-Sổ đăng ký là một file trong repo (3–5 recruiter đầu). `/join/<slug>` + `/join/<slug>/apply`.
+Sổ đăng ký là một file trong repo (3–5 recruiter đầu), **giá trị slug lấy từ `Admin.url`, khoá lấy từ
+`Admin.unique_id`** (Phụ lục A.2/A.3 — không tự chế). `/join/<slug>` + `/apply/<slug>`.
+**Kèm bắt buộc:** xin MOSO thêm `join` và `apply` vào `pageSections()` để không ai bị tự sinh slug trùng.
 Dùng lại `/loan-officer` sections + GetInTouch form (mode lead) và `RegisterLoanOfficerForms`
 (mode full). Attribution qua `referred_source=recruiter` + `referred_by=<email>` + `lo_labels`.
 
