@@ -699,3 +699,140 @@ lf-homepage vốn đã gọi (`getLOInfo` → `GET /api/lo-setting?key=`). Thêm
 
 ⇒ Đính chính một hiểu lầm dễ mắc: **B4-b không có nghĩa là phải sửa hệ cũ.** Cả hai phương án đều
 gần như không đụng MOSO; khác nhau ở chỗ B4-a bắt ta nuôi *hai* nguồn slug thay vì một.
+
+---
+
+# Phụ lục C — Trả lời hai câu của Bao (31/08): lấy info recruiter, và báo cho MOSO ai giới thiệu
+
+Bao đặt lại vấn đề, đúng hơn cách chúng ta đang bàn: recruiter rồi cũng được cấp account MOSO như
+HR / Licensing / Accounting, nên mỗi người đã có định danh duy nhất. Việc còn lại chỉ là hai câu.
+
+## C.1 — Câu 2 trước, vì nó đã xong sẵn: MOSO biết ai giới thiệu bằng cách nào
+
+**Không phải viết gì cả.** `LORecruiting.java:669-678` đã có:
+
+```java
+if (bean.is(referred_source, LoanOfficerReferredSource.recruiter)) {
+  if (bean.hasValue(referred_by)) {
+    find(Admin.TYPE)
+      .whereEquals(Admin.company_email, bean.get(referred_by))
+      .whereEquals(Admin.active, true)
+      .whereEquals(Admin.is_lock, false)
+      .list().stream()
+      .filter(admin -> admin.get(Admin.role).isAnyRecruiter())   // <-- KHÔNG đòi is_loan_originator
+      .findFirst()
+      .ifPresent(a -> bean.set(recruiter, a.keyName()));
+  }
+}
+```
+
+Và `LORecruiting` có hẳn FK riêng cho việc này (`:159` `referred_lo`, cùng chỗ với `recruiter`).
+Tức MOSO đã coi "recruiter nào sở hữu ứng viên này" là khái niệm hạng nhất, không phải chắp vá.
+
+**Cách dùng:** form gửi đúng hai field đã có trong `RegisterLoanOfficerRequest`
+(`moso-types.ts:1481`):
+
+```
+referred_source = "recruiter"                    // hằng số có sẵn, referred.ts:4
+referred_by     = "<company_email của recruiter>"
+```
+
+MOSO tự tra `company_email` → kiểm `role.isAnyRecruiter()` → set FK `recruiter`. **Zero dòng Java.**
+
+Ba điều đáng chú ý:
+
+1. Nhánh recruiter **không đòi `is_loan_originator`** → chạy đúng cho cả 10 recruiter thuần. Đây là
+   khác biệt then chốt so với dropdown ở FE (`agentflow-mxm6`), nơi điều kiện LO bị lồng vào và
+   loại mất họ. **Backend đúng, frontend sai** — nên đây là bug FE thuần, không cần MOSO vá.
+2. Nhánh `else if (referAdmin.is(is_loan_originator))` ở `:658-661` **ghi đè**
+   `referred_source` thành `loan_officer`. Đây chính là gốc của defect (c): FE gửi sai loại thì
+   MOSO đóng dấu lại theo LO. Gửi đúng `recruiter` thì không bị.
+3. Điều kiện lọc gồm `active && !is_lock` → recruiter nghỉ việc thì link của họ ngừng quy công,
+   im lặng. Hành vi này hợp lý, nhưng phải biết để không đi tìm bug.
+
+## C.2 — Câu 1: lấy thông tin recruiter để render trang
+
+**Dữ liệu đã có sẵn, công khai, không cần auth.** Chính endpoint `getAdmins` mà
+`/register-loan-officer` đang gọi đã trả về đủ cho **cả 12/12 recruiter, kể cả 10 người không phải
+LO**. Đếm ngày 31/08:
+
+| Field | 12 recruiter | 10 người không phải LO |
+|---|---|---|
+| `key` (khoá MOSO), `unique_id`, `company_email` | 12 | 10 |
+| `first_name`, `last_name`, `title` | 12 | 10 |
+| `preferred_languages`, `member_of_departments`, `office_location` | 12 | 10 |
+| `avatar` | 11 | 9 |
+| `company_phone` | 11 | 9 |
+| `url`, `originator_nmls`, `licenses`, `experience` | 2 | **0** |
+
+Nhóm cuối toàn field **riêng của loan officer** — trang recruiter không cần. Mọi thứ cần để dựng
+một trang cá nhân hoá (ảnh, tên, chức danh, ngôn ngữ, văn phòng, email, điện thoại) **đã có**.
+
+⇒ Không phải xây nguồn dữ liệu mới. Nhưng **phải xây một endpoint gọn** — xem C.4.
+
+## C.3 — Điều này giải tán luôn tranh luận B4-a / B4-b
+
+Bao nói đúng chỗ mấu chốt: *"mỗi account sẽ có name hoặc company email unique khác nhau để định
+danh"*. Đo lại thì `company_email` **chính là** khoá mà MOSO dùng để quy công (C.1). Vậy đừng đẻ
+thêm slug nào cả:
+
+> **slug = phần trước `@` của `company_email`, đổi `.` thành `-`**
+
+| company_email | URL |
+|---|---|
+| `seth.august@loanfactory.com` | `/join/seth-august` |
+| `baotrinh@loanfactory.com` | `/join/baotrinh` |
+
+Đúng dạng URL Bao muốn từ đầu, và đúng ví dụ Bao đưa. Đo trên production:
+
+- **0 trùng** trên 12 recruiter.
+- **0** local-part chứa ký tự không an toàn cho URL (toàn bộ 2.988 người).
+- Có sẵn cho 12/12 hôm nay, và cho mọi recruiter tương lai **ngay khi HR tạo account**.
+- **Không cần bảng lưu nào** — không B4-a, không B4-b, không collection ở moso-aid.
+
+Điểm mạnh thật sự không phải là "đỡ một bảng", mà là: **slug và khoá quy công là cùng một thứ.**
+Không có mapping nào để lệch, không có job đồng bộ nào để hỏng, không có câu hỏi "người này vừa
+được bật cờ LO thì link đổi không".
+
+**Bốn cảnh báo phải xử, không được bỏ qua:**
+
+1. **Trùng across domain.** 3 trùng trên 2.988 người, vì không phải ai cũng `@loanfactory.com`
+   (1/12 recruiter dùng `@elitemtgconsulting.com`). Resolver phải **phát hiện trùng và trả lỗi**,
+   tuyệt đối không im lặng lấy người đầu tiên — quy công sai người là hỏng tiền, không phải hỏng UI.
+2. **Đừng map ngược `-` → `.`.** 2/2.988 local-part vốn đã có dấu `-`, nên `a-b-c` có thể ứng với
+   `a-b.c` hoặc `a.b.c`. Cách đúng: **tính slug xuôi** cho từng recruiter rồi so khớp — ta đằng nào
+   cũng phải có danh sách recruiter để render.
+3. **Đổi email thì link gãy.** Hiếm với nhân viên, nhưng nếu sau này có recruiter cần link cố định
+   (in card, QR) thì thêm một cột `slug_override` — lúc đó mới cần, không phải bây giờ (YAGNI).
+4. **Slug lộ local-part email công ty.** Với nhân viên thì chấp nhận được (nó nằm sẵn trên name
+   card), nhưng phải nói ra để HR biết chứ không phát hiện sau.
+
+## C.4 — Một defect hiệu năng có sẵn, đừng cộng thêm vào
+
+`fetchAdmins()` gọi `mosoGet(..., {})` → `cacheRevalidate = 0` → `next: { revalidate: 0 }`
+(`mosoApi.ts:41-51`) → **không cache**. Payload đo được **16,5 MB**.
+
+Nghĩa là mỗi lần render `/loan-officer` và `/register-loan-officer` đang kéo 16,5 MB từ MOSO.
+Đây là vấn đề có sẵn, không phải do dự án này gây ra — nhưng nếu `/join/<slug>` dùng lại đúng lời
+gọi ấy thì mỗi lượt xem trang recruiter cũng kéo 16,5 MB.
+
+Cách xử, theo thứ tự ưu tiên:
+
+- **Ngắn hạn:** thêm `cacheRevalidate` cho `fetchAdmins()` (ví dụ 5 phút) — một dòng, có lợi ngay
+  cho hai trang đang chạy.
+- **Đúng đắn:** xin moso-aid một endpoint hẹp `GET /api/recruiters` trả đúng 12 dòng với ~8 field
+  (`slug, full_name, title, avatar, company_email, company_phone, office_location, preferred_languages`).
+  Nhẹ hơn ~3 bậc, và giấu `company_email` của toàn bộ 2.988 associate khỏi mọi lượt tải trang.
+
+Cái thứ hai là chỗ **duy nhất** trong toàn bộ thiết kế này cần code backend mới — và nó ở moso-aid
+(Node/Mongo), **không phải MOSO**.
+
+## C.5 — Bảng tổng: code nằm ở đâu
+
+| Việc | Repo | Bắt buộc |
+|---|---|---|
+| Trang `/join/[slug]` + `/apply/[slug]`, form 2 chế độ, resolve slug, prefill + khoá 2 field | **lf-homepage** | Có — ~80% khối lượng |
+| Endpoint hẹp `GET /api/recruiters` | **moso-aid** | Nên — xem C.4 |
+| Quy công `referred_source` + `referred_by` → FK `recruiter` | **MOSO** | **Không — đã có sẵn** |
+| Thêm `lo_labels` để biết đến từ trang nào | MOSO | Không — Phase 2 |
+| Sửa dropdown bỏ sót 10/12 recruiter | lf-homepage + lo-homepage | Riêng, `agentflow-mxm6` |
