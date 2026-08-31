@@ -648,3 +648,54 @@ nhưng nó không còn là điều kiện chặn.
 **Khuyến nghị: B4-b.** Không phải vì nó đẹp hơn, mà vì đằng nào cũng phải xây đường cấp tay cho
 10/12 người hôm nay và cho toàn bộ P2 ngày mai — xây một lần dùng cho tất cả, hơn là nuôi hai cơ
 chế song song rồi phải nhớ ai thuộc nhánh nào.
+
+## B.9 Code sửa ở đâu — đo 31/08
+
+### Phát hiện nền: MOSO làm router, `/<slug>/*` là namespace của nó
+
+`www.loanfactory.com` đứng trước **hai app Next.js khác nhau** (chứng minh: chunk `1225` khác hash
+giữa `/` và `/sethaugust`). MOSO ở phía trước phân luồng:
+
+| URL | Đi tới | Bằng chứng |
+|---|---|---|
+| `/our-lenders` | **lf-homepage** | title *"Our Lenders \| 240+ …"* |
+| `/sethaugust/our-lenders` | **lo-homepage** | title *"… \| Seth August"* — tên được ghép vào |
+| `/sethaugust/lo-recruiter-program-v1` | lo-homepage, route không có → về trang chủ Seth | |
+| `/api/webplus/v1/…` | MOSO | |
+
+Cơ chế: MOSO tra slug (kể cả custom domain kiểu `briannahomeloans.com`) → **cắt slug khỏi path**,
+tiêm header `x-moso-user-id` = key của LO, rồi mới chuyển sang lo-homepage. Cả hai app đọc header
+này (`lf-homepage/.../lo-info-check/page.tsx:77`, `lo-homepage/.../equity-line/page.tsx:72`).
+
+**Hệ quả cho lựa chọn URL — một lý do nữa chọn `/join/<slug>`:** dạng cũ `/<slug>/join` (kiểu
+`ReferralAgentInvitationOp` dùng cho partner agent) rơi vào namespace MOSO đang quản → phải sửa
+**router MOSO + lo-homepage**. `/join/<slug>` có `join` ở segment đầu, không phải slug nào cả, nên
+rơi thẳng về lf-homepage — **không đụng router**.
+
+### Việc phải làm, chung cho cả hai phương án
+
+1. **lf-homepage** — phần lớn nhất. Route `/join/[slug]` + `/apply/[slug]`; tự tra slug → recruiter
+   (MOSO **không** tiêm header ở đây vì `join` không phải slug); form hai chế độ; prefill và khoá
+   `referred_source` + `referred_by`.
+2. **lo-homepage** — chỉ khi muốn trang chạy cả dưới domain riêng của LO. Bỏ qua được ở Phase 0.
+3. **MOSO (packs)** — **không bắt buộc.** `RegisterLoanOfficerRequest` (`moso-types.ts:1481`) đã có
+   sẵn `referred_source` + `referred_by`, nên phần "ai giới thiệu" chạy được ngay hôm nay. Chỉ khi
+   muốn biết **đến từ trang nào** mới cần thêm `lo_labels` vào `registerLoanOfficer` — để tận dụng
+   `last_registration_event` ở A.8. Xếp Phase 2.
+
+### Chỗ hai phương án khác nhau: nơi cất slug
+
+| | B4-a | B4-b |
+|---|---|---|
+| Nguồn slug | `Admin.url`, **`getAdmins` đã trả sẵn** → 0 dòng MOSO | một nơi mới |
+| Phủ | 2/12 | 12/12 |
+| 10 người còn lại | **vẫn phải thêm nơi lưu mới** | cùng nơi đó |
+| Tổng số nơi lưu | 2 | 1 |
+
+**Nơi lưu cho B4-b nên là `moso-aid`, KHÔNG phải MOSO packs.** moso-aid là backend Node/Mongo mà
+lf-homepage vốn đã gọi (`getLOInfo` → `GET /api/lo-setting?key=`). Thêm một collection
+`recruiter → slug` + 2 endpoint (resolve công khai, CRUD cho admin) là xong. Tránh hẳn việc phải
+đụng entity GWT, chờ review MOSO, và chờ deploy hệ cũ.
+
+⇒ Đính chính một hiểu lầm dễ mắc: **B4-b không có nghĩa là phải sửa hệ cũ.** Cả hai phương án đều
+gần như không đụng MOSO; khác nhau ở chỗ B4-a bắt ta nuôi *hai* nguồn slug thay vì một.
