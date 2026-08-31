@@ -117,6 +117,34 @@ câu hỏi không khởi động lại vòng, CHECK đo rồi trả lời.
 Không tự đoán rồi làm tiếp — nêu rõ 2-3 phương án kèm trade-off cho user chọn.
 
 
+## Kỷ luật push lên repo org (chốt 31/08, Bao)
+
+**Account `TrongBaoMoso` đã bị remove khỏi org MỘT LẦN ngày 29/08 vì spam commit/noti.** Đây không phải
+lo xa — nó đã xảy ra. DevOps (anh Khải) cảnh báo lần hai.
+
+Nguyên văn Bao chốt 31/08:
+
+> "Cái cần đổi là thói quen push của các phiên agent, cụ thể: gom đủ 1 feature/1 nhóm việc mới push
+> (thay vì push mỗi round phản biện), squash trước khi mở PR, và bớt tạo/xoá nhánh vụn trên repo org —
+> dồn phần trao đổi qua lại vào TrongBaoMoso/agentflow (repo cá nhân) thay vì recruit-be."
+> → **"OK, follow your suggestion"**
+
+Bốn luật:
+1. **Gom đủ một feature / một nhóm việc mới push.** KHÔNG push mỗi vòng phản biện.
+2. **Squash trước khi mở PR.**
+3. **Không tạo/xoá nhánh vụn trên repo org.**
+4. **Mọi trao đổi giữa các phiên** (docs, verdict, beads, ghi chép) **dồn vào `TrongBaoMoso/agentflow`** —
+   repo cá nhân, push thoải mái.
+
+Commit local vẫn làm bình thường. Chỉ **push lên org** mới bị gom lại.
+
+**Đang có lệnh HOÃN push org từ 31/08 14:1x** cho tới khi Bao cho phép lại. Merge PR đã mở: Bao chưa nói
+rõ ⇒ **mặc định coi là CÓ CẤM** (merge vẫn sinh noti), giữ hướng thận trọng cho tới khi có lời chốt.
+
+Vì sao nó là vấn đề của protocol chứ không phải thói quen cá nhân: vòng phản biện nhiều phiên **tự nhiên
+sinh ra nhiều commit nhỏ** — mỗi lượt revise một commit, mỗi ghế một nhánh, mỗi lineage một PR. Chính cái
+làm review tốt lại là cái làm ngập noti. Nên phải gom Ở TẦNG QUY TRÌNH, không trông vào từng phiên tự tiết chế.
+
 ## Uỷ quyền đi qua HOST — ba điều kiện, phải đủ cả ba (chốt 31/08)
 
 Uỷ quyền **không** truyền qua tin nhắn giữa các phiên. Nhưng HOST có lúc phải **chuyển tiếp** một câu
