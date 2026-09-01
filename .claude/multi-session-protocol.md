@@ -390,3 +390,28 @@ tính chuyện chốt vòng hiện tại rồi bắt đầu session mới có t�
    chứng vụ push nhánh rỗng"*, rồi đề nghị "cherry-pick 3 commit sang master-side khi hết freeze" —
    tức **áp lại việc đã merge** (`57f61b6` = Merge PR #198). Cùng họ
    [[feedback_zero_needs_positive_control]]: hai nguyên nhân cho một số 0 trông y hệt nhau.
+
+25. **`merge-tree` CONFLICT ≠ "nhánh còn việc chưa land".** Conflict chỉ nói *không tự gộp được*.
+   Với nhánh có base **cũ hơn một lần đổi tên toàn repo** (`recruiting → recruit`), xung đột là
+   **chắc chắn** bất kể nội dung — kể cả khi nội dung đã land trọn bằng đường khác.
+   01/09: 7 nhánh bị hai phiên độc lập xếp "phải giữ" vì conflict; đo lại thì **cả 7 đều rỗng
+   việc** (commit cùng tiêu đề đã land qua PR #10/#139/#140/#141/#142/#143; V007/V031/V032/V033 và
+   mọi class chính đều có trên master; D68–D70 có trên cả hai nhánh, master đã tới D92).
+   **Phép chặt nhất, và nên dùng nó thay cho conflict:** *file tồn tại trên nhánh mà KHÔNG có ở cả
+   master lẫn release*. Ra 0 ⇒ nhánh không mang gì mới. Ra >0 thì kiểm tiếp xem có phải bản
+   **đổi tên** không (`mcpk` ra 84, cả 84 nằm dưới package cũ; 3 trong đó là class cũng bị đổi tên
+   — `RecruitingApplication→RecruitApplication`, `RecruitingPermission→RecruitPermission`,
+   `RecruitingSettingEntity→RecruitSettingEntity`).
+   Verdict 98/7 vẫn **lệch phía GIỮ** nên không ai mất gì (luật 21) — nhưng **lý do** thì sai, và
+   lý do sai đó đã đi tới Bao thành câu hỏi "7 việc này còn cần không". Anh ấy trả lời "còn cần,
+   mở bead làm lại". Không đo lại thì đã mở bead viết lại thứ đang nằm trên master.
+   ⇒ **Lệch-an-toàn vẫn phải sửa**: nó không mất việc, nhưng nó vẫn sinh ra một câu hỏi sai gửi
+   cho người quyết định, và người ta trả lời câu hỏi mình được hỏi.
+
+26. **Trước khi hỏi Bao một câu, ĐO LẠI TIỀN ĐỀ CỦA CHÍNH CÂU HỎI.** 01/09 tôi hỏi bốn câu; hai
+   câu (`zzsu`, `lja3`) hỏi về việc **đã CLOSED từ 30/08** — `zzsu` tự khỏi sau deploy
+   `staging-280413c`, `lja3` chạy xong 7.221/7.221 (100%), 0 tác dụng phụ. Tôi mang câu "hai câu
+   gật còn xếp hàng" từ bản tóm tắt compact qua nhiều lượt rồi hỏi thẳng. **Lần thứ ba cùng lỗi
+   trong hai ngày** (luật 19), và đây là lần đầu nó tiêu tốn lượt quyết định của người dùng.
+   Kèm: **`bd ready` và `bd show` bất đồng** — `ready` liệt `ok33` là ○ open trong khi `show` trả
+   ✓ CLOSED. **`bd show` là bản có thẩm quyền**; không đọc trạng thái từ `bd ready`.
