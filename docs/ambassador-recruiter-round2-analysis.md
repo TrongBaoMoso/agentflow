@@ -183,6 +183,69 @@ Không chỗ nào là **sổ cái**. `referral_bonus_requests` là danh sách *y
 phải bản ghi *đã trả*. Muốn trả lời "LO này đã nhận bao nhiêu tiền" thì phải cộng
 tay qua ba nguồn.
 
+### 1.9 Hai chương trình ĐÃ SHIP trên lf-homepage — đo lại sau khi Bao nhắc
+
+Bao chỉ ra các route đang có. Đo trên `lf-homepage`:
+
+```
+src/app/[locale]/(public)/ambassador-program/           (+ -v1, -v3)
+src/app/[locale]/(public)/lo-recruiter-program/         (+ -v1, -v3)
+src/app/[locale]/(public)/refer/refer-a-loan-officer/
+src/app/[locale]/(private)/manage-lo-programs/[programSlug]/
+```
+
+`src/shared/components/LoPrograms/` có **4.157 dòng** đã viết, gồm `ApplyModal`
+(496), `AdminConsole` (326 + 6 file con), `StatusPanel`, `ActivationPanel`,
+`BonusLadder`, `DirectorySection`.
+
+**Console admin đã có số liệu** (`AdminConsole/useProgramStats.ts`):
+
+| Có sẵn | Ghi chú |
+|---|---|
+| `pending` / `approved` / `rejected` / `total` | đếm thật bằng `countDocuments`, không phải đếm số dòng một trang |
+| `budgetCommitted` | tổng ngân sách **đã cam kết** theo bậc |
+| `approvedByLevel[]` | phân bố theo bậc, kèm ngân sách từng bậc |
+| `weekly[12]` | biểu đồ 12 tuần lượng đơn, **có khai báo khi dữ liệu vượt giới hạn** thay vì vẽ thiếu im lặng |
+
+→ **Sửa lại điều tôi viết ở §6.2:** không phải "chưa có dashboard admin". Đã có,
+và làm cẩn thận. Cái chưa có là **tầng quy công/hiệu suất** — console hiện tại
+không biết ai giới thiệu ai, không có tỷ lệ chuyển đổi, không có năng suất. Nó đo
+**luồng đơn vào chương trình**, không đo **kết quả của người đã vào**.
+
+Tương tự với ngân sách: `budgetCommitted` đã trả lời được *"LO này đang có trần bao
+nhiêu"* — chính là thứ Phương nói là đủ. Cái chưa có là **sổ chi**, và Phương nói
+rõ chưa cần. Nên mục 4 trong danh sách LO-facing **rẻ hơn tôi đánh giá ban đầu**.
+
+### 1.10 Ambassador ĐÃ CÓ link giới thiệu — bằng cơ chế KHÁC recruiter
+
+`src/shared/utils/loProgramStatus.ts:267,292`:
+
+```ts
+const COMPANY_REFERRAL_PATH = '/refer/refer-a-loan-officer'
+referralUrl: facts.domainUrl
+  ? `${facts.domainUrl.replace(/\/+$/, '')}${COMPANY_REFERRAL_PATH}`
+  : COMPANY_REFERRAL_PATH
+```
+
+Ambassador nhận link **trên domain riêng của chính họ** — và MOSO biết ai giới
+thiệu nhờ header `x-moso-user-id` mà proxy tiêm vào, không cần slug.
+
+Đặt cạnh cái tôi làm cho recruiter thì thành hai cơ chế:
+
+| | Ambassador (đã có) | Recruiter (`/join/<slug>`) |
+|---|---|---|
+| Link | `<domain riêng>/refer/refer-a-loan-officer` | `loanfactory.com/join/<slug>` |
+| Biết là ai nhờ | header `x-moso-user-id` từ proxy | slug suy từ `company_email` |
+| Điều kiện | **phải có domain riêng** | không cần gì |
+
+**Sự khác nhau này có lý do thật, không phải bất nhất:** đã đo ở Phụ lục B —
+`should_have_domain` loại các role chỉ-là-recruiter, nên 10/12 recruiter **không có
+domain**. Ambassador thì là LO nên có sẵn.
+
+Nhưng nó đẻ ra một câu hỏi thật: **một người vừa là LO vừa là recruiter thì có hai
+link, hai đường quy công.** Đó chính là Q14 — và giờ nó không còn là câu hỏi lý
+thuyết nữa, mà là hai đường dẫn đang cùng chạy trên production.
+
 ---
 
 ## 2. VẤN ĐỀ LỚN NHẤT: ba kho dữ liệu, không khoá chung
@@ -352,7 +415,14 @@ cùng lúc, không thì "lên ngay" tạo ra một lỗ chi tiêu.
 
 ## 5. Form nên bọc trong modal không?
 
-**Tách làm hai, trả lời khác nhau.**
+**Trước hết phải tách ba thứ đang bị gọi chung là "form":**
+
+1. **Đơn xin vào chương trình** (LO xin làm ambassador/recruiter) — `ApplyModal`
+   đã có, 496 dòng, **đã là modal rồi**. Câu hỏi này đã được trả lời bằng code.
+2. **Form ứng viên bước 1+2** trên `/join/<slug>`.
+3. **Form ứng viên full flow** trên `/join/<slug>/apply`.
+
+Phương đang hỏi về (2) và (3). Trả lời khác nhau.
 
 **`/join/<slug>` (step 1+2) — CÓ, modal hợp lý.** Form ngắn, không có gì phải rời
 trang, và modal giữ người ở lại trang bán hàng thay vì đẩy sang một trang trắng.
