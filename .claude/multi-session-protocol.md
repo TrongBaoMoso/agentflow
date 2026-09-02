@@ -487,3 +487,47 @@ tính chuyện chốt vòng hiện tại rồi bắt đầu session mới có t�
    kết luận **ngược** sự thật nội dung. Mọi bản dựng ghép-cặp thừa hưởng lỗi này; detector
    so-đầu-nhánh không ghép cặp nên miễn nhiễm — đó là lý do kỹ thuật để chọn nó.
    Cùng họ luật 25 (`merge-tree` conflict) và luật 22 (heuristic đọc nghĩa từ TÊN).
+
+## Sổ ngoại lệ từng-ca (per-case exception ledger)
+
+Trong thời gian một lệnh cấm-push còn hiệu lực: **phiên nào được Bảo cho push một ca cụ thể thì ghi
+MỘT DÒNG vào bảng dưới NGAY KHI PUSH.** Vắng dòng ghi là tín hiệu thật — rà thấy push mà không có
+dòng thì đáng hỏi, và hỏi có cơ sở.
+
+| repo | PR | PR created (UTC) | nguyên văn lời Bảo | mốc câu đó (UTC) |
+|---|---|---|---|---|
+| lf-homepage | #2334 | 31/08 08:24:21Z | `"ok GO, làm đi"` | 31/08 07:52:06Z |
+| moso-aid | #146 | 31/08 08:41:51Z | `"làm luôn 527g đi"` | 31/08 08:32:08Z |
+| lf-homepage | #2335 | 01/09 17:15:06Z | `"cho push lf-homepage"` | 01/09 17:14:29Z |
+
+(#2335: commit authored 16:44Z ⇒ **giữ local 30 phút**, push sau khi có lệnh — ca tuân thủ gương mẫu
+nhất của cả đợt.)
+
+33. **Ngoại lệ Bảo cấp trong MỘT cửa sổ thì mọi cửa sổ khác KHÔNG THẤY — và nó đọc lên y hệt vi
+   phạm.** Lỗ này đã bị khai thác 3 lần trong 2 ngày. Chi phí thật **không phải** công điều tra
+   (tôi rà 7 repo, hỏi 2 phiên, đọc 2 transcript): chi phí là nếu lặp thêm vài lần thì phản xạ
+   đúng — *"thấy push sau freeze thì đi kiểm"* — bị học thành *"báo động sau freeze toàn là giả"*,
+   và **lần thật sẽ trôi qua**. Đúng cơ chế `of4r` từ chối build đỏ vì nó.
+   Bản vá là **sổ ở trên**, và nó đúng **chiều lười**: thay công **tái dựng** bằng công **chép lại**
+   (người đang có nguyên văn trong tay chép rẻ hơn người khác đi đào); hỏng thì rơi về **đúng nguyên
+   trạng**, không tạo an toàn giả. Bead `agentflow-…` (P1) giữ lý lẽ đầy đủ.
+
+34. **Rà xem MỘT NGƯỜI có phá luật hay không: nguồn sơ cấp là LỜI CỦA CHÍNH NGƯỜI ĐÓ, và phải là
+   phép đo ĐẦU TIÊN.** (luật LEAD rút từ chính sai thứ tự của cả hai)
+   Tôi hỏi các phiên trước, đọc transcript của Bảo sau; đảo lại thì cả vòng điều tra không xảy ra.
+   LEAD còn định **đẩy nó lên thành một câu hỏi cho Bảo** — tức bắt nguồn sơ cấp tự khai thay vì đi
+   đọc. Điều tra ngang hàng về một hành động của user là sai địa chỉ ngay từ đầu.
+
+35. **ĐÍNH CHÍNH PHẢI SỐNG Ở CHỖ LỜI KHAI SAI ĐANG SỐNG.** (LEAD bắt được, tôi đã sót)
+   Tôi tự khai 4 lỗi của `gpm0` vào **notes**, nhưng **tiêu đề** vẫn là *"… (ymzt mục 2 — **Bao đã
+   chốt**)"*. Tiêu đề là thứ hiện trong `bd ready` / `bd list` / mọi bảng tổng hợp; người mở ngày
+   07/09 sẽ thấy một việc **đã được chủ dự án chốt** và phải mở notes mới biết chữ "chốt" đó là
+   **nhãn lựa chọn tôi tự viết rồi Bảo bấm**. Đã sửa tiêu đề thành *"KHÔNG PHẢI VIỆC — bản ghi một
+   câu hỏi hỏng"*. **Ba lần trong hai ngày** ta trả giá cho đúng lớp lỗi này: đính chính sống ở chỗ
+   ít người đọc, lời khai sai sống ở chỗ ai cũng đọc.
+
+36. **Một phép đo sai đối tượng có thể ĐẢO NGƯỢC THỨ HẠNG, không chỉ lệch số.** (LEAD)
+   Đo freeze bằng **mốc commit** thay vì **mốc push**: ca `#2335` — **tuân thủ gương mẫu nhất**, giữ
+   local 30 phút rồi mới push khi có lệnh — trở thành ca **đáng ngờ nhất** (commit 16:44Z, "trước
+   lệnh 30 phút"). Khi một phép đo có thể đảo thứ hạng, sai số của nó không phải nhiễu; nó là kết
+   luận ngược. Cùng họ luật 21 (hướng-sai) nhưng tệ hơn: lệch-an-toàn vẫn xếp đúng thứ tự.
