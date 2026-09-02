@@ -22,6 +22,7 @@ Gửi vào tên cũ trả "not reachable" — đó KHÔNG có nghĩa session đ�
 | **DEV** — ra solution đầu, code sau khi được duyệt | `f282aafb-4743-4fcd-ae7e-cff1291df025` |
 | **LEAD** — PO/PM/Tech Lead, review chéo DEV | `725a7bc4-3db7-413c-ba31-71ae7bfc0b9c` (31/08 tên `agentflow-d3`; tên cũ `agentflow-c7` **đã bị session `fb55f383` chiếm** — gửi theo tên đó là trúng nhầm phiên) |
 | **CHECK** — kiểm tra chéo cả DEV lẫn LEAD, góc nhìn độc lập | `73097213-64c1-43dd-b4a4-4967910886b9` (khôi phục 31/08 01:00, **id giữ nguyên, 58,2 MB context còn nguyên**; tên hiện tại `agentflow-be`) |
+| **PROGRAMS** — Ambassador + LO Recruiter program, trang `/join/<slug>` (Bao chốt 02/09: **thuộc recruit app**, vào chung vòng phản biện) | `ecfa5fd9-fc47-4f08-9d90-d654390bbd37` |
 | **PROGRESS** — đánh giá tiến độ (ngoài vòng review) | `bbf416be-d5d2-4fb4-8c48-dba660959014` |
 | **HOST** — cửa escalate về user (đồng-HOST, gửi song song cả hai) | `d7596c2a-254f-4398-96b4-3686132dddd7` và `7f54cf67-3cd1-415b-8027-ee351041df34` |
 
