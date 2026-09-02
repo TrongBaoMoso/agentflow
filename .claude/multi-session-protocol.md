@@ -580,3 +580,33 @@ nhất của cả đợt.)
    local 30 phút rồi mới push khi có lệnh — trở thành ca **đáng ngờ nhất** (commit 16:44Z, "trước
    lệnh 30 phút"). Khi một phép đo có thể đảo thứ hạng, sai số của nó không phải nhiễu; nó là kết
    luận ngược. Cùng họ luật 21 (hướng-sai) nhưng tệ hơn: lệch-an-toàn vẫn xếp đúng thứ tự.
+
+37. **Nhận lỗi RỘNG HƠN dữ kiện làm sai sổ y như nhận công rộng hơn thật.** (luật DEV tự rút sau
+   khi bị sửa hai lần trong một ngày)
+   Nó đặt bài học vào **chỗ không trả giá**, nên người đọc sau đi vá sai chỗ; và người bị gánh hộ
+   phải quay lại đẩy trách nhiệm về đúng chỗ — tức tạo thêm một vòng. Hai ca đo được: DEV nhận là
+   con số cũ của mình *gây ra* lỗi của LEAD (thật ra nó chỉ *không chặn được*), rồi nhận phép đo
+   số học của mình là sai (thật ra **đúng từng số**, chỉ **phân loại** sai — và chính nó lộ ra lỗ
+   thật). Sửa lỗi thì ghi đúng biên của lỗi, không rộng hơn, không hẹp hơn.
+
+38. **Mutant TƯƠNG ĐƯƠNG: xanh là ĐÚNG, không phải thiếu guard.** Phép đo giống nhau, kết luận
+   khác nhau; chỗ phân biệt là hỏi **"mutant đó có đổi HÀNH VI không"** — bước dễ bỏ nhất.
+   `zk7p`: `Math.round(now − due)` → `Math.floor` xanh một mình. Không phải lỗ — với hai số nguyên
+   UTC thì `floor ≡ round`. Đi tìm assertion để giết nó là viết một test chỉ ghim **chi tiết
+   triển khai**, loại test làm refactor sau này **đỏ oan**.
+   Hệ quả để tự soi: **một bảng đột biến mà MỌI dòng đều đỏ thường là chưa ai thử một mutant
+   tương đương.** Bảng tốt có ít nhất một dòng *xanh-là-đúng*.
+
+39. **Đột biến GHÉP chỉ chứng minh CÓ THỨ GÌ chịu lực, không chứng minh THỨ NÀO.**
+   `zk7p`: đổi `Date.UTC → new Date` **và** `round → floor` cùng lúc ⇒ đỏ, tôi tưởng xong. Tách
+   ra: **cả hai nửa đều xanh một mình**, nên nửa nguy hiểm — *"đơn giản hoá `Date.UTC(...)` thành
+   `new Date(...)`"*, đúng dạng dọn dẹp người ta hay làm — **đi thẳng vào master với suite xanh**.
+   Luật: mỗi đột biến **một** thay đổi. Và cách vá tốt hơn "thêm lưới quanh chỗ lỗi" là **xoá chỗ
+   để lỗi tồn tại**: bỏ hẳn phép làm tròn, để guard neo vào **tính nguyên** — thứ không phép làm
+   tròn nào ở dưới che được.
+
+40. **Gọi thẳng TÊN TEST trong comment của code, để code trỏ vào guard của chính nó.**
+   Mở rộng của luật 35 (đính chính phải sống ở chỗ lời khai sai đang sống): bead/PR **không có mặt**
+   lúc người ta mở file ra sửa. `followUpOverdueDays` nêu tên `overdue_shifts_by_time_of_day` ngay
+   trong javadoc, nên người định "gọn lại" hai bước `utcDayNumber(toDateString(today))` đọc được
+   ngay là có một test đang giữ tính chất đó và giữ vì lý do gì.
