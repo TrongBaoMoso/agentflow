@@ -1,5 +1,41 @@
-# recruit-be: 105 nhanh xoa 02/09/2026 (bead agentflow-ycqx)
-# phuc hoi mot nhanh: git push origin <sha>:refs/heads/<ten>
+# recruit-be: 105 nhanh da xoa 02/09/2026 (bead agentflow-ycqx)
+#
+# PHUC HOI MOT NHANH:  git push origin <sha>:refs/heads/<ten>
+#
+# BAN GHI NAY CO HAN SU DUNG, VA KHONG CO GI TU BAO KHI NO HET HAN.
+# Cac sha nay da MAT REF tren origin => se bi GC. File .txt thi song mai trong
+# git, nen ban ghi SE SONG LAU HON kha nang dung no: mot bao hiem TRONG NHU dang
+# con hieu luc. (LEAD 725a7bc4 neu.)
+#
+# HAI DIEU KIEN KHAC NHAU, PHAI DO RIENG — cai thu nhat thuong bi nham la cai thu hai:
+#   (1) co BAN GHI            -> file nay ton tai
+#   (2) co DUONG PHUC HOI     -> object con song o dau do
+# Va (2) co hai nguon doc lap:
+#   (2a) clone LOCAL con giu object
+#   (2b) REMOTE con giu object khong tham chieu (GitHub giu mot thoi gian roi GC)
+#
+# DO 02/09/2026, ngay sau khi xoa:
+#   (2a) 105/105 tra duoc trong clone HOST (7f54cf67) VA clone LEAD (725a7bc4)
+#   (2b) mau 20/105 sha: 20/20 CON tra duoc qua GitHub API (DEV f282aafb do mau 3,
+#        HOST do lai mau 20) — tuc hom nay khong chi song nho clone local
+#   Doi chung am dat o ca ba phep do (sha bia -> bi tu choi), nen cac so 0 la 0 that.
+#
+# KIEM CON DUNG DUOC KHONG — chay CA HAI, dung tin mot cai:
+#   (2a) trong mot clone recruit-be:
+#     while read s n; do case "$s" in \#*|'') continue;; esac; \
+#       git cat-file -e "$s^{commit}" 2>/dev/null || echo "MAT-LOCAL $n"; done < <file nay>
+#   (2b) tren remote:
+#     gh api repos/LoanFactory-Inc/recruit-be/commits/<sha> --jq .sha
+#
+#   DOI CHUNG AM (BAT BUOC — khong co no thi "0 dong MAT" co hai nghia:
+#   con object, hay lenh do hong):
+#     git cat-file -e 0000000000000000000000000000000000000000^{commit} 2>/dev/null \
+#       && echo "LENH HONG" || echo "sha bia bi tu choi => lenh do hoat dong"
+#
+# NEU (2a) va (2b) deu MAT: nhanh do khong cuu duoc nua. Thu clone cua cac phien khac
+# truoc khi ket luan mat han — moi phien co clone rieng, va do la nguon song lau nhat.
+#
+# <sha> <ten nhanh>
 eff307ee777cbf7c7c1482c7cc0acb7a4f33f386 agent/db0b-call-script
 1e34dfe9cc06bac73007c14e39e60eb7991d337a agent/k1od-moso-webhook-receiver
 884bf06fbad574672fa03b08eb9270409c6e261a agent/k1od-moso-webhook-receiver-rel
