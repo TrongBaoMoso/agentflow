@@ -439,3 +439,24 @@ tính chuyện chốt vòng hiện tại rồi bắt đầu session mới có t�
    Kết quả còn treo: 3 lượt push sau mốc dưới account `TrongBaoMoso` — moso-aid PR #146,
    lf-homepage PR #2334 và #2335 (cái cuối **hơn một ngày rưỡi** sau freeze). Đã hỏi phiên ra lệnh
    và LEAD; **không revert** vì revert cũng là push.
+
+29. **NGOẠI LỆ TỪNG CA của user KHÔNG phải là dỡ lệnh cấm — và đo bằng mốc PUSH, không mốc commit.**
+   Kết quả rà freeze (02/09), tôi tự đọc transcript xác minh chứ không nhận lời phiên khác:
+   | việc | lời Bảo (UTC) | PR created (UTC) | khoảng |
+   |---|---|---|---|
+   | lf-homepage #2335 | `"cho push lf-homepage"` 01/09 **17:14:29** | **17:15:06** | +37 giây |
+   | lf-homepage #2334 | `"ok GO, làm đi"` 31/08 **07:52:06** | **08:24:21** | +32 phút |
+   | moso-aid #146 | `"làm luôn 527g đi"` 31/08 **08:32:08** | **08:41:51** | +9,5 phút |
+   Cả ba **do chính Bảo ra lệnh trong cửa sổ của Bảo** ⇒ ngoại lệ hợp lệ theo từng ca. Freeze **vẫn
+   hiệu lực** cho mọi push do agent TỰ khởi xướng; chưa có lời dỡ nào.
+   **Chỗ đắt nhất của lượt rà này:** commit của #2335 authored **16:44Z**, tức **trước** lời Bảo 30
+   phút. Nếu đo bằng **mốc commit** thì nó trông y hệt một lượt vượt lệnh. Đo bằng **mốc PR/push**
+   thì thấy đúng hành vi luật muốn: **viết xong, commit local, GIỮ 30 phút, chỉ push khi có lời**.
+   ⇒ Rà một lệnh cấm-push phải đo **thời điểm push**, không đo thời điểm viết code. Commit local là
+   thứ lệnh cho phép, nên dùng nó làm bằng chứng buộc tội là đo sai đối tượng.
+
+30. **Broadcast không phủ được phiên mở SAU broadcast.** Lỗ thật của đợt này: bản broadcast lệnh
+   freeze gửi 9 phiên đang sống; session `fd99f5c9` mở **01/09**, sau đó, nên chưa bao giờ nhận.
+   Lưới an toàn duy nhất là **`MEMORY.md`** — phiên mới nạp nó lúc khởi động và thấy dòng freeze.
+   ⇒ Mọi lệnh có hiệu lực kéo dài phải vào **memory** ngay khi nhận, không chỉ broadcast. Broadcast
+   là thông báo cho hiện tại; memory là thứ nói với tương lai.
