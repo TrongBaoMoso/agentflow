@@ -365,6 +365,24 @@ tính chuyện chốt vòng hiện tại rồi bắt đầu session mới có t�
    Chỉ phép đầu có hình dạng chết người. Trước khi trình một con số, hỏi: *sai theo hướng này thì
    mất việc, hay chỉ giữ thừa?* Con số "gọn gàng" đầu tiên mình có thường là phép lệch-phá-hủy.
 
+24. **MỘT ĐOẠN CŨ NẰM TRONG MỘT FILE MỚI SỬA THÌ TỆ HƠN MỘT FILE CŨ — và cập nhật bằng cách BỒI
+   THÊM chú thích cạnh một dòng sai thì dòng sai VẪN Ở ĐÓ.** File cũ thì ai cũng nghi. File có ngày
+   sửa tươi thì không ai nghi — nên đoạn sai đi qua ngay dưới mắt người vừa chạm file.
+   Ca 1 (02/09, `recruit-be/docs/PROJECT-CONTEXT.md`): file sửa **24/08**, nhưng vẫn ghi "API nghiệp
+   vụ ❌ chưa viết · 11 file Java · 2 migration · 2 commit" trong khi thật là **185 file `src/main`
+   (225 kể cả test) · 45 migration · 268 commit · 17 controller**. Có người mở file ra sửa chỗ khác
+   và đoạn đó **sống sót qua lượt sửa**.
+   Ca 2, dạng phổ biến hơn (`BACKLOG.md`): mục V1-frontend được cập nhật LIÊN TỤC — chèn thêm "đã
+   ship 21/08", "đã ship 25/08" nhiều lần. Nhìn rất tươi. Nhưng **dòng gốc vẫn nói "chưa"**, các ghi
+   chú chỉ **bồi thêm bên cạnh**. Sau vài vòng thì mục đó vừa *được sửa gần đây* vừa *nói sai*.
+   ⇒ **SỬA CÂU GỐC, đừng bồi chú thích cạnh nó.** Cùng cơ chế với `gpm0`: đính chính sống ở chỗ ít
+   người đọc, lời khai sai sống ở chỗ ai cũng đọc — chỉ khác là ở đây hai chỗ đó nằm trong CÙNG MỘT
+   MỤC, cách nhau ba dòng.
+   Kèm theo: **mỗi dòng trạng thái phải ghi kèm CÁCH TỰ KIỂM** (lệnh đếm), và **ghi rõ PHẠM VI đếm** —
+   `src/main`=185 và `src/main+src/test`=225 là hai câu trả lời hợp lệ cho hai câu hỏi khác nhau,
+   không phải một cái sai. Không có cách tự kiểm thì ta chỉ thay một lời nói dối cũ bằng một lời nói
+   dối sẽ tới.
+
 23. **ĐẾM LƯỢT KIỂM ĐỘC LẬP, KHÔNG ĐẾM CHỮ KÝ — và ghi kèm TÊN TÁC GIẢ.** Chữ ký của chính tác giả
    KHÔNG phải một lượt kiểm. Ca thật 02/09, hai việc cùng đóng, cùng được mô tả là "hai chữ ký, cây
    đứng yên": `jip5` do DEV viết, LEAD + CHECK soi ⇒ **2 lượt độc lập**; `r9yu` do **LEAD** viết,
