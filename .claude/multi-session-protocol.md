@@ -415,3 +415,27 @@ tính chuyện chốt vòng hiện tại rồi bắt đầu session mới có t�
    trong hai ngày** (luật 19), và đây là lần đầu nó tiêu tốn lượt quyết định của người dùng.
    Kèm: **`bd ready` và `bd show` bất đồng** — `ready` liệt `ok33` là ○ open trong khi `show` trả
    ✓ CLOSED. **`bd show` là bản có thẩm quyền**; không đọc trạng thái từ `bd ready`.
+
+27. **VẮNG KHỎI ĐĂNG KÝ ≠ CHẾT — sửa luật 20.** 02/09: LEAD `725a7bc4` xuất hiện lại với **đúng
+   session id cũ** (tên mới `agentflow-ff`) sau khi tôi tuyên bố nó chết cho **bốn phiên**. Phiên
+   ra lệnh freeze cũng đổi `agentflow-83 → agentflow-4d`, cùng id `82068f7d`.
+   Vắng khỏi `~/.claude/sessions` + `SendMessage` trả *not reachable* chỉ nói được **"không tới
+   được LÚC NÀY"**. "Đã chết" là kết luận cần bằng chứng khác (user xác nhận đã đóng cửa sổ), và
+   gần như không bao giờ đáng kết luận.
+   **Tuyệt đối không resume một phiên chỉ vì nó không reachable**: resume **fork ra session id mới**
+   và chỉ mang **một phần** context ⇒ sinh ghế nhân đôi, rồi phiên gốc quay lại thì có hai ghế cùng
+   vai (đã trả giá 30/08 với cả LEAD và CHECK).
+   Luật 20 vẫn đúng phần "ghi lại mốc, đừng chỉ ghi trạng thái" — nhưng mốc phải ghi là
+   **"không tới được từ lúc X"**, không phải "chết lúc X". Đây là **lần thứ hai** tôi kết luận sai
+   về đúng ghế LEAD.
+
+28. **Rà tuân thủ một lệnh CẤM: mốc phải lấy từ SỰ KIỆN ĐO ĐƯỢC, không lấy theo ngày.**
+   02/09 tôi rà freeze bằng `since=2026-08-31T00:00:00Z` — mốc đó **trước** cả 5 việc hợp lệ, nên
+   kết quả đầu tiên tố oan 4 commit. Mốc đúng lấy từ **PR #206 merge 05:26 UTC** (việc cuối DEV xác
+   nhận là pre-freeze) ⇒ `since=05:30Z`.
+   Và mọi lượt rà phải kèm **đối chứng dương**: `recruit-be`/`recruit-fe`/`lo-homepage`/`lf-iq` ra
+   **0 commit sau mốc** ⇒ chứng minh lệnh rà *có phát hiện được*, "0" là 0 thật (`packs` ra 10
+   commit nhưng toàn của đồng nghiệp `yen.ha`/`imkhai` — phải đọc **author**, không đếm commit).
+   Kết quả còn treo: 3 lượt push sau mốc dưới account `TrongBaoMoso` — moso-aid PR #146,
+   lf-homepage PR #2334 và #2335 (cái cuối **hơn một ngày rưỡi** sau freeze). Đã hỏi phiên ra lệnh
+   và LEAD; **không revert** vì revert cũng là push.
