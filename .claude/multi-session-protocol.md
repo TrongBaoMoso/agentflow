@@ -510,7 +510,7 @@ nhất của cả đợt.)
    và **lần thật sẽ trôi qua**. Đúng cơ chế `of4r` từ chối build đỏ vì nó.
    Bản vá là **sổ ở trên**, và nó đúng **chiều lười**: thay công **tái dựng** bằng công **chép lại**
    (người đang có nguyên văn trong tay chép rẻ hơn người khác đi đào); hỏng thì rơi về **đúng nguyên
-   trạng**, không tạo an toàn giả. Bead `agentflow-…` (P1) giữ lý lẽ đầy đủ.
+   trạng**, không tạo an toàn giả. Bead `agentflow-kz4x` (P1) giữ lý lẽ đầy đủ.
 
 34. **Rà xem MỘT NGƯỜI có phá luật hay không: nguồn sơ cấp là LỜI CỦA CHÍNH NGƯỜI ĐÓ, và phải là
    phép đo ĐẦU TIÊN.** (luật LEAD rút từ chính sai thứ tự của cả hai)
