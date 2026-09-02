@@ -378,6 +378,24 @@ tính chuyện chốt vòng hiện tại rồi bắt đầu session mới có t�
    ⇒ **SỬA CÂU GỐC, đừng bồi chú thích cạnh nó.** Cùng cơ chế với `gpm0`: đính chính sống ở chỗ ít
    người đọc, lời khai sai sống ở chỗ ai cũng đọc — chỉ khác là ở đây hai chỗ đó nằm trong CÙNG MỘT
    MỤC, cách nhau ba dòng.
+   **VẾ BỔ SUNG 02/09 — ĐẶT CẢNH BÁO ĐÚNG CHỖ LÀ CẦN, KHÔNG ĐỦ.** Ca thật: `V035__hollow_table_warnings.sql`
+   (27/08) đã đặt `COMMENT ON TABLE sla_policies` ngay TRÊN CHÍNH BẢNG trong Postgres — "VỎ RỖNG…
+   SLA hiện đọc từ `recruit_settings`, KHÔNG từ bảng này". Chỗ hợp lý nhất có thể đặt. **Và
+   `BACKLOG.md` vẫn nói sai suốt SÁU NGÀY sau đó**, vì người mở BACKLOG hỏi "còn gì chưa làm" không
+   bao giờ chạy `\d+ sla_policies`.
+   Cơ chế: **một cảnh báo tốt ở một nơi KHÔNG lan sang nơi khác — nhưng nó tạo cảm giác là có.**
+   Người viết V035 có lý khi nghĩ mình đã xử lý xong; họ đã làm phần KHÓ (đo ra bảng rỗng, viết rõ cơ
+   chế thay thế). Cái thiếu là phần DỄ: đi tìm những chỗ khác đang nói sai về chính điều đó.
+   ⇒ **Khi phát hiện một điều bị ghi SAI ở một nơi, hỏi ngay: điều này còn được ghi ở đâu nữa?** Vá
+   một chỗ rồi để các bản sao còn lại nói sai thì tổng thể **TỆ HƠN**, vì giờ có một bản đúng đứng ra
+   làm chứng rằng "đã có người xử lý".
+   Đặc biệt khó thấy khi hai bản nằm ở **hai kho lưu trữ khác nhau** (comment trong DB vs file
+   markdown) — không ai từng nhìn thấy chúng cạnh nhau.
+   Kèm bẫy phụ cùng ca: V035 ghi khoá `sla.first_touch_hours`, BACKLOG ghi
+   `sla.first_touch_hours_by_source`. **Cả hai đều có thật** — `InboxServiceImpl` đọc bảng-theo-kênh
+   (V017) và rơi về khoá mặc định khi kênh không có trong bảng. V035 không sai, nó **nói được một
+   nửa**; và một nửa đúng là thứ khó bắt hơn một câu sai.
+
    Kèm theo: **mỗi dòng trạng thái phải ghi kèm CÁCH TỰ KIỂM** (lệnh đếm), và **ghi rõ PHẠM VI đếm** —
    `src/main`=185 và `src/main+src/test`=225 là hai câu trả lời hợp lệ cho hai câu hỏi khác nhau,
    không phải một cái sai. Không có cách tự kiểm thì ta chỉ thay một lời nói dối cũ bằng một lời nói
