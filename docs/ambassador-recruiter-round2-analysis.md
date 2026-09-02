@@ -618,3 +618,96 @@ Một nguyên tắc xuyên suốt: **làm phần ĐỌC bây giờ, hoãn phần
 - Quy công affiliate first/last-touch: [Rewardful](https://www.rewardful.com/articles/first-touch-vs-last-touch-attribution) · [CAKE](https://support.getcake.com/support/solutions/articles/5000545958-understanding-first-touch-vs-last-touch-attribution) · [Track360 — audit trail](https://track360.io/glossary/affiliate-commission-audit)
 - Chỉ số chương trình giới thiệu: [Sprad — 12 KPI](https://sprad.io/blog/employee-referral-program-metrics-12-kpis-dach-hr-should-track-beyond-hires)
 - Bậc đối tác / ân hạn / tụt mềm: [Introw](https://www.introw.io/blog/partner-tiers) · [GTM Playbooks](https://gtmplaybooks.substack.com/p/the-climb-mapping-partner-tiering) · [Loyalty Juggernaut](https://lji.io/guides/tier-strategy)
+
+---
+
+## 9. Vòng kiểm chứng lại trên MOSO (02/09) — Bao yêu cầu double-check
+
+Kéo `packs` mới nhất, đọc trên `origin/master` (`f56af910ca`).
+
+### 9.1 HAI CHỖ TÔI PHẢI TỰ SỬA
+
+**(a) "102.715 chưa ai nhận" KHÔNG phải chỉ số sở hữu.**
+`LORecruiting.claimed_profile` (`:208`) + `claimed_profile_want_join` (`:209`) chỉ được
+ghi từ `TempRestoreFIndLoanOfficerOp` — trang **"Find a Loan Officer"** nơi LO **tự nhận
+hồ sơ của chính mình**. Giống chủ quán xác nhận địa điểm trên Google Maps.
+→ Nó KHÔNG có nghĩa "chưa recruiter nào sở hữu". **Không có cơ chế recruiter-claim nào
+trong MOSO.** `owners_of_lo` (`:162`, ghi ở `:783`) chỉ là danh sách dẫn xuất để tìm
+kiếm, không phải quyền sở hữu.
+
+**(b) "Dữ liệu để đo đã có sẵn, không phải xây gì mới" — NÓI QUÁ.**
+`CommunicationStatistic` có `total_call`/`accept_call`, `total_messages`/
+`delivered_messages`, `total_email`/`read_email` — tách **nỗ lực** khỏi **kết quả**, đúng
+thứ luật cần. Nhưng đó là **số đếm, không có ngày**.
+Grep `Field<Date>` trên `LORecruiting`: chỉ có `nmls_sponsor_*`, `meeting_date`,
+`last_registration_at`. **Không có `last_contacted_at`.**
+Thời điểm CÓ trong nhật ký (`Type.captureAuditLog(true)` ở `:88`), nên tra được cho MỘT
+hồ sơ; nhưng truy vấn hàng loạt "mọi lead 14 ngày không ai đụng" thì cần một field ngày
+có index. → **Cần thêm một field. Nhỏ, nhưng phải nói ra.**
+
+### 9.2 BA PHÁT HIỆN TỐT HƠN DỰ ĐOÁN
+
+**Nhật ký kiểm toán đã bật.** `LORecruiting.TYPE` khai
+`.trackCreation(true).trackUpdate(true).captureAuditLog(true)` (`:88`). Entity
+`AuditLog` (base/core) mang `created` + `HasUser` + `HasNote` + `platform`. UI đã có mục
+"Audit log" trong menu từng dòng. → Yêu cầu "audit để phân xử" của Phương **đã tồn tại**.
+
+**Bậc thang trạng thái đã có.** `WebinarAttendeeStatus` chạy
+`Not touched → Initiate contact → Message sent → Dialogue`. Số production: 759 / 1.118 /
+18 trên 106k — dùng rất ít, nhưng cơ chế có.
+
+**Hồ sơ Modex KHÔNG chặn quy công recruiter.** Đây là kết luận quan trọng nhất cho Q1:
+- `RegisterInterestedLoanOfficer` (master) khử trùng bằng
+  `whereEquals(recruiting_type, interested)` **AND** `whereEquals(email, ...)`.
+- Hồ sơ Modex là `recruiting_type=recruiting` (RLO) → **không khớp**.
+- `throw new ErrorMessage("Duplicated NMLS")` (`:718`) nằm trong nhánh
+  `if (bean.is(recruiting_type, recruiting))` → **không áp cho form công khai**.
+→ Ứng viên đã có hồ sơ Modex vẫn tạo được hồ sơ ILO mới, `beforeCreated` chạy, recruiter
+**được quy công bình thường**. Q1 bớt nguy hiểm hơn đánh giá ban đầu.
+
+### 9.3 PHÁT HIỆN ĐÁNG GIÁ NHẤT: HAI YÊU CẦU CỦA PHƯƠNG KÉO NGƯỢC NHAU
+
+| Phương xin | Hôm nay |
+|---|---|
+| ① "1 user = 1 row/card" | khử trùng **lỏng** (email + cùng loại) → nhiều bản trùng |
+| ② Recruiter phải được tính công | quy công **chỉ chạy trong `beforeCreated`** |
+
+Hai cái này là **cùng một cơ chế nhìn từ hai phía**:
+- Khử trùng lỏng → tạo hồ sơ MỚI → `beforeCreated` chạy → **quy công tươi** ✅ nhưng trùng ❌
+- Siết khử trùng (NMLS/phone/fuzzy) → khớp bản cũ → `input.set(key, ...)` → thành UPDATE
+  → **`beforeCreated` KHÔNG chạy** → quy công đóng băng vĩnh viễn ❌
+
+→ **Gộp hồ sơ mà không làm gì thêm sẽ vô tình khoá cứng luật first-touch** — đúng cái Q2
+đang cố mở ra. Muốn cả hai thì phải **tách quyền sở hữu ra khỏi `beforeCreated`** thành
+một bản ghi tường minh (ai sở hữu, từ lúc nào, vì lý do gì, ai đổi).
+
+Chuẩn ngành khớp đúng: luật survivorship khi gộp bản ghi khuyên giữ trường quy công
+**theo bản có ngày tạo sớm nhất** ("earliest create date to preserve attribution") — tức
+first-touch, nhưng viết ra tường minh thay vì để ẩn trong lúc tạo.
+
+### 9.4 Hai dòng tiền của Ambassador — đo được
+
+Trang `refer/refer-a-loan-officer` cho thấy **thưởng mỗi lượt** ($500→$10.000, bậc thang
+theo *"Number loan closed in the preceding 12 months"*, chọn tiền mặt **hoặc** RSU). Khác
+hẳn **ngân sách marketing theo bậc** ($500/$1.000 mỗi tháng).
+
+Trong code:
+- Chọn tiền mặt/cổ phiếu: **CÓ** — `HasReferInfo.refer_bonus_method`, enum
+  `BonusMethod { one_time_bonus, rsu }`.
+- Bảng bậc thang theo số khoản vay: **KHÔNG** — `LoanOfficerReferralProgram` chỉ có
+  `amount` (một số phẳng) + `is_default`.
+- Tiền lệ gần nhất: `RSUGrant` có `total_closed_loans`, `average_production`,
+  `performance_period_start/end`, `rsu_granted_amount` — LF **đã** nghĩ theo mẫu
+  "kỳ đánh giá + số khoản vay → mức thưởng". Mẫu để copy khi làm bảng bậc thang.
+
+**Còn mơ hồ:** *"preceding 12 months"* của **ai** — người giới thiệu hay người được giới
+thiệu? Cách đọc hợp lý là **người được giới thiệu** (thưởng tỷ lệ với giá trị người tuyển
+về, và giải thích được vì sao người được tuyển cũng nhận RSU theo cùng dòng). Nhưng là
+tiền → **phải hỏi**, đừng suy.
+
+### 9.5 Việc đang chạy song song, đừng dẫm
+
+`packs` đang ở nhánh `feature/lorecruiting-registration-stamp`. Commit `54b770f1d1`
+(30/08) thêm `last_registration_at` + `last_registration_event` — dấu thời gian
+đăng ký. **Trực tiếp liên quan first-touch.** Field đã có trên master.
+Không đổi nhánh trong checkout này; phiên khác đang dùng.
