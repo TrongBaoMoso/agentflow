@@ -365,6 +365,18 @@ tính chuyện chốt vòng hiện tại rồi bắt đầu session mới có t�
    Chỉ phép đầu có hình dạng chết người. Trước khi trình một con số, hỏi: *sai theo hướng này thì
    mất việc, hay chỉ giữ thừa?* Con số "gọn gàng" đầu tiên mình có thường là phép lệch-phá-hủy.
 
+23. **ĐẾM LƯỢT KIỂM ĐỘC LẬP, KHÔNG ĐẾM CHỮ KÝ — và ghi kèm TÊN TÁC GIẢ.** Chữ ký của chính tác giả
+   KHÔNG phải một lượt kiểm. Ca thật 02/09, hai việc cùng đóng, cùng được mô tả là "hai chữ ký, cây
+   đứng yên": `jip5` do DEV viết, LEAD + CHECK soi ⇒ **2 lượt độc lập**; `r9yu` do **LEAD** viết,
+   CHECK soi ⇒ **1 lượt**. Cùng một nhãn, độ phủ khác nhau gấp đôi.
+   LEAD tự bắt được vì họ là tác giả `r9yu`; **người đọc sổ sáu tháng sau không có cách nào biết.**
+   Vì sao nó âm thầm: **chữ ký là thứ ĐẾM ĐƯỢC, nên nó thành thước đo mặc định**, còn "lượt kiểm độc
+   lập" phải suy ra từ việc ai viết. Thước đo dễ đếm luôn thắng thước đo đúng, trừ khi có người đổi
+   cách ghi.
+   Cách ghi đúng trong verdict/bead: `tác giả=<vai> · kiểm độc lập=<n> (<ai>)`.
+   Cùng phép trừ với luật 22 nhưng **khác đường rò**: luật 22 là *hai người, cùng phương pháp = một
+   lượt*; luật này là *hai chữ ký, một người là tác giả = một lượt*. Giữ riêng, đừng gộp.
+
 22. **Độc lập phải là độc lập VỀ PHƯƠNG PHÁP, không chỉ độc lập về người — "không kích hoạt ≠
    không tồn tại".** Đây là lỗ hổng nằm ngay trong quy trình 3 ghế này.
    31/08: hai lượt đo của hai phiên khác nhau ra **cùng bộ 7 nhánh**, tôi gọi đó là "hai lượt đo
