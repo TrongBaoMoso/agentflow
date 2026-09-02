@@ -460,3 +460,30 @@ tính chuyện chốt vòng hiện tại rồi bắt đầu session mới có t�
    Lưới an toàn duy nhất là **`MEMORY.md`** — phiên mới nạp nó lúc khởi động và thấy dòng freeze.
    ⇒ Mọi lệnh có hiệu lực kéo dài phải vào **memory** ngay khi nhận, không chỉ broadcast. Broadcast
    là thông báo cho hiện tại; memory là thứ nói với tương lai.
+
+31. **CÂU HỎI GỬI USER PHẢI KHAI RA QUYẾT ĐỊNH TRƯỚC ĐÓ CỦA CHÍNH HỌ.** Lỗi nặng nhất của đợt này —
+   không phải một con số sai, mà **một câu hỏi che mất một quyết định**.
+   01/09 01:27Z tôi hỏi Bảo "có dựng cổng báo docs lệch không", đưa `45/114 mốc lệch` làm lý do, và
+   viết *"thiết kế 3 ghế đã đồng ý"*. Bốn chỗ hỏng:
+   (1) Bảo **đã quyết 31/08**: KHÔNG dựng ngay, **hoãn tới 07/09 đo lại**, tiêu chí chốt trước
+       (≥1 lệch sống quá 60 phút ⇒ dựng; không có ⇒ đóng bead) — nằm ở `agentflow-of4r`, đặt bằng
+       `defer` chứ không bằng lời hẹn. Câu hỏi của tôi **mời Bảo đảo quyết định của chính mình mà
+       không nói rằng đang đảo**.
+   (2) `45/114` là **số chế độ CŨ**: 10/13 commit một-phía là bookkeeping per-round — đúng class mà
+       lệnh gom-push vừa nén. **Số chế độ cũ không dự báo chế độ mới**, nên nó không phải bằng chứng
+       cho quyết định hôm nay.
+   (3) *"3 ghế đã đồng ý"* **sai tại thời điểm hỏi**: LEAD có bead DEFERRED đúng câu đó. Hai ghế đã
+       chốt HOÃN.
+   (4) **Không có nguyên văn.** "Dựng đi (khi hết freeze)" là **nhãn lựa chọn do tôi tự viết** rồi
+       Bảo bấm chọn. Một lựa chọn được bấm **không phải** một câu được nói; đừng ghi nó vào bead như
+       lời user. Chuẩn của LEAD ("không đóng theo relay, đòi nguyên văn") bắt được ca này.
+   ⇒ Trước khi hỏi: tra xem user **đã quyết gì về đúng câu này** (`bd list`, bead defer, memo).
+   Nếu có, câu hỏi phải mở bằng *"anh đã chốt X ngày Y; hỏi lại vì Z"*. Và mọi tiền đề trong câu hỏi
+   ("ba ghế đồng ý", "còn cần không") **phải đo trước khi viết ra** — user trả lời đúng câu được hỏi.
+
+32. **Thời gian chỉ được làm BỘ LỌC; nội dung (patch-id / blob) mới được làm TRỌNG TÀI.** (luật LEAD)
+   Ghép cặp PR master↔release theo **tên nhánh** hỏng, và theo **thời gian** cũng rủ rê: trong cụm
+   19:09–19:15 có **hai** merge master tranh **một** merge release; ghép tham lam gán sai và cho ra
+   kết luận **ngược** sự thật nội dung. Mọi bản dựng ghép-cặp thừa hưởng lỗi này; detector
+   so-đầu-nhánh không ghép cặp nên miễn nhiễm — đó là lý do kỹ thuật để chọn nó.
+   Cùng họ luật 25 (`merge-tree` conflict) và luật 22 (heuristic đọc nghĩa từ TÊN).
