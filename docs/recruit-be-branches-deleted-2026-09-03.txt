@@ -1,0 +1,16 @@
+# recruit-be: 6 nhanh da land, xoa 03/09/2026 (PR #207-#212 da MERGED)
+#
+# PHUC HOI: git push origin <sha>:refs/heads/<ten>
+# HAN SU DUNG: chi chay tu clone con giu object; tren origin cac sha nay da mat ref => se bi GC.
+# KIEM: while read s n; do case "$s" in \#*|'') continue;; esac; \
+#         git cat-file -e "$s^{commit}" 2>/dev/null || echo "MAT $n"; done < <file nay>
+# DOI CHUNG AM (bat buoc): git cat-file -e 0000000000000000000000000000000000000000^{commit} \
+#         2>/dev/null && echo "LENH HONG" || echo "sha bia bi tu choi => lenh do hoat dong"
+#
+# <sha> <ten nhanh>
+db6465371316c9821f408e780c386d6e0cdbdc8c test/2p7j-pin-str-contract
+e407b0d37d02a47c1ba5a785fde063c2b35a98b0 test/2p7j-pin-str-contract-rel
+fb33359eb8ad01c0995f7418cb49bd38029a20ef test/r9yu-generated-column-it
+feffe1b753fcb077871ce99a9ce64ffa9bfdd0a1 test/r9yu-generated-column-it-rel
+6bca58236a1a01cd7d8789dd6ef8d34af9b5858d feat/jip5-registration-clock-squashed
+5e285d3657b9d00bd1f129d00e7bd6f0e884406e feat/jip5-registration-clock-rel
