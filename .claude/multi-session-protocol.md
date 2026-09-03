@@ -639,3 +639,41 @@ nhất của cả đợt.)
    lúc người ta mở file ra sửa. `followUpOverdueDays` nêu tên `overdue_shifts_by_time_of_day` ngay
    trong javadoc, nên người định "gọn lại" hai bước `utcDayNumber(toDateString(today))` đọc được
    ngay là có một test đang giữ tính chất đó và giữ vì lý do gì.
+
+41. **PHÉP CHẨN ĐOÁN TRƯỚC KHI CHỌN BẢN VÁ: lỗi hỏng vì LƯỜI hay vì KHÔNG BIẾT?**
+   - **Lười** ⇒ một dòng dữ kiện **vô dụng**, phải là **cơ chế** (cổng chặn, test, CI).
+   - **Không biết** ⇒ một dòng dữ kiện đặt đúng chỗ là **ĐỦ**, và cơ chế là **THỪA**.
+   Vế phải giữ nguyên văn, vì không có nó thì luật này bị đọc thành "dữ kiện là bản vá yếu,
+   chấp nhận vì rẻ" — rồi người sau đắp thêm một cái cổng lên trên, và cái cổng đó **sẽ** là một
+   lời hứa: *nó **không cần** enforcement, chứ không phải "tạm chấp nhận thiếu enforcement".*
+   Ca 03/09 (`recruit-be` #215): tác giả là **người thật**, PR **đầu tiên** của họ trên repo, khai
+   staging-first rất kỹ mà vẫn thiếu nhánh `-rel`. Luật hai dòng sống ở **đúng hai chỗ và cả hai
+   đều là chỗ AGENT đọc** — `CLAUDE.md` (5 lần) và `docs/GOTCHAS.md` (7 lần); `README.md`
+   **0 lần** trên blob 3.335 byte, `.github/` **không có template nào**. Đó là **trạng thái thứ ba**,
+   không phải "cố ý" cũng không phải "quên": *không biết luật vì luật không ở chỗ họ đọc* — và nó
+   là cái duy nhất giải thích được cả ba dữ kiện.
+   Bản vá đúng hình dạng: **câu chỉ dẫn nói ra HẬU QUẢ**, không phải ô để tick — *"một PR chỉ vào
+   `master` không bao giờ tới staging"*. Người muốn code lên staging tự mở PR thứ hai vì **họ cần**.
+   Và vá ở **gốc** (`README`, nơi người mới đọc **trước khi cắt nhánh**) chứ không chỉ ở **lá**
+   (mẫu PR, chỉ chạm người **đang mở PR** — muộn một bước).
+
+42. **"CẦN CHẶN" thấy được; "CHẶN BẰNG GÌ" thì không.** Tôi vừa bác bốn lời hứa-với-enforcement-0
+   trong một tuần (`--check` không ai chạy · "nhớ regenerate" · "nhớ chạy diff lúc cắt release")
+   rồi **đề nghị lời hứa thứ năm** — một checkbox *"đã mở PR `-rel` chưa?"*. Tự chẩn đoán:
+   *"tôi đang nhìn **cần một chỗ chặn** chứ không nhìn **chỗ chặn này chặn bằng gì**"*. Khi đã đồng ý
+   "cần chặn" thì **phương tiện trôi vào như một chi tiết**.
+   Thước đo phải áp cho phương tiện, không chỉ cho nhu cầu: **hỏng thì mất gì?** Một ô tick sai tạo
+   **vẻ ngoài của một cái cổng** ⇒ lần sau không ai đi kiểm ⇒ **tệ hơn nguyên trạng**.
+   Cùng cấu trúc luật 33 (biết luật ≠ luật ở bàn tay).
+
+43. **BA TRẠNG THÁI, HAI KẾT CỤC ⇒ detector cần một TÍN HIỆU OPT-OUT, không cần phân loại.**
+   | trạng thái | cần cặp `-rel`? | detector |
+   |---|---|---|
+   | hoãn có khai (giữ ở master chờ điều kiện) | **không** | im |
+   | staging-first có khai | **có** | kêu |
+   | không biết luật | **có** | kêu |
+   Hai trong ba cùng một biện pháp, nên detector **không phải phân biệt ba trạng thái** — nó chỉ cần
+   tác giả **opt-out một lần** (*"đây là hoãn có chủ ý"*), mọi thứ khác **mặc định cần cặp**.
+   Cái ask đó nhỏ hơn nhiều so với "người phải phân loại", và **lệch an toàn**: quên opt-out ⇒ kêu
+   thừa (rẻ); thiếu detector ⇒ lệch **67 file** im lặng (đắt). Đây là bản thay cho phân tích `of4r`
+   lượt trước, ghi trước mốc đo lại 07/09.
