@@ -677,3 +677,30 @@ nhất của cả đợt.)
    Cái ask đó nhỏ hơn nhiều so với "người phải phân loại", và **lệch an toàn**: quên opt-out ⇒ kêu
    thừa (rẻ); thiếu detector ⇒ lệch **67 file** im lặng (đắt). Đây là bản thay cho phân tích `of4r`
    lượt trước, ghi trước mốc đo lại 07/09.
+
+44. **MỘT SỐ 0 TỪ LISTING KHÔNG BAO GIỜ ĐƯỢC ĐỨNG MỘT MÌNH.** (luật do LEAD `725a7bc4` phát biểu
+   sau khi tự bắt lỗi của chính mình, 03/09) — mở rộng của luật "số 0 cần đối chứng dương", nhưng
+   nhắm vào **công cụ liệt kê**, chỗ nguy hiểm hơn vì kết quả trông như dữ liệu chứ không như phép đo.
+   **Ba ca thật trong CÙNG MỘT NGÀY, cả ba đều suýt thành kết luận sai gửi tới user:**
+   - `gh search code --owner LoanFactory-Inc '"PayPalServer"'` → **0**; bỏ ngoặc kép → **2**, file có
+     thật. Suýt kết luận "org không có PayPal ở đâu cả".
+   - LEAD: `unzip -l <tera-core.jar> | grep -iE 'client|http|rest'` → **rỗng**, trong khi
+     `core/base/http/HttpRequestCall.class` nặng **51.233 byte**. Suýt trả lời tôi "nền tảng không có
+     HTTP kit" ⇒ tôi đã đi **xây lại một thứ đã có 787 dòng**.
+   - HOST: grep `RestTemplate|WebClient|Feign` = 0 trên cả `recruit-be` lẫn `tera-core` ⇒ tôi báo user
+     *"cả nền tảng không có công cụ gọi ra ngoài"*. Sai: nền tảng **bọc nó lại thành tên riêng**
+     (`HttpRequestCall`). Tôi tìm tên thư viện, không tìm **cách nhà mình gọi tên việc đó**.
+
+   **Chế độ hỏng chung:** cả ba đều đo *"có chuỗi X không"* rồi đọc kết quả như *"có NĂNG LỰC X không"*.
+   Một codebase trưởng thành **luôn** đặt tên riêng cho hạ tầng của nó, nên tìm theo tên thư viện
+   ngoài là tìm sai tầng — y hệt GOTCHA 1 ("ROLE là dòng DB, không phải hằng số trong code").
+
+   **Thứ cứu LEAD không phải cẩn thận hơn — là MỘT CALLER CÓ THẬT mâu thuẫn với con số 0.**
+   Nên luật thao tác được, không phải lời khuyên chung chung:
+   > Trước khi kết luận "X không tồn tại", tìm **một chỗ dùng X thật**. Nếu năng lực đó thật sự cần
+   > thiết mà **không ai trong repo dùng nó**, đó mới là dữ kiện — và thường là dữ kiện khác hẳn.
+
+   Và hệ quả về **thứ tự đọc**: nghiên cứu ngoài trả lời *"ngành làm thế nào"*, không trả lời *"nhà
+   mình đã chọn gì"*. Hôm nay suýt dẫn tới scheduler thứ hai đặt cạnh một cái đang chạy
+   (`CronServiceImpl` chỉ phụ thuộc `PubSubService`, hợp đồng là publish-để-đăng-ký).
+   **Đọc nhà trước, đọc ngoài sau.**
