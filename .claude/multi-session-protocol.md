@@ -365,6 +365,35 @@ tính chuyện chốt vòng hiện tại rồi bắt đầu session mới có t�
    Chỉ phép đầu có hình dạng chết người. Trước khi trình một con số, hỏi: *sai theo hướng này thì
    mất việc, hay chỉ giữ thừa?* Con số "gọn gàng" đầu tiên mình có thường là phép lệch-phá-hủy.
 
+25. **BA CÂU HỎI CƠ HỌC TRƯỚC MỖI KHẲNG ĐỊNH TRONG BẢN GỬI USER — một câu gộp thì mù hai phần ba.**
+   03/09 HOST giao Bao một bản kế hoạch có **bốn mục sai**, tự gọi tên là "một dữ kiện đúng + một kết
+   luận nó không chống đỡ nổi", rồi đề một luật duy nhất. CHECK bác: đó là **TÊN HỌ, không phải thủ
+   tục** — bốn ca là **ba chế độ hỏng khác nhau**, và luật đề ra chỉ phủ hai ca đầu.
+
+   **(i) TƯƠI KHÔNG — đo lúc nào?** *Chế độ SỐ ĐO CÓ TUỔI.* Trạng thái ngoài đổi giữa lúc đo và lúc
+   khẳng định. Ca: khoá deploy đo 09:1x, khẳng định lại 15:xx, đã đổi lúc 14:23. Thủ tục: khẳng định
+   trạng-thái-ngoài phải **đo tại thời điểm khẳng định**; nếu vẫn dùng số cũ thì **kèm giờ đo**
+   ("khoá mượn, đo 09:1x") để người đọc tự biết nó có tuổi. Cùng họ ca hai-cửa-sổ 3,5 tiếng 02/09.
+
+   **(ii) ĐÚNG ĐỐI TƯỢNG KHÔNG — quote giải về ai?** *Chế độ VỊ NGỮ ĐÚNG, GẮN SAI ĐỐI TƯỢNG.* Ca:
+   Seth nói "cần duyệt" — câu đó THẬT, nhưng nói về **đường tắt**, HOST gắn vào **mốc 60 ngày**.
+   Không phải số cũ; **lúc đo nó đã sai**. Anh em ruột của bẫy khớp-theo-tên
+   (`referred_by_lo`/`"referred_by_source"`). Thủ tục: mọi khẳng định-về-lời-người-khác trong bản gửi
+   user phải kèm **quote nguyên văn + một dòng giải đối tượng** ("câu này nói về X, không phải Y").
+   Luật quote-anchored đã có trong sổ, chỉ chưa ai áp cho **tài liệu nội bộ**.
+
+   **(iii) ĐÃ MỞ VẬT CHƯA?** *Chế độ NHÃN THAY NỘI DUNG.* Ca: HOST đọc nhãn (`APPROVED` · 3 file ·
+   32 dòng) rồi khuyến nghị merge — **không mở PR**. Bên trong: 14 nhận xét, 2 lỗ bảo mật, và **cả
+   bốn lỗi chặn merge đều vừa trong 32 dòng**. DEV gọi tên gọn nhất: **kích thước diff không nói gì
+   về rủi ro diff.** Thủ tục: **không khuyến nghị hành động trên vật chưa mở**, y như không ký sha
+   chưa đọc blob (luật review 29/08, nay áp cho vai planner). Phép thử của DEV: *"tôi đang suy từ một
+   CHỈ SỐ (số dòng, số file, số hit) sang một KẾT LUẬN VỀ NỘI DUNG chưa đọc?"*
+
+   **LUẬT TỈ LỆ, CHECK thêm và nó là phần đắt nhất:** ca sai nặng nhất được HOST xếp **ĐỨNG ĐẦU
+   BẢNG** trong bản giao — và nhận **0 phép đo**. ⇒ **Công kiểm chứng phải tỉ lệ thuận với độ nổi
+   bật của khẳng định trong deliverable.** Món đứng đầu bảng mà không có phép đo là **cấu trúc
+   ngược**: thứ nhiều người đọc nhất lại là thứ ít bằng chứng nhất.
+
 24. **MỘT ĐOẠN CŨ NẰM TRONG MỘT FILE MỚI SỬA THÌ TỆ HƠN MỘT FILE CŨ — và cập nhật bằng cách BỒI
    THÊM chú thích cạnh một dòng sai thì dòng sai VẪN Ở ĐÓ.** File cũ thì ai cũng nghi. File có ngày
    sửa tươi thì không ai nghi — nên đoạn sai đi qua ngay dưới mắt người vừa chạm file.
