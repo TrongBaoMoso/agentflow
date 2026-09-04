@@ -704,3 +704,62 @@ nhất của cả đợt.)
    mình đã chọn gì"*. Hôm nay suýt dẫn tới scheduler thứ hai đặt cạnh một cái đang chạy
    (`CronServiceImpl` chỉ phụ thuộc `PubSubService`, hợp đồng là publish-để-đăng-ký).
    **Đọc nhà trước, đọc ngoài sau.**
+
+45. **PHÉP KIỂM ĐÚNG NHƯNG TRẢ LỜI SAI CÂU — bốn ca cùng họ, đo trong 24 giờ.**
+   Họ này nguy hiểm hơn phép đo hỏng: kết quả **đúng**, nên không có gì gợn. Cái sai nằm ở chỗ
+   **câu được trả lời không phải câu đang hỏi**.
+
+   **(a) Cây bằng nhau KHÔNG có nghĩa commit làm cùng một việc.** (luật do DEV `f282aafb` phát biểu
+   sau khi tự truy nguyên, 03/09) — **cây là NỘI DUNG; diff là NỘI DUNG TRỪ ĐI BASE.** Base dịch thì
+   *cùng một cây* diễn đạt *một diff khác*.
+   Ca thật: worktree tạo từ `origin/master` = `f0b94f2`; giữa chừng một lượt `git fetch` (lúc dọn
+   worktree) làm `origin/master` dịch sang `fd5c4e1`; `git reset --soft origin/master` để squash ⇒
+   cha thành `fd5c4e1`, **cây giữ nguyên** — mà cây đó dựng trên `f0b94f2`. Diff so với cha mới =
+   kế hoạch **+ một lượt revert `#228`** (xoá 53 dòng `GOTCHAS.md` vừa land). `#228` land `23:52:22`,
+   push `23:54:16` — **cách nhau 114 giây**.
+   DEV **CÓ kiểm**: so cây trước/sau squash, `4fc388d3 == 4fc388d3`, rồi kết luận "squash không đổi
+   nội dung". **Đúng — và vô dụng: cây chính là thứ `reset --soft` được ĐỊNH NGHĨA là giữ nguyên.**
+   Họ đã kiểm **bất biến của thao tác** thay vì **tác dụng của nó**; bước duy nhất chạm BASE là bước
+   duy nhất không đo.
+   ⇒ Sau mọi `reset --soft` / `rebase` / `commit-tree`: phép kiểm bắt buộc là **`git show --stat`**,
+   không phải so cây. Và ở repo nhiều phiên cùng đẩy, **một lượt `fetch` giữa chừng đủ làm base dịch
+   dưới chân mình trong cùng một lượt việc**.
+
+   **(b) `--is-ancestor` trả lời về COMMIT, không về NỘI DUNG.** Tôi báo user *"commit tài liệu mồ côi,
+   cần cứu"* vì `ahead=1`. DEV đọc từng dòng: **36/37 dòng đã ở master, dòng thứ 37 là dòng SAI** —
+   nó vẫn khuyến nghị `merge-tree` làm trọng tài, đúng thứ `master:673` đã cố ý gỡ. Gộp vào PR sẽ
+   cắm lại khuyến nghị ở dòng 669 trong khi dòng 673 bác nó: **tài liệu tự phủ định trong bốn dòng**.
+   Đây là lần **thứ hai** commit đó suýt được gộp; lần trước thoát nhờ cherry-pick xung đột —
+   **may, không phải cơ chế**. Lệch về phía "còn việc" nên nó **giả dạng thận trọng**.
+
+   **(c) `git branch -d` từ chối KHÔNG phải bằng chứng nhánh còn việc.** Bốn nhánh bị từ chối
+   *"not fully merged"* trong khi `--is-ancestor` với đúng base xác nhận đã land. `-d` so với **HEAD
+   local hoặc upstream ref**; ta so với `origin/master` / `origin/release`. Nhánh đã land nhưng
+   remote ref bị xoá sau merge thì `-d` **mù**. Ở repo hai dòng (master + release) hai câu này lệch
+   nhau **thường xuyên**.
+
+   **(d) Lọc `git worktree list` theo dòng `branch` làm rơi IM LẶNG mọi worktree detached-HEAD.**
+   `awk /^branch /` ra **9**, thực tế **14**. Hai cái rơi đúng là hai worktree **dùng làm mốc để đo**,
+   và cũng là hai cái dễ bỏ nhất. Bộ lọc trả lời *"worktree đang ở trên một nhánh"*, không trả lời
+   *"worktree"*. Cùng họ luật 44 (số 0 từ listing).
+
+   **Phép thử chung cho cả bốn, hỏi trước khi tin bất kỳ phép kiểm nào:**
+   > *"Câu lệnh này trả lời chính xác câu gì — và đó có phải câu tôi đang hỏi không?"*
+   Nếu phép kiểm đo một **bất biến của thao tác** (cây sau `reset --soft`, `ahead` sau khi base dịch),
+   nó **không thể** phát hiện lỗi của thao tác đó. Phải đo **tác dụng**, và đo **so với thứ sẽ bị
+   ảnh hưởng** — không phải so với thứ tiện tay nhất.
+
+46. **MỘT CÂU QUÁ TUYỆT ĐỐI KHÔNG CHỈ SAI — NÓ ĐỊNH GIÁ SAI CÁC PHƯƠNG ÁN.** (DEV mở rộng, 04/09)
+   Tôi viết trong `#228`: *"khả năng giao-lại của Pub/Sub KHÔNG áp cho handler nền tảng"*. Đúng về
+   **mặc định**, sai vì **quá tuyệt đối**: `handleMessage` không `final`, `ackMessage` là `protected`
+   ⇒ override được, ack sau khi ghi bền.
+   Chi phí thật không nằm ở chỗ câu đó sai. Nó đọc như một **trần của nền tảng**, nên người đọc sẽ đi
+   tìm **cơ chế inbound thứ hai** (HTTP push) để né một hạn chế **không tồn tại** — trả bằng một
+   **cửa công khai mới**, thứ **không lấy lại được**. Đó chính là điều suýt xảy ra với Q-D, và chỉ
+   dừng lại vì DEV đo `final`/`protected`.
+   ⇒ Khi ghi một hạn chế, phân biệt **mặc định** với **trần**. Ghi sai loại thì người sau không chỉ
+   tin sai — họ **mua một thứ đắt để né một thứ không có**.
+   Hệ quả cùng ngày: *"outbox có xác nhận giao"* đúng **chỉ vì** `AuditConfiguration` cắm chân
+   publisher vào `GoogleAuditEventPublisher` (bản confirming, `.get(timeout)`), **không phải** vì
+   `PubSubService` có xác nhận. `GooglePubSubServiceImpl.publish:44-50` **vứt future** — mọi đường
+   khác gọi nó đều nhận bản fire-and-forget. Đừng suy từ một cấu hình ra một tính chất của nền tảng.
