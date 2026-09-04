@@ -785,6 +785,60 @@
         "/Users/apple/Projects/agentflow/docs/mockups/lo-recruiter-join"
       ],
       "port": 3058
+    },
+    {
+      "name": "lfh-resources-fix",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-resources-fix",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3083"
+      ],
+      "port": 3083
+    },
+    {
+      "name": "lfh-prog-copy",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/lfh-prog-copy",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "3107"
+      ],
+      "port": 3107
+    },
+    {
+      "name": "amb-status-panel-mockup",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "3108",
+        "--directory",
+        "/Users/apple/Projects/lfh-prog-copy/docs/mockups/ambassador-status-panel"
+      ],
+      "port": 3108
+    },
+    {
+      "name": "lfh-prog-rel",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/lfh-prog-rel",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3109"
+      ],
+      "port": 3109
     }
   ]
 }
