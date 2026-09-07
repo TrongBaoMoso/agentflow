@@ -23,7 +23,23 @@ origin/production e6154771   (public)/join/ : 0
 đối chứng dương — ambassador-program/ : 5 / 5 / 5
 ```
 
-### ĐÍNH CHÍNH 1 — KHÔNG PHẢI 404. Production trả HTTP 200.
+### ĐÍNH CHÍNH 1 — KHÔNG PHẢI 404. Production **302 → trang chủ**.
+
+> **SỬA LẠI 08/09**: bản đầu của mục này ghi "HTTP 200". Sai — tôi đo bằng `curl -L` nên đọc mã
+> **sau khi đã đi theo redirect**. Đo lại không `-L`: `/join/<bất kỳ>` trả **302 → https://www.loanfactory.com/**.
+> Kết luận không đổi (link recruiter đưa ứng viên về trang chủ, mất quy công), nhưng cơ chế là REDIRECT,
+> và nó **đỡ tệ hơn** bản tôi mô tả một chút: URL trên thanh địa chỉ ĐỔI, nên người dùng còn thấy được
+> mình bị đưa đi đâu. Bản 200-tại-chỗ mà tôi mô tả thì hoàn toàn vô hình. Đừng dùng con số cũ.
+>
+> ```
+> /join/tommy-le      302 -> https://www.loanfactory.com/
+> /join/seth-august   302 -> https://www.loanfactory.com/
+> /join/khong-co-that 302 -> https://www.loanfactory.com/
+> ```
+> Slug thật và slug bịa cho cùng một kết quả — production không phân biệt được, vì route không tồn tại ở đó.
+
+<details><summary>bản đo cũ (giữ để đối chiếu)</summary>
+
 
 ```
 /join/test-slug            HTTP 200 | 1.272.513 byte | title "Loan Factory | We Dare You To Compare"
@@ -31,7 +47,9 @@ origin/production e6154771   (public)/join/ : 0
 /                          HTTP 200 | 1.272.513 byte | cùng title
 ```
 
-**Ba URL trả về CÙNG SỐ BYTE.** `/join/<slug>` trên production không phân biệt được với một URL gõ sai,
+</details>
+
+**Ba URL (sau khi theo redirect) trả về CÙNG SỐ BYTE.** `/join/<slug>` trên production không phân biệt được với một URL gõ sai,
 và cũng không phân biệt được với trang chủ.
 
 Điều này **tệ hơn 404**, không nhẹ hơn: 404 thì log thấy, monitoring thấy, người bấm thấy.
