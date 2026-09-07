@@ -839,6 +839,44 @@
         "3109"
       ],
       "port": 3109
+    },
+    {
+      "name": "lfh-withdraw",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "next",
+        "start",
+        "-p",
+        "3021"
+      ],
+      "port": 3021,
+      "cwd": ".worktrees/lfh-withdraw"
+    },
+    {
+      "name": "lfh-withdraw-dev",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "next",
+        "dev",
+        "-p",
+        "3022"
+      ],
+      "port": 3022,
+      "cwd": ".worktrees/lfh-withdraw"
+    },
+    {
+      "name": "lfh-paysec",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/lfh-paysec",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3077"
+      ],
+      "port": 3077
     }
   ]
 }
