@@ -905,6 +905,90 @@
         "3100"
       ],
       "port": 3100
+    },
+    {
+      "name": "lfh-recruiter-photos",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/lfh-recruiter-photos",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3079"
+      ],
+      "port": 3079
+    },
+    {
+      "name": "lfh-e25t-start",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/lfh-e25t",
+        "run",
+        "start",
+        "--",
+        "-p",
+        "3101"
+      ],
+      "port": 3101
+    },
+    {
+      "name": "rfe-brand",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/rfe-brand",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3110"
+      ],
+      "port": 3110
+    },
+    {
+      "name": "joinform",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/lfh-joinform",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3077"
+      ],
+      "port": 3077
+    },
+    {
+      "name": "lfh-rate-clip",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/lfh-rate-clip",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3084"
+      ],
+      "port": 3084
+    },
+    {
+      "name": "loh-rate-clip",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/loh-rate-clip",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3085"
+      ],
+      "port": 3085
     }
   ]
 }
