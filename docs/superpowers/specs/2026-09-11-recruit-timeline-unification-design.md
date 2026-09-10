@@ -735,8 +735,47 @@ recruit-fe OutcomeModal:29    ARCHIVE_REASONS = ['Not interested','Signed elsewh
                                                  'Wrong information','Asked to stop contact']
 ```
 
-⚠️ **FE cho chọn từ một list; BE nhận BẤT KỲ chuỗi.** Nên trên dây nó là **VĂN BẢN
-TỰ DO**, nội suy thẳng vào `sys_detail`. Đừng ghi "enum cố định" — sai về phía trấn an.
+⚠️ **ĐÍNH CHÍNH của chính dòng trên** (LEAD bắt, tôi đo lại): `archiveReason` **CÓ**
+`@Size(max = 255)` ở dòng `:51` — **ngay trên** field tôi trích. Bản trước tôi ghi
+"KHÔNG validation nào" là **sai phạm vi**.
+
+```
+CallOutcomeRequest.java:51   @Size(max = 255)
+CallOutcomeRequest.java:52   private String archiveReason;
+đối chứng dương: grep -cE '@(NotNull|NotBlank|Size|Pattern|Valid)' trên file đó = 3
+```
+
+**Kết luận không đổi một ly:** không `@Pattern`, không enum ⇒ FE cho chọn 4 lựa chọn,
+BE nhận **bất kỳ chuỗi ≤255**. Trên dây nó là **VĂN BẢN TỰ DO CÓ TRẦN**, nội suy thẳng
+vào `sys_detail`. Đừng ghi "enum cố định" — sai về phía trấn an. Và "có trần 255" không
+làm nó bớt xấu: một câu 255 ký tự thừa sức chở một lý do nhạy cảm.
+Ghi chú phạm vi: câu SYSTEM dựng TỪ nó đi vào `activities.summary` = **`TEXT`, không
+trần** (`V001:113`) ⇒ trần 255 chỉ chặn **mã lý do**, không chặn **câu dòng thời gian**.
+
+### ⛔ VÀ CHỖ SAI ĐÓ ĐANG CHE MỘT BUG — HAI CỬA, HAI TRẦN SAI KHÁC NHAU, MỘT CỘT
+
+```
+CallOutcomeRequest.java:51    @Size(max = 255)   ─┐
+BulkArchiveRequest.java:30    @Size(max = 500)   ─┤  cả hai chảy vào...
+FollowUpServiceImpl:240       candidate.setArchiveReason(reason)
+CandidateServiceImpl:316      candidate.setArchiveReason(reason)   (đường bulk, qua
+                              CandidateFacadeImpl:154 request.getReason())
+CandidateEntity.java:59       @Column(name = "archive_reason")
+V001__init.sql:47             archive_reason  VARCHAR(100)         ←┘  ...MỘT cột 100
+```
+
+**Trần LỎNG chạy TRƯỚC trần CHẶT.** Một lý do 101–255 ký tự (hoặc 101–500 ở đường bulk)
+**qua được Bean Validation** rồi **chết ở tầng DB** ⇒ **500, không phải 400**. Người dùng
+dán một câu dài vào ô đó nhận một lỗi hệ thống thay vì một thông báo tử tế.
+
+**Vì sao cơ chế sai của tôi lại nguy hơn con số sai:** nếu spec ghi *"không có validation
+nào"* thì bản vá hiển nhiên là **"thêm `@Size`"** — người viết sẽ thêm `@Size`, thấy đã có
+sẵn, rồi **không bao giờ nhìn tới cột `VARCHAR(100)`**. **Cơ chế sai không chỉ mô tả sai,
+nó định hướng bản vá RA KHỎI chỗ hỏng.**
+
+⇒ Bead riêng, không thuộc phạm vi tài liệu này. **Ba trần phải khớp** (hoặc `@Size` hạ về
+100, hoặc cột nới lên) — và hai cửa vào đang mang **hai** con số khác nhau, nên bản vá
+phải là **một hằng số dùng chung**, không phải ba lần gõ tay.
 
 ⇒ Một hàng nói **"Call outcome NOT_INTERESTED -> ARCHIVED (Asked to stop contact)"**,
 **không bao giờ xoá được**, **hiện trên cả hai tab cho mọi caller đọc được cast, kể cả
