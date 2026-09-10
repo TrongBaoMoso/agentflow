@@ -517,10 +517,13 @@ ghép ≤100 + ≤100 dòng trong bộ nhớ. Không có bài toán phân trang 
 
 1. **Mirror không đạt mục tiêu.** Modal của omni không render được hàng của
    recruit. Đẩy note sang omni để "thấy chung một chỗ" thì chỗ đó vẫn không thấy.
-2. **Erasure của omni sẽ phá ghi chú vận hành của chính recruiter.**
-   ⚠️ **SỬA CƠ CHẾ** — bản đầu dẫn `previews.go:402 authoredWithBody`. **Sai nguồn.**
-   Luật erasure thật (§6): `notSystem` = `NOT (m.side='SYSTEM' OR m.sys_type IS NOT NULL)`.
-   NOTE **không có miễn trừ** ⇒ body bị null. (Và **CALL cũng không** — xem §6.)
+2. **Bản sao phía recruit sống sót một lượt erasure.**
+   ⚠️ **SỬA HAI LẦN.** Bản đầu dẫn `previews.go:402 authoredWithBody` — **sai nguồn**
+   (luật thật là `notSystem`, §6). Và bản đầu gọi *"erasure phá ghi chú vận hành của
+   recruiter"* là **khuyết tật** — **nửa đó SAI**: nếu ứng viên đã yêu cầu xoá thì
+   ghi chú biến mất là **hành vi ĐÚNG**.
+   **Khuyết tật thật chỉ nằm ở nửa sau: bản sao trong `activities` SỐNG SÓT** — xem §6.1.
+   NOTE không có miễn trừ ⇒ body ở omni bị null; văn bản y hệt ở recruit thì không.
    Cùng lúc đó văn bản y hệt vẫn nằm trong `activities` của recruit
    (ngoài tầm với của erasure omni). **Sai cả hai đầu**: recruiter mất sổ,
    mà lượt erasure cũng không erase thật.
@@ -592,6 +595,52 @@ provisioned nhưng account của ta không đọc được nội dung nó."*
 **Không** nói "0 deployment trên 40+ namespace" — câu đó **không đo được** bằng
 quyền hiện có. Còn một khe không đo được: một lượt `helm upgrade` tay ngoài CD.
 
+### 6.1 ⛔ CHÂN CÒN HỞ — recruit-be CÓ **0** ĐƯỜNG XOÁ, VÀ THIẾT KẾ NÀY LÀM NÓ CHỊU LỰC
+
+LEAD nêu, tôi đo trên `recruit-be origin/master = 8d50991`:
+
+```
+git grep -lniE 'erasure|right.to.be.forgotten|gdpr|ccpa|scrub|anonymi[sz]' -- src/main/java
+  ->  0 FILE
+đối chứng dương cùng cây, cùng bộ lọc:  git grep -l 'CandidateEntity' -- src/main/java  ->  40 file
+git grep -lniE 'subject\.erased|subjectErased' -- src/main/java src/main/resources
+  ->  0 CONSUMER
+  (3 hit 'audit-events' đều là đường PHÁT của recruit: AuditController:21 endpoint,
+   application.yml:63 comment, V025:6 comment — không cái nào tiêu thụ)
+```
+
+**recruit-be không có một dòng nào xoá, ẩn danh, hay cào dữ liệu cá nhân.**
+Sau thiết kế này recruit giữ:
+
+1. `activities.body` / `.summary` — bản sao của **mọi** note cũng đã đẩy sang omni
+2. **toàn bộ** văn bản SYSTEM/audit, gồm chính câu `"ARCHIVED (Asked to stop contact)"` —
+   và vì ta quyết **đúng** là KHÔNG mirror SYSTEM, nó ở lại recruit **100%**
+
+⇒ Kết cục của một lượt erasure sau khi thiết kế này lên:
+**omni xoá nửa của nó. recruit không xoá gì.**
+
+**VÀ VÌ SAO NÓ TỆ HƠN NGUYÊN TRẠNG — không phải "vẫn như cũ":**
+
+| | trước | sau |
+|---|---|---|
+| omni giữ gì cho LO_CANDIDATE | gần như không (cast-only) | **một bản sao** |
+| có engine erasure chạy thật? | không ai tuyên bố | **có** — `V17__comm_erasure_receipt`, `subject.erased` |
+| có ai NGHIỆM THU một lượt xoá? | không | **có** — biên nhận phát ra, event bắn, modal trắng |
+
+**Một lượt erasure BÁO THÀNH CÔNG mà không xoá hết thì tệ hơn không có tính năng
+erasure** — vì nó tạo ra một **BIÊN NHẬN**, và biên nhận là thứ **có người ký vào**.
+Hướng hỏng: **fail-open trên một thuộc tính tuân thủ**, và vật hỏng chính là cái vật
+có nhiệm vụ khẳng định việc xoá đã xảy ra.
+
+⇒ **ĐỔI KHUNG ASK #5.** Nó đang được viết là *"để recruit BIẾT khi có erasure"*.
+Thứ nó thật sự mua: **đó là cơ chế DUY NHẤT làm bản sao phía recruit THU HỒI ĐƯỢC.**
+Không có nó, bản sao của recruit là bản sao **không xoá được**, và mọi biên nhận
+erasure phát ra sau đó **nói quá phạm vi thật**.
+(Cùng nước đi với ask #1↔#2: quyền đọc prod **là** thứ đóng khe đó, không phải tiện nghi.)
+
+**Không chặn Phase 2.** Nhưng nó **phải có người sở hữu TRƯỚC khi có ai nghiệm thu một
+lượt erasure**, và nó thuộc **Phase 0** (một ask), không phải Phase 3.
+
 ### ⛔ LUẬT ERASURE THẬT — `notSystem`, KHÔNG PHẢI `authoredWithBody`
 
 Bản đầu dẫn `previews.go:398-406 authoredWithBody` làm luật erasure. **Sai nguồn.**
@@ -646,7 +695,12 @@ SysDetail   trong internal/retention/  ->  0 hit
 sys_type    trong internal/retention/  ->  2 hit, CẢ HAI chỉ để LOẠI HÀNG RA:
     destructive.go:31      (comment)
     destructive_sql.go:35  (const notSystem)
-đối chứng dương cho CHÍNH glob đó: comm_message -> 32 hit (destructive_sql.go) + 12 (store_sql.go)
+HAI đối chứng dương, đóng hai chế độ hỏng khác nhau:
+  (i) glob/ref có chạy?   comm_message trong internal/retention/ -> 32 + 12 hit
+  (ii) chuỗi có thật?     sys_detail NGOÀI retention/erasure     -> 7 hit
+       db/migration/V02__omni_channel.sql 1 · messages/store_page.go 3
+       mapper.go · previews.go · system_sqlc.go · 2 test  (mỗi cái 1)
+  internal/erasure/ (7 file): sys_detail = 0 VÀ sys_type = 0
   => sys_detail KHÔNG NẰM TRONG TỪ VỰNG của máy móc erasure. Không phải
      "chỉ xuất hiện trong văn bản predicate" — mà là không xuất hiện ở đâu cả.
      Chỗ duy nhất SYSTEM được nhắc tới là sys_type, và chỉ để loại hàng RA.
@@ -670,13 +724,19 @@ service.go:500      if confined && r.Side != effectiveSide  <- chỉ áp cho REP
 **Và nội dung recruit-be sắp đẩy vào đó là dữ liệu cá nhân, nguyên văn:**
 
 ```
-FollowUpServiceImpl:242-244
-  systemActivity(candidate, actorId,
-      "Call outcome NOT_INTERESTED -> ARCHIVED "
-          + (NO_REASON.equals(reason) ? reason : "(" + reason + ")"));
-recruit-fe OutcomeModal/index.tsx:29
-  ARCHIVE_REASONS = ['Not interested','Signed elsewhere','Wrong information','Asked to stop contact']
+FollowUpServiceImpl:232-233   final String reason = isBlank(request.getArchiveReason())
+                                  ? NO_REASON : request.getArchiveReason().trim();
+FollowUpServiceImpl:242-244   systemActivity(candidate, actorId,
+                                  "Call outcome NOT_INTERESTED -> ARCHIVED "
+                                      + (NO_REASON.equals(reason) ? reason : "(" + reason + ")"));
+CallOutcomeRequest.java:52    private String archiveReason;   <- KHÔNG @Size, KHÔNG @Pattern,
+                                                                 KHÔNG enum, KHÔNG validation nào
+recruit-fe OutcomeModal:29    ARCHIVE_REASONS = ['Not interested','Signed elsewhere',
+                                                 'Wrong information','Asked to stop contact']
 ```
+
+⚠️ **FE cho chọn từ một list; BE nhận BẤT KỲ chuỗi.** Nên trên dây nó là **VĂN BẢN
+TỰ DO**, nội suy thẳng vào `sys_detail`. Đừng ghi "enum cố định" — sai về phía trấn an.
 
 ⇒ Một hàng nói **"Call outcome NOT_INTERESTED -> ARCHIVED (Asked to stop contact)"**,
 **không bao giờ xoá được**, **hiện trên cả hai tab cho mọi caller đọc được cast, kể cả
@@ -690,11 +750,21 @@ thuộc tính người ta thiết kế để **TRÁNH**, không phải để ch�
 > `side=INTERNAL` không bao giờ tới confined caller, và `notSystem`=TRUE nên body
 > của nó **nằm trong** phạm vi right-to-erasure.
 
-**Vì sao phải sửa dù kết luận không đổi:** nếu spec ghi "predicate xác nhận
-chỉ-mirror-SYSTEM" thì người đọc sáu tháng sau dùng đúng câu đó để **thăng Phase 3**,
-với niềm tin rằng retention đã bảo vệ họ — trong khi retention là thứ **miễn trừ**
-hàng đó khỏi mọi lượt xoá. **Số đúng + cơ chế sai vẫn là báo cáo sai**, và ở đây cơ
-chế sai đẩy quyết định về **phía có hại**.
+**CÂU DẠY ĐƯỢC, thay cho "cơ chế cũ ngược":**
+
+> `destructive.go:30-31` nói *"SYSTEM/AUDIT ROWS ARE NEVER PURGED"*. Đọc
+> **"never purged" = "được bảo vệ"** là đọc **theo TÊN**; đúng nghĩa là
+> **"được MIỄN TRỪ"**. Cùng một mệnh đề, hai nghĩa trái dấu — và với `sys_detail`
+> chở **văn bản người gõ**, thì **sống sót là chiều XẤU NHẤT**.
+> **Phân loại bằng HƯỚNG, đừng phân loại bằng tên.**
+
+Sống sót qua erasure là một **THUỘC TÍNH**, không phải một **ĐẢM BẢO**.
+
+Nếu spec ghi "predicate xác nhận chỉ-mirror-SYSTEM" thì người đọc sáu tháng sau dùng
+đúng câu đó để **thăng Phase 3**, tin rằng retention đã bảo vệ họ. **Số đúng + cơ chế
+sai vẫn là báo cáo sai**, và ở đây cơ chế sai đẩy quyết định về **phía có hại**.
+Cơ chế của lỗi này, để lần sau tránh: nhận một khẳng định về **HƯỚNG** của một
+predicate mà chỉ đo **SỰ TỒN TẠI** của nó.
 
 **Giới hạn trung thực (DEV tự hoãn, tôi giữ):** hôm nay **ứng viên chưa đọc được gì** —
 `candidates.account_id` có đúng một writer (`DedupServiceImpl:298`, merge fill, loser
@@ -871,7 +941,7 @@ phải từ lúc phase tiêu thụ nó.**
 | SYSTEM row có cho external thấy không | Khải | Phase 3 |
 | push `HIRING_MANAGER` lên cast? (lỗ D110, §4.6) | Khải | note của manager có tới omni không |
 | retention declaration cho LO_CANDIDATE | Khải | §6 |
-| IAM cấp topic `audit-events` | Khải | tín hiệu erasure |
+| IAM cấp topic `audit-events` | Khải | **cơ chế DUY NHẤT làm bản sao phía recruit thu hồi được** (§6.1) — không có nó thì mọi biên nhận erasure nói quá |
 
 **SMS/Call là món DUY NHẤT có ngày bắt đầu KHÔNG nằm trong tay tôi.** Xếp nó xuống
 sau là tự nguyện trả thêm độ trễ đó. Nó ở Phase 0 **không phải vì nó rẻ**.

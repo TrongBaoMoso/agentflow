@@ -149,13 +149,51 @@ CALL content (`transcript`, `recording_url`, `ai_summary`) are all in scope. Tha
 what pushed us to keep recruiter notes in recruit-be and join content at read time
 instead of mirroring it — so a change here changes our design, not just our data.
 
-## 7. IAM on the `audit-events` topic
+## 7. IAM on the `audit-events` topic — and why it is not a nice-to-have
 
-We would like to consume `subject.erased` (`erasure.go:572`, via govaudit) so a
-future AI context corpus can be revoked when a subject is erased. The topic already
-has 5 independent pull subscriptions, including another team's
-`audit-events-posthog`, so a sixth is precedented. Topic-level IAM is the only part
-we cannot read (PERMISSION_DENIED), so we cannot tell whether we already have it.
+We need to consume `subject.erased` (`erasure.go:572`, via govaudit). The topic already
+has 5 independent pull subscriptions, including another team's `audit-events-posthog`,
+so a sixth is precedented. Topic-level IAM is the only part we cannot read
+(PERMISSION_DENIED), so we cannot tell whether we already have it.
+
+**We first wrote this as "so recruit knows when an erasure happens". That undersells
+it, and the honest framing matters here because it concerns a compliance claim.**
+
+Measured on `recruit-be` `origin/master = 8d50991`:
+
+```
+git grep -lniE 'erasure|right.to.be.forgotten|gdpr|ccpa|scrub|anonymi[sz]' -- src/main/java
+  ->  0 files      (positive control, same tree, same filter:
+                    git grep -l 'CandidateEntity' -- src/main/java  ->  40 files)
+git grep -lniE 'subject\.erased|subjectErased' -- src/main/java src/main/resources
+  ->  0 consumers  (the 3 'audit-events' hits are all recruit's own EMIT side)
+```
+
+recruit-be has **no path that deletes, anonymises or scrubs personal data**. After the
+design we are about to build, recruit keeps a copy of every note we also push to omni,
+plus the whole SYSTEM/audit text — and because we decided *not* to mirror SYSTEM rows,
+that text stays in recruit in full.
+
+So an erasure would leave: **omni erases its half, recruit erases nothing.**
+
+That is worse than the status quo rather than neutral, and this is the part worth your
+attention. Today omni holds almost nothing for `LO_CANDIDATE` (cast-only) and nobody
+claims an erasure runs. Afterwards omni holds a copy, has a working erasure engine, has
+`V17__comm_erasure_receipt`, and emits `subject.erased`. So there will be a **receipt**,
+and an acceptance step, and a conversation thread that goes blank — while the same text
+is still live in the drawer where recruiters actually work.
+
+**An erasure that reports success without erasing everything is worse than having no
+erasure feature**, because it produces a receipt and somebody signs it.
+
+Consuming `subject.erased` is the **only** mechanism that makes recruit's copy
+revocable. Without it, recruit's copy cannot be erased at all, and any receipt omni
+issues overstates what happened. We would rather have this owned before anyone accepts
+an erasure than discover it during one.
+
+We are not asking you to build the recruit side — that is ours. We are asking for the
+subscription, and flagging that until it exists we will not describe erasure as working
+end to end.
 
 ## 8. Small correction in your repo
 
