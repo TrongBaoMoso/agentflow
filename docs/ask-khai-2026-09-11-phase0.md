@@ -23,8 +23,12 @@ Measured today, without needing cluster access:
 | `kubectl get ns omni-prod` | Active 17d |
 
 So CD has never deployed omni to production, and both manual dispatches ran on
-`master` (i.e. they deployed staging). The namespace is provisioned but empty of
-a release.
+`master` (i.e. they deployed staging).
+
+**Stating the scope precisely:** both measurements are about the **pipeline**, not the
+**cluster**. A `helm upgrade` run by hand bypasses CI entirely, and ruling that out
+needs read access on `omni-prod` — see §2. So the claim is "omni has never been
+deployed to production through its only pipeline", not "production is empty".
 
 **Why we are asking rather than planning around it:** every recruit feature we
 are about to build on omni is verifiable on staging and *unverifiable* on prod.
@@ -102,10 +106,30 @@ We are shipping the fail-closed option: **do not mirror an off-cast actor's note
 and say so in the UI.** Nothing is silently lost and we need nobody's decision.
 
 The question for you is whether the other option is acceptable — pushing
-`HIRING_MANAGER` for an elevated actor — because it grants that manager INTERNAL
-read over the **whole** conversation, which is the decision your own javadoc says
-has not been made. If the answer is no, we will keep the fail-closed behaviour
-permanently rather than leave it as a stopgap.
+`HIRING_MANAGER` for an elevated actor. Stating the real scope, because it is wider
+than it sounds: `access/gate.go:245-246` returns `Access{Read: true, Confined: false}`
+for `hasInternal`, and `Confined: false` means **both sides**. There is no narrower
+axis — `.Rank` has 0 hits in `internal/access/`, so rank orders the display and
+grants nothing. So the decision is not "let a manager see the team's notes", it is:
+
+> **a manager reads the candidate's entire correspondence — every email, every SMS
+> the candidate exchanged — not just the Team side.**
+
+**And one thing we want to rule out before it comes up:** filling
+`loCandidateStaffGrant` is *not* an alternative. It widens read the same way
+(`Confined: false`) but org-wide instead of per-candidate — your own javadoc calls
+that "how a recruiting record ends up readable by the whole company" — and it still
+does **not** let the manager author the note, because `internalAuthorIn`
+(`service.go:1946-1956`) requires a real INTERNAL cast row matching `principal_id`
+and has no staff-grant branch. It is the dangerous half without the useful half.
+
+We also considered writing the manager's note as a SYSTEM row (authorless, so it
+skips `authorOn` entirely). We are not doing that: `system.go:16-21` says a SYSTEM
+row "renders in BOTH channel tabs to EVERY caller, confined external callers
+included", and on `LO_CANDIDATE` the external caller is the candidate.
+
+If the answer to (a) is no, we will keep the fail-closed behaviour permanently
+rather than leave it as a stopgap.
 
 ## 6. Retention declaration for `LO_CANDIDATE`
 
@@ -142,6 +166,33 @@ do delete and anonymise.
 
 Worth a line because it is a *framed* banner: it reads like a live guarantee, so a
 reader checking "can retention touch this data?" gets a confident wrong answer.
+
+## 9. `cd.yml` — one line that turns a silent failure into a loud one
+
+Not a request for access; a defect we found while answering §1, and the cheapest item
+on this list.
+
+`cd.yml` has 16 selectors of the form
+`${{ github.ref == 'refs/heads/prod' && <prod> || <staging> }}`, matching that exact
+string, and no step fails on an unrecognised ref — the else branch is **staging**.
+
+So whoever cuts the production branch and names it **`production`** gets
+`environment=staging`, `project=lenderrate-master`, `cluster=moso-kube`,
+`namespace=omni-sta`, `values-file=values-staging.yaml`. CI green, deploy green,
+production empty — and **staging overwritten by what everyone believes is the
+production release**. Nothing logs a problem, because by the pipeline's own reckoning
+everything ran correctly.
+
+This is not hypothetical. In this org `recruit-be`, `recruit-fe` and `lf-homepage` all
+use `production`; omni is the repo that uses `prod`. Whoever cuts that branch will most
+likely type the name they type everywhere else.
+
+Fix: make the ref an explicit allowlist and **fail the job** on anything else, instead
+of falling through to staging. Or minimally, a first step:
+`if github.ref not in {master, prod} → exit 1`.
+
+Worth doing **before** the branch is cut, because that is the day it fires, and it
+fires quietly. It also protects your staging, not just our rollout.
 
 ---
 

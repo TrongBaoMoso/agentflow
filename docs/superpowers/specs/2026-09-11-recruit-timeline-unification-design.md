@@ -5,10 +5,13 @@
 **Neo cây:** recruit-be `origin/master` = **b8bc0df** · omni-service = **1e617aa** · recruit-fe = **12e4ebf**
 
 > ## ⛔ KHÔNG MỤC NÀO TRONG TÀI LIỆU NÀY CHẠY TRÊN PRODUCTION
-> **omni chưa được deploy ở production.** Branch `prod` không tồn tại và
-> **0/172** run CD nào chạy trên ref đó (chi tiết §6). Nghiệm thu trên staging
-> KHÔNG nói gì về prod — đúng hình dạng cái bẫy `next_follow_up_at`. Mọi báo cáo
-> "Phase N xong" mà không nhắc dòng này là một báo cáo thiếu.
+> **omni CHƯA BAO GIỜ deploy production QUA PIPELINE DUY NHẤT CỦA NÓ.** Branch
+> `prod` không tồn tại và **0/172** run CD nào chạy trên ref đó (§6).
+> ⚠️ **Đúng phạm vi:** cả hai bằng chứng nói về **PIPELINE**, không nói về
+> **CLUSTER** — một `helm upgrade` gõ tay đi vòng qua toàn bộ CI, và loại trừ nó
+> cần quyền đọc `omni-prod` mà ta **bị Forbidden**.
+> Nghiệm thu trên staging KHÔNG nói gì về prod — đúng hình dạng cái bẫy
+> `next_follow_up_at`. Mọi báo cáo "Phase N xong" mà không nhắc dòng này là thiếu.
 **Bead:** agentflow (mở khi bắt đầu từng phase)
 **Quyết định của Bao:** omni sở hữu HỘI THOẠI (không điều kiện); recruit sở hữu SỔ (activities); phần đọc **ghép lúc đọc**, KHÔNG mirror.
 
@@ -363,11 +366,52 @@ thao tác được luôn"*).
 
 | | nội dung | ai quyết |
 |---|---|---|
-| (a) | push `HIRING_MANAGER` lên cast cho actor elevated | **Khải** — javadoc gọi đó là *disclosure decision chưa ai làm*; nó cấp INTERNAL read cho manager đó trên **toàn bộ** hội thoại |
+| (a) | push `HIRING_MANAGER` lên cast cho actor elevated | **Khải** — xem §4.6b: nội dung THẬT của quyết định đó rộng hơn nó nghe |
 | (b) | **không mirror note của actor off-cast, và NÓI RA trong UI** rằng note này chỉ có trong recruit-be | không cần ai quyết — **fail-closed** |
 | (c) | đi đường `SystemRecorder` authorless | chưa có wiring (§7) |
 
 **Khuyến nghị: (b) cho Phase 2** vì nó fail-closed và không chờ ai; **(a) là ask riêng.**
+
+### 4.6b INTERNAL read KHÔNG CÓ THANG BẬC — và staff-grant là NGÕ CỤT
+
+```
+access/gate.go:245-246  case hasInternal:   return Access{Read: true, Confined: false}
+access/gate.go:252-253  case hasStaffGrant: return Access{Read: true, Confined: false}
+.Rank trong internal/access/  ->  0 hit   (rank chỉ để sắp xếp, KHÔNG phải trục quyền)
+```
+
+`Confined: false` = **đọc CẢ HAI SIDE**. Nên nội dung thật của *"a disclosure decision
+nobody has made"* **không phải** "cho manager thấy note của team". Nó là:
+
+> **Push `HIRING_MANAGER` = manager đọc TOÀN BỘ thư từ phía ứng viên — mọi email,
+> mọi SMS ứng viên đã trao đổi — không chỉ phần Team-side.**
+
+**Và omni có HAI cần, chỉ MỘT giải được D110:**
+
+| cần | Read | **Author** | phạm vi |
+|---|---|---|---|
+| (a) push cast row `HIRING_MANAGER` | `Confined:false` | ✅ | **theo từng ứng viên** |
+| (b) điền `loCandidateStaffGrant` | `Confined:false` | ❌ **KHÔNG** | **toàn tổ chức, mọi ứng viên** |
+
+```
+service.go:1946-1956  internalAuthorIn(castRows, userID):
+    for ... if p.Side == registry.SideInternal && p.PrincipalID != nil && *p.PrincipalID == userID
+    return nil, ErrNotInternalParticipant
+    => KHÔNG có nhánh staff-grant nào trong đường author
+```
+
+⇒ **(b) là ngõ cụt cho D110** — nó nới READ ra **toàn công ty** (javadoc `lo_candidate.go`
+gọi thẳng: *"how a recruiting record ends up readable by the whole company"*) mà **vẫn
+không cho manager ghi được note**. Nửa nguy hiểm không kèm nửa hữu ích. Và nó là cái
+**dễ đề nghị nhất**, vì `loCandidateStaffGrant = []` nằm đó trông như chỗ trống chờ điền.
+⇒ **Ask phải nói thẳng (b) KHÔNG phải phương án thay thế**, kèm hai dòng trên.
+
+**Cửa thứ ba, và nó TỆ HƠN:** "ghi note của manager thành hàng SYSTEM" — authorless nên
+bỏ qua `authorOn` hoàn toàn, và sống qua erasure. Hai thứ đang chặn biến mất cùng lúc.
+**Đừng** — `system.go:16-21` tự khai *"renders in BOTH channel tabs to EVERY caller,
+confined external callers included"* ⇒ **ứng viên đọc được note của manager**. Fail-open
+theo chiều ngược, tệ hơn (a) vì (a) ít nhất còn là nội bộ. (Và chưa nối được:
+`RecordSystemEvent` = 0 caller; đối chứng dương `NewService(` = 24 hit non-test.)
 
 ## 5. Quyết định đọc: COMPOSE-ON-READ, không mirror
 
@@ -387,9 +431,28 @@ git grep -inE 'omni|message_id' -- 'db/migration/*' | grep -i activit
   (đối chứng dương cho chính grep: 'activities' trong V001__init.sql = 5 hit)
 ```
 
-⇒ **KHÔNG CÓ CỘT NÀO GIỮ omni message id.** `channel_ref` là cột external-ref duy
-nhất, và nó là **zoom call id, caller-supplied, 0 reader** — overload nó thì phá
-đúng nghĩa `OmniCallMirrorClient:114-118` bảo vệ.
+⇒ **KHÔNG CÓ CỘT NÀO GIỮ omni message id.** ⚠️ Nhưng ghi cho chuẩn, kẻo người sau
+**tìm thấy `channel_ref` và dùng nó**: có **đúng một cột hình dạng phù hợp, và nó đã
+bị đặt tên cho thứ khác**.
+
+```
+ActivityEntity.java:53-54    @Column(name="channel_ref") private String channelRef;
+ActivityServiceImpl.java:93  activity.setChannelRef(request.getChannelRef());  <- writer DUY NHẤT,
+                             ghi thứ CLIENT gửi (LogActivityRequest:28)
+getChannelRef trên entity    = 0 reader
+OmniCallMirrorClient:113-116 "documented as the Zoom Phone call id and OVERLOADING IT
+                              WOULD DESTROY THAT MEANING, while a new column is only
+                              worth having once something reads it."
+```
+
+**Và cùng javadoc đó THU HẸP blocker này** (phiên omni chỉ ra):
+
+> *"omni already reconciles the two sides **on the Zoom call id**, so the link exists
+> where it is needed without recruit-be keeping a copy."*
+
+⇒ Với hàng **CALL**, mối nối **ĐÃ TỒN TẠI** qua Zoom call id — **không cần cột**.
+Cột mới chỉ cần cho **NOTE / CHAT** (không có provider id nào). Blocker phải nói vậy,
+đừng nói "previews chưa dùng được" chung chung.
 
 **Và đây là chỗ bản đầu gộp thật:** "dedup key column" (Phase 1) và "idempotency key
 dẫn từ activity id" (Phase 2) — bản đầu đặt **HAI TÊN ở HAI PHASE** và không nói
@@ -566,9 +629,71 @@ destructive_sql.go:502-508  UPDATE comm_call SET transcript = NULL, ai_summary =
 NOTE không miễn trừ ⇒ body null. CALL không miễn trừ ⇒ transcript + recording_url
 + ai_summary null.
 
-**Kết luận chống mirror NOTE không đổ — nó MẠNH HƠN**, và giờ đúng bằng `notSystem`
-chứ không bằng một phép suy. Phương án "chỉ mirror SYSTEM" được **chính predicate đó**
-xác nhận.
+**Kết luận chống mirror NOTE không đổ — nó MẠNH HƠN.** Nhưng ⛔ **HƯỚNG CỦA
+PREDICATE THÌ NGƯỢC VỚI BẢN TRƯỚC CỦA TÔI** (DEV bắt, tôi đo lại):
+
+### ⛔ `notSystem` LÀ LUẬT **MIỄN TRỪ**, KHÔNG PHẢI LUẬT **BẢO VỆ**
+
+Bản trước viết *"phương án 'chỉ mirror SYSTEM' được chính predicate xác nhận"*.
+**Đọc predicate theo chiều nó thật sự chạy thì nó nói điều ngược lại:**
+
+```
+git grep -n notSystem -- internal/retention/*.go   (bỏ test)
+  :35 định nghĩa · :432 :454 :693 :818 — CẢ BỐN đều là `AND notSystem`
+  => "chỉ chạm hàng KHÔNG phải SYSTEM"
+sys_detail trong toàn package retention  ->  0 hit  (rc=1)
+  => KHÔNG câu nào null nó, bao giờ
+```
+
+| hàng được mirror | `notSystem` | bị erasure? | confined external thấy? |
+|---|---|---|---|
+| **NOTE** (`side=INTERNAL`, `note=true`) | TRUE | **CÓ** — body bị null | **KHÔNG** |
+| **SYSTEM** (`side=SYSTEM`, `sys_type` set) | FALSE | **KHÔNG BAO GIỜ** | **CÓ** |
+
+Và SYSTEM hiện cho confined external **trên đường ROOT**, không có cổng thứ hai:
+
+```
+service.go:404-406  if confined { effectiveSide = registry.SideExternal }
+service.go:478      for _, m := range roots { if matchesSide(m, effectiveSide) && ... }
+placement.go:61-62  return side=="" || m.Side==side || m.Side==registry.SideSystem
+service.go:500      if confined && r.Side != effectiveSide  <- chỉ áp cho REPLIES (r.Side),
+                    KHÔNG áp cho roots. Một hàng RecordSystemEvent LÀ root.
+```
+
+**Và nội dung recruit-be sắp đẩy vào đó là dữ liệu cá nhân, nguyên văn:**
+
+```
+FollowUpServiceImpl:242-244
+  systemActivity(candidate, actorId,
+      "Call outcome NOT_INTERESTED -> ARCHIVED "
+          + (NO_REASON.equals(reason) ? reason : "(" + reason + ")"));
+recruit-fe OutcomeModal/index.tsx:29
+  ARCHIVE_REASONS = ['Not interested','Signed elsewhere','Wrong information','Asked to stop contact']
+```
+
+⇒ Một hàng nói **"Call outcome NOT_INTERESTED -> ARCHIVED (Asked to stop contact)"**,
+**không bao giờ xoá được**, **hiện trên cả hai tab cho mọi caller đọc được cast, kể cả
+confined external** — và external của LO_CANDIDATE **chính là ứng viên**. Đó là bộ ba
+thuộc tính người ta thiết kế để **TRÁNH**, không phải để chọn.
+
+> **CÂU ĐÚNG ĐỂ GHI:** `notSystem` **không bảo vệ** SYSTEM — nó **MIỄN TRỪ** SYSTEM
+> khỏi erasure. Cộng `matchesSide` khớp mọi tab, một hàng SYSTEM là **vĩnh viễn +
+> hiện cho external**. Nên nó là **lý do THỨ BA để KHÔNG mirror SYSTEM** (cạnh
+> actor-off-cast §4.6 và fan-out), và là **lý do ĐỘC LẬP ĐỂ mirror NOTE**:
+> `side=INTERNAL` không bao giờ tới confined caller, và `notSystem`=TRUE nên body
+> của nó **nằm trong** phạm vi right-to-erasure.
+
+**Vì sao phải sửa dù kết luận không đổi:** nếu spec ghi "predicate xác nhận
+chỉ-mirror-SYSTEM" thì người đọc sáu tháng sau dùng đúng câu đó để **thăng Phase 3**,
+với niềm tin rằng retention đã bảo vệ họ — trong khi retention là thứ **miễn trừ**
+hàng đó khỏi mọi lượt xoá. **Số đúng + cơ chế sai vẫn là báo cáo sai**, và ở đây cơ
+chế sai đẩy quyết định về **phía có hại**.
+
+**Giới hạn trung thực (DEV tự hoãn, tôi giữ):** hôm nay **ứng viên chưa đọc được gì** —
+`candidates.account_id` có đúng một writer (`DedupServiceImpl:298`, merge fill, loser
+cũng null) nên `principal_id` luôn rỗng. Đây là **rủi ro có ngày hết hạn** (S7 writer),
+**không phải lỗ đang chảy**. Đừng ghi "ứng viên sẽ thấy" ở thì hiện tại — ghi là
+*"sẽ thấy kể từ khi có S7 writer, và hàng đã ghi thì không xoá được."*
 
 ⚠️ **Xoá mọi câu ngụ ý "CALL sống qua erasure".** Người sau đọc `authoredWithBody`
 như luật erasure sẽ kết luận bản ghi cuộc gọi miễn nhiễm — sai, và sai về phía
@@ -734,6 +859,7 @@ phải từ lúc phase tiêu thụ nó.**
 | 2 giá trị Zoom (`zoom_los_user_id`, `zoom_account_email`) | **IT / Khải** | **SMS + Call** — thứ Bao hỏi ĐẦU TIÊN |
 | omni deploy production | Khải | **toàn bộ** tài liệu này trên prod |
 | quyền đọc ns `omni-prod` | Khải | mọi guard fail-closed trên cấu hình prod |
+| **`cd.yml` fail-loud khi ref lạ** | Khải | **ngày ai đó cắt nhánh prod** — xem §10.2 |
 | subject guard cho dedupe lookup | Khải | an toàn khoá dedup |
 | SYSTEM row có cho external thấy không | Khải | Phase 3 |
 | push `HIRING_MANAGER` lên cast? (lỗ D110, §4.6) | Khải | note của manager có tới omni không |
@@ -756,6 +882,62 @@ sau là tự nguyện trả thêm độ trễ đó. Nó ở Phase 0 **không ph�
 | ~~7~~ | ~~quyết tickets~~ | **ĐÃ QUYẾT: HOÃN** (§7.1) |
 
 Việc 1+2 có thể là **cùng một cột** — nếu vậy nói rõ, đừng để hai tên ở hai phase.
+
+### 10.2 ⛔ BẪY: NGÀY AI ĐÓ CẮT NHÁNH PROD, LẦN "DEPLOY PRODUCTION" ĐẦU TIÊN SẼ ĐÈ LÊN STAGING
+
+LEAD tìm ra, tôi đo lại trên `omni-service` `1e617aa`.
+
+`cd.yml` có **16 selector**, tất cả cùng một hình dạng, và **KHÔNG selector nào có
+nhánh báo lỗi** — else của chúng là **staging**:
+
+```
+cd.yml:55-60  environment: ${{ github.ref == 'refs/heads/prod' && 'production' || 'staging' }}
+              project:     ${{ ...                            && 'lender-rate'  || 'lenderrate-master' }}
+              cluster:     ${{ ...                            && 'moso-gke'     || 'moso-kube' }}
+              namespace:   ${{ ...                            && 'omni-prod'    || 'omni-sta' }}
+              values-file: ${{ ...                            && 'values-prod.yaml' || 'values-staging.yaml' }}
+grep -nE 'exit 1|fail' cd.yml   ->  KHÔNG có bước nào chặn ref lạ
+```
+
+Khớp **chuỗi CHÍNH XÁC** `refs/heads/prod`. Nên người cắt nhánh prod mà đặt tên
+**`production`** sẽ được:
+
+```
+environment = staging · project = lenderrate-master · cluster = moso-kube
+namespace   = omni-sta · values-file = values-staging.yaml
+```
+
+**CI xanh. Deploy xanh. Prod không có gì. Và staging vừa bị ghi đè bằng thứ người ta
+tin là bản production.** Không log nào kêu — theo pipeline thì mọi thứ đã chạy đúng.
+
+**Đây KHÔNG phải rủi ro lý thuyết — tiền lệ trong chính org này, tôi đo:**
+
+```
+recruit-be   refs/heads/production
+recruit-fe   refs/heads/production
+lf-homepage  refs/heads/production
+omni-service (nhánh deploy prod của nó là 'prod' — KHÁC MỌI REPO KHÁC)
+```
+
+Người đi cắt nhánh prod cho omni **gần như chắc sẽ gõ `production`** theo thói quen
+của mọi repo khác họ chạm.
+
+⇒ **Bản vá một dòng, biến fail-silent thành fail-loud:** đổi ternary thành allowlist
+tường minh và **FAIL job** khi ref lạ, thay vì rơi về staging. Tối thiểu: một bước đầu
+job `if github.ref không thuộc {master, prod} → exit 1`.
+
+⇒ **Thuộc Phase 0, không phải Phase 3** — nó phải được vá **TRƯỚC** ngày ai đó cắt
+nhánh prod, vì **đúng ngày đó là ngày nó nổ, và nó nổ về phía im lặng**.
+
+### 10.3 Bẫy công cụ khi đo branch — ghi lại để không ai kết luận ngược
+
+```
+git ls-remote --heads origin prod              -> rc=0   <- SAI, trông như CÓ tồn tại
+git ls-remote --exit-code --heads origin prod  -> rc=2   <- ĐÚNG
+```
+
+`ls-remote` **thoát 0 dù không khớp gì**. Khẳng định "branch không tồn tại" phải dùng
+`--exit-code`, hoặc đọc OUTPUT chứ đừng đọc `rc`.
 
 ### 10.1 ⚠️ "13 i18n override" là MỘT LẦN QUÉT cho một chỗ RÒ ĐỊNH KỲ
 
