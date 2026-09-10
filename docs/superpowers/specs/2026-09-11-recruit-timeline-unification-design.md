@@ -641,8 +641,15 @@ Bản trước viết *"phương án 'chỉ mirror SYSTEM' được chính predi
 git grep -n notSystem -- internal/retention/*.go   (bỏ test)
   :35 định nghĩa · :432 :454 :693 :818 — CẢ BỐN đều là `AND notSystem`
   => "chỉ chạm hàng KHÔNG phải SYSTEM"
-sys_detail trong toàn package retention  ->  0 hit  (rc=1)
-  => KHÔNG câu nào null nó, bao giờ
+sys_detail  trong internal/retention/  ->  0 hit
+SysDetail   trong internal/retention/  ->  0 hit
+sys_type    trong internal/retention/  ->  2 hit, CẢ HAI chỉ để LOẠI HÀNG RA:
+    destructive.go:31      (comment)
+    destructive_sql.go:35  (const notSystem)
+đối chứng dương cho CHÍNH glob đó: comm_message -> 32 hit (destructive_sql.go) + 12 (store_sql.go)
+  => sys_detail KHÔNG NẰM TRONG TỪ VỰNG của máy móc erasure. Không phải
+     "chỉ xuất hiện trong văn bản predicate" — mà là không xuất hiện ở đâu cả.
+     Chỗ duy nhất SYSTEM được nhắc tới là sys_type, và chỉ để loại hàng RA.
 ```
 
 | hàng được mirror | `notSystem` | bị erasure? | confined external thấy? |
