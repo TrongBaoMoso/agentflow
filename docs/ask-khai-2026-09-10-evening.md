@@ -34,6 +34,12 @@ either side can attribute a cast write: omni's request log carries an empty user
 for a key-only caller, and an unscoped key's `Principal.ServiceName` is the raw
 `X-Service-Name` header, so the adopter's own logs cannot answer it either.
 
+A correction, in case an earlier draft reached you: the field to read is
+`identity_from_key`, **not** `key_scoped`. Scope and identity are independent in
+the key config — a key with `allowed_subject_types` and no `service_name` is
+scoped while still taking its name from the header — so scope is not a stand-in
+for provenance. #284 now logs both, and step 3 below names the right one.
+
 We know who holds it. Hashes only, values never printed:
 
 ```
@@ -52,8 +58,8 @@ negative control (an unrelated secret)     66bc44da052ddcd1  ← differs from bo
    set already holds two, so both are valid during the switch and nothing breaks
    at any point;
 3. wait for a LOAN cast write to log `presented_service=tera-be` with
-   **`key_scoped=true`**. That line is tera-be confirming it now authenticates with
-   its own key;
+   **`identity_from_key=true`**. That line is tera-be confirming omni resolved its
+   name from the key rather than reading it off a header it sent;
 4. **then** remove the unscoped key.
 
 **Why not "watch for a day and delete if nothing shows".** That was our first
