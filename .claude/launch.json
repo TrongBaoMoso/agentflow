@@ -989,6 +989,34 @@
         "3085"
       ],
       "port": 3085
+    },
+    {
+      "name": "lfh-apply-modal",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/lfh-worktrees/apply-modal",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3097"
+      ],
+      "port": 3097
+    },
+    {
+      "name": "lfh-join-v3",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/lfh-worktrees/join-v3",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3077"
+      ],
+      "port": 3077
     }
   ]
 }

@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recruiter Invite Landing</title>
+<style>
+/* Tokens copied verbatim from lf-homepage/src/styles/lo-programs.css so the mockup and the
+   real code cannot drift on colour, radius or type scale. */
+:root{
+  --orange:#f36f20; --orange-soft:#ff9350; --orange-deep:#d45a10; --orange-tint:#fff2e9;
+  --ink:#12151c; --ink-2:#1b2029; --paper:#f5f6f9; --white:#fff;
+  --gray-1:#eef0f5; --gray-2:#e1e4ec; --gray-3:#c4c9d6; --gray-5:#798194; --gray-6:#545c6d;
+  --success:#16a34a; --danger:#e5484d;
+  --r-xs:8px; --r-sm:12px; --r-md:18px; --r-lg:24px; --r-xl:32px; --r-full:999px;
+  --shadow-sm:0 1px 2px rgba(18,21,28,.04), 0 6px 16px -10px rgba(18,21,28,.16);
+  --shadow-md:0 2px 6px rgba(18,21,28,.05), 0 22px 44px -26px rgba(18,21,28,.32);
+  --shadow-lg:0 4px 12px rgba(18,21,28,.06), 0 40px 80px -36px rgba(18,21,28,.45);
+  --shadow-orange:0 14px 36px -14px rgba(243,111,32,.6);
+  --h1:clamp(1.875rem,1.15rem + 2.9vw,3.5rem);
+  --h2:clamp(1.5rem,1rem + 2vw,2.5rem);
+  --body:clamp(.9375rem,.9rem + .2vw,1.0625rem);
+  --small:.8125rem; --micro:.6875rem;
+  --band-tight:clamp(2.5rem,2rem + 2vw,4rem);
+  --gutter:clamp(1.25rem,.75rem + 2.5vw,4rem);
+  --shell:1240px;
+  --ease:cubic-bezier(.16,1,.3,1); --fast:150ms; --normal:320ms;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font:var(--body)/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;line-height:1.08;letter-spacing:-.02em}
+p{margin:0}
+[hidden]{display:none!important}
+
+/* ---- mockup toolbar, not part of the real page ---- */
+.mk{position:sticky;top:0;z-index:60;background:var(--ink);color:#fff;padding:.6rem var(--gutter);
+  display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;font-size:var(--small)}
+.mk b{background:var(--orange);color:#fff;padding:.15rem .5rem;border-radius:var(--r-xs);
+  font-size:var(--micro);letter-spacing:.08em}
+.mk button{font:inherit;font-size:var(--small);background:transparent;color:#fff;cursor:pointer;
+  border:1px solid rgba(255,255,255,.35);border-radius:var(--r-full);padding:.25rem .75rem}
+.mk button[aria-pressed=true]{background:#fff;color:var(--ink);border-color:#fff;font-weight:700}
+.mk span{opacity:.6}
+
+.band{padding:var(--band-tight) 0}
+.band--white{background:var(--white)}
+.shell{max-width:var(--shell);margin:0 auto;padding:0 var(--gutter)}
+.eyebrow{display:flex;align-items:center;gap:.6rem;font-size:var(--micro);font-weight:800;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-bottom:.75rem}
+.eyebrow::before{content:'';width:28px;height:2px;background:var(--orange)}
+.lede{color:var(--gray-6);max-width:60ch;margin-top:.75rem}
+.h1--sm{font-size:var(--h2)}
+
+/* ---- hero ---- */
+.hero{display:grid;gap:2rem;grid-template-columns:1fr;align-items:start}
+@media(min-width:900px){.hero{grid-template-columns:1.3fr .7fr;gap:3rem}}
+.hero h1{font-size:var(--h1)}
+.hero h1 em{font-style:normal;color:var(--orange);display:block}
+.cta{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border:0;cursor:pointer;
+  background:var(--orange);color:#fff;font:inherit;font-weight:700;padding:.9rem 1.6rem;
+  border-radius:var(--r-full);box-shadow:var(--shadow-orange);
+  transition:transform var(--fast) var(--ease),background var(--fast) var(--ease)}
+.cta:hover{background:var(--orange-deep);transform:translateY(-1px)}
+.cta--wide{width:100%}
+.card{background:var(--white);border:1px solid var(--gray-2);border-radius:var(--r-lg);
+  padding:1.5rem;box-shadow:var(--shadow-sm)}
+.who{display:flex;gap:1rem;align-items:center}
+.ava{width:64px;height:64px;border-radius:var(--r-full);object-fit:cover;flex:0 0 auto;
+  box-shadow:0 0 0 3px var(--orange-tint)}
+.ava--txt{display:grid;place-items:center;background:var(--orange-tint);color:var(--orange-deep);
+  font-weight:800;font-size:1.25rem}
+.who h3{font-size:1.0625rem}
+.who p{font-size:var(--small);color:var(--gray-5)}
+.tag{display:inline-block;margin-top:.4rem;font-size:var(--micro);font-weight:800;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--orange-deep);background:var(--orange-tint);
+  padding:.2rem .55rem;border-radius:var(--r-full)}
+.rows{margin:1.25rem 0 0;display:grid;gap:.6rem;font-size:var(--small)}
+.rows div{display:flex;justify-content:space-between;gap:1rem;padding-bottom:.6rem;
+  border-bottom:1px solid var(--gray-1)}
+.rows div:last-child{border:0;padding:0}
+.rows dt{color:var(--gray-5)}
+
+/* live room — the field already ships in getAdmins; nobody uses it for recruiters yet */
+.live{display:flex;align-items:center;gap:.5rem;margin-top:1rem;width:100%;justify-content:center;
+  font:inherit;font-size:var(--small);font-weight:700;cursor:pointer;
+  background:rgba(22,163,74,.1);color:#12703a;border:1px solid rgba(22,163,74,.3);
+  border-radius:var(--r-full);padding:.6rem 1rem}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--success);
+  box-shadow:0 0 0 4px rgba(22,163,74,.18)}
+
+/* bio — the `bio` field on the Admin entity, which is RICH TEXT */
+.bio{margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--gray-1)}
+.bio h4{margin:0 0 .5rem;font-size:var(--micro);font-weight:800;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--gray-5)}
+.bio .body{font-size:var(--small);color:var(--gray-6);display:-webkit-box;-webkit-line-clamp:4;
+  -webkit-box-orient:vertical;overflow:hidden}
+.bio.is-open .body{-webkit-line-clamp:unset;overflow:visible}
+.bio button{margin-top:.5rem;background:none;border:0;padding:0;cursor:pointer;font:inherit;
+  font-size:var(--small);font-weight:700;color:var(--orange-deep);text-decoration:underline}
+
+/* ---- video ---- */
+.vwrap{display:grid;gap:1.5rem;grid-template-columns:1fr}
+@media(min-width:900px){.vwrap{grid-template-columns:1.1fr .9fr;align-items:center;gap:3rem}}
+.video{position:relative;width:100%;aspect-ratio:16/9;border-radius:var(--r-lg);overflow:hidden;
+  background:var(--ink);display:grid;place-items:center;color:#fff;text-align:center;
+  box-shadow:var(--shadow-md)}
+.video::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(120% 90% at 50% 0%,rgba(243,111,32,.55),transparent 60%)}
+.video div{position:relative;padding:1rem}
+.play{width:64px;height:64px;border-radius:var(--r-full);background:var(--orange);margin:0 auto .75rem;
+  display:grid;place-items:center;box-shadow:var(--shadow-orange)}
+.play::after{content:'';border-left:18px solid #fff;border-top:11px solid transparent;
+  border-bottom:11px solid transparent;margin-left:5px}
+
+/* ---- THE POINT: sessions laid out on the page; clicking one opens the modal ---- */
+.slots{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.5rem}
+.slot{position:relative;cursor:pointer;background:var(--white);border:1.5px solid var(--gray-2);
+  border-radius:var(--r-md);padding:1rem 1.15rem;text-align:left;font:inherit;min-width:12.5rem;
+  display:block;
+  transition:border-color var(--fast) var(--ease),box-shadow var(--fast) var(--ease),
+    transform var(--fast) var(--ease)}
+.slot:hover{border-color:var(--orange);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.slot:focus-visible{outline:3px solid var(--orange-soft);outline-offset:2px}
+.slot .d{display:block;font-weight:800;font-size:.9375rem;letter-spacing:-.01em}
+.slot .t{display:block;font-size:var(--small);color:var(--gray-5);margin-top:.15rem}
+.slot .go{display:block;margin-top:.65rem;font-size:var(--micro);font-weight:800;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--orange-deep)}
+.slot.is-next::after{content:'SOONEST';position:absolute;top:-.55rem;right:.75rem;
+  background:var(--ink);color:#fff;font-size:9px;font-weight:800;letter-spacing:.1em;
+  padding:.15rem .45rem;border-radius:var(--r-full)}
+
+/* ---- modal ---- */
+/* Scrolling lives on .mwrap, NOT on <dialog>: put overflow on the dialog itself and Chrome
+   lays its scrollbar over the sheet's width (measured 375 inside a 390 viewport), which on a
+   real device shows as a grey strip beside the white card. */
+dialog{border:0;padding:0;background:transparent;max-width:none;max-height:none;
+  width:100%;height:100dvh;margin:0;overflow:hidden}
+dialog::backdrop{background:rgba(18,21,28,.6);backdrop-filter:blur(3px)}
+.mwrap{height:100%;overflow-y:auto;display:flex;padding:2rem 1rem}
+.sheet{background:var(--white);border-radius:var(--r-xl);box-shadow:var(--shadow-lg);
+  width:min(660px,100%);margin:auto;display:flex;flex-direction:column}
+@media(max-width:640px){
+  /* On phones the form outgrows the screen: the white card takes the whole screen, drops its
+     radius, and the submit button sticks to the bottom via position:sticky on the footer. */
+  /* Scrolling moves entirely into .body: if .mwrap scrolls, its scrollbar eats ~15px of width
+     and the card is no longer full-bleed (measured 375 of 390). */
+  .mwrap{padding:0;align-items:stretch;overflow:hidden}
+  .sheet{border-radius:0;width:100%;height:100%}
+  .sheet .body{flex:1;min-height:0}
+  .sheet header{border-radius:0}
+  .sheet footer{border-radius:0}
+}
+.sheet header{padding:1.5rem 1.75rem 1.25rem;border-bottom:1px solid var(--gray-1);
+  position:sticky;top:0;background:var(--white);border-radius:var(--r-xl) var(--r-xl) 0 0;z-index:2}
+.sheet header h3{font-size:1.25rem}
+.sheet header .when{margin-top:.5rem;display:inline-flex;align-items:center;gap:.5rem;
+  background:var(--orange-tint);border:1px solid rgba(243,111,32,.28);border-radius:var(--r-full);
+  padding:.35rem .8rem;font-size:var(--small);font-weight:700;color:var(--orange-deep)}
+
+/* Session picker INSIDE the form. Switching here does not close the modal and does not
+   remount the form, so anything already typed survives — that is the whole reason it lives here. */
+.mpick{margin-top:.9rem}
+.mpick > span{display:block;font-size:var(--micro);font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gray-5);margin-bottom:.5rem}
+.mchips{display:flex;flex-wrap:wrap;gap:.4rem}
+.mchip{cursor:pointer;font:inherit;font-size:var(--small);font-weight:700;background:var(--white);
+  color:var(--gray-6);border:1.5px solid var(--gray-2);border-radius:var(--r-full);
+  padding:.45rem .85rem;transition:all var(--fast) var(--ease)}
+.mchip:hover{border-color:var(--orange-soft);color:var(--ink)}
+.mchip:focus-visible{outline:3px solid var(--orange-soft);outline-offset:2px}
+.mchip[aria-pressed=true]{background:var(--orange);border-color:var(--orange);color:#fff;
+  box-shadow:var(--shadow-orange)}
+.x{position:absolute;top:1.25rem;right:1.25rem;width:34px;height:34px;border-radius:var(--r-full);
+  border:1px solid var(--gray-2);background:var(--white);cursor:pointer;font-size:1.1rem;
+  color:var(--gray-6);line-height:1}
+.sheet .body{padding:1.5rem 1.75rem;overflow-y:auto}
+.sheet footer{padding:1.25rem 1.75rem;border-top:1px solid var(--gray-1);background:var(--gray-1);
+  border-radius:0 0 var(--r-xl) var(--r-xl);position:sticky;bottom:0}
+
+/* ---- form ---- */
+.f{display:grid;gap:.85rem}
+.f__row{display:grid;gap:.85rem}
+@media(min-width:560px){.f__row{grid-template-columns:1fr 1fr}}
+label.l{font-size:var(--small);font-weight:700;display:block;margin-bottom:.3rem}
+.req{color:var(--orange)}
+.f input[type=text],.f input[type=email],.f textarea{
+  width:100%;font:inherit;font-size:.9375rem;padding:.8125rem 1rem;border-radius:var(--r-sm);
+  border:1px solid var(--gray-2);background:var(--white);color:var(--ink)}
+.f textarea{min-height:80px;resize:vertical}
+.f input:focus,.f textarea:focus{outline:none;border-color:var(--orange);
+  box-shadow:0 0 0 4px rgba(243,111,32,.12)}
+.more{border:0;background:none;padding:0;cursor:pointer;font:inherit;font-size:var(--small);
+  font-weight:700;color:var(--orange-deep);text-decoration:underline;justify-self:start}
+.consent{display:flex;gap:.6rem;align-items:flex-start;font-size:var(--small)}
+.hint{font-size:var(--micro);color:var(--gray-5)}
+.hint--c{text-align:center;margin-top:.6rem}
+
+/* ---- xong ---- */
+.done{text-align:center;padding:.5rem 0}
+.tick{width:56px;height:56px;border-radius:var(--r-full);background:rgba(22,163,74,.12);
+  color:#12703a;display:grid;place-items:center;font-size:1.5rem;margin:0 auto .85rem}
+.done h3{font-size:1.25rem}
+.done p{margin-top:.6rem;font-size:var(--small);color:var(--gray-6)}
+.done .when{margin-top:.85rem;display:inline-block;background:var(--orange-tint);
+  border:1px solid rgba(243,111,32,.28);border-radius:var(--r-full);padding:.4rem 1rem;
+  font-size:var(--small);font-weight:800;color:var(--orange-deep)}
+
+/* ---- numbers / steps / faq ---- */
+.nums{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin-top:1.5rem}
+.num{background:var(--white);border:1px solid var(--gray-2);border-radius:var(--r-md);padding:1.25rem}
+.num b{display:block;font-size:clamp(1.75rem,1.2rem + 2vw,2.5rem);letter-spacing:-.03em;color:var(--orange)}
+.num span{font-size:var(--small);color:var(--gray-6)}
+.steps3{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));margin-top:1.5rem}
+.st{display:flex;gap:.85rem;align-items:flex-start}
+.st b{flex:0 0 auto;width:28px;height:28px;border-radius:var(--r-full);background:var(--ink);color:#fff;
+  display:grid;place-items:center;font-size:var(--small)}
+.st p{font-size:var(--small);color:var(--gray-6)}
+.st strong{display:block;color:var(--ink);font-size:.9375rem}
+.faq{margin-top:1.25rem;max-width:70ch}
+.faq details{border-bottom:1px solid var(--gray-2);padding:.9rem 0}
+.faq summary{cursor:pointer;font-weight:700;font-size:.9375rem;list-style:none;
+  display:flex;justify-content:space-between;gap:1rem}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:'+';color:var(--orange);font-weight:800}
+.faq details[open] summary::after{content:'–'}
+.faq p{margin-top:.6rem;font-size:var(--small);color:var(--gray-6)}
+
+/* ---- review annotations ---- */
+.note{border-left:3px solid var(--orange);background:var(--orange-tint);padding:.75rem 1rem;
+  border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:var(--small);margin-top:1rem;max-width:74ch}
+.note b{color:var(--orange-deep)}
+.note--warn{border-left-color:var(--danger);background:rgba(229,72,77,.07)}
+.note--warn b{color:#a3161a}
+.cut{background:var(--gray-1);border:1px dashed var(--gray-3);border-radius:var(--r-md);
+  padding:1rem 1.25rem;font-size:var(--small);color:var(--gray-6);margin-top:1.25rem;max-width:74ch}
+.cut b{color:var(--ink)}
+code{background:var(--gray-1);padding:.1rem .3rem;border-radius:4px;font-size:.85em}
+</style>
+</head>
+<body>
+
+
+<div class="mk">
+  <b>MOCKUP v3</b>
+  <span>/join/&lt;slug&gt;</span>
+  <button id="tAva" aria-pressed="true">Has photo</button>
+  <button id="tBio" aria-pressed="true">Has bio</button>
+  <button id="tVid" aria-pressed="false">Video: Loan Factory's</button>
+  <button id="tLive" aria-pressed="true">Live room</button>
+</div>
+
+<!-- ================= HERO ================= -->
+<section class="band band--white">
+  <div class="shell hero">
+    <div>
+      <p class="eyebrow">You were invited</p>
+      <h1>A licensed loan officer&rsquo;s<em>invitation from Seth August</em></h1>
+      <p class="lede">
+        Seth works with loan officers who are already closing loans somewhere else and want a
+        platform that keeps more of what they earn. It starts with one webinar — no fee, nothing to sign.
+      </p>
+      <button class="cta" style="margin-top:1.5rem"
+              onclick="document.getElementById('reg').scrollIntoView({behavior:'smooth'})">
+        See the upcoming webinars
+      </button>
+      <p class="note">
+        <b>Condensed:</b> the lede goes from four sentences to two. The &ldquo;everything below is the
+        same for every loan officer&hellip; no special deals, no fine print&rdquo; passage moves down into the FAQ.
+      </p>
+    </div>
+
+    <aside class="card">
+      <p class="eyebrow" style="margin-bottom:1rem">Your contact at Loan Factory</p>
+      <div class="who">
+        <img class="ava" id="avaImg"
+             src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAgMTIwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNmZmQ5YzAiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNmZmI0ODgiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgZmlsbD0idXJsKCNnKSIvPjxjaXJjbGUgY3g9IjYwIiBjeT0iNDYiIHI9IjIxIiBmaWxsPSIjZjM2ZjIwIiBvcGFjaXR5PSIuNTUiLz48cGF0aCBkPSJNMTggMTIwYzAtMjQgMTktNDAgNDItNDBzNDIgMTYgNDIgNDB6IiBmaWxsPSIjZjM2ZjIwIiBvcGFjaXR5PSIuNTUiLz48L3N2Zz4=" alt="">
+        <div class="ava ava--txt" id="avaTxt" hidden>SA</div>
+        <div>
+          <h3>Seth August</h3>
+          <p>Senior Recruiter</p>
+          <span class="tag">Outside recruiter</span>
+        </div>
+      </div>
+
+      <dl class="rows">
+        <div><dt>Email</dt><dd>seth.august@loanfactory.com</dd></div>
+        <div><dt>Phone</dt><dd>(408) 222-3222</dd></div>
+        <div><dt>Speaks</dt><dd>English, Vietnamese</dd></div>
+      </dl>
+
+      <button class="live" id="liveBtn"><i></i> Online now — talk to Seth</button>
+
+      <div class="bio" id="bioBlock">
+        <h4>About Seth</h4>
+        <div class="body">
+          I left a big bank for Loan Factory in 2023 because processing fees where I was ate most of
+          what I earned. Since then I have helped more than 40 loan officers make the move, most of them
+          people who assumed their licences were too tangled to transfer. I do not sell a dream — I sit
+          down with your numbers and tell you straight whether moving is worth it.
+        </div>
+        <button type="button" id="bioMore">Read more</button>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ================= VIDEO ================= -->
+<section class="band">
+  <div class="shell vwrap">
+    <div class="video">
+      <div>
+        <div class="play"></div>
+        <p style="font-weight:800;letter-spacing:.02em" id="vidTitle">SETH ON LOAN FACTORY</p>
+        <p style="font-size:var(--small);opacity:.75" id="vidSub">Recruiter's own video · 2:40</p>
+      </div>
+    </div>
+    <div>
+      <p class="eyebrow" id="vidEyebrow">Straight from the person inviting you</p>
+      <h2 class="h1--sm" id="vidHead">Seth talking, not a brochure</h2>
+      <p class="lede" id="vidLede">
+        The recruiter uploads their own video to YouTube and pastes the link into their own field.
+        With no personal video, the page falls back to Loan Factory's house video.
+      </p>
+      <div class="note" id="vidNote"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REGISTRATION ================= -->
+<section class="band band--white" id="reg">
+  <div class="shell">
+    <p class="eyebrow">Weekly webinar</p>
+    <h2 class="h1--sm">Pick the session you want</h2>
+    <p class="lede">
+      One live hour with the Loan Factory team, and Seth is on the call too. All times are Pacific.
+      Click a session and the form opens right there — no scrolling to find it.
+    </p>
+
+    <div class="slots" id="regPick">
+      <button class="slot is-next" data-d="Monday, September 14" data-t="1:00 PM Pacific">
+        <span class="d">Monday, September 14</span>
+        <span class="t">1:00 PM Pacific</span>
+        <span class="go">Save this seat →</span>
+      </button>
+      <button class="slot" data-d="Wednesday, November 18" data-t="1:00 PM Pacific">
+        <span class="d">Wednesday, November 18</span>
+        <span class="t">1:00 PM Pacific</span>
+        <span class="go">Save this seat →</span>
+      </button>
+      <button class="slot" data-d="Wednesday, December 16" data-t="1:00 PM Pacific">
+        <span class="d">Wednesday, December 16</span>
+        <span class="t">1:00 PM Pacific</span>
+        <span class="go">Save this seat →</span>
+      </button>
+    </div>
+
+    <!-- Once registration is done and the modal closes, the chip block on the page becomes this.
+         There is NO "full application" button any more — Bao's call on 10 Sep: the recruiter sends
+         that link themselves, once the candidate has agreed to join. -->
+    <div class="card" id="regDone" hidden style="margin-top:1.5rem;max-width:560px">
+      <div class="done">
+        <div class="tick">✓</div>
+        <h3>Your seat is booked</h3>
+        <p>The joining link is on its way to your inbox.</p>
+        <span class="when" id="regDoneWhen">Monday, September 14 · 1:00 PM Pacific</span>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>The chips here are the way in; the chips that actually pick a session live INSIDE the form.</b>
+      Click a session → the modal opens, and directly under its title sit those same three sessions as
+      pills. Switching in there <b>does not close the modal and does not rebuild the form</b>, so
+      anything already typed survives — the exact annoyance you pointed at. Close the modal and reopen
+      it and the values are still there.
+    </div>
+
+    <div class="note note--warn">
+      <b>Re-measured 10 Sep — correcting the earlier note:</b> the duplicate is on <b>STAGING</b>, not
+      production. Staging returns 4 sessions, two of them identical (<code>35580307023</code> and
+      <code>35555477079</code>, both 14 Sep at 00:00 — a 00:00 start is the tell that this is test data).
+      <b>Production is clean today</b>: 4 sessions at 4 distinct times (11, 17, 25 Sep and 2 Oct).
+      So this mockup <b>no longer de-duplicates</b>: collapsing them would hide a data error that whoever
+      created the webinar can fix in seconds, and risks swallowing a session that is really there.
+    </div>
+  </div>
+</section>
+
+<!-- ================= 3 NUMBERS + 3 STEPS ================= -->
+<section class="band">
+  <div class="shell">
+    <p class="eyebrow">Sixty seconds</p>
+    <h2 class="h1--sm">The three numbers people ask about first</h2>
+    <div class="nums">
+      <div class="num"><b>$395</b><span>Per closed loan, processed in house — one dedicated processor.</span></div>
+      <div class="num"><b>$0</b><span>Monthly software and platform fees.</span></div>
+      <div class="num"><b>42</b><span>States you can originate in the day your licence transfers.</span></div>
+    </div>
+
+    <div class="steps3">
+      <div class="st"><b>1</b><p><strong>Join a webinar</strong>One live hour. It commits you to nothing.</p></div>
+      <div class="st"><b>2</b><p><strong>Talk to Seth</strong>Your pipeline, your licences, and what moving would actually cost.</p></div>
+      <div class="st"><b>3</b><p><strong>Seth sends the sign-up link</strong>Only once you have agreed to join.</p></div>
+    </div>
+
+    <div class="cut">
+      <b>Cut from the page:</b> the &ldquo;Loan Factory vs typical brokerage&rdquo; comparison table
+      (4 rows × 3 columns) and the <b>7-step</b> joining list. Those two blocks took the most room and
+      served none of the single job this page has, which is to fill a seat on the webinar. Seven steps
+      become three.
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="band band--white">
+  <div class="shell">
+    <p class="eyebrow">Straight answers</p>
+    <h2 class="h1--sm">The three we get most</h2>
+    <div class="faq">
+      <details open><summary>Does registering for the webinar commit me to anything?</summary>
+        <p>No. It books you a seat and sends the joining link. There is no fee, no agreement and no
+        credit or licence check at that stage.</p></details>
+      <details><summary>When am I charged?</summary>
+        <p>Only at the startup-fee step of the full application, and only after you have chosen to go
+        ahead. The amount is the same for everyone — no special deals, no fine print.</p></details>
+      <details><summary>Do I have to move all my state licences at once?</summary>
+        <p>No. The licensing team works through them with you, and you can start originating in the
+        states that transfer first.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MODAL ================= -->
+<dialog id="dlg">
+  <div class="mwrap">
+    <div class="sheet">
+      <header>
+        <button class="x" id="dlgX" aria-label="Close">✕</button>
+        <h3 id="dlgTitle">Save your webinar seat</h3>
+        <div class="mpick" id="dlgPick">
+          <span>Your session — change it any time</span>
+          <div class="mchips" id="dlgChips"></div>
+        </div>
+      </header>
+
+      <div class="body" id="dlgBody">
+        <form class="f" id="dlgForm" onsubmit="return false">
+          <div class="f__row">
+            <div><label class="l">First name <span class="req">*</span></label><input type="text"></div>
+            <div><label class="l">Last name <span class="req">*</span></label><input type="text"></div>
+            <div><label class="l">Email <span class="req">*</span></label><input type="email"></div>
+            <div><label class="l">Phone <span class="req">*</span></label><input type="text" placeholder="(000) 000-0000"></div>
+          </div>
+
+          <button type="button" class="more" id="optBtn">+ NMLS number, licensed states, a question (all optional)</button>
+
+          <div id="optBox" hidden style="display:grid;gap:.85rem">
+            <div class="f__row">
+              <div><label class="l">NMLS number</label><input type="text"></div>
+              <div><label class="l">States you are licensed in</label><input type="text" placeholder="Select…"></div>
+            </div>
+            <div><label class="l">Question for Loan Factory</label><textarea placeholder="We will answer it on the call"></textarea></div>
+          </div>
+
+          <label class="consent"><input type="checkbox" checked> I agree to be contacted by Loan Factory about joining.</label>
+        </form>
+
+        <div class="done" id="dlgDone" hidden>
+          <div class="tick">✓</div>
+          <h3>Your seat is booked</h3>
+          <p>The joining link is on its way to your inbox. Seth will be on the call, so bring your questions.</p>
+          <span class="when" id="doneWhen">Monday, September 14 · 1:00 PM Pacific</span>
+          <p style="margin-top:1rem">Seth will follow up with you after the webinar.</p>
+        </div>
+      </div>
+
+      <footer id="dlgFoot">
+        <button class="cta cta--wide" id="dlgSubmit">Save my seat</button>
+        <p class="hint hint--c">Registering does not enrol you and does not charge you anything.</p>
+      </footer>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  const $ = (s) => document.querySelector(s);
+  const dlg = $('#dlg');
+
+  /* Single source for the session list: the chips on the page. The modal chips are built from
+     that same list, so the two places cannot drift apart. */
+  const slots = [...document.querySelectorAll('.slot')];
+  const label = (s) => s.dataset.d + ' · ' + s.dataset.t;
+  let picked = 0;
+
+  const paintPick = () => {
+    const when = label(slots[picked]);
+    $('#doneWhen').textContent = when;
+    $('#regDoneWhen').textContent = when;
+    [...$('#dlgChips').children].forEach((chip, i) =>
+      chip.setAttribute('aria-pressed', String(i === picked))
+    );
+  };
+
+  // Modal chips — built once, never rebuilt, so switching sessions never touches
+  // the fields already typed into.
+  slots.forEach((slot, i) => {
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'mchip';
+    chip.textContent = slot.dataset.d;
+    chip.setAttribute('aria-pressed', String(i === 0));
+    chip.addEventListener('click', () => { picked = i; paintPick(); });
+    $('#dlgChips').appendChild(chip);
+  });
+
+  const openDlg = (i) => {
+    picked = i;
+    paintPick();
+    // Deliberately NOT resetting the form: close it by accident, reopen, and the typing is still there.
+    dlg.showModal();
+    // Lock background scroll: without it the page keeps scrolling behind the modal, and the page
+    // scrollbar eats into the width of the white card on mobile.
+    document.body.style.overflow = 'hidden';
+  };
+
+  slots.forEach((slot, i) => slot.addEventListener('click', () => openDlg(i)));
+
+  const closeDlg = () => { dlg.close(); document.body.style.overflow = ''; };
+  $('#dlgX').addEventListener('click', closeDlg);
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) closeDlg(); });
+  dlg.addEventListener('close', () => {
+    document.body.style.overflow = '';
+    // Registration finished: the chip block on the page gives way to the confirmation panel.
+    if ($('#dlgDone').hidden === false) {
+      $('#regPick').hidden = true;
+      $('#regDone').hidden = false;
+    }
+  });
+  paintPick();
+
+  $('#optBtn').addEventListener('click', () => {
+    const box = $('#optBox');
+    box.hidden = !box.hidden;
+    $('#optBtn').textContent = box.hidden
+      ? '+ NMLS number, licensed states, a question (all optional)'
+      : '– Hide the optional fields';
+  });
+
+  $('#dlgSubmit').addEventListener('click', () => {
+    $('#dlgForm').hidden = true;
+    $('#dlgFoot').hidden = true;
+    $('#dlgPick').hidden = true;
+    $('#dlgDone').hidden = false;
+    $('#dlgTitle').textContent = 'Done';
+  });
+
+  /* ---- mockup toggles ---- */
+  const toggle = (btn, fn) => btn.addEventListener('click', () => {
+    const on = btn.getAttribute('aria-pressed') !== 'true';
+    btn.setAttribute('aria-pressed', String(on));
+    fn(on);
+  });
+
+  toggle($('#tAva'), (on) => {
+    $('#tAva').textContent = on ? 'Has photo' : 'NO photo (41%)';
+    $('#avaImg').hidden = !on;
+    $('#avaTxt').hidden = on;
+  });
+
+  toggle($('#tBio'), (on) => {
+    $('#tBio').textContent = on ? 'Has bio' : 'NO bio (8 of 12)';
+    $('#bioBlock').hidden = !on;
+  });
+
+  toggle($('#tLive'), (on) => {
+    $('#tLive').textContent = on ? 'Live room' : 'No live room';
+    $('#liveBtn').hidden = !on;
+  });
+
+  const bio = $('#bioBlock');
+  $('#bioMore').addEventListener('click', () => {
+    bio.classList.toggle('is-open');
+    $('#bioMore').textContent = bio.classList.contains('is-open') ? 'Read less' : 'Read more';
+  });
+
+  /* video: the recruiter's own (default) ↔ Loan Factory's */
+  const VID = {
+    own: {
+      title: 'SETH ON LOAN FACTORY', sub: "Recruiter's own video · 2:40",
+      eyebrow: 'Straight from the person inviting you', head: 'Seth talking, not a brochure',
+      lede: "The recruiter uploads their own video to YouTube and pastes the link into their own field. With no personal video, the page falls back to Loan Factory's house video.",
+      note: '<b>This is buildable today.</b> The <code>my_video</code> field already exists on the <code>Admin</code> entity (<code>HasMyPage.java:67</code>), it is <code>access(PUBLIC)</code>, and <code>my_video_embed_url</code> derives the embed URL from a YouTube / YouTube Shorts / Vimeo link on its own. No new field, no file upload, no CDN. An earlier note here claimed MOSO had no video field — that was wrong: the field is on the entity, <code>getAdmins</code> simply does not project it.'
+    },
+    lf: {
+      title: 'LOAN FACTORY EXPLAINED', sub: 'The Mortgage Disruptor · 14:19',
+      eyebrow: 'Fourteen minutes', head: 'What Loan Factory is, shown not told',
+      lede: 'The same video already running on /loan-officer — YouTube hRZL6xSsxGk, with a podcast cut. This is the fallback for a recruiter who has not pasted their own video yet.',
+      note: '<b>Today 0 of 12 recruiters have a <code>my_video</code></b> (each one probed individually through <code>GetOp</code>). So in practice the page will show this video almost every time, until recruiters have somewhere to paste a link.'
+    }
+  };
+  toggle($('#tVid'), (isLf) => {
+    const v = isLf ? VID.lf : VID.own;
+    $('#tVid').textContent = isLf ? "Video: Loan Factory's" : "Video: recruiter's own";
+    $('#vidTitle').textContent = v.title; $('#vidSub').textContent = v.sub;
+    $('#vidEyebrow').textContent = v.eyebrow; $('#vidHead').textContent = v.head;
+    $('#vidLede').textContent = v.lede; $('#vidNote').innerHTML = v.note;
+  });
+  $('#vidNote').innerHTML = VID.own.note;
+</script>
+
+</body>
+</html>
