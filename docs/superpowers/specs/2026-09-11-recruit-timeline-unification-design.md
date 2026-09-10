@@ -216,8 +216,43 @@ config/config.go:487-517          RETENTION_PURGE_EXECUTE_ENABLED default FALSE
 ```
 
 Staging: 0 key RETENTION trong 18-key configmap + 11-key secret.
-Production: **omni chưa deploy** — `omni-prod` rỗng, 0 deployment omni/comm
-trên toàn cluster 40+ namespace (đối chứng dương: `recruit-be = 4`).
+
+**Production — ĐÍNH CHÍNH 2026-09-11 (DOUBLE CHECK bắt, tôi đo lại và nhận).**
+Bản đầu của tài liệu này viết *"`omni-prod` rỗng, 0 deployment omni/comm trên
+toàn cluster 40+ namespace"*. **Phép đo đó HỎNG.** Đo lại, không nuốt stderr:
+
+```
+kubectl --context gke_lender-rate_us-central1_moso-gke get deploy -n omni-prod
+  Error from server (Forbidden): ... User "bao.trinh@loanfactory.com" cannot
+  list resource "deployments" ... in the namespace "omni-prod"        rc=1
+kubectl ... get deploy -A                                             rc=1  (Forbidden, cluster scope)
+kubectl ... get deploy -n recruit-be    recruit-be 2/2 2 2 7d5h        rc=0
+```
+
+⇒ Số 0 kia là **SỐ 0 TỪ LỖI**. Và đối chứng dương `recruit-be` **không cứu
+được**: nó chạy trong một namespace tôi ĐỌC ĐƯỢC, tức nó chứng minh `kubectl`
+chạy chứ **không** chứng minh tôi đọc được `omni-prod`. Đối chứng phải chia
+**cùng luồng quyền** với thứ đang đo, không chỉ cùng câu lệnh.
+
+**Bằng chứng thay thế — không phụ thuộc quyền k8s.** `cd.yml` chọn prod bằng
+`github.ref == 'refs/heads/prod'` ở **toàn bộ** 16 selector (image, project,
+channel, WIF provider, service account, cluster `moso-gke`, namespace
+`omni-prod`, `values-prod.yaml`). Vậy:
+
+| phép đo | kết quả |
+|---|---|
+| `git ls-remote --exit-code origin prod` | `rc=2` — **branch `prod` KHÔNG tồn tại** (đối chứng dương: 56 branch remote; `grep -i prod` chỉ ra `ci/cve-watch-prod-arm`) |
+| `gh run list --workflow=cd.yml --limit 400` | **172 run toàn lịch sử: 170 push master + 2 workflow_dispatch master, 0 trên ref `prod`** |
+| `kubectl get ns omni-prod` | Active 17d — provisioned ~25/08, khớp sổ cũ "provisioned 24/08 chưa deploy" |
+
+Hai lượt `workflow_dispatch` cũng trên master ⇒ chúng deploy **staging**, nên
+đường dispatch tay không mở lỗ nào.
+
+**Câu đúng để trình:** *"CD chưa từng deploy omni lên production — branch `prod`
+không tồn tại và 0/172 run nào chạy trên ref đó. Namespace `omni-prod` đã
+provisioned nhưng account của ta không đọc được nội dung nó."*
+**Không** nói "0 deployment trên 40+ namespace" — câu đó **không đo được** bằng
+quyền hiện có. Còn một khe không đo được: một lượt `helm upgrade` tay ngoài CD.
 
 ⚠️ `retention/retention.go` package doc vẫn ghi *"THIS PACKAGE DELETES AND
 ANONYMIZES NOTHING"* — **SAI**, `destructive.go` đã land. Đọc `destructive.go`.
@@ -334,7 +369,14 @@ MCP tool, **KHÔNG** thuộc timeline append-only.
 
 ## 11. Asks cho Khải (design, không phải permission)
 
-1. omni deploy production khi nào (hôm nay **chưa deploy ở đó**).
+1. omni deploy production khi nào. Đo được: branch `prod` không tồn tại và
+   0/172 run CD nào chạy trên ref đó ⇒ **CD chưa từng deploy omni lên prod**.
+   Kèm một ask phụ: **quyền đọc namespace `omni-prod`** — account
+   `bao.trinh@loanfactory.com` bị Forbidden ở đó (namespaced LẪN cluster scope),
+   nên phía chúng tôi không xác minh được trạng thái prod bằng phép đo trực tiếp.
+   Quyền đó cũng là **điều kiện** để dựng bất kỳ guard fail-closed nào trên cấu
+   hình prod — dựng guard cứng trên cấu hình mình không đọc được là đổi một
+   deployment YẾU-MÀ-ĐANG-CHẠY thành một deployment KHÔNG BOOT ĐƯỢC.
 2. **Subject guard cho dedupe lookup** — `system.go:78-80` trả existing IM LẶNG, không so subject.
 3. SYSTEM row có cho external thấy không. Hôm nay `placement.go:61-62` cho `SideSystem`
    khớp MỌI tab và `system.go:16-21` tự khai "renders in BOTH channel tabs to EVERY
