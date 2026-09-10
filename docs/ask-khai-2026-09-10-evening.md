@@ -60,8 +60,10 @@ negative control (an unrelated secret)     66bc44da052ddcd1  ← differs from bo
 draft and it is unsafe, for two measured reasons:
 
 - a cast write needs a human doing recruiter or LOS work. On recruit-be's side the
-  only unconditional push is `ActivityServiceImpl` logging an activity; the other
-  six call sites use `pushIfAlreadyCast` and do nothing for a candidate never
+  only unconditional push is `ActivityServiceImpl:114` logging an activity. The
+  other **six** call sites are all gated on the candidate already having a cast —
+  five `pushIfAlreadyCast`, plus `pushAllIfAlreadyCast` filtering a bulk list
+  through the same memo — and they do nothing at all for a candidate never
   contacted. Staging saw **0 cast writes** across a pod's whole 41-minute life. An
   empty list there means *no traffic*, not *no callers*.
 - and the caller we are looking for writes **LOAN** casts, not `LO_CANDIDATE` —
