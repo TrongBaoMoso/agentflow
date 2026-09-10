@@ -149,12 +149,70 @@ CALL content (`transcript`, `recording_url`, `ai_summary`) are all in scope. Tha
 what pushed us to keep recruiter notes in recruit-be and join content at read time
 instead of mirroring it — so a change here changes our design, not just our data.
 
-## 7. IAM on the `audit-events` topic — and why it is not a nice-to-have
+## 7. `subject.erased` — the dependency is audit-log-service **#180**, not omni
 
-We need to consume `subject.erased` (`erasure.go:572`, via govaudit). The topic already
-has 5 independent pull subscriptions, including another team's `audit-events-posthog`,
-so a sixth is precedented. Topic-level IAM is the only part we cannot read
-(PERMISSION_DENIED), so we cannot tell whether we already have it.
+**We asked this wrong twice. Third version, and this one names the actual blocker.**
+
+We need to consume `subject.erased` (`erasure.go:572`, via govaudit) so recruit can act
+on an erasure. Two things we got wrong before:
+
+**(a) Fan-out is not a feature to request — it is the architecture.**
+`audit-log-service/README.md`: *"Every product emits to ONE Pub/Sub topic; everything
+downstream is an independent pull consumer of that topic."* The diagram already shows
+four pull consumers on `audit-events`, one of which — `posthog-forwarder` — lives in
+**tera-analytics**, a different repo. So an external consumer already exists; recruit
+being the fifth is a precedented pattern, not a new capability.
+
+**(b) The real gate is in a third repo, and it is neither yours nor ours.**
+
+```
+audit-log-service #180  [OPEN since 2026-08-27]
+  "Catalog: one-owner-per-type blocks platform services publishing
+   for multiple products (omni)"
+README:9  "multi-product platform emitters (omni) are gated on #180."
+README:94 links the same issue
+```
+
+omni emitting `subject.erased` for `LO_CANDIDATE` — a subject type recruit owns — is
+blocked by a **one-owner-per-type constraint in audit-log-service's catalog**. Nothing
+in omni changes that, and nothing in recruit does either.
+
+So the ask is a coordination one: **is #180 what is holding omni's Path B for
+`LO_CANDIDATE`, and who owns closing it?** We are raising it with you because you would
+otherwise be the person we asked, and we would rather not spend a round on you adding a
+subscription and then hitting the catalog.
+
+**Why we are not treating this as cosmetic** — measured on `recruit-be`
+`origin/master = 8d50991`:
+
+```
+git grep -lniE 'erasure|right.to.be.forgotten|gdpr|ccpa|scrub|anonymi[sz]' -- src/main/java
+  ->  0 files      (positive control, same tree, same filter:
+                    git grep -l 'CandidateEntity' -- src/main/java  ->  40 files)
+git grep -lniE 'subject\.erased|subjectErased' -- src/main/java src/main/resources
+  ->  0 consumers  (the 3 'audit-events' hits are all recruit's own EMIT side)
+```
+
+recruit-be has **no path that deletes, anonymises or scrubs personal data**. After the
+design we are about to build, recruit keeps a copy of every note we also push to omni,
+plus the whole SYSTEM/audit text — and because we decided *not* to mirror SYSTEM rows,
+that text stays in recruit in full.
+
+So an erasure would leave: **omni erases its half, recruit erases nothing.**
+
+That is worse than the status quo rather than neutral. Today omni holds almost nothing
+for `LO_CANDIDATE` (cast-only) and nobody claims an erasure runs. Afterwards omni holds
+a copy, has a working erasure engine, has `V17__comm_erasure_receipt`, and emits
+`subject.erased`. So there will be a **receipt**, and an acceptance step, and a
+conversation thread that goes blank — while the same text is still live in the drawer
+where recruiters actually work.
+
+**An erasure that reports success without erasing everything is worse than having no
+erasure feature**, because it produces a receipt and somebody signs it.
+
+We are not asking you to build the recruit side — that is ours. We are asking whether
+#180 is the blocker, and flagging that until this path exists we will not describe
+erasure as working end to end.
 
 **We first wrote this as "so recruit knows when an erasure happens". That undersells
 it, and the honest framing matters here because it concerns a compliance claim.**

@@ -980,7 +980,7 @@ phải từ lúc phase tiêu thụ nó.**
 | SYSTEM row có cho external thấy không | Khải | Phase 3 |
 | push `HIRING_MANAGER` lên cast? (lỗ D110, §4.6) | Khải | note của manager có tới omni không |
 | retention declaration cho LO_CANDIDATE | Khải | §6 |
-| IAM cấp topic `audit-events` | Khải | **cơ chế DUY NHẤT làm bản sao phía recruit thu hồi được** (§6.1) — không có nó thì mọi biên nhận erasure nói quá |
+| **audit-log-service #180** (không phải IAM, không phải omni) | Khải điều phối | **cơ chế DUY NHẤT làm bản sao phía recruit thu hồi được** (§6.1). Fan-out là KIẾN TRÚC (`posthog-forwarder` ở tera-analytics đã pull cùng topic); cổng thật là ràng buộc **one-owner-per-type trong CATALOG** của audit-log-service, OPEN từ 27/08, và README của họ gate omni đúng trên nó |
 
 **SMS/Call là món DUY NHẤT có ngày bắt đầu KHÔNG nằm trong tay tôi.** Xếp nó xuống
 sau là tự nguyện trả thêm độ trễ đó. Nó ở Phase 0 **không phải vì nó rẻ**.
