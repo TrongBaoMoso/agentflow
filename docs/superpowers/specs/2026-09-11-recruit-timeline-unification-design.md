@@ -980,6 +980,7 @@ phải từ lúc phase tiêu thụ nó.**
 | SYSTEM row có cho external thấy không | Khải | Phase 3 |
 | push `HIRING_MANAGER` lên cast? (lỗ D110, §4.6) | Khải | note của manager có tới omni không |
 | retention declaration cho LO_CANDIDATE | Khải | §6 |
+| **IAM `workloadIdentityUser` cho ns `recruit-be`** | **DevOps, KHÔNG phải Khải** | **KHÔNG gate sau #180** — hai cổng ĐỘC LẬP: #180 chặn omni **PHÁT**, IAM chặn recruit-be **NHẬN** (`/token` → 403 ở metadata server, chặn *mọi* đường Pub/Sub: cron, e-sign, audit). Một dòng `gcloud`, không phá huỷ gì, mở ngay được. Ảnh chụp 09/09 — **đo lại trước khi dùng** |
 | **audit-log-service #180** (không phải IAM, không phải omni) | Khải điều phối | **cơ chế DUY NHẤT làm bản sao phía recruit thu hồi được** (§6.1). Fan-out là KIẾN TRÚC (`posthog-forwarder` ở tera-analytics đã pull cùng topic); cổng thật là ràng buộc **one-owner-per-type trong CATALOG** của audit-log-service, OPEN từ 27/08, và README của họ gate omni đúng trên nó |
 
 **SMS/Call là món DUY NHẤT có ngày bắt đầu KHÔNG nằm trong tay tôi.** Xếp nó xuống

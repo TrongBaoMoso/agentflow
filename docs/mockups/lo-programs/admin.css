@@ -1,0 +1,928 @@
+/* ==========================================================================
+   Loan Factory — Recruiting programs, admin console
+
+   A separate surface, not a viewer state of the landing pages. Admins never
+   see the pitch: one page covers BOTH programs, switched by a segmented
+   control, with stats, charts, search, filters, level control and decisions.
+
+   Loads after programs.css and reuses its tokens.
+   ========================================================================== */
+
+body.admin-body {
+  background: var(--paper);
+}
+
+/* -------------------------------------------------------------- header -- */
+
+.ahead {
+  padding-block: clamp(1.75rem, 1.25rem + 2vw, 2.75rem) 0;
+}
+
+.ahead__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem 1.5rem;
+}
+
+.ahead__title {
+  font-size: clamp(1.75rem, 1.35rem + 1.8vw, 2.75rem);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.ahead__sub {
+  margin-top: 0.5rem;
+  font-size: 0.9375rem;
+  color: var(--gray-6);
+}
+
+.ahead__actions {
+  margin-left: auto;
+  display: flex;
+  gap: 0.625rem;
+}
+
+/* Program switcher — one page, both programs */
+.segs {
+  display: inline-flex;
+  gap: 0.25rem;
+  margin-top: 1.75rem;
+  padding: 0.3125rem;
+  border-radius: var(--r-full);
+  background: var(--gray-1);
+  box-shadow: inset 0 0 0 1px var(--gray-2);
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.segs::-webkit-scrollbar {
+  display: none;
+}
+
+.seg {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5625rem 1.125rem;
+  border-radius: var(--r-full);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--gray-6);
+  white-space: nowrap;
+  transition:
+    background-color var(--fast) var(--ease),
+    color var(--fast) var(--ease),
+    box-shadow var(--fast) var(--ease);
+}
+
+.seg:hover {
+  color: var(--ink);
+}
+
+.seg[aria-selected='true'] {
+  background: var(--white);
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
+}
+
+.seg__n {
+  padding: 0.0625rem 0.4375rem;
+  border-radius: var(--r-full);
+  background: var(--gray-2);
+  font-size: var(--micro);
+  font-variant-numeric: tabular-nums;
+}
+
+.seg[aria-selected='true'] .seg__n {
+  background: var(--orange);
+  color: var(--white);
+}
+
+/* ----------------------------------------------------------------- kpis -- */
+
+.kpis {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: clamp(1.5rem, 1rem + 1.5vw, 2rem);
+}
+
+@media (min-width: 560px) {
+  .kpis {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 940px) {
+  .kpis {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.kpi {
+  padding: 1.125rem 1.25rem;
+  border-radius: var(--r-md);
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px var(--gray-2);
+}
+
+.kpi--hot {
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: none;
+}
+
+.kpi__label {
+  font-size: var(--micro);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray-5);
+}
+
+.kpi--hot .kpi__label {
+  color: rgba(245, 246, 249, 0.55);
+}
+
+.kpi__value {
+  margin-top: 0.3125rem;
+  font-size: clamp(1.75rem, 1.5rem + 1vw, 2.375rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi--hot .kpi__value {
+  color: var(--orange);
+}
+
+.kpi__note {
+  margin-top: 0.4375rem;
+  font-size: var(--small);
+  color: var(--gray-6);
+}
+
+.kpi--hot .kpi__note {
+  color: rgba(245, 246, 249, 0.6);
+}
+
+/* --------------------------------------------------------------- charts -- */
+
+.charts {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+@media (min-width: 940px) {
+  .charts {
+    grid-template-columns: 1.55fr 1fr;
+  }
+}
+
+.panelbox {
+  padding: 1.375rem 1.5rem 1.5rem;
+  border-radius: var(--r-md);
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px var(--gray-2);
+}
+
+.panelbox__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.875rem;
+  margin-bottom: 1.25rem;
+}
+
+.panelbox__title {
+  font-size: 0.9375rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.panelbox__hint {
+  font-size: var(--small);
+  color: var(--gray-5);
+  margin-left: auto;
+}
+
+/* Weekly registrations — plain SVG, no chart library */
+.spark {
+  display: block;
+  width: 100%;
+  height: 148px;
+  overflow: visible;
+}
+
+.spark__bar {
+  fill: var(--gray-2);
+  transition: fill var(--fast) var(--ease);
+}
+
+.spark__bar--amb {
+  fill: var(--orange);
+}
+
+.spark__bar--rec {
+  fill: var(--ink-3);
+}
+
+.spark g:hover .spark__bar {
+  fill: var(--orange-deep);
+}
+
+.spark__axis {
+  fill: var(--gray-5);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.spark__grid {
+  stroke: var(--gray-2);
+  stroke-width: 1;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin-top: 1rem;
+  font-size: var(--small);
+}
+
+.legend div {
+  display: flex;
+  align-items: center;
+  gap: 0.4375rem;
+}
+
+.legend i {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex: none;
+}
+
+.legend b {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Level distribution — labelled horizontal bars */
+.bars {
+  display: grid;
+  gap: 0.875rem;
+}
+
+.bar__top {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  margin-bottom: 0.375rem;
+}
+
+.bar__name {
+  font-weight: 700;
+}
+
+.bar__n {
+  margin-left: auto;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.bar__pct {
+  color: var(--gray-5);
+  font-variant-numeric: tabular-nums;
+}
+
+.bar__track {
+  height: 10px;
+  border-radius: var(--r-full);
+  background: var(--gray-1);
+  overflow: hidden;
+}
+
+.bar__fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--r-full);
+  background: var(--orange);
+  transition: width var(--normal) var(--ease);
+}
+
+.bar__fill--2 {
+  background: var(--orange-soft);
+}
+
+.bar__fill--3 {
+  background: var(--ink);
+}
+
+.bar__fill--muted {
+  background: var(--gray-3);
+}
+
+/* --------------------------------------------------------------- toolbar -- */
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  align-items: center;
+  margin-top: clamp(1.5rem, 1rem + 1.5vw, 2rem);
+  padding: 0.875rem;
+  border-radius: var(--r-md);
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px var(--gray-2);
+}
+
+.srch {
+  position: relative;
+  flex: 1 1 240px;
+  min-width: 0;
+}
+
+.srch input {
+  width: 100%;
+  font: inherit;
+  font-size: 0.875rem;
+  padding: 0.625rem 0.875rem 0.625rem 2.25rem;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--gray-2);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.srch input:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(243, 111, 32, 0.16);
+  background: var(--white);
+}
+
+.srch::before {
+  content: '';
+  position: absolute;
+  left: 0.8125rem;
+  top: 50%;
+  margin-top: -7px;
+  width: 11px;
+  height: 11px;
+  border: 2px solid var(--gray-5);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.srch::after {
+  content: '';
+  position: absolute;
+  left: 1.5rem;
+  top: 50%;
+  margin-top: 3px;
+  width: 6px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--gray-5);
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.tsel {
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.625rem 0.75rem;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--gray-2);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.tsel:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(243, 111, 32, 0.16);
+}
+
+.toolbar__reset {
+  padding: 0.625rem 0.875rem;
+  border-radius: var(--r-sm);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--gray-6);
+}
+
+.toolbar__reset:hover {
+  background: var(--gray-1);
+  color: var(--ink);
+}
+
+.toolbar__count {
+  margin-left: auto;
+  font-size: var(--small);
+  font-weight: 700;
+  color: var(--gray-6);
+  white-space: nowrap;
+}
+
+.toolbar__count b {
+  color: var(--ink);
+}
+
+/* Bulk action bar — only present when rows are ticked */
+.bulk {
+  display: none;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.625rem;
+  margin-top: 0.625rem;
+  padding: 0.75rem 0.875rem;
+  border-radius: var(--r-md);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.bulk.is-on {
+  display: flex;
+}
+
+.bulk__n {
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.bulk__acts {
+  margin-left: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* ----------------------------------------------------------------- table -- */
+
+.tablebox {
+  margin-top: 0.625rem;
+  border-radius: var(--r-md);
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px var(--gray-2);
+  overflow: hidden;
+}
+
+.tablescroll {
+  overflow-x: auto;
+}
+
+.atable {
+  min-width: 1040px;
+}
+
+.atable th {
+  padding: 0.8125rem 1rem;
+  text-align: left;
+  font-size: var(--micro);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray-5);
+  border-bottom: 1px solid var(--gray-2);
+  white-space: nowrap;
+  background: var(--white);
+}
+
+.atable th[data-sort] {
+  cursor: pointer;
+  user-select: none;
+}
+
+.atable th[data-sort]:hover {
+  color: var(--ink);
+}
+
+.atable th[aria-sort] {
+  color: var(--orange-deep);
+}
+
+.atable th[data-sort]::after {
+  content: '↕';
+  margin-left: 0.375rem;
+  opacity: 0.4;
+}
+
+.atable th[aria-sort='ascending']::after {
+  content: '↑';
+  opacity: 1;
+}
+
+.atable th[aria-sort='descending']::after {
+  content: '↓';
+  opacity: 1;
+}
+
+.atable td {
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  border-bottom: 1px solid var(--gray-1);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.atable tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.atable tbody tr {
+  transition: background-color var(--fast) var(--ease);
+  cursor: pointer;
+}
+
+.atable tbody tr:hover {
+  background: var(--gray-1);
+}
+
+.atable tbody tr.is-picked {
+  background: var(--orange-tint);
+}
+
+.who {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.who img {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+  background: var(--gray-1);
+}
+
+.who__name {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.who__mail {
+  font-size: var(--micro);
+  color: var(--gray-5);
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+.prog {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-weight: 700;
+  font-size: var(--small);
+}
+
+.prog::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  flex: none;
+}
+
+.prog--ambassador::before {
+  background: var(--orange);
+}
+
+.prog--recruiter::before {
+  background: var(--ink-3);
+}
+
+/* Level cell with inline promote / demote.
+   Named .lvl, not .tier — programs.css already owns .tier for the big level
+   cards on the Ambassador page, and the two collided. */
+.lvl {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.lvl__step {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--r-xs);
+  background: var(--gray-1);
+  color: var(--gray-6);
+  font-size: 0.75rem;
+  font-weight: 900;
+  line-height: 1;
+  transition:
+    background-color var(--fast) var(--ease),
+    color var(--fast) var(--ease);
+}
+
+.lvl__step:hover {
+  background: var(--orange);
+  color: var(--white);
+}
+
+.lvl__step[disabled] {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.acts {
+  display: flex;
+  gap: 0.375rem;
+}
+
+.chk {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--orange);
+  cursor: pointer;
+}
+
+.tfoot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-top: 1px solid var(--gray-2);
+  font-size: var(--small);
+  color: var(--gray-6);
+}
+
+.pager {
+  margin-left: auto;
+  display: flex;
+  gap: 0.3125rem;
+}
+
+.pager button {
+  min-width: 32px;
+  height: 32px;
+  padding-inline: 0.5rem;
+  border-radius: var(--r-xs);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--gray-6);
+  transition:
+    background-color var(--fast) var(--ease),
+    color var(--fast) var(--ease);
+}
+
+.pager button:hover {
+  background: var(--gray-1);
+  color: var(--ink);
+}
+
+.pager button[aria-current='true'] {
+  background: var(--ink);
+  color: var(--white);
+}
+
+.pager button[disabled] {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.noresults {
+  padding: 3.5rem 1.5rem;
+  text-align: center;
+}
+
+.noresults h3 {
+  font-size: 1.0625rem;
+  font-weight: 800;
+}
+
+.noresults p {
+  margin-top: 0.5rem;
+  font-size: 0.9375rem;
+  color: var(--gray-6);
+}
+
+/* --------------------------------------------------------------- drawer -- */
+
+.drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: none;
+}
+
+.drawer.is-open {
+  display: block;
+}
+
+.drawer__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(18, 21, 28, 0.5);
+  backdrop-filter: blur(2px);
+}
+
+.drawer__panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(460px, 100%);
+  background: var(--white);
+  box-shadow: -30px 0 70px -30px rgba(18, 21, 28, 0.5);
+  display: flex;
+  flex-direction: column;
+  animation: slidein var(--normal) var(--ease) both;
+}
+
+@keyframes slidein {
+  from {
+    transform: translateX(24px);
+    opacity: 0;
+  }
+}
+
+.drawer__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.375rem 1.5rem;
+  border-bottom: 1px solid var(--gray-2);
+}
+
+.drawer__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+  display: grid;
+  gap: 1.5rem;
+  align-content: start;
+}
+
+.drawer__foot {
+  display: flex;
+  gap: 0.625rem;
+  padding: 1.125rem 1.5rem;
+  border-top: 1px solid var(--gray-2);
+}
+
+.drawer__close {
+  margin-left: auto;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--r-xs);
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--gray-5);
+}
+
+.drawer__close:hover {
+  background: var(--gray-1);
+}
+
+.dl {
+  display: grid;
+  gap: 0.625rem;
+  font-size: 0.875rem;
+}
+
+.dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+}
+
+.dl dt {
+  color: var(--gray-5);
+  white-space: nowrap;
+}
+
+.dl dd {
+  margin: 0;
+  font-weight: 700;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.dsec__title {
+  font-size: var(--micro);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gray-5);
+  margin-bottom: 0.75rem;
+}
+
+.dnote {
+  padding: 0.875rem 1rem;
+  border-radius: var(--r-sm);
+  background: var(--orange-tint);
+  font-size: var(--small);
+  line-height: 1.5;
+  color: var(--brown, #944924);
+}
+
+.timeline {
+  display: grid;
+  gap: 0.875rem;
+  font-size: var(--small);
+}
+
+.timeline div {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+}
+
+.timeline i {
+  width: 8px;
+  height: 8px;
+  margin-top: 0.4375rem;
+  border-radius: 50%;
+  background: var(--gray-3);
+  flex: none;
+}
+
+.timeline time {
+  display: block;
+  color: var(--gray-5);
+  font-size: var(--micro);
+}
+
+@media (max-width: 700px) {
+  .drawer__panel {
+    width: 100%;
+  }
+}
+
+/* The decision column is why an admin is here — pin it to the right so it
+   stays put while the rest of the row scrolls under it. */
+.stick {
+  position: sticky;
+  right: 0;
+  z-index: 1;
+  background: var(--white);
+  box-shadow: -12px 0 16px -12px rgba(18, 21, 28, 0.28);
+}
+
+.atable tbody tr:hover .stick {
+  background: var(--gray-1);
+}
+
+.atable tbody tr.is-picked .stick {
+  background: var(--orange-tint);
+}
+
+.acts {
+  align-items: center;
+}
+
+/* Give the widest column a ceiling and let the address truncate. */
+.who {
+  max-width: 250px;
+}
+
+.who__name,
+.who__mail {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
+}
+
+.atable td,
+.atable th {
+  padding-inline: 0.75rem;
+}
+
+.lvl .badge {
+  min-width: 74px;
+}
+
+/* The app bar carries a logo, a tag, a back link and an identity chip — more
+   than fits a phone. Drop the back link's words and the admin's name. */
+@media (max-width: 760px) {
+
+
+
+
+
+  .ahead__actions {
+    width: 100%;
+    margin-left: 0;
+  }
+}
