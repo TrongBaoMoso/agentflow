@@ -968,6 +968,46 @@ tài liệu nói một điều sai.
 độ trễ tính bằng *ngày-tới-không-bao-giờ*, và **đồng hồ của nó chạy từ lúc GỬI, không
 phải từ lúc phase tiêu thụ nó.**
 
+### ⛔ RÀNG BUỘC THỨ TỰ NẰM NGOÀI TÀI LIỆU NÀY — đọc trước khi bật cờ followup trên prod
+
+Không thuộc phạm vi spec này, nhưng **nó bị nạp đạn bởi một bước trong nhánh Today/followup**, nên
+phải ghi ở cả hai chỗ — người bật cờ không đọc bead của bulk-archive.
+
+**Theo cấu hình trong repo** (`8d50991`; **chưa** đo env pod prod — gcloud token hết hạn):
+
+```
+deploy/configs/values-prod.yaml   followup = 0 hit   (đối chứng dương cùng file: RBAC = 1 hit)
+FollowUpProperties.java:67        queryTarget = ""   (mặc định rỗng)
+FollowUpTargetCondition           true CHỈ khi query-target KHÔNG rỗng ⇒ bean KHÔNG TỒN TẠI
+FollowUpAvailability.require()    bean == null -> THROW, luôn luôn, có chủ ý
+CandidateServiceImpl:312-314      require(followUpRemoverProvider).closeAllOpen(id)
+```
+
+**Hai kết luận ngược dấu:**
+
+| | |
+|---|---|
+| 🟢 | đường phá huỷ của `agentflow-b9a4` **KHÔNG thể chạy trên prod hôm nay** — `require()` ném 503 trước khi `closeAllOpen` chạy một dòng. Hôm nay nó là **hiểm hoạ CHỈ TRÊN STAGING** |
+| 🔴 | `archive()` **ném 503 trên MỌI lượt gọi ở prod** ⇒ **lưu trữ ứng viên hiện không làm được trên production** (bead riêng) |
+
+**NGHỊCH LÝ:** thứ giữ đường phá huỷ ngủ yên **chính là cờ** mà nhánh Today định bật —
+`RECRUIT_FOLLOWUP_QUERY_TARGET` trên prod, cũng là thứ làm `next_follow_up_at` có dữ liệu.
+**Bật cờ SỬA lỗi thấy được, và CÙNG LÚC NẠP ĐẠN cho lỗi không thấy được.**
+
+> **Bản vá `agentflow-b9a4` — đặc biệt là ĐẢO THỨ TỰ — phải land TRƯỚC khi
+> `RECRUIT_FOLLOWUP_QUERY_TARGET` được set trên production.**
+
+Viết dưới dạng **lệnh đo**, đừng viết dưới dạng mô tả sự kiện:
+
+```
+grep -cE 'RECRUIT_FOLLOWUP_QUERY_TARGET' deploy/configs/values-prod.yaml
+   0 = đường phá huỷ còn ngủ
+   1 = ĐÃ NẠP ĐẠN — b9a4 phải đã land trước dòng này
+```
+
+Cùng hình dạng `gate-anchored-in-another-repo`, chỉ khác: cổng nằm ở **một luồng công việc khác**,
+không phải repo khác — **tệ hơn, vì không có diff nào để ai đó chú ý.**
+
 ### Phase 0 — GỬI NGAY HÔM NAY, bất kể phase nào tiêu thụ
 
 | ask | cho ai | chặn gì |
