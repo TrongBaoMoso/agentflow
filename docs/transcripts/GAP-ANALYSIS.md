@@ -162,7 +162,7 @@ Legend: ✅ runs · 🟡 partial (says what's missing) · ❌ absent · 🔌 bui
 
 | Table | Verdict |
 |---|---|
-| `routing_rules` | ❌ 0 entity / 0 refs — where auto-assign would live |
+| `routing_rules` | ❌ 0 entity / 0 refs. Correct home for an **onboarding** hand-off rotation (§5 #10); **not** for recruiter lead intake |
 | `sla_policies` | ❌ 0 entity / 0 refs — carries the `escalation` column |
 | `comp_bands` | ❌ 0 entity / 0 refs |
 | `referrals` | ❌ 0 entity / 0 refs — referral bonus payout |
@@ -190,7 +190,7 @@ The ones that contradict current build direction matter most.
 | 41 | Call-SLA timers admin-configurable **per team** | ❌ SLA reads global `recruit_settings`; `sla_policies` hollow |
 | 38 | Auto-create the employee account on the 3-condition gate | 🔌 HR handoff built, dark on prod, `account_id` never linked back |
 | 34/36 | Workload rebalance is **peer-to-peer self-serve**, not a manager function | 🟡 transfer endpoints exist; no peer-to-peer UI |
-| 47 | Add a new "loan officer recruiter" role; retitle current recruiters as customer service | ❌ not in `RecruitPermission` / role seed |
+| 47 | Add a new "loan officer recruiter" role; retitle current recruiters as customer service | ⚠️ **my earlier "not seeded" was FALSE** — `OFFICER_RECRUITER` and `LO_SUPPORT` are both seeded in `V036__seed_kho_roles.sql`. What is genuinely absent is the **retitle**: D46/D86 add the new roles but state *"RECRUITER không thành legacy, không migrate ai"*. And no source says Victoria was told, which the CEO asked for |
 | C4 | ILO and RLO must stay **two separate pages** | ⚠️ contradicts the merge-into-one-table design Bảo demoed |
 
 ### Timeline — corrected 2026-09-22
@@ -216,6 +216,18 @@ gist-only. Never apply one verdict to that whole file. `NMLS` never appears corr
 Corroboration: on 13/08 the team states it has met Victoria+Brian, Yến and Ý, and has **not
 yet** met onboarding — *"còn mấy team phía sau như onboarding… tụi em chưa có mic được với
 họ"* (0:34).
+
+**Settled 23/09 against `recruit-be/docs/FEEDBACK/`, which dates the same meetings differently**
+(HR 12/08, onboarding 24/08, licensing 27/08). Those are **not meeting dates** — they are the
+timestamps of Bao's retelling message for each one; the licensing file opens *"tôi đã gặp team
+đó"* ("I have met that team"). The README then filed those timestamps under a column headed
+"Ngày họp". Content matches point for point, so these are the same five meetings and **there are
+no hidden extra ones**. Deciding evidence: on 06/08 Bảo calls the recruiting session *"tối hôm
+qua"* (53:21); the CEO mockup commit `76880a9` is stamped 13/08 11:29 and titled "idea CEO 13/08";
+and the 17/08 recording still shows HOT/COLD on one page, a split only decided as D46 on 22/08.
+
+The repo's README should say the earlier dates were a reconstruction error rather than leave two
+sets standing unannotated — a reconstruction's dates are the ones more likely to be wrong.
 
 ### What that ordering means — this reverses an earlier reading
 
@@ -269,10 +281,15 @@ was an artefact of the relay.
 second-hand version and contradict the first-hand one. What the directives DO call for, and
 what does not exist:
 
-- peer-to-peer self-serve reassignment by a recruiter, no manager (D36)
-- a manager absence-coverage screen — view an absent employee's queue, work it or bulk reassign (D37)
-- SLA timers configurable **per team** (D41) — today SLA is global `recruit_settings`, and
+- peer-to-peer self-serve reassignment by a recruiter, no manager (CEO-D36)
+- a manager absence-coverage screen — view an absent employee's queue, work it or bulk reassign (CEO-D37)
+- SLA timers configurable **per team** (CEO-D43 — *not* D41, which is company-email automation) — today SLA is global `recruit_settings`, and
   `sla_policies` is hollow
+
+> ⚠️ **Numbering collision — use the `CEO-` prefix.** `D36`, `D37` and `D41` are already taken in
+> `recruit-be/docs/DECISIONS.md` by unrelated decisions (activity-feed visibility, offer comp
+> snapshot, and the `block_display` migration). Three numbering schemes for the CEO's directives
+> are in circulation; anyone cross-referencing a bare `D41` will land on the wrong decision.
 
 One thing survives from 05/08 regardless: Victoria, Brian and Benjamin converged on
 **SLA-triggered release when a claimed lead sees no real activity**. That is compatible with the
@@ -296,7 +313,9 @@ Ranked by *blocking factor removed per unit of work*, not by feature size.
 
 3. **Checklist completion path.** Add write methods to `ChecklistItemService` (set DONE,
    `completed_by`, `assignee_id`). Without this the onboarding pipeline cannot terminate and
-   S6→S7 is unreachable. This is the smallest change with the largest unlock in the system.
+   the onboarding pipeline cannot terminate. (It no longer blocks S6→S7 — see §1: the gate is
+   inert because every template ships `mandatory=FALSE`, so S7 is reachable *vacuously* today.
+   **Shipped 23/09** as `agentflow-5pb2`, PR #392.)
 4. **Offer approve/reject screen.** Six hooks already exist with zero call sites and a
    permission already gates them. This is UI-only work against a finished, tested backend —
    and it is the exact ask Brian escalated (LOs paying before approval, then needing refunds).
@@ -315,16 +334,49 @@ Ranked by *blocking factor removed per unit of work*, not by feature size.
 
 ### Tier 3 — blocked on a human decision, do not build yet
 
-10. **Auto-assign / `routing_rules` — RESOLVED 22/09: do not build it at all.** C-001 is
-    settled (§4): the CEO's first-hand position is claim-first with peer-to-peer self-serve
-    reassignment. Round-robin would implement a second-hand relay that the CEO himself
-    contradicted eight days later. `routing_rules` stays hollow.
-    **Build these instead**, once Tier 0-1 clears — they are what the directives actually ask for:
-    peer-to-peer self-serve reassignment (D36) · manager absence-coverage screen (D37) ·
-    per-team SLA configuration (D41) · SLA-triggered release of untouched claimed leads
-    (the one thing the 05/08 room agreed on, and compatible with D36).
-11. **New "loan officer recruiter" role + retitling** (directive #47) — an org change, not a
-    code change, and Victoria has not been told.
+10. **Auto-assign — CORRECTED 23/09. The earlier "do not build it at all" was WRONG.**
+    It is two different asks and I collapsed them.
+
+    **For RECRUITERS — do not build round-robin.** C-001 stands (§4): the CEO's first-hand
+    position is claim-first with peer-to-peer self-serve reassignment, and Victoria runs her team
+    that way.
+
+    **For ONBOARDING SPECIALISTS — permitted, with conditions. Victoria did NOT ask for it.**
+
+    > **Victoria, 17/08 @ 55:05** — *"team chị tạm thời là có ba bạn onboarding specialist thì các
+    > bạn ấy sẽ **take list lần lượt** nha. Ví dụ như Miley đầu tiên, Sarah thứ hai, rồi Liz thứ
+    > ba. Thế xong rồi **vòng lặp đấy lại lặp lại**"*
+    > **@ 55:19** — *"chị biết là tụi em cũng có một cái **auto assignment** như vậy đó em"*
+    > **@ 55:27** — scoped: only for lists handed over by recruiting.
+
+    > **@ 56:02** — *"chị cái này là một cái **lưu ý nhỏ** thôi. **Nếu như các em decide** là có
+    > những cái automation như thế này thì khi đấy **cứ bàn luận với chị**"*
+
+    So the accurate reading is neither of my two earlier ones. She is not requesting round-robin —
+    she is saying *if* the team decides to automate, this is the rotation, and talk to her first.
+    She also gives a constraint that a naive rotation would violate: at 55:53 she notes it is
+    smoother for the LO **not** to have a second person pulled in when Miley is already onboarding
+    them — a same-person exception, not a pure cycle. And the roster is *"tạm thời"* (for now).
+
+    Net: `routing_rules` is the right home for an onboarding hand-off rotation, it is **not**
+    forbidden, and it is **not** a committed requirement either. Build it only with her in the
+    room, and only with the same-person exception.
+
+    Also still wanted, and still absent: peer-to-peer self-serve reassignment · manager
+    absence-coverage screen · per-team SLA configuration · SLA-triggered release of untouched
+    claimed leads.
+
+    **How I got it wrong, twice, in opposite directions.** First I over-generalised the CEO's
+    recruiter-scoped remarks into a blanket "no auto-assign". Then, correcting that, I read 55:05
+    as a request and wrote "Victoria asked for it — build it", without reading on to 56:02 where
+    she frames the whole thing as conditional. Each correction overshot because I stopped reading
+    at the line that proved the previous version wrong.
+
+11. **Retitling the current recruiters** (directive #47). The roles themselves already exist —
+    `OFFICER_RECRUITER` and `LO_SUPPORT` are seeded in `V036__seed_kho_roles.sql`; my earlier
+    claim that they were absent was false. What has not happened is the **retitle and the
+    migration of people**, which D46/D86 explicitly declined (*"RECRUITER không thành legacy,
+    không migrate ai"*), and telling Victoria, which the CEO asked for. An org change, not code.
 12. **`brand` / brand-manager routing** — three people held three positions on whether it
     exists in the new system at all.
 
@@ -354,7 +406,7 @@ handoff. Ten of them (T1–T10, see `extract/hr-yenvu-2026-08-06.md`).
 
 | Business need | Code today |
 |---|---|
-| T1 — Create Account on **7 simultaneous conditions** (1-1 = Pre-Onboarding, Fee = Paid/Waived, Agreement = Signed, Status = Onboarding, Licensing = NMLS Licensed, HR = Not Initiated, + "Onboarding D"), **with a GA/OR/KY background-check branch** → ticket to HR | `userservicesync` exists but fires from `enqueueIfEligible(candidate, changes)` — a **profile-field-change** trigger, not a condition gate. And its client is `NoOpUserServiceSyncClient` — a third stub |
+| T1 — Create Account on **a compound condition set** (condition 1 = `Pre-onboarding done`, Fee = Paid/Waived, Agreement = Signed, Status = Onboarding, Licensing = NMLS Licensed, HR = Not Initiated, + "Onboarding D"), **with a GA/OR/KY background-check branch** → ticket to HR | `userservicesync` exists but fires from `enqueueIfEligible(candidate, changes)` — a **profile-field-change** trigger, not a condition gate. And its client is `NoOpUserServiceSyncClient` — a third stub |
 | GA / OR / KY state branch on the background check | ❌ absent. Only a flat template `ct-hr-bgc` ("Background check") in `V067__checklist_templates.sql:79`, no state branching anywhere |
 | T2, T3 — status-pair nudges between HR and Licensing | ❌ no mechanism |
 | T5 — 100% Onboarded = HR Complete + Sponsorship approved + **`setup call`** (term resolved 22/09, see below) | Code uses a different definition entirely: *every mandatory checklist item DONE/NA* (`CandidateServiceImpl:747`) — and nothing can become DONE (§1). The three business gates map onto no code construct |
@@ -433,7 +485,8 @@ the domain nouns; it changed *how* they were wrong:
 > ⚠️ **The left column is reconstruction, not source.** `grant access` and `Access Granted`
 > appear in **no** transcript in this directory and in **neither** whisper run. The only place
 > those strings exist is this document's own prose. Nobody may cite them as requirements; they
-> are a question for Ý, in the same class as `"Onboarding D"` (§7). This warning exists because
+> are a question for Ý. (They are *not* in the same class as `"Onboarding D"`, which has since been
+> resolved from a second recording — no such second sample exists for these.) This warning exists because
 > a plausible reconstruction written into an analysis document becomes indistinguishable from a
 > sourced finding two readers later.
 
@@ -470,8 +523,11 @@ account → `HR onboarding`; LOs outside those states skip it. **The branch is r
 code has no state branching at all — only a flat `ct-hr-bgc` template
 (`V067__checklist_templates.sql:79`).
 
-**Killed: `"Onboarding D"`.** No clean form in any of the four transcripts, single occurrence,
-carries a business rule. Confidence zero. See §7.
+**Killed, then revived: `"Onboarding D"`.** On 22/09 I put its confidence at zero — no clean form
+in the file the corruption appeared in, single occurrence, carries a business rule. On 23/09 it was
+**resolved**: the clean form `pre onboarding` is in *both* recordings, and the legacy enum is
+`pre_onboarding_done("Pre-onboarding done")` (`LORecruiting.java:443`). The rule held; my sweep did
+not — I searched one file for a term the other file spelled correctly. See §7 Q1.
 
 `setup call` meets that bar, and was then confirmed independently: a second session grepped
 Miley 17/08 without reading this write-up and found the clean form at lines 639 and 673, with
@@ -485,9 +541,11 @@ never once did in either run. So a stable mishearing can be a property of the *e
 the term. Corollary for reading the extracts: a term that looks hopeless in one source may be
 attested cleanly in another, so always sweep all four files before declaring a term unknowable.
 
-`"Onboarding D"` does not meet it: single occurrence, no clean form anywhere, and it carries a
-business rule. It is **not "unresolved pending more analysis" — it is unresolvable from the
-transcripts.** No amount of re-reading fixes it. See §7.
+`"Onboarding D"` looked like the opposite case — single occurrence, no clean form — and I wrote
+that it was unresolvable from the transcripts. **That was wrong, and §7 Q1 now closes it.** The
+clean form `pre onboarding` is present in *both* recordings, and the legacy enum
+`LORecruiting.java:443` is literally `pre_onboarding_done("Pre-onboarding done")`. I had both
+samples and searched only the file the corruption was in. The rule was sound; my sweep was not.
 
 ### The HR↔Licensing asymmetry — REFINED 23/09 by the licensing transcript
 
@@ -519,9 +577,8 @@ she was describing handoffs rather than escalation.
 
 ### Attribution still open
 
-"Dave" — dev/IT team, or a named person who takes 1-1 meetings and owns tickets beside
-Kara? Evidence points both ways (14:42, 1:00:21). Both readings recorded; confirm with Yến.
-T1's recipient depends on it.
+~~"Dave" — dev/IT team or a named person?~~ **Resolved 23/09: a named person, Dave Hoan/Hoang in
+HR**, per the production screenshot quoted in `recruit-be/docs/FEEDBACK/03-hr.md`. See §7 Q3.
 
 
 ---
@@ -533,13 +590,15 @@ something concrete. Ordered by what they block.
 
 | # | Question | Ask | Blocks |
 |---|---|---|---|
-| 1 | Is `"Onboarding D"` a real status? It is the 7th condition of the create-account rule (T1), appears once, in one recording, with no clean form anywhere. | Yến | The create-account gate. Do not implement T1 until answered |
+| 1 | ~~Is `"Onboarding D"` a real status?~~ **RESOLVED 23/09 — it is "Pre-onboarding done".** The speaker stutters it (*"phải là onboarding D re-onbarding D"*, HR 1:06:52), and the clean form `pre onboarding` appears in **both** recordings independently — it is stage 8 of Miley's pipeline, the status that releases the contract for signature. My own corroboration rule settles it; I had both samples and failed to sweep the second file. **T1 is no longer blocked on this.** | — | nothing |
 | 2 | Confirm the third gate of 100% Onboarded is `setup call` (strong inference, §6) — and that HR does not own it. | Yến or Miley | 10 seconds to confirm; closes the last doubt on the 3-gate model |
-| 3 | Is "Dave" the dev/IT team, or a named person? Evidence points both ways — LOs book 1-1 meetings *with* Dave (14:42), and he owns tickets beside Kara (1:00:21). | Yến | The **recipient** of T1's ticket |
+| 3 | ~~Is "Dave" the dev/IT team, or a named person?~~ **RESOLVED 23/09 — a named person, Dave Hoan/Hoang in HR**, per the production screenshot quoted in `recruit-be/docs/FEEDBACK/03-hr.md`. My "dev team" gloss was wrong; the extraction agent refused it at the time and recorded both readings, which is why it was recoverable. | — | nothing |
 | 4 | Does `brand` / brand-manager routing still exist in the new system? Three people in the 06/08 room held three positions. The field does not exist in code at all. | Yến + Victoria | Whether to build it or formally drop it |
 | 5 | Which statistics should stay on the pipeline header? Victoria deferred: *"I need to sit down and think about it"* (05/08 @ 4:09). | Victoria | The header/KPI block redesign |
 | 6 | Has Victoria been told about directive #47 — a new "loan officer recruiter" role, and retitling current recruiters as customer service? The CEO said to tell her. | Thuận → Victoria | An org change, not a code change. Do not implement silently |
-| 7 | The blocking request to gate self-payment behind the background check has been open for months across **two departed PMs**, filed by **Brian, not Victoria** — so searching her name will not find it. Does it still stand as specified? | Brian | Tier 1 item 4 (approve/reject screen) — backend is already done |
+| 7 | The request to gate self-payment behind the background check. **Corrected 23/09:** Victoria states it herself — *"tụi chị **không muốn họ được trả luôn tiền**… phải qua tụi chị background check rồi này nọ thì mới được"* (ONB 39:45). It dates back to *"thời Phương Nguyễn"* and she notes Phương Nguyễn has since left (39:32). My earlier "filed by Brian, not Victoria" was wrong as a sole attribution. Still worth confirming the exact bar. | Victoria or Brian | Tier 1 item 4 (approve/reject screen) — backend is already done |
+
+| 8 | **Is Phương Nguyễn still the project owner?** At 17/08 @ 39:32 Victoria says *"Phương Nguyễn **trước khi rời đi**"* ("before Phương Nguyễn left"). The repo routes its highest-authority open questions to chị Phương, and a chị Phương speaks on 06/08 and 13/08. | Bao | Where every unresolved product question is sent |
 
 **Rule going forward:** any finding resting on a single English phrase transcribed from
 Vietnamese audio, where no clean form appears in an independent recording, goes on this list
@@ -555,7 +614,7 @@ uncertain it is:
 
 | Class | Example | Action |
 |---|---|---|
-| Carries a **business rule** — a condition, threshold, status or recipient | `"Onboarding D"` (7th condition of the create-account gate) | **Blocks implementation.** Ask a human (§7). Never reconstruct |
+| Carries a **business rule** — a condition, threshold, status or recipient | `"Onboarding D"` — resolved from a second recording, so it never needed the human it was routed to; `"Access Granted"` still does | **Blocks implementation** until a second *independent* sample or a human settles it. Never reconstruct from one |
 | Carries a **term the code must match** — an enum value, a status label | `setup call` | Must be settled before naming anything after it. Settled here |
 | Carries **context only** — a passing reference that changes no behaviour | `"cting"` (a team not yet interviewed), `"breakround"`, `"bên S"` | **Leave unresolved. Do not spend time on it** |
 
@@ -571,5 +630,6 @@ confirms independently (§3). Resolving the word changes no requirement, no sche
 priority. It stays open, and that is the correct outcome rather than a failure.
 
 **The failure mode this rule prevents** is spending verification effort proportional to
-*uncertainty* instead of to *consequence*. `"Onboarding D"` and `"cting"` are equally uncertain;
-only one of them can put a wrong condition into a production gate.
+*uncertainty* instead of to *consequence*. `"Onboarding D"` and `"cting"` looked equally uncertain;
+only one of them could put a wrong condition into a production gate, and that is the one that
+deserved the second sweep — which is exactly what eventually resolved it.
