@@ -110,7 +110,7 @@ HR needs two answers: `lo_type` and `employmentType`. Only `INDEPENDENT` fixes t
   - not already sent (`handed_off_at` null) → `already_sent`
   - the feature flag on → `enabled=false`, POST answers 409
 - **POST recomputes readiness server-side** in its own transaction immediately before enqueuing —
-  it never trusts an earlier GET. `ready=false` → **400** with the same body. `ready=true` →
+  it never trusts an earlier GET. Already sent → **409**. `ready=false` → **400** with a plain message listing the keys (the FE re-reads the list from GET rather than parsing the 400). `ready=true` →
   enqueue through `HrHandoffEnqueuer` (atomic `handed_off_at` compare-and-set, outbox, relay,
   8 retries) and return the new state; a lost race → **409** `already_sent`.
 - **Code changes this implies:** the offer half of `assertJoinedGate` (private, throws) is
