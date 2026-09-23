@@ -34,7 +34,7 @@ know, then hands over. HR fills only what only HR can.
 ## 2. Decision
 
 Decouple the handoff from the stage move. The candidate reaches `S6` however it does today (MOSO).
-A person — Onboarding, who runs the 1-1 (**Bao's belief, unconfirmed**) — completes the profile
+A person — Onboarding, who runs the 1-1 and confirms W-2 vs 1099 with the Loan Officer (**confirmed by Bao, 2026-09-24**) — completes the profile
 and clicks **Send to HR**. The button works only when the profile is complete.
 
 ## 3. Scope
@@ -87,7 +87,7 @@ HR needs two answers: `lo_type` and `employmentType`. Only `INDEPENDENT` fixes t
   hold it** (only `CANDIDATE_READ`, `ACTIVITY_READ`, `OFFER_READ`, `CANDIDATE_OVERRIDE_GATE`,
   `CHECKLIST_TEMPLATE_MANAGE_ONBOARDING`), so Onboarding could press Send to HR but not fill what
   it asks for. The migration therefore grants `ONBOARDING` **`CANDIDATE_UPDATE`** together with
-  the new handoff permission — **a permission decision for Bao** (it lets Onboarding edit every
+  the new handoff permission — **approved by Bao, 2026-09-24** (it lets Onboarding edit every
   profile field, as recruiters and managers already can).
 - **Audit:** two new `CandidateProfileField` entries (`lo_type`, `employment_type`, not PII, not
   MOSO-owned — MOSO never writes them, so no lock is needed), recorded in `candidate_change_log`
