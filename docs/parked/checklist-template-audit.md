@@ -26,6 +26,8 @@ Example: 40 LOs are stuck at S6 on "background check". HR turns the template's `
 
 So the ledger would stay empty and "affects N" would always read 0.
 
+**Migration number:** V102 on the branch is NOT reserved. Other branches (e.g. agentflow-7c's `agent/hot-idle-release`) may take V102/V103 in the meantime. On revival, rebase and renumber to the next free version on `origin/master` + unmerged branches, then regenerate `docs/SCHEMA.md`.
+
 ## Revive only after all three are true
 
 1. A template editor screen exists (Q12: departments flip mandatory themselves, no deploy).
