@@ -25,7 +25,9 @@ chase them:
    `completed_detail_form` and `is_corporate_loan_officer` empty — the three fields added together
    in recruit-be #363 (2026-09-18). So these rows were imported before #363 and **never
    re-imported**; the data exists in MOSO (measured 2026-09-17 on MOSO production: 97% of joined
-   rows carry a personal address). All 31 have a `legacy_key`.
+   rows carry a personal address). All 31 have a `legacy_key`. These 31 are already hired, so they
+   only prove the gap; the rows that matter are the not-yet-Joined ones with the same symptom
+   (counted in step A).
 
 **Principle (Bao, 2026-09-24):** whoever works with the candidate fills everything recruit can
 know. HR fills only what only HR can (work email, entity, placement, start date, contract,
@@ -115,7 +117,6 @@ override with a mandatory reason already exists). Requirements for `S6`:
 |---|---|
 | `first_name`, `last_name`, `email`, `phone`, `nmls_id`, `mailing_address` | yes |
 | `lo_type` | add |
-
 | `employment_type` | add |
 
 - **Validity is new code.** Today "filled" means only non-null / non-blank / non-empty
