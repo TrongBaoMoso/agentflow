@@ -39,3 +39,11 @@ Each had 2 reviewers + CI green; staging browser checks passed for #363–#368 (
 - Open question from the BE agent for Bao: a recruiter must now CLAIM an unowned lead before inviting it (no claim-and-invite shortcut). Ask Bao if a shortcut is wanted.
 - SPEED MODE (Bao 05/10 night, relayed by agentflow-fb = ex-9d): locally only targeted unit tests; ONE negative control per main fix; still 2 reviewers per PR (+ Repo Owner for non-recruit repos); defer side features (write them down); every PR body lists what was skipped. Back to full flow when Bao says "quay lại flow cũ" / "full flow". See memory feedback_speed_mode_vs_full_flow.md.
 - Hand-off flag owner session is now named **agentflow-fb** (formerly agentflow-9d).
+
+## OVERNIGHT 05→06/10 (Bao asleep; answers given before sleeping)
+- Production: NOT tonight — Bao decides in the morning. Prepare the commit list for recruit-fe + recruit-be (origin/production..origin/staging) for him.
+- recruit-be #559 (D209) + #562 (D210, decline guard) merged; #562 staging deploy in progress at handoff time. Staging verify of #559 PASSED (API + UI).
+- Dispatched tonight (speed mode, 2 reviewers each, staging only):
+  - qsg2z-r3 → recruit-fe less-text round 3 (agentflow-qsg2z.4): Today "Too much today?", "· make the first call", Reports blue box + Unclaimed-age caption, Exceptions section subs, dead CSS.
+  - qsg2z-fix6 → recruit-fe small fixes (agentflow-qsg2z.6): archive reason REQUIRED, 390px tile + footer, hide Invite when an offer is open, use can_request_offer.
+  - qsg2z-isodate → recruit-be readable date in "No answer … retry 1 of 4".
