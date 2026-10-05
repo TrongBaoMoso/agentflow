@@ -33,3 +33,9 @@ Each had 2 reviewers + CI green; staging browser checks passed for #363–#368 (
 - Tests that mock next-intl hide missing keys — always add a real-JSON test for new keys.
 - vi "Th 5" vs "Thứ 5" failure in followUp.test.ts is Node 24 ICU on this Mac; CI passes.
 - recruit-fe staging = `gh workflow run promote-staging.yml` (master tip); check `git log origin/staging..origin/master` first so you know whose commits ride along.
+
+## UPDATE 05/10 evening (after pause)
+- recruit-be **PR #559** is OPEN (not merged), commit f2c34e04: `OfferRequestPermission` in `OfferController#request` → 403 "Only the lead's owner or a manager can invite this candidate" unless owner or OFFER_APPROVE; check runs before the ARCHIVED/DORMANT 400; unowned lead = manager only; adds `can_request_offer` on `GET /candidates/{id}/invite-status` payload; D209 in DECISIONS; `OfferRequestOwnerOnlyIT` 6 cases, negative control 3/6 red. Next on resume: 2 reviewers (java-reviewer + security-reviewer), CI, squash-merge, staging push per recruit-be flow; then FE can switch `canInviteCandidate` to `can_request_offer` (optional follow-up), and run the #370 staging positive control.
+- Open question from the BE agent for Bao: a recruiter must now CLAIM an unowned lead before inviting it (no claim-and-invite shortcut). Ask Bao if a shortcut is wanted.
+- SPEED MODE (Bao 05/10 night, relayed by agentflow-fb = ex-9d): locally only targeted unit tests; ONE negative control per main fix; still 2 reviewers per PR (+ Repo Owner for non-recruit repos); defer side features (write them down); every PR body lists what was skipped. Back to full flow when Bao says "quay lại flow cũ" / "full flow". See memory feedback_speed_mode_vs_full_flow.md.
+- Hand-off flag owner session is now named **agentflow-fb** (formerly agentflow-9d).
