@@ -9,6 +9,9 @@ Source report: ~/Desktop/lf-homepage-ssn-and-logging-2026-10-05.md (from Tan Tha
 - All hotfix worktrees and temp files removed.
 
 ## Open
+- Re-check 05/10 ~20:00 VN: packs API on production STILL returns real SSNs (findALoanOfficer 4/5 sampled officers, getInfoCompany $owner). Khai's fix #3618/#3623 ("never return the associate SSN from the anonymous API") is only on origin/3.64.1, not live yet. HTML and logs are clean.
+- agentflow-wdml3: lo unknown/missing LO key -> 500 (licenses/originator_nmls/first_name); needs moso-aid 404 for unknown key or Bao's call.
+- Not ours, untouched: robots.txt meta-externalagent rule (App Engine owner, business call); platform request-log exclusion (platform team).
 - agentflow-kglwq (P1, packs, NOT ours): production findLenders returns 0 lenders since 07:33Z, right after App Engine default version c (packs 3.64.1, 07:26Z). /our-lenders and every lender page empty/404 on www and LO sites. Needs Bao to hand to the packs owner.
 - Follow-ups: agentflow-lzumx (browser fetches still pull full records), agentflow-tmwrf (over-shared props, no SSN), agentflow-k3ywl (/mentorships 500).
 - Thanh not yet replied to (draft in the session).
