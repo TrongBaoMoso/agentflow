@@ -101,3 +101,7 @@ Bao is now testing by hand and sends questions/issues in batches. Answer each on
   5. gquqq + xslxk (Department work queue: Assigned to, Mine filter, search, total, route guard)
 - **If the machine restarts:** the agents die. Check open PRs (`gh pr list -R LoanFactory-Inc/recruit-be` / `recruit-fe`, search the bead ids) and worktrees `<repo>/_wt/<bead>`, then re-dispatch whatever has no PR.
 - **Open question for Bao:** where does the "Onboarding lead" sit relative to the Recruit Manager (answered with a recommendation 06/10 night)?
+- 06/10 night, more decisions from Bao:
+  - **No Onboarding lead role** for now. Instead, a confirm when an onboarding specialist acts on another specialist's LO (bead d9csj, added to stream 5).
+  - **Onboarding's job is 4 steps:** book the 1-1, mark the 1-1 Done with W-2/1099, Send to HR, schedule the setup call.
+  - The placeholder templates ONB_ACCOUNT and ONB_TRAINING get retired through a migration (bead lnnnz, **stream 6**).
