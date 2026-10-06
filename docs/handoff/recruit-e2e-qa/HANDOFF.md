@@ -60,6 +60,21 @@ Bao is now testing by hand and sends questions/issues in batches. Answer each on
 5. **(also 4b) Can one OB see every other OB's LOs?** Verify. Today "Your onboarding" = own only. Department work = whole department. Drawer read = CANDIDATE_READ (all?). Answer with evidence.
 6. **"Why is the OB assigned only after approval?"** Bao did not understand the explanation. Re-explain simply with an example timeline. Give a recommendation: keep it as is, or show "will go to <next OB>" on the approval row, or pre-assign at request but only send to MOSO at SENT. Bao said **more questions are coming**.
 
+## Resumed 06/10 evening: all 6 follow-ups answered
+- **Choices page (Bao to pick "1A, 2A, 3A"):** https://claude.ai/artifact/QvHANRRLhHXb6d7tk4PWP5. Source: `evidence/recruit-ui-choices.html`. Research: `evidence/stepper-research.md`.
+  - Q1 stepper: A (numbered circles + labels; dots on phone, recommended), B (dots), C (3 phases).
+  - Q2 approve buttons: [Approve] / [Approve · charge $100] [Approve · waive $100], toast "Approved · {LO} → {OB}".
+  - Q3 Offer card: "Handed off" + "{OB} · {date}".
+- **"My hand-offs": DONE on staging.** recruit-fe #385 (247da501) went through 2 reviewers + delta review and green CI, then promote-staging. Verified on staging as recruiter.
+- **Q4/Q5:** see `evidence/q45.md`.
+  - An OB can SEE and ACT on other OBs' LOs. Only scheduling is assignee-only.
+  - Recruiters can open /work by URL.
+  - There is no OB-lead role.
+  - Bead **gquqq** = option A: rename, Assigned-to column + Mine filter, URL guard.
+  - **Bao must decide:** should OBs see but not act on each other's LOs, or not see them at all (ONBOARDING_LEAD role)?
+- **Q6:** re-explained with a timeline. Recommendation: keep assigning at SENT, and show the OB name in the approve toast and the Offer card.
+- **Still waiting on Bao:** his picks on the choices page; the Q5 decision; the HR TX licence answer; Q13 (does a self-approved waive need a second approver?); Q11/12 (withdraw offer?). More questions are coming.
+
 ## Rules for this session
 - ram-gate before any Chromium/dev server.
 - Never print `.worktrees/_designs/staging-test-accounts.local.md`; use awk on one row/column inside the login script only.
