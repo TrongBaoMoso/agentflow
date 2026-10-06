@@ -121,3 +121,36 @@ Bao is now testing by hand and sends questions/issues in batches. Answer each on
     | stream 2 | V224 | D221–D223 |
 
   - **Merge order:** BE before FE.
+
+## OVERNIGHT 07/10 (Bao asleep, said: "làm end-to-end tới sáng, không stop")
+
+**Bao's answers before sleeping:**
+- Email log: build a SEPARATE screen in recruit (not a link to TERA). Model it on TERA Communication Activity (tera.viet18.com/communication-activity). The research agent is writing `scratchpad/email-screen/report.md`; then dispatch stream 10.
+- LIC_* per-state checklist items: turn them OFF (stream 11, bead wirt9, V227/D229).
+- Production: "recruit has no employee users yet → promote production if OK". Plan:
+  - Promote CODE only, by pointer push `git push origin origin/staging:production` (TrongBaoMoso = release-recruit-be), after staging is verified.
+  - **Do NOT flip prod flags** that touch real LOs or MOSO prod (writeback, reminders SEND, agreement send, calendar invites, HR publish). Prod-parity session d96850c0 owns those, and they need Bao's explicit OK.
+- New product decisions: pick the safest option, write the reason in the bead and the morning report, and stop only for real people / prod data.
+
+**Done tonight:**
+- Staging MOSO Admin for bao.trinh@loanfactory.com created as an active OB specialist (raw Datastore insert, labels, branch=1; no memcache flush needed). Verified with "Send again" on QA AnewM.
+- Separate finding: bao.trinh+manager@ also has no MOSO Admin on staging, so its writes get 401. Not fixed.
+- Retry ladder weekend days: kept the BE behaviour (calendar days). Ask Bao in the morning whether retries should move to Monday (change `CandidateNoAnswerLadder.retryPlan`).
+
+**Numbering:**
+
+| Stream / PR | Decision | Flyway |
+|---|---|---|
+| #575 | D215, D216 | V221 |
+| #576 | D217 | |
+| lnnnz | D218 | V222 |
+| #577 | D219, D220 | V223 |
+| #578 | D221–D223 | V224 |
+| #580 | D224 | |
+| d9csj | (in #575) | |
+| #579 | D226 | |
+| stream 9 (24pp0 + kzn7n) | D227, D228 | V226 |
+| stream 11 | D229 | V227 |
+| stream 10 (email log) | D230+ | V228+ |
+
+**Merge queue:** `scratchpad/merge_pr.sh <repo> <pr> "<subject>"` waits for CI + clean, squash-merges, then runs promote-staging and waits for the deploy. Order: BE before FE; #577/#391 before the #578/#392 rebase.
