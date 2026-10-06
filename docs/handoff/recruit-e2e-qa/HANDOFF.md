@@ -156,7 +156,7 @@ Bao is now testing by hand and sends questions/issues in batches. Answer each on
 **Merge queue:** `scratchpad/merge_pr.sh <repo> <pr> "<subject>"` waits for CI + clean, squash-merges, then runs promote-staging and waits for the deploy. Order: BE before FE; #577/#391 before the #578/#392 rebase.
 
 ## STOPPED 07/10 ~02:00 at Bao's request (weekly usage ~84%, stop before 90%)
-All dev agents were stopped. Only the shell merge queue still runs (#576 → #389, via merge_pr.sh). State of each PR, so the next session can finish it:
+All dev agents were stopped. Merge queue also stopped (Bao: "tạm pause"). Check #576 / #389 state before resuming. State of each PR, so the next session can finish it:
 
 | Stream | Bead(s) | PRs | State | Next step |
 |---|---|---|---|---|
