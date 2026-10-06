@@ -172,3 +172,13 @@ All dev agents were stopped. Merge queue also stopped (Bao: "tạm pause"). Chec
 
 - Production promote NOT done yet. Bao OK'd a code-only promote once staging is verified.
 - Morning question for Bao: should no-answer retries landing on Sat/Sun move to Monday? (`CandidateNoAnswerLadder.retryPlan`)
+
+## Local WIP left on disk at shutdown (07/10 ~02:10). Worktrees persist; scratchpad does NOT
+- `recruit-be/_wt/tqguk` (#577): 1 local commit, unpushed; 3 dirty files. **WARNING:** the dirty `InviteStatusServiceImpl.java` may still be the deliberately broken negative control (DECLINED filter removed). Run `git diff`, restore it with `git checkout -- <file>`, then push.
+- `recruit-be/_wt/gfc3l`: shows 3 unpushed commits, but they are STALE. The coordinator force-pushed a squashed rebase (`881e6195`) to the PR branch. **Do NOT push from this worktree.**
+- `recruit-be/_wt/24pp0` (stream 9): 1 local commit, unpushed (a hold on the S5+ re-registration name). `recruit-fe/_wt/kzn7n`: 17 dirty files (FE WIP for stream 9).
+- `recruit-be/_wt/wirt9` (stream 11): 6 dirty files (migration WIP).
+- `recruit-be/_wt/lnnnz` (#581): 1 dirty file (probably the IT assertion being added).
+- `recruit-fe/_wt/wczzn` (#394): 2 unpushed commits + 13 dirty files (review fixes in progress). `recruit-be/_wt/wczzn` (#580) head `dce41442` is pushed? Check it with `git log @{u}..`.
+- `recruit-fe/_wt/zzaij`: 3 dirty files. #388 is already merged, so these are probably the follow-ups; check before deleting.
+- `merge_pr.sh` is saved in this folder (the scratchpad copy is lost on reboot).
