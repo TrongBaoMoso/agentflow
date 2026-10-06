@@ -47,3 +47,11 @@ Each had 2 reviewers + CI green; staging browser checks passed for #363–#368 (
   - qsg2z-r3 → recruit-fe less-text round 3 (agentflow-qsg2z.4): Today "Too much today?", "· make the first call", Reports blue box + Unclaimed-age caption, Exceptions section subs, dead CSS.
   - qsg2z-fix6 → recruit-fe small fixes (agentflow-qsg2z.6): archive reason REQUIRED, 390px tile + footer, hide Invite when an offer is open, use can_request_offer.
   - qsg2z-isodate → recruit-be readable date in "No answer … retry 1 of 4".
+
+## STATE 06/10 08:20 (+07) — pause before office
+- MERGED + on recruit-be staging: #559 (D209 invite owner/manager), #562 (D210 decline requester/owner/manager), #565 (readable retry note date). Staging verify PASSED for #559 and #562.
+- MERGED to recruit-fe master: #380 (less-text round 3), #381 (archive reason required, phone layout, Invite hidden when an offer is open, can_request_offer). Master tip 24886b8e also contains #382 (another session, Meet 1-1 Google event in the Call result).
+- recruit-fe STAGING DEPLOY NOT DONE: deploys of 1d5a76b0 / 24886b8e were cancelled or stuck "pending" with no jobs (GitHub incident "Disruption with some GitHub services" at the time). Re-dispatched: `gh workflow run cd-staging.yml --ref staging` → run 37398331445 (pending at 08:20). First thing on resume: `gh run view 37398331445 --repo LoanFactory-Inc/recruit-fe`; if still stuck, cancel and re-dispatch.
+- After the deploy succeeds: browser-check on staging (ram-gate chrome; creds via awk only) at 1440 and 390: Today/Reports/Exceptions without the removed text, "Unclaimed after N min" title, "Your numbers" tag for scoped users, Not interested reason required, attitude tiles + sticky footer at 390/320, Invite hidden on QA Anew for a manager (open SIGNED offer), Meet 1-1 path from #382 still has the "When *" required date.
+- Then morning summary to Bao + production commit list (origin/production..origin/staging for recruit-fe and recruit-be). Production NOT promoted; Bao decides.
+- Deferred (noted, not filed as bead yet): Today row "No reply for N days" no longer names the channel (call vs text vs email) on non-hero rows; Pipeline BulkArchiveModal still says "Reason (optional)".
