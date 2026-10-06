@@ -125,7 +125,7 @@ Bao is now testing by hand and sends questions/issues in batches. Answer each on
 ## OVERNIGHT 07/10 (Bao asleep, said: "làm end-to-end tới sáng, không stop")
 
 **Bao's answers before sleeping:**
-- Email log: build a SEPARATE screen in recruit (not a link to TERA). Model it on TERA Communication Activity (tera.viet18.com/communication-activity). The research agent is writing `scratchpad/email-screen/report.md`; then dispatch stream 10.
+- Email log: Bao chose a separate recruit screen, then PAUSED it (07/10 night). Do NOT dispatch stream 10.
 - LIC_* per-state checklist items: turn them OFF (stream 11, bead wirt9, V227/D229).
 - Production: "recruit has no employee users yet → promote production if OK". Plan:
   - Promote CODE only, by pointer push `git push origin origin/staging:production` (TrongBaoMoso = release-recruit-be), after staging is verified.
@@ -154,3 +154,21 @@ Bao is now testing by hand and sends questions/issues in batches. Answer each on
 | stream 10 (email log) | D230+ | V228+ |
 
 **Merge queue:** `scratchpad/merge_pr.sh <repo> <pr> "<subject>"` waits for CI + clean, squash-merges, then runs promote-staging and waits for the deploy. Order: BE before FE; #577/#391 before the #578/#392 rebase.
+
+## STOPPED 07/10 ~02:00 at Bao's request (weekly usage ~84%, stop before 90%)
+All dev agents were stopped. Only the shell merge queue still runs (#576 → #389, via merge_pr.sh). State of each PR, so the next session can finish it:
+
+| Stream | Bead(s) | PRs | State | Next step |
+|---|---|---|---|---|
+| 1 | tqguk + fd2y8 | be #577, fe #391 | fe #391 pushed (`dd98814`); be #577 fixes committed locally in `recruit-be/_wt/<stream1>`, NOT pushed (an item-4 negative control was being re-run) | finish and push #577, delta review, merge #577 then #391 |
+| 2 | z05ny + tdxg6 + 7h4fw | be #578 `d8a5989`, fe #392 `45d3930` | phase 1 pushed | after #577/#391 merge: rebase, drop the `@Transient` field, reuse #577's response view and helpers, hide the note when approveNow |
+| 3 | gfc3l | be #576 (rebased by coordinator, `881e6195`), fe #389 | merge queue running | verify on staging: QA Bsix shows one row |
+| 6 | lnnnz | be #581 `df07d55` | 2 APPROVEs | add the ledger idempotency assert, re-run negative controls on the final file, rebase after #576 (D218 above D217, regenerate SCHEMA.md), merge |
+| 7 | wczzn + ydn7k | be #580 `0f8d055`, fe #394 `d20c516` | reviews REQUEST_CHANGES (list sent to the agent; fixes possibly partly done in its worktree) | redo the fixes, see the review notes in this file's history / bead comments |
+| 8 | jnso3 | be #579, fe #393 | **MERGED + staging** | — |
+| 9 | 24pp0 + kzn7n | none yet | agent stopped mid-implementation (worktree may hold WIP) | restart |
+| 11 | wirt9 | none yet (V227/D229) | agent stopped while running tests | restart |
+| 10 | email log 09dt7 | — | PAUSED by Bao | — |
+
+- Production promote NOT done yet. Bao OK'd a code-only promote once staging is verified.
+- Morning question for Bao: should no-answer retries landing on Sat/Sun move to Monday? (`CandidateNoAnswerLadder.retryPlan`)
