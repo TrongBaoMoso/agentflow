@@ -55,3 +55,9 @@ Each had 2 reviewers + CI green; staging browser checks passed for #363–#368 (
 - After the deploy succeeds: browser-check on staging (ram-gate chrome; creds via awk only) at 1440 and 390: Today/Reports/Exceptions without the removed text, "Unclaimed after N min" title, "Your numbers" tag for scoped users, Not interested reason required, attitude tiles + sticky footer at 390/320, Invite hidden on QA Anew for a manager (open SIGNED offer), Meet 1-1 path from #382 still has the "When *" required date.
 - Then morning summary to Bao + production commit list (origin/production..origin/staging for recruit-fe and recruit-be). Production NOT promoted; Bao decides.
 - Deferred (noted, not filed as bead yet): Today row "No reply for N days" no longer names the channel (call vs text vs email) on non-hero rows; Pipeline BulkArchiveModal still says "Reason (optional)".
+
+## DONE 06/10 (+07) — session work complete
+- recruit-fe staging = master = 24886b8e (incl. #363 #364 #365 #368 #370 #380 #381); recruit-be staging = master = 91181420 (incl. #559 #562 #565). Browser verify of #380/#381 passed 06/10.
+- Note: Interested now shows a "Ready to join?" card with one button + Next step always shown — that is recruit-fe #379 (agentflow-yluqw, Bao's later decision 06/10), it replaced #368's Ready/Not yet radio. Not a regression.
+- Beads: qsg2z.1-.6 closed; open: qsg2z.7 (deferred follow-ups, need Bao OK), m08j8 (nurture digest, later).
+- Production NOT promoted: prod is 205 (fe) / 207 (be) commits behind staging, spanning many sessions — Bao decides.
