@@ -81,3 +81,23 @@ Bao is now testing by hand and sends questions/issues in batches. Answer each on
 - Staging only.
 - Production untouched.
 - Do not switch staging GAE packs default back to `a`.
+
+## 06/10 night: Bao approved, 5 dev streams dispatched (background agents of this session; rules in DEV-RULES.md)
+- **Bao's decisions:**
+  - stepper A;
+  - short approve copy;
+  - Offer card "Handed off";
+  - manager self-approve in one step, with a waive needing NO second approver;
+  - no Withdraw request;
+  - Department work option A;
+  - My invites one row per LO;
+  - waive reason + note shown to the approver;
+  - B9 and B13 removed from the sheet (sheet v20, 193 steps).
+- **Streams.** Each one: BE PR + FE PR → then 2 reviewers → CI → squash → promote-staging, done by this session.
+  1. tqguk (remaining copy + Offer card channel) + fd2y8 (waive reason / requester / note)
+  2. z05ny (Offer modal predicts the 5/2 rule) + tdxg6 (manager one-step approve) + 7h4fw (fee-paid needs SENT/SIGNED)
+  3. gfc3l (My invites one row per LO + history)
+  4. zzaij (circle stepper, FE only)
+  5. gquqq + xslxk (Department work queue: Assigned to, Mine filter, search, total, route guard)
+- **If the machine restarts:** the agents die. Check open PRs (`gh pr list -R LoanFactory-Inc/recruit-be` / `recruit-fe`, search the bead ids) and worktrees `<repo>/_wt/<bead>`, then re-dispatch whatever has no PR.
+- **Open question for Bao:** where does the "Onboarding lead" sit relative to the Recruit Manager (answered with a recommendation 06/10 night)?
