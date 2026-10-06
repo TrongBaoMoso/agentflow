@@ -105,3 +105,19 @@ Bao is now testing by hand and sends questions/issues in batches. Answer each on
   - **No Onboarding lead role** for now. Instead, a confirm when an onboarding specialist acts on another specialist's LO (bead d9csj, added to stream 5).
   - **Onboarding's job is 4 steps:** book the 1-1, mark the 1-1 Done with W-2/1099, Send to HR, schedule the setup call.
   - The placeholder templates ONB_ACCOUNT and ONB_TRAINING get retired through a migration (bead lnnnz, **stream 6**).
+- **Progress 06/10 late night:**
+  - **zzaij stepper:** #388 MERGED (45649c00), on staging and verified.
+  - **Stream 5:** be #575 + fe #390 are in review fixes.
+  - **Stream 3:** be #576 + fe #389 are in review fixes.
+  - **Streams 1, 2, 6:** still building.
+  - **Central numbering:**
+
+    | PR / stream | Flyway | Decisions |
+    |---|---|---|
+    | #575 | V221 | D215, D216 |
+    | #576 | — | D217 |
+    | lnnnz | V222 | D218 |
+    | stream 1 | V223 | D219–D220 |
+    | stream 2 | V224 | D221–D223 |
+
+  - **Merge order:** BE before FE.
