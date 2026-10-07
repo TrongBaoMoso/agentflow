@@ -44,3 +44,10 @@ gh pr view 406 -R LoanFactory-Inc/recruit-fe --json state,mergeStateStatus,merge
 - Pre-existing warning on master and on the old drawer: a React duplicate key `cand-1` on the candidate panel. Seen with fixture data, not caused by #399.
 - RAM is tight. Run jest through `~/.claude/bin/ram-gate acquire 1000|1500 <label>` with `--runInBand --runTestsByPath` and a file list. A path containing `[locale]` passed as a pattern matches nothing.
 - Screenshot harness, for re-shooting before/after: `scratchpad/qvshots/shoot.mjs` in session 7950a7aa. It is fixture-backed Playwright, with `timestamp` in epoch seconds. It may be gone after a reboot. Rebuild the same way if needed.
+
+## 07/10 evening (Bao away 2-3h, end-to-end window)
+- #407 (agentflow-1as20): onboarding checklist rendered 5-6x for the onboarding specialist. Root cause: sibling CandidateChecklist + CandidateTeam both `key={candidate.id}`. Merged 87c1d761, on staging AND production (cd-production run 37635547694). Eyeball check with bao.trinh+onb-test on QA Anewc still to do.
+- Production go-live also carried efprc, lpshc, lkw2w (Repo Owner GO; lpshc/lkw2w dormant until their BE + flags reach prod).
+- Closed as already on production: tqguk, yluqw, gfc3l, wczzn, fd2y8, 7h4fw; gbto closed as duplicate of 5t57m.
+- 5t57m: config complete both sides on prod (recruit-be 4 vars, followup-be hostpush by Huy); 0 errors in 3d; OPEN until a real call on prod creates a follow-up.
+- Staging 502 at 21:25 ICT = the single Spot pod was preempted; back at 21:27 with the same chunk as prod.
