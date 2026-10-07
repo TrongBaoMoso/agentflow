@@ -108,3 +108,9 @@ Production now: recruit-be `ee647d7f`, recruit-fe `681164b9` (both = staging).
 
 ### To turn back on when omni is ready
 `RECRUIT_OMNI_INBOUND_REPLY_ENABLED` -> remove/true in production values ONLY after `omni-inbound-reply` + `omni-inbound-reply.recruit-be` (DLQ + .monitor) exist, and after `agentflow-tniq4` is decided.
+
+## Update 07/10 ~11:50
+- Production = staging again: recruit-be `cf71a45b` (V227), recruit-fe `c8946c61`. Carried other sessions' work as Bao wants (rule: promote everything on staging, do not ask): be #576 #579 #580 #581 #582, fe #388 #389 #390 #393 #394 #399.
+- `agentflow-tniq4` fixed and closed (fe #397, 2 reviewers MERGE): composer offers no SMS/Email without ACTIVITY_LOG.
+- followup-be production: Huy enabled `HOSTPUSH_ENABLED=true` + `RECRUIT_GRPC_TARGET` (`c005ce5`, deployed 07/10 03:59Z). No recruiter has logged a call on prod since the bridge (only SYSTEM activities), so `next_follow_up_at` is still 0/905 — nothing to push yet; check again after real use.
+- omni production: still `e204724` (28/09), no #476, topics absent. Khai said 10:04 "Giờ anh release nha". Recruit side then needs: topics + 2 subscriptions, scoped key, host-subjects token -> one PR (base URL, outbound subscription, follower flag, `RECRUIT_OMNI_INBOUND_REPLY_ENABLED` back to true, FE bubble).
