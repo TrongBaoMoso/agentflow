@@ -230,3 +230,26 @@ Waiting:
 | 17 | weekend → Monday | fllrw | D236 if needed |
 
 **Merged today:** #576 #389 #581 #580 #394 #582 #577 #391 #395 #396 #583 #398.
+
+## STOPPED 07/10 ~17:10 — usage limit
+Merged to staging since 16:00:
+
+| PR | What |
+|---|---|
+| #578 / #392 | Offer modal, manager Approve |
+| #584 / #402 | Weekend retry → Monday |
+| #587 | 6 stages BE (merged a196605). The FE #404 merge may still be running in the shell queue; check its state. |
+
+Open:
+
+| PR | Stream | State / next step |
+|---|---|---|
+| be #585 / fe #401 | pay/sign, efprc | CI red: MyInvitesIT:419 date-range fixture. The fee-settled rule shifts the count; fix the fixture without weakening the test. #401 approved. |
+| be #586 / fe #403 | post-joined, lpshc | Queue output unclear. Check whether they merged; if not, rebase and merge. |
+| be #588 / fe #405 | auto HR, lkw2w | Review REQUEST_CHANGES. Manual send only when `!isWatching && handedOffAt == null`; `recheckAfterCommit` reads `isWatching` first; `sweep()` try/catch + batch + backoff; FE gates "Missing for HR" on `auto_watching`, else manual button. |
+
+Then:
+- Turn on `pipeline.v2_stages` on staging (PUT `/api/v1/admin/settings/pipeline.v2_stages`).
+- Smoke test.
+- Production: count S0-with-SENT rows (expect 0), promote code, create HR_ASSOCIATE_UPDATE subscription + DLQ on prod, set the `RECRUIT_FEATURES_HR_HANDOFF_*` env vars, turn on the flag.
+- For Bao: message to Hưng about a masked licence read (draft is in the chat).
