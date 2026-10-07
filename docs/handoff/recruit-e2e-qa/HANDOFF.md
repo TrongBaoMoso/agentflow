@@ -182,3 +182,25 @@ All dev agents were stopped. Merge queue also stopped (Bao: "tạm pause"). Chec
 - `recruit-fe/_wt/wczzn` (#394): 2 unpushed commits + 13 dirty files (review fixes in progress). `recruit-be/_wt/wczzn` (#580) head `dce41442` is pushed? Check it with `git log @{u}..`.
 - `recruit-fe/_wt/zzaij`: 3 dirty files. #388 is already merged, so these are probably the follow-ups; check before deleting.
 - `merge_pr.sh` is saved in this folder (the scratchpad copy is lost on reboot).
+
+## RESUMED 07/10 09:05 (after reboot); state at ~11:30
+Merged and on staging today:
+
+| PR | Change |
+|---|---|
+| #576 / #389 | My hand-offs shows one row per LO. Verified: QA Bsix has 1 row with "Declined 2× before". |
+| #581 | Retire ONB_ACCOUNT / ONB_TRAINING (V222) |
+| #580 / #394 | Call result refuses past moments; retry days and month dates shown inline |
+
+#577 IT failure root cause: a bare `jdbcTemplate.update` on an autoCommit=false pool gets rolled back. Fixed by wrapping it in `inTransaction` (bd2412dd). Negative control: red as expected. Local IT: 8/8 green.
+
+Merge queue running (shell, sequential): #582 (LIC_* retire, V227) → #577 → #391 → #395 (retry-day arrow chain, Bao 07/10) → #396 (Send info sends directly, bead 6mhuu).
+
+In review:
+- #583 / #398 (stream 9: re-registration hold + bell + Today chip, D227, V226)
+
+Waiting:
+- Stream 2 (#578 / #392) waits for #577 + #391, then rebase. The previous agent was stopped; start a new one from DEV-RULES and its phase-2 list (in the "STOPPED 07/10" table above).
+- Follow-ups filed: pg4l8 (omni idempotency key), 3r9rh (notifier drops 'deferred'), 09dt7 (email log screen, PAUSED).
+- Production promote: not done yet. Bao OK'd a code-only promote after staging is verified.
+- Open question for Bao: should weekend retry days move to Monday?
