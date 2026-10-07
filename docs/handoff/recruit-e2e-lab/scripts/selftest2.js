@@ -1,0 +1,64 @@
+const { chromium } = require('playwright'); const { login, api } = require('./auth'); const fs = require('fs'); const { execFileSync } = require('child_process');
+const q = (s) => execFileSync('/Users/apple/Projects/agentflow/.worktrees/_designs/e2-helpers/q.sh', [s]).toString().split('\n').slice(1, -2).map(l => l.split(' | ').map(x => x.trim()));
+const cands = Object.fromEntries(fs.readFileSync('cands.txt','utf8').split('\n').slice(1).map(l => l.split(' | ')).filter(a => a.length > 1).map(a => [a[0].trim(), a[1].trim()]));
+const C = (id) => cands[`bao.trinh+t08${id.toLowerCase()}@loanfactory.com`];
+const R = []; const rec = (step, ok, note) => { R.push({ step, status: ok === null ? 'skip' : ok ? 'pass' : 'fail', note }); console.log(step, ok, note); };
+const body = (x) => JSON.stringify(x.body?.error?.messages || x.body?.payload || x.body).slice(0, 200);
+(async () => {
+  const b = await chromium.launch({ headless: true });
+  const t = JSON.parse(fs.readFileSync('tokens.json'));
+  const adm = (await login(b, 'chauchau.inc@gmail.com')).token;
+  // X: production CRUD on Z4 (claude's own)
+  const z = C('Z4');
+  let x = await api(t.rec, 'PUT', `/candidates/${z}`, { career_production: 2500000, units12mo: 8, loans_since_anchor: 15 });
+  let row = q(`select career_production, units_12mo, loans_since_anchor, units_12mo_source, loans_since_as_of from candidates where id='${z}'`)[0];
+  rec('X2', x.status < 300 && row[1] === '8' && row[2] === '15', `API PUT 2,500,000 / 8 / 15 → ${x.status}; DB ${row.join(' / ')}`);
+  x = await api(t.rec, 'PUT', `/candidates/${z}`, { units12mo: -1 }); const neg = x.status;
+  x = await api(t.rec, 'PUT', `/candidates/${z}`, { units12mo: 'abc' }); const abc = x.status;
+  rec('X3', neg >= 400 && abc >= 400, `API units12mo=-1 → ${neg}; 'abc' → ${abc}`);
+  x = await api(t.rec, 'PUT', `/candidates/${z}`, { units12mo: null }); row = q(`select units_12mo from candidates where id='${z}'`)[0];
+  rec('X4', row[0] === '8', `API units12mo=null → ${x.status}; giá trị vẫn ${row[0]} (trống = không đổi)`);
+  const lk = q(`select recruiter_locked_fields from candidates where id='${z}'`)[0];
+  rec('X5', /units|career/i.test(lk[0] || ''), `DB recruiter_locked_fields sau khi sửa tay: ${lk[0]}`);
+  x = await api(t.hh, 'PUT', `/candidates/${C('E6f')}`, { units12mo: 3 });
+  rec('W8', x.status === 403, `API Headhunter sửa units12mo lead của mình → ${x.status} ${body(x)}`);
+  x = await api(t.hh, 'PUT', `/candidates/${C('E6f')}`, { company_name: 'QA HH Company' });
+  rec('X11', x.status < 300, `API Headhunter sửa Company → ${x.status}`);
+  // W: auto-own of W1, and program invite reasons
+  row = q(`select coalesce((select max(g.email) from rbac_grants g where g.user_id=c.owner_id),''), c.origin_type, c.stage from candidates c where id='${C('W1')}'`)[0];
+  rec('W3', row[0] === 'bao.trinh+hh@loanfactory.com', `DB QA Wjoinnew owner=${row[0]} origin=${row[1]} stage=${row[2]}`);
+  x = await api(t.hh, 'POST', `/candidates/${C('E6g')}/call-outcome`, { attitude: 'INTERESTED', send_invite: true });
+  x = await api(t.hh, 'POST', `/candidates/${C('E6g')}/offers`, { waive_fee: false, note: 'QA program invite' });
+  const st = x.body?.payload?.status; rec('W6', x.status < 300, `API Headhunter offer QA Erecruit (không số) → ${x.status} ${st || body(x)}`);
+  x = await api(t.mgr, 'GET', '/offers/pending-approval'); const s = JSON.stringify(x.body); const i = s.indexOf(C('E6g'));
+  const near = i >= 0 ? s.slice(Math.max(0, i - 1500), i + 1500) : '';
+  rec('W7', i >= 0 && /PROGRAM|program/i.test(near), `API hàng duyệt manager có QA Erecruit; mã lý do: ${(near.match(/"[A-Z_]{6,}"/g) || []).filter(v => /PROGRAM|COLLECT|QUALIF|CREDIT|LOANS|SINCE|12MO/.test(v)).slice(0, 6).join(', ')}`);
+  // RT7: big producer threshold change + restore
+  const before = q(`select distinct on (setting_key) setting_key, value from recruit_settings where setting_key in ('pipeline.big_producer_loans_since_min') and effective_from<=now() order by setting_key, effective_from desc`)[0];
+  x = await api(adm, 'PUT', '/admin/settings/pipeline.big_producer_loans_since_min', { value: 7 });
+  const put = x.status; await new Promise(r => setTimeout(r, 35000));
+  x = await api(t.rec, 'GET', '/config/candidate-view'); const v7 = x.body?.payload?.big_producer_loans_since_min;
+  x = await api(adm, 'PUT', '/admin/settings/pipeline.big_producer_loans_since_min', { value: Number(before?.[1] || 5) });
+  await new Promise(r => setTimeout(r, 35000)); const back = (await api(t.rec, 'GET', '/config/candidate-view')).body?.payload?.big_producer_loans_since_min;
+  rec('RT7', put < 300 && v7 === 7 && back === Number(before?.[1] || 5), `API Settings Big producer loans-since: ${before?.[1]} → 7 (PUT ${put}, FE đọc ${v7}) → trả lại ${back}`);
+  // UI checks for RT
+  const r = await login(b, 'bao.trinh+recruiter@loanfactory.com'); const p = r.p;
+  await p.goto('https://recruit.viet18.com/candidates/' + C('L1'), { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(9000);
+  let tx = (await p.innerText('body')).replace(/\s+/g, ' '); await p.screenshot({ path: 'shots/rt-l1.png', fullPage: true });
+  const sentCount = (tx.match(/Sent to HR/g) || []).length;
+  rec('RT9', !/UTC/.test(tx), `UI hồ sơ QA Lautosent: số lần chữ “Sent to HR” = ${sentCount}; có chữ “UTC”: ${/UTC/.test(tx)}`);
+  rec('RT3', /of \d+ done/.test(tx) && /Before joining/i.test(tx), `UI thẻ Onboarding progress: “${(tx.match(/\d+ of \d+ done/) || [''])[0]}”, Before joining: ${/Before joining/i.test(tx)}`);
+  await p.setViewportSize({ width: 1440, height: 900 });
+  await p.goto('https://recruit.viet18.com/invites', { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(9000);
+  const rem = await p.evaluate(() => { const bs = [...document.querySelectorAll('button')].filter(b => /Remind/.test(b.innerText) && b.offsetParent); return bs.map(b => { const r = b.getBoundingClientRect(); return [Math.round(r.right), window.innerWidth]; }); });
+  tx = (await p.innerText('body')).replace(/\s+/g, ' ');
+  rec('RT10', rem.length ? rem.every(([rt, w]) => rt <= w) : null, `UI My hand-offs 1440: nút Remind (cạnh phải/khung) ${JSON.stringify(rem.slice(0, 4))}`);
+  rec('RT5', /Waiting on/i.test(tx) && /Since/i.test(tx), `UI My hand-offs: có cột Waiting on / Since; còn cột “With”: ${/\bWith\b/.test(tx)}`);
+  rec('RT1', /Paid · not signed|Signed · fee pending|Fee waived · not signed/.test(tx) || null, `UI My hand-offs: chữ trạng thái giữa chừng: ${(tx.match(/(Paid · not signed|Signed · fee pending|Fee waived · not signed)/) || ['(chưa có LO ở trạng thái đó)'])[0]}`);
+  await r.ctx.close();
+  const m = await login(b, 'bao.trinh+manager@loanfactory.com'); await m.p.goto('https://recruit.viet18.com/exceptions', { waitUntil: 'domcontentloaded' }); await m.p.waitForTimeout(9000);
+  tx = (await m.p.innerText('body')).replace(/\s+/g, ' '); await m.p.screenshot({ path: 'shots/rt-exceptions.png', fullPage: true });
+  rec('RT2', /Signed in MOSO, needs a decision/i.test(tx), `UI Exceptions: mục “Signed in MOSO, needs a decision”: ${/Signed in MOSO/i.test(tx)}`);
+  rec('H1', /Unclaimed/i.test(tx), `UI Exceptions có mục Unclaimed; thấy Hunclaimed: ${/Hunclaimed/.test(tx)}`);
+  fs.writeFileSync('selftest2.json', JSON.stringify(R, null, 1)); await b.close();
+})();

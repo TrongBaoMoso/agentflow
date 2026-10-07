@@ -1,0 +1,34 @@
+const { chromium } = require('playwright'); const { login } = require('./auth'); const fs = require('fs');
+const out = []; const rec = (step, ok, note) => { out.push({ step, status: ok === null ? 'skip' : ok ? 'pass' : 'fail', note }); console.log(step, ok, note); fs.writeFileSync('uiflow2.json', JSON.stringify(out, null, 1)); };
+const txt = async (p) => (await p.innerText('body').catch(() => '')).replace(/\s+/g, ' ');
+const B = (p, re) => p.locator('button:visible').filter({ hasText: re });
+async function step(id, fn) { try { await fn(); } catch (e) { rec(id, null, 'automation: ' + e.message.split('\n').filter(l => /waiting for|Error|Timeout/.test(l)).slice(0, 2).join(' / ').slice(0, 200)); } }
+(async () => { const b = await chromium.launch({ headless: true });
+  const m = await login(b, 'bao.trinh+manager@loanfactory.com'); const p = m.p;
+  await step('B6', async () => { await p.goto('https://recruit.viet18.com/today', { waitUntil: 'domcontentloaded', timeout: 90000 }); await p.waitForTimeout(8000);
+    let t = await txt(p); const has = /Claudeofferd/.test(t); const btns = (t.match(/Approve · charge \$100|Approve · waive \$100|Approve|Decline/g) || []).slice(0, 6);
+    const row = p.locator('tr, [class*=row]', { hasText: 'Claudeofferd' }).first();
+    await row.locator('button:visible').filter({ hasText: /^\s*Decline/ }).first().click(); await p.waitForTimeout(1500);
+    const ta = p.locator('textarea:visible').last(); await ta.fill('abc'); await p.waitForTimeout(500);
+    const conf = B(p, /^\s*Decline/).last(); const d3 = await conf.isDisabled();
+    await ta.fill('QA decline by Claude'); await p.waitForTimeout(500); const d4 = await conf.isDisabled();
+    await conf.click(); await p.waitForTimeout(3000); t = await txt(p);
+    rec('B6', has && d3 && !d4 && /Declined/.test(t), `UI hàng chờ có QA Claudeofferd=${has}; nút trên dòng: ${[...new Set(btns)].join(' / ')}; lý do 3 ký tự khoá=${d3}; 20 ký tự mở=${!d4}; toast Declined=${/Declined/.test(t)}`); });
+  await step('H1', async () => { await p.goto('https://recruit.viet18.com/exceptions', { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(8000); const t = await txt(p);
+    rec('H4', /Claimed, not contacted/i.test(t), 'UI Exceptions mục “Claimed, not contacted yet”: ' + /Claimed, not contacted/i.test(t) + '; có QA Hnotcontacted: ' + /Hnotcontacted/.test(t)); });
+  await m.ctx.close();
+  const o = await login(b, 'bao.trinh+onb-test@loanfactory.com'); const q = o.p;
+  await step('J2', async () => { await q.goto('https://recruit.viet18.com/work', { waitUntil: 'domcontentloaded' }); await q.waitForTimeout(8000);
+    await q.getByRole('button', { name: /^Everyone$/ }).first().click().catch(() => {}); await q.waitForTimeout(1500);
+    await q.getByPlaceholder(/Search name or NMLS/).fill('Claudeschedule'); await q.waitForTimeout(3000);
+    const row = q.locator('tr', { hasText: 'Claudeschedule' }).first(); const assigned = (await row.innerText().catch(() => '')).replace(/\s+/g, ' ');
+    await row.locator('button:visible').filter({ hasText: /Block/ }).first().click(); await q.waitForTimeout(1200);
+    let t = await txt(q); const onBehalf = /belongs to|Do it anyway/i.test(t);
+    if (onBehalf) { await B(q, /Do it anyway|Continue|Yes/).last().click().catch(() => {}); await q.waitForTimeout(1200); }
+    const ta = q.locator('textarea:visible').last(); await ta.fill('abc'); const mb = B(q, /Mark blocked/).last(); const d3 = await mb.isDisabled().catch(() => null);
+    await ta.fill('QA block test by Claude'); await q.waitForTimeout(400); await mb.click(); await q.waitForTimeout(2500); t = await txt(q);
+    rec('J5', d3 === true && /Marked blocked/.test(t), `UI Team queue (row: ${assigned.slice(0, 90)}); hộp “làm thay” hiện=${onBehalf}; lý do 3 ký tự khoá=${d3}; toast Marked blocked=${/Marked blocked/.test(t)}`);
+    rec('J3', onBehalf || /You$/.test(assigned) ? true : null, 'Hộp xác nhận làm thay khi LO thuộc Onboarding khác: ' + onBehalf);
+    await row.locator('button:visible').filter({ hasText: /Unblock/ }).first().click().catch(() => {}); await q.waitForTimeout(2500); t = await txt(q);
+    rec('J5b', /Reopened|Unblocked/i.test(t), 'UI Unblock → toast: ' + ((t.match(/(Reopened|Unblocked)[^.]{0,40}/) || ['không'])[0])); });
+  await b.close(); })();
