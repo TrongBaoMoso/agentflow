@@ -253,3 +253,37 @@ Then:
 - Smoke test.
 - Production: count S0-with-SENT rows (expect 0), promote code, create HR_ASSOCIATE_UPDATE subscription + DLQ on prod, set the `RECRUIT_FEATURES_HR_HANDOFF_*` env vars, turn on the flag.
 - For Bao: message to Hưng about a masked licence read (draft is in the chat).
+
+## PAUSED 07/10 ~17:30 (Bao going home). EXACT STATE, check `gh pr view` first on resume
+**MERGED + staging:** #587 be (6 stages, a196605f) and #404 fe (a41f22b8). The `pipeline.v2_stages` flag is still OFF everywhere.
+
+**OPEN:**
+
+| PR | Stream | State / next step |
+|---|---|---|
+| be #585 / fe #401 | efprc, pay/sign | The MyInvitesIT fixture fix is pushed (bc02e157); CI must go green. #401 approved; its last small commit adds the "Signed and paid, invite on hold" / "Paid in MOSO, waived here" copy. Merge #585 then #401. |
+| be #586 / fe #403 | lpshc, post-joined progress | Review fixes pushed (77571d79 / 0f015efe). A shell merge_pr.sh was running for #586, with #403 queued after it. If the machine shut down it died: re-run `docs/handoff/recruit-e2e-qa/merge_pr.sh recruit-be 586 "<subject>"`, then fe 403. May need a rebase over #587. |
+| be #588 / fe #405 | lkw2w, auto Send to HR | REQUEST_CHANGES, not fixed (agent stopped). fe worktree `recruit-fe/_wt/lkw2w` has 2 dirty files (SendToHr index + test), WIP of the amendment; inspect before continuing. Fixes needed: |
+
+Fixes needed for lkw2w:
+1. Manual send allowed when `!isWatching && handedOffAt == null`; IT where manual and auto race and only one send happens.
+2. `recheckAfterCommit`: a plain `isWatching` read first; register the callback only for watched rows.
+3. `sweep()`: try/catch, batch cap, last_checked_at or backoff even on failure.
+4. FE gates "Missing for HR" and the Today item on `auto_watching`; otherwise show the manual button.
+5. Rebase over #585 / #586 / #587, which touch the same files.
+
+**After all merged:**
+1. Staging: `PUT /api/v1/admin/settings/pipeline.v2_stages` true (as an admin, e.g. chauchau). Smoke-test the 6 stages, Big producer, progress card, hand-offs bar, auto Send to HR.
+2. Production ("tự làm hết"):
+   - read-only count of S0 ACTIVE rows with a SENT/SIGNED offer (expect 0);
+   - promote be/fe code (`git push origin <sha>:production` per DELIVERY_FLOW; read tera-docs first);
+   - create prod Pub/Sub HR_ASSOCIATE_UPDATE_SUBSCRIBE_RECRUIT + DLQ + .monitor in lender-rate, same shape as onboard; set RECRUIT_HR_UPDATE_SUBSCRIPTION;
+   - set RECRUIT_FEATURES_HR_HANDOFF_PUBLISH=true + RECRUIT_FEATURES_HR_HANDOFF_AUTO_SEND=true + the HR relay internal key;
+   - turn on pipeline.v2_stages and post-joined-progress.
+   - Coordinate with the prod-parity handoff (docs/handoff/recruit-prod-parity/HANDOFF.md).
+
+**Bao TODO:** send Hưng the request for a masked per-state licence read (draft in chat 07/10). Until then Licensing is a manual tick.
+
+**Mode:** SPEED MODE (see DEV-RULES): CI is the IT gate, 1 reviewer per PR, negative controls only for permission/money/data guards.
+
+**Merge script:** `docs/handoff/recruit-e2e-qa/merge_pr.sh` waits for CI + a clean merge state, then squashes, runs promote-staging and waits for the deploy. It exits 2 on red CI and 3 on a dirty PR (rebase manually: keep both DECISIONS rows).
