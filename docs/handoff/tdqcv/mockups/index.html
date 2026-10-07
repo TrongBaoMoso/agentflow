@@ -1,0 +1,61 @@
+<title>Register Loan Officer Redesign</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+
+/* Layout: one slim version bar on top, the chosen mockup fills the rest of the window. Single dark look on purpose. */
+:root {
+  color-scheme: dark;
+  --bar: #14161b;
+  --bar-line: #2c3038;
+  --text: #e8eaf0;
+  --muted: #9aa0ab;
+  --seg: #23262d;
+  --on: #f36f20;
+  --on-text: #fff;
+  --font: Montserrat, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+}
+html, body { height: 100%; }
+body { margin: 0; background: var(--bar); color: var(--text); font-family: var(--font); display: flex; flex-direction: column; }
+.vbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 8px 16px; padding-top: calc(8px + env(safe-area-inset-top, 0px)); background: var(--bar); border-bottom: 1px solid var(--bar-line); font-size: 13px; }
+.vbar .lbl { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.vseg { display: inline-flex; padding: 3px; gap: 2px; border-radius: 8px; background: var(--seg); }
+.vseg button { font: inherit; font-weight: 600; color: var(--muted); background: none; border: 0; padding: 6px 12px; border-radius: 6px; cursor: pointer; transition: background 150ms, color 150ms; }
+.vseg button:hover { color: var(--text); }
+.vseg button[aria-pressed='true'] { background: var(--on); color: var(--on-text); }
+.vseg button:focus-visible { outline: 2px solid var(--on); outline-offset: 2px; }
+.vbar .note { color: var(--muted); min-width: 0; }
+iframe { flex: 1; width: 100%; border: 0; background: var(--bar); }
+@media (prefers-reduced-motion: reduce) { .vseg button { transition: none; } }
+</style>
+
+<header class="vbar" aria-label="Mockup version">
+  <span class="lbl">Version</span>
+  <div class="vseg" role="group" aria-label="Choose a version">
+    <button type="button" id="v-previous" data-v="previous" aria-pressed="false">Previous (bold, dark hero)</button>
+    <button type="button" id="v-current" data-v="current" aria-pressed="true">Current (calm)</button>
+  </div>
+  <span class="note" id="vnote">The calm version is the one in review now.</span>
+</header>
+<iframe id="view" title="Register Loan Officer mockup" src="current.html"></iframe>
+
+<script>
+(() => {
+  const NOTES = {
+    current: 'The calm version is the one in review now.',
+    previous: 'Earlier version from 06/10, kept for comparison.'
+  }
+  const view = document.getElementById('view')
+  const buttons = [...document.querySelectorAll('.vseg button')]
+  function show(v) {
+    if (!NOTES[v]) v = 'current'
+    if (!view.src.endsWith(v + '.html')) view.src = v + '.html'
+    buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.v === v)))
+    document.getElementById('vnote').textContent = NOTES[v]
+    try { localStorage.setItem('rlo-version', v) } catch (e) {}
+  }
+  buttons.forEach((b) => b.addEventListener('click', () => show(b.dataset.v)))
+  let start = location.hash.slice(1)
+  if (!NOTES[start]) { try { start = localStorage.getItem('rlo-version') || 'current' } catch (e) { start = 'current' } }
+  show(start)
+})()
+</script>

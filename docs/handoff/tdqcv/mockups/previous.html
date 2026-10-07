@@ -1,0 +1,1454 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>Register Loan Officer Redesign</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap');
+
+/* Tokens: lov1 palette (loan-officer-v1.css) + lo-programs elevation, radii and eyebrow (lo-programs.css) */
+:root {
+  color-scheme: light;
+  --orange: #f36f20;
+  --orange-ink: #c4550c;
+  --orange-deep: #d45a10;
+  --orange-soft: #ff9350;
+  --orange-tint: #fff1e8;
+  --night: #0f1626;
+  --night-2: #18223a;
+  --night-line: #2a3552;
+  --on-night: #f4f2ef;
+  --on-night-2: #b3bacb;
+  --paper: #fbfaf8;
+  --card: #fff;
+  --ink: #151b29;
+  --ink-2: #4a5263;
+  --muted: #767d8b;
+  --line: #e9e5df;
+  --slot: #f1eee9;
+  --slot-line: #d9d3ca;
+  --ok: #1f9d6b;
+  --ok-tint: #e7f6ef;
+  --danger: #c0392b;
+  --warn: #9a5b00;
+  --warn-tint: #fff6e0;
+  --warn-line: #f5a524;
+  --mono: ui-monospace, sfmono-regular, menlo, consolas, monospace;
+  --r-sm: 12px;
+  --r-md: 18px;
+  --r-lg: 22px;
+  --r-full: 999px;
+  --shadow-sm: 0 1px 2px rgba(18, 21, 28, 0.04), 0 6px 16px -10px rgba(18, 21, 28, 0.16);
+  --shadow-md: 0 2px 6px rgba(18, 21, 28, 0.05), 0 22px 44px -26px rgba(18, 21, 28, 0.32);
+  --shadow-card: 0 30px 60px -36px rgba(15, 22, 38, 0.5);
+  --shadow-orange: 0 14px 36px -14px rgba(243, 111, 32, 0.6);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --fast: 150ms;
+  --normal: 320ms;
+  --stick: 60px;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #e4e1dc;
+  color: var(--ink);
+  font-family: Montserrat, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4, p { margin: 0; }
+h1, h2, h3 { text-wrap: balance; line-height: 1.08; }
+button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
+a { color: var(--orange-ink); }
+.i { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; border-radius: 8px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+/* ---------------------------------------------------------------- mockup toolbar */
+.mk {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px;
+  padding: 10px 16px;
+  background: #0b101c; color: #e8eaf0;
+  font-size: 13px; border-bottom: 1px solid #222b40;
+}
+.mk b { font-weight: 800; letter-spacing: 0.02em; }
+.mk .tag { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); }
+.mk label { display: inline-flex; align-items: center; gap: 8px; }
+.mk select {
+  font: inherit; font-weight: 600; color: #fff; background: #18223a;
+  border: 1px solid #2a3552; border-radius: 8px; padding: 6px 10px; max-width: 280px;
+}
+.mk-seg { display: inline-flex; padding: 3px; border-radius: 999px; background: #18223a; border: 1px solid #2a3552; }
+.mk-seg button { padding: 5px 12px; border-radius: 999px; font-weight: 700; color: #b3bacb; }
+.mk-seg button[aria-pressed='true'] { background: var(--orange); color: #fff; }
+.mk .sp { flex: 1; }
+/* On a real phone the toolbar wraps to three rows, so it scrolls away instead of covering the page's own sticky bars. */
+@media (max-width: 700px) { .mk { position: static; } :root { --stick: 0px; } }
+
+/* ---------------------------------------------------------------- device frame */
+.frame { container: page / inline-size; background: var(--paper); margin-inline: auto; }
+.frame.is-m {
+  --stick: 0px;
+  width: 375px; height: calc(100vh - 92px); min-height: 560px;
+  margin-block: 18px; overflow-y: auto; overflow-x: hidden;
+  border-radius: 30px; border: 8px solid #10141f;
+  box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.5);
+}
+
+/* ---------------------------------------------------------------- shared primitives */
+.wrap { max-width: 1180px; margin-inline: auto; padding-inline: 20px; }
+.kicker { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--orange-ink); }
+.eyebrow { display: flex; align-items: center; gap: 12px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase; color: var(--orange); }
+.eyebrow::before { content: ''; width: 40px; height: 3px; border-radius: 999px; background: var(--orange); flex: none; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border-radius: 12px; padding: 14px 22px; font-weight: 800; font-size: 15px; line-height: 1.25;
+  text-decoration: none; transition: transform var(--fast) var(--ease), background var(--fast), box-shadow var(--fast);
+}
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(1px); }
+.btn-o { background: linear-gradient(140deg, var(--orange-soft), var(--orange) 55%); color: #fff; box-shadow: var(--shadow-orange); }
+.btn-o:hover { background: linear-gradient(140deg, var(--orange), var(--orange-deep) 70%); }
+.btn-ghost { color: var(--ink); box-shadow: inset 0 0 0 2px var(--line); background: var(--card); }
+.btn-ghost:hover { box-shadow: inset 0 0 0 2px var(--orange); }
+.btn-line { color: #fff; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.55); }
+.btn-line:hover { box-shadow: inset 0 0 0 2px #fff; }
+.btn-white { background: #fff; color: #b8490a; }
+.btn[disabled] { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+.link-btn { display: inline-flex; align-items: center; gap: 6px; font-weight: 800; font-size: 14px; color: var(--orange-ink); padding: 4px 0; }
+.link-btn:hover { color: var(--orange-deep); text-decoration: underline; }
+
+/* ---------------------------------------------------------------- hero */
+.hero { position: relative; overflow: hidden; isolation: isolate; background: var(--night); color: var(--on-night); }
+.hero::before {
+  content: ''; position: absolute; inset: -40% -10% auto -20%; height: 150%; z-index: -1;
+  background:
+    radial-gradient(50% 60% at 14% 8%, rgba(243, 111, 32, 0.32), transparent 62%),
+    radial-gradient(46% 56% at 88% 0%, rgba(79, 111, 150, 0.32), transparent 62%);
+}
+.hero::after {
+  content: ''; position: absolute; inset: 0; z-index: -1; opacity: 0.5;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(180deg, #000 0%, transparent 85%);
+}
+.hero-top { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr); gap: 40px; align-items: end; padding-block: 64px 36px; }
+.hero h1 { font-size: clamp(36px, 4.6cqi + 8px, 72px); font-weight: 900; letter-spacing: -0.045em; line-height: 1.02; color: #fff; margin-top: 18px; }
+.hero h1 span { color: var(--orange); }
+.hero .lede { margin-top: 18px; font-size: clamp(17px, 0.6cqi + 13px, 21px); font-weight: 600; line-height: 1.4; color: #dfe3ec; max-width: 44ch; }
+.hero .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+.pill { display: inline-flex; align-items: center; gap: 7px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 700; background: rgba(244, 242, 239, 0.08); color: #e8eaf0; border: 1px solid rgba(244, 242, 239, 0.12); }
+.pill .i { width: 16px; height: 16px; color: var(--orange); }
+.split { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--night-line); border-radius: var(--r-lg); background: rgba(24, 34, 58, 0.7); backdrop-filter: blur(6px); }
+.split > div { padding: 22px 22px 20px; display: grid; gap: 4px; }
+.split > div + div { border-left: 1px solid var(--night-line); }
+.split b { font-size: 54px; font-weight: 900; letter-spacing: -0.05em; line-height: 1; }
+.split > div:first-child b { color: var(--orange); }
+.split span { font-size: 14px; color: var(--on-night-2); font-weight: 600; }
+.split small { grid-column: 1 / -1; padding: 12px 22px; border-top: 1px solid var(--night-line); font-size: 13px; color: var(--on-night-2); }
+
+/* journey track: 8 steps, "your part" vs "our part" */
+.track-wrap { padding-bottom: 40px; }
+.track-heads { display: grid; grid-template-columns: 5fr 3fr; gap: 14px; margin-bottom: 12px; }
+.track-heads span { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--on-night-2); }
+.track-heads span::after { content: ''; flex: 1; height: 1px; background: var(--night-line); }
+.track-heads span:first-child { color: var(--orange); }
+.track { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 8px; }
+.track li { position: relative; display: grid; gap: 10px; align-content: start; padding: 16px 14px 18px; border-radius: 16px; background: var(--night-2); border: 1px solid var(--night-line); transition: background var(--normal), border-color var(--normal), transform var(--normal) var(--ease); }
+.track li.ours { background: transparent; border-style: dashed; }
+.track .n { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-weight: 900; font-size: 14px; background: rgba(244, 242, 239, 0.08); color: var(--on-night); }
+.track .n .i { width: 16px; height: 16px; display: none; }
+.track b { font-size: 14px; font-weight: 700; line-height: 1.3; color: var(--on-night); }
+.track b a { color: var(--orange-soft); text-decoration: none; }
+.track li.done .n { background: var(--ok); }
+.track li.done .n span { display: none; }
+.track li.done .n .i { display: block; }
+.track li.done b { color: var(--on-night-2); }
+.track li.now { background: var(--orange); border-color: var(--orange); transform: translateY(-4px); box-shadow: var(--shadow-orange); }
+.track li.now .n { background: #fff; color: var(--orange-ink); }
+.track li.now b { color: #fff; }
+.track li.now::after {
+  content: attr(data-here); position: absolute; top: -11px; right: 10px;
+  font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  background: #fff; color: var(--orange-ink); padding: 3px 7px; border-radius: 6px;
+}
+
+/* ---------------------------------------------------------------- workspace */
+.work { padding-block: 44px 0; }
+.work-grid { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 36px; align-items: start; }
+.frame.is-thanks .rail, .frame.is-thanks .mnav, .frame.is-thanks .act { display: none !important; }
+.frame.is-thanks .work-grid { grid-template-columns: minmax(0, 1fr); }
+
+/* side rail */
+.rail { position: sticky; top: calc(var(--stick) + 20px); display: grid; gap: 14px; }
+.rail-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 20px 14px 14px; box-shadow: var(--shadow-sm); }
+.rail-card > .kicker { padding-inline: 8px; }
+.rail-prog { margin: 10px 8px 14px; display: grid; gap: 8px; }
+.rail-prog .bar { height: 6px; border-radius: 999px; background: var(--slot); overflow: hidden; }
+.rail-prog .bar i { display: block; height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, var(--orange-soft), var(--orange)); transition: width var(--normal) var(--ease); }
+.rail-prog small { font-size: 12px; color: var(--muted); font-weight: 600; }
+.rsteps { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.rs > button { width: 100%; display: grid; grid-template-columns: 30px 1fr auto; gap: 10px; align-items: center; text-align: left; padding: 10px 8px; border-radius: 12px; transition: background var(--fast); }
+.rs > button:hover { background: var(--slot); }
+.rs .dot { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-size: 13px; font-weight: 900; border: 2px solid var(--slot-line); color: var(--muted); background: var(--card); }
+.rs .dot .i { width: 15px; height: 15px; display: none; }
+.rs .lbl { font-size: 14px; font-weight: 700; line-height: 1.25; color: var(--ink-2); }
+.rs .badge { font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 999px; background: var(--orange-tint); color: var(--orange-ink); white-space: nowrap; }
+.rs.done .dot { background: var(--ok); border-color: var(--ok); color: #fff; }
+.rs.done .dot span { display: none; }
+.rs.done .dot .i.ok { display: block; }
+.rs.now > button { background: var(--night); }
+.rs.now .dot { background: var(--orange); border-color: var(--orange); color: #fff; }
+.rs.now .lbl { color: #fff; }
+.rs.locked .dot span { display: none; }
+.rs.locked .dot .i.lk { display: block; }
+.rs.locked .lbl { color: var(--muted); }
+.parts { list-style: none; margin: 4px 0 6px 23px; padding: 0 0 0 20px; border-left: 2px solid var(--line); display: grid; gap: 2px; }
+.parts button { width: 100%; text-align: left; display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 10px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.parts button:hover { background: var(--slot); }
+.parts button::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--slot-line); flex: none; }
+.parts .done button::before { background: var(--ok); }
+.parts .now button { color: var(--ink); font-weight: 800; background: var(--orange-tint); }
+.parts .now button::before { background: var(--orange); box-shadow: 0 0 0 4px rgba(243, 111, 32, 0.2); }
+.help { display: grid; gap: 6px; padding: 16px 18px; border-radius: var(--r-md); background: var(--slot); font-size: 13px; color: var(--ink-2); }
+.help b { color: var(--ink); font-size: 14px; }
+.help a { font-weight: 700; }
+
+/* mobile compact navigator */
+.mnav { display: none; position: sticky; top: var(--stick); z-index: 20; margin: 0 -20px 18px; padding: 12px 20px; background: rgba(251, 250, 248, 0.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.mnav-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.mnav-top div { display: grid; }
+.mnav-top small { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange-ink); }
+.mnav-top b { font-size: 15px; font-weight: 800; }
+.mnav summary { list-style: none; font-size: 13px; font-weight: 800; padding: 7px 12px; border-radius: 999px; box-shadow: inset 0 0 0 1.5px var(--line); background: var(--card); cursor: pointer; white-space: nowrap; }
+.mnav summary::-webkit-details-marker { display: none; }
+.mnav details[open] summary { box-shadow: inset 0 0 0 1.5px var(--orange); }
+.mnav .sheet { margin-top: 10px; padding: 10px 6px; background: var(--card); border: 1px solid var(--line); border-radius: var(--r-md); box-shadow: var(--shadow-md); }
+.msegs { display: grid; grid-template-columns: 0.6fr repeat(4, 0.6fr) 1fr 1fr 1fr; gap: 4px; margin-top: 10px; }
+.msegs i { height: 5px; border-radius: 999px; background: var(--slot-line); }
+.msegs i.done { background: var(--ok); }
+.msegs i.now { background: var(--orange); }
+
+/* stage + panels */
+.stage { min-width: 0; }
+.panel { display: none; animation: rise var(--normal) var(--ease); }
+.panel.on { display: block; }
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.ph { display: grid; gap: 10px; margin-bottom: 22px; }
+.ph h2 { font-size: clamp(28px, 2.4cqi + 10px, 44px); font-weight: 900; letter-spacing: -0.035em; }
+.ph p { font-size: 17px; color: var(--ink-2); max-width: 60ch; }
+
+/* part strip on top of Basic information */
+.pstrip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin-bottom: 26px; }
+.pstrip button { display: grid; gap: 6px; text-align: left; padding: 0 2px; }
+.pstrip i { height: 6px; border-radius: 999px; background: var(--slot-line); transition: background var(--normal); }
+.pstrip span { font-size: 12px; font-weight: 700; color: var(--muted); }
+.pstrip .done i { background: var(--ok); }
+.pstrip .now i { background: var(--orange); }
+.pstrip .now span { color: var(--ink); }
+
+/* section blocks */
+.blk { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--shadow-card); margin-bottom: 18px; overflow: hidden; }
+.blk-h { display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start; padding: 22px 26px 0; }
+.blk-h .ico { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; background: var(--orange-tint); color: var(--orange-ink); }
+.blk-h .ico .i { width: 22px; height: 22px; }
+.blk-h h3 { font-size: 19px; font-weight: 800; letter-spacing: -0.015em; margin-top: 2px; }
+.blk-h p { font-size: 14px; color: var(--ink-2); margin-top: 4px; }
+.blk-b { padding: 20px 26px 26px; display: grid; gap: 16px; }
+.blk.sub { box-shadow: none; background: var(--paper); border-style: dashed; border-color: var(--slot-line); }
+.blk.sub .blk-h .ico { background: var(--night); color: #fff; font-weight: 900; font-size: 13px; letter-spacing: 0.02em; }
+.divider { height: 1px; background: var(--line); margin-block: 4px; }
+
+/* fields */
+.frow { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.frow.three { grid-template-columns: 2fr 1fr 1fr; }
+.f { display: grid; gap: 6px; align-content: start; }
+.f-l { font-size: 13px; font-weight: 700; color: var(--ink-2); }
+.f-l i { font-style: normal; color: var(--orange-ink); }
+.f-l em { font-style: normal; font-weight: 600; color: var(--muted); }
+.f input:not([type='checkbox']), .f select {
+  font: inherit; font-size: 16px; width: 100%; min-height: 48px; padding: 12px 14px;
+  border: 1.5px solid var(--line); border-radius: 10px; background: var(--paper); color: var(--ink);
+  transition: border-color var(--fast), box-shadow var(--fast);
+}
+.f select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5263' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6l6 -6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; }
+.f input:focus, .f select:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 4px rgba(243, 111, 32, 0.14); background: #fff; }
+.f input[readonly] { background: var(--slot); color: var(--ink-2); border-color: transparent; }
+.f-hint { font-size: 12.5px; color: var(--muted); }
+.f.err input { border-color: var(--danger); box-shadow: 0 0 0 4px rgba(192, 57, 43, 0.1); }
+.f-err { font-size: 13px; font-weight: 600; color: var(--danger); }
+.lead { font-size: 14px; color: var(--ink-2); }
+
+/* checkbox */
+.cb { display: grid; grid-template-columns: 22px 1fr; gap: 12px; align-items: start; font-size: 14px; color: var(--ink-2); line-height: 1.5; cursor: pointer; }
+.cb input { appearance: none; width: 22px; height: 22px; margin: 0; border-radius: 7px; border: 2px solid var(--slot-line); background: #fff; display: grid; place-items: center; cursor: pointer; transition: background var(--fast), border-color var(--fast); }
+.cb input::after { content: ''; width: 10px; height: 6px; border: 2.5px solid #fff; border-top: 0; border-right: 0; transform: rotate(-45deg) translate(1px, -1px); opacity: 0; }
+.cb input:checked { background: var(--orange); border-color: var(--orange); }
+.cb input:checked::after { opacity: 1; }
+.cb small { display: block; font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+.cb.boxed { padding: 16px 18px; border-radius: var(--r-md); border: 1.5px solid var(--line); background: var(--paper); }
+.cb.boxed:has(input:checked) { border-color: var(--orange); background: var(--orange-tint); }
+
+/* segmented Yes / No (night pressed, like lov1 day tiles) */
+.q { display: grid; gap: 10px; }
+.q > .f-l { font-size: 14px; color: var(--ink); }
+.seg { display: inline-flex; width: max-content; padding: 4px; gap: 4px; border-radius: 999px; background: var(--slot); }
+.seg button { min-width: 84px; padding: 10px 20px; border-radius: 999px; font-weight: 800; font-size: 14px; color: var(--ink-2); transition: background var(--fast), color var(--fast); }
+.seg button:hover { color: var(--ink); background: rgba(255, 255, 255, 0.7); }
+.seg button[aria-pressed='true'] { background: var(--night); color: #fff; }
+
+/* option cards (Loan Officer type, licensed type) */
+.opts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.opt { position: relative; display: grid; gap: 4px; text-align: left; padding: 16px 16px 16px 48px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--paper); transition: border-color var(--fast), background var(--fast); }
+.opt::before { content: ''; position: absolute; left: 16px; top: 17px; width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--slot-line); background: #fff; }
+.opt b { font-size: 15px; font-weight: 800; }
+.opt small { font-size: 13px; color: var(--muted); }
+.opt:hover { border-color: var(--slot-line); }
+.opt[aria-pressed='true'] { border-color: var(--night); background: #fff; box-shadow: var(--shadow-sm); }
+.opt[aria-pressed='true']::before { border: 6px solid var(--orange); }
+.opt:disabled { opacity: 0.45; cursor: not-allowed; }
+.why { display: flex; gap: 8px; align-items: flex-start; font-size: 13.5px; color: var(--ink-2); padding: 10px 12px; border-radius: 10px; background: var(--slot); }
+.why .i { width: 17px; height: 17px; color: var(--orange-ink); margin-top: 1px; }
+
+/* state picker */
+.picked { display: flex; flex-wrap: wrap; gap: 6px; min-height: 34px; align-items: center; }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 8px 6px 12px; border-radius: 999px; background: var(--night); color: #fff; font-size: 13px; font-weight: 700; }
+.chip button { width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; background: rgba(255, 255, 255, 0.14); }
+.chip button .i { width: 12px; height: 12px; }
+.picked .none { font-size: 13px; color: var(--muted); }
+.stgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(46px, 1fr)); gap: 5px; padding: 12px; border-radius: 14px; background: var(--paper); border: 1px solid var(--line); }
+.st { position: relative; height: 38px; border-radius: 9px; font-size: 12.5px; font-weight: 800; letter-spacing: 0.02em; background: #fff; border: 1px solid var(--line); color: var(--ink-2); transition: background var(--fast), color var(--fast), border-color var(--fast); }
+.st:hover { border-color: var(--orange); color: var(--ink); }
+.st[aria-pressed='true'] { background: var(--orange); border-color: var(--orange); color: #fff; }
+.st.w2::after { content: ''; position: absolute; top: 4px; right: 4px; width: 5px; height: 5px; border-radius: 50%; background: var(--night); }
+.st.w2[aria-pressed='true']::after { background: #fff; }
+.legend { display: flex; gap: 6px; align-items: center; font-size: 12px; color: var(--muted); }
+.legend::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--night); }
+details.pick > summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 800; color: var(--orange-ink); }
+details.pick > summary::-webkit-details-marker { display: none; }
+details.pick[open] > summary { margin-bottom: 10px; }
+
+/* chips multi-select (languages) */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.tog { padding: 9px 14px; border-radius: 999px; font-size: 14px; font-weight: 700; color: var(--ink-2); background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--line); transition: background var(--fast), box-shadow var(--fast), color var(--fast); }
+.tog:hover { box-shadow: inset 0 0 0 1.5px var(--orange); }
+.tog[aria-pressed='true'] { background: var(--orange-tint); color: var(--orange-ink); box-shadow: inset 0 0 0 1.5px var(--orange); }
+
+/* notes, styled like lo-programs .note */
+.note { display: grid; grid-template-columns: 20px 1fr; gap: 10px; padding: 14px 16px; border-radius: 14px; border-left: 3px solid var(--orange); background: var(--orange-tint); font-size: 14px; line-height: 1.55; color: var(--ink); }
+.note .i { width: 18px; height: 18px; color: var(--orange-ink); margin-top: 1px; }
+.note.warn { border-left-color: var(--warn-line); background: var(--warn-tint); }
+.note.warn .i { color: var(--warn); }
+.note.calm { border-left-color: var(--slot-line); background: var(--slot); color: var(--ink-2); }
+.note.calm .i { color: var(--ink-2); }
+.note b { font-weight: 800; }
+.confirm { display: grid; gap: 10px; padding: 14px 16px; border-radius: 14px; border: 1.5px solid var(--warn-line); background: #fff; }
+.confirm b { font-size: 14px; }
+.confirm .row { display: flex; gap: 8px; flex-wrap: wrap; }
+.confirm .btn { padding: 10px 18px; font-size: 14px; }
+.confirm .ok { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 800; color: var(--ok); }
+
+details.more > summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 800; color: var(--orange-ink); }
+details.more > summary::-webkit-details-marker { display: none; }
+details.more > summary::before { content: '+'; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; background: var(--orange-tint); font-weight: 900; }
+details.more[open] > summary::before { content: '–'; }
+details.more .more-b { margin-top: 10px; display: grid; gap: 8px; font-size: 14px; color: var(--ink-2); padding: 14px 16px; background: var(--paper); border-radius: 12px; }
+
+.rows { display: grid; gap: 8px; }
+.urow { display: grid; grid-template-columns: 1fr 44px; gap: 8px; }
+.urow.social { grid-template-columns: 160px 1fr 44px; }
+.icon-btn { height: 48px; border-radius: 10px; display: grid; place-items: center; color: var(--muted); background: var(--paper); border: 1.5px solid var(--line); }
+.icon-btn:hover { color: var(--danger); border-color: var(--danger); }
+.indent { display: grid; gap: 14px; padding: 16px 18px; border-radius: 14px; background: var(--paper); border: 1px solid var(--line); }
+
+/* before you begin bento */
+.bento { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; margin-bottom: 18px; }
+.req { grid-column: span 3; display: grid; gap: 10px; align-content: start; padding: 22px; border-radius: var(--r-lg); background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow-sm); }
+.req.wide { grid-column: span 4; }
+.req.narrow { grid-column: span 2; }
+.req.dark { background: var(--night); color: var(--on-night); border-color: var(--night); }
+.req.dark p { color: var(--on-night-2); }
+.req.dark p b { color: #fff; }
+.req .ico { width: 42px; height: 42px; border-radius: 13px; display: grid; place-items: center; background: var(--orange-tint); color: var(--orange-ink); }
+.req.dark .ico { background: var(--orange); color: #fff; }
+.req h3 { font-size: 18px; font-weight: 800; letter-spacing: -0.015em; }
+.req p { font-size: 14px; color: var(--ink-2); line-height: 1.55; }
+.req p b { color: var(--ink); }
+.req .big { font-size: 46px; font-weight: 900; letter-spacing: -0.05em; line-height: 1; color: var(--orange); }
+
+/* answer summary */
+.sum { display: grid; gap: 10px; }
+.sum-g { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.sum-g header { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: var(--paper); border-bottom: 1px solid var(--line); }
+.sum-g header b { font-size: 14px; font-weight: 800; }
+.sum-g dl { margin: 0; display: grid; grid-template-columns: 180px 1fr; }
+.sum-g dt, .sum-g dd { margin: 0; padding: 9px 16px; font-size: 14px; border-bottom: 1px solid var(--slot); }
+.sum-g dt { color: var(--muted); font-weight: 600; }
+.sum-g dd { font-weight: 700; }
+
+/* sticky action bar */
+.act {
+  position: sticky; bottom: 0; z-index: 15; display: flex; align-items: center; gap: 14px;
+  margin-top: 28px; padding: 12px 16px 14px; border-radius: 18px 18px 0 0;
+  background: rgba(251, 250, 248, 0.96); backdrop-filter: blur(10px);
+  border: 1px solid var(--line); border-bottom: 0; box-shadow: 0 -16px 32px -22px rgba(15, 22, 38, 0.45);
+  transition: transform var(--normal) var(--ease), opacity var(--normal) var(--ease);
+}
+/* Docked out of view while the step heading is still in the lower part of the screen,
+   so the bar never sits on top of the heading. */
+.act.is-away { transform: translateY(110%); opacity: 0; pointer-events: none; }
+.act .mid { flex: 1; font-size: 13px; color: var(--muted); font-weight: 600; text-align: center; }
+.act .btn-o { min-width: 220px; }
+
+/* fee locked state */
+.lockhero { position: relative; overflow: hidden; display: grid; grid-template-columns: auto 1fr; gap: 26px; align-items: center; padding: 34px; border-radius: 26px; background: var(--night); color: var(--on-night); box-shadow: var(--shadow-card); }
+.lockhero::before { content: ''; position: absolute; inset: auto -20% -60% 30%; height: 140%; background: radial-gradient(50% 50% at 50% 50%, rgba(243, 111, 32, 0.28), transparent 70%); }
+.ring { position: relative; width: 108px; height: 108px; border-radius: 50%; display: grid; place-items: center; background: conic-gradient(from 0deg, var(--orange), #ffb37d, var(--orange)); }
+.ring::before { content: ''; position: absolute; inset: 6px; border-radius: 50%; background: var(--night); }
+.ring .i { position: relative; width: 40px; height: 40px; color: var(--orange); }
+.ring::after { content: ''; position: absolute; inset: -8px; border-radius: 50%; border: 2px solid rgba(243, 111, 32, 0.45); animation: ping 2.2s var(--ease) infinite; }
+@keyframes ping { 0% { transform: scale(0.92); opacity: 1; } 100% { transform: scale(1.18); opacity: 0; } }
+.lockhero h2 { position: relative; font-size: clamp(28px, 2.4cqi + 10px, 42px); font-weight: 900; letter-spacing: -0.035em; color: #fff; }
+.lockhero p { position: relative; margin-top: 10px; font-size: 17px; color: #dfe3ec; max-width: 48ch; }
+.ticket { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 14px; margin-top: 16px; padding: 18px 22px; border-radius: var(--r-md); background: var(--card); border: 1.5px dashed var(--slot-line); }
+.ticket b { font-size: 32px; font-weight: 900; letter-spacing: -0.04em; }
+.ticket span { display: block; font-size: 14px; color: var(--ink-2); font-weight: 600; }
+.ticket em { font-style: normal; display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 800; background: var(--orange-tint); color: var(--orange-ink); }
+.ticket em .i { width: 15px; height: 15px; }
+.unlock { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 8px; }
+.unlock li { display: grid; grid-template-columns: 40px 1fr auto; gap: 14px; align-items: center; padding: 14px 18px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); }
+.unlock .ico { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--slot); color: var(--muted); }
+.unlock b { font-size: 15px; font-weight: 800; }
+.unlock small { display: block; font-size: 13px; color: var(--muted); }
+.unlock .lk { color: var(--muted); }
+
+/* sign + nmls */
+.two { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.classify { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border-radius: 14px; background: var(--night); color: #fff; }
+.classify small { display: block; font-size: 12px; color: var(--on-night-2); font-weight: 600; }
+.classify b { font-size: 17px; font-weight: 800; }
+.classify .ico { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--orange); }
+.signbtn { display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center; width: 100%; text-align: left; padding: 20px 22px; border-radius: 18px; background: linear-gradient(140deg, var(--orange-soft), var(--orange) 55%); color: #fff; box-shadow: var(--shadow-orange); transition: transform var(--fast) var(--ease); }
+.signbtn:hover { transform: translateY(-2px); }
+.signbtn b { font-size: 18px; font-weight: 900; display: block; }
+.signbtn small { font-size: 13px; opacity: 0.9; font-weight: 600; }
+.signbtn .i { width: 28px; height: 28px; }
+.doc { display: grid; gap: 12px; padding: 20px; border-radius: var(--r-lg); background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow-sm); }
+.doc .paper { position: relative; height: 150px; border-radius: 12px; background: repeating-linear-gradient(180deg, var(--paper) 0 14px, var(--slot) 14px 16px); border: 1px solid var(--line); overflow: hidden; }
+.doc .paper::after { content: attr(data-draft); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-12deg); font-weight: 900; font-size: 30px; letter-spacing: 0.2em; color: rgba(243, 111, 32, 0.28); border: 3px solid rgba(243, 111, 32, 0.28); padding: 4px 14px; border-radius: 10px; }
+.doc b { font-size: 16px; font-weight: 800; }
+.idcard { display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: center; padding: 20px 22px; border-radius: var(--r-lg); background: var(--night); color: #fff; }
+.idcard .logo { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; background: var(--orange); font-weight: 900; font-size: 18px; letter-spacing: -0.04em; }
+.idcard small { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--on-night-2); }
+.idcard b { font-size: 18px; font-weight: 800; }
+.idcard .num { font-size: 26px; font-weight: 900; letter-spacing: -0.02em; color: var(--orange); }
+.copy { display: inline-flex; align-items: center; gap: 6px; padding: 9px 14px; border-radius: 10px; font-size: 13px; font-weight: 800; background: rgba(255, 255, 255, 0.1); color: #fff; }
+.copy .i { width: 16px; height: 16px; }
+.howto { list-style: none; counter-reset: h; margin: 0; padding: 0; display: grid; gap: 10px; }
+.howto li { counter-increment: h; display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start; font-size: 15px; color: var(--ink-2); }
+.howto li::before { content: counter(h); width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-weight: 900; background: var(--orange-tint); color: var(--orange-ink); }
+.howto li b { color: var(--ink); }
+
+/* website gate */
+.gate { max-width: 640px; margin-inline: auto; border-radius: 26px; overflow: hidden; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow-card); }
+.gate-top { padding: 26px 28px 22px; background: var(--night); color: #fff; display: grid; gap: 10px; }
+.gate-top .kicker { color: var(--orange); }
+.gate-top h2 { font-size: 28px; font-weight: 900; letter-spacing: -0.03em; }
+.gate-top p { color: var(--on-night-2); font-size: 15px; }
+.gate-b { padding: 24px 28px 28px; display: grid; gap: 16px; }
+.blur-behind { filter: blur(3px); opacity: 0.35; pointer-events: none; margin-top: 20px; }
+
+/* thank you */
+.ty { position: relative; overflow: hidden; border-radius: 28px; background: var(--night); color: var(--on-night); padding: clamp(28px, 4cqi, 56px); display: grid; gap: 26px; box-shadow: var(--shadow-card); }
+.ty::before { content: ''; position: absolute; inset: -50% -20% auto 30%; height: 160%; background: radial-gradient(45% 45% at 50% 50%, rgba(243, 111, 32, 0.3), transparent 70%); }
+.ty > * { position: relative; }
+.ty h2 { font-size: clamp(32px, 3.6cqi + 10px, 60px); font-weight: 900; letter-spacing: -0.045em; line-height: 1.02; color: #fff; max-width: 18ch; }
+.ty h2 span { color: var(--orange); }
+.ty .lede { font-size: 19px; color: #dfe3ec; font-weight: 600; max-width: 52ch; }
+.ty-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.ty-card { padding: 20px; border-radius: 18px; background: var(--night-2); border: 1px solid var(--night-line); display: grid; gap: 8px; align-content: start; }
+.ty-card .n { font-size: 36px; font-weight: 900; letter-spacing: -0.04em; color: var(--orange); line-height: 1; }
+.ty-card b { font-size: 16px; font-weight: 800; color: #fff; }
+.ty-card p { font-size: 14px; color: var(--on-night-2); }
+.ty-card a { color: var(--orange-soft); font-weight: 700; }
+.ty-cta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.ty-foot { margin-top: 16px; padding: 22px 26px; border-radius: var(--r-lg); background: var(--orange); color: #fff; display: flex; flex-wrap: wrap; gap: 14px; justify-content: space-between; align-items: center; }
+.ty-foot b { font-size: 20px; font-weight: 900; letter-spacing: -0.02em; }
+.ty-foot p { font-size: 15px; opacity: 0.92; }
+
+.sitefoot { margin-top: 56px; padding: 26px 0; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+.sitefoot .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+
+/* ---------------------------------------------------------------- responsive (container queries) */
+@container page (max-width: 980px) {
+  .hero-top { grid-template-columns: 1fr; padding-top: 48px; }
+  .split { max-width: 520px; }
+  .work-grid { grid-template-columns: minmax(0, 1fr); }
+  .rail { display: none; }
+  .mnav { display: block; }
+  .track-wrap { overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 32px; margin-inline: -20px; padding-inline: 20px; scrollbar-width: none; }
+  .track-heads, .track { width: 1000px; }
+  .track li { scroll-snap-align: start; }
+  .two { grid-template-columns: minmax(0, 1fr); }
+}
+@container page (max-width: 640px) {
+  .wrap { padding-inline: 16px; }
+  .mnav { margin-inline: -16px; padding-inline: 16px; }
+  .track-wrap { margin-inline: -16px; padding-inline: 16px; }
+  .hero-top { padding-block: 36px 26px; gap: 26px; }
+  .hero h1 { font-size: 38px; }
+  .split b { font-size: 42px; }
+  .split > div { padding: 16px; }
+  .track-heads, .track { width: 860px; }
+  .work { padding-top: 0; }
+  .frow, .frow.three, .opts { grid-template-columns: 1fr; }
+  .blk-h { padding: 18px 18px 0; grid-template-columns: 38px 1fr; gap: 12px; }
+  .blk-h .ico { width: 38px; height: 38px; border-radius: 12px; }
+  .blk-b { padding: 16px 18px 20px; }
+  .bento { grid-template-columns: 1fr; }
+  .req, .req.wide, .req.narrow { grid-column: auto; }
+  .seg { width: 100%; }
+  .seg button { flex: 1; }
+  .urow.social { grid-template-columns: 1fr 44px; }
+  .urow.social select { grid-column: 1 / -1; }
+  .sum-g dl { grid-template-columns: 1fr; }
+  .sum-g dt { padding-bottom: 0; border-bottom: 0; }
+  .pstrip { display: none; }
+  .act { gap: 8px; margin-inline: -16px; padding: 10px 16px 12px; border-radius: 0; border-inline: 0; }
+  .act .mid { display: none; }
+  .act .btn-o { flex: 1; min-width: 0; }
+  .act .btn-ghost { padding-inline: 16px; }
+  .act .btn-ghost .t { display: none; }
+  .lockhero { grid-template-columns: 1fr; padding: 26px 22px; gap: 18px; }
+  .ring { width: 84px; height: 84px; }
+  .ticket { grid-template-columns: 1fr; }
+  .ty-grid { grid-template-columns: 1fr; }
+  .idcard { grid-template-columns: auto 1fr; }
+  .idcard .copy { grid-column: 1 / -1; justify-content: center; }
+  .gate-top, .gate-b { padding-inline: 20px; }
+  .stgrid { grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); padding: 8px; }
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-user" viewBox="0 0 24 24"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"/><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M5 12l-2 0l9 -9l9 9l-2 0"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"/><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"/></symbol>
+  <symbol id="i-id" viewBox="0 0 24 24"><path d="M3 7a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v10a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z"/><path d="M7 10a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M15 8l2 0"/><path d="M15 12l2 0"/><path d="M7 16l10 0"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/><path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"/></symbol>
+  <symbol id="i-pct" viewBox="0 0 24 24"><path d="M16 17a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M6 7a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M6 18l12 -12"/></symbol>
+  <symbol id="i-world" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"/><path d="M3.6 9h16.8"/><path d="M3.6 15h16.8"/><path d="M11.5 3a17 17 0 0 0 0 18"/><path d="M12.5 3a17 17 0 0 1 0 18"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><path d="M3 12a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M15 6a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M15 18a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M8.7 10.7l6.6 -3.4"/><path d="M8.7 13.3l6.6 3.4"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M5 7a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"/><path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0 -3 -3.85"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5l10 -10"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6z"/><path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0"/><path d="M8 11v-4a4 4 0 1 1 8 0v4"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2"/></symbol>
+  <symbol id="i-sign" viewBox="0 0 24 24"><path d="M3 17c3.333 -3.333 5 -6 5 -8c0 -3 -1 -3 -2 -3s-2.032 1.085 -2 3c.034 2.048 1.658 4.877 2.5 6c1.5 2 2.5 2.5 3.5 1l2 -3c.333 2.667 1.333 4 3 4c.53 0 2.639 -2 3 -2c.517 0 1.517 .667 3 2"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><path d="M16.555 3.843l3.602 3.602a2.877 2.877 0 0 1 0 4.069l-2.643 2.643a2.877 2.877 0 0 1 -4.069 0l-.301 -.301l-6.558 6.558a2 2 0 0 1 -1.239 .578l-.175 .008h-1.172a1 1 0 0 1 -.993 -.883l-.007 -.117v-1.172a2 2 0 0 1 .467 -1.284l.119 -.13l.414 -.414h2v-2h2v-2l2.144 -2.144l-.301 -.301a2.877 2.877 0 0 1 0 -4.069l2.643 -2.643a2.877 2.877 0 0 1 4.069 0z"/><path d="M15 9h.01"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="M5 12l14 0"/><path d="M5 12l6 6"/><path d="M5 12l6 -6"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"/><path d="M12 9h.01"/><path d="M11 12h1v4h1"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 9v4"/><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z"/><path d="M12 16h.01"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5l0 14"/><path d="M5 12l14 0"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6l-12 12"/><path d="M6 6l12 12"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z"/><path d="M3 7l9 6l9 -6"/></symbol>
+  <symbol id="i-laptop" viewBox="0 0 24 24"><path d="M3 19l18 0"/><path d="M5 7a1 1 0 0 1 1 -1h12a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-12a1 1 0 0 1 -1 -1z"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 19l16 0"/><path d="M4 15l4 -6l4 2l4 -5l4 4"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 10.941c2.333 -3.308 .167 -7.823 -1 -8.941c0 3.395 -2.235 5.299 -3.667 6.706c-1.43 1.408 -2.333 3.621 -2.333 5.588c0 3.704 3.134 6.706 7 6.706s7 -3.002 7 -6.706c0 -1.712 -1.232 -4.403 -2.333 -5.588c-2.084 3.353 -3.257 3.353 -4.667 2.235"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/><path d="M9 9l1 0"/><path d="M9 13l6 0"/><path d="M9 17l6 0"/></symbol>
+  <symbol id="i-case" viewBox="0 0 24 24"><path d="M3 9a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"/><path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2"/><path d="M12 12l0 .01"/><path d="M3 13a20 20 0 0 0 18 0"/></symbol>
+  <symbol id="i-lang" viewBox="0 0 24 24"><path d="M4 5h7"/><path d="M9 3v2c0 4.418 -2.239 8 -5 8"/><path d="M5 9c0 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4 -9l4 9"/><path d="M19.1 18h-6.2"/></symbol>
+  <symbol id="i-clip" viewBox="0 0 24 24"><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2"/><path d="M9 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"/><path d="M9 14l2 2l4 -4"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><path d="M7 9.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z"/><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c1.091 0 1.971 .878 2 1.97"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6"/><path d="M11 13l9 -9"/><path d="M15 4h5v5"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"/><path d="M12 7v5l3 3"/></symbol>
+  <symbol id="i-bldg" viewBox="0 0 24 24"><path d="M3 21l18 0"/><path d="M9 8l1 0"/><path d="M9 12l1 0"/><path d="M9 16l1 0"/><path d="M14 8l1 0"/><path d="M14 12l1 0"/><path d="M14 16l1 0"/><path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16"/></symbol>
+</svg>
+
+<!-- ============================================================ MOCKUP TOOLBAR -->
+<header class="mk" aria-label="Mockup controls">
+  <span class="tag">Mockup</span>
+  <b data-vi="Đăng ký Loan Officer · thiết kế lại">Register Loan Officer · redesign</b>
+  <label><span data-vi="Đi tới">Jump to</span>
+    <select id="jump">
+      <option value="before" data-vi="1 · Trước khi bắt đầu">1 · Before you begin</option>
+      <option value="p1" data-vi="2.1 · Thông tin cơ bản: Thông tin cá nhân">2.1 · Basic information: Personal information</option>
+      <option value="p2" data-vi="2.2 · Thông tin cơ bản: Giấy phép và tiểu bang">2.2 · Basic information: License and states</option>
+      <option value="p3" data-vi="2.3 · Thông tin cơ bản: Thù lao và hiện diện trực tuyến">2.3 · Basic information: Compensation and online presence</option>
+      <option value="p4" data-vi="2.4 · Thông tin cơ bản: Người giới thiệu và xác nhận">2.4 · Basic information: Referral and confirm</option>
+      <option value="thanks" data-vi="Trang cảm ơn (sau khi gửi)">Thank-you page (after submit)</option>
+      <option value="fee" data-vi="3 · Đóng phí một lần (đang khoá, chờ cuộc gọi)">3 · Pay one-time fee (locked until the call)</option>
+      <option value="sign" data-vi="4 · Xem và ký hợp đồng">4 · Review and sign agreement</option>
+      <option value="gate" data-vi="4 · Thẻ chặn câu hỏi website">4 · Website question gate card</option>
+      <option value="nmls" data-vi="5 · Cấp quyền trên NMLS">5 · Grant access on NMLS</option>
+    </select>
+  </label>
+  <span class="sp"></span>
+  <div class="mk-seg" id="vw" role="group" aria-label="Width">
+    <button type="button" data-w="d" aria-pressed="true" data-vi="Máy tính">Desktop</button>
+    <button type="button" data-w="m" aria-pressed="false" data-vi="Điện thoại 375">Mobile 375</button>
+  </div>
+  <div class="mk-seg" id="lang" role="group" aria-label="Language">
+    <button type="button" data-l="en" aria-pressed="true">EN</button>
+    <button type="button" data-l="vi" aria-pressed="false">Tiếng Việt</button>
+  </div>
+</header>
+
+<div class="frame" id="frame">
+<main class="rlo">
+
+  <!-- ============================================================ HERO -->
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="wrap hero-top">
+      <div>
+        <span class="eyebrow" data-vi="Đăng ký Loan Officer">Register as a Loan Officer</span>
+        <h1 id="hero-h" data-vi="Gia nhập Loan Factory. <span>Phần còn lại để chúng tôi lo.</span>">Join Loan Factory. <span>We'll handle the rest.</span></h1>
+        <p class="lede" data-vi="Điền thông tin của bạn bên dưới. Chúng tôi sẽ gọi cho bạn để nói chi tiết.">Fill out your information below. We will call you to talk about the details.</p>
+        <div class="meta">
+          <span class="pill"><svg class="i"><use href="#i-clock"/></svg><span data-vi="Khoảng 10 phút">About 10 minutes</span></span>
+          <span class="pill"><svg class="i"><use href="#i-lock"/></svg><span data-vi="Phí $100 chỉ đóng sau cuộc gọi">$100 fee only after your call</span></span>
+          <span class="pill"><svg class="i"><use href="#i-mail"/></svg>recruiting@loanfactory.com</span>
+        </div>
+      </div>
+      <div class="split" aria-label="Who does what">
+        <div><b>5</b><span data-vi="bước bạn làm">steps for you</span></div>
+        <div><b>3</b><span data-vi="bước chúng tôi làm">steps for us</span></div>
+        <small data-vi="Đây là toàn bộ quy trình nhận việc. Vị trí của bạn được tô màu cam.">This is the whole onboarding process. Where you are now is shown in orange.</small>
+      </div>
+    </div>
+    <div class="wrap track-wrap">
+      <div class="track-heads"><span data-vi="Phần của bạn">Your part</span><span data-vi="Phần của chúng tôi">Our part</span></div>
+      <ol class="track" id="track">
+        <li data-here="You are here"><span class="n"><span>1</span><svg class="i"><use href="#i-check"/></svg></span><b data-vi="Điền thông tin của bạn">Fill out your information</b></li>
+        <li data-here="You are here"><span class="n"><span>2</span><svg class="i"><use href="#i-check"/></svg></span><b data-vi="Nói chuyện ngắn với chúng tôi qua điện thoại">Talk with us on a short call</b></li>
+        <li data-here="You are here"><span class="n"><span>3</span><svg class="i"><use href="#i-check"/></svg></span><b data-vi="Đóng phí khởi đầu $100">Pay the $100 startup fee</b></li>
+        <li data-here="You are here"><span class="n"><span>4</span><svg class="i"><use href="#i-check"/></svg></span><b data-vi="Ký Loan Officer Agreement">Sign the Loan Officer Agreement</b></li>
+        <li data-here="You are here"><span class="n"><span>5</span><svg class="i"><use href="#i-check"/></svg></span><b data-vi="Cấp quyền truy cập hồ sơ NMLS cho Loan Factory">Give Loan Factory access to your NMLS record</b></li>
+        <li class="ours"><span class="n"><span>6</span><svg class="i"><use href="#i-check"/></svg></span><b data-vi="<a href='#'>licensing@loanfactory.com</a> sponsor bạn"><a href="#">licensing@loanfactory.com</a> sponsors you</b></li>
+        <li class="ours"><span class="n"><span>7</span><svg class="i"><use href="#i-check"/></svg></span><b data-vi="HR tạo tài khoản cho bạn">HR sets up your account</b></li>
+        <li class="ours"><span class="n"><span>8</span><svg class="i"><use href="#i-check"/></svg></span><b data-vi="Bắt đầu làm việc tại Loan Factory">Start working at Loan Factory</b></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============================================================ WORKSPACE -->
+  <section class="work">
+    <div class="wrap work-grid">
+
+      <!-- desktop side rail -->
+      <aside class="rail" aria-label="Application steps">
+        <nav class="rail-card">
+          <span class="kicker" data-vi="Hồ sơ của bạn">Your application</span>
+          <div class="rail-prog"><div class="bar"><i id="pbar"></i></div><small id="ptext"></small></div>
+          <ol class="rsteps">
+            <li class="rs" data-rs="0"><button type="button" data-go="before"><span class="dot"><span>1</span><svg class="i ok"><use href="#i-check"/></svg><svg class="i lk"><use href="#i-lock"/></svg></span><span class="lbl" data-vi="Trước khi bắt đầu">Before you begin</span></button></li>
+            <li class="rs" data-rs="1"><button type="button" data-go="p1"><span class="dot"><span>2</span><svg class="i ok"><use href="#i-check"/></svg><svg class="i lk"><use href="#i-lock"/></svg></span><span class="lbl" data-vi="Thông tin cơ bản">Basic information</span></button>
+              <ol class="parts" id="railparts">
+                <li data-part="1"><button type="button" data-go="p1" data-vi="Thông tin cá nhân">Personal information</button></li>
+                <li data-part="2"><button type="button" data-go="p2" data-vi="Giấy phép và tiểu bang">License and states</button></li>
+                <li data-part="3"><button type="button" data-go="p3" data-vi="Thù lao và trực tuyến">Compensation and online</button></li>
+                <li data-part="4"><button type="button" data-go="p4" data-vi="Người giới thiệu và xác nhận">Referral and confirm</button></li>
+              </ol>
+            </li>
+            <li class="rs" data-rs="2"><button type="button" data-go="fee"><span class="dot"><span>3</span><svg class="i ok"><use href="#i-check"/></svg><svg class="i lk"><use href="#i-lock"/></svg></span><span class="lbl" data-vi="Đóng phí một lần">Pay one-time fee</span><span class="badge" id="feebadge" data-vi="Sau cuộc gọi">After your call</span></button></li>
+            <li class="rs" data-rs="3"><button type="button" data-go="sign"><span class="dot"><span>4</span><svg class="i ok"><use href="#i-check"/></svg><svg class="i lk"><use href="#i-lock"/></svg></span><span class="lbl" data-vi="Xem và ký hợp đồng">Review and sign agreement</span></button></li>
+            <li class="rs" data-rs="4"><button type="button" data-go="nmls"><span class="dot"><span>5</span><svg class="i ok"><use href="#i-check"/></svg><svg class="i lk"><use href="#i-lock"/></svg></span><span class="lbl" data-vi="Cấp quyền trên NMLS">Grant access on NMLS</span></button></li>
+          </ol>
+        </nav>
+        <div class="help">
+          <b data-vi="Có câu hỏi khi điền form?">Questions while filling this out?</b>
+          <span data-vi="Email cho đội Recruiting">Email our Recruiting team</span>
+          <a href="#">recruiting@loanfactory.com</a>
+        </div>
+      </aside>
+
+      <div class="stage">
+        <!-- mobile compact navigator -->
+        <div class="mnav">
+          <div class="mnav-top">
+            <div><small id="mstep"></small><b id="mtitle"></b></div>
+            <details>
+              <summary data-vi="Tất cả bước">All steps</summary>
+            </details>
+          </div>
+          <div class="msegs" id="msegs"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="sheet" id="msheet" hidden></div>
+        </div>
+
+        <!-- ======================================== BEFORE YOU BEGIN -->
+        <section class="panel" data-screen="before" aria-labelledby="h-before">
+          <div class="ph">
+            <span class="kicker" data-vi="Bước 1 / 5">Step 1 of 5</span>
+            <h2 id="h-before" data-vi="Trước khi bắt đầu">Before you begin</h2>
+            <p data-vi="Chào mừng đến Loan Factory! Trước khi điền thông tin, hãy chắc rằng chúng ta hợp nhau. Loan Factory là công ty môi giới thế chấp phát triển nhanh, dựa trên công nghệ. Mọi Loan Officer cần đáp ứng 4 điều dưới đây.">Welcome to Loan Factory! Before you fill out your information, let's make sure we are a good match. Loan Factory is a fast-growing, tech-driven mortgage broker. Every Loan Officer needs to meet the four points below.</p>
+          </div>
+          <div class="bento">
+            <article class="req wide dark">
+              <span class="ico"><svg class="i"><use href="#i-id"/></svg></span>
+              <h3 data-vi="Giấy phép và NMLS">Licensing and NMLS</h3>
+              <p data-vi="<b>Đang hoạt động:</b> bạn cần NMLS ID hợp lệ. Các tiểu bang muốn chúng tôi sponsor phải đang Active hoặc Approved-Inactive.">
+                <b>Active status:</b> you need a valid NMLS ID. The states you want us to sponsor must be Active or Approved-Inactive.</p>
+              <p data-vi="<b>Giấy phép hết hạn:</b> gia hạn trên NMLS trước, rồi chúng tôi mới gửi yêu cầu sponsor. <b>Đang chờ sponsor:</b> nếu bạn mới xin giấy phép tiểu bang và chỉ chờ công ty sponsor, chúng tôi sponsor được."><b>Expired license:</b> renew it on NMLS first, then we can send the sponsorship request. <b>Pending sponsorship:</b> if you just applied for a state license and only need a sponsoring company, we can sponsor you.</p>
+            </article>
+            <article class="req narrow">
+              <span class="ico"><svg class="i"><use href="#i-chart"/></svg></span>
+              <span class="big" data-vi="1 khoản vay">1 loan</span>
+              <p data-vi="mỗi 6 tháng để giữ sponsor của bạn đang hoạt động.">every 6 months to keep your sponsorship active.</p>
+            </article>
+            <article class="req">
+              <span class="ico"><svg class="i"><use href="#i-laptop"/></svg></span>
+              <h3 data-vi="Thành thạo công nghệ">Comfortable with technology</h3>
+              <p data-vi="Chúng tôi là công ty ưu tiên công nghệ. Chúng tôi luôn hướng dẫn công cụ riêng, nhưng bạn cần tự dùng tốt phần mềm hiện đại và quy trình số để quản lý pipeline.">We are a tech-first company. We always show you our own tools, but you need to be comfortable using modern software and digital workflows on your own to manage your pipeline.</p>
+            </article>
+            <article class="req">
+              <span class="ico"><svg class="i"><use href="#i-flame"/></svg></span>
+              <h3 data-vi="Chủ động và ham học">Drive and a will to learn</h3>
+              <p data-vi="Bạn chủ động tìm khách, xây thương hiệu riêng bằng công cụ của chúng tôi, cởi mở với góp ý và sẵn sàng học hướng dẫn và tính năng mới.">You go after new clients, build your own brand with our tools, stay open to feedback, and are ready to learn new guidelines and features.</p>
+            </article>
+          </div>
+          <label class="cb boxed">
+            <input type="checkbox" id="ack">
+            <span data-vi="Tôi đã đọc các yêu cầu trên. Tôi xác nhận mình đáp ứng yêu cầu về giấy phép, công nghệ và doanh số, và có đủ điều kiện để thành công tại Loan Factory.">I acknowledge the requirements listed above. I confirm that I meet the licensing, technology, and production expectations, and I have what it takes to succeed at Loan Factory.</span>
+          </label>
+        </section>
+
+        <!-- ======================================== PART 1 -->
+        <section class="panel" data-screen="p1" aria-labelledby="h-p1">
+          <div class="pstrip" data-strip></div>
+          <div class="ph">
+            <span class="kicker" data-vi="Thông tin cơ bản · Phần 1 / 4">Basic information · Part 1 of 4</span>
+            <h2 id="h-p1" data-vi="Thông tin cá nhân">Personal information</h2>
+            <p data-vi="Bạn là ai và chúng tôi gửi giấy tờ thuế tới đâu.">Who you are, and where we send your tax forms.</p>
+          </div>
+
+          <section class="blk">
+            <header class="blk-h"><span class="ico"><svg class="i"><use href="#i-user"/></svg></span><div><h3 data-vi="Tên và liên hệ">Name and contact</h3><p data-vi="Dùng tên hợp pháp đúng như trên hồ sơ NMLS.">Use your legal name exactly as it appears on your NMLS record.</p></div></header>
+            <div class="blk-b">
+              <div class="frow">
+                <label class="f"><span class="f-l"><span data-vi="Tên">First name</span> <i>*</i></span><input value="Alex" autocomplete="given-name"></label>
+                <label class="f"><span class="f-l" data-vi="Họ">Last name</span><input value="Nguyen" autocomplete="family-name"></label>
+              </div>
+              <div class="frow">
+                <label class="f"><span class="f-l"><span data-vi="Tên hợp pháp">Legal first name</span> <em data-vi="(tuỳ chọn)">(optional)</em></span><input></label>
+                <label class="f"><span class="f-l"><span data-vi="Họ hợp pháp">Legal last name</span> <em data-vi="(tuỳ chọn)">(optional)</em></span><input></label>
+              </div>
+              <div>
+                <button type="button" class="link-btn" id="aliasBtn"><svg class="i"><use href="#i-plus"/></svg><span data-vi="Tôi dùng một tên gọi khác">I go by a different first name</span></button>
+                <label class="f" id="aliasF" hidden><span class="f-l"><span data-vi="Tên gọi khác">Alias first name</span> <em data-vi="(tuỳ chọn)">(optional)</em></span><input></label>
+              </div>
+              <div class="divider"></div>
+              <div class="frow">
+                <label class="f"><span class="f-l"><span data-vi="Email">Email</span> <i>*</i></span><input type="email" value="alex.nguyen@example.com" autocomplete="email"></label>
+                <label class="f"><span class="f-l" data-vi="Số điện thoại">Phone</span><input placeholder="(000) 000-0000" data-vi-ph="(000) 000-0000" autocomplete="tel"></label>
+              </div>
+              <label class="cb">
+                <input type="checkbox" checked>
+                <span><span data-vi="Khi cung cấp số điện thoại, bạn đồng ý nhận SMS từ chúng tôi về hỗ trợ khách hàng.">By providing your phone number, you agree to receive SMS messages from us regarding customer support.</span>
+                <small data-vi="Có thể tính phí tin nhắn và dữ liệu. Trả lời STOP để huỷ, HELP để được hỗ trợ. Xem <a href='#'>chính sách quyền riêng tư</a> và <a href='#'>điều khoản dịch vụ</a>.">Message and data rates may apply. Reply STOP to opt out, HELP for support. See our <a href="#">privacy policy</a> and <a href="#">terms of service</a>.</small></span>
+              </label>
+              <label class="f"><span class="f-l"><span data-vi="Quốc tịch">Citizenship</span> <i>*</i></span>
+                <select>
+                  <option data-vi="Công dân Mỹ">US Citizen</option>
+                  <option data-vi="Thường trú nhân (Thẻ xanh)">Permanent Resident Alien (Green Card)</option>
+                  <option data-vi="Không phải thường trú nhân">Non-permanent Resident Alien</option>
+                </select>
+              </label>
+            </div>
+          </section>
+
+          <section class="blk">
+            <header class="blk-h"><span class="ico"><svg class="i"><use href="#i-home"/></svg></span><div><h3 data-vi="Địa chỉ nhà">Home address</h3><p data-vi="Nơi bạn sống, để chúng tôi thiết lập thuế thu nhập tiểu bang. Báo cho bộ phận Nhân sự nếu địa chỉ thay đổi.">Where you live, so we can set up state income tax. Tell Human Resources if it changes.</p></div></header>
+            <div class="blk-b">
+              <div class="frow three">
+                <label class="f"><span class="f-l"><span data-vi="Địa chỉ">Street address</span> <i>*</i></span><input value="1250 Oak Street"></label>
+                <label class="f"><span class="f-l" data-vi="Căn hộ">Apt or unit</span><input></label>
+                <label class="f"><span class="f-l"><span data-vi="Mã ZIP">ZIP code</span> <i>*</i></span><input value="95112"></label>
+              </div>
+              <label class="f"><span class="f-l"><span data-vi="Thành phố">City</span> <i>*</i></span><input value="San Jose, Santa Clara County, CA"><span class="f-hint" data-vi="Thành phố, quận và tiểu bang tự điền theo mã ZIP.">City, county and state fill in from the ZIP code.</span></label>
+              <label class="cb boxed">
+                <input type="checkbox" id="sameMail" checked>
+                <span><span data-vi="Địa chỉ nhận thư giống địa chỉ nhà.">My mailing address is the same.</span><small data-vi="Cuối năm chúng tôi gửi W-2 hoặc W-9 tới địa chỉ này.">We mail your W-2 or W-9 here at the end of the year.</small></span>
+              </label>
+              <div class="indent" id="mailBlock" hidden>
+                <div class="frow three">
+                  <label class="f"><span class="f-l"><span data-vi="Địa chỉ nhận thư">Mailing street address</span> <i>*</i></span><input></label>
+                  <label class="f"><span class="f-l" data-vi="Căn hộ">Apt or unit</span><input></label>
+                  <label class="f"><span class="f-l"><span data-vi="Mã ZIP">ZIP code</span> <i>*</i></span><input></label>
+                </div>
+                <label class="f"><span class="f-l"><span data-vi="Thành phố">City</span> <i>*</i></span><input></label>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <!-- ======================================== PART 2 -->
+        <section class="panel" data-screen="p2" aria-labelledby="h-p2">
+          <div class="pstrip" data-strip></div>
+          <div class="ph">
+            <span class="kicker" data-vi="Thông tin cơ bản · Phần 2 / 4">Basic information · Part 2 of 4</span>
+            <h2 id="h-p2" data-vi="Giấy phép và tiểu bang">License and states</h2>
+            <p data-vi="Giấy phép NMLS của bạn và các tiểu bang bạn muốn Loan Factory sponsor.">Your NMLS license and the states you want Loan Factory to sponsor.</p>
+          </div>
+
+          <section class="blk">
+            <header class="blk-h"><span class="ico"><svg class="i"><use href="#i-id"/></svg></span><div><h3 data-vi="Giấy phép của bạn">Your license</h3><p data-vi="Chọn mọi tiểu bang bạn đang có giấy phép.">Pick every state where you hold a license.</p></div></header>
+            <div class="blk-b">
+              <label class="f" style="max-width:320px"><span class="f-l"><span data-vi="NMLS ID">NMLS ID</span> <i>*</i></span><input value="2045817" inputmode="numeric"></label>
+              <div class="q">
+                <span class="f-l"><span data-vi="Tiểu bang có giấy phép">Licensed states</span> <i>*</i></span>
+                <div class="picked" id="licPicked"></div>
+                <details class="pick" open><summary><svg class="i"><use href="#i-plus"/></svg><span data-vi="Thêm hoặc bỏ tiểu bang">Add or remove states</span></summary><div class="stgrid" id="licGrid"></div></details>
+                <div class="note warn" data-warn="lic-a" hidden><svg class="i"><use href="#i-alert"/></svg><span data-vi="Nếu Loan Factory sponsor bạn ở GA, MT, OH, OR hoặc PA, không công ty thế chấp nào khác có giấy phép ở các tiểu bang này được sponsor bạn. Vui lòng xác nhận, hoặc bỏ tiểu bang đó khỏi danh sách sponsor.">If Loan Factory sponsors you in GA, MT, OH, OR or PA, no other mortgage company licensed in these states can sponsor you. Please confirm, or remove the state from our sponsorship.</span></div>
+                <div class="note warn" data-warn="lic-b" hidden><svg class="i"><use href="#i-alert"/></svg><span data-vi="Nếu Loan Factory sponsor bạn ở SC, AR hoặc NE, không công ty thế chấp nào khác được sponsor bạn ở bất kỳ tiểu bang nào khác.">If Loan Factory sponsors you in SC, AR or NE, no other mortgage company can sponsor you in any other state.</span></div>
+              </div>
+              <label class="cb"><input type="checkbox"><span data-vi="Tôi không chỉ làm hồ sơ vay với Loan Factory (tôi cũng làm với công ty khác).">I do not originate loans only with Loan Factory (I also work with another company).</span></label>
+            </div>
+          </section>
+
+          <section class="blk">
+            <header class="blk-h"><span class="ico"><svg class="i"><use href="#i-bldg"/></svg></span><div><h3 data-vi="Tiểu bang cần sponsor">States to sponsor</h3><p data-vi="Chúng tôi sponsor được giấy phép Approved-Inactive, Approved, hoặc Pending vì chưa có sponsor. Giấy phép hết hạn phải gia hạn trước; bạn vẫn đi tiếp được và chúng tôi gửi yêu cầu khi nó active.">We can sponsor a license that is Approved-Inactive, Approved, or Pending because it has no sponsor. An expired license must be renewed first; you can keep going and we submit the request once it is active.</p></div></header>
+            <div class="blk-b">
+              <div class="q">
+                <span class="f-l"><span data-vi="Tiểu bang bạn muốn Loan Factory sponsor">States you want Loan Factory to sponsor</span> <i>*</i></span>
+                <div class="picked" id="spPicked"></div>
+                <details class="pick" open><summary><svg class="i"><use href="#i-plus"/></svg><span data-vi="Thêm hoặc bỏ tiểu bang">Add or remove states</span></summary><div class="stgrid" id="spGrid"></div>
+                  <span class="legend" style="margin-top:8px" data-vi="Tiểu bang chỉ cho phép Outside Loan Officer (W-2)">State that allows Outside Loan Officer (W-2) only</span></details>
+                <div class="note warn" data-warn="sp-a" hidden><svg class="i"><use href="#i-alert"/></svg><span data-vi="Nếu Loan Factory sponsor bạn ở GA, MT, OH, OR hoặc PA, không công ty thế chấp nào khác có giấy phép ở các tiểu bang này được sponsor bạn. Vui lòng xác nhận, hoặc bỏ tiểu bang đó khỏi danh sách sponsor.">If Loan Factory sponsors you in GA, MT, OH, OR or PA, no other mortgage company licensed in these states can sponsor you. Please confirm, or remove the state from our sponsorship.</span></div>
+                <div class="note warn" data-warn="sp-b" hidden><svg class="i"><use href="#i-alert"/></svg><span data-vi="Nếu Loan Factory sponsor bạn ở SC, AR hoặc NE, không công ty thế chấp nào khác được sponsor bạn ở bất kỳ tiểu bang nào khác.">If Loan Factory sponsors you in SC, AR or NE, no other mortgage company can sponsor you in any other state.</span></div>
+                <div class="confirm" id="spConfirm" hidden>
+                  <b data-vi="Bạn có xác nhận sponsor này không?">Do you confirm this sponsorship?</b>
+                  <div class="row" id="spConfirmBtns">
+                    <button type="button" class="btn btn-o" data-confirm="yes" data-vi="Xác nhận">Confirm</button>
+                    <button type="button" class="btn btn-ghost" data-confirm="no" data-vi="Huỷ">Cancel</button>
+                  </div>
+                  <span class="ok" id="spConfirmed" hidden><svg class="i"><use href="#i-check"/></svg><span data-vi="Đã xác nhận">Confirmed</span></span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- California (shown when CA is a sponsor state) -->
+          <section class="blk sub" id="caCard">
+            <header class="blk-h"><span class="ico">CA</span><div><h3 data-vi="California">California</h3><p data-vi="Hiện ra vì bạn chọn California trong tiểu bang cần sponsor.">Shown because California is one of your states to sponsor.</p></div></header>
+            <div class="blk-b">
+              <div class="q">
+                <span class="f-l"><span data-vi="Loại giấy phép">Licensed type</span> <i>*</i></span>
+                <div class="opts" data-opts="caType">
+                  <button type="button" class="opt" data-v="dfpi"><b>DFPI MLO</b><small data-vi="Chỉ thế chấp">Mortgage only</small></button>
+                  <button type="button" class="opt" data-v="dre"><b>DRE-endorsed MLO</b><small data-vi="Bất động sản và thế chấp">Real estate and mortgage</small></button>
+                </div>
+              </div>
+              <div id="caDfpi" hidden class="q">
+                <div class="note"><svg class="i"><use href="#i-info"/></svg><span data-vi="Là DFPI mortgage loan originator ở California, bạn phải được trả lương theo dạng <b>Outside Loan Officer (W-2)</b>. Để được trả theo <b>1099</b>, hãy lấy giấy phép DRE-endorsed MLO và làm việc theo giấy phép đó, hoặc không làm thế chấp ở California.">As a California DFPI mortgage loan originator, you must be paid as a <b>W-2 Outside Loan Officer</b>. To be paid on a <b>1099 basis</b>, get a DRE-endorsed MLO license and work under it, or do not do mortgage business in California.</span></div>
+                <span class="f-l"><span data-vi="Bạn có thêm giấy phép bất động sản DRE California không?">Do you also have a California DRE real estate license?</span> <i>*</i></span>
+                <div class="seg" data-seg="dfpiDre"><button type="button" data-v="yes" data-vi="Có">Yes</button><button type="button" data-v="no" data-vi="Không">No</button></div>
+                <div class="note calm" data-show="dfpiDre=yes" hidden><svg class="i"><use href="#i-info"/></svg><span data-vi="Đề nghị NMLS đổi giấy phép DFPI MLO sang <b>DRE-endorsed MLO</b>. Khi đó bạn có thể treo giấy phép DRE ở Loan Factory và làm cả bất động sản lẫn thế chấp.">Ask NMLS to change your DFPI MLO license to a <b>DRE-endorsed MLO</b> license. Then you can hang your DRE license with Loan Factory and practice both real estate and mortgage here.</span></div>
+                <div class="note calm" data-show="dfpiDre=no" hidden><svg class="i"><use href="#i-info"/></svg><span data-vi="Trước tiên hãy lấy <b>giấy phép bất động sản DRE</b>, rồi đề nghị chuyển DFPI MLO sang <b>DRE-endorsed MLO</b>. Sau đó bạn có thể được trả theo 1099.">First get a <b>DRE real estate license</b>, then ask for your DFPI MLO license to be converted to a <b>DRE-endorsed MLO</b> license. After that you can be paid on a 1099 basis.</span></div>
+                <label class="f" data-show="dfpiDre=yes" hidden style="max-width:320px"><span class="f-l" data-vi="Số giấy phép DRE California">California DRE license number</span><input></label>
+              </div>
+              <div id="caDre" hidden class="q">
+                <div class="note"><svg class="i"><use href="#i-info"/></svg><span data-vi="Là <b>DRE-endorsed MLO</b>, bạn có thể làm cả bất động sản và thế chấp.">As a <b>DRE-endorsed MLO</b>, you can practice both real estate and mortgage.</span></div>
+                <span class="f-l"><span data-vi="Bạn có muốn làm bất động sản với Loan Factory không?">Do you want to practice real estate with Loan Factory as well?</span> <i>*</i></span>
+                <div class="seg" data-seg="practiceRe"><button type="button" data-v="yes" data-vi="Có">Yes</button><button type="button" data-v="no" data-vi="Không">No</button></div>
+                <div class="note calm" data-show="practiceRe=yes" hidden><svg class="i"><use href="#i-info"/></svg><span data-vi="Bạn phải gia nhập một hiệp hội REALTOR® địa phương và MLS, có phí thành viên hằng năm. Vui lòng chọn <a href='#'>Path B trong hướng dẫn này</a>.">You must join a local REALTOR® association and the MLS, which has an annual membership fee. Please choose <a href="#">Path B in these instructions</a>.</span></div>
+                <div class="note calm" data-show="practiceRe=no" hidden><svg class="i"><use href="#i-info"/></svg><span data-vi="Bạn chưa được làm bất động sản. Để làm, giấy phép bất động sản DRE của bạn phải do Loan Factory (DRE #01771313) sponsor.">You are not allowed to practice real estate yet. To practice, your DRE real estate license must be sponsored by Loan Factory (DRE #01771313).</span></div>
+                <div class="frow">
+                  <label class="f"><span class="f-l" data-vi="Số giấy phép DRE California">California DRE license number</span><input id="dreNum" value="02198765"></label>
+                  <label class="f"><span class="f-l"><span data-vi="Loại giấy phép DRE California">CA DRE license type</span> <i>*</i></span>
+                    <select id="dreType"><option value="" data-vi="Chọn loại">Select a type</option><option value="broker">Broker endorsement</option><option value="sales">Salesperson endorsement</option></select></label>
+                </div>
+                <div class="note calm" id="salesNote" hidden><svg class="i"><use href="#i-info"/></svg><span data-vi="Mỗi lúc bạn chỉ được liên kết với một broker hoặc công ty có giấy phép.">You may only be affiliated with one licensed broker or corporation at a time.</span></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Indiana (shown when IN is a sponsor state) -->
+          <section class="blk sub" id="inCard" hidden>
+            <header class="blk-h"><span class="ico">IN</span><div><h3>Indiana</h3><p data-vi="Hiện ra vì bạn chọn Indiana trong tiểu bang cần sponsor.">Shown because Indiana is one of your states to sponsor.</p></div></header>
+            <div class="blk-b">
+              <div class="q">
+                <span class="f-l"><span data-vi="Loại giấy phép">Licensed type</span> <i>*</i></span>
+                <div class="opts" data-opts="inType">
+                  <button type="button" class="opt" data-v="dfi"><b>DFI MLO</b><small data-vi="Department of Financial Institutions">Department of Financial Institutions</small></button>
+                  <button type="button" class="opt" data-v="sos"><b>SOS LO</b><small data-vi="Secretary of State">Secretary of State</small></button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="blk">
+            <header class="blk-h"><span class="ico"><svg class="i"><use href="#i-case"/></svg></span><div><h3 data-vi="Cách bạn được trả lương">How you are paid</h3><p data-vi="Một số tiểu bang và loại giấy phép quyết định thay bạn. Lý do hiện ngay bên dưới.">Some states and license types decide this for you. The reason shows right below.</p></div></header>
+            <div class="blk-b">
+              <div class="q">
+                <span class="f-l"><span data-vi="Loại Loan Officer">Loan Officer type</span> <i>*</i></span>
+                <div class="opts" data-opts="loType">
+                  <button type="button" class="opt" data-v="w2"><b>Outside Loan Officer (W-2)</b><small data-vi="Nhân viên, Loan Factory khấu trừ thuế">Employee, Loan Factory withholds taxes</small></button>
+                  <button type="button" class="opt" data-v="1099"><b>Independent Loan Officer (1099)</b><small data-vi="Nhà thầu độc lập, bạn tự nộp thuế">Independent contractor, you file your own taxes</small></button>
+                </div>
+              </div>
+              <div class="why" id="whyState" hidden><svg class="i"><use href="#i-info"/></svg><span data-vi="Chỉ W-2, vì bạn chọn sponsor ở <b class='js-w2'></b>. Các tiểu bang này chỉ cho phép Outside Loan Officer (W-2).">W-2 only, because you picked <b class="js-w2"></b> to sponsor. These states allow Outside Loan Officer (W-2) only.</span></div>
+              <div class="why" id="whyCa" hidden><svg class="i"><use href="#i-info"/></svg><span data-vi="Chỉ W-2, vì giấy phép California của bạn là DFPI MLO.">W-2 only, because your California license is DFPI MLO.</span></div>
+              <div class="why" id="whyIn" hidden><svg class="i"><use href="#i-info"/></svg><span data-vi="Chỉ W-2, vì giấy phép Indiana của bạn là DFI MLO.">W-2 only, because your Indiana license is DFI MLO.</span></div>
+              <div class="why" id="why1099" hidden><svg class="i"><use href="#i-info"/></svg><span data-vi="Mặc định 1099 theo loại giấy phép của bạn. Bạn vẫn có thể đổi.">Set to 1099 by default for your license type. You can still change it.</span></div>
+            </div>
+          </section>
+        </section>
+
+        <!-- ======================================== PART 3 -->
+        <section class="panel" data-screen="p3" aria-labelledby="h-p3">
+          <div class="pstrip" data-strip></div>
+          <div class="ph">
+            <span class="kicker" data-vi="Thông tin cơ bản · Phần 3 / 4">Basic information · Part 3 of 4</span>
+            <h2 id="h-p3" data-vi="Thù lao và hiện diện trực tuyến">Compensation and online presence</h2>
+            <p data-vi="Thiết lập giá, website và mạng xã hội của bạn.">Your pricing settings, your website, and your social media.</p>
+          </div>
+
+          <section class="blk">
+            <header class="blk-h"><span class="ico"><svg class="i"><use href="#i-pct"/></svg></span><div><h3 data-vi="Thù lao">Compensation</h3><p data-vi="Các số này đặt lãi suất trên pricing engine của bạn. Mỗi số chỉ đổi được một lần mỗi 3 tháng.">These set the rates on your pricing engine. You can change each one only once every 3 months.</p></div></header>
+            <div class="blk-b">
+              <div class="frow">
+                <label class="f"><span class="f-l"><span data-vi="Main target compensation">Main target compensation</span> <i>*</i></span><input value="1.5" inputmode="decimal"></label>
+                <label class="f err"><span class="f-l"><span data-vi="Correspondent target compensation">Correspondent target compensation</span> <i>*</i></span><input value="140" inputmode="decimal"><span class="f-err" data-vi="Nhập số từ 0 đến 100">Enter a number from 0 to 100</span></label>
+              </div>
+              <details class="more">
+                <summary data-vi="Các số này dùng để làm gì?">What do these do?</summary>
+                <div class="more-b">
+                  <p data-vi="<b>Main target compensation</b> được tính vào borrower-paid compensation trên lãi suất website của bạn, và là mặc định khi bạn convert một khoản vay. Bạn có thể tăng hoặc giảm cho từng khoản vay khi lender cho phép."><b>Main target compensation</b> is built into borrower-paid compensation on your website rates, and is the default when you convert a loan. You can raise or lower it per loan when the lender allows.</p>
+                  <p data-vi="<b>Correspondent target compensation</b> là bắt buộc với các correspondent investor của chúng tôi. Bạn không phải chọn giữa wholesale và correspondent; khoản vay có thể đi qua cả hai. Xem <a href='#'>Correspondent Handbook</a>."><b>Correspondent target compensation</b> is required for our correspondent investors. You do not have to choose between wholesale and correspondent; loans can go through either. See the <a href="#">Correspondent Handbook</a>.</p>
+                </div>
+              </details>
+            </div>
+          </section>
+
+          <section class="blk">
+            <header class="blk-h"><span class="ico"><svg class="i"><use href="#i-lang"/></svg></span><div><h3 data-vi="Ngôn ngữ bạn dùng với khách hàng">Languages you speak with clients</h3><p data-vi="Tuỳ chọn. Chọn bao nhiêu cũng được.">Optional. Pick as many as you like.</p></div></header>
+            <div class="blk-b"><div class="chips" id="langs"></div></div>
+          </section>
+
+          <section class="blk">
+            <header class="blk-h"><span class="ico"><svg class="i"><use href="#i-world"/></svg></span><div><h3 data-vi="Website">Website</h3><p data-vi="Hồ sơ mạng xã hội được hỏi riêng ở bên dưới.">Social media profiles are asked about separately below.</p></div></header>
+            <div class="blk-b" id="siteBlock">
+              <div class="q">
+                <span class="f-l"><span data-vi="Bạn có website hoặc landing page quảng bá thế chấp không?">Do you currently have a website or landing page that promotes mortgages?</span> <i>*</i></span>
+                <div class="seg" data-seg="site"><button type="button" data-v="yes" data-vi="Có">Yes</button><button type="button" data-v="no" data-vi="Không">No</button></div>
+              </div>
+              <div class="q" data-show="site=yes" hidden>
+                <span class="f-l"><span data-vi="Địa chỉ website">Website address</span> <i>*</i></span>
+                <div class="rows" data-rows="url"></div>
+                <button type="button" class="link-btn" data-add="url"><svg class="i"><use href="#i-plus"/></svg><span data-vi="Thêm website khác">Add another website</span></button>
+                <span class="f-hint" data-vi="Thêm ít nhất một địa chỉ bắt đầu bằng https://">Add at least one address that starts with https://</span>
+              </div>
+              <label class="cb boxed" data-show="site=any" hidden><input type="checkbox"><span><span data-vi="Tôi đồng ý xin phép Loan Factory trước khi tạo website hoặc landing page mới quảng bá thế chấp.">I agree to obtain Loan Factory's approval before creating any new website or landing page that promotes mortgages.</span> <i style="color:var(--orange-ink);font-style:normal">*</i></span></label>
+            </div>
+          </section>
+
+          <section class="blk">
+            <header class="blk-h"><span class="ico"><svg class="i"><use href="#i-share"/></svg></span><div><h3 data-vi="Mạng xã hội">Social media</h3><p data-vi="Chúng tôi gợi ý Facebook cá nhân và fanpage, LinkedIn, Google Business Profile (để nhận đánh giá), Zillow, Yelp và TikTok.">We suggest your Facebook profile and page, LinkedIn, Google Business Profile (for reviews), Zillow, Yelp and TikTok.</p></div></header>
+            <div class="blk-b">
+              <div class="q">
+                <span class="f-l" data-vi="Bạn có link mạng xã hội không?">Do you have any social media links?</span>
+                <div class="seg" data-seg="social"><button type="button" data-v="yes" data-vi="Có">Yes</button><button type="button" data-v="no" data-vi="Không">No</button></div>
+              </div>
+              <div class="q" data-show="social=yes" hidden>
+                <div class="rows" data-rows="social"></div>
+                <button type="button" class="link-btn" data-add="social"><svg class="i"><use href="#i-plus"/></svg><span data-vi="Thêm link mạng xã hội">Add a social link</span></button>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <!-- ======================================== PART 4 -->
+        <section class="panel" data-screen="p4" aria-labelledby="h-p4">
+          <div class="pstrip" data-strip></div>
+          <div class="ph">
+            <span class="kicker" data-vi="Thông tin cơ bản · Phần 4 / 4">Basic information · Part 4 of 4</span>
+            <h2 id="h-p4" data-vi="Người giới thiệu và xác nhận">Referral and confirm</h2>
+            <p data-vi="Cho chúng tôi biết bạn biết đến Loan Factory từ đâu, kiểm tra câu trả lời rồi gửi.">Tell us how you found us, check your answers, and submit.</p>
+          </div>
+
+          <section class="blk">
+            <header class="blk-h"><span class="ico"><svg class="i"><use href="#i-users"/></svg></span><div><h3 data-vi="Bạn biết đến Loan Factory từ đâu?">How did you hear about Loan Factory?</h3><p data-vi="Nếu một người giới thiệu bạn, chúng tôi gửi tiền thưởng giới thiệu cho họ.">If a person referred you, we send them a referral bonus.</p></div></header>
+            <div class="blk-b">
+              <label class="f"><span class="f-l"><span data-vi="Giới thiệu bởi">Referred by</span> <em data-vi="(tuỳ chọn)">(optional)</em></span>
+                <select id="refSrc">
+                  <option value="" data-vi="Chọn một">Select one</option>
+                  <option value="webinar" data-vi="Hội thảo trực tuyến">Webinar</option>
+                  <option value="social" data-vi="Mạng xã hội">Social media</option>
+                  <option value="job" data-vi="Đăng tin tuyển dụng">Job posting</option>
+                  <option value="outside" selected data-vi="Outside Loan Officer">Outside Loan Officer</option>
+                  <option value="returning" data-vi="Loan Officer quay lại">Returning Loan Officer</option>
+                  <option value="trade" data-vi="Hội chợ thế chấp">Mortgage trade show</option>
+                  <option value="partner" data-vi="Giới thiệu đối tác">Partner referral</option>
+                  <option value="google">Google</option>
+                  <option value="others" data-vi="Khác">Others</option>
+                </select>
+              </label>
+              <div class="indent" id="refBlock">
+                <div class="frow">
+                  <label class="f"><span class="f-l" data-vi="Tên người giới thiệu">Referrer name</span><input value="Jamie Tran"></label>
+                  <label class="f"><span class="f-l"><span data-vi="Email người giới thiệu">Referrer email</span> <i>*</i></span><input type="email" value="jamie.tran@example.com"></label>
+                </div>
+                <label class="f" style="max-width:320px"><span class="f-l" data-vi="Số điện thoại người giới thiệu">Referrer phone</span><input placeholder="(000) 000-0000"></label>
+                <div class="q">
+                  <span class="f-l" data-vi="Tiền thưởng giới thiệu: người giới thiệu có tài khoản Zelle không?">Referral bonus: does the referrer have a Zelle account?</span>
+                  <div class="seg" data-seg="zelle"><button type="button" data-v="yes" data-vi="Có">Yes</button><button type="button" data-v="no" data-vi="Không">No</button></div>
+                </div>
+                <div class="q" data-show="zelle=yes" hidden>
+                  <span class="f-l" data-vi="Gửi tiền thưởng qua Zelle bằng">Send the referral bonus by Zelle using</span>
+                  <div class="chips" data-radio="zmethod">
+                    <button type="button" class="tog" data-v="phone" data-vi="Số điện thoại">Phone</button>
+                    <button type="button" class="tog" data-v="email" data-vi="Địa chỉ email">Email address</button>
+                    <button type="button" class="tog" data-v="other" data-vi="Thông tin Zelle khác">Other Zelle details</button>
+                  </div>
+                  <label class="f" data-show="zmethod=other" hidden><span class="f-l" data-vi="Thông tin Zelle">Zelle details</span><input></label>
+                </div>
+                <label class="f" data-show="zelle=no" hidden><span class="f-l" data-vi="Cách nhận tiền thưởng giới thiệu mong muốn">Preferred payment method for the referral bonus</span><input></label>
+              </div>
+            </div>
+          </section>
+
+          <section class="blk">
+            <header class="blk-h"><span class="ico"><svg class="i"><use href="#i-clip"/></svg></span><div><h3 data-vi="Kiểm tra câu trả lời">Check your answers</h3><p data-vi="Bấm Sửa ở từng phần để thay đổi.">Click Edit on a part to change it.</p></div></header>
+            <div class="blk-b sum">
+              <div class="sum-g"><header><b data-vi="Thông tin cá nhân">Personal information</b><button type="button" class="link-btn" data-go="p1" data-vi="Sửa">Edit</button></header>
+                <dl><dt data-vi="Tên">Name</dt><dd>Alex Nguyen</dd><dt>Email</dt><dd>alex.nguyen@example.com</dd><dt data-vi="Địa chỉ nhà">Home address</dt><dd>1250 Oak Street, San Jose, CA 95112</dd></dl></div>
+              <div class="sum-g"><header><b data-vi="Giấy phép và tiểu bang">License and states</b><button type="button" class="link-btn" data-go="p2" data-vi="Sửa">Edit</button></header>
+                <dl><dt>NMLS ID</dt><dd>2045817</dd><dt data-vi="Tiểu bang có giấy phép">Licensed states</dt><dd id="sumLic"></dd><dt data-vi="Tiểu bang cần sponsor">States to sponsor</dt><dd id="sumSp"></dd><dt data-vi="Loại Loan Officer">Loan Officer type</dt><dd id="sumType"></dd></dl></div>
+              <div class="sum-g"><header><b data-vi="Thù lao và trực tuyến">Compensation and online</b><button type="button" class="link-btn" data-go="p3" data-vi="Sửa">Edit</button></header>
+                <dl><dt>Main target compensation</dt><dd>1.5</dd><dt data-vi="Website">Website</dt><dd id="sumSite"></dd></dl></div>
+            </div>
+          </section>
+
+          <label class="cb boxed">
+            <input type="checkbox" id="ack2">
+            <span><span data-vi="Tôi xác nhận mọi thông tin tôi cung cấp là đúng, chính xác và đầy đủ. Tôi hiểu rằng mọi thông tin sai lệch có thể ảnh hưởng đến hồ sơ của tôi.">I confirm that all information I provided is true, accurate and complete. I understand that any misrepresentation may affect my application.</span> <i style="color:var(--orange-ink);font-style:normal">*</i></span>
+          </label>
+        </section>
+
+        <!-- ======================================== THANK YOU -->
+        <section class="panel" data-screen="thanks" aria-labelledby="h-ty">
+          <div class="ty">
+            <span class="eyebrow" data-vi="Đã gửi thông tin">Information received</span>
+            <h2 id="h-ty" data-vi="Cảm ơn bạn đã gửi thông tin. <span>Bạn đã tiến gần thêm một bước!</span>">Thanks for submitting your information. <span>You're one step closer!</span></h2>
+            <p class="lede" data-vi="Chúng tôi đã nhận thông tin và sẽ sớm liên hệ để hướng dẫn các bước nhận việc tiếp theo. Hãy sẵn sàng gia nhập đội ngũ đang thay đổi ngành thế chấp.">We've received your information and will contact you shortly to guide you through the next steps of onboarding. Get ready to join a team that's transforming the mortgage game.</p>
+            <div class="ty-grid">
+              <div class="ty-card"><span class="n">1</span><b data-vi="Đã xong: thông tin của bạn">Done: your information</b><p data-vi="Bạn không cần làm gì thêm lúc này.">You do not need to do anything else right now.</p></div>
+              <div class="ty-card"><span class="n">2</span><b data-vi="Tiếp theo: cuộc gọi ngắn">Next: a short call</b><p data-vi="Chúng tôi gọi để nói chi tiết. Sau cuộc gọi, các bước tiếp theo sẽ mở.">We call you to talk about the details. After the call, the next steps open.</p></div>
+              <div class="ty-card"><span class="n">?</span><b data-vi="Có câu hỏi? Chúng tôi có câu trả lời">Got questions? We've got answers</b><p data-vi="Email cho chúng tôi tại <a href='#'>recruiting@loanfactory.com</a> hoặc hỏi trong cuộc gọi nhận việc sắp tới.">Email us at <a href="#">recruiting@loanfactory.com</a> or ask during your upcoming onboarding call.</p></div>
+            </div>
+            <div class="ty-cta">
+              <a class="btn btn-o" href="#" data-go="fee"><span data-vi="Xem hồ sơ của tôi">See my application</span><svg class="i"><use href="#i-right"/></svg></a>
+              <a class="btn btn-line" href="#" data-vi="Tìm hiểu thêm về Loan Factory">Explore more at Loan Factory</a>
+            </div>
+          </div>
+          <div class="ty-foot">
+            <div><b data-vi="Rất vui khi có bạn đồng hành.">We're thrilled to have you with us.</b><p data-vi="Loan Factory: nơi sự nghiệp thế chấp của bạn cất cánh, nhanh hơn, thông minh hơn, tốt hơn.">Loan Factory: where your mortgage career takes off, faster, smarter, better.</p></div>
+          </div>
+        </section>
+
+        <!-- ======================================== PAY ONE-TIME FEE (locked) -->
+        <section class="panel" data-screen="fee" aria-labelledby="h-fee">
+          <div class="ph">
+            <span class="kicker" data-vi="Bước 3 / 5 · Đóng phí một lần">Step 3 of 5 · Pay one-time fee</span>
+          </div>
+          <div class="lockhero">
+            <span class="ring"><svg class="i"><use href="#i-phone"/></svg></span>
+            <div>
+              <h2 id="h-fee" data-vi="Giờ bạn đã xong phần của mình.">You're done for now.</h2>
+              <p data-vi="Chúng tôi sẽ sớm gọi cho bạn. Sau cuộc gọi, chúng tôi sẽ mở các bước tiếp theo cho bạn.">We will call you soon. After the call, we will give you access to the following steps.</p>
+            </div>
+          </div>
+          <div class="ticket">
+            <div><b>$100</b><span data-vi="Phí khởi đầu một lần">One-time startup fee</span></div>
+            <em><svg class="i"><use href="#i-lock"/></svg><span data-vi="Chỉ đóng sau cuộc gọi">Due only after your call</span></em>
+          </div>
+          <ol class="unlock">
+            <li><span class="ico"><svg class="i"><use href="#i-case"/></svg></span><div><b data-vi="Đóng phí một lần">Pay one-time fee</b><small data-vi="Mở sau cuộc gọi">Opens after your call</small></div><svg class="i lk"><use href="#i-lock"/></svg></li>
+            <li><span class="ico"><svg class="i"><use href="#i-sign"/></svg></span><div><b data-vi="Xem và ký hợp đồng">Review and sign agreement</b><small data-vi="Chúng tôi email cho bạn khi sẵn sàng">We email you when it's ready</small></div><svg class="i lk"><use href="#i-lock"/></svg></li>
+            <li><span class="ico"><svg class="i"><use href="#i-key"/></svg></span><div><b data-vi="Cấp quyền trên NMLS">Grant access on NMLS</b><small data-vi="Để licensing@loanfactory.com sponsor bạn">So licensing@loanfactory.com can sponsor you</small></div><svg class="i lk"><use href="#i-lock"/></svg></li>
+          </ol>
+          <div class="help" style="margin-top:16px"><b data-vi="Chưa nhận được cuộc gọi?">Haven't heard from us?</b><span data-vi="Email cho đội Recruiting tại <a href='#'>recruiting@loanfactory.com</a>">Email our Recruiting team at <a href="#">recruiting@loanfactory.com</a></span></div>
+        </section>
+
+        <!-- ======================================== REVIEW AND SIGN -->
+        <section class="panel" data-screen="sign" aria-labelledby="h-sign">
+          <div class="ph">
+            <span class="kicker" data-vi="Bước 4 / 5">Step 4 of 5</span>
+            <h2 id="h-sign" data-vi="Xem và ký hợp đồng">Review and sign agreement</h2>
+            <p data-vi="Hoàn tất nhận việc trong vài phút. Loan Factory cần gửi cho bạn thông báo, tài liệu công bố, uỷ quyền và các giấy tờ khác trong quá trình hợp tác. Vui lòng xem và ký bên dưới.">Complete your onboarding in minutes. Loan Factory is required to provide notices, disclosures, authorizations, acknowledgments, and other documents to you during our relationship. Please review and sign below.</p>
+          </div>
+          <div class="two">
+            <div style="display:grid;gap:12px">
+              <div class="classify"><span class="ico"><svg class="i"><use href="#i-case"/></svg></span><div><small data-vi="Bạn tạm thời được xếp loại là">You are tentatively classified as</small><b>Outside Loan Officer (W-2)</b></div></div>
+              <button type="button" class="signbtn"><svg class="i"><use href="#i-sign"/></svg><span><b data-vi="Bấm vào đây để ký tài liệu">Click here to sign documents</b><small data-vi="Ký điện tử nhanh và an toàn">Quick and secure electronic signature</small></span><svg class="i"><use href="#i-right"/></svg></button>
+              <div class="note warn"><svg class="i"><use href="#i-alert"/></svg><span data-vi="Vui lòng không rời trang này cho đến khi ký xong mọi tài liệu.">Please do not leave this page until all documents are signed.</span></div>
+            </div>
+            <aside class="doc">
+              <div class="paper" data-draft="DRAFT"></div>
+              <b data-vi="Bản nháp Outside Loan Officer Agreement">Draft Outside Loan Officer Agreement</b>
+              <span class="lead" data-vi="Đội nhận việc sẽ gửi bản hợp đồng đã điền sẵn thông tin của bạn.">The onboarding team will send you the pre-filled agreement.</span>
+              <a class="link-btn" href="#"><span data-vi="Đọc bản nháp">Read the draft</span><svg class="i"><use href="#i-ext"/></svg></a>
+            </aside>
+          </div>
+          <div class="help" style="margin-top:16px"><b data-vi="Cần trợ giúp?">Need help?</b><span data-vi="Liên hệ đội hỗ trợ tại <a href='#'>support@loanfactory.com</a>">Reach our support team at <a href="#">support@loanfactory.com</a></span></div>
+        </section>
+
+        <!-- ======================================== WEBSITE GATE -->
+        <section class="panel" data-screen="gate" aria-labelledby="h-gate">
+          <div class="gate">
+            <div class="gate-top">
+              <span class="kicker" data-vi="Câu hỏi bắt buộc">Required question</span>
+              <h2 id="h-gate" data-vi="Còn một câu hỏi trước khi bạn tiếp tục">One more question before you continue</h2>
+              <p data-vi="Vui lòng trả lời câu hỏi bắt buộc về website. Bạn tiếp tục được ngay sau khi lưu.">Please answer this required question about your website. You can continue right after you save.</p>
+            </div>
+            <div class="gate-b">
+              <div class="q">
+                <span class="f-l"><span data-vi="Bạn có website hoặc landing page quảng bá thế chấp không?">Do you currently have a website or landing page that promotes mortgages?</span> <i>*</i></span>
+                <span class="f-hint" data-vi="Hồ sơ mạng xã hội được hỏi riêng.">Social media profiles are asked about separately.</span>
+                <div class="seg" data-seg="gsite"><button type="button" data-v="yes" data-vi="Có">Yes</button><button type="button" data-v="no" data-vi="Không">No</button></div>
+              </div>
+              <div class="q" data-show="gsite=yes" hidden>
+                <span class="f-l"><span data-vi="Địa chỉ website">Website address</span> <i>*</i></span>
+                <div class="rows" data-rows="gurl"></div>
+                <button type="button" class="link-btn" data-add="gurl"><svg class="i"><use href="#i-plus"/></svg><span data-vi="Thêm website khác">Add another website</span></button>
+              </div>
+              <label class="cb boxed" data-show="gsite=any" hidden><input type="checkbox"><span data-vi="Tôi đồng ý xin phép Loan Factory trước khi tạo website hoặc landing page mới quảng bá thế chấp.">I agree to obtain Loan Factory's approval before creating any new website or landing page that promotes mortgages.</span></label>
+              <button type="button" class="btn btn-o" data-go="sign"><span data-vi="Lưu và tiếp tục">Save and continue</span><svg class="i"><use href="#i-right"/></svg></button>
+            </div>
+          </div>
+          <div class="blur-behind" aria-hidden="true">
+            <div class="classify"><span class="ico"><svg class="i"><use href="#i-case"/></svg></span><div><small>&nbsp;</small><b>Outside Loan Officer (W-2)</b></div></div>
+          </div>
+        </section>
+
+        <!-- ======================================== NMLS -->
+        <section class="panel" data-screen="nmls" aria-labelledby="h-nmls">
+          <div class="ph">
+            <span class="kicker" data-vi="Bước 5 / 5 · Bước cuối của bạn">Step 5 of 5 · Your last step</span>
+            <h2 id="h-nmls" data-vi="Cấp quyền NMLS cho Loan Factory">Give Loan Factory access on NMLS</h2>
+            <p data-vi="Để hoàn tất sponsor, bạn phải cấp cho Loan Factory quyền truy cập hồ sơ NMLS của bạn.">To complete the sponsorship, you must give Loan Factory the access right to your NMLS record.</p>
+          </div>
+          <div class="idcard">
+            <span class="logo">LF</span>
+            <div><small data-vi="Cấp quyền cho">Give access to</small><b>Loan Factory, Inc.</b><div class="num">NMLS # 320841</div></div>
+            <button type="button" class="copy" id="copyNmls"><svg class="i"><use href="#i-copy"/></svg><span data-vi="Sao chép số NMLS">Copy NMLS number</span></button>
+          </div>
+          <section class="blk" style="margin-top:16px">
+            <header class="blk-h"><span class="ico"><svg class="i"><use href="#i-key"/></svg></span><div><h3 data-vi="Cách làm">How to do it</h3><p data-vi="Làm theo hướng dẫn từng bước, chỉ mất vài phút.">Follow the step-by-step guide. It takes a few minutes.</p></div></header>
+            <div class="blk-b">
+              <ol class="howto">
+                <li><span data-vi="Đăng nhập <b>NMLS</b> bằng tài khoản cá nhân của bạn.">Sign in to <b>NMLS</b> with your individual account.</span></li>
+                <li><span data-vi="Mở hướng dẫn và làm theo các bước cấp quyền cho <b>Loan Factory (NMLS # 320841)</b>.">Open the guide and follow its steps to give access to <b>Loan Factory (NMLS # 320841)</b>.</span></li>
+                <li><span data-vi="Xong. <b>licensing@loanfactory.com</b> sẽ bắt đầu sponsor bạn.">That's it. <b>licensing@loanfactory.com</b> starts your sponsorship.</span></li>
+              </ol>
+              <div><a class="btn btn-o" href="#"><span data-vi="Mở hướng dẫn">Open the guide</span><svg class="i"><use href="#i-ext"/></svg></a></div>
+            </div>
+          </section>
+          <div class="help"><b data-vi="Có câu hỏi?">Questions?</b><span data-vi="Liên hệ <a href='#'>licensing@loanfactory.com</a>">Reach out to <a href="#">licensing@loanfactory.com</a></span></div>
+        </section>
+
+        <!-- sticky action bar -->
+        <div class="act" id="act">
+          <button type="button" class="btn btn-ghost" id="backBtn"><svg class="i"><use href="#i-left"/></svg><span class="t" data-vi="Quay lại">Back</span></button>
+          <span class="mid" id="actMid"></span>
+          <button type="button" class="btn btn-o" id="nextBtn"><span id="nextLbl"></span><svg class="i"><use href="#i-right"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="sitefoot"><div class="wrap"><span>© Loan Factory · NMLS # 320841</span><span data-vi="Có câu hỏi? recruiting@loanfactory.com">Questions? recruiting@loanfactory.com</span></div></footer>
+</main>
+</div>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s)
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)]
+  const frame = $('#frame')
+  let lang = 'en'
+  const L = (en, vi) => (lang === 'vi' ? vi : en)
+
+  const STATES = 'AL AK AZ AR CA CO CT DE DC FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY'.split(' ')
+  const WARN_A = ['GA', 'MT', 'OH', 'OR', 'PA']
+  const WARN_B = ['SC', 'AR', 'NE']
+  const W2_ONLY = ['GA', 'MA', 'MS', 'MT', 'NC', 'NJ', 'NV', 'RI', 'SC', 'VT']
+  const LANGS = [['English', 'Tiếng Anh'], ['Spanish', 'Tiếng Tây Ban Nha'], ['Vietnamese', 'Tiếng Việt'], ['Chinese', 'Tiếng Trung'], ['Korean', 'Tiếng Hàn'], ['Tagalog', 'Tiếng Tagalog'], ['Hindi', 'Tiếng Hindi'], ['Arabic', 'Tiếng Ả Rập'], ['Russian', 'Tiếng Nga'], ['Portuguese', 'Tiếng Bồ Đào Nha']]
+
+  const state = {
+    lic: new Set(['CA', 'TX', 'GA']),
+    sp: new Set(['CA', 'TX']),
+    caType: 'dre', inType: '', loType: '1099', loTouched: false,
+    seg: { site: 'yes', social: 'yes', zelle: 'yes', gsite: '' }, zmethod: 'phone',
+    confirmed: false
+  }
+
+  /* ---------- screens ---------- */
+  const SCREENS = {
+    before: { step: 0, track: 0, back: null, next: 'p1', label: ['Continue to Basic information', 'Tiếp tục tới Thông tin cơ bản'], mid: ['Check the box above to unlock the next step.', 'Đánh dấu ô bên trên để mở bước tiếp theo.'], title: ['Before you begin', 'Trước khi bắt đầu'] },
+    p1: { step: 1, part: 1, track: 0, back: 'before', next: 'p2', label: ['Next: License and states', 'Tiếp: Giấy phép và tiểu bang'], mid: ['Part 1 of 4 · Nothing is sent until part 4', 'Phần 1 / 4 · Chưa gửi gì cho tới phần 4'], title: ['Personal information', 'Thông tin cá nhân'] },
+    p2: { step: 1, part: 2, track: 0, back: 'p1', next: 'p3', label: ['Next: Compensation and online', 'Tiếp: Thù lao và trực tuyến'], mid: ['Part 2 of 4 · Nothing is sent until part 4', 'Phần 2 / 4 · Chưa gửi gì cho tới phần 4'], title: ['License and states', 'Giấy phép và tiểu bang'] },
+    p3: { step: 1, part: 3, track: 0, back: 'p2', next: 'p4', label: ['Next: Referral and confirm', 'Tiếp: Người giới thiệu và xác nhận'], mid: ['Part 3 of 4 · Nothing is sent until part 4', 'Phần 3 / 4 · Chưa gửi gì cho tới phần 4'], title: ['Compensation and online', 'Thù lao và trực tuyến'] },
+    p4: { step: 1, part: 4, track: 0, back: 'p3', next: 'thanks', label: ['Submit my information', 'Gửi thông tin của tôi'], mid: ['Part 4 of 4 · Your answers are sent when you submit', 'Phần 4 / 4 · Câu trả lời được gửi khi bạn bấm Gửi'], title: ['Referral and confirm', 'Người giới thiệu và xác nhận'] },
+    thanks: { step: 2, track: 1, title: ['Thank you', 'Cảm ơn'] },
+    fee: { step: 2, track: 1, back: 'p4', next: null, mid: ['We will call you soon', 'Chúng tôi sẽ sớm gọi cho bạn'], title: ['Pay one-time fee', 'Đóng phí một lần'] },
+    sign: { step: 3, track: 3, back: null, next: 'nmls', label: ['Next: Grant access on NMLS', 'Tiếp: Cấp quyền trên NMLS'], mid: ['Step 4 of 5', 'Bước 4 / 5'], title: ['Review and sign agreement', 'Xem và ký hợp đồng'], unlocked: true },
+    gate: { step: 3, track: 3, noAct: true, title: ['Review and sign agreement', 'Xem và ký hợp đồng'], unlocked: true },
+    nmls: { step: 4, track: 4, back: 'sign', next: null, mid: ['Step 5 of 5 · your last step', 'Bước 5 / 5 · bước cuối của bạn'], title: ['Grant access on NMLS', 'Cấp quyền trên NMLS'], unlocked: true }
+  }
+  const PART_NAMES = [['Personal', 'Cá nhân'], ['License and states', 'Giấy phép'], ['Compensation', 'Thù lao'], ['Referral', 'Giới thiệu']]
+  const STEP_NAMES = [['Before you begin', 'Trước khi bắt đầu'], ['Basic information', 'Thông tin cơ bản'], ['Pay one-time fee', 'Đóng phí một lần'], ['Review and sign agreement', 'Xem và ký hợp đồng'], ['Grant access on NMLS', 'Cấp quyền trên NMLS']]
+  let current = 'p1'
+
+  function go(id) {
+    current = id
+    const s = SCREENS[id]
+    $$('.panel').forEach((p) => p.classList.toggle('on', p.dataset.screen === id))
+    frame.classList.toggle('is-thanks', id === 'thanks')
+    $('#jump').value = id
+    // journey track
+    $$('#track li').forEach((li, i) => {
+      li.classList.toggle('done', i < s.track)
+      li.classList.toggle('now', i === s.track)
+      li.dataset.here = L('You are here', 'Bạn ở đây')
+    })
+    // rail
+    $$('.rs').forEach((li) => {
+      const n = +li.dataset.rs
+      const locked = !s.unlocked && n > 2
+      li.className = 'rs' + (n < s.step ? ' done' : n === s.step ? ' now' : locked ? ' locked' : '')
+    })
+    $('#feebadge').hidden = s.unlocked
+    $$('#railparts li').forEach((li) => {
+      const n = +li.dataset.part
+      li.className = s.step > 1 || (s.part && n < s.part) ? 'done' : n === s.part ? 'now' : ''
+    })
+    $('#railparts').hidden = s.step !== 1
+    // progress (5 steps, Basic counts as 4 parts)
+    const units = s.step === 0 ? 0 : s.step === 1 ? 1 + (s.part - 1) : s.step + 3
+    const pct = Math.round((units / 8) * 100)
+    $('#pbar').style.width = pct + '%'
+    $('#ptext').textContent = L(`${pct}% done · step ${s.step + 1} of 5`, `Đã xong ${pct}% · bước ${s.step + 1} / 5`)
+    // part strip
+    $$('[data-strip]').forEach((strip) => {
+      strip.innerHTML = PART_NAMES.map((n, i) => {
+        const cls = i + 1 < s.part ? 'done' : i + 1 === s.part ? 'now' : ''
+        return `<button type="button" class="${cls}" data-go="p${i + 1}"><i></i><span>${L(...n)}</span></button>`
+      }).join('')
+    })
+    // mobile nav
+    $('#mstep').textContent = s.part ? L(`Step 2 of 5 · Part ${s.part} of 4`, `Bước 2 / 5 · Phần ${s.part} / 4`) : L(`Step ${s.step + 1} of 5`, `Bước ${s.step + 1} / 5`)
+    $('#mtitle').textContent = L(...s.title)
+    const segIdx = s.step === 0 ? 0 : s.step === 1 ? s.part : s.step + 3
+    $$('#msegs i').forEach((el, i) => { el.className = i < segIdx ? 'done' : i === segIdx ? 'now' : '' })
+    $('#msheet').innerHTML = `<ol class="rsteps">${STEP_NAMES.map((n, i) => {
+      const cls = i < s.step ? 'done' : i === s.step ? 'now' : !s.unlocked && i > 2 ? 'locked' : ''
+      const target = ['before', 'p1', 'fee', 'sign', 'nmls'][i]
+      return `<li class="rs ${cls}"><button type="button" data-go="${target}"><span class="dot"><span>${i + 1}</span><svg class="i ok"><use href="#i-check"/></svg><svg class="i lk"><use href="#i-lock"/></svg></span><span class="lbl">${L(...n)}</span></button></li>`
+    }).join('')}</ol>`
+    $('.mnav details').open = false
+    $('#msheet').hidden = true
+    // action bar
+    const act = $('#act')
+    act.hidden = !!s.noAct || id === 'thanks'
+    $('#backBtn').style.visibility = s.back ? 'visible' : 'hidden'
+    $('#nextBtn').hidden = !s.next
+    if (s.label) $('#nextLbl').textContent = L(...s.label)
+    $('#actMid').textContent = s.mid ? L(...s.mid) : ''
+    $('#nextBtn').disabled = id === 'before' ? !$('#ack').checked : id === 'p4' ? !$('#ack2').checked : false
+    update()
+    dockBar()
+  }
+
+  /* Show the bottom action bar only once the step heading sits above it. */
+  function dockBar() {
+    const act = $('#act')
+    const head = $('.panel.on h2')
+    if (act.hidden || !head) return
+    const viewBottom = frame.classList.contains('is-m') ? frame.getBoundingClientRect().bottom : innerHeight
+    const isClear = head.getBoundingClientRect().bottom < viewBottom - act.offsetHeight - 12
+    act.classList.toggle('is-away', !isClear)
+  }
+  let dockQueued = false
+  const queueDock = () => { if (!dockQueued) { dockQueued = true; requestAnimationFrame(() => { dockQueued = false; dockBar() }) } }
+  addEventListener('scroll', queueDock, { passive: true })
+  addEventListener('resize', queueDock)
+  frame.addEventListener('scroll', queueDock, { passive: true })
+
+  document.addEventListener('click', (e) => {
+    const g = e.target.closest('[data-go]')
+    if (g) { e.preventDefault(); go(g.dataset.go); scrollTop() }
+  })
+  $('#jump').addEventListener('change', (e) => { go(e.target.value); scrollTop() })
+  $('#nextBtn').addEventListener('click', () => { const n = SCREENS[current].next; if (n) { go(n); scrollTop() } })
+  $('#backBtn').addEventListener('click', () => { const b = SCREENS[current].back; if (b) { go(b); scrollTop() } })
+  $('#ack').addEventListener('change', () => go(current))
+  $('#ack2').addEventListener('change', () => go(current))
+  $('.mnav details').addEventListener('toggle', (e) => { $('#msheet').hidden = !e.target.open })
+  function scrollTop() {
+    const target = $('.work')
+    const scroller = frame.classList.contains('is-m') ? frame : window
+    const top = frame.classList.contains('is-m') ? target.offsetTop : target.getBoundingClientRect().top + window.scrollY - 60
+    scroller.scrollTo({ top, behavior: 'smooth' })
+  }
+
+  /* ---------- state pickers ---------- */
+  function renderGrid(key) {
+    const grid = $(key === 'lic' ? '#licGrid' : '#spGrid')
+    grid.innerHTML = STATES.map((s) => `<button type="button" class="st${key === 'sp' && W2_ONLY.includes(s) ? ' w2' : ''}" data-st="${s}" data-k="${key}" aria-pressed="${state[key].has(s)}">${s}</button>`).join('')
+  }
+  function renderPicked(key) {
+    const box = $(key === 'lic' ? '#licPicked' : '#spPicked')
+    const list = [...state[key]].sort()
+    box.innerHTML = list.length
+      ? list.map((s) => `<span class="chip">${s}<button type="button" data-rm="${s}" data-k="${key}" aria-label="Remove ${s}"><svg class="i"><use href="#i-x"/></svg></button></span>`).join('')
+      : `<span class="none">${L('No state picked yet', 'Chưa chọn tiểu bang nào')}</span>`
+    $$('.st', $(key === 'lic' ? '#licGrid' : '#spGrid')).forEach((b) => b.setAttribute('aria-pressed', state[key].has(b.dataset.st)))
+  }
+  document.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-st],[data-rm]')
+    if (!t) return
+    const k = t.dataset.k, s = t.dataset.st || t.dataset.rm
+    state[k].has(s) ? state[k].delete(s) : state[k].add(s)
+    if (k === 'sp') state.confirmed = false
+    update()
+  })
+  $('#spConfirmBtns').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-confirm]')
+    if (!b) return
+    if (b.dataset.confirm === 'yes') state.confirmed = true
+    else { WARN_B.forEach((s) => state.sp.delete(s)); state.confirmed = false }
+    update()
+  })
+
+  /* ---------- segmented, options, radio chips ---------- */
+  document.addEventListener('click', (e) => {
+    const sb = e.target.closest('.seg button')
+    if (sb) { state.seg[sb.parentElement.dataset.seg] = sb.dataset.v; update(); return }
+    const ob = e.target.closest('.opts .opt')
+    if (ob && !ob.disabled) {
+      const k = ob.parentElement.dataset.opts
+      state[k] = ob.dataset.v
+      if (k === 'loType') state.loTouched = true
+      update(); return
+    }
+    const rb = e.target.closest('[data-radio] .tog')
+    if (rb) { state[rb.parentElement.dataset.radio] = rb.dataset.v; update(); return }
+    const lb = e.target.closest('#langs .tog')
+    if (lb) lb.setAttribute('aria-pressed', lb.getAttribute('aria-pressed') !== 'true')
+  })
+
+  /* ---------- dynamic rows ---------- */
+  function addRow(kind) {
+    const box = $(`[data-rows="${kind}"]`)
+    const row = document.createElement('div')
+    row.className = 'urow' + (kind === 'social' ? ' social' : '')
+    row.innerHTML = (kind === 'social'
+      ? `<label class="f"><select aria-label="Platform"><option>Facebook</option><option>LinkedIn</option><option>Google Business Profile</option><option>Zillow</option><option>Yelp</option><option>TikTok</option></select></label>`
+      : '') + `<label class="f"><input placeholder="https://" value="${box.children.length === 0 && kind !== 'gurl' ? (kind === 'social' ? 'https://www.facebook.com/alexnguyenloans' : 'https://www.alexnguyenloans.com') : ''}" aria-label="URL"></label><button type="button" class="icon-btn" data-del aria-label="Remove"><svg class="i"><use href="#i-x"/></svg></button>`
+    box.appendChild(row)
+  }
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('[data-add]')
+    if (a) addRow(a.dataset.add)
+    const d = e.target.closest('[data-del]')
+    if (d) { const box = d.closest('.rows'); if (box.children.length > 1) d.parentElement.remove() }
+  })
+
+  $('#aliasBtn').addEventListener('click', () => { $('#aliasF').hidden = false; $('#aliasBtn').hidden = true })
+  $('#sameMail').addEventListener('change', (e) => { $('#mailBlock').hidden = e.target.checked })
+  $('#refSrc').addEventListener('change', update)
+  $('#dreType').addEventListener('change', update)
+  $('#copyNmls').addEventListener('click', (e) => {
+    const lbl = e.currentTarget.querySelector('span')
+    lbl.textContent = L('Copied', 'Đã sao chép')
+    setTimeout(() => { lbl.textContent = L('Copy NMLS number', 'Sao chép số NMLS') }, 1400)
+  })
+
+  /* ---------- rules ---------- */
+  function update() {
+    renderPicked('lic'); renderPicked('sp')
+    const has = (set, list) => list.some((s) => set.has(s))
+    for (const k of ['lic', 'sp']) {
+      const b = has(state[k], WARN_B)
+      $(`[data-warn="${k}-b"]`).hidden = !b
+      $(`[data-warn="${k}-a"]`).hidden = b || !has(state[k], WARN_A)
+    }
+    const spB = has(state.sp, WARN_B)
+    $('#spConfirm').hidden = !spB
+    $('#spConfirmBtns').hidden = state.confirmed
+    $('#spConfirmed').hidden = !state.confirmed
+
+    const ca = state.sp.has('CA'), ind = state.sp.has('IN')
+    $('#caCard').hidden = !ca
+    $('#inCard').hidden = !ind
+    $('#caDfpi').hidden = state.caType !== 'dfpi'
+    $('#caDre').hidden = state.caType !== 'dre'
+    $('#salesNote').hidden = $('#dreType').value !== 'sales'
+
+    // Loan Officer type rule
+    const w2States = [...state.sp].filter((s) => W2_ONLY.includes(s)).sort()
+    const byCa = ca && state.caType === 'dfpi'
+    const byIn = ind && state.inType === 'dfi'
+    const forced = w2States.length > 0 || byCa || byIn
+    const def1099 = !forced && ((ca && state.caType === 'dre') || (ind && state.inType === 'sos'))
+    if (forced) state.loType = 'w2'
+    else if (def1099 && !state.loTouched) state.loType = '1099'
+    $('[data-opts="loType"] [data-v="1099"]').disabled = forced
+    $('#whyState').hidden = !w2States.length
+    $$('.js-w2').forEach((b) => { b.textContent = w2States.join(', ') })
+    $('#whyCa').hidden = !(byCa && !w2States.length)
+    $('#whyIn').hidden = !(byIn && !w2States.length && !byCa)
+    $('#why1099').hidden = !(def1099 && state.loType === '1099')
+
+    $$('.opts').forEach((g) => $$('.opt', g).forEach((o) => o.setAttribute('aria-pressed', state[g.dataset.opts] === o.dataset.v)))
+    $$('.seg').forEach((g) => $$('button', g).forEach((b) => b.setAttribute('aria-pressed', state.seg[g.dataset.seg] === b.dataset.v)))
+    $$('[data-radio]').forEach((g) => $$('.tog', g).forEach((b) => b.setAttribute('aria-pressed', state[g.dataset.radio] === b.dataset.v)))
+    $$('[data-show]').forEach((el) => {
+      const [k, v] = el.dataset.show.split('=')
+      const val = state.seg[k] ?? state[k]
+      el.hidden = v === 'any' ? !val : val !== v
+    })
+    $('#refBlock').hidden = !['outside', 'others'].includes($('#refSrc').value)
+
+    // summary
+    $('#sumLic').textContent = [...state.lic].sort().join(', ') || '—'
+    $('#sumSp').textContent = [...state.sp].sort().join(', ') || '—'
+    $('#sumType').textContent = state.loType === 'w2' ? 'Outside Loan Officer (W-2)' : 'Independent Loan Officer (1099)'
+    $('#sumSite').textContent = state.seg.site === 'yes' ? 'https://www.alexnguyenloans.com' : state.seg.site === 'no' ? L('No website', 'Không có website') : '—'
+  }
+
+  /* ---------- language ---------- */
+  $$('[data-vi]').forEach((el) => { el.dataset.en = el.innerHTML })
+  function applyLang(l) {
+    lang = l
+    document.documentElement.lang = l
+    $$('[data-vi]').forEach((el) => { el.innerHTML = l === 'vi' ? el.dataset.vi : el.dataset.en })
+    $$('#langs .tog').forEach((b, i) => { b.textContent = LANGS[i][l === 'vi' ? 1 : 0] })
+    $$('#lang button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.l === l))
+    go(current)
+  }
+  $('#lang').addEventListener('click', (e) => { const b = e.target.closest('[data-l]'); if (b) applyLang(b.dataset.l) })
+
+  /* ---------- width ---------- */
+  $('#vw').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-w]')
+    if (!b) return
+    frame.classList.toggle('is-m', b.dataset.w === 'm'); queueDock()
+    $$('#vw button').forEach((x) => x.setAttribute('aria-pressed', x === b))
+  })
+
+  /* ---------- init ---------- */
+  $('#langs').innerHTML = LANGS.map(([en], i) => `<button type="button" class="tog" aria-pressed="${i === 0 || i === 2}">${en}</button>`).join('')
+  renderGrid('lic'); renderGrid('sp')
+  addRow('url'); addRow('social'); addRow('gurl')
+  $('#ack').checked = true
+  const params = new URLSearchParams(location.search)
+  if (params.get('w') === 'm') $('#vw [data-w="m"]').click()
+  applyLang(params.get('lang') === 'vi' ? 'vi' : 'en')
+  go(SCREENS[params.get('s')] ? params.get('s') : 'p1')
+})()
+</script>
+
+</body></html>
