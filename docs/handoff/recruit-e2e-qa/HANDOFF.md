@@ -287,3 +287,26 @@ Fixes needed for lkw2w:
 **Mode:** SPEED MODE (see DEV-RULES): CI is the IT gate, 1 reviewer per PR, negative controls only for permission/money/data guards.
 
 **Merge script:** `docs/handoff/recruit-e2e-qa/merge_pr.sh` waits for CI + a clean merge state, then squashes, runs promote-staging and waits for the deploy. It exits 2 on red CI and 3 on a dirty PR (rebase manually: keep both DECISIONS rows).
+
+## RESUMED 07/10 ~18:45
+- Staging `pipeline.v2_stages` = true (PUT 200). Pipeline tabs: All / New lead / Engaged / Offer / Onboarding / Joined / Onboarded (no S0/S3 tab; S0 rows still listed under All as "Not started"). Hot leads: producer badge renders ("Check production first" when no MOSO loan data — expected on fake staging data).
+- Prod read (temp pod, deleted): ACTIVE S0 58, S2 1, S3 0, S5 314, S6 69, S7 63; S0 with SENT/SIGNED offer = 0. So flipping the switch on prod moves 0 rows and V232's repair moves 0 rows.
+- Agents running: a3bd53df (#585/#401 rebase, V233), ab8b564a (#586/#403, V234), afe9e2cf (#588/#405 fixes, V235). Next: merge queue 585->401, 586->403, 588->405, then promote prod.
+- 19:40 Bao (busy 2-3h, "làm end-to-end, không stop"): (a) 69 LO already in Joined on prod -> MEASURE first and report, do not send; (b) Bao tells Linh himself.
+- Prod measure 19:55: 69 ACTIVE S6, ALL never handed to HR (handed_off_at null, outbox empty), all moved to S6 by SYSTEM (MOSO sync): 62 in Sep, 7 in Oct. Auto-send (D231) arms only on NEW S6 entries, so these 69 stay untouched until Bao decides.
+- Master was RED from Khai's #589 (omni live in prod; OmniInboundConfigurationTest pinned "false"). Fixed by be #590 (test expects "true").
+- fe #401 merged (ed3c944c). fe #403 conflicted with #401 on notifications.json (both added keys; kept both), tsc 0, jest 112/112, pushed.
+- merge_pr.sh: retries the merge-commit read; exits 3 after 3x dirty.
+- ~21:30 staging: be #585 #586 #590 + fe #401 #403 #405 merged+deployed. UI checked: My hand-offs bar/legend/With/Waiting on/Since; Joined row shows HR account done, HR to-do+Licensing waiting.
+- FOUND: staging sub HR_ASSOCIATE_UPDATE_SUBSCRIBE_RECRUIT_STAGING has NO grant for recruit-be@lenderrate-master (testIamPermissions {} vs ONBOARD consume+get) -> pod logs PERMISSION_DENIED for that one subscriber; other 3 subscribers fine. Bao's account cannot set IAM. Needs Khai/project owner: recruit-be@ subscriber+viewer on the sub, Pub/Sub service agent publisher on the _DLQ topic + subscriber on the sub. Low priority: the licence feed does nothing until HR offers a masked read.
+- PROD decision: no HR_ASSOCIATE_UPDATE subscription on prod for now (zero value, IAM needs DevOps). be #591 = prod values HR_HANDOFF_PUBLISH + AUTO_SEND + POST_JOINED_PROGRESS (merge after #588; Repo Owner review running). HR prod intake exists (GET 405 vs bogus 404).
+- 23:22 staging: be #588 (f740879f) + #591 (570c4c61) merged+deployed. fe #408 (card to mockup, 0041ef4f) and #410 (Today row, bells icons, setup-call Mark done button; 168b7fec) merged. fe #409 (My hand-offs table to mockup) rebased, merging.
+- 23:36 PRODUCTION recruit-be = 570c4c61 (pushed from 21099f6a; cd-production success). Pod: schema V235, started, 0 ERROR, HR_HANDOFF_PUBLISH/AUTO_SEND/POST_JOINED_PROGRESS = true. Not-registered crons only sequence + user-sync (pre-existing).
+- 23:37 PRODUCTION pipeline.v2_stages = true via a new recruit_settings row (updated_by claude:product-owner-approved-07/10), guarded by "0 ACTIVE S3" (so PipelineS3Retirement had nothing to do). No prod admin login available for the PUT.
+- Bao's setup-call: no booking action exists; the orange button says "Mark done" (calendar icon). Real booking = future work if wanted.
+- Today row shows "Due {date}" not "ready since" (payload lacks the ready date).
+- NEXT: fe #409 merged -> visual check vs mockup on staging (profile card, My hand-offs, Today, bells) -> push recruit-fe production.
+- 23:48 PRODUCTION recruit-fe = 5e593433 (#401 #403 #405 #408 #409 #410 + others' #406 #407). Staging visual check vs mockup: card, My hand-offs table OK.
+- fe #412 (hide duplicate "Sent to HR · UTC" bar under the card, PT time elsewhere; Remind button fits) merging -> then push fe production again.
+- OPEN for Bao: (1) 69 prod Joined LOs never sent to HR; (2) hide the old 15-item onboarding checklist on the profile? (Accounting/IT still use it); (3) real "book setup call" action?; (4) Khai grants for HR_ASSOCIATE_UPDATE staging sub; (5) Hưng masked licence read.
+- 00:2x PRODUCTION recruit-fe = b648d195 (#412 on top). Staging check: no UTC "Sent to HR" bar under the card, no clipped buttons in My hand-offs. ALL planned work for this Q&A round is on production; only the 5 OPEN items for Bao remain.
