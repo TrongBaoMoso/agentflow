@@ -204,3 +204,29 @@ Waiting:
 - Follow-ups filed: pg4l8 (omni idempotency key), 3r9rh (notifier drops 'deferred'), 09dt7 (email log screen, PAUSED).
 - Production promote: not done yet. Bao OK'd a code-only promote after staging is verified.
 - Open question for Bao: should weekend retry days move to Monday?
+
+## 07/10 afternoon: Bao "làm end-to-end, không stop"
+**Decisions:**
+- 6-stage plan APPROVED in full (https://claude.ai/artifact/KMp1MzN27kJezCDdEgHSgE). Bead y0ynz, stream 16, D234, V232+.
+- Big producer label uses its OWN settings (default 5/2).
+- Production: "tự làm hết". After verifying on staging: promote code, create the associate.updated subscription with a DLQ like the onboard one, and turn on Send to HR plus pipeline.v2_stages in production.
+- Weekend no-answer retries move to Monday. Bead fllrw, stream 17.
+- Auto Send to HR: no "Send now" exception. Missing BLOCKING fields → bell + Today to the OB AND the recruiter owner. Optional fields don't block.
+- Manual ticks of HR to-do / HR docs / Licensing: recruiter owner or OB.
+- Licensing auto-tick = every applied state is sponsored (read from HR lo-licenses on the associate.updated "licensing" category).
+- UI COPY RULE: no hints or explanations in the UI, fewest plain words (added to DEV-RULES).
+
+**Mockup approved:** https://claude.ai/artifact/PWaJrrBpWfsrutNSRDLkep (EN/VI toggle).
+
+**Streams running:**
+
+| Stream | Work | Bead | Numbers |
+|---|---|---|---|
+| 2 | #578 / #392 BE IT | — | — |
+| 13 | pay/sign fixes | efprc | D230 |
+| 14 | auto Send to HR | lkw2w | D231 |
+| 15 | post-Joined progress | lpshc | D232/D233, V231 |
+| 16 | 6 stages | y0ynz | D234, V232+ |
+| 17 | weekend → Monday | fllrw | D236 if needed |
+
+**Merged today:** #576 #389 #581 #580 #394 #582 #577 #391 #395 #396 #583 #398.

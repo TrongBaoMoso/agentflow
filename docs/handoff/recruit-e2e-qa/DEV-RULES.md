@@ -17,3 +17,9 @@
   - Open a PR to master with a test plan. End the PR body with: 🤖 Generated with [Claude Code](https://claude.com/claude-code)
 - Do NOT merge, do NOT promote, do NOT touch production. Reply with the PR URL(s), head SHA, test evidence and the negative-control results.
 - Never print /Users/apple/Projects/agentflow/.worktrees/_designs/staging-test-accounts.local.md. If you need a staging login, read one row/column with awk inside the script only.
+
+## UI copy rule (product owner, 07/10, applies to every screen)
+- No explanatory notes, hints or captions in the UI.
+- Fewest words possible, plain words someone understands on first read.
+- Labels and status words only: e.g. "Waiting on HR · 3 days", "Missing for HR: NMLS", "Mark done", "Undo".
+- No sentences that explain how the system works, e.g. "Ticks itself when…" or "HR app will tick this later" — drop them.
