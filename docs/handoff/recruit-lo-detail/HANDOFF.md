@@ -9,11 +9,13 @@ Talk to Bao in Vietnamese. Repo artifacts in English.
 |---|---|---|---|---|
 | recruit-fe #399 (agentflow-zd5ut, closed) | Row click opens a TERA quick view (`CandidateDrawer/QuickView.tsx`, still `?c=`). "Open full profile" goes to the new page `/candidates/[id]` (`CandidateDrawer/CandidateProfile.tsx` + `CandidateHero.tsx`), with sections `?section=` and Back `?from=`. Replaces the 360 drawer. Hovering the LO name no longer underlines it. | c8946c61 | yes | **yes**: production = c8946c61, cd-production run 37572028300 success, both serve `candidates/[id]/page-833f702a` |
 | recruit-fe #400 (agentflow-kbwn6, closed) | Menu/title `Today` became **My work today** (vi "Việc hôm nay của tôi"). Tiles became "To contact today" / **Never contacted** ("Chưa từng liên hệ"). Copy naming the page follows. | 957382ec | yes (run 37591797647) | **no**: Bao has not said go |
-| recruit-fe #406 (agentflow-dobcf, open at pause) | (1) The tile subtracts `waiting_on_lo_count`. It read 34 over 25 rows because 9 people waiting on payment or signing were counted. (2) No "Another day" group: a `future` bucket is filed under "Later today", because the BE picks rows on the company day (America/Los_Angeles). (3) The tile is now **To contact** (vi "Cần liên hệ"). | pending | pending | no |
+| recruit-fe #406 (agentflow-dobcf, closed) | (1) The tile subtracts `waiting_on_lo_count`. It read 34 over 25 rows because 9 people waiting on payment or signing were counted. (2) No "Another day" group: a `future` bucket is filed under "Later today", because the BE picks rows on the company day (America/Los_Angeles). (3) The tile is now **To contact** (vi "Cần liên hệ"). | ef471c82 | yes (run 37616041222, verified 'To contact', no 'Another day') | **no** — Bao's go |
 
 Before/after screenshots of #399: https://claude.ai/artifact/CN5cfKF1Y6GACAGAk6aKdk
 
-## FIRST thing on resume
+## Resume 07/10 evening: #406 merged + on staging. Remaining: production for #400 + #406 (Bao's go), then wait for Bao's next feedback.
+
+## (Done) FIRST thing on resume
 
 ```bash
 gh pr view 406 -R LoanFactory-Inc/recruit-fe --json state,mergeStateStatus,mergeCommit
