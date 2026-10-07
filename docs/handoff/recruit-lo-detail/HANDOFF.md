@@ -13,7 +13,7 @@ Talk to Bao in Vietnamese. Repo artifacts in English.
 
 Before/after screenshots of #399: https://claude.ai/artifact/CN5cfKF1Y6GACAGAk6aKdk
 
-## 07/10 19:15: everything is on PRODUCTION (ef471c82, cd-production run 37618927574 success; carried #392 #402 #404 #406; #400 was already there). Only open item: wait for Bao's next feedback. Note: prod BE lacks recruit-be #584, so the #402 Settings retry preview shows weekend days as Monday while prod BE still schedules them on the weekend (cosmetic).
+## 07/10 19:15: everything is on PRODUCTION (ef471c82, cd-production run 37618927574 success; carried #392 #402 #404 #406; #400 was already there). Only open item: wait for Bao's next feedback. recruit-be production = staging = 2b1a6e64 (pushed by imkhai 12:15Z, run 37619680195 success), which includes #584, so the #402 preview now matches prod BE.
 
 ## (Done) FIRST thing on resume
 
