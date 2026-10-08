@@ -180,3 +180,9 @@ Bao's answers 08/10 evening: count EXPIRED licences (no change needed); exclude 
   - Fix: grant the GSA pubsub viewer on the topic plus subscriber on the subscription (or project pubsub.editor, as prod has), then restart.
 - **b975a1e5** (setup call booking, another session's #602) was on staging and not yet on prod at 20:35. A watcher promotes it if nobody does within 40 min.
 - **Local note:** an agent rebuilt tera-core origin/master into ~/.m2 (the old jars are backed up in the session scratchpad m2-loanfactory-backup), because the August snapshot lacked notification.v2.
+- 21:25: full parity. recruit-be staging = prod = b975a1e5, recruit-fe staging = prod = 5829d94e. The gwj7y session promoted both itself. Prod BE pods: 0 ERROR, 5 Pub/Sub adapters, actor it.dept@, auto-send false. FE pods Running; / answers 307 to login, /login answers 200.
+- Staging IAM, re-measured with testIamPermissions on Bao's request:
+  - Bao's access comes from groups dev@loanfactory.com, dev_leads@ and dev@moso.com (roles/editor + container.clusterAdmin, ...). He has get/publish/consume but NO setIamPolicy on the HR topic and subscription.
+  - The recruit-be@lenderrate-master GSA has NO project-level Pub/Sub role, while prod and the other services have pubsub.editor.
+  - Who can grant: roles/owner khai@loanfactory.com / khai@moso.com, thanh.t.tran@, info@moso.com; projectIamAdmin hoa.truong@.
+  - Tracked in agentflow-couwc.
