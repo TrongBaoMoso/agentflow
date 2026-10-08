@@ -63,3 +63,11 @@ Withdrawn: "HR accepts duplicate work email" — HR does block it (M3 pass).
 - Blocked for automation: /join, after-party, webinar forms have reCAPTCHA (W5/E7 manual).
 - Bao-only left: A11, J7, G2, Y12, OM9 (+RT11 bubble once an LO messages), H8 (after ~23:20 VN 08/10), H10 (after ~23:20 VN 09/10); Y8 check on 09/10 that the scheduled info for QA Claudeofferb was NOT auto-sent.
 - D4 DONE: QA Claudetwostate (t08q20, TX+FL) HR draft has 2 licence rows (TX, FL). Claude now at 256/263; the 7 left are Bao-only (A11, J7, G2, Y12, OM9, H8, H10).
+
+## RESUME POINT 08/10 ~17:45 VN (Bao going home)
+- Resume: `cd ~/Projects/agentflow && claude --resume` → session 073e4aab. Scratch: `~/Projects/agentflow/.worktrees/_designs/e2e-lab-scratch/` (playwright installed in seed/). Nothing running in the background.
+- Accounts file rewritten 08/10 17:30: one table of 7 accounts with "name shown in recruit" (QA Test Recruiter = bao.trinh+recruiter, …); backup `.bak-20261008`.
+- Bao did by hand 08/10 and Claude recorded: A11, Y12, RT11, Y9 pass · OM9 fail (agentflow-rpzrj) · W5 pass · H7, E6b, S9 pass · W4 skip (idle release off) · E7 must be redone with fresh emails (t08e71 after-party, t08e72 webinar, refer form t08ref1 with referrer bao.trinh+recruiter) — Claude's mistake used t08x1/t08x2 (QA Xproduction/Xfreeze; names restored, X1 self-reported now $5M/6).
+- Bao decisions 08/10: D3b → agentflow-paup6; F-14 accept; F-16 later → agentflow-yq94b; R2 → agentflow-msh1b. New beads: agentflow-u0pmv ("Hot pool" → "Hot leads"), agentflow-nu8dn (audit "Someone" on revoked grant), agentflow-rpzrj (Omni call recording/From/Calling…/no Log result).
+- Waiting on Bao: C6, L4 (Send to HR block on Overview, QA Claudeofferb), OM5, OM6 (detailed steps given in chat), G2, E7 redo, refer form, decision on "HH will be on the call" copy ({first} = inviter first name).
+- Timed: bead agentflow-57pqi (J7 ~22:05 VN 08/10, H8 after 23:20 VN 08/10, Y8 after 14:05 VN 09/10, J7 part 2 ~15:05, H10 after 23:20 VN 09/10). Session-only cron reminders exist but die if the session closes.
