@@ -26,7 +26,7 @@ FE: `useSigningLinkAfterCall` asks for the link at the sign step when the call i
 ## Staging check (www.viet18.com, row `bao.trinh+ce3ey-*@loanfactory.com`)
 - call done + paid + no link → page asked once, link stored (cost ONE Inkless envelope: staging `use_inkless` is ON right now, billed to the prod account);
 - reload with link → no second ask; call done + unpaid → no ask.
-- After packs master reaches staging: re-check that `registerSigningAgreement` before the call returns no link, and `getRegisterLoanOfficer` hides the link while unpaid.
+- packs master did NOT reach staging by ~05:40 +07 (GAE `b` last deployed 08/10 20:34 +07; SWAT pipeline did not run within 60 min of the merge). Deploying staging by hand on SWAT is a shared MOSO resource, so not done without Bao. After packs master reaches staging: re-check that `registerSigningAgreement` before the call returns no link, and `getRegisterLoanOfficer` hides the link while unpaid.
 
 ## Open
 - Bao: decide on the out-of-order rows in `out-of-order-rows-2026-10-09.md` (4 rows can still sign before the call; 2 signed and paid with no call; 3 paid with no call; 1 signed without paying). Only counted, nothing cancelled (Bao 09/10).
