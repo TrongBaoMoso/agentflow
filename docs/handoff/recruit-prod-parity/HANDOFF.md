@@ -157,3 +157,26 @@ Waiting on Bao (ask only if he raises it):
 
 Done today (verified): Google Connect live; #595 HR licence feed sub; follow-up hostpush (positive control above); omni view.
 Note: commit 16e452a accidentally carried the pre-staged .beads/issues.jsonl (bead state only).
+
+## Update 08/10 ~20:40: licences from user-service, referrals actor, auto-send off (all on prod)
+Bao's answers 08/10 evening: count EXPIRED licences (no change needed); exclude real-estate licences; set it.dept@ as the referrals actor; turn HR auto-send OFF on prod.
+- **recruit-be #597, prod `ce44fa5a`.** The licence read moved from HR `/internal/v1/lo-licenses` (deprecated 05/10, being deleted by ai-hr-be #1010; Hung confirmed) to user-service `GET http://user-service.user-service.svc.cluster.local:8082/api/v1/users/{id}` (in-cluster, no auth), mirroring tera-be #970.
+  - An unknown user is 200 with ONLY `response_date` (measured). Any other 2xx without a payload is treated as retryable.
+  - Licences are mapped from `licenses[]` (state, sponsored, sponsored_date).
+  - The id compare ignores case. The refusal WARN fires once per HTTP status.
+  - `.chart-lint-allow` lists the user-service host.
+  - 2 reviewers said MERGE. Full suite: 4250 tests green.
+- **Real-estate exclusion NOT done, on purpose.** The HR catalogue (ai-hr-be migration 00144) has only two regulator ids that can be real_estate, '80' and '35670068218'. Both are CA DRE MLO License Endorsements typed {broker, real_estate}, i.e. valid CA mortgage licences. Excluding them by regulator_id would block real CA LOs. user-service carries no per-holding type, so this cannot be done from recruit.
+- **Known limit, recorded in the D232 addendum.** HR announces associate.updated(licensing) BEFORE its best-effort push to user-service. A fast read sees the old licences, returns NOT_YET and acks. The failure direction is "not done", never a false tick.
+- **Prod in-scope count today: 0.** No prod candidate has account_id; it is written only by the HR onboard event after a recruit hand-off.
+- **recruit-be #598, prod `91e2f414`.**
+  - `RECRUIT_API_REFERRALS_SYSTEM_ACTOR_EMAIL=it.dept@loanfactory.com`. Verified BEFORE the change: a sealed packs prod `referrers/resolve` as it.dept@ about another person returned 200 `reason=ok`, so it is an active MOSO Admin with RECRUITING.
+  - `RECRUIT_FEATURES_HR_HANDOFF_AUTO_SEND=false` on prod. hr_handoff_auto had 0 armed rows and hr_handoff_outbox 0 before the change. Staging keeps it on.
+  - D184 addendum: ADMIN and MANAGER now see the full referrals set; program member /link works.
+  - Both prod pods: config present, 0 ERROR, 5 Pub/Sub adapters.
+- **STAGING bug, bead agentflow-couwc (P1, needs DevOps).**
+  - On every staging boot, tera-core's PubsubListener is denied getTopic(HR_ASSOCIATE_UPDATE) / getSubscription(HR_ASSOCIATE_UPDATE_SUBSCRIBE_RECRUIT_STAGING) for GSA recruit-be@lenderrate-master and aborts. HrAssociateUpdated and SearchIndexSync handlers are therefore never configured on staging (prod has all 5).
+  - Probe event recruit-probe-lic-1791463725 is sitting unprocessed in that staging subscription.
+  - Fix: grant the GSA pubsub viewer on the topic plus subscriber on the subscription (or project pubsub.editor, as prod has), then restart.
+- **b975a1e5** (setup call booking, another session's #602) was on staging and not yet on prod at 20:35. A watcher promotes it if nobody does within 40 min.
+- **Local note:** an agent rebuilt tera-core origin/master into ~/.m2 (the old jars are backed up in the session scratchpad m2-loanfactory-backup), because the August snapshot lacked notification.v2.
