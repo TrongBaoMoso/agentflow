@@ -204,3 +204,32 @@ Checklist to switch it on later, in order:
 3. Set program_sync.mode to APPLY (recruit_settings). Watch one tick.
 4. Set referrals.enabled=true.
 5. Verify a member logs in and sees only their own leads.
+
+## AUDIT 09/10 00:55 (re-measured from scratch on Bao's request)
+- **Code.** recruit-be master = staging = production = e5caa333; recruit-fe master = staging = production = 028784a3. The latest deploy runs in all 4 environments succeeded on those shas. All pods are Running with 0 restarts.
+- **DB.** Flyway V238 on both environments (equal to the repo), 0 failed migrations.
+- **Secrets.** recruit-svc-secret has the same 22 keys in both environments, none empty.
+- **Cron.** Identical registrations. sequence-tick and user-service-sync-tick are unregistered in BOTH environments; those features are unfinished.
+- **Frontend.** The deployment env and the NEXT_PUBLIC build args differ only in URLs.
+- **MOSO prod.** Every recruit API route answers 401, i.e. it exists, the same as staging. The packs PRs 3550/3564/3576/3577/3579/3582/3603/3615 are all in release tag 202610051329.3.64.0.
+- **Prod pod reachability.** user-service, ai-hr, omni, followup and the gateway all answer.
+- **Remaining differences are all deliberate.**
+  - Env flags ON in staging, OFF in prod:
+    - PACKS_WRITEBACK (with RETRY_UNKNOWN_ACTOR_AS_SYSTEM and FALLBACK_ACTOR)
+    - ONBOARDING_WRITEBACK
+    - ONBOARDING_HIRE_CLASSIFICATION
+    - ONBOARDING_LEGAL_NAME
+    - ONBOARDING_V2_HANDOFF (also blocked by packs bugs agentflow-90vkj and agentflow-gglqk)
+    - AGREEMENT_SEND
+    - GOOGLE_CALENDAR_EVENTS
+    - MEET_ATTENDANCE
+  - HR_HANDOFF_AUTO_SEND: true on staging, false on prod (Bao 08/10).
+  - Guest and recipient policies: ALLOWLIST on staging, ANY on prod (intended).
+  - DB settings:
+    - referrals.enabled
+    - headhunter.auto_own_enabled
+    - onboarding.reminder.delivery_mode: SEND on staging, DRY_RUN on prod
+    - onboarding.reminder.allowed_emails
+    - hot.claim_sla_starts_at (a timestamp only)
+- **Only infrastructure gap: STAGING Pub/Sub IAM** (agentflow-couwc). Staging has 3 of 5 adapters. Prod has 5/5 and 0 ERROR.
+- **Staging noise.** The staging ERROR lines are AsyncRequestTimeoutException from SSE stream timeouts, which are benign.
