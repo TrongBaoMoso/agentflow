@@ -54,3 +54,12 @@ Withdrawn: "HR accepts duplicate work email" — HR does block it (M3 pass).
 - Claude can still do: E6b (rename banner lives in the Quick view drawer — RegistrationNameHint), F9 (find a Today-listed lead; ladder key `followup.no_answer_retry_days`, restore [3,5,10,30]), H11/H12 (Unclaimed→Exceptions minutes is a UI setting), R2 (nurture LO has no Log result entry outside Today — check), S8 templates submit/approve, OM6, B12 (Remind on Claudeofferd did not toast — retest, make sure the click is in its own row), W9 (retest what HH sees), J2/J3, RT4/A23 (needs a Joined LO whose specialist is onb-test), C1S, E5 (lopage form lacks website buttons), W5/E7 (/join is a webinar page, not the LO form), RT11 bubble, RT12 v1 full walk, U1 (= F-9), V1–V6 (V1 confirmed hot.idle_release_enabled=false).
 - Needs Bao: Zoom calls (Y1–Y3, OM9), LO SMS reply (Y12), inbox checks (A11, J7, G2 reply), H8 (after ~23:20 VN 08/10), H10 (after ~23:20 VN 09/10), decisions on D3b and F-14.
 - Do NOT use the claude.ai Gmail connector (it is trung.thach's mailbox).
+
+## Update 08/10 ~16:00 VN (resumed after reboot)
+- Scratch now lives at `~/Projects/agentflow/.worktrees/_designs/e2e-lab-scratch/` (`/tmp` copy was wiped). `npm i playwright` + `npx playwright install chromium-headless-shell` done in `seed/`.
+- Progress: 255 / 263 Claude results (~97%). Sheet v11 published.
+- Done this round: C1S/C4 (1099 page + "Independent Contractor W-9" in HR), A23 + RT4 (Claudeindie Onboarded via "HR and Licensing are done — book the setup call"), S8 (draft → in review → manager approve), J2/J3, B12 (confirm dialog "Send reminder"), F9 (ladder [1] → "No more automatic retries"), H11/H12 (Unclaimed after 1 min), Y1–Y3, Y8, UX4, X9, E5, RT12, V2/V6, W9.
+- New beads: agentflow-cjvtz (F-17 call on someone else's lead: no warning, overwrites pending call), agentflow-fp7bb (F-18 v1 "Check your answers" scrolls sideways at 375). F-16 (1099 agreement asks LO for effective date + notice address) = question for Bao. Withdrawn: recruiter sees Approve on templates (it is disabled — fine).
+- Blocked for automation: /join, after-party, webinar forms have reCAPTCHA (W5/E7 manual).
+- Bao-only left: A11, J7, G2, Y12, OM9 (+RT11 bubble once an LO messages), H8 (after ~23:20 VN 08/10), H10 (after ~23:20 VN 09/10); Y8 check on 09/10 that the scheduled info for QA Claudeofferb was NOT auto-sent.
+- D4 in progress: QA Claudetwostate (t08q20, TX+FL, f84f8be9-…) Joined 08:46 UTC, HR hand-off pending → check HR draft has two licence rows.
