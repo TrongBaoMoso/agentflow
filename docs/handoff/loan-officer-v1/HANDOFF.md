@@ -99,3 +99,10 @@ Bao authorised (08/10 afternoon) shipping the whole batch to PRODUCTION after 2 
 4. Tell Phuong (Bao) which apps have no landing page: LOS, Marketplace, LUNA+ (staging only), Loan Coordinator (gated on purpose). LFIQ and CRM have landing pages.
 5. Open, waiting on people: Victoria meeting (bead agentflow-br2bp, questions in section 4 above); lo-homepage port of register v1 (wait for a final v1/v2 decision; Matt preferred v1).
 - UPDATE 18:05: staging now serves 00b0f40b (revision lf-homepage-master-01553-td5, 100%) — step 1 of Next steps is done; start at step 2.
+
+## SHIPPED 2026-10-08 evening (agentflow-cc)
+- PRODUCTION #2638 (75a6350a): /loan-officer is now the v1 page (old SEO title/description/canonical/JSON-LD, indexable), /loan-officer-v1 → 308, FAQ live numbers (prod: 48 states, 242 lenders, ~21.5k reviews), chevron right, hidden Learn more for LOS/Marketplace/LUNA+/Loan Coordinator, alternating backgrounds, ?ref locks referrer + name, "register now" carries ?ref, referrer fields optional like old form, thank-you old footer, ChatNow kept, Pylon modal kept; register cleanups (#2632).
+- PRODUCTION #2641 (e5e1326d, revision lf-homepage-00736): /loan-officer-old = old page (noindex, unlinked, not in sitemap, own copy of old FAQ text); video/announcement modals above ChatNow (#2640); thank-you "Approximately 45-60 minutes" (/loan-officer still says webinar "About 1.5 hours" — Bao chose this, flagged).
+- Production smoke PASS incl. ONE real webinar registration: "Bao Test", bao.trinh+lo-prod-test@loanfactory.com, Oct 9 webinar, submitted 2026-10-08 19:07 +07 — Recruiting should ignore it.
+- packs #3640 merged to master 7b5d38aa (missing show_on_public_site = visible; lender list/detail also require is_approved; explicit false hides). Staging baseline before deploy: 136 rows / 132 with logo. PRODUCTION needs a 3.64.1 hotfix cherry-pick + Khai's deploy_hot_fix — not urgent (prevention only; prod /our-lenders is fine since the 06/10 backfill).
+- Open: Victoria meeting (agentflow-br2bp); delete /loan-officer-old after the comparison is done (reviewer suggestion); lo-homepage port of register v1 waits for the v1/v2 decision.
