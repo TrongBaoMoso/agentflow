@@ -77,3 +77,7 @@ Withdrawn: "HR accepts duplicate work email" — HR does block it (M3 pass).
 - NEW P1 agentflow-8r58m: QA Claudeswitch (W-2 → 1099 at the 1-1) signed in MOSO (lo_agreement_signed=true) but recruit keeps offer SENT, LO stuck at S5. Control Claudeindie went SIGNED/S6.
 - agentflow-m4eyx raised to P1: an INVITE sent by the MANAGER account dead-lettered (401 x8) for QA Claudeofferb → LO never emailed; banner "The invite did not reach MOSO" shows correctly.
 - Next for Claude on resume: re-check Claudeswitch after a MOSO re-send; L4 on a Joined LO; G2/OM5/OM6/E7/refer as Bao reports screenshots; timed steps per agentflow-57pqi.
+
+## 08/10 ~19:00 VN — staging signing switched to Inkless
+- From ~18:30 VN the LO "Click Here to Sign Documents" tab opens **Inkless** (demo document, "0 of 5 Completed", I Accept → START → SIGN fields → "Create your signature / Set Signature" → FINISH → "Complete Signing"). The old in-page signer (#click-here-to-sign) used by paysign.js no longer applies. Use `seed/inkless.js <loId>` (mouse clicks on the SIGN boxes; sidebar NEXT/FINISH at x=1304,y=105). Pay still via paysign.js (mode "pay").
+- OM5 pass, OM6 fail → agentflow-pp4j5 (Omni chat has no @mention picker). L4 being redone on QA Claudeflow (phone 123 before Joined; restore to (714) 555-1971 after).
