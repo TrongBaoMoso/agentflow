@@ -140,3 +140,20 @@ Production now: recruit-be `ee647d7f`, recruit-fe `681164b9` (both = staging).
 - Omni view on prod: thread loads, all omni XHRs 200 (Bao did not send).
 - Hung (ai-hr-be): agreed recruit may call GET /internal/v1/lo-licenses, "doi e fix xiu". At 10:45Z master still gates it to sourceTera only (internal/api/lolicensefeed.go:15). Watching for the change.
 - Referrals actor: packs referrersResolve needs an ACTIVE MOSO Admin found by email AND App.hasAnyPermission(RECRUITING) (OWNER implies it). Whether SUPER ADMIN implies RECRUITING is not visible in repo code (framework jar). Bao proposes it.dept@loanfactory.com; no prod Datastore read to verify (403), so verify by a live call after setting it.
+
+## RESUME POINT 08/10 ~17:55 (Bao paused, going home)
+Session d96850c0-0bf5-476f-a82d-0f47551372c0. Prod = staging for code; everything below is waiting on people or decisions.
+Bao's stance: prod is released but NOT opened to users yet. Do not grant the 2 unknown 403 users (a6277368, ebdd7216). Keep the 7 existing grants unless Bao says otherwise.
+
+Do first on resume (self-serve):
+1. Hung / lo-licenses: fetch ai-hr-be, then check whether internal/api/lolicensefeed.go still gates GET /internal/v1/lo-licenses to sourceTera only (master and any new branch/PR by hungcao-lf). The background watcher was stopped at pause and found nothing. Once it is open to RECRUIT on staging: verify from the recruit staging pod (expect 200, not 403), then prod after HR promotes. Recruit side needs no change.
+2. Re-measure prod quickly: pods healthy and 0 ERROR (context gke_lender-rate_us-central1_moso-gke, ns recruit-be), with ~/.cache/claude-recruit/pgq.sh for DB reads.
+
+Waiting on Bao (ask only if he raises it):
+- Referrals actor: he proposes it.dept@loanfactory.com (MOSO SUPER ADMIN). Needs an active MOSO Admin plus RECRUITING (OWNER implies it; SUPER is unverified). Not urgent because the Headhunter program is DRY_RUN. When he says go: set RECRUIT_API_REFERRALS_SYSTEM_ACTOR_EMAIL in helm-chart/config/production/values.yaml (PR, 2 reviewers, ship_pr.sh), then make one read-only call. 200 = done; otherwise ask the MOSO admin to grant RECRUITING.
+- Flag enablement: follow the order given 08/10. Manual use for 1-2 weeks, then PACKS_WRITEBACK + ONBOARDING_WRITEBACK, then e-sign / reminders SEND / calendar, then program sync APPLY last. Bao may ask to turn off HR_HANDOFF_AUTO_SEND.
+- Test level B (outbound omni / e-sign / HR send) needs a fake LO created in MOSO prod (bao.trinh+recruittest@loanfactory.com plus Bao's phone). Bao decides.
+- Bao's Zoom is not linked on prod (banner), so SMS and calls from recruit are unavailable to him.
+
+Done today (verified): Google Connect live; #595 HR licence feed sub; follow-up hostpush (positive control above); omni view.
+Note: commit 16e452a accidentally carried the pre-staged .beads/issues.jsonl (bead state only).
