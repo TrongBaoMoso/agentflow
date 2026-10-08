@@ -62,4 +62,4 @@ Withdrawn: "HR accepts duplicate work email" — HR does block it (M3 pass).
 - New beads: agentflow-cjvtz (F-17 call on someone else's lead: no warning, overwrites pending call), agentflow-fp7bb (F-18 v1 "Check your answers" scrolls sideways at 375). F-16 (1099 agreement asks LO for effective date + notice address) = question for Bao. Withdrawn: recruiter sees Approve on templates (it is disabled — fine).
 - Blocked for automation: /join, after-party, webinar forms have reCAPTCHA (W5/E7 manual).
 - Bao-only left: A11, J7, G2, Y12, OM9 (+RT11 bubble once an LO messages), H8 (after ~23:20 VN 08/10), H10 (after ~23:20 VN 09/10); Y8 check on 09/10 that the scheduled info for QA Claudeofferb was NOT auto-sent.
-- D4 in progress: QA Claudetwostate (t08q20, TX+FL, f84f8be9-…) Joined 08:46 UTC, HR hand-off pending → check HR draft has two licence rows.
+- D4 DONE: QA Claudetwostate (t08q20, TX+FL) HR draft has 2 licence rows (TX, FL). Claude now at 256/263; the 7 left are Bao-only (A11, J7, G2, Y12, OM9, H8, H10).
