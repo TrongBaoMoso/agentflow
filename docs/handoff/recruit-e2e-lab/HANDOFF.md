@@ -71,3 +71,9 @@ Withdrawn: "HR accepts duplicate work email" — HR does block it (M3 pass).
 - Bao decisions 08/10: D3b → agentflow-paup6; F-14 accept; F-16 later → agentflow-yq94b; R2 → agentflow-msh1b. New beads: agentflow-u0pmv ("Hot pool" → "Hot leads"), agentflow-nu8dn (audit "Someone" on revoked grant), agentflow-rpzrj (Omni call recording/From/Calling…/no Log result).
 - Waiting on Bao: C6, L4 (Send to HR block on Overview, QA Claudeofferb), OM5, OM6 (detailed steps given in chat), G2, E7 redo, refer form, decision on "HH will be on the call" copy ({first} = inviter first name).
 - Timed: bead agentflow-57pqi (J7 ~22:05 VN 08/10, H8 after 23:20 VN 08/10, Y8 after 14:05 VN 09/10, J7 part 2 ~15:05, H10 after 23:20 VN 09/10). Session-only cron reminders exist but die if the session closes.
+
+## RESUME POINT 08/10 ~18:10 VN (Bao going home)
+- C6 pass (calendar disables future days). L4 skip: "HR will ask for one" lives in the Send to HR block that only exists from S6 → redo on a Joined LO; restore QA Claudeofferb phone to (714) 555-1878 (Bao set it to 123).
+- NEW P1 agentflow-8r58m: QA Claudeswitch (W-2 → 1099 at the 1-1) signed in MOSO (lo_agreement_signed=true) but recruit keeps offer SENT, LO stuck at S5. Control Claudeindie went SIGNED/S6.
+- agentflow-m4eyx raised to P1: an INVITE sent by the MANAGER account dead-lettered (401 x8) for QA Claudeofferb → LO never emailed; banner "The invite did not reach MOSO" shows correctly.
+- Next for Claude on resume: re-check Claudeswitch after a MOSO re-send; L4 on a Joined LO; G2/OM5/OM6/E7/refer as Bao reports screenshots; timed steps per agentflow-57pqi.
