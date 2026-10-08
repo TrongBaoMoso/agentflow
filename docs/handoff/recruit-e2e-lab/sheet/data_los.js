@@ -372,8 +372,8 @@ const LOS = [
 "en": "Web form — register-loan-officer page"
 },
 "prep": {
-"vi": "<b>Onboarding</b> · chủ: bao+recruiter · offer SENT/PENDING · Onboarding: <code>bao.trinh+onb-test@loanfactory.com</code> · Claude dùng để tự test",
-"en": "<b>Onboarding</b> · owner: bao+recruiter · offer SENT/PENDING · Onboarding: <code>bao.trinh+onb-test@loanfactory.com</code> · used by Claude's self-test"
+"vi": "<b>Onboarding</b> · chủ: bao+recruiter · 1-1 đã Done, đã đăng ký lại với tên mới “Claudeschedulenew” (case E6) · Onboarding: <code>bao.trinh+onb-test@loanfactory.com</code> · Claude dùng để tự test",
+"en": "<b>Onboarding</b> · owner: bao+recruiter · 1-1 Done, re-registered with new name “Claudeschedulenew” (case E6) · Onboarding: <code>bao.trinh+onb-test@loanfactory.com</code> · used by Claude's self-test"
 },
 "cand": "1cae21e1-6b60-448e-9f81-02e4516a64b7",
 "key": "ahNzfmxlbmRlcnJhdGUtbWFzdGVychcLEgxMT1JlY3J1aXRpbmcY3L_B4YQBDKIBEDU3MTYxMDQwMjY1MjE2MDA",
@@ -467,8 +467,8 @@ const LOS = [
 "en": "Web form — register-loan-officer page"
 },
 "prep": {
-"vi": "<b>Onboarding</b> · chủ: bao+recruiter · offer SENT/PENDING · Onboarding: <code>bao.trinh+onb-test@viet18.com</code>",
-"en": "<b>Onboarding</b> · owner: bao+recruiter · offer SENT/PENDING · Onboarding: <code>bao.trinh+onb-test@viet18.com</code>"
+"vi": "<b>Onboarding</b> · chủ: bao+recruiter · offer SENT/PENDING · Onboarding: <code>bao.trinh+onb-test@loanfactory.com</code>",
+"en": "<b>Onboarding</b> · owner: bao+recruiter · offer SENT/PENDING · Onboarding: <code>bao.trinh+onb-test@loanfactory.com</code>"
 },
 "cand": "0e8c332d-a98c-4ea0-a948-7677b53efda3",
 "key": "ahNzfmxlbmRlcnJhdGUtbWFzdGVychcLEgxMT1JlY3J1aXRpbmcY0Y6z2IQBDKIBEDU3MTYxMDQwMjY1MjE2MDA",
@@ -769,8 +769,8 @@ const LOS = [
 "en": "Web form — register-loan-officer page"
 },
 "prep": {
-"vi": "<b>Onboarding</b> · chủ: bao+recruiter · offer SENT/PENDING · Onboarding: <code>bao.trinh+onb-test@viet18.com</code> · dùng để đăng ký lại",
-"en": "<b>Onboarding</b> · owner: bao+recruiter · offer SENT/PENDING · Onboarding: <code>bao.trinh+onb-test@viet18.com</code> · for re-registration"
+"vi": "<b>Onboarding</b> · chủ: bao+recruiter · offer SENT/PENDING · Onboarding: <code>bao.trinh+onb-test@loanfactory.com</code> · dùng để đăng ký lại",
+"en": "<b>Onboarding</b> · owner: bao+recruiter · offer SENT/PENDING · Onboarding: <code>bao.trinh+onb-test@loanfactory.com</code> · for re-registration"
 },
 "cand": "3b2284b1-68d0-4cfd-8d3d-11375fece1fc",
 "key": "ahNzfmxlbmRlcnJhdGUtbWFzdGVychcLEgxMT1JlY3J1aXRpbmcYv57S34QBDKIBEDU3MTYxMDQwMjY1MjE2MDA",
@@ -1449,8 +1449,8 @@ const LOS = [
 "en": "Web form — register-loan-officer page"
 },
 "prep": {
-"vi": "<b>Onboarding</b> · chủ: bao+recruiter · offer SENT/PENDING · Onboarding: <code>bao.trinh+onb-test@viet18.com</code> · 1-1 CHƯA xong",
-"en": "<b>Onboarding</b> · owner: bao+recruiter · offer SENT/PENDING · Onboarding: <code>bao.trinh+onb-test@viet18.com</code> · 1-1 NOT done"
+"vi": "<b>Onboarding</b> · chủ: bao+recruiter · offer SENT/PENDING · Onboarding: <code>bao.trinh+onb-test@loanfactory.com</code> · 1-1 CHƯA xong",
+"en": "<b>Onboarding</b> · owner: bao+recruiter · offer SENT/PENDING · Onboarding: <code>bao.trinh+onb-test@loanfactory.com</code> · 1-1 NOT done"
 },
 "cand": "abac93dc-ae31-4458-a823-8530c6a925d6",
 "key": "ahNzfmxlbmRlcnJhdGUtbWFzdGVychcLEgxMT1JlY3J1aXRpbmcY5qTz3IQBDKIBEDU3MTYxMDQwMjY1MjE2MDA",
@@ -1810,8 +1810,8 @@ const LOS = [
 "en": "Web form — register-loan-officer page"
 },
 "prep": {
-"vi": "<b>Onboarding</b> · chủ: bao+recruiter · offer SENT/PENDING · Onboarding: <code>bao.trinh+onb-test@viet18.com</code> · Claude dùng để tự test",
-"en": "<b>Onboarding</b> · owner: bao+recruiter · offer SENT/PENDING · Onboarding: <code>bao.trinh+onb-test@viet18.com</code> · used by Claude's self-test"
+"vi": "<b>Onboarding</b> · chủ: bao+recruiter · offer SENT/PENDING · Onboarding: <code>bao.trinh+onb-test@loanfactory.com</code> · Claude dùng để tự test",
+"en": "<b>Onboarding</b> · owner: bao+recruiter · offer SENT/PENDING · Onboarding: <code>bao.trinh+onb-test@loanfactory.com</code> · used by Claude's self-test"
 },
 "cand": "238b937e-b5c0-4770-8249-62ffb67184d8",
 "key": "ahNzfmxlbmRlcnJhdGUtbWFzdGVychcLEgxMT1JlY3J1aXRpbmcY56Tz3IQBDKIBEDU3MTYxMDQwMjY1MjE2MDA",
