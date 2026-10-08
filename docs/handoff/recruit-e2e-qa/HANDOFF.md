@@ -310,3 +310,12 @@ Fixes needed for lkw2w:
 - fe #412 (hide duplicate "Sent to HR · UTC" bar under the card, PT time elsewhere; Remind button fits) merging -> then push fe production again.
 - OPEN for Bao: (1) 69 prod Joined LOs never sent to HR; (2) hide the old 15-item onboarding checklist on the profile? (Accounting/IT still use it); (3) real "book setup call" action?; (4) Khai grants for HR_ASSOCIATE_UPDATE staging sub; (5) Hưng masked licence read.
 - 00:2x PRODUCTION recruit-fe = b648d195 (#412 on top). Staging check: no UTC "Sent to HR" bar under the card, no clipped buttons in My hand-offs. ALL planned work for this Q&A round is on production; only the 5 OPEN items for Bao remain.
+
+## RESUMED 08/10 18:27
+- Prod check: flags still true, v2 true, 0 auto-send watches (no worked LO entered S6 since), outbox empty; S6 67, S7 86.
+- Bao decided: (1) leave the prod Joined LOs as they are (no bulk send); (2) old 15-item checklist on the profile COLLAPSED by default -> agentflow-6zv4m (agent fe-checklist-collapse); (3) build real "Book the setup call" reusing Book 1-1 -> agentflow-gwj7y (agent setupcall-booking: phase 1 plan in evidence/setup-call-booking-plan.md, then wait for go).
+- 18:40 Bao (busy until 00:00, "end-to-end, không stop"): setup-call booking = onboarding specialist + recruiter owner may book; no Google -> connect prompt + Mark done still works; default 30 min; ship to PRODUCTION tonight after staging check.
+- 19:20 fe #413 (old checklist collapsed by default) merged, staging verified, PRODUCTION ccd52fc4. Bead agentflow-6zv4m closed.
+- agentflow-gwj7y setup-call booking: be #602 (D236, no migration; reviewer MERGE after 2 MEDIUM fixes: non-tickers get no link/colleagues, attendance never claims setup calls) -> PRODUCTION b975a1e5 21:13 (schema 235, 0 ERROR). fe #416 + #417 (copy: header after booking, "this call" not "this 1-1") -> staging verified on QA Autoa (ticked HR to-do/docs/Licensing as owner, booked Oct 10 8:00 PM PT, Reschedule works) -> PRODUCTION 5829d94e (also carries others' #414 #415).
+- Prod has google-calendar-events OFF: booking saves the slot and opens a pre-filled Google Calendar tab (template mode). Turning on API mode needs Khai's prod Google OAuth client.
+- Staging test data changed: QA Autoa HR to-do/HR docs/Licensing ticked by QA Test Recruiter, setup call booked Oct 10 8:00 PM PT.
