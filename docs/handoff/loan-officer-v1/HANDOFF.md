@@ -82,3 +82,19 @@ Matt Moghaddam 08/10 12:41 — see section 3 (5 → 3 steps). Not started.
 - zh FAQ answers end URLs with "。" → `_lib/splitLinks.ts` (URL chars only) + test.
 - Mantine `Accordion unstyled`: use `classNames.content` (not `panel`) for padding, else closed items stay tall.
 - Google Chat space can be read through Playwright Chrome (Bao's session, `chat.google.com/u/1/app/chat/AAQAJxJ3RAw`); the Gmail MCP connector is a borrowed mailbox — do not use it.
+
+## RESUME POINT 2026-10-08 ~18:00 +07 (Bao paused, going home) — owner session agentflow-cc (8658d500)
+Bao authorised (08/10 afternoon) shipping the whole batch to PRODUCTION after 2 reviewers + Repo Owner + browser test, INCLUDING replacing /loan-officer with the v1 page (condition: forms behave like the old /loan-officer). See memory feedback_away_window_0810_lov1_prod.md.
+
+### Done
+- #2631 How to join 3 steps: master f0cc5e5c, PRODUCTION via #2634 (09d1ac7d) — live.
+- Merged to master (staging), NOT yet on production: #2632 register cleanups (54150f34), #2633 hide Learn more for LOS/Marketplace/LUNA+/Loan Coordinator + alternating section backgrounds (e44e8477), #2635 v1 becomes /loan-officer + 308 from /loan-officer-v1 + old SEO/JSON-LD + thank-you old footer + ChatNow + ?ref carried by "register now" + referrer fields optional like old form (b0ece65d), #2636 FAQ live numbers (states=license_state shared with trust block, lenders, reviews) + chevron right (2d0e31d1), #2637 referrer NAME shown locked under ?ref like old page (00b0f40b). All reviewed (2 reviewers + Repo Owner each).
+- agentflow-z4vrz closed (prod /our-lenders 0 lenders = data backfill fixed it 06/10); hardening task filed for packs (show_on_public_site missing = visible).
+- /loan-coordinator redirects home ON PURPOSE (Bao's PR #2300, 21/08, fee page gated to signed-in users).
+
+### Next steps (in order)
+1. Check staging serves 00b0f40b: `gcloud run services describe lf-homepage-master --project lenderrate-master --region us-central1` → traffic revision label commit-sha must be 00b0f40b (on 08/10 two builds finished out of order and staging served an older sha; fix by `gcloud builds triggers run 42174edd-d959-4c20-a3bc-5d7b162e74ba --project=lenderrate-master --sha=<master tip>`).
+2. Re-smoke staging www.viet18.com/loan-officer: FAQ shows live numbers (no "nearly 7,000", no "(all except CT and NY)"), chevron on the RIGHT, FAQ states == trust block states; ?ref=1000946 shows locked "Loan Officer: Chow Fi"; /loan-officer-v1 → 308. (Earlier full smoke on b0ece65d passed SEO/redirect/links/backgrounds/webinar submit/referral/optional referrer/titles; see shots/staging-smoke/.)
+3. Production promote: production tree == master@f0cc5e5c, so `git worktree add <path> -b promote/... origin/production`, `git merge --no-ff <master tip>`; if src/messages/en.json conflicts take master's version (`git checkout --theirs`), verify `git write-tree` == `<master tip>^{tree}`, commit (own Bash call), push, PR into production, merge with --match-head-commit, verify prod build + Cloud Run lf-homepage 100% on the new revision, then smoke https://www.loanfactory.com/loan-officer (title/description same as before, no noindex, webinar form, ?ref, thank-you). A stale promote worktree exists at _worktrees/lfh-promote-lo-replace (b22fac9f = master 2d0e31d1, never pushed) — delete it and redo with the new tip.
+4. Tell Phuong (Bao) which apps have no landing page: LOS, Marketplace, LUNA+ (staging only), Loan Coordinator (gated on purpose). LFIQ and CRM have landing pages.
+5. Open, waiting on people: Victoria meeting (bead agentflow-br2bp, questions in section 4 above); lo-homepage port of register v1 (wait for a final v1/v2 decision; Matt preferred v1).
