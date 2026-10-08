@@ -186,3 +186,21 @@ Bao's answers 08/10 evening: count EXPIRED licences (no change needed); exclude 
   - The recruit-be@lenderrate-master GSA has NO project-level Pub/Sub role, while prod and the other services have pubsub.editor.
   - Who can grant: roles/owner khai@loanfactory.com / khai@moso.com, thanh.t.tran@, info@moso.com; projectIamAdmin hoa.truong@.
   - Tracked in agentflow-couwc.
+
+## Update 08/10 ~22:00: Headhunter program on prod (Bao: "it is running for real", in MOSO)
+Measured on the recruit prod DB:
+- program_members: 2 approved (team_lead and associate_recruiter); BOTH have company_email NULL in MOSO; 0 linked.
+- program_sync.mode DRY_RUN since 07/10 17:45Z. 0 HEADHUNTER/TEAM_LEAD grants. referrals.enabled=false. 0 candidates with origin_owner_key. 0 referrer_identity.
+- The FE headhunter nav is already on prod.
+
+Bao's decision 08/10:
+- Do NOT switch the recruit side on yet. It goes on together with opening prod to users.
+- KEEP the manual admin Link; no auto-match by e-mail.
+- Reason for the decision: measured on prod 08/10, `POST /user-svc/public/api/v1/users/register` is exposed (GET returns 405). It accepts a caller-supplied `"verify": true` (user-service CreateUserRequest.java:44). Password login `/auth-svc/public/api/v1/auth/login` is also exposed. See bead agentflow-rsnyo.
+
+Checklist to switch it on later, in order:
+1. A MOSO admin fills company_email for each roster member.
+2. A recruit admin clicks Link per member (the actor it.dept@ is already set).
+3. Set program_sync.mode to APPLY (recruit_settings). Watch one tick.
+4. Set referrals.enabled=true.
+5. Verify a member logs in and sees only their own leads.
