@@ -21,3 +21,9 @@ Open questions for Bao: Mobile card line "messages" (chat is COMING SOON) → "Y
 
 ### Restart review servers on resume
 For each worktree: `tok=$(~/.claude/bin/ram-gate acquire next-dev <label> --wait 900)`; `npx next dev -p 3100` (register, rlo-thuan-fixes) / `-p 3101` (loan-officer, lo-webinar-platform); if raw message keys show, `touch src/messages/*.json`. Kill only your own PID (an agent once pkill'd the other server).
+
+## SHIPPED 2026-10-09 ~22:00 +07
+- lf-homepage #2655 (register v1, squash 83aaa58d) + #2656 (/loan-officer webinar C + platform A + wider landing + webinar moved after No software fees + Language Team hidden, squash f370f978) → master/staging, then production via #2657 (33b1c702, Cloud Run lf-homepage-00742, 100%). Verified www.loanfactory.com: /loan-officer, /register-loan-officer(-v1,-v2), /loan-officer-old all 200; v1 shows "5 easy steps"; Language Team gone.
+- Bao decisions: /recruit/[slug] follows v1 (same form); consent text stays collapsed behind "Read the full terms" (Repo Owner flagged for compliance; Bao kept it).
+- Draft PR #2653 closed (superseded by #2655).
+- Next: Bao sends the review email to Thuan (draft in chat, EN + VI, asks Victoria/Brayan/Matt/Khai/Ben for ideas to simplify registration by Wed 14/10); lo-homepage /loan-officer: hide Language Team too; v2 not updated (only v1 was approved).
