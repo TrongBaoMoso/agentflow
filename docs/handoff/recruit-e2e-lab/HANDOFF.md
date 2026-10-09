@@ -129,3 +129,17 @@ Since 11:30 today:
 - Findings filed: G2 LO email replies lost in Google Workspace route d6d00 (agentflow-fexgs, DevOps); l06om NMLS: ai-hr-be-only fix is a no-op (user-service ignores nmls since #49) → Bao to choose option 1 (user-service internal fill-only NMLS write) or 2 (mortgage_nmls on MOSO record); zoom-go one-leg notify (5j85f, Khai); R1 offer-creation deadlock risk (ioidi); OAuthConfig tokens SECURED (4zi51); BOOTSTRAP.md secret gaps (exs2h).
 - Test LO TRINH VU TRONG BAO phone = manhadmin's own Zoom line → change to a real outside number before call tests. Bao to confirm: Play recording needs 1 or 2 clicks.
 - Open question to Bao: Omni Team-only @ only lists people already on the team; offer to build "pick any recruit staff → auto-add follower" (needs Khai OK on MENTION_NOT_TEAMMATE).
+
+## RESUME POINT 10/10 ~03:00 VN — overnight (Bao asleep; rules: memory feedback_away_window_1010_overnight.md)
+**Sheet: 262/263 steps PASS.** Only G2 (LO email reply lost in Google Workspace route) is left → ask Khai Mon 12/10 who administers viet18.com / loanfactory.com Workspace (bead agentflow-fexgs).
+Shipped to PRODUCTION (each: 2 reviewers, staging browser test):
+- recruit-be #616 (X10: Manager Audit shows edits of Loans since / Closed units, D247) → prod c0db3260.
+- recruit-fe #426 (Q4/RT13 unknown/broken candidate link → in-app "not available" + Back), #427 (Back remembers tab's last page via sessionStorage; in-app "Page not found" 404; lint back in CI; .nvmrc 22), #428 (X10 FE), #429 (i64qb: Edit profile opened from ?pm=1 cold load now fills + saves), #430 (jhkyv: Back uses Navigation API, Accept-Language q-values, root dotted paths in-app 404) → prod 986569f0.
+STAGING only (prod = owner Tai Pham / taipham0901):
+- user-service #60 (403 on /api/v1/internal/** when request came through the public gateway — before, any logged-in user could PUT licences; bead agentflow-t7qwi), #59 (Hung: internal PUT /users/nmls used by ai-hr-be #1030), #61 (no-op when user already holds the NMLS). Staging c370e8f; prod still d21bc20 = hole still open on prod. Message for Tai drafted in chat 10/10 ~00:30.
+- l06om verified by an honest E2E (new LO QA Handoffnmls, bao.trinh+t10ho1, NMLS 9931011: register → claim → Interested → offer → 1-1 → pay+sign Inkless → Joined → auto hand-off → HR create → HR shows NMLS, written by HR hire code). Bead stays open until user-service prod.
+E2E retests: AA1, AA5, C4, D3b, E1b, F7, Q7, R2, RT12, U1, UX9, Y3, Q4, RT13, X10, OM9, M2, H10 pass; SKIPs made real: V3, V5, R3, RT2, W4 (flag on 49 s then OFF, verified), W10 (via bao.trinh+hh referrer; recruiter's MOSO Admin lacks labels — Bao chose not to patch), M7 (pass on V3 evidence, Bao's call).
+OM9 test LO TRINH VU TRONG BAO (07001ba1) phone is now +1 303-499-7111 (NIST time line, auto-answers) — use it for call tests; Zoom line 1464 cannot call international. Bao's HR/admin test account chauchau.inc@gmail.com is OK to use.
+Deferred / not wanted: yc2ag (non-US click-to-dial country code, Bao skipped), 1obz3 (/lf-users exposure, Bao: not worth tokens), 5j85f (zoom-go internal one-leg, Khai).
+SWAT/MOSO staging: still stuck (builder b1 + ironman offline; test packs/loan 37 stuck "running" on b1; install base/core Rerun queued on batman). Bao said do NOT Mark done; wait for Monday. When builders return: install base/core (revert #771) BEFORE packs/loan, then test packs #3645.
+New beads: t7qwi (user-service gateway hole, staging fixed), 1obz3, yc2ag (deferred), z1rwu/i64qb/jhkyv (closed), rpzrj (closed).
