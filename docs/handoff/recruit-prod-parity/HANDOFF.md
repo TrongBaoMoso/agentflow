@@ -233,3 +233,23 @@ Checklist to switch it on later, in order:
     - hot.claim_sla_starts_at (a timestamp only)
 - **Only infrastructure gap: STAGING Pub/Sub IAM** (agentflow-couwc). Staging has 3 of 5 adapters. Prod has 5/5 and 0 ERROR.
 - **Staging noise.** The staging ERROR lines are AsyncRequestTimeoutException from SSE stream timeouts, which are benign.
+
+## Update 09/10 ~11:00: new access, direct re-measurement, CORRECTIONS
+**Access granted by Khai (09/10):**
+- Pub/Sub IAM for recruit-be@lenderrate-master. After a restart, staging has 5/5 adapters. The probe event was processed (ALREADY_DONE) and a real HR event too (NO_CANDIDATE). agentflow-couwc closed.
+- `roles/datastore.viewer` on lender-rate (MOSO prod) for bao.trinh. Helpers: `~/.cache/claude-recruit/dsq_prod.sh` and `~/.cache/claude-recruit/actorprobe/Probe.java`. Memory: reference_moso_prod_datastore_read.
+
+**Re-measured directly (previously inferred):**
+- **it.dept@.** Inferred before from an API probe; now confirmed from Datastore: active, has RECRUITING and OWNER.
+- **MOSO RECRUITING on prod, by person.** The DB and the live probe agree for each one:
+  - YES: victoria.pham, bao.trinh, dave.hoang, it.dept.
+  - NO: seth.august, brayan, miley.dau (is_onboarding_specialist=true), dung, rosaline.pham.
+  - This is a prerequisite for prod write-back; tracked in agentflow-h5xoz.
+- **CORRECTION, Headhunter roster.** The 2 program_members are status PENDING (sync log: members=2 approved=0), not "approved". moso-aid sends company_email only for APPROVED members (lo-program-team.js contract), so NULL is correct. In MOSO, both Admins DO have a company_email. My 08/10 statements "2 approved members" and "a MOSO admin must fill company_email" were WRONG.
+- **Sync completeness, key by key.**
+  - MOSO LORecruiting updated since recruit's first candidate (14/09 13:02Z): 975. recruit: 990. In both: 974.
+  - 15 recruit rows were deleted in MOSO; 13 of them are still ACTIVE in recruit.
+  - 1 joined LO (id 37060607095, updated 02/10 19:40Z) never produced a webhook.
+  - Tracked in agentflow-g7hc5.
+  - MOSO has 131,055 LORecruiting rows in total; recruit does not backfill history by design.
+- **MOSO prod version.** Now 3.65.0 (GAE version d, 09/10 03:27Z). It includes packs #3627 (agentflow-90vkj/gglqk fix) and all recruit API routes.
