@@ -48,3 +48,11 @@ FE: `useSigningLinkAfterCall` asks for the link at the sign step when the call i
 
 ## Message for Khai (VI)
 > Anh Khải ơi, em nhờ anh deploy hotfix packs 3.64.1 cho ticket Brayan (LO ký hợp đồng trước khi tick Pre-onboarding done). PR: https://github.com/LoanFactory-Inc/packs/pull/3642. Đã merge master (#3641), 2 reviewer + Repo Owner duyệt, test chạy trên nhánh 3.64.1. Frontend (lf-homepage, lo-homepage) đã lên production trước, đúng thứ tự cần. Cảm ơn anh.
+
+## RESUME POINT (paused 09/10 ~06:00 +07, Bao shutting down the laptop)
+State: nothing running in the background. Worktrees kept: `_worktrees/packs-ce3ey` (master branch, merged) and `_worktrees/packs-3641-ce3ey` (PR #3642, open).
+Next, in order:
+1. `gcloud app versions list --project=lenderrate-master --service=default` — if `b` was redeployed after 09/10 04:05 +07, run the staging server checks above on the test row (`bao.trinh+ce3ey-*`, key in this session's scratchpad is gone after reboot: find it via `getRegisterLoanOfficer` request logs on staging or create a new row). Do NOT call `registerSigningAgreement` on a pre-call row until the new code is confirmed live (old code builds a billed Inkless envelope).
+2. Ask Bao: did Khai deploy #3642? did Bao send the Brayan reply? decision on `out-of-order-rows-2026-10-09.md`?
+3. After #3642 is on prod: probe prod read-only — `getRegisterLoanOfficer` for a pre-call row with a stored link (e.g. Jessica Phan / Steve Hutchins from the list) must no longer return `url_signing_sessions`.
+4. Then close bead agentflow-ce3ey and remove both packs worktrees.
