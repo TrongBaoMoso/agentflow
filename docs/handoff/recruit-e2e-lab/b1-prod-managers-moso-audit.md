@@ -67,7 +67,64 @@ Date: 2026-10-09. All reads were read-only: no code, config, data or settings we
 
 Prod state today: `packs_writeback_outbox` has 0 rows, so nothing has been refused yet. Only the 9 grants listed in section 3 exist. Sara, Lisbeth, Tommy, Wegina, Matt and Lindsay have no recruit grant, so they cannot be actors today.
 
-**Note on fix option (a).** Granting MOSO `RECRUITING` to Brayan and Seth also opens MOSO's HR "Recruiting" menu (jobs, interview questions, candidates). The packs gate checks the HR-style permission, not the LO-recruiting one. The alternative is a packs change that also admits `RECRUITED_LOAN_OFFICERS` in `hasRecruitingPermission()`. That would admit Brayan, Seth, Miley, Sara, Wegina, Matt and Lindsay. It is a security decision for the packs Repo Owner and Bao, and it is not made here.
+**Note on fix option (a).** Granting MOSO `RECRUITING` to Brayan and Seth also opens MOSO's HR "Recruiting" menu (jobs, interview questions, candidates). The packs gate checks the HR-style permission, not the LO-recruiting one. The alternative is a packs change that also admits `RECRUITED_LOAN_OFFICERS` in `hasRecruitingPermission()`. That would admit Brayan, Seth, Miley, Sara, Wegina, Matt and Lindsay. It is a security decision for the packs Repo Owner and Bao, and it is not made here. *(Superseded by 3c below.)*
+
+### 3c. Follow-up 09/10: how MOSO's own UI lets these people invite without RECRUITING
+
+Short answer: the MOSO UI enforces **no server-side permission** on the invite path. The only gate is client-side: which LO-recruiting pages the user can open. RecruitAPI's `RECRUITING`-only gate is therefore **stricter than MOSO**, and it is a carry-over mistake, not a deliberate tightening.
+
+**(1) The MOSO UI invite path**
+Repos: moso `origin/master` `dd34e7f4bc`, packs `98eb5dcf5d9`, base `7f39defc21`.
+
+- **The "Invite" popup** is `LORecruitingInvitationView.sendEmailButton` (moso `client/view/interested_loan_officer/LORecruitingInvitationView.java:179`). It is opened from `LORecruitingListView.java:255,1271` and `ModexDataView.java:231`. It calls only generic ops:
+  - `ServerOps.SaveOp` on `LORecruiting` (`:198`). For a new row it sets `recruiter = App.currentUsername()` (`:204`), sets `added_by_admin = true`, and sets the status to `invited_to_join` when "send invite" is ticked (`:205`).
+  - `LoanOps.EnsureLORecruiterOp` (`:214`).
+  - `ServerOps.EmailOp` (`:186`).
+- **Server checks on those ops:**
+  - `SaveOp` has an empty `@RequiresPermissions` (base `appengine/.../op/SaveOp.java:30`). An empty array skips `checkPermissions` (`AbstractOp.java:396-397,429`). With no annotation at all, the default would have been OWNER.
+  - `SaveOp` then calls `Bean.canWrite` (`SaveOp.java:41`). That goes to `Bean.checkPermissions` (`appengine/.../db/Bean.java:1108-1119`). `LORecruiting` and its parent types set no `SecurityPolicy`: none of them appear among the files that call `securityPolicy(` in base or packs, and parent policies are copied over at `ServerTypeSystem.java:42`. With a null policy the write is allowed, so any logged-in session may save an `LORecruiting`.
+  - `EmailOp` has an empty `@RequiresPermissions()` (base `core/.../op/EmailOp.java:20`).
+  - `EnsureLORecruiterOp` has an empty `@RequiresPermissions` (packs `referral/EnsureLORecruiterOp.java:24`).
+- **Agreement and onboarding ops** used by the MOSO UI also have empty annotations: `EnsureSigningSessionsRegisterInterestedLoanOfficer.java:68` and `RebuildIloAgreementTask.java:36`. Several helper ops require only `Permission.ADMIN`, and `ADMIN` = `"Admin"` = the user *kind*, so any Admin passes. Examples: `CallLORecruitingOp:14`, `SendInterestedLoanOfficerNoteOp:18`, `FindReferentEntitiesOp:14`. I did not trace each onboarding-meeting status click, but it goes through the same generic `SaveOp` on `LORecruiting`.
+- **The "Refer a loan officer" form** is `InviteALoanOfficerForm` → `SaveLORecruiterOp`. It has an empty `@RequiresPermissions` (packs `referral/SaveLORecruiterOp.java:44`) and creates a row with status `invited_to_join`, sends a `refer_a_loan_officer` mail, and is open to any logged-in user.
+- **The real gate is in the client**, in moso `InterestedLoanOfficersMod`:
+  - The Interested LO page needs `canAccessInterestedLoanOfficerPage()` (`:278`). That is `LORecruitingListView.canManageAll()` (`:1735`), meaning any of `LICENSING`, `INTERESTED_LOAN_OFFICERS`, `MANAGE_REAL_ESTATE_AGENT`, or the accounting / marketing / HR role. Or it is `hasOwnerRoles()` (`:1743`), meaning `is_recruiter`, `is_out_sourcing_recruiter`, onboarding specialist or support specialist; these users only see rows they own.
+  - The Recruited LO page needs `RECRUITED_LOAN_OFFICERS` (`RecruitedLoanOfficersView.java:804`) or `is_recruiter` (`:808`).
+  - `InterestedLoanOfficersMod.PERMISSION = Permission.RECRUITING` (`:61`) is used only for one redirect (`:145`). It is not an access gate.
+
+**Prod proof that they write through MOSO without RECRUITING.**
+- Source: `LORecruiting` rows in Datastore `lender-rate` / ns `5716104026521600`, read-only. "recruiter = their Admin key" with `added_by_admin = true` is exactly what the popup stamps. Of these people, only Lisbeth and Tommy hold RECRUITING.
+- **Brayan:** 1,414 rows, 26 since 01/07, last on 06/10/2026.
+- **Miley:** 843 rows, 47 since 01/07, last on 08/10.
+- **Sara:** 1,170 rows, 73 since 01/07, last on 08/10.
+- **Wegina:** 1,627 rows, 92 since 01/07, last on 06/10.
+- **Lindsay:** 16 rows, all since 01/07, last on 08/10.
+- **Seth:** 0 rows as `recruiter`. He has 22 rows as `referred_by` (the referral form), the last on 28/05/2026.
+- **Matt:** 0 rows under `recruiter`, `referred_by` or `owners_of_lo`, for both his key and his company email. Not confirmed.
+- **EmailHistory with `reply_to = brayan@`:** 2,577 mails. The top subjects are recruiting and webinar mails, the last on 31/08/2026.
+
+**(2) Why RecruitAPI picked RECRUITING**
+- `git log -S Permission.RECRUITING` shows where it came from:
+  - First in `SaveLORecruitingFromRecruitOp` (packs #3525, 15/09, `2941a1ab3dd`): `@RequiresPermissions(permissions = Permission.RECRUITING)` plus an in-body `checkPermissions(RECRUITING)`. No reason was given beyond "Authz".
+  - Then RecruitAPI (packs #3550, 22/09, `e2911c06af3`) copied it "for consistency with the sibling write-back op". The comment explains the threat: recruit-be picks the actor email, so without a gate any active Admin it names could drive a recruiting surface.
+- Neither PR compared the rule against who actually invites in MOSO today. The #3550 body lists only API-key and skew prerequisites.
+- recruit-be `docs/DECISIONS.md` **D152** (28/09) already hit the same mismatch for onboarding specialists: only 8 of 31 on staging held RECRUITING. It was fixed narrowly with the `is_onboarding_specialist` relaxation (packs rev-3579-sec2). No decision ever chose RECRUITING-only for recruiters on purpose.
+- **Conclusion:** this is an unintended tightening, a mistake. MOSO itself admits these users.
+
+**(3) Recommended rule for RecruitAPI (packs change, needs the packs Repo Owner)**
+- Replace `hasRecruitingPermission()` in `authRequest` with "may act on LO recruiting". It should mirror MOSO's client gate minus the unrelated roles:
+  `hasAnyPermission(RECRUITING, INTERESTED_LOAN_OFFICERS, RECRUITED_LOAN_OFFICERS) || admin.is(is_recruiter) || admin.is(is_out_sourcing_recruiter)`
+  This would apply to `invite`, `sync`, `webinars` and `registerWebinar`. Keep the existing `is_onboarding_specialist` own-candidate relaxation for meeting, agreement and reminder.
+- **Who this admits:**
+  - Brayan, Seth, Miley, Sara, Wegina, Matt, Lindsay, Lisbeth, Tommy, Victoria, Phuong, Bao and IT Dept.
+  - Geta Smith, through `is_out_sourcing_recruiter` alone (no permissions at all).
+  - It does *not* admit a plain loan officer or a broker.
+- **Do not include `LICENSING`, `MANAGE_REAL_ESTATE_AGENT` or the accounting / marketing / HR roles.** MOSO lets them open the page, but recruit-be never makes them invite actors.
+- **Security trade-off.** The gate is defence-in-depth behind the shared API key, the sealed actor header and recruit-be RBAC (`OFFER_REQUEST`, owner-or-`OFFER_APPROVE`, D209).
+  - Widening it lets a compromised or buggy recruit-be act as roughly 13 more MOSO users instead of 5. It is still not as any Admin.
+  - It is still far stricter than MOSO's own server, which admits any session.
+  - Optional tightening: for actors admitted only through `is_recruiter` / `is_out_sourcing_recruiter`, without `INTERESTED_` or `RECRUITED_LOAN_OFFICERS`, scope writes to rows whose `recruiter` is the actor. This mirrors MOSO's `hasOwnerRoles` own-rows list and the existing `actingSpecialistOwnsCandidate`.
+- **Until packs ships this:** keep `RECRUIT_FEATURES_PACKS_WRITEBACK` off on prod, or have only Victoria, Bao or IT Dept request invites. Granting RECRUITING per person also works, but it opens MOSO's HR job-posting menu to them.
 
 **Sources**
 - recruit-be `origin/master` = `origin/production` `e5caa333`.
