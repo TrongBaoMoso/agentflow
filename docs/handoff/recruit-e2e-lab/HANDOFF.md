@@ -92,3 +92,23 @@ Process facts learned: recruit-be/fe `staging` is now promoter-only -> `gh workf
 Test results tonight (link updated): OM5 pass (gate correct; +tag addresses collide by design), OM6 pass after #606, H8 pass (Today wait is gold by design, banner red), j06ji verified, retest batch 11/14 (vm9tm UI -> #419).
 Open for Bao: bead agentflow-7dx4u (answered/instructed, not yet confirmed) + agentflow-57pqi (Y8 >14:05 09/10, J7 day-1 ~15:05, H10 >23:20, J7 2h screenshot, G2). Open question: do all prod MANAGERs who send/approve offers have an active MOSO account?
 Staging test data left: manhadmin follower of QA Claudereminder; candidate QA Om5mailtm (mail.tm qa-om5-17c2dde7@maxxspace.com, creds in e2e-lab-scratch/om5-mailtm.json); 2 pre-fix team-email rows mirrored as contact (d8171d98, 864588c3).
+
+## RESUME POINT 09/10 ~08:40 VN — overnight batch shipped; paused for Bao's commute (session 073e4aab)
+Resume: `cd ~/Projects/agentflow && claude --resume` → session 073e4aab ("recruit E2E lab"). Then `bd show agentflow-7dx4u` (everything waiting on Bao) and read this section.
+
+SHIPPED TO PRODUCTION overnight (each: 2+ reviewers → staging test → prod):
+- recruit-be 0c515c2a: #608 ze4kn (referral LO = new lead; V240 repaired 59 prod LOs, audit table offers_v240_audit; 11 ACTIVE + 56 non-ACTIVE left on purpose → decision bead agentflow-nkgt7), #609 rpzrj BE (Omni-panel call arms Log result), #610 ld7ef (names retry row), #611 y8fbi BE (assigned onboarding specialist can message own LO), #607 (other session, V241 business hours). Flyway now v241.
+- recruit-fe e0a48689: #421 (header search finds LOs bnqmf, Team-only copy hh46z, approval overdue RED H8), #422 rpzrj FE, #423 y8fbi FE.
+- Staging verified for all of the above (t4 agent: ze4kn/y8fbi/rpzrj/ld7ef PASS; t421 PASS).
+
+IN PROGRESS — resume here:
+- agentflow-8r58m: recruit-be PR #612 (scheduled MOSO signed reconcile, D246). Both reviewers REQUEST_CHANGES. Fixes are half-done in worktree /Users/apple/Projects/recruit-be-worktrees/8r58m as LOCAL commit 3a0ce2ec "WIP … do not push as-is" on top of 76805025 (the PR head). To continue: `git reset --soft HEAD~1` there, finish + test, then amend into ONE commit and force-with-lease push. Required fixes (from reviews): (1) PESSIMISTIC_WRITE lock on the offer in healSignedFromMoso before SENT check + concurrent IT; (2) prefer configured RECRUITING actor (actor-email = it.dept@loanfactory.com in prod values) with specialist fallback / retry on REFUSED/unknown-actor; (3) visibility: effective-state boot line, disabled-tick WARN, last-tick metric, WARN signedInMoso>healed, malformed dry-run body counted, WARN noActor; (4) per-offer last-checked + oldest-first rotation (migration V242 if needed; master highest is V241), outsideWindow count; (5) consecutiveSystemic not reset by non-systemic, RuntimeException counts; (6) overlap guard. Then re-run java-reviewer + silent-failure-hunter, merge, promote staging (`gh workflow run promote-staging.yml -f sha=<master sha>`), set RECRUIT_MOSO_SIGNED_RECONCILE_INTERNAL_API_KEY on staging, test, prod (key + actor-email needed in prod secret/values — ops).
+- QA Claudeswitch already unstuck on STAGING via admin import (SIGNED, S6).
+
+WAITING ON BAO (bead agentflow-7dx4u):
+- SECURITY agentflow-1ebmq P0: rotate Mailgun API key (plaintext in prod App Engine logs).
+- crfc1 proposal (docs/handoff/recruit-e2e-lab/crfc1-email-spam-proposal.md): spam is staging-only.
+- B1 audit (b1-prod-managers-moso-audit.md): Brayan + Seth lack MOSO RECRUITING.
+- l06om root cause in ai-hr-be (HR team) — patch proposal in bead.
+- agentflow-nkgt7 decision; G2 part 2 (Bao replies to email); omni-service #548 prod + tera-components #314 review → Khai; rpzrj omni/zoom findings → Khai.
+TIMED (session crons DIE on shutdown — redo by hand or re-create after resume): Y8 after 14:05 VN 09/10 (Claude may run it), H10 after 23:20 VN 09/10 (Claude may run it). See bead agentflow-57pqi.
