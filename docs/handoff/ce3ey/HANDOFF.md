@@ -60,3 +60,10 @@ Next, in order:
 ## UPDATE 09/10 10:30 +07 — packs fix is on PRODUCTION
 Khai released packs 3.65.0 from master (GAE `d`, 10:27 +07); it contains #3641. #3642 closed (not needed). Read-only prod check right after: pre-call rows with a link 0/29 (was 4), call-done-unpaid rows with a link 0/8, call-done-and-paid rows still served 82/87 (5 never had one). No real user traffic on the register endpoints yet since the release. Both packs worktrees removed.
 Left for Bao: send the Brayan reply; decide on the out-of-order rows (Steve Hutchins was ticked this morning, unpaid).
+
+## CLOSED 09/10 ~15:10 +07
+- Bao replied to Brayan with two emails (Sara's case + Miley's case), content as drafted in the session.
+- Re-measured with prod Datastore read access (granted by Khai): History-based timelines for 497 loan officers. Since the new order (Oct 5): Carlos, Malinda, LaShambra Ewing signed before the call; Shane Ouimet signed 2 min after the call, fee marked paid by Miley 24 min later; Leo Namiot signed Oct 8 evening (US) with no call/no payment. Open Inkless links without a call: Jessica Phan, Sejal Patel, Woodrow Collins, Brayan TEST. Rows from the old list (Areg, Nicholas, Aman, Larry, Brisaly, Kara) followed the pre-Oct-5 process.
+- Miley's case = Cameron Dela Fuente: profile entered by staff in MOSO, call ticked with no onboarding specialist, so no envelope until the specialist was set (20:41Z); covered by the sign-step ask now on prod.
+- Final checks: fixes still on packs master / lf production / lo produciton-v2; prod GAE d since 10:27; no errors on register endpoints since; no prod email template carries the raw Inkless link; 0 RECRUIT_V2 rows on prod, recruit-be prod only reads.
+- Not done on purpose: no envelope cancelled (Bao), staging packs still on the 08/10 20:34 build (staging test row `bao.trinh+ce3ey-*` left there).
