@@ -2,6 +2,73 @@
 
 Date: 2026-10-09. All reads were read-only: no code, config, data or settings were changed.
 
+## Re-verified 09/10 (independent re-check after Bao doubted the Brayan/Seth finding)
+
+**Verdict: the original finding stands.** Brayan and Seth would be refused by packs as the acting user for invite and profile sync. What changed: the evidence is now direct (prod Datastore reads plus the permission code), Miley's `is_onboarding_specialist` was measured, and the other people on the LO Recruiting list were added (table 3b below).
+
+**Why Bao's `/lo-info-check` lists look like "they have recruiting permission" but are not.** Two different permissions have similar names:
+- `RECRUITING` is a core permission. It is defined at base `core/src/main/java/com/mvu/core/shared/typekey/Permission.java:28` and registered at `:60` as "Access Recruiting menu ... post jobs, manage interview questions and manage candidates", implied only by `OWNER` (and so `SUPER`). **This is the one packs RecruitAPI checks.**
+- `RECRUITED_LOAN_OFFICERS` and `INTERESTED_LOAN_OFFICERS` are loan permissions. They are defined at packs `loan/.../shared/typekey/LoanPermissions.java:86-87` and registered at `:194-195` as "Access Recruited/Interested loan officers menu", implied by `OWNER`. They do **not** imply `RECRUITING`. The implication graph only runs parent to child (base `core/.../server/Permissions.java:17-47`).
+- Neither Brayan's nor Seth's `permissions` list contains `RECRUITING` or `OWNER`. Bao's screenshots and the prod Datastore read agree on this.
+
+**Exact rule in packs** (`origin/master` `92b719f42e2`, `loan/src/main/java/com/mvu/loan/server/op/api/RecruitAPI.java`):
+- `authenticate()` (`:1157-1219`):
+  - Checks the Bearer token, the Loan Factory namespace pin, the shared key and the sealed fresh actor header.
+  - `resolveActorAdmin(email)` must return an **active** Admin, otherwise 401 "unknown or inactive acting user".
+  - Then it installs `createSessionUser(admin)`. The session permissions are `Permissions.getImpliedPermissions(Admin.permissions)` (base `appengine/.../BaseServer.java:498-509`).
+- `hasRecruitingPermission()` = `App.hasAnyPermission(currentUser, Permission.RECRUITING)` (`:1263-1265`).
+- `isAuthorizedActor` = `RECRUITING || (allowOnboardingSpecialist && Admin.is_onboarding_specialist)` (`:1230-1234`). If it is false, `authRequest` throws 401 "acting user lacks recruiting permission" (`:1134-1147`).
+- **No department, role (`is_recruiter`, `is_out_sourcing_recruiter`) or `RECRUITED_LOAN_OFFICERS` check exists anywhere in RecruitAPI** (grep "department" = 0 hits).
+
+| Op recruit-be calls | packs gate | Who passes |
+|---|---|---|
+| `candidate/invite` (also carries `onboarding_specialist`) | `authRequest(req)` `:465` | RECRUITING only. Separately, the named specialist must be an active `is_onboarding_specialist` Admin (`:2639-2648`). That rule is about the *named specialist*, not the actor |
+| `candidate/sync` (profile write-back) | `authRequest(req)` `:310` | RECRUITING only |
+| `webinars`, `candidate/registerWebinar` | `authRequest(req)` `:268`, `:389` | RECRUITING only |
+| `candidate/onboardingMeeting` | `authRequest(req, true)` `:722` | RECRUITING, or `is_onboarding_specialist` limited to own candidates (`actingSpecialistOwnsCandidate` `:1249-1255`) |
+| `candidate/agreement` (dry-run/status) | `authRequest(req, true)` `:1398` and owner check `:1400` | same as above |
+| `candidate/agreement/send` | `authRequest(req, true)` `:1691` | same as above (`sendAgreement(..., hasRecruitingPermission(), actor, ...)`) |
+| `candidate/meetingReminder` | `authRequest(req, true)` `:1729` | same as above (`RecruitMeetingReminder.send(..., hasRecruitingPermission(), actor)`) |
+| `referrers/resolve`, `referrals/byOwner` | `authenticate()` only `:985`, `:1043` | any active Admin, but without RECRUITING only about themselves ("Forbidden - you may resolve only yourself" `:993`, `:1015`) |
+
+**Who is the actor** (recruit-be `origin/master`):
+- Each outbox row carries `actor_email = ActorEmailResolver.emailOf(actorId)`, which is `rbac_grants.email` of the recruit user whose action enqueued it (`PacksWritebackEnqueuer.java:227`, `:278-585`).
+- For an invite this is the requesting recruiter (D127).
+- Meeting reminders act as the candidate's onboarding specialist (`OnboardingReminderGuards.java:110`).
+- Agreement send acts as the clicking user (`AgreementSendServiceImpl.java:129`).
+
+**Was the earlier probe valid?** Yes.
+- `referrers/resolve` asked about *another* person returns "Forbidden - you may resolve only yourself" exactly when `hasRecruitingPermission()` is false (`:986-993`), which is the same predicate `authRequest` uses.
+- The earlier audit did not use a different op with a different rule. Its only gap was that Miley's specialist flag was "not probed", and it is now measured.
+
+### 3b. Re-verified table (prod MOSO Datastore `lender-rate` / ns `5716104026521600`, kind `Admin`, read 09/10 as bao.trinh@ via REST runQuery; prod recruit `rbac_grants` read through `rq-prod.sh`, read-only pod deleted)
+
+- Departments: `32969207757` = `DEPARTMENT_15_LO_RECRUITING` and `33029377312` = `DEPARTMENT_14_LO_ONBOARDING` (`DepartmentSetting.java:66,70`). packs ignores both.
+- All 13 Admins below are `active=true`.
+- "A" = admitted as actor for invite / sync / webinars.
+- "O" = admitted for onboardingMeeting / agreement / agreement send / meetingReminder.
+
+| Person | company_email (Admin key) | MOSO RECRUITING? | is_onboarding_specialist | recruit prod grant | A (invite, sync) | O (meeting, agreement, reminder) |
+|---|---|---|---|---|---|---|
+| Bao Trinh | bao.trinh@ (personal gmail) | **yes** | no | ADMIN | yes | yes (any candidate) |
+| IT Dept | it.dept@ (numeric id) | **yes** (+OWNER, SUPER) | no | ADMIN | yes | yes |
+| Victoria Pham | victoria.pham@ | **yes** | no | MANAGER | yes | yes |
+| Brayan Suarez | brayan@ (brsuarez2001@gmail.com) | **no** (has INTERESTED_/RECRUITED_LOAN_OFFICERS, LOAN_OFFICERS, CONFIG …) | no | RECRUITER | **NO**: 401 "lacks recruiting permission" | **NO** |
+| Seth August | seth.august@ (sethdaugust@gmail.com) | **no** (only INTERESTED_/RECRUITED_LOAN_OFFICERS) | no (`is_out_sourcing_recruiter`=true) | RECRUITER | **NO** | **NO** |
+| Miley Dau | miley.dau@ | no | **yes** | ONBOARDING | no | own candidates only |
+| Sara Acosta | sara.acosta@ | no | **yes** | none | no | own candidates only |
+| Lisbeth Giraldo | lisbeth.giraldo@ | **yes** | yes | none | yes | yes |
+| Tommy Le | tommy.le@ | **yes** | no | none | yes | yes |
+| Wegina Co | wegina@ | no | no | none | no | no |
+| Matt Moghaddam | mattmo@ | no | no (`is_out_sourcing_recruiter`) | none | no | no |
+| Lindsay Davis | lindsay.davis@ | no (only RECRUITED_LOAN_OFFICERS) | no | none | no | no |
+| (also in dept) Phuong Nguyen | phuong.nguyen@ | yes (+OWNER) | no | none | yes | yes |
+| (also in dept) Geta Smith | geta@ | no (no permissions) | no | none | no | no |
+
+Prod state today: `packs_writeback_outbox` has 0 rows, so nothing has been refused yet. Only the 9 grants listed in section 3 exist. Sara, Lisbeth, Tommy, Wegina, Matt and Lindsay have no recruit grant, so they cannot be actors today.
+
+**Note on fix option (a).** Granting MOSO `RECRUITING` to Brayan and Seth also opens MOSO's HR "Recruiting" menu (jobs, interview questions, candidates). The packs gate checks the HR-style permission, not the LO-recruiting one. The alternative is a packs change that also admits `RECRUITED_LOAN_OFFICERS` in `hasRecruitingPermission()`. That would admit Brayan, Seth, Miley, Sara, Wegina, Matt and Lindsay. It is a security decision for the packs Repo Owner and Bao, and it is not made here.
+
 **Sources**
 - recruit-be `origin/master` = `origin/production` `e5caa333`.
 - packs `origin/master` `832b8d31fb`.
@@ -46,7 +113,7 @@ The prod `rbac_grants` table has 9 rows, and every grant carries an email.
 | Victoria Pham | victoria.pham@loanfactory.com | MANAGER | send + approve | yes | yes | **yes** | OK |
 | Brayan | brayan@loanfactory.com | RECRUITER | send (request; own candidates) | yes | yes | **no** | **BLOCKED as mail actor.** An invite he requests is mailed as him (D127), and packs `candidate/invite` refuses with 401 "lacks recruiting permission" |
 | Seth August | seth.august@loanfactory.com | RECRUITER | send (request; own candidates) | yes | yes | **no** | **BLOCKED as mail actor**, same as Brayan |
-| Miley Dau | miley.dau@loanfactory.com | ONBOARDING | no offers (has AGREEMENT_SEND) | yes | yes | no | Not an offer actor. Agreement send / reminders work only if her Admin has `is_onboarding_specialist` and she is the row's specialist (not probed) |
+| Miley Dau | miley.dau@loanfactory.com | ONBOARDING | no offers (has AGREEMENT_SEND) | yes | yes | no | Not an offer actor. Agreement send / reminders work only for her own candidates: re-verified 09/10 that her Admin has `is_onboarding_specialist`=true |
 | Dave Hoang | dave.hoang@loanfactory.com | HR | no | yes | yes | yes | n/a |
 | Dung | dung@loanfactory.com | LICENSING | no | yes | yes | no | n/a |
 | Rosaline Pham | rosaline.pham@loanfactory.com | ACCOUNTING | no | yes | yes | no | n/a |
