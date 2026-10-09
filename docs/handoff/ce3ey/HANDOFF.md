@@ -56,3 +56,7 @@ Next, in order:
 2. Ask Bao: did Khai deploy #3642? did Bao send the Brayan reply? decision on `out-of-order-rows-2026-10-09.md`?
 3. After #3642 is on prod: probe prod read-only — `getRegisterLoanOfficer` for a pre-call row with a stored link (e.g. Jessica Phan / Steve Hutchins from the list) must no longer return `url_signing_sessions`.
 4. Then close bead agentflow-ce3ey and remove both packs worktrees.
+
+## UPDATE 09/10 10:30 +07 — packs fix is on PRODUCTION
+Khai released packs 3.65.0 from master (GAE `d`, 10:27 +07); it contains #3641. #3642 closed (not needed). Read-only prod check right after: pre-call rows with a link 0/29 (was 4), call-done-unpaid rows with a link 0/8, call-done-and-paid rows still served 82/87 (5 never had one). No real user traffic on the register endpoints yet since the release. Both packs worktrees removed.
+Left for Bao: send the Brayan reply; decide on the out-of-order rows (Steve Hutchins was ticked this morning, unpaid).
