@@ -112,3 +112,7 @@ WAITING ON BAO (bead agentflow-7dx4u):
 - l06om root cause in ai-hr-be (HR team) — patch proposal in bead.
 - agentflow-nkgt7 decision; G2 part 2 (Bao replies to email); omni-service #548 prod + tera-components #314 review → Khai; rpzrj omni/zoom findings → Khai.
 TIMED (session crons DIE on shutdown — redo by hand or re-create after resume): Y8 after 14:05 VN 09/10 (Claude may run it), H10 after 23:20 VN 09/10 (Claude may run it). See bead agentflow-57pqi.
+
+## 09/10 ~11:30 VN — 8r58m shipped
+- recruit-be #612 (scheduled MOSO signed-agreement reconcile, D246, V242) on PRODUCTION cf12f0d3 after 3 review rounds (java + silent-failure APPROVE). Staging: key deposited (SM secret recruit-be-recruit-moso-signed-reconcile-internal-api-key + merge-patched into recruit-svc-secret), cron every 20 min, first tick 04:20Z checked 19 / failed 0. Prod: inert until ops sets RECRUIT_MOSO_SIGNED_RECONCILE_INTERNAL_API_KEY (boot log "cron NOT registered (key unset)"); prod dry run as it.dept@ returned 200.
+- Follow-ups: agentflow-exs2h (BOOTSTRAP.md rebuild drops 3 keys; prod key), agentflow-ioidi (pre-existing request() vs push offer-creation deadlock risk). All recruit E2E bug beads from the overnight batch are now closed except those waiting on others (see agentflow-7dx4u).
