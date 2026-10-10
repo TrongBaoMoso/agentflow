@@ -6,7 +6,10 @@ const WHO = {
   REC: { vi: "Recruiter", en: "Recruiter" }, REC2: { vi: "Recruiter thứ hai", en: "Second recruiter" }, RECSMS: { vi: "Recruiter có Zoom", en: "Recruiter with Zoom" },
   MGR: { vi: "Manager", en: "Manager" }, ONB: { vi: "Onboarding", en: "Onboarding" }, ONBG: { vi: "Onboarding có Google", en: "Onboarding with Google" },
   HH: { vi: "Headhunter", en: "Headhunter" }, ADMIN: { vi: "Admin", en: "Admin" }, HR: { vi: "HR (HR app)", en: "HR (HR app)" },
-  ANY: { vi: "Mọi vai", en: "Any role" }, DEV: { vi: "Nhờ dev / Claude", en: "Ask dev / Claude" }
+  ANY: { vi: "Mọi vai", en: "Any role" }, DEV: { vi: "Nhờ dev / Claude", en: "Ask dev / Claude" },
+  TL: { vi: "Team lead", en: "Team lead" }, OFR: { vi: "Officer recruiter", en: "Officer recruiter" }, LOS: { vi: "LO support", en: "LO support" },
+  RHR: { vi: "HR (vai recruit)", en: "HR (recruit role)" }, LIC: { vi: "Licensing", en: "Licensing" }, ACCT: { vi: "Accounting", en: "Accounting" },
+  ONBP: { vi: "Onboarding thuần", en: "Pure Onboarding" }, NG: { vi: "Đăng nhập, không có quyền recruit", en: "Signed in, no recruit grant" }
 };
 
 const ACC = {
@@ -26,8 +29,21 @@ const ACC = {
     use: { vi: "“Chau Chau” — admin mọi app staging: recruit ADMIN (Settings, Permissions), HR app <code>hr.viet18.com</code> (tạo nhân viên), MOSO admin <code>www.viet18.com</code> (Interested LOs → Status, Email History).", en: "“Chau Chau” — admin of every staging app: recruit ADMIN (Settings, Permissions), HR app <code>hr.viet18.com</code> (create associates), MOSO admin <code>www.viet18.com</code> (Interested LOs → Status, Email History)." } }
 };
 
+// 10/10 role accounts (created on staging by the orchestrator; case AB checks them before use)
+Object.assign(ACC, {
+  roleTl: { email: "bao.trinh+role-teamlead@loanfactory.com", label: WHO.TL, use: { vi: "Vai TEAM_LEAD (phạm vi ORIGIN_TEAM: lead của mình + lead do team thu về). Staging chưa có thành viên chương trình nào có khoá team lead → phần “lead của team” có thể không kiểm được (AD6).", en: "TEAM_LEAD role (ORIGIN_TEAM scope: own leads + leads collected by the team). No staging program member has a team-lead key yet → the “team leads” part may not be testable (AD6)." } },
+  roleOfr: { email: "bao.trinh+role-officer@loanfactory.com", label: WHO.OFR, use: { vi: "Vai OFFICER_RECRUITER: như Recruiter nhưng không có Hot leads và không xác nhận tên pháp lý.", en: "OFFICER_RECRUITER role: like Recruiter but no Hot leads and no legal-name confirm." } },
+  roleLos: { email: "bao.trinh+role-losupport@loanfactory.com", label: WHO.LOS, use: { vi: "Vai LO_SUPPORT: như Recruiter nhưng không có Cold list và không xác nhận tên pháp lý.", en: "LO_SUPPORT role: like Recruiter but no Cold list and no legal-name confirm." } },
+  roleHr: { email: "bao.trinh+role-hr@loanfactory.com", label: WHO.RHR, use: { vi: "Vai HR trong recruit (KHÔNG phải HR app): tick việc phòng HR trong checklist.", en: "HR role inside recruit (NOT the HR app): ticks HR department checklist items." } },
+  roleLic: { email: "bao.trinh+role-licensing@loanfactory.com", label: WHO.LIC, use: { vi: "Vai LICENSING: tick việc phòng Licensing.", en: "LICENSING role: ticks Licensing department items." } },
+  roleAcc: { email: "bao.trinh+role-accounting@loanfactory.com", label: WHO.ACCT, use: { vi: "Vai ACCOUNTING: Team queue mở ở phòng Accounting.", en: "ACCOUNTING role: Team queue opens on Accounting." } },
+  roleOnb: { email: "bao.trinh+role-onb@loanfactory.com", label: WHO.ONBP, use: { vi: "Onboarding THUẦN (chỉ một vai ONBOARDING, không vai nào khác) — dùng cho các bước “Onboarding bị chặn”. Không phải specialist của LO nào cho tới khi được gán.", en: "PURE Onboarding (only the ONBOARDING role) — for “Onboarding is blocked” steps. Not anyone's specialist until assigned." } },
+  roleNg: { email: "bao.trinh+role-nogrant@loanfactory.com", label: WHO.NG, use: { vi: "Có tài khoản đăng nhập chung nhưng KHÔNG có quyền recruit nào (như người giới thiệu / ambassador).", en: "Has a shared sign-in account but NO recruit grant (like a referrer / ambassador)." } }
+});
+
 // which account each role signs in with (a step may override with .as = ACC key or {vi,en})
-const LOGIN = { REC: "rec", REC2: "recSms", RECSMS: "recSms", MGR: "mgr", ONB: "onb", ONBG: "onbG", HH: "hh", ADMIN: "admin", HR: "admin" };
+const LOGIN = { REC: "rec", REC2: "recSms", RECSMS: "recSms", MGR: "mgr", ONB: "onb", ONBG: "onbG", HH: "hh", ADMIN: "admin", HR: "admin",
+  TL: "roleTl", OFR: "roleOfr", LOS: "roleLos", RHR: "roleHr", LIC: "roleLic", ACCT: "roleAcc", ONBP: "roleOnb", NG: "roleNg" };
 
 const PW_NOTE = {
   vi: "Mật khẩu: <b>trong file tài khoản test / hỏi Bao</b> (trang này không bao giờ ghi mật khẩu). Quên mật khẩu: <code>account.viet18.com</code> → <b>Forgot password?</b> → nhập đúng email đó (thư về hộp <code>bao.trinh@loanfactory.com</code>). Alias có dấu <code>+</code> KHÔNG đăng nhập Google được.",

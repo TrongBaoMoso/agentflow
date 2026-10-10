@@ -1,8 +1,17 @@
 // ---------- static reference sections ----------
 const accTable = () => {
-  const keys = ["rec", "recSms", "mgr", "onb", "onbG", "hh", "admin"];
+  const keys = ["rec", "recSms", "mgr", "onb", "onbG", "hh", "admin", "roleTl", "roleOfr", "roleLos", "roleHr", "roleLic", "roleAcc", "roleOnb", "roleNg"].filter(k => ACC[k]);
   return `<div class="ref tbl"><table><thead><tr>${U("accCols").map(x => `<th>${esc(x)}</th>`).join("")}</tr></thead><tbody>${keys.map(k => `<tr><td><span class="role">${esc(T(ACC[k].label))}</span></td><td class="mono">${esc(ACC[k].email)}${cp(ACC[k].email)}</td><td>${T(ACC[k].use)}</td></tr>`).join("")}</tbody></table></div>`;
 };
+const flagsNote = (l) => l === "vi"
+  ? `<div class="callout warn"><p>Bao 10/10: production <b>cố ý TẮT</b> 7 cờ mà staging BẬT: <code>PACKS_WRITEBACK</code>, <code>ONBOARDING_WRITEBACK</code>, <code>ONBOARDING_V2_HANDOFF</code>, <code>AGREEMENT_SEND</code>, <code>GOOGLE_CALENDAR_EVENTS</code>, <code>MEET_ATTENDANCE</code>, <code>HR_HANDOFF_AUTO_SEND</code>. Đây là biến môi trường, KHÔNG đổi được trong Settings, và không có môi trường test nào tắt chúng.</p>
+<ul class="prep"><li>Bước có nhãn <span class="pill mid">⚑ chỉ chứng minh STAGING</span> (A9–A15, A17, A20, A21, AA12, AD2, B7, B13, B14, C1–C4, C1S, F5, J2–J4, J6, J7, L1–L3, M2, RT6, RT9, V5) chỉ chứng minh hành vi staging. Đạt ở đó KHÔNG có nghĩa production làm vậy.</li>
+<li>Trên production: gửi offer / 1-1 Done / chọn webinar / sửa hồ sơ KHÔNG ghi sang MOSO; không gán specialist nên không có Schedule 1-1; không có nút gửi thoả thuận; lịch 1-1 kiểu mẫu; không chuông Meet; Send to HR bấm tay; email nhắc lịch chỉ DRY_RUN.</li>
+<li>Đường thủ công của production: case <b>AG</b>. Phần kiểm được trên staging thì test (AG1 Send to HR tay, AG2 Resend invite); phần còn lại ghi thật “chỉ kiểm được trên prod với LO thật → không test”.</li></ul></div>`
+  : `<div class="callout warn"><p>Bao 10/10: production keeps <b>7 flags OFF on purpose</b> that staging has ON: <code>PACKS_WRITEBACK</code>, <code>ONBOARDING_WRITEBACK</code>, <code>ONBOARDING_V2_HANDOFF</code>, <code>AGREEMENT_SEND</code>, <code>GOOGLE_CALENDAR_EVENTS</code>, <code>MEET_ATTENDANCE</code>, <code>HR_HANDOFF_AUTO_SEND</code>. They are env vars, NOT Settings, and no test environment has them off.</p>
+<ul class="prep"><li>Steps tagged <span class="pill mid">⚑ proves STAGING only</span> (A9–A15, A17, A20, A21, AA12, AD2, B7, B13, B14, C1–C4, C1S, F5, J2–J4, J6, J7, L1–L3, M2, RT6, RT9, V5) only prove staging behaviour. A pass there does NOT mean production does the same.</li>
+<li>In production: sending an offer / 1-1 Done / picking a webinar / editing the profile writes NOTHING to MOSO; no specialist is assigned so there is no Schedule 1-1; no agreement buttons; template-mode calendar; no Meet bells; Send to HR is manual; reminder mails are DRY_RUN only.</li>
+<li>Production's manual paths: case <b>AG</b>. What staging can run is tested (AG1 manual Send to HR, AG2 Resend invite); the rest honestly says “only provable on production with a real LO → not tested”.</li></ul></div>`;
 const guideBody = (l) => {
   const H = (n, vi, en) => `<h3 class="sub">${n}. ${l === "vi" ? vi : en}</h3>`;
   const R = (k) => RES[k].body[l];
@@ -25,14 +34,15 @@ const guideBody = (l) => {
     + H(8, "Gọi Zoom", "Zoom calls") + R("zoom")
     + H(9, "HR app", "HR app") + R("hrapp")
     + H(10, "Email về đâu", "Where emails arrive") + R("inbox")
-    + H(11, "Ghi kết quả", "Recording results") + R("results");
+    + H(11, "Ghi kết quả", "Recording results") + R("results")
+    + H(12, "Cờ tính năng: staging BẬT, production TẮT (cố ý)", "Feature flags: ON in staging, OFF in production (on purpose)") + flagsNote(l);
 };
 const STATIC = [
   { id: "status", code: "%", nav: { vi: "Tình trạng 10/10", en: "Status 10/10" }, title: { vi: "Tình trạng 10/10/2026 và cách dùng trang này", en: "Status on 10/10/2026 and how to use this page" }, body: { get vi() { return `
 <p class="intro">Bản 10/10: mọi bước đã viết lại thành hướng dẫn từng bước (đăng nhập tài khoản nào, URL, nút nào, gõ gì, đợi bao lâu, chữ kỳ vọng). Code: recruit-be <code>c0db3260</code>, recruit-fe <code>986569f0</code> — cả hai lên production 10/10 ~02:30 VN.</p>
 <div class="grid2">
 <div><b>Kết quả Claude</b>262 / 263 bước cũ ĐẠT (chip “Claude (tự test)” dưới mỗi bước = kết quả gần nhất). Còn lại: <b>G2</b> phần 2 (LO trả lời email về recruit) bị chặn bởi định tuyến Google Workspace — bead <b>fexgs</b>.</div>
-<div><b>Bước mới 10/10</b>B13, B14 (packs #3645 — chờ deploy), OM5b, OM10, OM11, Q4b, Q4c, Q9, S10 — chưa ai chạy.</div>
+<div><b>Bước mới 10/10</b>B13, B14 (packs #3645 — chờ deploy), OM5b, OM10, OM11, Q4b, Q4c, Q9, S10 — chưa ai chạy. <b>Thêm từ audit code 10/10:</b> case AB (tài khoản theo vai — làm trước), AC, AD, AE, AF, AG, AH + mục “Không test”.</div>
 <div><b>LO mới cho lần chạy tay</b>LO tạo sẵn 07–08/10 phần lớn đã được Claude dùng. Mỗi case có dòng “CHƯA TẠO” (bao.trinh+t10…, (714) 555-12xx, NMLS 99312xx) — tự đăng ký theo mục 5 “Hướng dẫn chung”.</div>
 <div><b>Đăng nhập</b>Mỗi bước có dòng 🔑 ghi đúng email cần đăng nhập. Mật khẩu: trong file tài khoản test / hỏi Bao.</div>
 </div>
@@ -49,7 +59,7 @@ const STATIC = [
 <p class="intro">10/10 edition: every step is rewritten as a step-by-step guide (which account, URL, which button, what to type, how long to wait, the expected text). Code: recruit-be <code>c0db3260</code>, recruit-fe <code>986569f0</code> — both promoted to production 10/10 ~02:30 VN.</p>
 <div class="grid2">
 <div><b>Claude's results</b>262 / 263 old steps PASS (the “Claude (self-test)” chip under each step = latest result). Left: <b>G2</b> part 2 (LO email reply back into recruit) blocked by Google Workspace routing — bead <b>fexgs</b>.</div>
-<div><b>New steps 10/10</b>B13, B14 (packs #3645 — waiting on deploy), OM5b, OM10, OM11, Q4b, Q4c, Q9, S10 — not run yet.</div>
+<div><b>New steps 10/10</b>B13, B14 (packs #3645 — waiting on deploy), OM5b, OM10, OM11, Q4b, Q4c, Q9, S10 — not run yet. <b>Added from the 10/10 code audit:</b> cases AB (role accounts — run first), AC, AD, AE, AF, AG, AH + the “Not tested” section.</div>
 <div><b>Fresh LOs for the manual run</b>The 07–08/10 prepared LOs were mostly used by Claude. Each case has “NOT CREATED” rows (bao.trinh+t10…, (714) 555-12xx, NMLS 99312xx) — register them per item 5 of the Quick start.</div>
 <div><b>Sign-in</b>Every step has a 🔑 line naming the exact email. Password: in the test-accounts file / ask Bao.</div>
 </div>
