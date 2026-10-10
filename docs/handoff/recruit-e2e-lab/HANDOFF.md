@@ -143,3 +143,27 @@ OM9 test LO TRINH VU TRONG BAO (07001ba1) phone is now +1 303-499-7111 (NIST tim
 Deferred / not wanted: yc2ag (non-US click-to-dial country code, Bao skipped), 1obz3 (/lf-users exposure, Bao: not worth tokens), 5j85f (zoom-go internal one-leg, Khai).
 SWAT/MOSO staging: still stuck (builder b1 + ironman offline; test packs/loan 37 stuck "running" on b1; install base/core Rerun queued on batman). Bao said do NOT Mark done; wait for Monday. When builders return: install base/core (revert #771) BEFORE packs/loan, then test packs #3645.
 New beads: t7qwi (user-service gateway hole, staging fixed), 1obz3, yc2ag (deferred), z1rwu/i64qb/jhkyv (closed), rpzrj (closed).
+
+## RESUME POINT 10/10 evening — coverage audit + gap run
+
+Bao asked "is every feature/role/bug tested, 100%?". Audit of code (be c0db3260 / fe b082eaae) vs the 272-step sheet found ~100 gaps → 75 new steps (cases AB–AH) added; sheet now 347 steps (artifact KXZ1EhJKuVRir7L5ExY7pj, v25). Audit reports: session scratchpad audit/{fe_gaps,be_gaps,rbac_gaps}.md.
+
+Bao decisions 10/10: prod flags OFF vs staging are intentional (steps tagged "⚑ chỉ chứng minh STAGING"); recruit fixes → prod after 2 reviewers + staging test; staging role accounts allowed; Focus remind-later = Pacific business time; RBAC product questions (D210) keep as is.
+
+Shipped to PRODUCTION 10/10 (all 2 reviewers + staging verified):
+- be #617 remove offer stub routes /send /signed /fee-paid /waive-fee (D248) — 9a90f611
+- fe #432 remind-later in Pacific business time — ec945d3d
+- fe #433 Sent-to-HR chip says who sent (not always Auto); #434 Today for HR/Licensing/Accounting/Onboarding/no-access; #435 Pipeline Source filter labels — 740f4bf1
+- be #618 + fe #436 "Not sent" row says why MOSO refused (no "missing: .") — be 8af6dc92 / fe 837e71ed
+- be #619 staging-only: agreement allowlist + agree4..agree9
+
+Staging role accounts (HR New associate + Permissions by chauchau): bao.trinh+role-teamlead/officer/losupport/hr/licensing/accounting/onb/nogrant. role-onb ONBOARDING grant REVOKED 10/10 (it was being auto-assigned offers). Passwords appended to the local accounts file.
+
+Results: 70 new step results in the artifact DB (results collection). Open/blocked:
+- AF4/AF5/AF12 (Google Meet) need bao.trinh@loanfactory.com — stored password WRONG, account 1 attempt from lockout. Bao must update the file.
+- AF9 needs Bao to sign the Inkless agreement for an LO with bao.trinh+agree3@.
+- Team-lead team scope: Bao must set the MOSO password for role-teamlead (create-password email) then program apply/approve/link.
+- AH9 skipped (irreversible), AD8 skipped (strip absent).
+- Beads: agentflow-l39ek (UI flips to English: user-service default language=en, owner Tai), agentflow-6d26h (onboarding auto-assign vs MOSO, revisit D137).
+- Seed gaps for Bao: LO_SUPPORT/OFFICER_RECRUITER lack CANDIDATE_LEGAL_NAME_CONFIRM; ONBOARDING has OVERRIDE_GATE without TRANSITION.
+- Security hygiene: recruiting-fe clone's origin URL embeds a GitHub token (rotate).
