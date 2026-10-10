@@ -14,7 +14,9 @@ const UI = {
     runT:"Nhật ký lần chạy", runIntro:"Mỗi lần chạy một case ghi một dòng: case, email LO, ID ứng viên, tới bước nào, kết quả. Mỗi người thấy dòng của mình; chế độ So sánh thấy của mọi người.",
     rCase:"Case (vd A, B3)", rLo:"Email LO", rCand:"ID ứng viên", rReach:"Tới bước", rNote:"Ghi chú, mã bead", rAdd:"Thêm vào nhật ký", rOk:"Đã thêm",
     rRes:{pass:"Qua hết",partial:"Qua một phần",fail:"Lỗi chặn"}, rCols:["Lúc","Người","Case","LO / ứng viên","Tới","Kết quả","Ghi chú",""], rEmpty:"Chưa có lần chạy nào.", del:"Xoá",
-    claudeSays:"Claude đã chạy", grpRef:"Tham khảo", grpCases:"Case test" },
+    claudeSays:"Claude đã chạy", grpRef:"Tham khảo", grpCases:"Case test",
+    loginAs:"Đăng nhập", pw:"mật khẩu: trong file tài khoản test / hỏi Bao", loginLO:"Vai LO: cửa sổ ẩn danh, không đăng nhập recruit", loginAny:"Tài khoản nào cũng được (mặc định <code>bao.trinh+recruiter@loanfactory.com</code>)", loginHR:"tại <code>hr.viet18.com</code>",
+    freshT:"Lần chạy tay 10/10: LO tạo sẵn của case này phần lớn đã được Claude dùng hết. Hãy tự đăng ký LO mới ở dòng “CHƯA TẠO” trong bảng (cách đăng ký: khối 🆕 bên dưới), rồi ở mọi bước thay tên LO cũ (QA …) bằng tên LO mới đó." },
   en: { all:"All", todo:"Not tested", fail:"Failed", pass:"Passed", skip:"Skipped", notes:"Show every note box", search:"Search steps, LOs, emails…",
     vMe:"My results", vAll:"Compare everyone", vUser:"Only: ", you:"You", someone:"Someone", claude:"Claude (self-test)",
     cases:"cases", steps:"steps", notTested:"Not tested", stP:"Pass", stF:"Fail", stS:"Skip",
@@ -29,7 +31,9 @@ const UI = {
     runT:"Run log", runIntro:"One line per case run: case, LO email, candidate ID, how far, result. You see your lines; Compare shows everyone's.",
     rCase:"Case (e.g. A, B3)", rLo:"LO email", rCand:"Candidate ID", rReach:"Reached step", rNote:"Note, bead id", rAdd:"Add to log", rOk:"Added",
     rRes:{pass:"All passed",partial:"Partly passed",fail:"Blocking failure"}, rCols:["When","Who","Case","LO / candidate","Reached","Result","Note",""], rEmpty:"No runs yet.", del:"Delete",
-    claudeSays:"Claude ran it", grpRef:"Reference", grpCases:"Test cases" }
+    claudeSays:"Claude ran it", grpRef:"Reference", grpCases:"Test cases",
+    loginAs:"Sign in as", pw:"password: in the test-accounts file / ask Bao", loginLO:"LO role: incognito window, no recruit sign-in", loginAny:"Any account (default <code>bao.trinh+recruiter@loanfactory.com</code>)", loginHR:"at <code>hr.viet18.com</code>",
+    freshT:"Manual run 10/10: most prepared LOs of this case were used up by Claude. Register a fresh LO from the “NOT CREATED” row in the table (🆕 block below), then in every step replace the old LO name (QA …) with that new name." }
 };
 const CLAUDE = "claude";
 const state = { lang:"vi", view:"me", filter:"all", q:"", uid:null, user:null, db:null, canWrite:true,
@@ -55,7 +59,7 @@ function loTable(ids){
   const h = U("loCols");
   return `<div class="tbl"><table><thead><tr>${h.map(x=>`<th>${esc(x)}</th>`).join("")}</tr></thead><tbody>${rows.map(l => `<tr>
     <td class="mono">${esc(l.id)}</td><td>${esc(l.fn+" "+l.ln)}</td>
-    <td class="mono">${esc(l.em)}${cp(l.em)}</td><td class="mono">${esc(l.ph)}${l.ph?cp(l.ph.replace(/\D/g,"")):""}</td><td class="mono">${esc(l.nm)}${l.nm?cp(l.nm):""}</td>
+    <td class="mono">${esc(l.em)}${l.em?cp(l.em):""}</td><td class="mono">${esc(l.ph)}${l.ph?cp(l.ph.replace(/\D/g,"")):""}</td><td class="mono">${esc(l.nm)}${l.nm?cp(l.nm):""}</td>
     <td>${T(l.src)}</td><td>${T(l.prep)}</td>
     <td class="links">${l.cand?`<a href="https://recruit.viet18.com/candidates/${esc(l.cand)}" target="_blank" rel="noopener">${esc(U("profile"))}</a>${cp(l.cand)}<br>`:""}${l.key?`<a href="${esc(l.entryBase||"https://www.viet18.com/register-loan-officer")}?key=${esc(l.key)}" target="_blank" rel="noopener">${esc(U("loLink"))}</a>`:""}</td></tr>`).join("")}</tbody></table></div>`;
 }
@@ -65,6 +69,15 @@ function resBlock(c){
   if(c.acc && c.acc.length) parts.push(`<details open><summary>${esc(U("who"))}</summary><div class="body">${c.acc.map(accBlock).join("")}<div class="meta">${T(RES.loginShort.body)}</div></div></details>`);
   for(const k of (c.res||[])){ const r=RES[k]; if(!r) continue; parts.push(`<details ${r.open===false?"":"open"}><summary>${T(r.title)}</summary><div class="body">${T(r.body)}</div></details>`); }
   return parts.length ? `<div><p class="lbl">${esc(U("res"))}</p><div class="res" style="margin-top:6px">${parts.join("")}</div></div>` : "";
+}
+
+function loginLine(s){
+  if(s.as && typeof s.as === "object") return `<div class="login">🔑 ${T(s.as)}</div>`;
+  const k = s.as || LOGIN[s.who];
+  if(s.who==="LO" && !s.as) return `<div class="login">🔑 ${U("loginLO")}</div>`;
+  if(s.who==="ANY" && !s.as) return `<div class="login">🔑 ${U("loginAny")}</div>`;
+  const a = k && ACC[k]; if(!a) return "";
+  return `<div class="login">🔑 ${esc(U("loginAs"))}: <code>${esc(a.email)}</code>${cp(a.email)} ${s.who==="HR"?U("loginHR"):""} · ${esc(U("pw"))}</div>`;
 }
 
 // ---------- build ----------
@@ -79,6 +92,7 @@ function buildCases(){
       <p class="goal"><b>${esc(U("goal"))}:</b> ${T(c.goal)}</p>
       ${c.prep?`<div><p class="lbl">${esc(U("prep"))}</p><ul class="prep" style="margin-top:6px">${(T(c.prep)||[]).map(p=>`<li>${p}</li>`).join("")}</ul></div>`:""}
       ${resBlock(c)}
+      ${c.fresh?`<div class="callout warn">${esc(U("freshT"))}</div>`:""}
       ${c.tip?`<div class="callout">${T(c.tip)}</div>`:""}
       ${c.warn?`<div class="callout warn">${T(c.warn)}</div>`:""}
       ${c.lock?`<div class="callout warn">${esc(U("lockHint"))} <button class="btn ghost" type="button" data-lock="${esc(c.id)}">${esc(U("lockTake"))}</button></div>`:""}
@@ -93,6 +107,7 @@ function buildCases(){
           </div>
           <div class="ib">
             <div><span class="sid">${esc(s.id)}</span><span class="role">${esc(T(WHO[s.who]||s.who))}</span></div>
+            ${loginLine(s)}
             <div class="act">${act}</div>
             <div class="exp"><b class="k">${esc(U("exp"))}</b>${exp}</div>
             ${s.bug?`<span class="bug">${T(s.bug)}</span>`:""}

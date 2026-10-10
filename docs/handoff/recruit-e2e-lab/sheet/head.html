@@ -61,7 +61,7 @@ section h2{font-size:1.14rem;margin:0 0 6px;display:flex;flex-wrap:wrap;gap:8px;
 section h2 .code{font-family:var(--f-mono);color:var(--accent);font-size:.9rem}
 h3.sub{margin:14px 0 6px;font-size:.98rem}
 .intro{color:var(--muted);margin:0 0 12px;max-width:76ch}
-.role{display:inline-block;font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;font-weight:600;color:var(--accent);background:var(--accent-soft);padding:1px 7px;border-radius:4px;white-space:nowrap}
+.role{display:inline-block;font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;font-weight:600;color:var(--accent);background:var(--accent-soft);padding:1px 7px;border-radius:4px;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;vertical-align:middle}
 .ref{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
 .tbl{overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-size:.86rem}
@@ -97,6 +97,7 @@ ul.prep,ol.prep{margin:0;padding-left:20px;display:flex;flex-direction:column;ga
 .stamp:disabled{cursor:not-allowed;opacity:.45}
 .ib{min-width:0}
 .sid{font-family:var(--f-mono);font-size:.74rem;color:var(--muted);margin-right:6px}
+.login{font-size:.8rem;color:var(--muted);margin-top:2px;overflow-wrap:anywhere}.login code{font-size:.78rem}
 .act{font-weight:500;margin-top:2px}
 .exp{color:var(--muted);font-size:.9rem;margin-top:3px}
 .exp b.k{color:var(--ink)}
