@@ -1,5 +1,5 @@
 // ---------- fresh LOs for the 10/10 manual run (not created yet) + LOs created 09–10/10 ----------
-// Emails/NMLS/phones checked against docs + session transcripts on 10/10 (DB check blocked: gcloud auth expired).
+// Emails/NMLS/phones verified unused in recruit staging DB (candidates + rbac_grants) on 10/10 after gcloud re-auth; positive control t10ho1 matched.
 const LOS_FRESH = [{"id":"NRT1","fresh":"RT","fn":"QA","ln":"Tenretest","em":"bao.trinh+t10rt1@loanfactory.com","ph":"(714) 555-1201","nm":"9931201","src":{"vi":"Web form (tự đăng ký)","en":"Web form (self-register)"},"prep":{"vi":"<b>CHƯA TẠO</b> · case RT · đăng ký theo ★ mục 5","en":"<b>NOT CREATED</b> · case RT · register per ★ item 5"}},
 {"id":"NA1","fresh":"A","fn":"QA","ln":"Tenmain","em":"bao.trinh+t10a1@loanfactory.com","ph":"(714) 555-1202","nm":"9931202","src":{"vi":"Web form (tự đăng ký)","en":"Web form (self-register)"},"prep":{"vi":"<b>CHƯA TẠO</b> · case A · đăng ký theo ★ mục 5","en":"<b>NOT CREATED</b> · case A · register per ★ item 5"}},
 {"id":"NA2","fresh":"A","fn":"QA","ln":"Tenspare","em":"bao.trinh+t10a2@loanfactory.com","ph":"(714) 555-1203","nm":"9931203","src":{"vi":"Web form (tự đăng ký)","en":"Web form (self-register)"},"prep":{"vi":"<b>CHƯA TẠO</b> · case A · đăng ký theo ★ mục 5","en":"<b>NOT CREATED</b> · case A · register per ★ item 5"}},
