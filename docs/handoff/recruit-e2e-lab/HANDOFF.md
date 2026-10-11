@@ -167,3 +167,10 @@ Results: 70 new step results in the artifact DB (results collection). Open/block
 - Beads: agentflow-l39ek (UI flips to English: user-service default language=en, owner Tai), agentflow-6d26h (onboarding auto-assign vs MOSO, revisit D137).
 - Seed gaps for Bao: LO_SUPPORT/OFFICER_RECRUITER lack CANDIDATE_LEGAL_NAME_CONFIRM; ONBOARDING has OVERRIDE_GATE without TRANSITION.
 - Security hygiene: recruiting-fe clone's origin URL embeds a GitHub token (rotate).
+
+### Update 11/10 morning (Bao present)
+- AF4, AF5 (Meet attendance bell "QA Anewe was in your 1-1 on Meet for 13 min", PROPOSE_DONE), AF12 (disconnect/reconnect Google, same 5 scopes) PASS with Bao's live Google session (headed Chrome, persistent profile, CDP :9333). AF12 Cancel-at-consent and @gmail sub-checks not done.
+- AD6 PASS: real Team lead set up (MOSO setup form → /lo-recruiter-program apply Level 3 → chauchau approve on /manage-lo-programs/lo-recruiter-program → admin assigns team lead in member drawer → recruit sync → Permissions → Program members → Link). Team lead sees 8 team leads, not others'. Open Q for Bao: team lead quick view shows full email/phone/NMLS (sheet expected masking).
+- MOSO staging never sends mail whose sender is the company email su@test.com (BaseEmailService test-sender kill switch; EmailHistory still says "sent") → password/welcome mails for HR-created users never arrive; reset link can be read from staging EmailHistory body.
+- Calendar guest leak fixed: manhadmin@viet18.com is a Google Group incl. a real employee (Khai); staging colleagues bypassed the guest allowlist (D211). be #621 (D249) → prod 1d3bd2a8; verified on staging by reschedule (guest list = organizer + 2 aliases). Khai removed by hand from the QA Anewe event ("Don't send").
+- Program application form (www.viet18.com) Email max 40 chars blocks a prefilled 42-char company email — small bug, not filed yet.
