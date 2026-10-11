@@ -62,8 +62,8 @@ CASES.push({ id: "R", group: G_SCR, short: { vi: "Nurture / Dormant", en: "Nurtu
 CASES.push({ id: "S", group: G_SCR, short: { vi: "Pipeline & màn quản lý", en: "Pipeline & admin screens" },
   title: { vi: "Pipeline 6 stage, Big producer, Duplicates, Reports, Templates, Audit", en: "6-stage Pipeline, Big producer, Duplicates, Reports, Templates, Audit" },
   goal: { vi: "Các màn quản lý.", en: "Management screens." },
-  los: ["S1", "S2", "B1"], acc: ["rec", "mgr"],
-  loNote: { vi: "S1, S2 cố ý trùng NMLS 9931899 (email khác) để test Duplicates.", en: "S1, S2 deliberately share NMLS 9931899 (different emails) for Duplicates." },
+  los: ["B1"], acc: ["rec", "mgr"],
+  loNote: { vi: "NS1, NS2 (đăng ký mới ở S6) cố ý trùng NMLS 9931264 (email khác) để test Duplicates.", en: "NS1, NS2 (registered fresh in S6) deliberately share NMLS 9931264 (different emails) for Duplicates." },
   steps: [
     S("S1", "REC", "<b>Pipeline</b> → các tab trên cùng.", "Tab: <b>All / New lead / Engaged / Offer / Onboarding / Joined / Onboarded</b>. LO chưa ai claim hiện ở All với nhãn “Not started”.", "<b>Pipeline</b> → the tabs.", "Tabs: <b>All / New lead / Engaged / Offer / Onboarding / Joined / Onboarded</b>. Unclaimed LOs show under All as “Not started”."),
     S("S2", "REC", "Hot leads: xem nhãn sản xuất.", "LO chưa có số: “Check production first”. Sau khi nhập 6/3 (B1): “<b>Big producer</b>”; Big producer xếp đầu.", "Hot leads: production label.", "No numbers: “Check production first”. After 6/3 (B1): “<b>Big producer</b>”; big producers sort first."),
