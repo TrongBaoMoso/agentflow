@@ -174,3 +174,17 @@ Results: 70 new step results in the artifact DB (results collection). Open/block
 - MOSO staging never sends mail whose sender is the company email su@test.com (BaseEmailService test-sender kill switch; EmailHistory still says "sent") → password/welcome mails for HR-created users never arrive; reset link can be read from staging EmailHistory body.
 - Calendar guest leak fixed: manhadmin@viet18.com is a Google Group incl. a real employee (Khai); staging colleagues bypassed the guest allowlist (D211). be #621 (D249) → prod 1d3bd2a8; verified on staging by reschedule (guest list = organizer + 2 aliases). Khai removed by hand from the QA Anewe event ("Don't send").
 - Program application form (www.viet18.com) Email max 40 chars blocks a prefilled 42-char company email — small bug, not filed yet.
+
+## Update 12/10 early morning (VN) — gap audit round 2 + fixes
+
+- Coverage re-audit (2 agents): 140 audit items → 16 had no step, 20 "pass" notes overstated. Case AI (21 steps, cases_12.js) added; 21 re-runs done (sheet v30).
+- Fixes shipped to PRODUCTION (2 reviewers + staging test each):
+  - recruit-be #622 (de5cf60a): checklist due_in_days 0–365 (AA9), follower trail names (OM3/D183).
+  - recruit-fe #440 (62f96e6b): Duplicates New/Backlog tabs (S6), conversation role label (OM3), audit "Name (email)" + CSV subject_email (P8), due-days no clamp (AA9).
+  - recruit-be #623 (75ace547): readable follow-up activity lines (business tz).
+  - recruit-fe #441 (611168d8): "Specialist assigned for {LO}", queue Sent-to-MOSO copy, saved-view ⋯ aria-label.
+  - lf-homepage #2660/#2661 + lo-homepage #893/#894/#895: shared email max 40 → 254.
+- omni-service #587 (07f9bdaa) merged to MASTER ONLY: AI13 (merged LO shows own note as "External sender", unread). Staging promote would also ship Khai's held #585; production is Khai's. AI13 stays FAIL until Khai releases.
+- Still to run (run-ai, after 14:00 VN 12/10): AI2, AI3, AI9b on QA Claudeadvisor, AI11 final mismatch check (~20:08 VN), then AI19 (auto-release, Bao approved 12/10; full restore via Pipeline → Assign owner).
+- Not testable via UI (sheet NOTEST list): Signed-fee-not-paid chip, FE#41 hold banner (stage_requirements inactive), BE#7 inbound STOP (no undo; needs Bao), AI7b COLLECTED_BY_YOU (D221 one-step approve).
+- Leftovers on staging: MOSO Company "QA Co AI12" on QA Tenaelabel; MOSO Career Production "0"/Preferred languages "English" on QA Claudeschedule.
