@@ -253,3 +253,53 @@ Checklist to switch it on later, in order:
   - Tracked in agentflow-g7hc5.
   - MOSO has 131,055 LORecruiting rows in total; recruit does not backfill history by design.
 - **MOSO prod version.** Now 3.65.0 (GAE version d, 09/10 03:27Z). It includes packs #3627 (agentflow-90vkj/gglqk fix) and all recruit API routes.
+
+## AUDIT 13/10 ~04:00 (night, full re-audit: recruit-be/fe, packs, moso-aid, omni, user-service, followup, ai-hr)
+
+Bao's answers before sleeping: add the reconcile key to prod = yes. MOSO rollback = "option 1": open hotfix PRs into 3.64.1, assign imkhai, no merge and no deploy. Do NOT promote recruit-fe; the night session owns it.
+
+**Fixed tonight**
+- `RECRUIT_MOSO_SIGNED_RECONCILE_INTERNAL_API_KEY` was missing in prod `recruit-svc-secret` (prod had 22 keys, staging 23). Added it; both envs now have the same 23 keys and no prod value equals staging. The cron registered on boot. The first tick at 03:00 +07 returned 200: candidates=2, checked=2, notSigned=2, healed=0, malformed=0, failed=0. This also proves the MOSO 3.64.1 `candidate/agreement` read works with the it.dept actor.
+
+**MOSO prod rollback (biggest finding)**
+- GAE `lender-rate` default is version c, built from branch 3.64.1 (jar loan-3.64.1-SNAPSHOT, deployed 12/10 11:29Z). It ran 3.65.0 from 09/10; that version was overwritten with 3.64.1 on 10/10 14:58Z. Staging (`lenderrate-master`) still runs 3.65.0.
+- Master fixes missing on prod:
+  - #3627 (90vkj, gglqk)
+  - #3641 (ce3ey: a signing link is served before the 1-1 call; the anonymous execute door accepts the loan officer registration ops)
+  - #3645 (cg03s: recruit-api returns 401 to recruiters without RECRUITING)
+  - ocveo
+- Hotfix PRs into `3.64.1`, assigned and review-requested to imkhai, NOT merged:
+  - #3675 (90vkj+gglqk)
+  - #3676 (ce3ey, stacked on #3675)
+  - #3677 (cg03s)
+  - #3678 (ocveo)
+- Merge order: 3675 → 3676; 3677 and 3678 can go in any order. Each PR has targeted tests green and a negative control.
+- The deploy build needs base installed at origin/3.64.1, because the shared ~/.m2 base 3.64.1 is stale. Closed PR #3642 is superseded; do not reopen it.
+- Beads ce3ey and ocveo were reopened.
+- The lf-homepage and lo-homepage prod pages call 0 webplus ops missing on 3.64.1. The sign step still gets its link (registerSigningAgreement exists there).
+
+**Parity confirmed (audit agents, read-only)**
+- recruit-be: prod = staging = master = 5c715987 (#626, shipped by another session; rev 43 is healthy, 10 cron lines, 0 ERROR).
+  - Live env equals helm values.
+  - Identical cron registrations; 5 Pub/Sub adapters, all subscriptions exist with DLQ.
+  - Flyway: 187 rows, V242, 0 failed in both DBs.
+  - recruit_settings: 133 keys; 5 differ, all intentional or env-specific.
+- Dependencies on their prod refs match recruit's contract: moso-aid (rev 00114 = pro tip), user-service, followup-be (protos byte-identical), ai-hr-be, cron-service, omni (except the item below).
+- All 10 packs recruit routes exist on prod (401 unauthenticated; a bogus path returns 404).
+- recruit-fe: prod 611168d8 is 2 commits behind staging f6257b38 (#442 SDK 0.4.26, Call disabled for recruiters without Zoom; #444 claim-first). The night session owns these. The audit found no env leak and no FE→BE path missing on prod.
+
+**Still needs someone else**
+1. imkhai: review, merge and deploy packs 3.64.1 PRs #3675-#3678. All prod recruit flags that would call packs write ops are OFF, so recruit itself is not blocked today. The ce3ey hole is the urgent part.
+2. omni owner: promote omni at or after b5b545d (#548 `side` field) to production. Without it, recruit-be #605 is inert in prod: Team-only Omni emails still count as candidate contact. Nothing breaks.
+3. DevOps: prod has no metrics or alerts for recruit-be.
+   - `podMonitoring.enabled` is staging-only by design (deploy/alerts/README: prod has a separate owner).
+   - HR hand-off publish and the HR subscribers are live in prod, so outbox and DLQ failures are silent there.
+   - Needs the lender-rate owner to opt in (helm flag + alert policies + channels). bao.trinh cannot even list PodMonitoring on the prod cluster.
+4. Before turning on any prod-off flag: PACKS_WRITEBACK, ONBOARDING_WRITEBACK, HIRE_CLASSIFICATION, LEGAL_NAME, V2_HANDOFF and AGREEMENT_SEND require the packs ports above (plus #3564/#3577/#3579/#3582 on the prod build), and every acting recruiter needs MOSO RECRUITING (h5xoz: Seth/Brayan/Miley lack it).
+   - GOOGLE_CALENDAR_EVENTS and MEET_ATTENDANCE need the Calendar and Meet APIs on the OAuth client's project, which we could not measure.
+   - MEET_ATTENDANCE needs NO Pub/Sub topic. `recruit-meet-events-staging` is referenced only in a docs spike, so its absence on prod is not a gap.
+
+**Intentional or decided (no action)**
+- headhunter.auto_own_enabled: true on staging, false on prod. Bao 08/10: keep Headhunter off until users are let in.
+- Program sync is DRY_RUN in both envs.
+- Staging-only drift: `SPRING_FLYWAY_OUT_OF_ORDER=true` is live on the staging deployment but not in helm values, so the next helm deploy drops it. This is harmless now.
