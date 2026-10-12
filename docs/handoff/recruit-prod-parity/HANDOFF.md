@@ -303,3 +303,27 @@ Bao's answers before sleeping: add the reconcile key to prod = yes. MOSO rollbac
 - headhunter.auto_own_enabled: true on staging, false on prod. Bao 08/10: keep Headhunter off until users are let in.
 - Program sync is DRY_RUN in both envs.
 - Staging-only drift: `SPRING_FLYWAY_OUT_OF_ORDER=true` is live on the staging deployment but not in helm values, so the next helm deploy drops it. This is harmless now.
+
+### 13/10 ~05:00 additions (reviews done, new security finding)
+
+- **Reviews of #3675-#3678.** Reviewer A (java) found no CRITICAL or HIGH issue: all four merged onto 3.64.1 cleanly and 169 tests passed. Reviewer B (security) gave LGTM-with-nits on all four. Repo Owner verdicts:
+  - #3675 and #3678: SAFE-TO-MERGE.
+  - #3676: SAFE-WITH-CONDITIONS, merge after #3675.
+  - #3677: SAFE-WITH-CONDITIONS. imkhai must answer whether a user can set their own `Admin.is_recruiter`/`is_out_sourcing_recruiter`, and recruit PACKS_WRITEBACK stays off until the smoke test passes.
+  - The full deploy plan, smoke tests and rollback (`set-traffic c=1`) are in the comment on #3675.
+- **Correction.** #3645 (cg03s) was NEVER on prod; the 3.65.0 build was cut before it merged. No evidence links the rollback to any of these fixes. Most likely a 3.64.1 hotfix deploy overwrote 3.65.0 (asked imkhai on #3675).
+- **#3678 prod data.** In the company namespace, 0 lenders are approved with `show_on_public_site` missing, so none become newly public. The list goes from 243 to 242: Eleven Mortgage (unapproved, agreement expired 10/10) drops off.
+- **ce3ey happened for real on prod 12/10.** Two LOs got an envelope at the Basic-info save and SIGNED it before the 1-1 call and before paying or getting a waiver:
+  - LORecruiting 37634837020 = recruit candidate 51af552b
+  - LORecruiting 6629731021357056 = recruit candidate 1993b8b1
+  - In recruit both are at S6, offer SIGNED, fee PENDING, no owner.
+  - Nothing was changed (we count, never cancel). Bao or staff decide on the fee and the call. Bead ce3ey has the details.
+- **NEW: agentflow-9wg8r (P1).** The public `registerLoanOfficer` (keyed AND unkeyed, via the email dedupe) and `registerWebinar` saved raw `paid_startup_fee`/`waive_startup_fee`/`waive_startup_fee_reason`/`paypal_order_id`/`lo_agreement_signed`. Anyone with an LO's email could mark the fee paid or waived, or fake "signed", and recruit's reconcile trusts `lo_agreement_signed`.
+  - Prod history shows no abuse (every anonymous paid flip has a PayPal order; there are no self-waives).
+  - Fix PRs, assigned to imkhai, NOT merged:
+    - #3679 into master: Reviewer A LGTM, Reviewer B LGTM-with-nits, Repo Owner SAFE-WITH-CONDITIONS (needed a 2nd reviewer, now satisfied).
+    - #3680 into 3.64.1: re-stacked on #3676, head abd94f1066d.
+  - **Final merge order on 3.64.1: 3675 → 3676 → 3680 → 3677/3678. Ship #3680 together with #3676.**
+- **Follow-up beads (P2):**
+  - agentflow-mnhsb: switch the public register/webinar body to an allowlist. Other privileged LORecruiting fields are still writable.
+  - agentflow-mz36c: the PayPal order is not bound to the row, and the PayPal client secret is logged on token failure. 0 such log lines in the 30-day retention window; rotating is the owner's call.
