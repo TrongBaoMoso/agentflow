@@ -195,3 +195,17 @@ Results: 70 new step results in the artifact DB (results collection). Open/block
 - Skipped ON PURPOSE (the form is the test step): ND1 (D2), ND2 (D3), NE1 (E2), NE2 (E3). 26 rows were already registered by testers (NA1, NB1–7, NC1–4, NS1–2, NAD1, NAE1–5, NAF1–2, NAI1–4) — untouched, marked “ĐÃ CÓ” with their stage.
 - Sheet v31: sheet/data_created12.js patches LOS_FRESH (prep text, recruit link, LO ?key link); build.sh loads it before app.js; freshT/status copy updated; .exp/.act pills may wrap. Script + keys: session scratchpad mk12/ (created.json).
 - Note: NB1 QA Tenbauto was registered with NMLS 9931207 (same as NB2) — tester typo, left as is.
+
+## Update 12/10 evening VN — case AI finished (AI2, AI3, AI9b, AI11, AI19)
+- Two Mac reboots today (~08:25 and ~20:01 VN) wiped /private/tmp; the step results live in the artifact DB (results/claude__<STEP>), so nothing recorded was lost. Screenshots of the earlier runners were lost.
+- AI2 pass: "Back to them today" lists Hotbadge Testlead (not worked).
+- AI3 pass: +1 / +2 tooltip shows "(2 today)", not 1. A follow-up at 10:00 VN tomorrow is still today in LA. The panel labels it "Tomorrow", which conflicts with the tooltip. EN "1 more follow-ups" plural slip confirmed. All 3 follow-ups cleared.
+- AI9b pass on QA Claudeadvisor: bell for recruiter and onb-test, Activity text, Legal name prompt all correct. "Use this name" was not clicked; the MOSO last name was restored and the prompt is gone. Leftover: MOSO Career Production "0" / Preferred languages "English" on QA Claudeadvisor (the MOSO form requires both).
+- AI11 pass: the writeback is Sent and MOSO shows the specialist bao.trinh@loanfactory.com, with no mismatch. The Sync label shows the raw key SyncTrace.writeback_kind_ONBOARDING_SPECIALIST (missing FE translation). The nightly MOSO re-send (~20:08 VN) had not arrived by 21:12.
+- AI19 pass: ON 21:16:34, OFF 21:21:08 VN (hot.idle_release_enabled=false verified in DB).
+  - The 21:20 tick released 40 leads. Restored through the Pipeline UI: 27/27 back to their former owner, 0 mismatches (verified by SQL).
+  - **13 manhadmin leads are left UNOWNED pending Bao's decision.** Re-assigning rings manhadmin's in-app bell.
+  - Finding (suspected BE bug): there is no stage filter, so 3 Joined (S6) LOs were released (Etoe Hirea, E2E HireB0928, E2E Stranger0929), plus 3 S5 leads.
+  - QA Wjoinclean's Activity, viewed as HH, has no "returned to the pool" line (unconfirmed).
+  - 4 HH leads are now TRANSFER, not ORIGIN_OWN. NW1 QA Tenwjoin was not released; it is still ORIGIN_OWN by HH.
+- Still open: AI13 (omni #585 + #587 need Khai to promote), the 13 manhadmin leads, and the Bao questions listed in the 12/10 early-morning update.
