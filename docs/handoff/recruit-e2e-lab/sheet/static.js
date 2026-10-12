@@ -43,7 +43,7 @@ const STATIC = [
 <div class="grid2">
 <div><b>Kết quả Claude</b>262 / 263 bước cũ ĐẠT (chip “Claude (tự test)” dưới mỗi bước = kết quả gần nhất). Còn lại: <b>G2</b> phần 2 (LO trả lời email về recruit) bị chặn bởi định tuyến Google Workspace — bead <b>fexgs</b>.</div>
 <div><b>Bước mới 10/10</b>B13, B14 (packs #3645 — chờ deploy), OM5b, OM10, OM11, Q4b, Q4c, Q9, S10 — chưa ai chạy. <b>Thêm từ audit code 10/10:</b> case AB (tài khoản theo vai — làm trước), AC, AD, AE, AF, AG, AH + mục “Không test”.</div>
-<div><b>LO mới cho lần chạy tay</b>LO tạo sẵn 07–08/10 phần lớn đã được Claude dùng. Mỗi case có dòng “CHƯA TẠO” (bao.trinh+t10…, (714) 555-12xx, NMLS 99312xx) — tự đăng ký theo mục 5 “Hướng dẫn chung”.</div>
+<div><b>LO mới cho lần chạy tay</b>LO tạo sẵn 07–08/10 phần lớn đã được Claude dùng. 12/10: Claude đã tạo sẵn 33 LO mới (dòng “ĐÃ TẠO 12/10”) — bỏ qua bước đăng ký. Chỉ ND1, ND2, NE1, NE2 để bạn tự đăng ký (form là bước test).</div>
 <div><b>Đăng nhập</b>Mỗi bước có dòng 🔑 ghi đúng email cần đăng nhập. Mật khẩu: trong file tài khoản test / hỏi Bao.</div>
 </div>
 <h3 class="sub">Thay đổi từ 08/10 tới 10/10 (đã lên staging + production)</h3>
@@ -60,7 +60,7 @@ const STATIC = [
 <div class="grid2">
 <div><b>Claude's results</b>262 / 263 old steps PASS (the “Claude (self-test)” chip under each step = latest result). Left: <b>G2</b> part 2 (LO email reply back into recruit) blocked by Google Workspace routing — bead <b>fexgs</b>.</div>
 <div><b>New steps 10/10</b>B13, B14 (packs #3645 — waiting on deploy), OM5b, OM10, OM11, Q4b, Q4c, Q9, S10 — not run yet. <b>Added from the 10/10 code audit:</b> cases AB (role accounts — run first), AC, AD, AE, AF, AG, AH + the “Not tested” section.</div>
-<div><b>Fresh LOs for the manual run</b>The 07–08/10 prepared LOs were mostly used by Claude. Each case has “NOT CREATED” rows (bao.trinh+t10…, (714) 555-12xx, NMLS 99312xx) — register them per item 5 of the Quick start.</div>
+<div><b>Fresh LOs for the manual run</b>The 07–08/10 prepared LOs were mostly used by Claude. 12/10: Claude pre-registered 33 fresh LOs (rows “CREATED 12/10”) — skip the register step. Only ND1, ND2, NE1, NE2 are left for you (the form is the test step).</div>
 <div><b>Sign-in</b>Every step has a 🔑 line naming the exact email. Password: in the test-accounts file / ask Bao.</div>
 </div>
 <h3 class="sub">Changes from 08/10 to 10/10 (on staging + production)</h3>

@@ -16,7 +16,7 @@ const UI = {
     rRes:{pass:"Qua hết",partial:"Qua một phần",fail:"Lỗi chặn"}, rCols:["Lúc","Người","Case","LO / ứng viên","Tới","Kết quả","Ghi chú",""], rEmpty:"Chưa có lần chạy nào.", del:"Xoá",
     claudeSays:"Claude đã chạy", grpRef:"Tham khảo", grpCases:"Case test",
     loginAs:"Đăng nhập", pw:"mật khẩu: trong file tài khoản test / hỏi Bao", loginLO:"Vai LO: cửa sổ ẩn danh, không đăng nhập recruit", loginAny:"Tài khoản nào cũng được (mặc định <code>bao.trinh+recruiter@loanfactory.com</code>)", loginHR:"tại <code>hr.viet18.com</code>",
-    freshT:"Lần chạy tay 10/10: LO tạo sẵn của case này phần lớn đã được Claude dùng hết. Hãy tự đăng ký LO mới ở dòng “CHƯA TẠO” trong bảng (cách đăng ký: khối 🆕 bên dưới), rồi ở mọi bước thay tên LO cũ (QA …) bằng tên LO mới đó." },
+    freshT:"12/10: Claude đã tạo sẵn các LO mới của case này (dòng “ĐÃ TẠO 12/10” trong bảng, đúng các ô của khối 🆕). Bỏ qua bước “Đăng ký LO …”, làm tiếp từ bước sau; link LO (?key) ở cột Link. Dòng “CHƯA TẠO — CỐ Ý” thì tự đăng ký vì chính form là bước test. Ở mọi bước thay tên LO cũ (QA …) bằng tên LO mới." },
   en: { all:"All", todo:"Not tested", fail:"Failed", pass:"Passed", skip:"Skipped", notes:"Show every note box", search:"Search steps, LOs, emails…",
     vMe:"My results", vAll:"Compare everyone", vUser:"Only: ", you:"You", someone:"Someone", claude:"Claude (self-test)",
     cases:"cases", steps:"steps", notTested:"Not tested", stP:"Pass", stF:"Fail", stS:"Skip",
@@ -33,7 +33,7 @@ const UI = {
     rRes:{pass:"All passed",partial:"Partly passed",fail:"Blocking failure"}, rCols:["When","Who","Case","LO / candidate","Reached","Result","Note",""], rEmpty:"No runs yet.", del:"Delete",
     claudeSays:"Claude ran it", grpRef:"Reference", grpCases:"Test cases",
     loginAs:"Sign in as", pw:"password: in the test-accounts file / ask Bao", loginLO:"LO role: incognito window, no recruit sign-in", loginAny:"Any account (default <code>bao.trinh+recruiter@loanfactory.com</code>)", loginHR:"at <code>hr.viet18.com</code>",
-    freshT:"Manual run 10/10: most prepared LOs of this case were used up by Claude. Register a fresh LO from the “NOT CREATED” row in the table (🆕 block below), then in every step replace the old LO name (QA …) with that new name." }
+    freshT:"12/10: Claude pre-registered this case's fresh LOs (rows “CREATED 12/10” in the table, every field per the 🆕 block). Skip the “Register LO …” step and continue from the next one; the LO link (?key) is in the Links column. Rows “NOT CREATED — on purpose” you register yourself, because the form itself is the test step. In every step replace the old LO name (QA …) with the new one." }
 };
 const CLAUDE = "claude";
 const state = { lang:"vi", view:"me", filter:"all", q:"", uid:null, user:null, db:null, canWrite:true,

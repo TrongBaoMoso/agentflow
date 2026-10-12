@@ -188,3 +188,10 @@ Results: 70 new step results in the artifact DB (results collection). Open/block
 - Still to run (run-ai, after 14:00 VN 12/10): AI2, AI3, AI9b on QA Claudeadvisor, AI11 final mismatch check (~20:08 VN), then AI19 (auto-release, Bao approved 12/10; full restore via Pipeline → Assign owner).
 - Not testable via UI (sheet NOTEST list): Signed-fee-not-paid chip, FE#41 hold banner (stage_requirements inactive), BE#7 inbound STOP (no undo; needs Bao), AI7b COLLECTED_BY_YOU (D221 one-step approve).
 - Leftovers on staging: MOSO Company "QA Co AI12" on QA Tenaelabel; MOSO Career Production "0"/Preferred languages "English" on QA Claudeschedule.
+
+## Update 12/10 ~18:00 VN — 33 fresh LOs pre-registered (session 1a9e7f24)
+- Bao asked to bulk-create the manual-run LOs. Registered 33 rows through the same MOSO APIs the pages call (registerLoanOfficer with the ★ item 5 fields; NW1 via registerWebinar JOIN_SLUG bao-trinhhh; NT1 via submitReferALoanOfficer, referrer bao.trinh+hh) + NAF7 = bao.trinh+agree4 (QA Tenagreefour, 9931295) for AF7.
+- Verified in recruit staging DB: 33/33 arrived (S0, WEB_FORM, W-2, TX); NW1 owned by HH (S1); NT1 REFERRAL S0 unowned. Pre-check: 0 email/phone/NMLS collisions (positive control t10a1 matched).
+- Skipped ON PURPOSE (the form is the test step): ND1 (D2), ND2 (D3), NE1 (E2), NE2 (E3). 26 rows were already registered by testers (NA1, NB1–7, NC1–4, NS1–2, NAD1, NAE1–5, NAF1–2, NAI1–4) — untouched, marked “ĐÃ CÓ” with their stage.
+- Sheet v31: sheet/data_created12.js patches LOS_FRESH (prep text, recruit link, LO ?key link); build.sh loads it before app.js; freshT/status copy updated; .exp/.act pills may wrap. Script + keys: session scratchpad mk12/ (created.json).
+- Note: NB1 QA Tenbauto was registered with NMLS 9931207 (same as NB2) — tester typo, left as is.
