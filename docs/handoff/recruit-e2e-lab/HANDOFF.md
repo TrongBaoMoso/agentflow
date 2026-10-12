@@ -204,8 +204,8 @@ Results: 70 new step results in the artifact DB (results collection). Open/block
 - AI11 pass: the writeback is Sent and MOSO shows the specialist bao.trinh@loanfactory.com, with no mismatch. The Sync label shows the raw key SyncTrace.writeback_kind_ONBOARDING_SPECIALIST (missing FE translation). The nightly MOSO re-send (~20:08 VN) had not arrived by 21:12.
 - AI19 pass: ON 21:16:34, OFF 21:21:08 VN (hot.idle_release_enabled=false verified in DB).
   - The 21:20 tick released 40 leads. Restored through the Pipeline UI: 27/27 back to their former owner, 0 mismatches (verified by SQL).
-  - **13 manhadmin leads are left UNOWNED pending Bao's decision.** Re-assigning rings manhadmin's in-app bell.
+  - The 13 manhadmin leads were restored to manhadmin through the same UI once Bao approved (22:xx VN). SQL check: 40/40 owner_id = from_owner. All 17 restored manhadmin/HH leads are now TRANSFER.
   - Finding (suspected BE bug): there is no stage filter, so 3 Joined (S6) LOs were released (Etoe Hirea, E2E HireB0928, E2E Stranger0929), plus 3 S5 leads.
   - QA Wjoinclean's Activity, viewed as HH, has no "returned to the pool" line (unconfirmed).
   - 4 HH leads are now TRANSFER, not ORIGIN_OWN. NW1 QA Tenwjoin was not released; it is still ORIGIN_OWN by HH.
-- Still open: AI13 (omni #585 + #587 need Khai to promote), the 13 manhadmin leads, and the Bao questions listed in the 12/10 early-morning update.
+- Still open: AI13 (omni #585 + #587 need Khai to promote) and the Bao questions listed in the 12/10 early-morning update.
