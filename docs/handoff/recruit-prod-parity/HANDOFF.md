@@ -370,3 +370,10 @@ Read this section first, then `bd show` the beads below. All agents are stopped,
 - **NEW agentflow-pymgv (P0), CONFIRMED on staging:** anonymous `execute/FindOp` bulk-reads Admin (135 fields), EscalationTicket, Asset, Employment, Note, Document and more. This is a legacy design (a public executeOp that runs any op), so it needs an imkhai/Bao decision; the proposed fix is an anonymous op+kind allowlist. Also new: agentflow-cct8l (P1), the Loan public view and unaudited routes.
 - **13/10 ~10:20 VN:** Khai merged #3675, #3684, #3682 and #3676 into 3.64.1, all squash-merged. #3676 and then #3680 were rebased after the squashes (patch-id identical; 63 tests). Remaining for 3.64.1: #3680, #3686, #3688, #3677, #3678, all MERGEABLE and none stacked. Then: deploy, smoke test (see the #3675 comments "Deploy plan update (p0qak)" and "(zum0l)"), and only after that rotate the PayPal/Calendly credentials. zum0l Repo Owner: #3686 SAFE, #3688 SAFE-WITH-CONDITIONS (smoke). Prod logs: 0 calls to the patched routes in 30 days.
 - **Lesson:** stacked PRs + squash merge = conflict after every merge. For a hotfix line, send independent PRs or ask for "Rebase and merge".
+- **13/10 ~10:30 VN, everything merged.** Khai approved (via Bao: "anh Khải nói approve merge").
+  - Session merged #3686 and #3688 into 3.64.1; the tip is `ddea2e1c701`.
+  - Session merged master #3679, #3681, #3683, #3685 and #3687; a sequential merge simulation was clean.
+  - Khai merged the rest of the 3.64.1 set himself and is deploying the HF.
+  - **Remaining:** confirm the new GAE version takes traffic, run `scratchpad/smoke_prod.py`, then Khai rotates the PayPal and Calendly credentials.
+  - The baseline smoke run on old version c FAILED as expected (negative control): the leak was present, there were 243 lenders, and an anonymous Borrower read returned 204.
+- **p0qak exposure:** in 30 days of request logs, the only calls were our own 3 probes, on 13/10, all curl from 1 IP.
