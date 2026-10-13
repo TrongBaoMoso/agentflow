@@ -259,3 +259,4 @@ Every PR got 2 reviewers, a staging UI test, then a literal-SHA prod push with "
     - (B) add the prod LO mail_configs row (datafix copy ALL→LO).
   - After the fix, send one new test email. G2 prod (inbound reply) cannot be tested until outbound works.
   - Follow-up: a failure before SMTP should flip the bubble to "failed".
+- Bao 13/10: SKIP prod email/G2 for now; focus on staging. Fold the prod outbound-email fix (omni ≥#565 or LO mail_configs row) into the "what does prod need to match staging" list when Bao asks for it.
