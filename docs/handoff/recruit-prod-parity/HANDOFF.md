@@ -360,3 +360,9 @@ Read this section first, then `bd show` the beads below. All agents are stopped,
 **Other beads opened tonight:** mnhsb (public register body allowlist), 01s4a (hardcoded credentials in packs source).
 
 **To resume:** `git pull` agentflow; `cd packs && git fetch`; check the zum0l WIP branches and worktrees (packs/.worktrees/); re-spawn reviewers A, B and Repo Owner for the zum0l PRs once they are opened; get the Repo Owner verdict on #3683/#3684.
+
+### 13/10 resume (after Bao's restart)
+- Nothing merged; prod is still version c (3.64.1).
+- p0qak: Repo Owner gave SAFE-TO-MERGE on #3683/#3684. **New 3.64.1 order: 3684 → 3682 → 3675 → 3676 → 3680 → 3677/3678.** Rotate the 3 credentials only AFTER #3684 + #3682 are live, otherwise the new values leak again. Rotation steps are in the #3675 comment "Deploy plan update (p0qak)". Staging leaks its own, different credentials (hash compare); its Calendly token is live, so rotate that too.
+- zum0l: the previous fix agent died at shutdown before pushing (only a draft test existed). A new agent `zum0l-fix` is working in packs/.worktrees/zA-*/zB-* and pushes after each green step.
+- The Khai message draft was updated with the new order and rotation steps.
