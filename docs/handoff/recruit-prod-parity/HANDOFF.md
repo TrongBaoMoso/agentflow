@@ -327,3 +327,6 @@ Bao's answers before sleeping: add the reconcile key to prod = yes. MOSO rollbac
 - **Follow-up beads (P2):**
   - agentflow-mnhsb: switch the public register/webinar body to an allowlist. Other privileged LORecruiting fields are still writable.
   - agentflow-mz36c: the PayPal order is not bound to the row, and the PayPal client secret is logged on token failure. 0 such log lines in the 30-day retention window; rotating is the owner's call.
+- **mz36c log fix:** #3681 (master) and #3682 (3.64.1 port) stop logging the PayPal client secret. Reviewer A LGTM; Repo Owner SAFE-WITH-CONDITIONS and recommends including it in the deploy. **Final 3.64.1 order: 3675 → 3676 → 3680 → 3677/3678 → 3682.**
+- New bead agentflow-01s4a (P2): hardcoded credentials in packs source (e.g. the LPA OAuth fallbacks in LPAOAuth2.java:66-67). Values were not recorded.
+- The ce3ey cases since the rollback are exactly the 2 from 12/10 (request logs since 10/10 14:58Z).
