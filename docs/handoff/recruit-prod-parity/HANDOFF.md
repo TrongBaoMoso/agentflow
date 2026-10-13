@@ -377,3 +377,7 @@ Read this section first, then `bd show` the beads below. All agents are stopped,
   - **Remaining:** confirm the new GAE version takes traffic, run `scratchpad/smoke_prod.py`, then Khai rotates the PayPal and Calendly credentials.
   - The baseline smoke run on old version c FAILED as expected (negative control): the leak was present, there were 243 lenders, and an anonymous Borrower read returned 204.
 - **p0qak exposure:** in 30 days of request logs, the only calls were our own 3 probes, on 13/10, all curl from 1 IP.
+
+## Update 13/10 ~13:00 — Bao decisions after HF
+- Credential rotation: NOT doing it (Bao). The route is patched on prod, so nothing leaks any more. p0qak closed.
+- One more HF for #3686/#3688 (zum0l): not urgent (Bao). Ships with Khai's next normal deploy. After that deploy, rerun smoke_prod.py; the "anon GetOp kind=Borrower" check must flip to PASS.
