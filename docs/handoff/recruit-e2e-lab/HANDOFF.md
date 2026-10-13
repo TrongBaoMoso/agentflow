@@ -209,3 +209,39 @@ Results: 70 new step results in the artifact DB (results collection). Open/block
   - QA Wjoinclean's Activity, viewed as HH, has no "returned to the pool" line (unconfirmed).
   - 4 HH leads are now TRANSFER, not ORIGIN_OWN. NW1 QA Tenwjoin was not released; it is still ORIGIN_OWN by HH.
 - Still open: AI13 (omni #585 + #587 need Khai to promote) and the Bao questions listed in the 12/10 early-morning update.
+
+## Update 13/10 overnight (Bao asleep 02:00–07:40 VN): 8 tracks shipped to PROD
+Every PR got 2 reviewers, a staging UI test, then a literal-SHA prod push with "successfully rolled out" verified.
+
+**Shipped to PROD** (recruit-be origin/production 25166c10, recruit-fe e4fd4d6b):
+- **Headhunter sign-ups (D250):** be #624, fe #443 + #449.
+  - Bell: "{lo} signed up through your page".
+  - My work today: "New from your page" group and nav badge.
+  - Hot leads: generic empty state "No leads right now", plus "Why it is back" / "Take back" for headhunters.
+  - Pipeline: headhunters default to Collected by me + New lead.
+  - Staging test lead: QA Hhsignqmz 0ee6f884.
+- **Profile Claim-first (fe #444):** an unowned ACTIVE/NURTURE lead shows only Claim on /candidates/[id] and in the quick view. Owned leads are unchanged (Bao: "keep it" for other people's leads). Managers are Claim-only too.
+  - Test lead QA Probeone 12bb971c stays claimed by the recruiter (no UI release; Exceptions "Take back" once it shows).
+- **G2 (be #626):** HostSubjectsServiceImpl.resolve accepts a cand-<uuid> routing key. The staging retest at 03:45 VN recorded the EMAIL INBOUND activity. The old parked omni message dfac40e3 is not replayed.
+  - On prod, replies also need the Workspace route for reply.loanfactory.com (bead ef81f, not verified).
+- **Idle auto-release only at New lead (D251):** be #625, fe #447. Adds `release_blocked_reason` (OFF / ESTABLISHED / STAGE) and truthful hint copy. Auto-release is still OFF on staging and prod.
+  - Re-check after 13/10 18:00Z: the AI19-restored S5/S6 leads should appear on Exceptions without a release promise.
+- **B7 (D254):** fe #445, be #628. The two production numbers are editable inside Edit & resend, saved via PUT before the offer.
+  - Open question for Bao: should a resend after a decline always go to review? Today raising the numbers can auto-send.
+- **LO types W-2/1099 only (D255):** be #627, fe #446. Legacy Corporate/MA values stay readable and are shown as "(legacy)".
+  - Corporate hiring rule is TO CONFIRM with Onboarding (Miley).
+- **Webinar follow-ups (D253, V243 + V244):** be #629, fe #448.
+  - Two follow-ups: the working day before the session (reminder) and the working day after (feedback call).
+  - A re-save replaces only the ids recorded in candidates.webinar_follow_up_ids. A suppressed email falls back to the single follow-up.
+  - Headline "Webinar follow-up". The "+N" tooltip is fixed.
+  - Untested on staging: the timed note text. Both staging sessions are at midnight PT.
+
+**Sheet v32 + guide:** Bao's 12/10 results triaged (scratchpad triage_bao_1213.md). Sheet text fixed for A23, B7, B9, B10, B13, B14, C2/C3, F5–F7b (commit ec6af58). Vietnamese guide: docs/handoff/recruit-e2e-lab/GUIDE-1213.md.
+- B14 is still 401 "lacks recruiting permission". packs #3645 is live on staging, but bao.trinh+role-losupport+1 has none of the MOSO grants it accepts. A MOSO admin must grant one.
+
+**Follow-ups, not done:**
+- idle-release: BE order OFF before STAGE hides the stage reason while auto-release is off.
+- B7 toast "Try again." is misleading when a retry cannot help.
+- Webinar: the stale-snapshot fallback after a live miss; D253 wording on the single-row replace.
+- Prod flag headhunter.auto_own_enabled has not been checked (it controls whether prod gets ORIGIN_OWN at all).
+- The agentflow origin remote URL embeds a GitHub token. Rotate it.
