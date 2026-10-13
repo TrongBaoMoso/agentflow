@@ -251,3 +251,11 @@ Every PR got 2 reviewers, a staging UI test, then a literal-SHA prod push with "
 - Headhunter on prod: no user holds an approved HEADHUNTER/TEAM_LEAD program role on prod yet, so `headhunter.auto_own_enabled` on prod is checked later, once the first member is approved. Until then "New from your page" stays empty on prod by design.
 - LO types (D255): Bao 13/10 — recruit only cares that onboarding picks W-2 or 1099 after the Meet 1-1 so the LO signs the right agreement. How staff mark a Corporate LO in MOSO afterwards is outside recruit; no Miley confirmation needed. Drop the "TO CONFIRM with Onboarding" line from D255 in the next recruit-be PR that touches DECISIONS.md.
 - GitHub token in the agentflow origin URL: Bao 13/10 — leave as is.
+- PROD recruit outbound email is BROKEN (found 13/10 by Bao's "G2 prod test" to Bao Test a328b47e):
+  - What happens: omni prod accepts the send (200) and publishes to moso-notifier with v1 role "LO". moso-notifier prod then throws MailConfigNotFoundException ("No mail provider configured for application LO") before SendGrid, 02:58:43Z 13/10, notificationId 5d72fd56. The mail never leaves.
+  - Root cause: prod moso-notifier has no LO mail_configs row (moso-notifier PR #159 still open). The UI keeps showing "Sent", because no failure status flows back (COMM_EMAIL_STATUS_ENABLED is unset).
+  - Fix options, owned by Khai / omni / notifier:
+    - (A) promote omni master ≥437dcae (#565, sends OMNI_DIRECT_MAIL as TERA; already on staging);
+    - (B) add the prod LO mail_configs row (datafix copy ALL→LO).
+  - After the fix, send one new test email. G2 prod (inbound reply) cannot be tested until outbound works.
+  - Follow-up: a failure before SMTP should flip the bubble to "failed".
