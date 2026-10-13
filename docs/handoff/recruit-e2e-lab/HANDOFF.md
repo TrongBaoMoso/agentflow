@@ -245,3 +245,7 @@ Every PR got 2 reviewers, a staging UI test, then a literal-SHA prod push with "
 - Webinar: the stale-snapshot fallback after a live miss; D253 wording on the single-row replace.
 - Prod flag headhunter.auto_own_enabled has not been checked (it controls whether prod gets ORIGIN_OWN at all).
 - The agentflow origin remote URL embeds a GitHub token. Rotate it.
+
+## Update 13/10 morning — Bao's answers
+- B7 (D254 open question): KEEP. After a manager declines, raising the numbers may auto-send the resend; no forced review. Close the open question in D254 with the next recruit-be PR that touches DECISIONS.md.
+- Headhunter on prod: no user holds an approved HEADHUNTER/TEAM_LEAD program role on prod yet, so `headhunter.auto_own_enabled` on prod is checked later, once the first member is approved. Until then "New from your page" stays empty on prod by design.
