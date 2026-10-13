@@ -330,3 +330,33 @@ Bao's answers before sleeping: add the reconcile key to prod = yes. MOSO rollbac
 - **mz36c log fix:** #3681 (master) and #3682 (3.64.1 port) stop logging the PayPal client secret. Reviewer A LGTM; Repo Owner SAFE-WITH-CONDITIONS and recommends including it in the deploy. **Final 3.64.1 order: 3675 → 3676 → 3680 → 3677/3678 → 3682.**
 - New bead agentflow-01s4a (P2): hardcoded credentials in packs source (e.g. the LPA OAuth fallbacks in LPAOAuth2.java:66-67). Values were not recorded.
 - The ce3ey cases since the rollback are exactly the 2 from 12/10 (request logs since 10/10 14:58Z).
+
+## RESUME POINT 13/10 ~08:20 (Bao shut the machine down to go to the office)
+
+Read this section first, then `bd show` the beads below. All agents are stopped, so a resumed session must re-spawn them.
+
+**URGENT open security items (MOSO packs, prod = branch 3.64.1):**
+1. **agentflow-p0qak (P0).** The public webplus route `getMeetingAndAppointmentConfiguration` returned the raw config bean, which included the PayPal client secret, Calendly token and Calendly signing key. Only lengths were verified; values were never printed.
+   - Fix PRs: #3683 (master) and #3684 (3.64.1, independent; merge first).
+   - Reviews: Reviewer A LGTM, Reviewer B LGTM-with-nits. **Repo Owner verdict was still PENDING at pause.**
+   - **The 3 credentials must be rotated by imkhai/Bao regardless of the deploy.**
+   - A count of calls to that route over 30 days was running and was lost at shutdown. Re-run it: `gcloud logging read 'protoPayload.resource:"getMeetingAndAppointmentConfiguration"' --project lender-rate --freshness=30d`, and print only the count, dates and distinct IPs.
+2. **agentflow-zum0l (P0).** Confirmed on STAGING (field names only):
+   - The anonymous `execute/GetOp` kind Loan returns `$borrowers`/`$main_borrower` UNFILTERED (DOB, credit report link, assets, liabilities, ...).
+   - The anonymous `getAlert` (and getLoanConfiguration/getLenderAgreement/getCampaign) returns the raw Bean = all stored fields.
+   - Prod runs the same code; it was NOT probed on prod.
+   - The FE quote/qm alert pages use GetOp kind Loan but do not read `$main_borrower`/`$borrowers`.
+   - Fix in progress by an agent (since stopped). Fix A is a generic raw-Bean → `toMap(anonymous view)` guard in WebPlusAPI.handleRequest. Fix B filters or drops FK expansions for anonymous executeOp.
+   - The checkpoint of that work is listed below (WIP branches).
+3. agentflow-9wg8r (P1): fee/agreement-field bypass. PRs #3679 (master) and #3680 (3.64.1, stacked on #3676). Fully reviewed.
+4. agentflow-mz36c: the PayPal secret was logged. PRs #3681 (master) and #3682 (3.64.1). Fully reviewed.
+
+**3.64.1 merge order for imkhai:** 3684 → 3675 → 3676 → 3680 → 3677/3678 → 3682, then the zum0l ports when ready. The deploy plan, smoke tests and rollback are in the comment on #3675.
+
+**Message to Khai:** draft in `docs/handoff/recruit-prod-parity/msg-khai-3.64.1-hotfix.md` (Vietnamese; Bao sends it). It still needs the zum0l PR numbers once they exist.
+
+**Bao's decisions still pending:** the 2 LOs who signed early on 12/10 (recruit 51af552b, 1993b8b1), credential rotation, recruit prod metrics/alerts (DevOps), and getAlert/legacy link design (now part of zum0l).
+
+**Other beads opened tonight:** mnhsb (public register body allowlist), 01s4a (hardcoded credentials in packs source).
+
+**To resume:** `git pull` agentflow; `cd packs && git fetch`; check the zum0l WIP branches and worktrees (packs/.worktrees/); re-spawn reviewers A, B and Repo Owner for the zum0l PRs once they are opened; get the Repo Owner verdict on #3683/#3684.
