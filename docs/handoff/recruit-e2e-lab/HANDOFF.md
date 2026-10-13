@@ -249,3 +249,5 @@ Every PR got 2 reviewers, a staging UI test, then a literal-SHA prod push with "
 ## Update 13/10 morning — Bao's answers
 - B7 (D254 open question): KEEP. After a manager declines, raising the numbers may auto-send the resend; no forced review. Close the open question in D254 with the next recruit-be PR that touches DECISIONS.md.
 - Headhunter on prod: no user holds an approved HEADHUNTER/TEAM_LEAD program role on prod yet, so `headhunter.auto_own_enabled` on prod is checked later, once the first member is approved. Until then "New from your page" stays empty on prod by design.
+- LO types (D255): Bao 13/10 — recruit only cares that onboarding picks W-2 or 1099 after the Meet 1-1 so the LO signs the right agreement. How staff mark a Corporate LO in MOSO afterwards is outside recruit; no Miley confirmation needed. Drop the "TO CONFIRM with Onboarding" line from D255 in the next recruit-be PR that touches DECISIONS.md.
+- GitHub token in the agentflow origin URL: Bao 13/10 — leave as is.
