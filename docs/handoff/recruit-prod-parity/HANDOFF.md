@@ -341,7 +341,7 @@ Read this section first, then `bd show` the beads below. All agents are stopped,
    - Reviews: Reviewer A LGTM, Reviewer B LGTM-with-nits. **Repo Owner verdict was still PENDING at pause.**
    - **The 3 credentials must be rotated by imkhai/Bao regardless of the deploy.**
    - A count of calls to that route over 30 days was running and was lost at shutdown. Re-run it: `gcloud logging read 'protoPayload.resource:"getMeetingAndAppointmentConfiguration"' --project lender-rate --freshness=30d`, and print only the count, dates and distinct IPs.
-2. **agentflow-zum0l (P0).** Confirmed on STAGING (field names only):
+2. **agentflow-zum0l (P0).** Also: a local test shows an anonymous GetOp/FindOp kind=Borrower (sequential ids) returns full Borrower records; confirm on staging only. Confirmed on STAGING (field names only):
    - The anonymous `execute/GetOp` kind Loan returns `$borrowers`/`$main_borrower` UNFILTERED (DOB, credit report link, assets, liabilities, ...).
    - The anonymous `getAlert` (and getLoanConfiguration/getLenderAgreement/getCampaign) returns the raw Bean = all stored fields.
    - Prod runs the same code; it was NOT probed on prod.
