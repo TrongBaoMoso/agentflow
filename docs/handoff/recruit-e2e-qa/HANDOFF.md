@@ -327,3 +327,4 @@ Fixes needed for lkw2w:
 - Old open items: (1) prod Joined LOs: leave (Bao 08/10); (2) checklist collapsed: shipped; (3) setup-call booking: shipped; (4) staging IAM grant: fixed; (5) licence read: replaced by #597.
 - 15 merged/clean worktrees removed (recruit-be/_wt and recruit-fe/_wt: omnitest prodvals gwj7y gwj7y-copy lkw2w lpshc efprc tqguk chkcollapse progcard).
 - Not this session's, left as is: agentflow-5t57m (followup bridge, other session).
+- 15/10 follow-up: agentflow-5t57m is already CLOSED. Backlog left from this session, now tracked: agentflow-c1466 (turn on Google Calendar events in prod; template mode works today). Staging test data note above (QA Autoa ticked + booked) stays as a reminder.
