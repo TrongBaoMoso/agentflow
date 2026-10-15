@@ -381,3 +381,27 @@ Read this section first, then `bd show` the beads below. All agents are stopped,
 ## Update 13/10 ~13:00 — Bao decisions after HF
 - Credential rotation: NOT doing it (Bao). The route is patched on prod, so nothing leaks any more. p0qak closed.
 - One more HF for #3686/#3688 (zum0l): not urgent (Bao). Ships with Khai's next normal deploy. After that deploy, rerun smoke_prod.py; the "anon GetOp kind=Borrower" check must flip to PASS.
+
+## CLOSE-OUT AUDIT 15/10 ~23:00 (re-measured, Bao closes this session)
+- **MOSO prod:** version c, jar loan-3.64.1-SNAPSHOT, created 15/10 09:56Z from 3.64.1 tip abd913259a1. The tip contains all 9 hotfix PRs. `smoke_prod.py` is 6/6 PASS, including anonymous GetOp kind=Borrower = 400. Staging: version b, 15/10 11:42Z.
+- **Beads closed today:** zum0l, 90vkj, gglqk, 9wg8r, ocveo, 5t57m.
+- **recruit-be:**
+  - prod `recruit-svc-secret` = staging: 23 keys each, the same names, none empty.
+  - Pub/Sub adapters 5/5 in both environments.
+  - The same crons are unregistered in both (post-joined reconcile, sequence, user-service-sync).
+  - Pods Running, 0 restarts. The only ERROR lines are permission 403s from a user without a grant.
+- **Env flags ON in staging, OFF in prod:** the same set as before, plus 2 added by other sessions on 14-15/10: `RECRUIT_OMNI_MEET_CALLS_ENABLED`, which was staging-only by decision, and `RECRUIT_PLATFORM_INBOX_ENABLED`.
+- **Code drift, owned by other sessions:**
+  - recruit-be staging is 1 commit ahead of prod, a staging-only values change (#645).
+  - recruit-fe staging is 6 commits ahead of prod: SDK 0.4.36→0.4.39, Feedback button, gateway origin and landing (#482-#487). The Feedback/landing sessions own these.
+- **Prod outbound email (13/10 bug):** fix option A is deployed. omni prod runs `production` 0414925 (14/10), which contains #565 (437dcae) and #548. moso-notifier prod has 0 "LO" MailConfigNotFound in its 8h of pod logs; the 1 hit is app MARKETPLACE. There has been no recruit send since, so this is NOT verified end to end. Bao needs to send one test email. moso-notifier #159 is still open.
+- **h5xoz**, re-measured: seth.august, brayan and miley.dau have NO MOSO RECRUITING; victoria.pham does.
+- **Still open, owned by others or by a Bao decision:**
+  - ce3ey: the 2 early-signed LOs.
+  - cg03s: Khai has not answered the is_recruiter question.
+  - pymgv: anonymous allowlist, Bao/Khai decision.
+  - cct8l, mnhsb, mz36c (PayPal order binding), 01s4a.
+  - h5xoz, g7hc5.
+  - 5p5tg: flags that touch real people.
+  - Prod metrics and alerts (DevOps).
+  - PII dump `~/Backups/recruit-prod/recruit_db-pre-promote-20261006-0923-v131.dump` still exists; delete it when Bao agrees.
