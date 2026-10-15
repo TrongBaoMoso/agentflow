@@ -26,6 +26,13 @@ Paused 2026-10-15 ~17:45 (Bao shut the machine down). Session d11ae72d-de7f-4ddd
   - the gate and menu disagree when has_referrals=false or a person has roles but no grants;
   - the hex regex {3,8} is loose.
 
+**16/10 follow-up (recruit-fe #489, on production):**
+- The launcher puts each icon on a light tile (as in Ally/CRM/MOSO), so dark icons are visible.
+- It falls back to `{origin}/favicon.ico` when the catalogue has no icon, so Nova shows.
+- The tab and app name are "Loan Factory Recruit" (was "LF Recruit").
+- Luna shows a letter because its favicon is unreachable, the same as in the other apps.
+- A real Loan Officer, Armando, tested on production: he landed on My referrals with an empty state, as expected.
+
 ## RESUME POINT (historical)
 
 **Done**
