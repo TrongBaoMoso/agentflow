@@ -2,7 +2,31 @@
 
 Paused 2026-10-15 ~17:45 (Bao shut the machine down). Session d11ae72d-de7f-4ddd-a20e-7e14eb5cdab9, named "Landing page Ambassador program".
 
-## RESUME POINT
+## FINAL STATE (16/10 ~00:45 VN): SHIPPED
+
+- **recruit-fe #487** is on PRODUCTION (290f0d5c).
+  - Landing at recruit.loanfactory.com/.
+  - Recruit header lockup.
+  - A zero-grant Loan Officer gets My referrals only.
+  - Verified in a real browser: landing, 9-dot with 14 apps incl. CRM, Sign in → account SSO.
+- **recruit-be #648** (rsnyo: findKey skips REVOKED) is on PRODUCTION (747b9130).
+  - Bao kept LAZY_SSO self-links and accepted the residual risk.
+  - Follow-ups are in a P3 bead ("rsnyo follow-ups").
+- **Production `referrals.enabled`:**
+  - It was on for about 3.5 min by mistake on 15/10 (16:05:45Z–16:09:19Z); there was no exposure, see the rsnyo bead comment.
+  - Back on at 17:38:21Z, after the fix reached production.
+- **lf-homepage #2671** (Recruit card) is on STAGING ONLY. Bao: never production.
+  - Code gate: `APP_NODES` shows the card only when `NEXT_PUBLIC_ENV` is `staging` or `development`.
+  - Production /loan-officer is verified at 4+4 cards.
+- **Spec:** updated as built (D8, D9, sign-in link, catalogue source).
+- **Plan executed inline.** Ledger: `.superpowers/sdd/2026-10-15-recruit-landing/progress.md` (gitignored).
+- **Deferred minors:**
+  - keyframe names not rl-prefixed;
+  - light overscroll band;
+  - the gate and menu disagree when has_referrals=false or a person has roles but no grants;
+  - the hex regex {3,8} is loose.
+
+## RESUME POINT (historical)
 
 **Done**
 - The design is approved and the spec is committed (`dbc6594`).
