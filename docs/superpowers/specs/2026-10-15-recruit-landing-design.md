@@ -20,7 +20,8 @@ Approved mockup (v5): https://claude.ai/artifact/VLaTVjLpLYdBdkdJSzQtWW · file:
 | D5 | /loan-officer gets a 9th card at the end of the left column (5 left, 4 right). |
 | D6 | The page is always mid-dark (warm charcoal), whatever the visitor's system theme. It is not black. |
 | D7 | Motion, as in the mockup: the hero plays once on load, and each feature row plays once as it scrolls in. Nothing moves when the visitor prefers reduced motion. |
-| D8 | Content shows only what `/my-referrals` really does. There is no "60 days" claim and no dollar amount, because the payout timing is still open (bead `agentflow-lklmx`). Amounts live on the program pages. |
+| D8 | Content shows only what `/my-referrals` really does. **Updated 15/10 (Bao):** the bonus row states the published Loan Officer referral rule, "Eligible 60 days after they join" (loanfactory.com/refer/refer-a-loan-officer; recruit-be uses `lo_joined_date + 60`). The open payout-timing question (bead `agentflow-lklmx`) is about the staff LO Recruiter Program, not this page. Still no dollar amounts; they live on the program pages. Example dates follow the 60-day rule. |
+| D9 | Header shows only the brand (Recruit icon, Loan Factory wordmark, "Recruit"), the 9-dot launcher and Sign in. There are no section links, because they read as links to other pages (Bao 15/10). |
 
 ## 3. What gets built
 
@@ -33,7 +34,7 @@ Approved mockup (v5): https://claude.ai/artifact/VLaTVjLpLYdBdkdJSzQtWW · file:
 - `/login` is unchanged. It still hands the visitor straight to the portal for deep links and expired sessions.
 
 **Sign in**
-- Every "Sign in" button links to `buildAccountLoginUrl(origin, '/my-referrals')`. The callback already honours `next` (`safeNext` guards against open redirects).
+- Every "Sign in" button links to `/login?next=%2Fmy-referrals`. `/login` already handles every sign-in mode (signed in, SSO, dev persona) and forwards `next` through `buildAccountLoginUrl` (`safeNext` guards against open redirects).
 - Signed-in internal staff never see the landing, because D2 sends them to `/today`.
 
 **Sections** (copy as in the mockup, en + vi in `src/messages/{en,vi}/landing.json`)
@@ -56,7 +57,7 @@ Every example panel carries a visible "Example" chip, and its names and numbers 
 
 **9-dot launcher**
 - The SDK's `AppLauncher` (platform-react 0.4.37) needs a signed-in platform session, so it cannot run here. Instead, recruit-fe gets a small `PublicAppLauncher`.
-- It reads the public catalogue `GET {NEXT_PUBLIC_API_URL}/auth-svc/public/api/v1/applications`. That is the same auth-service `PublicApplicationController` data CRM shows signed out.
+- It reads the public catalogue `GET {NEXT_PUBLIC_API_URL}/engagement-svc/public/applications`. This is what CRM shows signed out. auth-service exposes only `/public/api/v1/applications/origins` (codes and origins, with no names or icons). The gateway allows the recruit origins on both staging and production (measured 15/10).
 - It renders the same 3-column tile grid, with the title "Loan Factory apps", in a Mantine `Popover`.
 - Each tile is an `<a href={app.url}>`. When `icon_url` is null, the tile shows a letter mark in `app.color`.
 - Error and loading states:
@@ -130,7 +131,7 @@ Manual and visual checks (with ram-gate, one Chromium):
   - the `referrals.enabled` flag on production recruit-be;
   - whether a plain Loan Officer account without a recruit role can complete SSO into recruit and load `/my-referrals`.
   If either fails, the landing still ships, but that gap is reported to Bao before the /loan-officer card goes live.
-- The public catalogue's RECRUIT entry is wrong: its description is "Hire faster — post roles…", it has no icon, and its color is green. That is auth-service data, not code. The plan files a bead to ask the platform owner to set the right name, description, icon (`https://recruit.loanfactory.com/icon.svg`) and color. The landing does not depend on it.
+- The public catalogue's RECRUIT entry is wrong: its description is "Hire faster — post roles…", it has no icon, and its color is green. That is catalogue data (served by engagement-svc), not code. The plan files a bead to ask the platform owner to set the right name, description, icon (`https://recruit.loanfactory.com/icon.svg`) and color. The landing does not depend on it.
 - Staff whose session has expired now see the landing first. They need one extra click on Sign in. This was accepted in D2.
 
 ## 7. Out of scope
