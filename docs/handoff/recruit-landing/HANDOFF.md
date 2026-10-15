@@ -9,9 +9,11 @@ Paused 2026-10-15 ~17:45 (Bao shut the machine down). Session d11ae72d-de7f-4ddd
 - Spec: `docs/superpowers/specs/2026-10-15-recruit-landing-design.md`.
 - Mockup v5: mid-dark with animation. The file is `docs/superpowers/specs/assets/2026-10-15-recruit-landing-mockup.html`, and the artifact is https://claude.ai/artifact/VLaTVjLpLYdBdkdJSzQtWW.
 
+**Update 15/10 evening:** the plan is written at `docs/superpowers/plans/2026-10-15-recruit-landing.md`, and its stylesheet is at `docs/superpowers/plans/assets/2026-10-15-recruit-landing.css`.
+
 **Next step**
-1. Write the implementation plan with the superpowers:writing-plans skill. Save it to `docs/superpowers/plans/2026-10-15-recruit-landing.md`.
-2. Ask Bao to review it and choose how to execute it: subagent-driven or native.
+1. Bao reviews the plan and chooses how to execute it: subagent-driven or native.
+2. Then follow the plan from Task A0.
 3. Do not write product code before Bao approves the plan.
 4. Bao must see both pages on a local run before anything is pushed.
 
