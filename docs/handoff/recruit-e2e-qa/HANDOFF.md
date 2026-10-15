@@ -319,3 +319,11 @@ Fixes needed for lkw2w:
 - agentflow-gwj7y setup-call booking: be #602 (D236, no migration; reviewer MERGE after 2 MEDIUM fixes: non-tickers get no link/colleagues, attendance never claims setup calls) -> PRODUCTION b975a1e5 21:13 (schema 235, 0 ERROR). fe #416 + #417 (copy: header after booking, "this call" not "this 1-1") -> staging verified on QA Autoa (ticked HR to-do/docs/Licensing as owner, booked Oct 10 8:00 PM PT, Reschedule works) -> PRODUCTION 5829d94e (also carries others' #414 #415).
 - Prod has google-calendar-events OFF: booking saves the slot and opens a pre-filled Google Calendar tab (template mode). Turning on API mode needs Khai's prod Google OAuth client.
 - Staging test data changed: QA Autoa HR to-do/HR docs/Licensing ticked by QA Test Recruiter, setup call booked Oct 10 8:00 PM PT.
+
+## CLOSED 15/10 (final audit, measured — not from memory)
+- Every recruit-be / recruit-fe PR created 06/10–09/10 is MERGED and an ancestor of origin/production (be prod c2bb9df1, fe prod 8c4bfcaf). No open PR left from this session.
+- Closed 15 beads whose PRs were already on production: efprc lpshc lkw2w y0ynz z05ny tdxg6 fllrw ydn7k 24pp0 kzn7n wirt9 lnnnz zzaij 6mhuu gquqq (gwj7y, 6zv4m closed 08/10).
+- Prod now: HR_HANDOFF_PUBLISH=true, POST_JOINED_PROGRESS=true, HR_HANDOFF_AUTO_SEND=false (product owner 08/10, #598: prod not open to users yet), RECRUIT_HR_UPDATE_SUBSCRIPTION set (#595). HrAssociateUpdated subscriber configured on staging AND prod, no PERMISSION_DENIED (the staging grant gap is fixed). Licences now read from user-service (#597), so the masked-licence-read blocker is gone.
+- Old open items: (1) prod Joined LOs: leave (Bao 08/10); (2) checklist collapsed: shipped; (3) setup-call booking: shipped; (4) staging IAM grant: fixed; (5) licence read: replaced by #597.
+- 15 merged/clean worktrees removed (recruit-be/_wt and recruit-fe/_wt: omnitest prodvals gwj7y gwj7y-copy lkw2w lpshc efprc tqguk chkcollapse progcard).
+- Not this session's, left as is: agentflow-5t57m (followup bridge, other session).
