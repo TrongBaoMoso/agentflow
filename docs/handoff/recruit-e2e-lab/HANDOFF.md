@@ -260,3 +260,14 @@ Every PR got 2 reviewers, a staging UI test, then a literal-SHA prod push with "
   - After the fix, send one new test email. G2 prod (inbound reply) cannot be tested until outbound works.
   - Follow-up: a failure before SMTP should flip the bubble to "failed".
 - Bao 13/10: SKIP prod email/G2 for now; focus on staging. Fold the prod outbound-email fix (omni ≥#565 or LO mail_configs row) into the "what does prod need to match staging" list when Bao asks for it.
+
+## CLOSE-OUT AUDIT 15/10 — session 073e4aab (measured, not from memory)
+- All 13/10 ships are still on production (merge-base checked 15/10): recruit-be 25166c10, 559c46c4, cac2f95e, 5c715987; recruit-fe e4fd4d6b, ce2e63d5, 313f2f1e, 5be4680d, f6257b38.
+- omni-service production now contains #548, #558, #565, #585, #587 (Khai promoted after 13/10).
+- Staging: hot.idle_release_enabled=false since 12/10 14:21Z; zero IDLE_RELEASE ledger rows since 13/10. Webinar offsets V243 = 1/1.
+- 13 merged, clean worktrees of this session removed.
+- Beads:
+  - fexgs closed (staging reply path verified 13/10).
+  - Open follow-ups filed: er081 (D254/D255 text + 3 LOW items), 33wk6 (B14 retest; the grant agent died on a MOSO edit lock, last outbox row is still DEAD_LETTER 12/10), j12zg (@mention bell decision), f61ak (D207 no-specialist decision), wjf3g (prod HH flag).
+  - Still open from before: x1l9i, wapn, oyquh.
+- Test leads QA Probeone / Probetwo are owned by bao.trinh+recruiter (later sessions used them too); staging data, left as is.
