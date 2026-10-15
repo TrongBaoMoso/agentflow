@@ -1,0 +1,489 @@
+<title>Loan Factory Recruit Landing</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: review sheet, two frames. Frame 2 follows the house landing pattern of crm.loanfactory.com and
+   ally.loanfactory.com: sticky header with 9-dot launcher, big two-tone hero with a floating product card,
+   then alternating feature rows, each a real piece of the /my-referrals UI. */
+:root{
+  --accent:#f26b1d; --accent-ink:#c2410c; --accent-tint:#ffedd5; --accent-wash:#fff4ea;
+  --brand-blue:#3b5bff; --brand-violet:#7b4dff;
+  --green:#059669; --green-tint:#e7f7ef; --gold:#b45309; --gold-tint:#fef3c7; --blue:#1d4ed8; --blue-tint:#eaf1ff;
+  --bg:#efece7; --surface:#ffffff; --page:#ffffff; --soft:#f7f6f3; --text:#1d1b19; --muted:#625e57; --faint:#8a847a;
+  --border:#ebe8e3; --note-bg:#f4f7ff; --note-ink:#2b3550; --on-dark:#fffaf5;
+  --shadow-sm:0 1px 2px rgba(29,27,25,.06);
+  --shadow:0 2px 4px rgba(29,27,25,.04),0 18px 40px -18px rgba(29,27,25,.22);
+  --f-display:"Montserrat","Segoe UI",Roboto,sans-serif;
+  --f-ui:"Public Sans",-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --accent:#fb7a2e; --accent-ink:#fdba74; --accent-tint:#3b2921; --accent-wash:#241b16;
+  --green:#34d399; --green-tint:#15291f; --gold:#fbbf24; --gold-tint:#2f2616; --blue:#93b4ff; --blue-tint:#1c2438;
+  --bg:#121110; --surface:#1f1e1b; --page:#171614; --soft:#1b1a18; --text:#f1efeb; --muted:#b3aea5; --faint:#a39e95;
+  --border:#302e2a; --note-bg:#18202f; --note-ink:#c9d4ee; --on-dark:#1d1b19;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.4); --shadow:0 2px 4px rgba(0,0,0,.3),0 18px 40px -18px rgba(0,0,0,.7); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --accent:#fb7a2e; --accent-ink:#fdba74; --accent-tint:#3b2921; --accent-wash:#241b16;
+  --green:#34d399; --green-tint:#15291f; --gold:#fbbf24; --gold-tint:#2f2616; --blue:#93b4ff; --blue-tint:#1c2438;
+  --bg:#121110; --surface:#1f1e1b; --page:#171614; --soft:#1b1a18; --text:#f1efeb; --muted:#b3aea5; --faint:#a39e95;
+  --border:#302e2a; --note-bg:#18202f; --note-ink:#c9d4ee; --on-dark:#1d1b19;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.4); --shadow:0 2px 4px rgba(0,0,0,.3),0 18px 40px -18px rgba(0,0,0,.7); color-scheme:dark}
+
+/* The landing commits to one dark look (Bao 15/10), so its tokens are pinned on the frame. */
+.browser{
+  --accent:#ff7a2f; --accent-ink:#ffb27a; --accent-tint:rgba(255,122,47,.16); --accent-wash:rgba(255,122,47,.08);
+  --green:#3ddc97; --green-tint:rgba(61,220,151,.14); --gold:#fbbf24; --gold-tint:rgba(251,191,36,.14);
+  --blue:#8fb0ff; --blue-tint:rgba(143,176,255,.14);
+  --surface:#3a3633; --page:#2b2826; --soft:#332f2c; --text:#f7f3ec; --muted:#c9c2b8; --faint:#a39c92;
+  --border:#4a4541; --note-bg:rgba(143,176,255,.12); --note-ink:#c9d4ee;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.25); --shadow:0 2px 4px rgba(0,0,0,.2),0 24px 48px -20px rgba(0,0,0,.55);
+  color-scheme:dark; color:var(--text)}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--f-ui);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 80px}
+.sheet{max-width:1200px;margin-inline:auto;display:flex;flex-direction:column;gap:44px}
+h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;margin:0}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sheet-head{display:flex;flex-direction:column;gap:6px}
+.sheet-head h1{font-size:24px;font-weight:800}
+.sheet-head p{color:var(--muted);max-width:76ch}
+.frame{display:flex;flex-direction:column;gap:12px}
+.frame-label{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap}
+.frame-label b{color:var(--text)}
+.note{background:var(--note-bg);color:var(--note-ink);border-radius:8px;padding:10px 14px;font-size:13px}
+.note ul{margin:4px 0 0;padding-left:18px}
+.ex{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;color:var(--note-ink);background:var(--note-bg);padding:2px 7px;border-radius:99px}
+
+/* ---------- Frame 1: ecosystem card ---------- */
+.eco{background:var(--accent-wash);border:1px solid var(--border);border-radius:14px;padding:28px;display:grid;grid-template-columns:minmax(0,1fr) 200px minmax(0,1fr);gap:28px;align-items:center}
+.eco-col{display:flex;flex-direction:column;gap:12px;min-width:0}
+.app{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow-sm)}
+.app.ghost{opacity:.4}
+.app.new{border:2px solid var(--accent);position:relative;box-shadow:var(--shadow)}
+.app.new::after{content:"NEW";position:absolute;top:-10px;right:14px;background:var(--accent);color:#fff;font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;padding:2px 8px;border-radius:99px}
+.app-head{display:flex;gap:12px;align-items:center}
+.app-icon{width:40px;height:40px;border-radius:10px;background:var(--accent-tint);color:var(--accent);display:grid;place-items:center;flex:none}
+.app-icon svg{width:20px;height:20px}
+.app-title{font-family:var(--f-display);font-weight:700;font-size:17px;line-height:1.2}
+.app-name{color:var(--muted);font-size:14px}
+.checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 16px;padding:0;margin:0;list-style:none;font-weight:600;font-size:14px}
+.checks li{display:flex;gap:6px}
+.checks li::before{content:"✓";color:var(--green);font-weight:700}
+.learn{align-self:flex-start;color:var(--accent-ink);background:var(--accent-wash);border:1px solid var(--accent-tint);font-weight:700;font-size:14px;padding:6px 12px;border-radius:99px;text-decoration:none}
+.hub{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.hub-ring{width:150px;height:150px;border-radius:50%;border:8px solid var(--accent);background:var(--surface);display:grid;place-items:center;font-size:50px}
+.hub b{font-family:var(--f-display);font-size:16px}
+.hub span{color:var(--muted);font-size:13px}
+
+/* ---------- Frame 2: landing ---------- */
+.browser{border-radius:14px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow);background:var(--page)}
+.chrome{background:var(--soft);border-bottom:1px solid var(--border);padding:10px 14px;display:flex;gap:10px;align-items:center}
+.dots{display:flex;gap:6px}.dots i{width:10px;height:10px;border-radius:50%;background:var(--border);display:block}
+.url{flex:1;min-width:0;background:var(--surface);border-radius:99px;padding:4px 14px;font-family:var(--f-mono);font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.wrap{max-width:1120px;margin-inline:auto;width:100%;padding-inline:32px}
+.nav{border-bottom:1px solid var(--border);background:var(--page)}
+.nav .wrap{display:flex;align-items:center;gap:28px;padding-block:12px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:800;font-size:16px;text-decoration:none;flex:none}
+.brand img{width:30px;height:30px;border-radius:8px}
+.brand span{font-family:var(--f-ui);font-weight:500;color:var(--muted)}
+.nav-links{display:flex;gap:22px;font-size:14px;color:var(--muted);flex:1;min-width:0}
+.nav-links a{text-decoration:none}
+.nav-links a:hover{color:var(--text)}
+.nav-right{display:flex;gap:10px;align-items:center;position:relative}
+.waffle{width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--surface);display:grid;grid-template-columns:repeat(3,4px);gap:4px;place-content:center;cursor:pointer}
+.waffle i{width:4px;height:4px;border-radius:50%;background:var(--muted);display:block}
+.pill-btn{display:inline-flex;align-items:center;gap:8px;border-radius:99px;font-weight:700;text-decoration:none;font-size:15px;padding:11px 22px;border:1px solid transparent;font-family:var(--f-ui);cursor:pointer;white-space:nowrap}
+.pill-btn.primary{background:var(--accent);color:#fff;box-shadow:0 8px 20px -10px var(--accent)}
+.pill-btn.primary:hover{background:var(--accent-ink)}
+.pill-btn.ghost{background:var(--surface);border-color:var(--border);color:var(--text)}
+.pill-btn.ghost:hover{border-color:var(--muted)}
+.pill-btn.sm{padding:8px 18px;font-size:14px}
+
+/* hero */
+.hero{position:relative;overflow:hidden;background:radial-gradient(50% 65% at 82% 35%,rgba(255,122,47,.20) 0%,transparent 72%),radial-gradient(45% 55% at 0% 100%,rgba(123,77,255,.10) 0%,transparent 72%),var(--page)}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.95fr);gap:56px;align-items:center;padding-block:72px 80px}
+.hero-copy{display:flex;flex-direction:column;gap:22px;min-width:0}
+.tag{align-self:flex-start;background:var(--accent-tint);color:var(--accent-ink);font-weight:600;font-size:13px;padding:5px 12px;border-radius:99px}
+.hero h2{font-size:clamp(34px,4.6vw,58px);font-weight:800;line-height:1.04;letter-spacing:-.02em}
+.hero h2 em{font-style:normal;color:var(--accent)}
+.lede{font-size:18px;color:var(--muted);max-width:42ch}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{display:inline-flex;gap:6px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:99px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--muted)}
+.chip b{color:var(--accent)}
+
+.stage{position:relative;min-width:0;padding:28px 10px}
+.ref{background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);padding:22px;display:flex;flex-direction:column;gap:18px;position:relative;z-index:1}
+.ref-top{display:flex;gap:12px;align-items:center}
+.avatar{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-family:var(--f-display);flex:none;background:var(--blue-tint);color:var(--blue)}
+.avatar.o{background:var(--accent-tint);color:var(--accent-ink)}
+.avatar.g{background:var(--green-tint);color:var(--green)}
+.who b{display:block;font-size:16px}
+.who span{font-size:13px;color:var(--muted)}
+.status{margin-left:auto;font-size:12px;font-weight:700;padding:4px 10px;border-radius:99px;white-space:nowrap}
+.s-onb{background:var(--gold-tint);color:var(--gold)}
+.s-lic{background:var(--blue-tint);color:var(--blue)}
+.s-done{background:var(--green-tint);color:var(--green)}
+.s-new{background:var(--soft);color:var(--muted);border:1px solid var(--border)}
+.track{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.track div{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--muted)}
+.track i{height:6px;border-radius:99px;background:var(--border);display:block;position:relative;overflow:hidden}
+.track i::after{content:"";position:absolute;inset:0;transform-origin:left center;border-radius:inherit}
+.track .on i::after{background:var(--green)}
+.track .cur i::after{background:var(--accent);transform:scaleX(.55)}
+.track b{color:var(--text);font-size:13px}
+.track span{font-family:var(--f-mono);font-size:11px}
+.bonus{display:flex;align-items:center;gap:16px;background:var(--accent-wash);border:1px solid var(--accent-tint);border-radius:14px;padding:14px 16px}
+.big{font-family:var(--f-display);font-weight:800;font-size:44px;line-height:.9;color:var(--accent);font-variant-numeric:tabular-nums}
+.bonus p{font-size:14px;color:var(--muted)}
+.bonus p b{color:var(--text);display:block;font-size:15px}
+.float{position:absolute;z-index:2;background:var(--surface);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);padding:8px 12px;font-size:12px;display:flex;gap:8px;align-items:center}
+.float b{display:block;font-size:13px}
+.float span{color:var(--muted)}
+.float .dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex:none}
+.float.f1{top:0;right:-6px}
+.float.f2{bottom:4px;left:-14px}
+.float.f2 .dot{background:var(--accent)}
+
+/* feature rows */
+.rows .wrap{display:flex;flex-direction:column;gap:96px;padding-block:88px}
+.row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:64px;align-items:center}
+.row.flip .row-copy{order:2}
+.row-copy{display:flex;flex-direction:column;gap:16px;min-width:0}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.row h3{font-size:clamp(26px,3vw,38px);font-weight:800;line-height:1.1;letter-spacing:-.01em}
+.row p{color:var(--muted);font-size:17px;max-width:40ch}
+.ticks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;font-size:15px}
+.ticks li{display:flex;gap:10px}
+.ticks li::before{content:"✓";color:var(--accent);font-weight:800}
+.panel{background:var(--soft);border:1px solid var(--border);border-radius:20px;padding:22px;min-width:0}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow-sm);overflow:hidden}
+.card-h{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--border);gap:8px}
+.card-h b{font-family:var(--f-display);font-size:15px}
+.list{list-style:none;margin:0;padding:0}
+.list li{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border)}
+.list li:last-child{border-bottom:0}
+.list .avatar{width:36px;height:36px;font-size:13px}
+.list b{font-size:14px;display:block}
+.list small{color:var(--muted);font-size:12px}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:20px 16px 18px;gap:8px;position:relative}
+.step{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;position:relative;z-index:1}
+.step i{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:13px;background:var(--surface);border:2px solid var(--border);color:var(--faint)}
+.step.done i{background:var(--green);border-color:var(--green);color:#fff}
+.step.cur i{border-color:var(--accent);color:var(--accent)}
+.step b{font-size:13px}
+.step span{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.steps::before{content:"";position:absolute;left:16%;right:16%;top:33px;height:2px;background:var(--border)}
+.count-row{display:flex;align-items:center;gap:18px;padding:18px 16px;border-bottom:1px solid var(--border)}
+.count-row p{color:var(--muted);font-size:14px}
+.count-row p b{color:var(--text);display:block;font-size:16px}
+.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+.stats div{padding:18px 12px;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:4px}
+.stats div:last-child{border-right:0}
+.stats b{font-family:var(--f-display);font-size:30px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.stats span{font-size:12px;color:var(--muted);line-height:1.3}
+.stats .hl b{color:var(--accent)}
+.stats .ok b{color:var(--green)}
+.filter{display:flex;gap:6px;flex-wrap:wrap;padding:12px 16px}
+.filter span{font-size:12px;font-weight:600;padding:4px 10px;border-radius:99px;border:1px solid var(--border);color:var(--muted)}
+.filter span.on{background:var(--text);color:var(--page);border-color:var(--text)}
+
+/* ambassador */
+.amb .wrap{padding-block:0 88px}
+.amb-card{border-radius:24px;padding:40px 44px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px;align-items:center;
+  background:radial-gradient(70% 140% at 100% 0%,rgba(255,122,47,.38) 0%,transparent 60%),var(--surface);border:1px solid var(--border);color:var(--text)}
+.amb-card h3{font-size:clamp(24px,2.6vw,32px);font-weight:800}
+.amb-card p{color:var(--muted);margin-top:8px;max-width:48ch;font-size:16px}
+.amb-card .pill-btn{background:var(--text);color:var(--page)}
+
+.foot{border-top:1px solid var(--border)}
+.foot .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:20px;font-size:13px;color:var(--muted)}
+
+@media (max-width:960px){
+  .eco{grid-template-columns:minmax(0,1fr)} .hub{order:-1}
+  .nav-links{display:none}
+  .hero .wrap,.row{grid-template-columns:minmax(0,1fr);gap:36px}
+  .hero .wrap{padding-block:44px 56px}
+  .row.flip .row-copy{order:0}
+  .rows .wrap{gap:64px;padding-block:56px}
+  .amb-card{grid-template-columns:minmax(0,1fr);padding:28px}
+}
+@media (max-width:560px){
+  .eco{padding:16px} .wrap{padding-inline:16px}
+  .checks{grid-template-columns:minmax(0,1fr)}
+  .brand span{display:none}
+  .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .stats div:nth-child(3){border-right:0}
+  .stats div:nth-child(-n+3){border-bottom:1px solid var(--border)}
+  .float.f1{right:0} .float.f2{left:0}
+}
+/* Motion: one load sequence in the hero, then each feature row plays once as it scrolls in.
+   Everything is readable at rest; with reduced motion nothing moves. */
+@media (prefers-reduced-motion:no-preference){
+  .browser{--ease:cubic-bezier(.16,1,.3,1)}
+  .pill-btn,.waffle,.panel .card,.learn{transition:transform .35s var(--ease),background .15s ease,border-color .15s ease,box-shadow .35s var(--ease)}
+  .pill-btn:hover{transform:translateY(-2px)}
+  .waffle:hover{transform:rotate(90deg)}
+  .row:hover .panel .card{transform:translateY(-4px);box-shadow:var(--shadow)}
+  .hero-copy>*{animation:rise .8s var(--ease) both}
+  .hero-copy>:nth-child(2){animation-delay:.08s}
+  .hero-copy>:nth-child(3){animation-delay:.16s}
+  .hero-copy>:nth-child(4){animation-delay:.24s}
+  .hero-copy>:nth-child(5){animation-delay:.32s}
+  .stage .ref{animation:rise-card 1s .2s var(--ease) both}
+  .track .on:nth-child(1) i::after{animation:fill .7s .7s var(--ease) both}
+  .track .on:nth-child(2) i::after{animation:fill .7s 1s var(--ease) both}
+  .track .cur i::after{animation:fill-part 1.1s 1.3s var(--ease) both}
+  .float.f1{animation:pop .5s 1.1s var(--ease) both,bob 5s 1.6s ease-in-out infinite}
+  .float.f2{animation:pop .5s 1.5s var(--ease) both,bob 6s 2s ease-in-out infinite reverse}
+  .float.f1 .msg{transition:opacity .3s ease,transform .3s ease}
+  .float.f1.swap .msg{opacity:0;transform:translateY(4px)}
+  .chip b,.float .dot{animation:pulse 2.4s ease-in-out infinite}
+  .row.in .list li{animation:slide .6s var(--ease) both}
+  .row.in .list li:nth-child(2){animation-delay:.08s}
+  .row.in .list li:nth-child(3){animation-delay:.16s}
+  .row.in .list li:nth-child(4){animation-delay:.24s}
+  .row.in .step i{animation:pop .45s var(--ease) both}
+  .row.in .step:nth-child(2) i{animation-delay:.35s}
+  .row.in .step:nth-child(3) i{animation-delay:.7s}
+  .row.in .count-row .big{animation:pop .5s .9s var(--ease) both}
+  .row.in .stats div{animation:rise .6s var(--ease) both}
+  .row.in .stats div:nth-child(2){animation-delay:.06s}
+  .row.in .stats div:nth-child(3){animation-delay:.12s}
+  .row.in .stats div:nth-child(4){animation-delay:.18s}
+  .row.in .stats div:nth-child(5){animation-delay:.24s}
+  .amb-card{background-size:140% 140%;animation:glow 9s ease-in-out infinite alternate}
+}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}}
+@keyframes rise-card{from{opacity:0;transform:translateY(28px) rotate(-1.5deg) scale(.97)}}
+@keyframes fill{from{transform:scaleX(0)}}
+@keyframes fill-part{from{transform:scaleX(0)}to{transform:scaleX(.55)}}
+@keyframes pop{0%{opacity:0;transform:scale(.6)}70%{transform:scale(1.06)}100%{opacity:1;transform:scale(1)}}
+@keyframes bob{0%,100%{translate:0 0}50%{translate:0 -6px}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes slide{from{opacity:0;transform:translateX(24px)}}
+@keyframes glow{from{background-position:0% 0%}to{background-position:100% 100%}}
+</style>
+
+<main class="sheet">
+  <header class="sheet-head">
+    <h1>Loan Factory Recruit landing, v5 (mid dark, animated)</h1>
+    <p>Redrawn in the house pattern of crm.loanfactory.com and ally.loanfactory.com. Frame 1 is the new card on /loan-officer. Frame 2 is what a signed-out visitor sees at recruit.loanfactory.com. Names, dates and numbers are examples.</p>
+  </header>
+
+  <section class="frame" aria-labelledby="f1">
+    <div class="frame-label" id="f1"><b>1 · loanfactory.com/loan-officer</b> AI mortgage platform · 5 cards left, 4 right</div>
+    <div class="eco">
+      <div class="eco-col">
+        <div class="app ghost"><div class="app-head"><div class="app-icon">●</div><div><div class="app-title">Marketing</div><div class="app-name">Ally</div></div></div></div>
+        <div class="app ghost"><div class="app-head"><div class="app-icon">●</div><div><div class="app-title">Leads and clients</div><div class="app-name">CRM</div></div></div></div>
+        <div class="app ghost"><div class="app-head"><div class="app-icon">●</div><div><div class="app-title">Loan processing and pricing</div><div class="app-name">LOS &amp; Pricing</div></div></div></div>
+        <div class="app ghost"><div class="app-head"><div class="app-icon">●</div><div><div class="app-title">Explore our services</div><div class="app-name">Marketplace</div></div></div></div>
+        <article class="app new" aria-label="New card: Referrals and bonuses">
+          <div class="app-head">
+            <div class="app-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M17 8v6M14 11h6"/></svg></div>
+            <div><div class="app-title">Referrals and bonuses</div><div class="app-name">Loan Factory Recruit</div></div>
+          </div>
+          <p>Track every Loan Officer you refer.</p>
+          <ul class="checks"><li>Stage of each referral</li><li>Days until your bonus</li><li>Bonus payment status</li><li>Ambassador Program</li></ul>
+          <a class="learn" href="#f2">Learn more →</a>
+        </article>
+      </div>
+      <div class="hub" aria-hidden="true"><div class="hub-ring">🧑‍💼</div><b>You, the Loan Officer</b><span>All tools work together, around you.</span></div>
+      <div class="eco-col">
+        <div class="app ghost"><div class="app-head"><div class="app-icon">●</div><div><div class="app-title">Funding and closing</div><div class="app-name">LUNA+</div></div></div></div>
+        <div class="app ghost"><div class="app-head"><div class="app-icon">●</div><div><div class="app-title">Work from your phone</div><div class="app-name">Loan Factory Mobile</div></div></div></div>
+        <div class="app ghost"><div class="app-head"><div class="app-icon">●</div><div><div class="app-title">Past clients</div><div class="app-name">Loan Factory IQ</div></div></div></div>
+        <div class="app ghost"><div class="app-head"><div class="app-icon">●</div><div><div class="app-title">Real estate deals</div><div class="app-name">MOSO Real Estate</div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="frame" aria-labelledby="f2">
+    <div class="frame-label" id="f2"><b>2 · recruit.loanfactory.com</b> signed out · signed-in visitors still go straight into the app</div>
+    <div class="browser">
+      <div class="chrome"><div class="dots" aria-hidden="true"><i></i><i></i><i></i></div><div class="url">https://recruit.loanfactory.com/</div></div>
+
+      <nav class="nav" aria-label="Main navigation"><div class="wrap">
+        <a class="brand" href="#"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2IiB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImUtdGlsZSIgeDE9IjIwIiB5MT0iMjAiIHgyPSIyMzYiIHkyPSIyMzYiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjNEY4QkZGIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMC41NSIgc3RvcC1jb2xvcj0iIzNCNUJGRiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM3QjRERkYiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImUtc3RhciIgeDE9IjE1MCIgeTE9IjIwIiB4Mj0iMjQwIiB5Mj0iMTEwIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI0ZGRDU0RiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjAuNSIgc3RvcC1jb2xvcj0iI0ZGN0FDNiIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNBMjRCRkYiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImUtc2hpbmUiIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjRkZGRkZGIiBzdG9wLW9wYWNpdHk9IjAuMzUiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIwLjUiIHN0b3AtY29sb3I9IiNGRkZGRkYiIHN0b3Atb3BhY2l0eT0iMCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPGc+CiAgICA8cmVjdCB4PSIyMiIgeT0iNDIiIHdpZHRoPSIxOTAiIGhlaWdodD0iMTkwIiByeD0iNTIiIGZpbGw9InVybCgjZS10aWxlKSIvPgogIDwvZz4KICA8cmVjdCB4PSIyMiIgeT0iNDIiIHdpZHRoPSIxOTAiIGhlaWdodD0iMTkwIiByeD0iNTIiIGZpbGw9InVybCgjZS1zaGluZSkiLz4KICA8cGF0aCBkPSJNMTUwIDg0QzE2NyA4NCAxNzkgOTYgMTc5IDExMlMxNjcgMTQwIDE1MCAxNDAgMTIxIDEyOCAxMjEgMTEyIDEzMyA4NCAxNTAgODRaIiBmaWxsPSIjRENFM0ZGIi8+CiAgPHBhdGggZD0iTTEwOCAxODZDMTA4IDE2NSAxMjYgMTUwIDE1MCAxNTBTMTkyIDE2NSAxOTIgMTg2QzE5MiAxOTEgMTg5IDE5NCAxODQgMTk0SDExNkMxMTEgMTk0IDEwOCAxOTEgMTA4IDE4NloiIGZpbGw9IiNEQ0UzRkYiLz4KICA8cGF0aCBzdHJva2U9InVybCgjZS10aWxlKSIgc3Ryb2tlLXdpZHRoPSIxMCIgcGFpbnQtb3JkZXI9InN0cm9rZSIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZD0iTTk4IDk4QzExOCA5OCAxMzEgMTExIDEzMSAxMjlTMTE4IDE2MCA5OCAxNjAgNjUgMTQ3IDY1IDEyOSA3OCA5OCA5OCA5OFoiIGZpbGw9IiNGRkZGRkYiLz4KICA8cGF0aCBkPSJNNDQgMjA0QzQ0IDE4MiA2OCAxNjggOTggMTY4UzE1MiAxODIgMTUyIDIwNEMxNTIgMjA5IDE0OSAyMTIgMTQ0IDIxMkg1MkM0NyAyMTIgNDQgMjA5IDQ0IDIwNFoiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0idXJsKCNlLXRpbGUpIiBzdHJva2Utd2lkdGg9IjEwIiBwYWludC1vcmRlcj0ic3Ryb2tlIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CiAgPGc+CiAgICA8cmVjdCB4PSIxODIiIHk9IjE4IiB3aWR0aD0iMjgiIGhlaWdodD0iODQiIHJ4PSIxNCIgZmlsbD0idXJsKCNlLXN0YXIpIi8+CiAgICA8cmVjdCB4PSIxNTQiIHk9IjQ2IiB3aWR0aD0iODQiIGhlaWdodD0iMjgiIHJ4PSIxNCIgZmlsbD0idXJsKCNlLXN0YXIpIi8+CiAgPC9nPgo8L3N2Zz4K" alt="" width="30" height="30">Loan Factory <span>Recruit</span></a>
+        <div class="nav-links"><a href="#track">Your referrals</a><a href="#bonus">Bonus</a><a href="#amb">Ambassador Program</a></div>
+        <div class="nav-right">
+          <button class="waffle" type="button" aria-label="Loan Factory apps"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></button>
+          <a class="pill-btn primary sm" href="#">Sign in</a>
+        </div>
+      </div></nav>
+
+      <section class="hero" aria-labelledby="hero-h"><div class="wrap">
+        <div class="hero-copy">
+          <span class="tag">For Loan Officers who refer Loan Officers</span>
+          <h2 id="hero-h">Refer a Loan Officer. <em>See when you get paid.</em></h2>
+          <p class="lede">Every person you referred, their stage, and your bonus. In one place.</p>
+          <div class="cta-row">
+            <a class="pill-btn primary" href="#">Sign in →</a>
+            <a class="pill-btn ghost" href="#track">See how it works</a>
+          </div>
+          <div class="chips"><span class="chip"><b>●</b> Live stage updates</span><span class="chip"><b>●</b> Bonus countdown</span><span class="chip"><b>●</b> Free for every Loan Officer</span></div>
+        </div>
+
+        <div class="stage" aria-label="Example referral">
+          <div class="float f1" aria-live="off"><span class="dot"></span><div class="msg"><b>Licensed in TX, CA</b><span>Today</span></div></div>
+          <div class="ref">
+            <div class="ref-top">
+              <div class="avatar">JL</div>
+              <div class="who"><b>Jordan Lee</b><span>Referred Aug 4 · <span class="ex">EXAMPLE</span></span></div>
+              <span class="status s-onb">Onboarding</span>
+            </div>
+            <div class="track">
+              <div class="on"><i></i><b>Referred</b><span>Aug 04</span></div>
+              <div class="on"><i></i><b>Licensed</b><span>Oct 15</span></div>
+              <div class="cur"><i></i><b>Onboarded</b><span>In progress</span></div>
+            </div>
+            <div class="bonus">
+              <div class="big" data-countdown="30">23</div>
+              <p><b>days to your bonus</b>Eligible on Nov 7</p>
+            </div>
+          </div>
+          <div class="float f2"><span class="dot"></span><div><b>Bonus approved</b><span>Maria Gomez</span></div></div>
+        </div>
+      </div></section>
+
+      <section class="rows" aria-label="Features"><div class="wrap">
+
+        <div class="row" id="track">
+          <div class="row-copy">
+            <span class="eyebrow">Your referrals</span>
+            <h3>Know where every referral stands.</h3>
+            <p>No more asking the recruiter. Each person's stage updates on its own.</p>
+            <ul class="ticks"><li>Referred, licensed, onboarded, with dates</li><li>Licensed states for each person</li><li>Filter by stage</li></ul>
+          </div>
+          <div class="panel">
+            <div class="card">
+              <div class="card-h"><b>My referrals</b><span class="ex">EXAMPLE</span></div>
+              <div class="filter"><span class="on">All 6</span><span>In progress 3</span><span>Onboarded 2</span></div>
+              <ul class="list">
+                <li><div class="avatar">JL</div><div><b>Jordan Lee</b><small>Referred Aug 4 · Licensed TX, CA</small></div><span class="status s-onb">Onboarding</span></li>
+                <li><div class="avatar o">AN</div><div><b>An Nguyen</b><small>Referred Sep 12</small></div><span class="status s-lic">Licensing</span></li>
+                <li><div class="avatar g">MG</div><div><b>Maria Gomez</b><small>Onboarded Aug 30</small></div><span class="status s-done">Onboarded</span></li>
+                <li><div class="avatar">DP</div><div><b>David Park</b><small>Referred Oct 9</small></div><span class="status s-new">Referred</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="row flip" id="bonus">
+          <div class="row-copy">
+            <span class="eyebrow">Your bonus</span>
+            <h3>See the day your bonus is due.</h3>
+            <p>A countdown for each person, then every payment step.</p>
+            <ul class="ticks"><li>Days left and the eligible date</li><li>Requested, approved, paid</li><li>The date of each step</li></ul>
+          </div>
+          <div class="panel">
+            <div class="card">
+              <div class="card-h"><b>Maria Gomez · bonus</b><span class="ex">EXAMPLE</span></div>
+              <div class="count-row"><div class="big" style="color:var(--green)">✓</div><p><b>Bonus reached</b>Eligible since Oct 29</p></div>
+              <div class="steps">
+                <div class="step done"><i>✓</i><b>Requested</b><span>Oct 30</span></div>
+                <div class="step done"><i>✓</i><b>Approved</b><span>Nov 3</span></div>
+                <div class="step cur"><i>3</i><b>Paid</b><span>Waiting</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="row-copy">
+            <span class="eyebrow">Your numbers</span>
+            <h3>All your referrals at a glance.</h3>
+            <p>Five numbers that show how your referrals are doing.</p>
+            <ul class="ticks"><li>Referred and in progress</li><li>Onboarded</li><li>Bonus pending and paid</li></ul>
+          </div>
+          <div class="panel">
+            <div class="card">
+              <div class="card-h"><b>This year</b><span class="ex">EXAMPLE</span></div>
+              <div class="stats">
+                <div><b data-count="6">6</b><span>Referred</span></div>
+                <div><b data-count="3">3</b><span>In progress</span></div>
+                <div class="ok"><b data-count="2">2</b><span>Onboarded</span></div>
+                <div class="hl"><b data-count="1">1</b><span>Bonus pending</span></div>
+                <div class="ok"><b data-count="1">1</b><span>Bonus paid</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div></section>
+
+      <section class="amb" id="amb" aria-labelledby="amb-h"><div class="wrap">
+        <div class="amb-card">
+          <div>
+            <h3 id="amb-h">Refer more with the Ambassador Program.</h3>
+            <p>Loan Factory pays you back for the ads you run to bring in Loan Officers.</p>
+          </div>
+          <a class="pill-btn" href="#">See the program →</a>
+        </div>
+      </div></section>
+
+      <footer class="foot"><div class="wrap"><span>© Loan Factory</span><a href="#">loanfactory.com/loan-officer</a></div></footer>
+    </div>
+    <div class="note">
+      For review:
+      <ul>
+        <li>The landing is always dark, whatever the visitor's system theme. The /loan-officer card stays light, like that page.</li>
+        <li>Header follows CRM and Ally: brand, anchors, the shared 9-dot app launcher (works signed out), orange Sign in.</li>
+        <li>Sign in uses the existing SSO hand-off and returns to /my-referrals.</li>
+        <li>No "60 days" and no dollar amounts: payout timing is still open (bead lklmx).</li>
+        <li>No Technology Advisor block: internal apps skip it (Phuong, #tera-plus 28/09).</li>
+        <li>"See the program" → loanfactory.com/ambassador-program. Locales: en + vi.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+<script>
+(() => {
+  const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  if (still) return
+  const tick = (el, from, to, ms, delay) => {
+    const start = performance.now() + delay
+    const step = (now) => {
+      const t = Math.min(1, Math.max(0, (now - start) / ms))
+      const eased = 1 - Math.pow(1 - t, 3)
+      el.textContent = String(Math.round(from + (to - from) * eased))
+      if (t < 1) requestAnimationFrame(step)
+    }
+    requestAnimationFrame(step)
+  }
+  // hero: the bonus countdown runs down to today's value
+  document.querySelectorAll('[data-countdown]').forEach((el) => {
+    tick(el, Number(el.dataset.countdown), Number(el.textContent), 1400, 900)
+  })
+  // hero: the top badge cycles through example events
+  const events = [['Licensed in TX, CA', 'Today'], ['New referral', 'David Park'], ['Bonus requested', 'Maria Gomez']]
+  const badge = document.querySelector('.float.f1')
+  let i = 0
+  if (badge) setInterval(() => {
+    badge.classList.add('swap')
+    setTimeout(() => {
+      i = (i + 1) % events.length
+      badge.querySelector('b').textContent = events[i][0]
+      badge.querySelector('.msg span').textContent = events[i][1]
+      badge.classList.remove('swap')
+    }, 300)
+  }, 3600)
+  // rows: play once on entering the view; content is already there at rest
+  if (!('IntersectionObserver' in window)) return
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return
+      e.target.classList.add('in')
+      e.target.querySelectorAll('[data-count]').forEach((el) => tick(el, 0, Number(el.dataset.count), 900, 150))
+      io.unobserve(e.target)
+    })
+  }, { threshold: 0.35 })
+  document.querySelectorAll('.row').forEach((r) => io.observe(r))
+})()
+</script>
