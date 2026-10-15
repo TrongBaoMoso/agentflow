@@ -396,6 +396,7 @@ Read this section first, then `bd show` the beads below. All agents are stopped,
   - recruit-fe staging is 6 commits ahead of prod: SDK 0.4.36→0.4.39, Feedback button, gateway origin and landing (#482-#487). The Feedback/landing sessions own these.
 - **Prod outbound email (13/10 bug):** fix option A is deployed. omni prod runs `production` 0414925 (14/10), which contains #565 (437dcae) and #548. moso-notifier prod has 0 "LO" MailConfigNotFound in its 8h of pod logs; the 1 hit is app MARKETPLACE. There has been no recruit send since, so this is NOT verified end to end. Bao needs to send one test email. moso-notifier #159 is still open.
 - **h5xoz**, re-measured: seth.august, brayan and miley.dau have NO MOSO RECRUITING; victoria.pham does.
+- New beads 15/10 for items that were only in this file: agentflow-nozxu (prod test email), agentflow-u7p7l (prod metrics/alerts), agentflow-t1b90 (delete PII dump).
 - **Still open, owned by others or by a Bao decision:**
   - ce3ey: the 2 early-signed LOs.
   - cg03s: Khai has not answered the is_recruiter question.
