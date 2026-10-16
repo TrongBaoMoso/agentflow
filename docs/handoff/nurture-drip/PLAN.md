@@ -32,11 +32,11 @@ app keeps in touch automatically. Channel (Email | SMS) and interval (2 | 3 | 4 
    ones → default days (`followup.nurture_default_days`). No messages sent for migrated rows until the next interval.
 5. **Flag** `recruit.features.nurture-drip` — staging ON, production absent until Bao says.
 
-## LO replies before the date (Bao 17/10)
-Today (origin/master) a NURTURE LO who replies before `nurture_until` does NOT appear on Today (the list arm is
-`status=NURTURE and nurtureUntil <= today`). New rule: an inbound Email/SMS reply during nurture stops the drip, ends the
-nurture (status ACTIVE) and puts the LO on the recruiter's Today now as a "Replied" task; the open NURTURE_CALL is
-closed with reason REPLIED (kept in history). The recruiter then logs a fresh result.
+## LO replies before the date (Bao 17/10, proposal)
+Today a reply never surfaces a row (audit: TODAY-AUDIT.md gap 1-2). Proposal for EVERY next step: an inbound Email/SMS
+puts the LO on the owner's Today now with chip "Replied · 2h ago", a one-line quote, button "Reply" (opens Conversation),
+and the existing schedule shown ("Call back Jan 20"). The row leaves when the recruiter replies (outbound after the
+inbound) or logs a result. During nurture the reply also stops the drip; the NURTURE_CALL stays until a new result.
 
 ## Work split
 - BE-1 D270 + NURTURE_CALL kind + neutral() rewrite + Today/Pipeline counts + migration (IT).
