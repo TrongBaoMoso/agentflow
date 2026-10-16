@@ -1,0 +1,29 @@
+# Nurture redesign + Today gaps — handoff (overnight 17→18/10)
+
+Epic `agentflow-236t9` · plan `PLAN.md` · audit `TODAY-AUDIT.md` · mockup https://claude.ai/artifact/HRBVojzgrE9ta3vn8tw77B ·
+email drafts https://claude.ai/artifact/Janv74puAXww1t3VqqmjFD
+
+## Shipped to STAGING (2 reviewers + CI each; production untouched, all new flags absent on prod)
+| Repo | PR | What |
+|---|---|---|
+| recruit-fe | #510 | Log result polish round 2 (green Ready card, HR segmented, webinar date cards, fewer borders) |
+| recruit-be | #654 | D271: nurture.drip.* settings, template Purpose (+4 seeded Nurture templates), {{recruiter_name}}/{{next_webinar}}/{{webinar_link}}, public unsubscribe (GET confirm / POST write, opaque HMAC token) |
+| recruit-fe | #511 | Settings "Keep in touch while nurturing" (admin), template Purpose dropdown + filter |
+| recruit-be | #655 | D270: Neutral = ACTIVE + one NURTURE_CALL follow-up; staging migration moved 8 owned NURTURE rows (0 failed, 43 unowned left); reply surfaces on Today; Send-now no phantom; Call click keeps due follow-up; 5th no-answer → Nurture call in 3 months; blacklist hidden; SMS STOP marker; LO-booked meeting closes Meet 1-1; business_timezone |
+| recruit-fe | #512 | Today: Replied chip + Reply button, Nurture call + chip, sent_now, date-only grouping (Overdue from next business day), business timezone, SMS opted-out |
+| recruit-be | #656 | D272: Nurture drip sender (moso-notifier v2, ledger, allowlist bao.trinh+*, DRY_RUN default, cap 25/tick, CAN-SPAM footer, unsubscribe link) |
+| recruit-fe | #513 | Pipeline Nurture chip fits; date-only shows no fake time (VN viewers saw 2:00pm) |
+| recruit-be | #657 | D273: scheduled Send info sends itself (9:00 business time for date-only, clamped to business hours, 24h stale, placeholder guard, scheduled_send marker, skip lines) |
+| recruit-fe | #514 | Scheduled send state on Today/Focus (Scheduled · / Not sent ·), schedule form blocker + optional time + "Sends automatically…" line |
+
+## Staging config done
+- GSM lenderrate-master: `recruit-be-recruit-unsubscribe-hmac-secret`, `recruit-be-recruit-nurture-drip-internal-api-key` (latest version = cluster; v1 unused), patched into k8s `recruit-be/recruit-svc-secret`, restarted; cron `recruit-nurture-drip-tick` registered; `RECRUIT_NURTURE_MAIL` declared on notifier.
+
+## Not done / needs someone else
+1. **moso-notifier RECRUIT mail config** (bead .12) — Khai. Until then everything stays DRY_RUN (no real mail even to bao.trinh+).
+2. **omni reply-alias route** (Reply-To into omni) + **omni #602** system-events (timeline line) — Khai. Meanwhile Reply-To = recruiter, recruit timeline line only.
+3. `nurture.drip.enabled=true` and later `delivery_mode=SEND` need an ADMIN (SETTINGS_MANAGE) — Bao.
+4. Webinar attendance can't close follow-ups: MOSO sends only a register flag, no per-session events.
+5. reply_snippet is null until omni mirrors reply bodies.
+6. Production: nothing pushed; the NURTURE migration on prod needs a measured stage count first (query in recruit-be #655 comment).
+7. Staging QA side effect: QA Fneutral → Neutral 6 months (Nurture call 2027-04-16, stage Engaged).
