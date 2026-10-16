@@ -83,3 +83,19 @@ Bead: see `bd list | grep "join page on own site"`.
    moso-aid stub on :5099, dev server :3012 with NEXT_PUBLIC_AID_API_URL=http://localhost:5099).
 
 3. Empty bio → HIDE the block (Bao, 16/10). Already the behavior; no default text.
+
+## Editor built + verified locally (16/10 night)
+- lo-homepage 68714c087 (agent lo-join-editor): `/lo-setting` section "Recruiting page" (Recruiting bio rich text +
+  Recruiting video + link to `<site>/<url>/join`), own "Save recruiting page" button; route
+  `src/app/webplus-api/join-page/route.ts` (PUT → moso-aid PUT /api/recruiter-profile with RECRUITER_PROFILE_SERVICE_KEY).
+- lo-homepage c890937fb (lead fixes): call `${NEXT_PUBLIC_ASSET_URL}/webplus-api/join-page` (relative path would hit
+  the lf host on loanfactory.com/<slug>), CORS + OPTIONS like the other webplus-api routes, stored-HTML cap 10,000,
+  moso-aid 400 → 400. 12 route tests; negative control on CORS header fails 1 test as expected.
+- moso-aid 8271a3b: bio cap is on stored HTML = 10,000 (was 2,000, which refused formatted bios under 2,000 visible).
+  100 tests pass.
+- E2E local: stub moso-aid on :5099 (stores PUTs, checks x-service-key, proxies the rest to staging) + dev :3012
+  (NEXT_PUBLIC_AID_API_URL/ASSET_URL overridden, RECRUITER_PROFILE_SERVICE_KEY set). Saved bio+video in lo-setting →
+  /join shows "About Mindie" bio and the own YouTube embed. Screenshots `.playwright-mcp/lo-setting-recruiting.png`,
+  `.playwright-mcp/join-after-save.png`.
+- Deploy needs: RECRUITER_PROFILE_SERVICE_KEY on lo-homepage Cloud Run (staging lo-homepage-master in lenderrate-master,
+  prod lo-homepage-v2 in lender-rate), same value as moso-aid's in that environment.
