@@ -13,9 +13,9 @@ app keeps in touch automatically. Channel (Email | SMS) and interval (2 | 3 | 4 
 1. **One source for the date.** Neutral creates a follow-up `kind=NURTURE_CALL` (followup-be `kind` is free text) due on the
    wake date. Reschedule/Clear work like any follow-up and it shows in To do and Follow-up history.
    `nurture_until` stops being written; the Today nurture arm is removed (the follow-up surfaces it).
-2. **Status NURTURE is kept as a label**, cleared when the NURTURE_CALL follow-up is done/cleared or any other outcome is
-   logged. Keeping the status avoids touching the ACTIVE-only gates (`CandidateServiceImpl:1093/1105/1131/1299`).
-   Pipeline default filter becomes **ACTIVE + NURTURE** ("In progress"), with the amber Nurture chip on the row.
+2. **Neutral = Call again with a far date (Bao 17/10).** The LO stays `status=ACTIVE` (no NURTURE status for new
+   Neutrals), so Pipeline needs no new filter and every ACTIVE-only gate keeps working. The amber "Nurture" chip is
+   derived from the open NURTURE_CALL follow-up. Existing NURTURE rows are migrated to ACTIVE + follow-up.
 3. **Keep-in-touch drip** while NURTURE_CALL is open:
    - Settings (admin, `SETTINGS_MANAGE`): `nurture.drip.enabled` (bool), `nurture.drip.channel` (`EMAIL|SMS`, default EMAIL),
      `nurture.drip.interval_weeks` (2|3|4, default 4).
@@ -27,8 +27,7 @@ app keeps in touch automatically. Channel (Email | SMS) and interval (2 | 3 | 4 
    - Stops for good on: LO reply (inbound), recruiter call/outbound, follow-up done/rescheduled-to-now, STOP/suppression,
      archive. Guards re-checked each attempt (`SuppressionService`).
    - Engine: cron-service tick + ledger claim + outbox, copied from `OnboardingReminderTickServiceImpl` (D198 precedent).
-   - SMS: goes through omni with STOP handling + quiet hours; if the SMS path is not ready, the SMS option is shown
-     disabled with "coming soon" (Email works first).
+   - SMS: shown disabled "coming soon" until the SMS path (STOP + quiet hours) is ready; Email first (Bao OK 17/10).
 4. **Migration:** every candidate `NURTURE` with `nurture_until` → create NURTURE_CALL follow-up on that date; dateless
    ones → default days (`followup.nurture_default_days`). No messages sent for migrated rows until the next interval.
 5. **Flag** `recruit.features.nurture-drip` — staging ON, production absent until Bao says.
@@ -46,5 +45,4 @@ closed with reason REPLIED (kept in history). The recruiter then logs a fresh re
 - FE-1 Settings block, Templates "Use for Nurture" toggle, Neutral copy, Pipeline default + chip, Follow-up row label.
 
 ## Open for Bao
-- Pipeline default "In progress" = Active + Nurture (recommended) vs a separate "Nurture" tab.
 - Drip off by default on production until templates exist (recommended).
