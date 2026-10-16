@@ -14,6 +14,7 @@ email drafts https://claude.ai/artifact/Janv74puAXww1t3VqqmjFD
 | recruit-be | #656 | D272: Nurture drip sender (moso-notifier v2, ledger, allowlist bao.trinh+*, DRY_RUN default, cap 25/tick, CAN-SPAM footer, unsubscribe link) |
 | recruit-fe | #513 | Pipeline Nurture chip fits; date-only shows no fake time (VN viewers saw 2:00pm) |
 | recruit-be | #657 | D273: scheduled Send info sends itself (9:00 business time for date-only, clamped to business hours, 24h stale, placeholder guard, scheduled_send marker, skip lines) |
+| recruit-be | #658 | candidate-view `scheduled_send_info` capability |
 | recruit-fe | #514 | Scheduled send state on Today/Focus (Scheduled · / Not sent ·), schedule form blocker + optional time + "Sends automatically…" line |
 
 ## Staging config done
@@ -27,3 +28,5 @@ email drafts https://claude.ai/artifact/Janv74puAXww1t3VqqmjFD
 5. reply_snippet is null until omni mirrors reply bodies.
 6. Production: nothing pushed; the NURTURE migration on prod needs a measured stage count first (query in recruit-be #655 comment).
 7. Staging QA side effect: QA Fneutral → Neutral 6 months (Nurture call 2027-04-16, stage Engaged).
+
+Morning report: https://claude.ai/artifact/6tf19GVCfeWNDgGWV51qgw
