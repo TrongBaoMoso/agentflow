@@ -58,3 +58,18 @@ inbound) or logs a result. During nurture the reply also stops the drip; the NUR
 - omni bodies are plain text in omni's branded layout (no raw HTML) → templates are written as text; the logo comes from
   the omni layout.
 - Same path serves the scheduled Send info auto-send (gap 5).
+
+## Org email research (3 independent agents, 17/10)
+- Standard: apps publish v2 events to moso-notifier (Pub/Sub NOTIFICATION_EVENT_TOPIC) → SendGrid. Used by ai-hr-be,
+  auth-service, lfiq-backend, tera-be, followup-be, omni-service itself (OMNI_DIRECT_MAIL). notification-service (Go) is
+  replacing moso-notifier in place (Khai), same contract.
+- Outliers: callcenter (direct SendGrid, has its own nurture email + footer/opt-out), lf/lo-homepage + packs (legacy MOSO
+  GAE SendGrid), feedback-be-go (Gmail API).
+- Only omni puts mail on the omni timeline and threads replies (reply token minted inside omni, no endpoint exposes it).
+  No app sends through omni server-side; omni has no internal compose, plain-text bodies only, no email unsubscribe.
+- moso-notifier supports HTML templates, passthrough HTML, Reply-To, `oneClickUnsubscribeUrl` (List-Unsubscribe),
+  delivery webhooks; no inbound/threading.
+- Decision proposal: omni internal compose route (key-bound to recruit-be as LO_CANDIDATE owner, author = owning recruiter,
+  automation_ref, bulk lane, optional sanitized HTML body or declared template, oneClickUnsubscribeUrl passthrough, email
+  suppression check). recruit-be owns scheduler, templates (Purpose), unsubscribe endpoint + suppression, excludes
+  automated sends from "human touch". Khai approves omni design. Fallback (direct moso-notifier like HR) fails threading.
