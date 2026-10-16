@@ -73,3 +73,11 @@ inbound) or logs a result. During nurture the reply also stops the drip; the NUR
   automation_ref, bulk lane, optional sanitized HTML body or declared template, oneClickUnsubscribeUrl passthrough, email
   suppression check). recruit-be owns scheduler, templates (Purpose), unsubscribe endpoint + suppression, excludes
   automated sends from "human touch". Khai approves omni design. Fallback (direct moso-notifier like HR) fails threading.
+
+## DECISION (Bao 17/10) — sending path
+- Automatic emails (Nurture drip, scheduled Send info) go through **moso-notifier v2** (like ai-hr-be): HTML template,
+  LF logo, oneClickUnsubscribeUrl (recruit-be hosts the unsubscribe page + suppression).
+- The omni timeline gets ONE short line per send (title, e.g. "Nurture email sent · Upcoming webinar") via omni PR #602
+  system-events, never the full body. Recruit Follow-up history / activity gets the same line.
+- Reply-To: omni's reply alias for the LO (needs a small omni internal route that returns it — ask Khai); until then
+  Reply-To = the owning recruiter. Replies landing in omni → INBOUND → Today "Replied" + drip stop.
