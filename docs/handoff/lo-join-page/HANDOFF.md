@@ -69,3 +69,15 @@ Bead: see `bd list | grep "join page on own site"`.
   1. `referred_source` for webinar sign-ups: `loan_officer` vs `recruiter` (LO Recruiter Program auto-own)? Check D268/D269 + packs.
   2. `lead_origin` not sent (packs 400s unknown values; no slug for LO site). Decide.
   3. Report was truncated after "/api/join-page shape" — ask agent `lo-join-port` via SendMessage for the rest, or re-check fetchJoinOverlay against moso-aid `{success, data:{bio?,video_url?,section_position?}}`.
+
+## Bao's answers (resume, 16/10 evening)
+1. Editor location = lo-homepage `/lo-setting` (NOT lf /manage-join-page). MOSO Website settings embeds
+   `<agent_url>lo-setting?loKey=<own key>` in an iframe for the logged-in Loan Officer (packs AgentMyPageView.java:199,
+   `&admin=true` for admins). Plan: "Recruiting page" section in lo-setting (recruiting bio + recruiting video),
+   saved via a new lo-homepage server route that forwards to moso-aid PUT /api/recruiter-profile with
+   RECRUITER_PROFILE_SERVICE_KEY (new server env on lo-homepage Cloud Run, staging + prod). Agent "lo-join-editor"
+   building it in `_worktrees/lo-join-page`. lf /manage-join-page stays for dedicated headhunters only (no LO widening).
+2. Bao asked whether "The short version of how the platform works…" is the bio: NO — that is the copy beside the
+   company fallback video. The bio is the "About <first name>" block inside the contact card (4 lines + Read more).
+   Screenshots: `.playwright-mcp/join-1440b.png` (no bio) vs `.playwright-mcp/join-bio-1440.png` (sample bio via local
+   moso-aid stub on :5099, dev server :3012 with NEXT_PUBLIC_AID_API_URL=http://localhost:5099).
