@@ -42,3 +42,13 @@ recruit.viet18.com → My work today → switch **Try the new Call workspace** (
 - #504 (70a5ba90): icon-only book tabs that expand on hover/focus (icon+label in a row), full-height rounded accents, 6px top strip, full-height modal, no header Call.
 - #507 (33021a12): legal name inside Identity (normal confirm button), NO explanatory hints, no "N fields"/"needs you", numbers reject "-", languages placeholder only when empty, compact referral reason, Onboarding + Source & history removed from workspace/popup (still on /candidates/[id]), Source chip in header, no City/ST, label popover.
 - recruit-fe production still a3857831 (#496); staging 33021a12 also carries agentflow-b2's staging-only HR kit (#497–#506).
+
+## RESUME POINT 16/10 evening (Bao paused, going home)
+- FE-12 Log result polish (bead agentflow-u22s1), worktree `_worktrees/recruit-fe-logresult-polish` branch `fix/log-result-polish`, ALL UNCOMMITTED (owner reviews locally first).
+- Round 1 done (note top in popup, sticky footer, `.rec-seg`, white Next step box). Round 2 handed to a dev-fe agent, may be unfinished:
+  1. Ready-to-join card back to GREEN, more prominent.
+  2. Segmented controls like HR "Labour contract": light neutral gray track, white selected, muted unselected (no beige).
+  3. Webinar: date CARDS like viet18.com/loan-officer ("Wed, Nov 18" + "12:00 AM PT"), preselect nearest session, instead of Select dropdown.
+  4. Fewer borders at bottom: no outer Next step box border, footer without hard line.
+  Screenshots target: scratchpad/lrpol2/. On resume: `git -C _worktrees/recruit-fe-logresult-polish status` + diff to see what landed, finish missing items, restart preview (next dev 3311, proxies 3320 Recruiter / 3310 Manager, via ram-gate), show Bao, then commit → PR → 2 reviewers + CI → merge → promote staging.
+- Nurture redesign proposal (waiting on Bao's OK): Neutral = one "Nurture call" follow-up on the wake date (single source, LO stays Active + Nurture chip, shows in To do/history) + keep-in-touch drip: default monthly email (Settings: 2 weeks / 1 month / off), SMS only for events (consent/STOP), stop on reply/call/due date; content = existing Templates tagged "Nurture", rotate, `{next_webinar}` variable. Reverses D50/D56/D121 → spec + mockup before BE work.
