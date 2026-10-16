@@ -57,3 +57,15 @@ Register route in RELEASE_PAGES/middleware/sitemap like other pages. noindex.
 - moso-aid branch flow: feature → master (staging auto-deploy) → pro (prod).
 
 Bead: see `bd list | grep "join page on own site"`.
+
+## Phase B agent report (arrived after pause, NOT yet verified by lead)
+- Commit 3e2c49081 on feature/lo-join-page. Agent claims: tsc 0, 5 suites / 66 tests pass, build passes, `/[locale]/join` in route list. No browser/next dev run yet.
+- Route `src/app/[locale]/(public)/join/` (layout = PublicLayout like best-price). `_lib/buildJoinOwner.ts` (getLOInfo → card), `_lib/fetchJoinOverlay.ts` (moso-aid `/api/join-page`, 3s timeout, degrade). Ported utils joinSections/recruiterFields/bioSanitize/youtube + tests, join-sections const, LoPrograms FaqSection + RevealObserver. New dep `xss`.
+- CSS `src/styles/lo-join.css` (~870 lines, everything scoped under `.lop`, tokens moved from :root to .lop).
+- `'/join': true` in RELEASE_PAGES + ROUTES.JOIN. i18n: 71 RecruiterJoinPage keys × 5 locales.
+- Attribution: webinar SessionPicker (index.tsx:164-178) sends `referred_source: 'loan_officer'`, `referred_by` = owner company email (+ agent_email for webinar). Ready to join (page.tsx:87) = `buildJoinNowUrl({label, value: owner email}, basePathLO)` → `/<slug>/register-loan-officer`.
+- Card shows email/phone only if owner `is_show_email` / `is_show_phone` === true.
+- Agent's open questions (decide on resume, may need recruit-be/packs check):
+  1. `referred_source` for webinar sign-ups: `loan_officer` vs `recruiter` (LO Recruiter Program auto-own)? Check D268/D269 + packs.
+  2. `lead_origin` not sent (packs 400s unknown values; no slug for LO site). Decide.
+  3. Report was truncated after "/api/join-page shape" — ask agent `lo-join-port` via SendMessage for the rest, or re-check fetchJoinOverlay against moso-aid `{success, data:{bio?,video_url?,section_position?}}`.
