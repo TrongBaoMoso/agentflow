@@ -30,3 +30,10 @@ recruit.viet18.com → My work today → switch **Try the new Call workspace** (
 - Numbers can't be cleared via PUT (BE ignores null) → inline "can't be cleared here".
 - Put-into reads omni's same-origin email iframe; feature-detected, hidden if unreadable.
 - Staging QA side effects: QA Tenaeboard got an "Interested" result; QA Claudeladder / QA Tenaeboard have a logged call without result. All edited profile fields were restored.
+
+## 17/10 — Popup tabs (3rd mode, default)
+- recruit-fe #499 (09d2393b) + #501 (1dcae8af) on **staging only**; production waits for Bao (staging also carries agentflow-b2's staging-only HR kit #497/#500/#498…).
+- Mode selector "Call view: Classic · Workspace · Popup tabs" on Today/Focus (flag call_workspace), default Popup tabs, per user+browser.
+- Popup: one 1160px modal, book tabs on the left edge (icon above label), white body + 3px accent strip; Log result = FollowUpsPanelBody (note after outcome), Conversation = ConversationPanel hideHeader, Profile = shared ProfileTabContent (2 columns). Every Call / Log result / Prepare offer / reply bubble routes by mode.
+- Open: agentflow-2kqyf (omni draft/side callbacks for reload persistence, tera-components), number clear needs BE, omni first-visit tour shows inside the popup.
+- Report: https://claude.ai/artifact/91EeRYbXEYcZpjJqHAXe6L
