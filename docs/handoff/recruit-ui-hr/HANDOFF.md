@@ -10,7 +10,6 @@ recruit-fe production is a fast-forward push of the whole `staging` branch. The 
 | #500 | Picker follow-up: Tab stop when the anchor day is disabled; Esc on the trigger closes only the picker | de5547a7 | 2 |
 | #498 | List pages like HR: one page frame, scope pills (tint, not solid), "Label: value" filter bar, quiet notices, uniform row buttons, pills, icon tile removed from every PageHead, tablet/phone layouts (Today strip stacks, task table scrolls, Hot/Cold cards, sticky actions), Referrals table fits | cb221e16 | 2 + 2 final |
 | #503 | Candidate page Profile tab → HR detail blocks (icon tile + title + accent Edit, uppercase label grid 3/2/1 cols, legal-name confirm as a normal primary button) | 62d5c3dd | 2, real-data local check + staging check |
-
 | #505 | Profile tab: Edit edits the block in place (HR style, Cancel/Save in header, no modal); legal name inside Identity; "1-1 outcome" heading removed (hint instead); minus key blocked, no negative-number message; compact Referral reason; languages placeholder/hint; HR chips (grey #f1f3f5, centred) for every MultiSelect/TagsInput | 9dca3f3f | 2 + 2 delta; Bao approved local preview |
 
 Other sessions merged in between: #499/#501 call popup tabs (agentflow-2c), #502 platform SDK 0.4.40.
