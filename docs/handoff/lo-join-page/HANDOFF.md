@@ -81,3 +81,5 @@ Bead: see `bd list | grep "join page on own site"`.
    company fallback video. The bio is the "About <first name>" block inside the contact card (4 lines + Read more).
    Screenshots: `.playwright-mcp/join-1440b.png` (no bio) vs `.playwright-mcp/join-bio-1440.png` (sample bio via local
    moso-aid stub on :5099, dev server :3012 with NEXT_PUBLIC_AID_API_URL=http://localhost:5099).
+
+3. Empty bio → HIDE the block (Bao, 16/10). Already the behavior; no default text.
