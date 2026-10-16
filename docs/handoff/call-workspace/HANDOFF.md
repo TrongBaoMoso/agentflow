@@ -37,3 +37,8 @@ recruit.viet18.com → My work today → switch **Try the new Call workspace** (
 - Popup: one 1160px modal, book tabs on the left edge (icon above label), white body + 3px accent strip; Log result = FollowUpsPanelBody (note after outcome), Conversation = ConversationPanel hideHeader, Profile = shared ProfileTabContent (2 columns). Every Call / Log result / Prepare offer / reply bubble routes by mode.
 - Open: agentflow-2kqyf (omni draft/side callbacks for reload persistence, tera-components), number clear needs BE, omni first-visit tour shows inside the popup.
 - Report: https://claude.ai/artifact/91EeRYbXEYcZpjJqHAXe6L
+
+## 17/10 afternoon — popup polish + profile blocks (staging)
+- #504 (70a5ba90): icon-only book tabs that expand on hover/focus (icon+label in a row), full-height rounded accents, 6px top strip, full-height modal, no header Call.
+- #507 (33021a12): legal name inside Identity (normal confirm button), NO explanatory hints, no "N fields"/"needs you", numbers reject "-", languages placeholder only when empty, compact referral reason, Onboarding + Source & history removed from workspace/popup (still on /candidates/[id]), Source chip in header, no City/ST, label popover.
+- recruit-fe production still a3857831 (#496); staging 33021a12 also carries agentflow-b2's staging-only HR kit (#497–#506).
