@@ -46,3 +46,15 @@ inbound) or logs a result. During nurture the reply also stops the drip; the NUR
 
 ## Open for Bao
 - Drip off by default on production until templates exist (recommended).
+
+## Sending path (investigated 17/10)
+- Bao: every LO communication must be on the omni timeline → automatic sends go through omni, not packs.
+- omni today has NO server-to-server compose: compose (`POST /api/v1/subjects/{type}/{id}/messages`) needs a user token;
+  the internal-key surface has no compose and omni refuses "acting user" headers (`internal/auth/middleware.go:150,186`).
+  Send info works only because the browser sends with the recruiter's token.
+- Needed in omni-service (PR for Khải): internal compose route for automated sends on behalf of the subject's owner
+  (recruit-be key, owner check, `automated=true` marker shown in the timeline, Reply-To alias so replies thread back),
+  plus List-Unsubscribe / one-click unsubscribe, and `COMM_EMAIL_LOGO_URL` set to the LF logo (unset in both envs).
+- omni bodies are plain text in omni's branded layout (no raw HTML) → templates are written as text; the logo comes from
+  the omni layout.
+- Same path serves the scheduled Send info auto-send (gap 5).
