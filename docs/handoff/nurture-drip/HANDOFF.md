@@ -45,3 +45,7 @@ Morning report: https://claude.ai/artifact/6tf19GVCfeWNDgGWV51qgw
 - Staging recruit-be OOMKilled twice ~13:00Z (full heap needs ~1199Mi > 1184Mi when slow /today requests overlap) → #666 staging memory 1344Mi; /today slowness = bead agentflow-yzq8v.
 - Staging test settings left ON on purpose: nurture.drip.enabled=true, delivery_mode=SEND (allowlist bao.trinh+* only), interval_weeks=2 (first real Nurture e-mail to QA Fneutral bao.trinh+t08f3 due Mon 2/11 ~15:00Z; then set back to 4) — bead agentflow-236t9.15.
 - Open, waiting on others: omni-service #608, #609 (ready), #602 (draft) — Khai; prod auto e-mails go-live (bead .14) — Bao; "5.7.1 relay access denied" = hard bounce (Bao may change); webinar attendance (bead .8) — MOSO; omni draft persistence (2kqyf) — Tai.
+
+## 18/10 — webinar signals (D277)
+- recruit-be #668 merged (d7af2482): MOSO registration plans the WEBINAR follow-ups, attendance closes the reminder and patches the feedback call. Staging + production deployed; `webinar-signals` ON staging, absent (off) on production. Bead 236t9.8 closed.
+- Next: FE "Attended / Registered" chip (local preview first), then a real packs registration + staff CSV check on staging.
