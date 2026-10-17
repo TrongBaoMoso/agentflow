@@ -26,7 +26,7 @@ email drafts https://claude.ai/artifact/Janv74puAXww1t3VqqmjFD
 3. `nurture.drip.enabled=true` and later `delivery_mode=SEND` need an ADMIN (SETTINGS_MANAGE) — Bao.
 4. Webinar attendance can't close follow-ups: MOSO sends only a register flag, no per-session events.
 5. reply_snippet is null until omni mirrors reply bodies.
-6. Production: nothing pushed; the NURTURE migration on prod needs a measured stage count first (query in recruit-be #655 comment).
+6. Production (updated 17/10): recruit-be prod = 82598d48 (all of the above), recruit-fe prod = 9cb2b08c; nurture-followup ON on prod (#663, migration moved 0); automatic e-mail flags OFF on prod — go-live checklist in bead agentflow-236t9.14.
 7. Staging QA side effect: QA Fneutral → Neutral 6 months (Nurture call 2027-04-16, stage Engaged).
 
 Morning report: https://claude.ai/artifact/6tf19GVCfeWNDgGWV51qgw
@@ -39,3 +39,9 @@ Morning report: https://claude.ai/artifact/6tf19GVCfeWNDgGWV51qgw
 - 17/10 03:15Z (10:15 VN): REAL send proven on staging — QA Claudeboard (t08q14), subject "Recruit staging test — sent now (Sat)"; notifier: Mail sent appId=RECRUIT provider=SENDGRID, webhook DELIVERED. business_hours was widened temporarily via admin API and restored to the saved value (08-17 Mon-Fri LA). The Monday 19/10 schedule was replaced by this test.
 - 18/10: recruit-be #659 (BOOTSTRAP keys), #660 (host push on in prod — docs), #661 (D274 Reply-To = omni reply address, staging flag ON, waits for omni #608), #662 (ITs no longer depend on the wall clock) merged + promoted to staging. Open: omni-service #608 (Khai) and #602; production go-live (Bao); bounce intake (.11); webinar attendance data (MOSO).
 - 18/10 later: prod = c0f67339 (nurture-followup ON on prod via #663; migration moved 0). #664 bounce intake (staging subscription SVC_STATUS_MAIL_RECRUIT_SUBSCRIPTION + DLQ created by us; listening OK), #665 dual Reply-To (switch OFF until omni #609). Unsubscribe link tested on staging (GET confirm / POST write / tamper 400), suppression removed again. Waiting on Khai: omni #608, #609, #602.
+
+## Final state 17/10 ~14:30Z (session close audit)
+- Real reply test PASSED on staging: omni-composed e-mail to QA Claudeboard (13:09Z), Bao replied from Gmail (14:06Z) → EMAIL INBOUND activity + Today replied_at = 14:06:49 ("Replied" chip). reply_snippet null (omni mirrors no body).
+- Staging recruit-be OOMKilled twice ~13:00Z (full heap needs ~1199Mi > 1184Mi when slow /today requests overlap) → #666 staging memory 1344Mi; /today slowness = bead agentflow-yzq8v.
+- Staging test settings left ON on purpose: nurture.drip.enabled=true, delivery_mode=SEND (allowlist bao.trinh+* only), interval_weeks=2 (first real Nurture e-mail to QA Fneutral bao.trinh+t08f3 due Mon 2/11 ~15:00Z; then set back to 4) — bead agentflow-236t9.15.
+- Open, waiting on others: omni-service #608, #609 (ready), #602 (draft) — Khai; prod auto e-mails go-live (bead .14) — Bao; "5.7.1 relay access denied" = hard bounce (Bao may change); webinar attendance (bead .8) — MOSO; omni draft persistence (2kqyf) — Tai.
