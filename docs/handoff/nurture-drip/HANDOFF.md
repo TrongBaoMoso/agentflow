@@ -30,3 +30,9 @@ email drafts https://claude.ai/artifact/Janv74puAXww1t3VqqmjFD
 7. Staging QA side effect: QA Fneutral → Neutral 6 months (Nurture call 2027-04-16, stage Engaged).
 
 Morning report: https://claude.ai/artifact/6tf19GVCfeWNDgGWV51qgw
+
+## 18/10 morning follow-ups (self-served, no Khai needed)
+- nurture.drip.enabled=true and delivery_mode=SEND on staging via the normal settings API (admin test account chauchau.inc); allowlist still only bao.trinh+*@loanfactory.com; send_enabled_at stamped 2026-10-17T01:54:40Z (no catch-up burst).
+- moso-notifier #300 merged + promoted to staging (Repo Owner agent + reviewer OK): RECRUIT copies ENGAGEMENT's mail identity (staging profile only). Log: "Mail config in sync: appId=RECRUIT" (a RECRUIT row already existed; SMTP synced). mailpit is empty → staging mail likely goes to real SendGrid (to be proven by the test below).
+- E2E real-send test: QA Claudeboard (bao.trinh+t08q14) has a scheduled Send info EMAIL for Mon 2026-10-19 09:00 PT (16:00Z, 23:00 VN), subject "Recruit staging test — scheduled info". Undo: delivery_mode DRY_RUN.
+- omni-service #608 (reply-address route) open for Khai; recruit must read subject_id (no conversation_id). recruit-be #659 docs: the two staging secrets added to BOOTSTRAP + rebuild list.
