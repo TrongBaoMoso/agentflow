@@ -1,0 +1,249 @@
+<title>Pipeline UI v2</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one long review sheet — the full "after" table first, then one before/after card per point, then stage options */
+:root{
+  --bg:#f8f7f5; --surface:#ffffff; --sunk:#f3f1ee; --line:#ebe6e0; --ink:#1c1917; --muted:#57534e; --faint:#8a817a;
+  --acc:#c4520f; --acc-soft:#fcede4; --acc-ink:#a3420a;
+  --g:#17803d; --g-soft:#e7f5ec; --b:#1d5bd8; --b-soft:#e8effd; --a:#8a5a00; --a-soft:#fdf3d6; --r:#c0262d; --r-soft:#fdecec; --gy:#57534e; --gy-soft:#efedea;
+  --sans:"Public Sans",system-ui,-apple-system,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#151312; --surface:#1e1b19; --sunk:#262220; --line:#35302c; --ink:#f3eee9; --muted:#c3b9b1; --faint:#968b83;
+  --acc:#f08a4b; --acc-soft:#3a2417; --acc-ink:#f6a774;
+  --g:#5fcf8a; --g-soft:#16301f; --b:#7ea8ff; --b-soft:#1a2540; --a:#e8bd52; --a-soft:#342910; --r:#f28b8b; --r-soft:#3a1a1a; --gy:#c3b9b1; --gy-soft:#2c2826; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#151312; --surface:#1e1b19; --sunk:#262220; --line:#35302c; --ink:#f3eee9; --muted:#c3b9b1; --faint:#968b83;
+  --acc:#f08a4b; --acc-soft:#3a2417; --acc-ink:#f6a774;
+  --g:#5fcf8a; --g-soft:#16301f; --b:#7ea8ff; --b-soft:#1a2540; --a:#e8bd52; --a-soft:#342910; --r:#f28b8b; --r-soft:#3a1a1a; --gy:#c3b9b1; --gy-soft:#2c2826; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45}
+.wrap{max-width:1240px;margin:0 auto;padding-block:28px 72px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:36px}
+h1{font-size:28px;margin:0;letter-spacing:-.01em;text-wrap:balance}
+h2{font-size:19px;margin:0;text-wrap:balance}
+h3{font-size:15px;margin:0}
+.lede{color:var(--muted);max-width:75ch;margin:6px 0 0}
+.eyebrow{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:600}
+.sec{display:grid;gap:14px}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+/* ── the app frame ── */
+.app{min-width:1108px;padding:22px 20px 18px;display:grid;gap:14px;background:var(--bg)}
+.app h4{font-size:26px;margin:0;font-weight:700;letter-spacing:-.01em}
+.tabs{display:flex;gap:4px;flex-wrap:wrap}
+.tab{padding:7px 12px;border-radius:8px;color:var(--muted);font-weight:500;display:inline-flex;gap:7px;align-items:center;cursor:pointer;border:0;background:none;font:inherit}
+.tab .n{font-size:11.5px;font-weight:600;background:var(--gy-soft);border-radius:99px;padding:1px 7px;font-variant-numeric:tabular-nums}
+.tab.on{background:var(--acc-soft);color:var(--acc-ink);font-weight:600}
+.tab.on .n{background:var(--surface)}
+.tab.muted{color:var(--faint);font-style:normal}
+.tab.muted .n{background:transparent;border:1px dashed var(--line)}
+.tab-sep{width:1px;background:var(--line);margin:6px 4px}
+.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ctl{height:36px;border:1px solid var(--line);border-radius:8px;background:var(--surface);display:inline-flex;align-items:center;gap:8px;padding:0 12px;color:var(--ink);white-space:nowrap;font:inherit;cursor:pointer}
+.ctl .k{color:var(--faint)}
+.ctl.search{width:250px;color:var(--faint);cursor:text}
+.ctl.icon{width:36px;padding:0;justify-content:center}
+.ctl.on{border-color:var(--acc);color:var(--acc)}
+.grow{flex:1}
+.chev{width:10px;height:10px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translate(-2px,-2px);opacity:.6}
+table{border-collapse:collapse;width:100%;table-layout:fixed;background:var(--surface)}
+.tblbox{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
+th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-weight:600;text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);background:var(--sunk);white-space:nowrap}
+td{padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+th:first-child,td:first-child{padding-left:16px}
+tbody tr:hover{background:color-mix(in srgb,var(--acc-soft) 45%,transparent)}
+.sort{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:4px;border-radius:4px}
+.sort:hover{color:var(--ink)}
+.sort[data-on]{color:var(--ink)}
+.sort:focus-visible,.tab:focus-visible,.ctl:focus-visible,.opt:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.cb{width:15px;height:15px;border:1.5px solid var(--line);border-radius:4px;display:block}
+.who{display:flex;gap:10px;align-items:center;min-width:0}
+.av{width:30px;height:30px;border-radius:50%;background:var(--acc-soft);color:var(--acc-ink);font-size:10.5px;font-weight:700;display:grid;place-items:center;flex-shrink:0;border:1px solid color-mix(in srgb,var(--acc) 25%,transparent)}
+.nm{min-width:0;display:grid}
+.nm b{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nm a{font-size:12px;color:var(--faint);text-decoration:none}
+.nm a:hover{color:var(--acc);text-decoration:underline}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;padding:2px 8px;border-radius:99px;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.c-g{background:var(--g-soft);color:var(--g)} .c-b{background:var(--b-soft);color:var(--b)} .c-a{background:var(--a-soft);color:var(--a)} .c-gy{background:var(--gy-soft);color:var(--gy)} .c-acc{background:var(--acc-soft);color:var(--acc-ink)} .c-r{background:var(--r-soft);color:var(--r)}
+.dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
+.sub{display:flex;align-items:center;gap:4px;font-size:11.5px;color:var(--faint);margin-top:3px;min-width:0}
+.sub span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.vf{width:16px;height:16px;flex-shrink:0;display:inline-block}
+.never{color:var(--r);font-weight:500}
+.dim{color:var(--faint)}
+.fu{font-size:12px;font-weight:600;color:var(--r);background:var(--r-soft);border-radius:6px;padding:2px 7px;white-space:nowrap}
+.owner{display:flex;gap:6px;align-items:center;min-width:0}
+.owner .av{width:20px;height:20px;font-size:8.5px}
+.owner span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.claim{background:var(--acc);color:#fff;border:0;border-radius:8px;padding:6px 14px;font:inherit;font-weight:600;cursor:pointer}
+.dots{color:var(--faint);letter-spacing:1px;padding:0 4px}
+/* stage options */
+.stA{display:grid;gap:5px}
+.stA b{font-weight:600;font-size:13px}
+.seg{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;width:118px}
+.seg i{height:5px;border-radius:3px;background:var(--line)}
+.seg i.f{background:var(--stc)}
+.stB{display:grid;gap:4px}
+.stB b{font-weight:600;font-size:13px}
+.trk{display:flex;align-items:center;gap:8px}
+.trk .t{flex:1;max-width:96px;height:6px;border-radius:99px;background:var(--line);overflow:hidden}
+.trk .t i{display:block;height:100%;border-radius:99px;background:var(--stc)}
+.trk span{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;min-width:32px;text-align:right}
+/* cards */
+.pt{display:grid;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
+.pt-h{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+.num{font-family:var(--mono);font-size:12px;color:var(--acc);font-weight:500}
+.pt p{margin:0;color:var(--muted);max-width:80ch}
+.ba{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start}
+.ba figure{margin:0;display:grid;gap:6px;min-width:0}
+.ba figcaption{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+.before figcaption{color:var(--faint)} .after figcaption{color:var(--g)}
+.shot{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.shot img{display:block;width:100%;height:auto}
+.live{border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:14px;overflow-x:auto}
+.menu{background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.08);padding:6px;width:200px;display:grid}
+.opt{all:unset;padding:8px 10px;border-radius:6px;cursor:pointer;display:flex;justify-content:space-between}
+.opt:hover{background:var(--sunk)}
+.opt.sel{background:var(--acc-soft);color:var(--acc-ink);font-weight:600}
+.cmp{width:100%;font-size:13px}
+.cmp td,.cmp th{padding:8px 10px}
+.opts3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.optcard{border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:10px;background:var(--surface)}
+.optcard.rec{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}
+.optcard ul{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+.tag{font-size:11px;font-weight:700;color:var(--acc);letter-spacing:.04em}
+.board{display:flex;gap:10px;align-items:stretch}
+.col{flex:0 0 200px;background:var(--sunk);border-radius:10px;padding:10px;display:grid;gap:8px;align-content:start}
+.col-h{display:flex;justify-content:space-between;align-items:center;font-weight:600}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px;display:grid;gap:6px}
+.fold{flex:0 0 46px;background:var(--sunk);border-radius:10px;padding:10px 0;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--faint);cursor:pointer;border:1px dashed var(--line)}
+.fold .v{writing-mode:vertical-rl;font-weight:600;color:var(--muted)}
+.fold:hover{border-color:var(--acc);color:var(--acc)}
+.q{background:var(--acc-soft);border-radius:10px;padding:12px 14px;color:var(--acc-ink)}
+.q b{color:var(--acc-ink)}
+.utabs{display:flex;gap:2px;border-bottom:1px solid var(--line);overflow-x:auto}
+.utab{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:7px;padding:10px 12px;color:var(--muted);font-weight:500;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.utab .uc{font-size:11.5px;font-weight:600;background:var(--gy-soft);border-radius:99px;padding:1px 7px;font-variant-numeric:tabular-nums}
+.utab.on{color:var(--acc-ink);border-bottom-color:var(--acc);font-weight:600}
+.utab.on .uc{background:var(--acc-soft);color:var(--acc-ink)}
+.utab.muted{color:var(--faint)}
+.utab:hover{color:var(--ink)}
+.stabs{display:flex;gap:6px;flex-wrap:wrap}
+.stab{all:unset;cursor:pointer;padding:7px 13px;border-radius:8px;background:var(--gy-soft);color:var(--muted);font-weight:600;font-size:13px}
+.stab span{font-weight:500;opacity:.75;margin-left:4px;font-variant-numeric:tabular-nums}
+.stab.on{background:var(--acc);color:#fff}
+.bulk{display:flex;align-items:center;gap:8px;flex-wrap:wrap;border:1.5px solid var(--acc);background:var(--acc-soft);border-radius:10px;padding:8px 12px}
+.bulk b{color:var(--acc-ink);font-size:15px;margin-right:6px}
+.bb{font:inherit;font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:7px;padding:5px 10px;cursor:pointer}
+.bb.red{color:var(--r);border-color:color-mix(in srgb,var(--r) 35%,transparent);background:var(--r-soft)}
+.bb.dis{opacity:.5;cursor:not-allowed}
+.bulk .why{font-size:12.5px;color:var(--muted);flex:1;min-width:200px}
+.bulk .x{all:unset;cursor:pointer;color:var(--faint);padding:4px 6px}
+@media (max-width:820px){.ba,.opts3{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Recruit · /pipeline · mockup chờ duyệt</div>
+    <h1>Pipeline UI v2</h1>
+    <p class="lede">Gộp issue 1 đã duyệt (tab Not started), 7 điểm Bao nêu ngày 18/10, và các điểm 9–13 nêu sau đó. Chỉ đổi giao diện: không thêm API, không đổi dữ liệu. Tên và số liệu lấy từ staging. Ảnh "trước" là ảnh Bao gửi.</p>
+  </header>
+
+  <section class="sec">
+    <div><div class="eyebrow">Sau khi đổi</div><h2>Bảng Pipeline đầy đủ (khổ 1440px)</h2></div>
+    <div class="scroll"><div class="app" id="app"></div></div>
+  </section>
+
+  <section class="sec">
+    <div><div class="eyebrow">Chờ Bao chọn</div><h2>Thanh tab stage: 3 kiểu</h2>
+    <p class="lede">Cả ba kiểu dùng cùng số liệu. Tối nay Bao không trả lời thì tôi làm kiểu 1 (Tera), vì kiểu này dễ đọc nhất khi có 8 tab, và chấm màu khớp với thanh Stage cách A.</p></div>
+    <div class="pt"><div class="pt-h"><span class="num">Kiểu 1 · đề xuất</span><h3>Gạch chân như Tera</h3></div><div class="live" id="tabsTera"></div>
+      <div class="shot"><img src="img/tabs_tera_pipeline.jpg" alt="Tera pipeline underline tabs" width="1176" height="520" loading="lazy"></div></div>
+    <div class="pt"><div class="pt-h"><span class="num">Kiểu 2</span><h3>Nút đặc như HR</h3></div><div class="live" id="tabsHr"></div>
+      <div class="ba"><div class="shot"><img src="img/tabs_hr_training.jpg" alt="HR training solid tabs" width="1176" height="520" loading="lazy"></div><div class="shot"><img src="img/tabs_tera_borrowers.jpg" alt="Tera borrowers scope buttons" width="1176" height="520" loading="lazy"></div></div></div>
+    <div class="pt"><div class="pt-h"><span class="num">Kiểu 3</span><h3>Giữ như hiện tại</h3></div><div class="live" id="tabsNow"></div></div>
+  </section>
+
+  <section class="sec" id="points"></section>
+
+  <section class="sec">
+    <div><div class="eyebrow">Điểm 4 · chọn 1 trong 3</div><h2>Cột Stage: ba cách hiển thị</h2>
+    <p class="lede">HR app có hai cách. Trang Onboarding dùng thanh dày 6px, màu theo % (cam dưới 40%, xanh dương 40–80%, xanh lá từ 80%), số % in đậm bên phải. Màn tuyển dụng thì không có thanh, chỉ có chip stage màu và số ngày nằm ở stage. Recruit chưa có ngày vào stage, nên không làm "số ngày" được nếu không sửa BE.</p></div>
+    <div class="opts3" id="stageOpts"></div>
+    <div class="ba">
+      <figure class="before"><figcaption>HR app · Onboarding (thanh theo %)</figcaption><div class="shot"><img src="img/hr_onboarding.jpg" alt="HR app onboarding list with checklist completion bars" width="1440" height="1100" loading="lazy"></div></figure>
+      <figure class="before"><figcaption>HR app · Recruiting board (chip stage + số ngày)</figcaption><div class="shot"><img src="img/hr_job_board.jpg" alt="HR app recruiting board with stage columns" width="1440" height="1100" loading="lazy"></div></figure>
+    </div>
+  </section>
+</div>
+
+<script>
+const STAGES=[['New lead','S1'],['Engaged','S2'],['Offer','S4'],['Onboarding','S5'],['Joined','S6'],['Onboarded','S7']];
+const STC={S0:'var(--line)',S1:'var(--gy)',S2:'var(--b)',S4:'var(--a)',S5:'var(--acc)',S6:'var(--g)',S7:'var(--g)'};
+const ROWS=[
+ {n:'Chi Testthui',nm:'87754',src:['Web form','g'],st:'S6',stat:'Active',tch:'never',fu:'',own:null},
+ {n:'QA Dlate',nm:'',src:['Referral','b'],ref:['Referred by HH Test Headhunter',true],st:'S0',stat:'Active',tch:'never',fu:'',own:null},
+ {n:'QA Hhsignqmz',nm:'9931301',src:['Referral','b'],ref:['Invited by HH Test Headhunter',true],st:'S1',stat:'Active',tch:'never',fu:'Oct 15',own:['HH','HH Test Headhunter']},
+ {n:'QA Tenejoin',nm:'9931277',src:['Referral','b'],ref:['Invited by HH Test Headhunter',true],web:'Webinar session: Dec 16',st:'S1',stat:'Active',tch:'never',fu:'',own:['HH','HH Test Headhunter']},
+ {n:'QA Tenewebinar',nm:'9931276',src:['Webinar','a'],web:'Webinar session: Nov 18',st:'S1',stat:'Active',tch:'never',fu:'',own:['QR','QA Test Recruiter']},
+ {n:'QA Teneparty',nm:'9931274',src:['After Party · Houston · Nov 3','a'],st:'S2',stat:'Active',tch:'5 days ago',fu:'Oct 14',own:['QR','QA Test Recruiter']},
+ {n:'QA Tenelopage',nm:'9931273',src:['Referral','b'],ref:['Referred by 1099v1 Loan Officer',false],st:'S0',stat:'Active',tch:'never',fu:'',own:null},
+ {n:'QA Tencadvisor',nm:'9931218',src:['Web form','g'],st:'S5',stat:'Active',tch:'2 days ago',fu:'',own:['BT','Bao Trinh']},
+];
+const ini=n=>n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+const VF='<svg class="vf" viewBox="0 0 24 24" aria-label="Verified Loan Factory employee" role="img"><path fill="var(--b)" d="M12.01 2.011a3.2 3.2 0 0 1 2.113.797l.154.145.698.698a1.2 1.2 0 0 0 .71.341l.135.008h1a3.2 3.2 0 0 1 3.195 3.018l.005.182v1c0 .27.092.533.258.743l.09.1.697.698a3.2 3.2 0 0 1 .147 4.382l-.145.154-.698.698a1.2 1.2 0 0 0-.341.71l-.008.135v1a3.2 3.2 0 0 1-3.018 3.195l-.182.005h-1a1.2 1.2 0 0 0-.743.258l-.1.09-.698.697a3.2 3.2 0 0 1-4.382.147l-.154-.145-.698-.698a1.2 1.2 0 0 0-.71-.341L8 20.011H7a3.2 3.2 0 0 1-3.195-3.018L3.8 16.81v-1a1.2 1.2 0 0 0-.258-.743l-.09-.1-.697-.698a3.2 3.2 0 0 1-.147-4.382l.145-.154.698-.698a1.2 1.2 0 0 0 .341-.71L3.8 8.19v-1l.005-.182a3.2 3.2 0 0 1 3.013-3.013L7 3.99h1a1.2 1.2 0 0 0 .743-.258l.1-.09.698-.697a3.2 3.2 0 0 1 2.269-.934z"/><path d="M8.5 12.2l2.4 2.4 4.6-4.8" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const VF_OLD='<svg class="vf" style="width:13px;height:13px" viewBox="0 0 24 24" fill="none" stroke="var(--faint)" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.2l2.4 2.4 4.6-4.8"/></svg>';
+const who=r=>`<div class="who"><span class="av">${ini(r.n)}</span><span class="nm"><b title="${r.n}">${r.n}</b>${r.nm?`<a href="#" onclick="return false">NMLS ${r.nm}</a>`:'<span class="dim" style="font-size:12px">No NMLS</span>'}</span></div>`;
+const source=r=>`<span class="chip c-${r.src[1]}">${r.src[0]}</span>${r.ref?`<div class="sub"><span>${r.ref[0]}</span>${r.ref[1]?VF:''}</div>`:''}${r.web?`<div class="sub"><span>${r.web}</span></div>`:''}`;
+const idx=s=>STAGES.findIndex(x=>x[1]===s);
+const nameOf=s=>s==='S0'?'Not started':STAGES[idx(s)][0];
+const stageA=s=>{const i=idx(s);return `<div class="stA" style="--stc:${STC[s]}"><b>${nameOf(s)}</b><div class="seg" role="img" aria-label="${nameOf(s)}, step ${i+1} of 6">${STAGES.map((_,k)=>`<i class="${k<=i?'f':''}"></i>`).join('')}</div></div>`};
+const pctOf=s=>{const i=idx(s);return Math.round(((i<0?0:i+1))/6*100)};
+const colorByPct=p=>p>=80?'var(--g)':p>=40?'var(--b)':'var(--acc)';
+const stageB=s=>{const p=pctOf(s);return `<div class="stB"><b>${nameOf(s)}</b><div class="trk"><div class="t"><i style="width:${p}%;--stc:${colorByPct(p)}"></i></div><span>${p}%</span></div></div>`};
+const stageC=s=>s==='S0'?`<span class="chip c-gy">Not started</span>`:`<span class="chip" style="background:color-mix(in srgb,${STC[s]} 14%,transparent);color:${STC[s]==='var(--gy)'?'var(--gy)':STC[s]}"><span class="dot"></span>${nameOf(s)}</span>`;
+const owner=r=>r.own?`<div class="owner"><span class="av">${r.own[0]}</span><span>${r.own[1]}</span></div>`:'<span class="dim">— unowned</span>';
+const row=(r,stage=stageA)=>`<tr><td><span class="cb"></span></td><td>${who(r)}</td><td>${source(r)}</td><td>${stage(r.st)}</td><td><span class="chip c-g"><span class="dot"></span>${r.stat}</span></td><td>${r.tch==='never'?'<span class="never">never</span>':r.tch}</td><td>${r.fu?`<span class="fu">▣ ${r.fu}</span>`:'<span class="dim">—</span>'}</td><td>${owner(r)}</td><td style="text-align:right;white-space:nowrap">${r.own?'':'<button class="claim" type="button">Claim</button>'}<span class="dots">⋯</span></td></tr>`;
+const SORT_ICON={none:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l4-4 4 4M7 5v14M21 15l-4 4-4-4M17 19V5"/></svg>',up:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 19V5M6 11l6-6 6 6"/></svg>',down:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M6 13l6 6 6-6"/></svg>'};
+let sortState={col:null,dir:null};
+function th(label,col){const on=sortState.col===col;const ic=on?SORT_ICON[sortState.dir]:SORT_ICON.none;return `<th aria-sort="${on?(sortState.dir==='up'?'ascending':'descending'):'none'}"><button class="sort" type="button" data-col="${col}" ${on?'data-on':''}>${label}${ic}</button></th>`}
+function table(stage=stageA,rows=ROWS){return `<div class="tblbox"><table><colgroup><col style="width:44px"><col style="width:220px"><col><col style="width:140px"><col style="width:100px"><col style="width:104px"><col style="width:120px"><col style="width:140px"><col style="width:126px"></colgroup>
+<thead><tr><th><span class="cb"></span></th><th>Candidate</th><th>Source</th><th>Stage</th><th>Status</th>${th('Last touch','touch')}${th('Follow-up','followup')}<th>Owner</th><th></th></tr></thead><tbody>${rows.map(r=>row(r,stage)).join('')}</tbody></table></div>`}
+const tabs=`<div class="tabs" role="tablist"><button class="tab on" type="button">All <span class="n">6,242</span></button><span class="tab-sep" aria-hidden="true"></span><button class="tab muted" type="button" title="Leads nobody has started yet. They live in the Cold list too.">Not started <span class="n">5,007</span></button><span class="tab-sep" aria-hidden="true"></span>${[['New lead',213],['Engaged',26],['Offer',10],['Onboarding',437],['Joined',364],['Onboarded',185]].map(([l,n])=>`<button class="tab" type="button">${l} <span class="n">${n}</span></button>`).join('')}</div>`;
+const filterBar=`<div class="bar"><span class="ctl search">⌕&nbsp; Name, NMLS, company…</span><button class="ctl" type="button"><span class="k">Status:</span> Active <span class="chev"></span></button><button class="ctl" type="button"><span class="k">Source:</span> All sources <span class="chev"></span></button><button class="ctl" type="button"><span class="k">Label:</span> All labels <span class="chev"></span></button><button class="ctl" type="button">⊘ No owner yet</button><span class="grow"></span><button class="ctl icon" type="button" aria-label="Saved filters">🔖</button><button class="ctl icon on" type="button" aria-label="Table">☰</button><button class="ctl icon" type="button" aria-label="Board">▥</button><button class="ctl icon" type="button" aria-label="Cards">▦</button><button class="ctl icon" type="button" aria-label="Refresh">↻</button></div>`;
+function renderApp(){document.getElementById('app').innerHTML=`<h4>Pipeline</h4>${tabs}${filterBar}${table()}`;bindSort()}
+function bindSort(){document.querySelectorAll('.sort').forEach(b=>b.onclick=()=>{const c=b.dataset.col;
+  // touch: asc (least recent) -> desc (most recent) -> default; follow-up: asc (soonest) -> default
+  if(sortState.col!==c)sortState={col:c,dir:c==='touch'?'up':'up'};else if(c==='touch'&&sortState.dir==='up')sortState.dir='down';else sortState={col:null,dir:null};
+  renderApp();renderPoints()})}
+
+const P=[
+ {n:'Issue 1 · đã duyệt',t:'Tab "Not started" và cột gấp trên Board',p:'Tab Not started đứng sau All, chữ nhạt, số đếm viền đứt nét. Các tab cộng lại đúng bằng All. Trên Board, Not started là một dải gấp sẵn ở bên trái, chỉ hiện số lượng. Bấm vào thì chuyển sang bảng ở tab Not started, không render 5,000 thẻ.',b:'before_board.jpg',bw:1440,bh:1200,a:()=>`${tabs}<div style="height:12px"></div><div class="board"><div class="fold" role="button" tabindex="0" title="Open Not started in the table"><span>›</span><span class="chip c-gy" style="padding:1px 6px">5,007</span><span class="v">Not started</span></div>${STAGES.slice(0,3).map(([l,s],i)=>`<div class="col"><div class="col-h"><span>● ${l}</span><span class="chip c-gy">${[213,26,10][i]}</span></div>${ROWS.filter(r=>r.st===s).slice(0,2).map(r=>`<div class="card">${who(r)}<div>${`<span class="chip c-${r.src[1]}">${r.src[0]}</span>`}</div></div>`).join('')||'<div class="card dim">QA Tenmain #2</div>'}</div>`).join('')}</div>`},
+ {n:'Điểm 1',t:'Cột Candidate: chỉ avatar, tên, NMLS',p:'Dùng lại đúng ô của Hot leads và Cold list (LeadWhoCell). Bỏ icon gọi/email, email, state, chip "Check production first" và label. Email vẫn copy được từ menu ⋯. Label vẫn lọc được bằng bộ lọc. Lỗi mất tên (issue 2) hết luôn vì không còn chip chen vào dòng tên.',b:'before_1.jpg',bw:585,bh:781,a:()=>table(stageA,ROWS.slice(0,4))},
+ {n:'Điểm 2',t:'Độ rộng cột Candidate',p:'Hiện cột Candidate là cột co giãn duy nhất, nên màn càng rộng thì nó càng phình. Đổi thành rộng cố định 220px; phần dư dồn cho Source, cột có dòng "Invited by…" hay bị cắt nhất. Ở 1440px gần như không đổi; ở màn rộng hơn, Source rộng ra thay vì Candidate. My work today cũng đang cho cột Loan officer co giãn (1.1fr), có thể đổi tương tự nếu Bao muốn.'},
+ {n:'Điểm 3',t:'Cột Source và icon xác minh',p:'Source ở Pipeline, Hot leads, Cold list, Exceptions và Dormant đều dùng chung một component (LeadSourceCell), nên giống hệt nhau. Hot leads trông gọn hơn chỉ vì lead ở đó chưa có dòng người giới thiệu hay webinar. My work today không có cột Source. Icon xác minh đổi từ vòng xám 13px sang huy hiệu xanh 16px; sửa một chỗ là áp dụng cho cả 5 trang.',b:'before_2.jpg',bw:287,bh:936,a:()=>`<table class="cmp"><thead><tr><th>Trước</th><th>Sau</th></tr></thead><tbody>${ROWS.filter(r=>r.ref).map(r=>`<tr><td><span class="chip c-${r.src[1]}">${r.src[0]}</span><div class="sub"><span>${r.ref[0]}</span>${r.ref[1]?VF_OLD:''}</div></td><td>${source(r)}</td></tr>`).join('')}</tbody></table>`},
+ {n:'Điểm 4',t:'Cột Stage',p:'Ba cách ở phần cuối trang. Đề xuất cách A: 6 đoạn ứng với 6 stage, tô màu tới stage hiện tại. Nhìn là biết lead đang ở bước mấy, không cần số % (khoảng cách giữa các stage không bằng nhau nên % dễ gây hiểu nhầm).',b:'before_3.jpg',bw:863,bh:923},
+ {n:'Điểm 5',t:'Dropdown Status',p:'Bỏ phần giải thích ("— alive", "— parked", "— dropped"). Chỉ viết hoa chữ cái đầu. Bản tiếng Việt cũng đổi theo.',b:'before_4.jpg',bw:477,bh:460,a:()=>`<div style="display:flex;gap:14px;align-items:start;flex-wrap:wrap"><button class="ctl" type="button"><span class="k">Status:</span> Nurture <span class="chev"></span></button><div class="menu" role="listbox">${['All statuses','Active','Nurture','Archived','Blocked'].map(o=>`<button class="opt ${o==='Nurture'?'sel':''}" type="button">${o}${o==='Nurture'?'<span>✓</span>':''}</button>`).join('')}</div></div>`},
+ {n:'Điểm 6',t:'Sort trên tiêu đề cột, như Hot leads',p:'Sort hiện có 4 kiểu: Newest first, Least recently touched, Most recently touched, Follow-up soonest. Đưa lên tiêu đề cột: Last touch bấm lần 1 là lâu chưa chạm nhất, lần 2 là mới chạm nhất, lần 3 về mặc định. Follow-up bấm lần 1 là gần nhất, lần 2 về mặc định. Không bấm cột nào thì giữ Newest first như hôm nay. Bảng phía trên bấm thử được.',b:'before_5.jpg',bw:827,bh:593,a:()=>`<div class="tblbox" style="max-width:520px"><table><thead><tr><th>Stage</th><th>Status</th>${th('Last touch','touch')}${th('Follow-up','followup')}</tr></thead></table></div><p style="margin-top:10px;font-size:12.5px">Đang sort: <b>${sortState.col?({touch:{up:'Least recently touched first',down:'Most recently touched first'},followup:{up:'Follow-up soonest first'}})[sortState.col][sortState.dir]:'Newest first (mặc định)'}</b></p>`},
+ {n:'Điểm 7',t:'Bỏ More filters, đưa Source và Label ra ngoài',p:'Popup More filters chỉ còn Source và Label nên bỏ hẳn. Hai bộ lọc này đứng ngay cạnh Status. Cụm nút lưu bộ lọc, đổi kiểu xem và refresh vẫn ở bên phải. Ô tìm kiếm thu còn 250px để cả dãy vừa một hàng ở 1440px.',a:()=>filterBar},
+ {n:'Điểm 9',t:'Menu ⋯: bỏ Copy email và Copy số điện thoại',p:'NMLS đã hiện ngay trong ô Candidate; email và số điện thoại xem trong quick view. Sau khi bỏ, menu ⋯ chỉ còn mục đổi giai đoạn (điểm 10). Role không có quyền đổi giai đoạn (Onboarding, HR, Licensing, Accounting) sẽ không còn nút ⋯.',b:'before_6.jpg',bw:208,bh:105,a:()=>`<div class="menu" style="width:230px"><span class="eyebrow" style="padding:6px 10px">Change stage</span>${['New lead','Engaged','Offer'].map(o=>`<button class="opt" type="button">${o}</button>`).join('')}</div>`},
+ {n:'Điểm 10',t:'Đổi giai đoạn bằng tay: chỉ giữ 3 bước đầu',p:'Đã đọc code backend: Onboarding, Joined và Onboarded đều tự chuyển (Onboarding khi gửi lời mời; Joined khi offer đã ký và phí đã trả hoặc miễn, hoặc khi MOSO đẩy về; Onboarded khi HR và Licensing xong hoặc đã có setup call). Chuyển tay vào Joined mà chưa có offer ký thì backend từ chối, nên trong menu đó là ba lựa chọn gần như chắc lỗi. Ba bước đầu thì khác: New lead, Engaged, Offer cũng tự chuyển, nhưng hay cần sửa tay. Ví dụ: Loan Officer đồng ý qua Zalo hay gặp trực tiếp nên app không ghi nhận, hoặc cần lùi một lead bị đẩy nhầm (lùi tay còn chặn hệ thống tự đẩy lại). Đề xuất: menu chỉ còn New lead, Engaged, Offer (bỏ stage hiện tại), kèm một dòng nhỏ "Onboarding trở đi tự cập nhật". Nếu Bao muốn bỏ hẳn tính năng này thì cần quyết định riêng, vì đó là đổi chức năng chứ không chỉ giao diện.',b:'before_7.jpg',bw:221,bh:220,a:()=>`<div class="menu" style="width:250px"><span class="eyebrow" style="padding:6px 10px">Change stage</span>${['New lead','Offer'].map(o=>`<button class="opt" type="button">${o}</button>`).join('')}<span class="dim" style="font-size:12px;padding:6px 10px;border-top:1px solid var(--line);margin-top:4px">Onboarding, Joined and Onboarded update on their own.</span></div>`},
+ {n:'Điểm 11',t:'Có owner nhưng Last touch vẫn "never"',p:'"Last touch" chỉ tính liên lạc đi ra mà có ghi lại: bấm Call/SMS/Email trong app, hoặc tin gửi từ Omni. Nhiều cách có owner mà chưa liên lạc: bấm Claim, nhận lead hàng loạt ở Today, manager giao lead, Loan Officer tự đăng ký qua trang của Headhunter (tự gán owner), MOSO nhập kèm owner, gộp trùng. Một chỗ dễ nhầm: chỉ bấm Log result mà không bấm Call thì không tính là đã chạm. Đề xuất giao diện: lead có owner mà chưa chạm thì hiện "Not contacted" màu cam thay cho "never" màu đỏ. Lead chưa có owner vẫn giữ "never".',b:'before_8.jpg',bw:1655,bh:981,a:()=>`<table class="cmp"><thead><tr><th>Owner</th><th>Last touch · trước</th><th>Last touch · sau</th></tr></thead><tbody><tr><td>${owner(ROWS[2])}</td><td><span class="never">never</span></td><td><span class="chip c-a">Not contacted</span></td></tr><tr><td>${owner(ROWS[1])}</td><td><span class="never">never</span></td><td><span class="never">never</span></td></tr><tr><td>${owner(ROWS[5])}</td><td>5 days ago</td><td>5 days ago</td></tr></tbody></table>`},
+ {n:'Điểm 12',t:'Claim xong liên lạc ngay tại chỗ, như Hot leads',p:'Hiện tại Claim ở Pipeline chỉ hiện thông báo rồi tải lại; dòng đó chỉ đổi owner, không có nút nào để liên lạc. Ở Hot leads, Claim xong dòng vẫn đứng yên, có tag "Yours", nút Claim đổi thành dãy Call, SMS, Email, Open conversation và nút Log result (mở form ghi kết quả). Đề xuất dùng lại đúng dãy nút đó (ClaimedRowActions) cho Pipeline. Không cần API mới, cũng không phải chuyển sang /today.',a:()=>`<table class="cmp"><thead><tr><th>Ngay sau khi bấm Claim</th><th></th></tr></thead><tbody><tr><td>${who(ROWS[1])}</td><td style="text-align:right;white-space:nowrap"><span class="chip c-acc">Yours</span> <span class="ctl icon" style="height:30px;width:30px">✆</span> <span class="ctl icon" style="height:30px;width:30px">✉︎</span> <span class="ctl icon" style="height:30px;width:30px">@</span> <span class="ctl icon" style="height:30px;width:30px">💬</span> <button class="claim" type="button">Log result</button></td></tr></tbody></table>`},
+ {n:'Điểm 13',t:'Thanh khi tick chọn dòng',p:'Tham khảo Tera (trang Brokerages): khung cam viền, số đã chọn in đậm màu cam, mỗi nút có màu theo việc, nút bị khóa có câu giải thích ngay bên cạnh, nút X ở góc phải. HR app staging không có danh sách nào tick chọn được để chụp. HR app dùng chung component BulkActionBar của Tera. Đề xuất áp cùng kiểu đó cho Pipeline: Archive màu đỏ, Assign owner khi bị khóa thì ghi rõ lý do.',b:'before_9.jpg',bw:1631,bh:104,a:()=>`<div class="bulk"><b>2 selected</b><button class="bb dis" type="button" disabled>👤 Assign owner</button><button class="bb" type="button">⇩ Export CSV</button><button class="bb red" type="button">🗄 Archive…</button><span class="why">Assign owner: only for leads you own. Ask a manager to hand over the others.</span><button class="x" type="button" aria-label="Clear selection">✕</button></div><div style="margin-top:14px" class="shot"><img src="img/bulk_tera_brokerages.jpg" alt="Tera Brokerages bulk bar reference" width="1440" height="1000" loading="lazy"></div>`},
+];
+function renderPoints(){document.getElementById('points').innerHTML=P.map(x=>`<article class="pt"><div class="pt-h"><span class="num">${x.n}</span><h3>${x.t}</h3></div><p>${x.p}</p>${x.b||x.a?`<div class="ba">${x.b?`<figure class="before"><figcaption>Trước</figcaption><div class="shot"><img src="img/${x.b}" alt="Before: ${x.t}" width="${x.bw}" height="${x.bh}" loading="lazy"></div></figure>`:''}${x.a?`<figure class="after" ${x.b?'':'style="grid-column:1/-1"'}><figcaption>Sau</figcaption><div class="live">${x.a()}</div></figure>`:''}</div>`:''}</article>`).join('');bindSort()}
+document.getElementById('stageOpts').innerHTML=[
+ ['A','Đoạn theo bước','6 đoạn, tô tới stage hiện tại, màu theo nhóm stage. Không có %.',stageA,true],
+ ['B','Thanh kiểu HR Onboarding','Thanh dày 6px, màu theo % (cam, xanh dương, xanh lá), số % đậm bên phải.',stageB,false],
+ ['C','Chip kiểu HR Recruiting','Chỉ chip stage có chấm màu, không thanh. Gọn nhất, nhưng mất cảm giác "đi được bao xa".',stageC,false]
+].map(([k,t,d,f,rec])=>`<div class="optcard ${rec?'rec':''}"><div><span class="tag">CÁCH ${k}${rec?' · ĐỀ XUẤT':''}</span><h3>${t}</h3></div><p style="margin:0;color:var(--muted);font-size:13px">${d}</p><ul>${['S0','S1','S2','S4','S5','S6','S7'].map(s=>`<li>${f(s)}</li>`).join('')}</ul></div>`).join('');
+const TABDATA=[['All',6242,null],['Not started',5007,'S0'],['New lead',213,'S1'],['Engaged',26,'S2'],['Offer',10,'S4'],['Onboarding',437,'S5'],['Joined',364,'S6'],['Onboarded',185,'S7']];
+const fmt=n=>n.toLocaleString('en-US');
+document.getElementById('tabsTera').innerHTML=`<div class="utabs">${TABDATA.map(([l,n,s],i)=>`<button class="utab ${i===2?'on':''} ${s==='S0'?'muted':''}" type="button">${s&&s!=='S0'?`<span class="dot" style="background:${STC[s]}"></span>`:''}${l}<span class="uc">${fmt(n)}</span></button>`).join('')}</div>`;
+document.getElementById('tabsHr').innerHTML=`<div class="stabs">${TABDATA.map(([l,n],i)=>`<button class="stab ${i===2?'on':''}" type="button">${l} <span>${fmt(n)}</span></button>`).join('')}</div>`;
+document.getElementById('tabsNow').innerHTML=`<div class="tabs">${TABDATA.map(([l,n,s],i)=>`<button class="tab ${i===2?'on':''} ${s==='S0'?'muted':''}" type="button">${l} <span class="n">${fmt(n)}</span></button>`).join('')}</div>`;
+renderApp();renderPoints();
+</script>
