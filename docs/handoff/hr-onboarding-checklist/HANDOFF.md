@@ -28,7 +28,7 @@ tasks (HR / IT / manager steps) are **neither shown nor an S7 gate**; scope **st
   both HR steps were already ticked by hand) and the card shows HR docs **1 of 2 done** (`shots/stg-a1007-after-upload.png`).
 
 ## Open
-- **agentflow-79nv5**: staging has no `RECRUIT_POST_JOINED_RECONCILE_INTERNAL_API_KEY`, so the reconcile cron is NOT
+- **agentflow-79nv5 DONE 19/10**: key created + cron registered on staging (first sweep 16:15Z: 9 checked, 1 ticked, 0 failed; BOOTSTRAP #691). Old note: staging had no `RECRUIT_POST_JOINED_RECONCILE_INTERNAL_API_KEY`, so the reconcile cron was NOT
   registered ("cron NOT registered (key unset)"). Ticks fire only on HR events / one-off checks until it is added.
 - **For Hung (HR side):** to-do step `câc` (to-do #124) is linked into the LO checklist but the LO has **no such to-do
   in their to-do list** (View as a1007 → To-dos: not there), so nobody can complete it and HR to-do can never reach
