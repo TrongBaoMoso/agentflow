@@ -62,3 +62,8 @@ Tokens: docs/handoff/recruit-e2e-lab/scripts/auth.js login(). Preview: worktree 
 
 ## NOTE 19/10 late
 - Session agentflow-5d reports Bao unfroze PRODUCTION for recruit-be + recruit-fe and that agentflow-5d does the FF push (incl. fe #525). This session does NOT push prod; after their deploy, verify prod (Hot Assign, Exceptions badge/MOSO actions, chip, URL guards) if Bao asks.
+
+## DONE — PRODUCTION 19/10 (pushed by session agentflow-5d, verified here)
+- recruit-be production 98fe3a4f contains #684 #685 #687 #688 (deploy success; flyway V258, V259 success on prod).
+- recruit-fe production 6df12752 contains #534 #535 #536 #538 (deploy success).
+- Not measured with prod accounts (no prod test logins); staging measurements stand.
