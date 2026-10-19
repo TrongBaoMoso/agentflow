@@ -46,3 +46,10 @@ Tokens: docs/handoff/recruit-e2e-lab/scripts/auth.js login(). Preview: worktree 
 ## Agent state at pause
 - **be #685**: last sha 42158bf06e7bc9e5d06a8f6c2341c43fcc0fd51a, nothing uncommitted (worktree _worktrees/recruit-be-moso-actions). CI run 39236551652 was pending at pause. If MosoSyncActionsIT still fails: read logs via `gh api repos/LoanFactory-Inc/recruit-be/actions/jobs/<id>/logs`. S6 credit = OWNER like the automatic heal (one-word change to NONE if Bao wants).
 - **fe #535** https://github.com/LoanFactory-Inc/recruit-fe/pull/535 (feat/exceptions-badge-moso-actions): badge from /exceptions/counts (REPORT_TEAM, polls poll_after_seconds, hides 0/403/404) + MOSO row actions (confirm modals, OFFER_APPROVE gate, InviteModal `noApproveNow`, handled modal, STALE/NOT_ON_LIST toasts). 23 new tests, tsc/eslint clean, NOT reviewed, NOT run against real BE or a browser. To do: 2 reviewers; after be #685 on staging check the 409 code location (`conflictCode` in useMosoSyncActions.ts reads error_payload.code); measure MOSO table at 1280/1440 (long labels); then merge + promote staging.
+
+
+## UPDATE 19/10 evening (after resume)
+- be #685 merged fd99407f (3 IT fixture fixes: 42158bf0, 9c0d07f5, d140370b — no assertion loosened) → STAGING ✅ (moso-sync item has last_seen with Z; counts total 76).
+- fe #535 merged d72a30aa (reviewed twice; labels "Record signature"/"Record payment", InviteModal warning, 403/400 mapped) → STAGING ✅.
+- fe #536 merged 55004050 (owner cell wraps; claimed-idle table 0px overflow at 1280/1440) → STAGING ✅. Measured on staging: badge "Exceptions 76", recruiter has no Exceptions link.
+- PRODUCTION: NOT pushed. Both repos are under Bao's prod freeze (pipeline-scope-1910 HANDOFF): staging also carries be #677 (V258), fe #525 (w9fk4, staging-only per its window), #532, #533. Needs Bao's call.
