@@ -51,3 +51,6 @@ Then: 2 reviewers again (java-reviewer + security-reviewer), CI green, merge, pr
 - Verified on staging with lead QA Hhsignqmz (owned by HH): recruiter + role-onb get 404 identical to a random UUID (GET, PUT, activities, claim, onboarding-specialist, transition); search excludes it for recruiter/role-onb, includes it for manager; HH sees own; /users/names hides the owner name from recruiter; UI /pipeline?scope=all&q=Hhsignqmz: recruiter no row, manager row, no 5xx. Screenshots scratchpad pw/ui686_rec.png, ui686_mgr.png.
 - Accepted residuals in D283: /suppressions, owner ids on department routes, /users role list, old bells. Held-by-collector panel in Hot is now manager-only (follows Bao's rule).
 - PROD still frozen: BE staging-not-prod = #677, #684, #685, #686, #687, #688; FE = #525, #532, #533, #534 (+ other session's later ones). Waiting for Bao.
+
+## 19/10 ~21:30 — prod push handed to session agentflow-5d
+Peer session agentflow-5d says Bao unfroze PROD for recruit-be + recruit-fe and it is doing the FF origin/staging -> production (incl. fe #525). This session does NOT push prod. After it reports: verify origin/production contains be 78660803 (#686), b09cbbc9 (#677) and fe 963c4c9d (#532); V258 in prod flyway_schema_history.
