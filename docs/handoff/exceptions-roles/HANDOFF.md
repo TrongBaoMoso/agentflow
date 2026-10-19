@@ -59,3 +59,6 @@ Tokens: docs/handoff/recruit-e2e-lab/scripts/auth.js login(). Preview: worktree 
 - be #687 (D288: first-sight MOSO row with history maps like an import — IMPORT source, no hand-raise stamp; v2 stock arm closed) merged b64c9126 → STAGING. pipeline.v2_stages is TRUE on prod and staging.
 - be #688 (D289: admin-typed new row = MANUAL, no stamp, Cold; a real signal wins; later registration within hot.hand_raise_window_days stamps with min(now, clock); late referrer on a recent unstamped MANUAL row upgrades to REFERRAL) merged 2bdf6f80 → STAGING. Prod: 1011 rows have no registration baseline; only clocks inside the 3-day window can stamp.
 - PRODUCTION still frozen (Bao). Staging-not-prod now also includes #538, #687, #688.
+
+## NOTE 19/10 late
+- Session agentflow-5d reports Bao unfroze PRODUCTION for recruit-be + recruit-fe and that agentflow-5d does the FF push (incl. fe #525). This session does NOT push prod; after their deploy, verify prod (Hot Assign, Exceptions badge/MOSO actions, chip, URL guards) if Bao asks.
