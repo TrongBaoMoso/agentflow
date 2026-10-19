@@ -53,3 +53,9 @@ Tokens: docs/handoff/recruit-e2e-lab/scripts/auth.js login(). Preview: worktree 
 - fe #535 merged d72a30aa (reviewed twice; labels "Record signature"/"Record payment", InviteModal warning, 403/400 mapped) → STAGING ✅.
 - fe #536 merged 55004050 (owner cell wraps; claimed-idle table 0px overflow at 1280/1440) → STAGING ✅. Measured on staging: badge "Exceptions 76", recruiter has no Exceptions link.
 - PRODUCTION: NOT pushed. Both repos are under Bao's prod freeze (pipeline-scope-1910 HANDOFF): staging also carries be #677 (V258), fe #525 (w9fk4, staging-only per its window), #532, #533. Needs Bao's call.
+
+## UPDATE 19/10 night
+- fe #538 (Archived/Nurture chip on Hot) merged f06e7214 → STAGING; measured with a patched Hot response: chip 18px, no row growth, no overflow 1440 light / 375 dark.
+- be #687 (D288: first-sight MOSO row with history maps like an import — IMPORT source, no hand-raise stamp; v2 stock arm closed) merged b64c9126 → STAGING. pipeline.v2_stages is TRUE on prod and staging.
+- be #688 (D289: admin-typed new row = MANUAL, no stamp, Cold; a real signal wins; later registration within hot.hand_raise_window_days stamps with min(now, clock); late referrer on a recent unstamped MANUAL row upgrades to REFERRAL) merged 2bdf6f80 → STAGING. Prod: 1011 rows have no registration baseline; only clocks inside the 3-day window can stamp.
+- PRODUCTION still frozen (Bao). Staging-not-prod now also includes #538, #687, #688.
