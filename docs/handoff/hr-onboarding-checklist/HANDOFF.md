@@ -35,3 +35,30 @@ tasks (HR / IT / manager steps) are **neither shown nor an S7 gate**; scope **st
   1/1 except by Complete onboarding. Also the step title "câc" looks like test data.
 - Production: not touched (flag default false). Needs ai-hr-be #1116 on prod + Bao's go.
 - Slack draft for Hung: in the session reply (Bao sends).
+
+---
+
+# RESUME POINT 2026-10-19 (paused for shutdown) — Licensing states (agentflow-1kw50)
+
+**Bao 19/10 OK:** under the Licensing step, list each applied-for state (`candidates.sponsor_states`) with ONLY
+Sponsored / Not sponsored yet / No license yet (NO "In process"; recruit only cares sponsored yes/no; nothing needed
+from Hung). Header states the rule, never "x of y": "1 state needed" (or "1 license needed" when no applied-for
+states) → "AL sponsored"; other states fold under "N more". **Visibility only — LicensingInference /
+HrLicensingProcessor unchanged (D257: one applied-for state sponsored = done).** Same flow as w9fk4: 2 reviewers per
+side → CI → merge → promote STAGING → screenshots; **no prod**; no local preview needed.
+
+- Mockup v2 (approved): https://claude.ai/artifact/8Fw3ZHQaVRoSjM44kniF4L
+- Contract: `GET /api/v1/candidates/{id}/onboarding-progress/licences` →
+  `{state: AVAILABLE|NO_ACCOUNT|UNAVAILABLE|DISABLED, rule: ANY_APPLIED_STATE|ANY_LICENSE, sponsored_state, states:[{state, license_name, status: SPONSORED|NOT_SPONSORED|NO_LICENSE, sponsored_date}]}`; non-AVAILABLE = only `state`.
+- WIP worktrees (local commits, NOT pushed — see bead notes for SHAs):
+  - BE `/Users/apple/Projects/agentflow/recruit-be-worktrees/1kw50-lic` (branch `feat/1kw50-licence-states`)
+  - FE `/Users/apple/Projects/agentflow/recruit-fe-worktrees/1kw50-lic` (branch `feat/1kw50-licence-states`)
+- Next steps: finish/verify each side (BE: full unit suite, NOT integrationTest locally — Docker on the Mac hung; CI
+  runs it. D-number: check master AND open PRs, CI guard rejects collisions); 2 reviewers per side; push + PR; CI;
+  merge BE first → `gh workflow run promote-staging.yml -f sha=<merge sha>` → confirm cd-staging; then FE; screenshot
+  LO bao.trinh+a3009f (candidate 73fd9c9c-ae63-4ac7-8ffe-2347a49f3798: applied AK/AL/TX, AL licence not sponsored).
+- Test in HR staging with **chauchau** (full permissions): Associates → QA Anewe → Licenses → Edit licenses → AL
+  Sponsored = Sponsored → recruit should auto-tick Licensing and header "AL sponsored".
+
+Other open items: agentflow-79nv5 (staging reconcile cron key); Bao will reproduce + explain the HR to-do list naming
+issue he saw with Hung.
