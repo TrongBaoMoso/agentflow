@@ -66,3 +66,7 @@ Headhunter Pipeline: no Owner column, no No owner yet (old ?owner=none ignored),
 - #686 on prod: 0 HEADHUNTER/TEAM_LEAD grant users and 0 leads they own (positive control staging: 2 users / 13 leads) — nothing hidden on prod yet; staging behaviour verified earlier.
 - Worktrees removed: recruit-fe .worktrees/{pipe-balance,timecell,scope,hh-owner}, _worktrees/recruit-be-{anytouch,hh-visibility}. No dev server of this session running.
 - Left open (backlog, not blocking): agentflow-nl92f (P3 meetingWhen raw Date), agentflow-4k8xs.5, agentflow-4k8xs.6 (P3), epic agentflow-4k8xs. Open PRs under the same GitHub user belong to other sessions (fe #542 #515 #318, be #690).
+
+## Night 19→20/10 — P3 beads (away window, Bao: to PROD unless staging carries another session's unapproved PR)
+- fe #546 (agentflow-4k8xs.6, board waits for view config + skeleton) and fe #545 (agentflow-nl92f, meeting/setup-call zone, intlZone helper): 2 reviewers each APPROVE, merged, on STAGING (verified: board reads S1,S2,S4,S5,S6,S7 only, no S0; Today no raw Date). PROD HELD: staging also carries #547 (other session's Exceptions UI, staging-only per its away window). agentflow-5d will push the whole batch after Bao approves Exceptions UI.
+- be #695 (agentflow-4k8xs.5, departed-owner batch + auto claim, D294): round 1 REQUEST CHANGES from both reviewers (program members without grant treated as departed), fixes in progress. Prod measured: 0 ACTIVE departed-owner rows; prod PG 18.1, staging 18.0.
