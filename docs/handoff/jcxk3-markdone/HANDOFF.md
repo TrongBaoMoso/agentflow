@@ -1,6 +1,8 @@
 # HANDOFF — 19/10 evening: OB Mark done on a started 1-1 (agentflow-jcxk3) + MOSO OB flag (agentflow-7v6p8)
 
-Paused 19/10 ~17:30 (+07) because Bao shut the machine down. Nothing pushed, nothing on staging.
+**UPDATE 19/10 evening: jcxk3 is ON STAGING** (recruit-fe #537 squash 17df61f1, 2 reviewers APPROVE, cd-staging success). Not on production (prod frozen; ask Bao). 7v6p8 still waits for Bao's answer (fill MOSO test values?).
+
+Paused 19/10 ~17:30 (+07) because Bao shut the machine down.
 
 ## 1. agentflow-jcxk3: Today, "Mark done" on a 1-1 that has started (recruit-fe, UI only)
 
