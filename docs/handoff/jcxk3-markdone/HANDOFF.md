@@ -64,3 +64,12 @@ MOSO Admin lacks is_onboarding_specialist.
 - slpfp BE: recruit-be #690 merged 2a7e0e1a, ON STAGING (V260 applied, API verified). Bead agentflow-slpfp.
 - In flight: agent be-slpfp → recruit-be branch feat/xh8dp-ob-followups (worktree recruit-be-worktrees/xh8dp): xh8dp LOW fixes + POST /onboarding/specialists/{userId}/clear-hold (REPORT_TEAM). Agent fe-slpfp → recruit-fe branch feat/slpfp-ob-picker (worktree recruit-fe-worktrees/slpfp-picker): held specialists greyed "Not on MOSO yet", clear-hold button, SPECIALIST_CHANGED bell copy.
 - Each PR: 2 reviewers + CI → merge → promote staging → verify. Morning: report + prod list for Bao.
+
+## MORNING STATE 20/10 ~02:15 (overnight done, staging only)
+- recruit-be #690 (2a7e0e1a, D292, V260): staging + PRODUCTION (pushed by session agentflow-5d against Bao's no-prod answer; measured inert on prod: no PACKS_WRITEBACK / ONBOARDING_WRITEBACK / ONBOARDING_V2_HANDOFF flags, positive control 6 FEATURES vars).
+- recruit-be #694 (6e3990fd, D295): STAGING only. Bell follow-ups + POST /onboarding/specialists/{userId}/clear-hold (REPORT_TEAM). Verified on staging: manager (role-officer) 200, onb-test 403, unknown id 404.
+- recruit-fe #544 (8f1d9444): STAGING only. Held specialists greyed "Not on MOSO yet" (tooltip explains), e-mail under each name, REPORT_TEAM "Clear hold" (vi "Cho chọn lại"), SPECIALIST_CHANGED bell copy, HOLD_CLEARED audit copy. Verified live on staging (Team queue → Onboarding → Needs owner → 1-1s only → Pick a specialist first). Shots: docs/handoff/slpfp-picker/shots/.
+- Reviews: every PR 2 reviewers APPROVE after fix rounds; CI incl. Integration tests green.
+- Open LOW beads: agentflow-p45by (BE), agentflow-q6kia (FE).
+- Waiting Bao: production for be #694 + fe #544 (agentflow-5d promised not to push them without Bao's OK).
+- Bao re-test: QA Tenaeboard is in Needs owner (its pick was cleared by the 19/10 refusal) → assign role-officer → recruiter Prepare offer / Go to onboarding → OB bell should ring only after MOSO accepts; no "no longer handed".
