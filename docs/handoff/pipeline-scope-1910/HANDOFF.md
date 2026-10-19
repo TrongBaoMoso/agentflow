@@ -58,3 +58,11 @@ Peer session agentflow-5d says Bao unfroze PROD for recruit-be + recruit-fe and 
 ## 19/10 ~22:30 — fe #541 on STAGING
 Headhunter Pipeline: no Owner column, no No owner yet (old ?owner=none ignored), Your candidates chip removed for all. Merged e9426806, staging verified (hh, hh ?owner=none not empty, team lead keeps Owner + No owner yet, recruiter unchanged). Screenshots scratchpad pw/stg541_*.png. PROD: staging also carries other session's #540 (Licensing) — not pushed.
 - 19/10 ~23:00: fe #541 ON PRODUCTION (e9426806, image sha256:670fae0e, 4/4 pods ready). GitHub showed the run as 'waiting' after the deployment succeeded (GitHub API flaky).
+
+## CLOSE-OUT AUDIT 19/10 ~23:20 (measured, not from memory) — SESSION CLOSED
+- Both repos: production = staging = master (fe e9426806, be 98fe3a4f); nothing waiting.
+- All 13 PRs of this session are ancestors of origin/production: fe #523 #524 #526 #527 #528 #529 #530 #532 #541; be #674 #677 #678 #686. Local-only pipe-balance commits verified inside #523 (TimeCell, pagerSlots, assign picker, compact cells, cards/board v2).
+- Prod pods: recruit-fe 4/4 on sha256:670fae0e (#541); recruit-be 2/2. Prod flyway V257/V258/V259 success; stage_entered_at null = 0 of 1144.
+- #686 on prod: 0 HEADHUNTER/TEAM_LEAD grant users and 0 leads they own (positive control staging: 2 users / 13 leads) — nothing hidden on prod yet; staging behaviour verified earlier.
+- Worktrees removed: recruit-fe .worktrees/{pipe-balance,timecell,scope,hh-owner}, _worktrees/recruit-be-{anytouch,hh-visibility}. No dev server of this session running.
+- Left open (backlog, not blocking): agentflow-nl92f (P3 meetingWhen raw Date), agentflow-4k8xs.5, agentflow-4k8xs.6 (P3), epic agentflow-4k8xs. Open PRs under the same GitHub user belong to other sessions (fe #542 #515 #318, be #690).
