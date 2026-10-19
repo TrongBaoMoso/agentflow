@@ -73,3 +73,6 @@ Tokens: docs/handoff/recruit-e2e-lab/scripts/auth.js login(). Preview: worktree 
 - Every commit of this work is an ancestor of origin/production: be 8ecd19ee (#681), 32219ddc (#684), fd99407f (#685), b64c9126 (#687), 2bdf6f80 (#688); fe 9144f344 (#531), 7bdfb433 (#534), d72a30aa (#535), 55004050 (#536), f06e7214 (#538).
 - recruit-be prod pods 2/2 run sha256:aeea52df…, the digest the production build and deploy jobs both log.
 - Not checked in a prod browser (no prod test accounts in this session).
+
+## UPDATE 19/10 late night
+- fe #542 merged b14e9cde → STAGING (verified manager: picker has no HOT note, scroller 338/338 no horizontal scroll, detail line "Role · Role", bulk bar directly above the table). Prod not pushed yet.
