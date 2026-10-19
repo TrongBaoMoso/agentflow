@@ -59,3 +59,8 @@ MOSO Admin lacks is_onboarding_specialist.
 ## Answered to Bao this session (confirm when back)
 - Why "no longer handed to you" (above).
 - When Mark done appears: after start + duration (default 30 min); setup-call rows always have it.
+
+## OVERNIGHT 19→20/10 (Bao away, staging only, NO prod) — memory feedback_away_window_1920_ob_moso
+- slpfp BE: recruit-be #690 merged 2a7e0e1a, ON STAGING (V260 applied, API verified). Bead agentflow-slpfp.
+- In flight: agent be-slpfp → recruit-be branch feat/xh8dp-ob-followups (worktree recruit-be-worktrees/xh8dp): xh8dp LOW fixes + POST /onboarding/specialists/{userId}/clear-hold (REPORT_TEAM). Agent fe-slpfp → recruit-fe branch feat/slpfp-ob-picker (worktree recruit-fe-worktrees/slpfp-picker): held specialists greyed "Not on MOSO yet", clear-hold button, SPECIALIST_CHANGED bell copy.
+- Each PR: 2 reviewers + CI → merge → promote staging → verify. Morning: report + prod list for Bao.
