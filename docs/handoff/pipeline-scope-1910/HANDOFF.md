@@ -57,3 +57,4 @@ Peer session agentflow-5d says Bao unfroze PROD for recruit-be + recruit-fe and 
 
 ## 19/10 ~22:30 — fe #541 on STAGING
 Headhunter Pipeline: no Owner column, no No owner yet (old ?owner=none ignored), Your candidates chip removed for all. Merged e9426806, staging verified (hh, hh ?owner=none not empty, team lead keeps Owner + No owner yet, recruiter unchanged). Screenshots scratchpad pw/stg541_*.png. PROD: staging also carries other session's #540 (Licensing) — not pushed.
+- 19/10 ~23:00: fe #541 ON PRODUCTION (e9426806, image sha256:670fae0e, 4/4 pods ready). GitHub showed the run as 'waiting' after the deployment succeeded (GitHub API flaky).
