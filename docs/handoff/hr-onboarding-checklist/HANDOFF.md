@@ -62,3 +62,16 @@ side → CI → merge → promote STAGING → screenshots; **no prod**; no local
 
 Other open items: agentflow-79nv5 (staging reconcile cron key); Bao will reproduce + explain the HR to-do list naming
 issue he saw with Hung.
+
+---
+
+# DONE 2026-10-19 22:xx — Licensing states (agentflow-1kw50)
+
+| Repo | PR | Merge | Staging | Production |
+|---|---|---|---|---|
+| recruit-be | #689 (D291) | 98fe3a4f | deployed | **deployed** by agentflow-5d's prod FF (before our hold message arrived); pods healthy, 0 ERROR |
+| recruit-fe | #540 | 561a42cb | deployed | NOT yet (prod FE pinned at 6df12752); told agentflow-5d it is OK after the staging test passed |
+
+- D291 also changed the Licensing tick: applied-for values read as US codes (`UsStateCodes`: code, full name, "CA-DFPI"→CA; junk ignored → any-licence fallback). Measured prod: 125/1,158 values non-code; 124 LOs, none with an HR account yet, so no prod LO affected today.
+- Staging verified: endpoint AVAILABLE for a3009f (AL sponsored); mapping checked by temporarily setting sponsor_states to ["Alaska","alabama","TX-NMLS","Mary"] (restored to ["AK","AL","TX"]); card screenshots `shots/lic-desk-light.png`, `lic-desk-dark.png`, `lic-phone.png`.
+- Review nits not done (LOW): scoped actors (HH/TL) get 403 on /licences and /hr-checklist (not in ScopedRouteAllowlist) — FE renders nothing; unknown status shown raw.
