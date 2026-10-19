@@ -45,3 +45,9 @@ Then: 2 reviewers again (java-reviewer + security-reviewer), CI green, merge, pr
 ## RESUMED 19/10 evening
 - BE prod now ALSO has #681 + #682 (pushed by another session/Bao). BE staging-not-prod: #677 (mine) + #684 (other session, D286 exceptions badge). FE staging-not-prod: #525, #532, #533, #534 (#534 other session). Freeze still holds because of #684/#525/#534.
 - #686 tip 2a7d4f5b (WIP write-path fixes) — CI red: HeadhunterRowScopeIT "WRITE: the HH cannot edit the figures and channel that decide program credit". New agent be-hh-visibility2 finishing + verifying all items.
+
+## 19/10 21:00 — #686 DONE on STAGING
+- Merged 78660803 (squash, after java-reviewer + security-reviewer APPROVE at 4eb5fe4b; last rounds: follower guard, getParameterValues, role cache, held-list IT). Promoted to staging, cd-staging success.
+- Verified on staging with lead QA Hhsignqmz (owned by HH): recruiter + role-onb get 404 identical to a random UUID (GET, PUT, activities, claim, onboarding-specialist, transition); search excludes it for recruiter/role-onb, includes it for manager; HH sees own; /users/names hides the owner name from recruiter; UI /pipeline?scope=all&q=Hhsignqmz: recruiter no row, manager row, no 5xx. Screenshots scratchpad pw/ui686_rec.png, ui686_mgr.png.
+- Accepted residuals in D283: /suppressions, owner ids on department routes, /users role list, old bells. Held-by-collector panel in Hot is now manager-only (follows Bao's rule).
+- PROD still frozen: BE staging-not-prod = #677, #684, #685, #686, #687, #688; FE = #525, #532, #533, #534 (+ other session's later ones). Waiting for Bao.
