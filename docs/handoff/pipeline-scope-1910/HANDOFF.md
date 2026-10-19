@@ -41,3 +41,7 @@ Then: 2 reviewers again (java-reviewer + security-reviewer), CI green, merge, pr
 - Staging tokens: playwright scripts in scratchpad `pw/` (tok.js, tok_rec.js, tok_hh.js, tok_tl.js) write ~/.cache/claude-recruit/preview/stg_*.token; login helper docs/handoff/recruit-e2e-lab/scripts/auth.js.
 - Read-only prod/staging SQL: temp pod postgres:18-alpine + envFrom recruit-svc-secret, ns recruit-be; contexts gke_lender-rate_us-central1_moso-gke (prod), gke_lenderrate-master_us-central1_moso-kube (staging); PGOPTIONS default_transaction_read_only=on.
 - UI research report: https://claude.ai/artifact/3doW8eoshm5Nxkpgdj5LS3 (patterns #2 #3 #5 done; others open).
+
+## RESUMED 19/10 evening
+- BE prod now ALSO has #681 + #682 (pushed by another session/Bao). BE staging-not-prod: #677 (mine) + #684 (other session, D286 exceptions badge). FE staging-not-prod: #525, #532, #533, #534 (#534 other session). Freeze still holds because of #684/#525/#534.
+- #686 tip 2a7d4f5b (WIP write-path fixes) — CI red: HeadhunterRowScopeIT "WRITE: the HH cannot edit the figures and channel that decide program credit". New agent be-hh-visibility2 finishing + verifying all items.
