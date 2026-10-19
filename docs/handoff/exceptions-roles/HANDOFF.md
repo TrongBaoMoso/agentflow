@@ -67,3 +67,9 @@ Tokens: docs/handoff/recruit-e2e-lab/scripts/auth.js login(). Preview: worktree 
 - recruit-be production 98fe3a4f contains #684 #685 #687 #688 (deploy success; flyway V258, V259 success on prod).
 - recruit-fe production 6df12752 contains #534 #535 #536 #538 (deploy success).
 - Not measured with prod accounts (no prod test logins); staging measurements stand.
+
+## DONE 19/10 late: PRODUCTION verified by this session
+- Pushed by agentflow-5d (Bao unfroze prod). recruit-be production = 98fe3a4f, recruit-fe production = 6df12752; both cd-production runs success (be 14:43Z, fe 14:50Z).
+- Every commit of this work is an ancestor of origin/production: be 8ecd19ee (#681), 32219ddc (#684), fd99407f (#685), b64c9126 (#687), 2bdf6f80 (#688); fe 9144f344 (#531), 7bdfb433 (#534), d72a30aa (#535), 55004050 (#536), f06e7214 (#538).
+- recruit-be prod pods 2/2 run sha256:aeea52df…, the digest the production build and deploy jobs both log.
+- Not checked in a prod browser (no prod test accounts in this session).
