@@ -50,7 +50,7 @@ side → CI → merge → promote STAGING → screenshots; **no prod**; no local
 - Mockup v2 (approved): https://claude.ai/artifact/8Fw3ZHQaVRoSjM44kniF4L
 - Contract: `GET /api/v1/candidates/{id}/onboarding-progress/licences` →
   `{state: AVAILABLE|NO_ACCOUNT|UNAVAILABLE|DISABLED, rule: ANY_APPLIED_STATE|ANY_LICENSE, sponsored_state, states:[{state, license_name, status: SPONSORED|NOT_SPONSORED|NO_LICENSE, sponsored_date}]}`; non-AVAILABLE = only `state`.
-- WIP worktrees (local commits, NOT pushed — see bead notes for SHAs):
+- Local commits, NOT pushed, NOT reviewed yet — BE 7698dade (D289), FE eb24f460:
   - BE `/Users/apple/Projects/agentflow/recruit-be-worktrees/1kw50-lic` (branch `feat/1kw50-licence-states`)
   - FE `/Users/apple/Projects/agentflow/recruit-fe-worktrees/1kw50-lic` (branch `feat/1kw50-licence-states`)
 - Next steps: finish/verify each side (BE: full unit suite, NOT integrationTest locally — Docker on the Mac hung; CI
