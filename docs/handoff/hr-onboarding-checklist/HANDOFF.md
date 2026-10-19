@@ -80,5 +80,5 @@ issue he saw with Hung.
 
 # PRODUCTION switch-on 2026-10-19 ~17:00Z (Bao approved)
 - **Post-Joined reconcile ON in production:** `RECRUIT_POST_JOINED_RECONCILE_INTERNAL_API_KEY` patched by hand into prod `recruit-svc-secret` (64-hex), setting `onboarding.progress_reconcile_enabled` = true (via settings API as Bao's ADMIN grant, in-cluster curl pod), rollout restart; pods log `cron registered`; first sweep 17:00Z: 0 candidates, 0 failed (prod has 0 S6 with an HR account).
-- **HR onboarding flag for production:** recruit-be #692 (values) merged e1545508 + promoted to staging. **Takes effect at the next recruit-be production FF** — handed to agentflow-5d (prod owner), because staging also carries #690 (another session). Until that FF, prod pods still run with the flag off.
+- **HR onboarding flag for production: LIVE** (agentflow-5d released #692; prod pod env RECRUIT_HR_UPDATE_ONBOARDING_ENABLED=true measured). Was: recruit-be #692 (values) merged e1545508 + promoted to staging — handed to agentflow-5d (prod owner), because staging also carries #690 (another session). Until that FF, prod pods still run with the flag off.
 - Verify after the FF: prod pod env `RECRUIT_HR_UPDATE_ONBOARDING_ENABLED=true`.
