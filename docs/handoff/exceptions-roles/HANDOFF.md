@@ -76,3 +76,4 @@ Tokens: docs/handoff/recruit-e2e-lab/scripts/auth.js login(). Preview: worktree 
 
 ## UPDATE 19/10 late night
 - fe #542 merged b14e9cde → STAGING (verified manager: picker has no HOT note, scroller 338/338 no horizontal scroll, detail line "Role · Role", bulk bar directly above the table). Prod not pushed yet.
+- fe #542 → PRODUCTION b14e9cde (Bao approved 19/10 ~23:40), deploy result in cd-production run.
