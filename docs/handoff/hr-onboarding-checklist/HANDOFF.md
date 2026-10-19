@@ -75,3 +75,10 @@ issue he saw with Hung.
 - D291 also changed the Licensing tick: applied-for values read as US codes (`UsStateCodes`: code, full name, "CA-DFPI"→CA; junk ignored → any-licence fallback). Measured prod: 125/1,158 values non-code; 124 LOs, none with an HR account yet, so no prod LO affected today.
 - Staging verified: endpoint AVAILABLE for a3009f (AL sponsored); mapping checked by temporarily setting sponsor_states to ["Alaska","alabama","TX-NMLS","Mary"] (restored to ["AK","AL","TX"]); card screenshots `shots/lic-desk-light.png`, `lic-desk-dark.png`, `lic-phone.png`.
 - Review nits not done (LOW): scoped actors (HH/TL) get 403 on /licences and /hr-checklist (not in ScopedRouteAllowlist) — FE renders nothing; unknown status shown raw.
+
+---
+
+# PRODUCTION switch-on 2026-10-19 ~17:00Z (Bao approved)
+- **Post-Joined reconcile ON in production:** `RECRUIT_POST_JOINED_RECONCILE_INTERNAL_API_KEY` patched by hand into prod `recruit-svc-secret` (64-hex), setting `onboarding.progress_reconcile_enabled` = true (via settings API as Bao's ADMIN grant, in-cluster curl pod), rollout restart; pods log `cron registered`; first sweep 17:00Z: 0 candidates, 0 failed (prod has 0 S6 with an HR account).
+- **HR onboarding flag for production:** recruit-be #692 (values) merged e1545508 + promoted to staging. **Takes effect at the next recruit-be production FF** — handed to agentflow-5d (prod owner), because staging also carries #690 (another session). Until that FF, prod pods still run with the flag off.
+- Verify after the FF: prod pod env `RECRUIT_HR_UPDATE_ONBOARDING_ENABLED=true`.
