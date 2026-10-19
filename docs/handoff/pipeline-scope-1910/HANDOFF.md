@@ -54,3 +54,6 @@ Then: 2 reviewers again (java-reviewer + security-reviewer), CI green, merge, pr
 
 ## 19/10 ~21:30 — prod push handed to session agentflow-5d
 Peer session agentflow-5d says Bao unfroze PROD for recruit-be + recruit-fe and it is doing the FF origin/staging -> production (incl. fe #525). This session does NOT push prod. After it reports: verify origin/production contains be 78660803 (#686), b09cbbc9 (#677) and fe 963c4c9d (#532); V258 in prod flyway_schema_history.
+
+## 19/10 ~22:30 — fe #541 on STAGING
+Headhunter Pipeline: no Owner column, no No owner yet (old ?owner=none ignored), Your candidates chip removed for all. Merged e9426806, staging verified (hh, hh ?owner=none not empty, team lead keeps Owner + No owner yet, recruiter unchanged). Screenshots scratchpad pw/stg541_*.png. PROD: staging also carries other session's #540 (Licensing) — not pushed.
