@@ -82,3 +82,10 @@ Tokens: docs/handoff/recruit-e2e-lab/scripts/auth.js login(). Preview: worktree 
 - be #693 (D293: unowned list + /duplicates need CLAIM or REPORT_TEAM; dept-role list narrowed to owned + own-specialist rows; rebased onto D294 unowned(memberUserIds)) merged ac2398a8 → STAGING. fe #543 (No owner yet toggle needs CLAIM/REPORT_TEAM incl. ADMIN *, Cold URL guardRoles) merged e80f45b8 → STAGING. Measured per role on staging.
 - be #696 (D296: counts COUNT path) approved by 2 reviewers; CI IT failing (3) — being investigated.
 - My overnight CI watcher was broken (zsh word-splitting) from 00:20 to 07:08 — lost ~6h.
+
+## PAUSE 20/10 morning (Bao going to the office)
+- DONE to STAGING overnight: be #693 (D293) ac2398a8 + fe #543 e80f45b8 — measured per role. Bead wuv9s closed. PROD not pushed: needs Bao.
+- IN FLIGHT: be #696 (D296, agentflow-eqh8p, perf COUNT path for /exceptions/counts). Real bug found by CI (unbound :establishedSince → 500) fixed in 34f4e838 + HotIdleReleaseStoreClockQueryTest; CI fully green on 34f4e838; both reviewers APPROVE (A re-reviewed the fix). Branch updated to master → head 0f271938, CI was running at pause.
+  Resume: gh pr checks 696 -R LoanFactory-Inc/recruit-be → if green: squash-merge, gh workflow run promote-staging.yml -R LoanFactory-Inc/recruit-be -f sha=<merge sha>, wait cd-staging, then curl /exceptions/counts as manager (expect same numbers as before, e.g. total 76-ish) and recruiter 403.
+- Then ask Bao for PROD of: be #693 + #696, fe #543 (FE first or together with BE #693 — the No-owner toggle must be hidden before BE 403s it).
+- Lesson: in zsh never loop with `set -- $pr` (no word splitting) — use one-variable loops.
