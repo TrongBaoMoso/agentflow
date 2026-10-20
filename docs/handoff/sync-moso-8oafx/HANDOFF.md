@@ -3,15 +3,18 @@
 Away window night 21->22/10 (memory feedback_away_window_2122_8oafx_sync.md): recruit-be/fe -> STAGING only, no prod. packs PR only.
 Design: `bd show agentflow-8oafx` notes "PROPOSAL CONFIRMED".
 
-## State (update as you go)
+## State (update as you go) — 22/10 ~04:30
 | Piece | Where | Status |
 |---|---|---|
-| recruit-be | PR #704, branch feature/identity-writeback-8oafx, worktree recruit-be-worktrees/identity-8oafx | pushed; unit suite green (5747); CI IdentityWritebackIT failed once on the specialist MOSO_FIELD_CHANGED bell (owner got it, specialist 0); diagnostic commit 79c33e85 pushed, read the CI message |
-| packs master | PR #3721, branch feat/recruit-identity-sync-8oafx, worktree _worktrees/packs-identity-8oafx | open, not merged (Khai). 322 RecruitApi*/V2 tests green locally |
-| packs 3.64.1 | PR #3722, branch hf/3.64.1-recruit-identity-sync-8oafx, worktree _worktrees/packs-identity-8oafx-3641 | open, not merged. 294 green (base 3.64.1 installed locally) |
-| recruit-fe | worktree recruit-fe-worktrees/identity-8oafx, branch feature/identity-writeback-8oafx | code written, NOT committed yet; jest 620 green on Bell/Drawer/EditModal suites |
-| reviews | - | not done (the overnight lead is a fork and cannot spawn reviewer agents) |
-| staging | - | not promoted |
+| recruit-be | PR #704, branch feature/identity-writeback-8oafx, worktree recruit-be-worktrees/identity-8oafx, head 9cb8745f+d660a969 | 2 review rounds addressed (be-A, be-B, be-R2); round 3 (be-R3) running; unit 5753 green; IT fixed by seeding a claimed entity (d660a969), CI rerun pending |
+| packs master | PR #3721 (3 commits, head 3684294d284) | Repo Owner round 2 APPROVE; round-2 LOWs fixed; 14 identity tests green; not merged (Khai) |
+| packs 3.64.1 | PR #3722 (same 3 commits) | 14 green on 3.64.1; not merged |
+| recruit-fe | PR #556, head 85bd174c | 2 reviews addressed (fe-A approve, fe-B changes -> fixed); fe-R2 running; 59 suites / 690 tests green locally |
+| reviews | headless `command claude -p` read-only (the lead is a fork, no Agent tool) | outputs in session scratchpad reviews/*.md |
+| staging | - | not promoted yet |
+
+Design change in round 2 (D303 point 5): no unfreeze. A fix stays in recruiter_locked_fields; after SYNCED / CHANGED_IN_MOSO only the live webhook treats it as unfrozen (MosoFieldSync#mosoOwnedAgainFieldKeys).
+Follow-ups: agentflow-wzkts (packs), agentflow-swd7k (fe).
 
 ## Key facts
 - packs WRITABLE_FIELDS already accepts first_name/last_name/phone/nmls (3.64.1 + master); only email is excluded (lookup key) -> recruit sends `new_email`.
