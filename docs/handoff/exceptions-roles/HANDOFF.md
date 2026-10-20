@@ -89,3 +89,7 @@ Tokens: docs/handoff/recruit-e2e-lab/scripts/auth.js login(). Preview: worktree 
   Resume: gh pr checks 696 -R LoanFactory-Inc/recruit-be → if green: squash-merge, gh workflow run promote-staging.yml -R LoanFactory-Inc/recruit-be -f sha=<merge sha>, wait cd-staging, then curl /exceptions/counts as manager (expect same numbers as before, e.g. total 76-ish) and recruiter 403.
 - Then ask Bao for PROD of: be #693 + #696, fe #543 (FE first or together with BE #693 — the No-owner toggle must be hidden before BE 403s it).
 - Lesson: in zsh never loop with `set -- $pr` (no word splitting) — use one-variable loops.
+
+## 20/10 morning resume
+- be #696 (D296) merged dc2b54ec → STAGING; measured counts 71 == list 71 past deadline; recruiter 403.
+- Waiting on Bao: PROD for be #693 + #696 and fe #543 (FE #543 first or together with BE #693).
