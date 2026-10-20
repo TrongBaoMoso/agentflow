@@ -77,3 +77,8 @@ Tokens: docs/handoff/recruit-e2e-lab/scripts/auth.js login(). Preview: worktree 
 ## UPDATE 19/10 late night
 - fe #542 merged b14e9cde → STAGING (verified manager: picker has no HOT note, scroller 338/338 no horizontal scroll, detail line "Role · Role", bulk bar directly above the table). Prod not pushed yet.
 - fe #542 → PRODUCTION b14e9cde (Bao approved 19/10 ~23:40), deploy result in cd-production run.
+
+## OVERNIGHT 19→20/10 (Bao asleep; staging only)
+- be #693 (D293: unowned list + /duplicates need CLAIM or REPORT_TEAM; dept-role list narrowed to owned + own-specialist rows; rebased onto D294 unowned(memberUserIds)) merged ac2398a8 → STAGING. fe #543 (No owner yet toggle needs CLAIM/REPORT_TEAM incl. ADMIN *, Cold URL guardRoles) merged e80f45b8 → STAGING. Measured per role on staging.
+- be #696 (D296: counts COUNT path) approved by 2 reviewers; CI IT failing (3) — being investigated.
+- My overnight CI watcher was broken (zsh word-splitting) from 00:20 to 07:08 — lost ~6h.
