@@ -46,3 +46,8 @@ Production: none of the above pushed to production (Bao decides prod).
 2. #702: final confirm by 2 reviewers on `490d5cfa`; merge (squash, subject "... (D302) (#702)"); promote recruit-be staging.
 3. Ask Bao whether to message Khải to deploy packs 3.64.1 (`e3f3f98093`); then the smoke test + flag + backfill (OPEN item 3).
 4. Next feature: experience chip/filter/reports on rows (OPEN item 4).
+
+## Progress after resume (20/10 night)
+- recruit-be #702 MERGED (`8c064b0d`, includes upgrade-only decide() + reason sentences) and on STAGING (cd-staging success). Flag `packs.writeback.experience_enabled` OFF.
+- recruit-fe #554: real bug found — controlled Popover never called onClose, so Escape/outside click did nothing; fixed via onChange (`7caa6dd5`), OnBehalfConfirm 9/9, CI green. Final 2-reviewer confirm running.
+- Side effect: a mis-targeted promote ran recruit-fe promote-staging with master tip `93323d15` → put another session's merged #553 (Follow-ups modal spacing) on staging early. Nothing of #554 went out.
