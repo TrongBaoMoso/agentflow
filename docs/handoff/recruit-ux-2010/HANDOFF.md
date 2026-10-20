@@ -10,7 +10,7 @@ Resume: `claude --resume 15297c09-59ed-49cc-b5da-67d3cf96e298` from ~/Projects/a
   - Before the next prod FF: ask the owners of #550, #552, #698 (rule: memory feedback_prod_pusher_ask_pr_owner_first).
 
 ## In flight when paused
-- recruit-fe worktree `recruit-fe-worktrees/popup-everywhere`, branch `feat/popup-tabs-everywhere`, LOCAL WIP commit 3352e9fc (not pushed). Read WIP-NOTES.md there first. Done: shared opener, classic paths removed, loading skeleton, src/shared tests. Left: src/app tests, 1 failing FollowUpsPanel.logResultV3 test, per-surface tests + negative controls, tsc/lint/full jest/build, local preview, screenshots.
+- DONE: popup-tabs-everywhere merged as recruit-fe #555 (0b353055) and on STAGING 20/10; today-old kept (bead agentflow-676kt reminds removal); follow-up bead agentflow-odtil.
   Bao decision 20/10: ONE popup (tabs Call result / Conversation / Profile) everywhere; Call/Log result -> Call result tab, SMS/Email/Conversation -> Conversation tab; no classic single modals anywhere (Today rows, Hot, Cold, Pipeline, Exceptions, Team queue, Focus, drawer, /candidates/[id], bell links); remove "Classic" from Call view; replace "Loading..." in the popup with a skeleton + Mantine Loader. Workspace (full page) keep/remove = agent to propose, Bao to decide.
   Next steps: finish implementation + tests + negative controls -> local preview (proxy :3610, next dev :3611) -> Bao OK -> PR -> 2 reviewers -> CI -> merge -> promote-staging. No prod.
 
