@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Log result next step</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Tokens: TERA people sheet (light) + recruit accent. Cool neutrals only, no warm greys. */
+:root {
+  --page: #eef0f3;
+  --card: #ffffff;
+  --card-2: #f8f9fa;
+  --track: #f1f3f5;
+  --line: #dee2e6;
+  --line-soft: #e9ecef;
+  --line-strong: #ced4da;
+  --ink: #212529;
+  --ink-soft: #343a40;
+  --ink-mute: #495057;
+  --ink-faint: #6b7280;
+  --acc: #e35a0d;
+  --acc-hover: #c94e0a;
+  --acc-soft: #ffefe2;
+  --acc-ink: #9a3b05;
+  --r-xs: 6px; --r-sm: 8px; --r-md: 11px; --r-lg: 14px; --r-full: 999px;
+  --ctl-h: 36px;
+  --font: 'Public Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --fast: 150ms;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 14px/1.45 var(--font); -webkit-font-smoothing: antialiased; }
+svg.i { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ── Board ─────────────────────────────── */
+.board { max-width: 1260px; margin: 0 auto; padding: 32px 24px 64px; }
+.board > header h1 { margin: 0 0 4px; font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+.board > header p { margin: 0 0 28px; color: var(--ink-mute); max-width: 70ch; }
+.variant { margin-bottom: 48px; }
+.variant-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px; }
+.variant-letter { display: grid; place-items: center; width: 30px; height: 30px; border-radius: var(--r-sm); background: var(--ink); color: #fff; font-weight: 700; align-self: center; }
+.variant-head h2 { margin: 0; font-size: 17px; font-weight: 700; }
+.variant-head p { margin: 0; color: var(--ink-mute); }
+.frames { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start; }
+.frame-desk { width: 760px; max-width: 100%; }
+.frame-phone { width: 390px; max-width: 100%; }
+.frame-cap { font-size: 12px; color: var(--ink-faint); margin: 0 0 6px; }
+
+/* ── Modal shell ───────────────────────── */
+.modal { container-type: inline-size; background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 12px 32px -12px rgba(16,24,40,.14); overflow: hidden; }
+.frame-phone .modal { border-radius: 18px; }
+.m-head { display: flex; align-items: center; gap: 10px; padding: 16px 20px; border-bottom: 1px solid var(--line-soft); }
+.m-head h3 { margin: 0; font-size: 16px; font-weight: 700; }
+.m-who { color: var(--ink-mute); font-size: 13px; }
+.m-x { margin-left: auto; width: 28px; height: 28px; display: grid; place-items: center; border-radius: var(--r-sm); color: var(--ink-faint); }
+.m-body { display: flex; flex-direction: column; gap: 14px; padding: 18px 20px; background: var(--card-2); }
+.m-foot { display: flex; justify-content: flex-end; gap: 10px; padding: 14px 20px; border-top: 1px solid var(--line-soft); }
+@container (max-width: 520px) {
+  .m-head, .m-body, .m-foot { padding-left: 14px; padding-right: 14px; }
+  .m-foot .btn { flex: 1; }
+}
+
+/* ── Shared pieces: Offer card, tile, inputs, buttons ── */
+.card { display: flex; flex-direction: column; gap: 12px; min-width: 0; padding: 16px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--card); }
+.card-head { display: flex; align-items: center; gap: 10px; }
+.card-title { margin: 0; font-size: 14px; font-weight: 700; line-height: 1.3; }
+.tile { display: grid; place-items: center; flex: none; width: 30px; height: 30px; border-radius: var(--r-sm); background: var(--acc-soft); color: var(--acc-ink); }
+.lbl { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; color: var(--ink-soft); }
+.lbl .opt { font-weight: 400; color: var(--ink-faint); }
+.field { min-width: 0; }
+.input { display: flex; align-items: center; gap: 8px; height: var(--ctl-h); padding: 0 12px; border: 1px solid var(--line-strong); border-radius: var(--r-sm); background: var(--card); color: var(--ink); font: inherit; width: 100%; white-space: nowrap; overflow: hidden; }
+.input .i { color: var(--ink-faint); }
+.input .chev { margin-left: auto; }
+.input:hover { border-color: #adb5bd; }
+.input:focus-visible, .input.is-focus { outline: none; border-color: var(--acc); box-shadow: 0 0 0 3px color-mix(in srgb, var(--acc) 18%, transparent); }
+textarea.input { height: auto; min-height: 112px; padding: 10px 12px; line-height: 1.5; resize: vertical; white-space: normal; display: block; }
+.count { font-size: 12px; color: var(--ink-faint); text-align: right; margin-top: 4px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: var(--ctl-h); padding: 0 16px; border-radius: var(--r-sm); font: 600 14px/1 var(--font); border: 1px solid var(--line-strong); background: var(--card); color: var(--ink); cursor: pointer; }
+.btn-primary { background: var(--acc); border-color: var(--acc); color: #fff; }
+.btn-primary:hover { background: var(--acc-hover); }
+.btn:focus-visible, .pill:focus-visible, .seg button:focus-visible, .tab:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+
+/* Pills (A + B): 36px, icon + label */
+.pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill { display: inline-flex; align-items: center; gap: 7px; height: var(--ctl-h); padding: 0 14px 0 12px; border: 1px solid var(--line); border-radius: var(--r-full); background: var(--card); color: var(--ink-soft); font: 500 14px/1 var(--font); cursor: pointer; transition: border-color var(--fast) ease, background-color var(--fast) ease; }
+.pill .i { color: var(--ink-faint); }
+.pill:hover { border-color: color-mix(in srgb, var(--acc) 45%, var(--line)); }
+.pill[aria-checked="true"] { border-color: var(--acc); background: var(--acc-soft); color: var(--acc-ink); font-weight: 600; box-shadow: inset 0 0 0 1px var(--acc); }
+.pill[aria-checked="true"] .i { color: var(--acc); }
+
+/* Segmented control (A + C) */
+.seg { display: inline-flex; padding: 3px; gap: 2px; border-radius: var(--r-sm); background: var(--track); border: 1px solid var(--line-soft); height: var(--ctl-h); flex: none; }
+.seg button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 0 12px; border: 0; border-radius: 6px; background: transparent; color: var(--ink-mute); font: 500 13px/1 var(--font); cursor: pointer; white-space: nowrap; }
+.seg button:hover { color: var(--ink); }
+.seg button[aria-checked="true"] { background: var(--card); color: var(--ink); font-weight: 600; box-shadow: 0 1px 2px rgba(16,24,40,.08), 0 0 0 1px var(--line); }
+.seg button[aria-checked="true"] .i { color: var(--acc); }
+
+/* ── A: Compact pills ──────────────────── */
+.a-row { display: flex; align-items: flex-end; gap: 10px; }
+.a-row .grow { flex: 1; min-width: 0; }
+.a-when .field-date { flex: 1.3; }
+.a-when .field-time { flex: 1; }
+@container (max-width: 520px) {
+  .a-row { flex-wrap: wrap; }
+  .a-when .seg { width: 100%; }
+  .a-when .seg button { flex: 1; }
+  .a-when .field-date, .a-when .field-time { flex: 1 1 40%; }
+  .a-how .grow { flex-basis: 100%; }
+  .next-pills .pill { flex: 1 1 calc(50% - 4px); justify-content: center; }
+}
+
+/* ── B: Two columns ───────────────────── */
+.b-step { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.b-step .card-head { min-width: 110px; }
+.b-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); border: 1px solid var(--line-soft); border-radius: var(--r-md); }
+.b-col { padding: 14px; min-width: 0; }
+.b-col + .b-col { border-left: 1px solid var(--line-soft); }
+.b-col h4 { margin: 0 0 10px; font-size: 13px; font-weight: 700; color: var(--ink); }
+.radio-list { display: flex; flex-direction: column; gap: 4px; }
+.radio { display: flex; align-items: center; gap: 10px; padding: 7px 8px; border-radius: var(--r-sm); font-weight: 500; color: var(--ink-soft); cursor: pointer; }
+.radio:hover { background: var(--card-2); }
+.radio .dot { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--line-strong); background: var(--card); flex: none; display: grid; place-items: center; }
+.radio[aria-checked="true"] { color: var(--ink); font-weight: 600; }
+.radio[aria-checked="true"] .dot { border-color: var(--acc); }
+.radio[aria-checked="true"] .dot::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--acc); }
+.b-dt { display: grid; grid-template-columns: 1.3fr 1fr; gap: 8px; margin: 4px 0 0 36px; }
+.b-how { display: flex; flex-direction: column; gap: 12px; }
+.chips { display: flex; gap: 8px; }
+.chips .pill { flex: 1; justify-content: center; }
+@container (max-width: 520px) {
+  .b-cols { grid-template-columns: 1fr; }
+  .b-col + .b-col { border-left: 0; border-top: 1px solid var(--line-soft); }
+  .b-dt { margin-left: 0; }
+  .b-step .pills { width: 100%; }
+  .b-step .pill { flex: 1 1 calc(50% - 4px); justify-content: center; }
+}
+
+/* ── C: Composer ───────────────────────── */
+.c-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 3px; padding: 3px; border-radius: var(--r-md); background: var(--track); border: 1px solid var(--line-soft); }
+.tab { display: flex; align-items: center; justify-content: center; gap: 7px; height: 38px; border: 0; border-radius: var(--r-sm); background: transparent; color: var(--ink-mute); font: 500 14px/1 var(--font); cursor: pointer; white-space: nowrap; }
+.tab:hover { color: var(--ink); background: color-mix(in srgb, var(--card) 55%, transparent); }
+.tab[aria-checked="true"] { background: var(--card); color: var(--ink); font-weight: 600; box-shadow: 0 1px 2px rgba(16,24,40,.08), 0 0 0 1px var(--line); }
+.tab[aria-checked="true"] .i { color: var(--acc); }
+.composer { border: 1px solid var(--line-strong); border-radius: var(--r-md); background: var(--card); overflow: hidden; }
+.composer:focus-within { border-color: var(--acc); box-shadow: 0 0 0 3px color-mix(in srgb, var(--acc) 15%, transparent); }
+.c-bar { display: flex; align-items: center; gap: 10px; padding: 8px; border-bottom: 1px solid var(--line-soft); }
+.c-bar .seg { height: 32px; }
+.c-tpl { flex: 1; min-width: 0; height: 32px; border: 0; padding: 0 8px; }
+.c-tpl:hover { background: var(--card-2); }
+.c-msg { display: block; width: 100%; min-height: 108px; padding: 12px 14px; border: 0; resize: vertical; font: 14px/1.55 var(--font); color: var(--ink); outline: none; }
+.c-meta { display: flex; justify-content: flex-end; padding: 0 14px 8px; font-size: 12px; color: var(--ink-faint); }
+.c-when { display: flex; align-items: flex-end; gap: 10px; }
+.c-when .field-date { flex: 1.3; }
+.c-when .field-time { flex: 1; }
+@container (max-width: 520px) {
+  .c-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .c-bar { flex-wrap: wrap; gap: 6px; }
+  .c-bar .seg { width: 100%; }
+  .c-bar .seg button { flex: 1; }
+  .c-tpl { flex-basis: 100%; }
+  .c-when { flex-wrap: wrap; }
+  .c-when .seg { width: 100%; }
+  .c-when .seg button { flex: 1; }
+  .c-when .field-date, .c-when .field-time { flex: 1 1 40%; }
+}
+
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M10 14l11 -11"/><path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5"/></symbol>
+  <symbol id="i-webinar" viewBox="0 0 24 24"><path d="M3 4l18 0"/><path d="M4 4v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-10"/><path d="M12 16l0 4"/><path d="M9 20l6 0"/><path d="M8 12l3 -3l2 2l3 -3"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M5 7a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"/><path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0 -3 -3.85"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z"/><path d="M3 7l9 6l9 -6"/></symbol>
+  <symbol id="i-sms" viewBox="0 0 24 24"><path d="M8 9h8"/><path d="M8 13h6"/><path d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12z"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/></symbol>
+  <symbol id="i-caltime" viewBox="0 0 24 24"><path d="M11.8 21h-5.8a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4"/><path d="M14 18a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.5v1.5l.5 .5"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"/><path d="M12 7v5l3 3"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6l6 -6"/></symbol>
+  <symbol id="i-next" viewBox="0 0 24 24"><path d="M15 14l4 -4l-4 -4"/><path d="M19 10h-11a4 4 0 1 0 0 8h1"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/><path d="M9 13l6 0"/><path d="M9 17l6 0"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6l-12 12"/><path d="M6 6l12 12"/></symbol>
+</svg>
+
+<main class="board">
+  <header>
+    <h1>Log result: Next step, three layouts</h1>
+    <p>Same state in each: Send info, Schedule for later, SMS. Desktop modal at 760px, phone at 390px.</p>
+  </header>
+
+  <section class="variant" id="variant-a" aria-labelledby="ha">
+    <div class="variant-head"><span class="variant-letter">A</span><h2 id="ha">Compact pills</h2><p>One pill row for the step, one Send card with two dense rows.</p></div>
+    <div class="frames"><div class="frame-desk"><p class="frame-cap">Desktop 760</p><div class="slot" data-tpl="tpl-a"></div></div><div class="frame-phone"><p class="frame-cap">Phone 390</p><div class="slot" data-tpl="tpl-a"></div></div></div>
+  </section>
+
+  <section class="variant" id="variant-b" aria-labelledby="hb">
+    <div class="variant-head"><span class="variant-letter">B</span><h2 id="hb">When and How</h2><p>Two columns side by side, message across the full width.</p></div>
+    <div class="frames"><div class="frame-desk"><p class="frame-cap">Desktop 760</p><div class="slot" data-tpl="tpl-b"></div></div><div class="frame-phone"><p class="frame-cap">Phone 390</p><div class="slot" data-tpl="tpl-b"></div></div></div>
+  </section>
+
+  <section class="variant" id="variant-c" aria-labelledby="hc">
+    <div class="variant-head"><span class="variant-letter">C</span><h2 id="hc">Composer</h2><p>Step as a segmented bar; channel and template live in the message box toolbar.</p></div>
+    <div class="frames"><div class="frame-desk"><p class="frame-cap">Desktop 760</p><div class="slot" data-tpl="tpl-c"></div></div><div class="frame-phone"><p class="frame-cap">Phone 390</p><div class="slot" data-tpl="tpl-c"></div></div></div>
+  </section>
+</main>
+
+<!-- Shared modal chrome is inlined in each template so every frame is a complete screenshot. -->
+<template id="tpl-a">
+  <div class="modal">
+    <div class="m-head"><h3>Log result</h3><span class="m-who">Marcus Reyes</span><span class="m-x"><svg class="i"><use href="#i-x"/></svg></span></div>
+    <div class="m-body">
+      <section class="card" aria-label="Next step">
+        <div class="card-head"><span class="tile"><svg class="i"><use href="#i-next"/></svg></span><div class="card-title">Next step</div></div>
+        <div class="pills next-pills" role="radiogroup" aria-label="Next step">
+          <button class="pill" role="radio" aria-checked="false"><svg class="i"><use href="#i-phone"/></svg>Call again</button>
+          <button class="pill" role="radio" aria-checked="true"><svg class="i"><use href="#i-send"/></svg>Send info</button>
+          <button class="pill" role="radio" aria-checked="false"><svg class="i"><use href="#i-webinar"/></svg>Webinar</button>
+          <button class="pill" role="radio" aria-checked="false"><svg class="i"><use href="#i-users"/></svg>Meet 1-1</button>
+        </div>
+      </section>
+      <section class="card" aria-label="Send info">
+        <div class="card-head"><span class="tile"><svg class="i"><use href="#i-send"/></svg></span><div class="card-title">Send info</div></div>
+        <div class="a-row a-when">
+          <div class="seg" role="radiogroup" aria-label="When to send">
+            <button role="radio" aria-checked="false"><svg class="i"><use href="#i-send"/></svg>Send now</button>
+            <button role="radio" aria-checked="true"><svg class="i"><use href="#i-caltime"/></svg>Schedule</button>
+          </div>
+          <div class="field field-date"><label class="lbl">Send on</label><div class="input"><svg class="i"><use href="#i-cal"/></svg>Thu, Oct 23, 2026</div></div>
+          <div class="field field-time"><label class="lbl">Time <span class="opt">(optional)</span></label><div class="input"><svg class="i"><use href="#i-clock"/></svg>10:00 AM</div></div>
+        </div>
+        <div class="a-row a-how">
+          <div class="field"><label class="lbl">Send via</label>
+            <div class="pills" role="radiogroup" aria-label="Send via">
+              <button class="pill" role="radio" aria-checked="false"><svg class="i"><use href="#i-mail"/></svg>Email</button>
+              <button class="pill" role="radio" aria-checked="true"><svg class="i"><use href="#i-sms"/></svg>SMS</button>
+            </div>
+          </div>
+          <div class="field grow"><label class="lbl">Template</label><div class="input"><svg class="i"><use href="#i-file"/></svg>Comp plan overview<svg class="i chev"><use href="#i-chev"/></svg></div></div>
+        </div>
+        <div class="field"><label class="lbl">Message</label>
+          <textarea class="input" rows="4">Hi Marcus, it's Dana from Loan Factory. Here's the comp plan and tools overview we talked about: lfac.co/lo-plan. Happy to walk you through it on Thursday.</textarea>
+          <div class="count">156 / 320</div>
+        </div>
+      </section>
+    </div>
+    <div class="m-foot"><button class="btn">Cancel</button><button class="btn btn-primary">Save result</button></div>
+  </div>
+</template>
+
+<template id="tpl-b">
+  <div class="modal">
+    <div class="m-head"><h3>Log result</h3><span class="m-who">Marcus Reyes</span><span class="m-x"><svg class="i"><use href="#i-x"/></svg></span></div>
+    <div class="m-body">
+      <section class="card" aria-label="Next step">
+        <div class="b-step">
+          <div class="card-head"><span class="tile"><svg class="i"><use href="#i-next"/></svg></span><div class="card-title">Next step</div></div>
+          <div class="pills" role="radiogroup" aria-label="Next step">
+            <button class="pill" role="radio" aria-checked="false"><svg class="i"><use href="#i-phone"/></svg>Call again</button>
+            <button class="pill" role="radio" aria-checked="true"><svg class="i"><use href="#i-send"/></svg>Send info</button>
+            <button class="pill" role="radio" aria-checked="false"><svg class="i"><use href="#i-webinar"/></svg>Webinar</button>
+            <button class="pill" role="radio" aria-checked="false"><svg class="i"><use href="#i-users"/></svg>Meet 1-1</button>
+          </div>
+        </div>
+        <div class="b-cols">
+          <div class="b-col">
+            <h4>When</h4>
+            <div class="radio-list" role="radiogroup" aria-label="When to send">
+              <div class="radio" role="radio" aria-checked="false" tabindex="0"><span class="dot"></span>Send now</div>
+              <div class="radio" role="radio" aria-checked="true" tabindex="0"><span class="dot"></span>Schedule for later</div>
+            </div>
+            <div class="b-dt">
+              <div class="field"><label class="lbl">Send on</label><div class="input"><svg class="i"><use href="#i-cal"/></svg>Oct 23, 2026</div></div>
+              <div class="field"><label class="lbl">Time</label><div class="input"><svg class="i"><use href="#i-clock"/></svg>10:00 AM</div></div>
+            </div>
+          </div>
+          <div class="b-col b-how">
+            <div><h4>How</h4>
+              <div class="chips" role="radiogroup" aria-label="Send via">
+                <button class="pill" role="radio" aria-checked="false"><svg class="i"><use href="#i-mail"/></svg>Email</button>
+                <button class="pill" role="radio" aria-checked="true"><svg class="i"><use href="#i-sms"/></svg>SMS</button>
+              </div>
+            </div>
+            <div class="field"><label class="lbl">Template</label><div class="input"><svg class="i"><use href="#i-file"/></svg>Comp plan overview<svg class="i chev"><use href="#i-chev"/></svg></div></div>
+          </div>
+        </div>
+        <div class="field"><label class="lbl">Message</label>
+          <textarea class="input" rows="4">Hi Marcus, it's Dana from Loan Factory. Here's the comp plan and tools overview we talked about: lfac.co/lo-plan. Happy to walk you through it on Thursday.</textarea>
+          <div class="count">156 / 320</div>
+        </div>
+      </section>
+    </div>
+    <div class="m-foot"><button class="btn">Cancel</button><button class="btn btn-primary">Save result</button></div>
+  </div>
+</template>
+
+<template id="tpl-c">
+  <div class="modal">
+    <div class="m-head"><h3>Log result</h3><span class="m-who">Marcus Reyes</span><span class="m-x"><svg class="i"><use href="#i-x"/></svg></span></div>
+    <div class="m-body">
+      <section class="card" aria-label="Next step">
+        <div class="card-head"><span class="tile"><svg class="i"><use href="#i-next"/></svg></span><div class="card-title">Next step</div></div>
+        <div class="c-steps" role="radiogroup" aria-label="Next step">
+          <button class="tab" role="radio" aria-checked="false"><svg class="i"><use href="#i-phone"/></svg>Call again</button>
+          <button class="tab" role="radio" aria-checked="true"><svg class="i"><use href="#i-send"/></svg>Send info</button>
+          <button class="tab" role="radio" aria-checked="false"><svg class="i"><use href="#i-webinar"/></svg>Webinar</button>
+          <button class="tab" role="radio" aria-checked="false"><svg class="i"><use href="#i-users"/></svg>Meet 1-1</button>
+        </div>
+        <div class="composer">
+          <div class="c-bar">
+            <div class="seg" role="radiogroup" aria-label="Send via">
+              <button role="radio" aria-checked="false"><svg class="i"><use href="#i-mail"/></svg>Email</button>
+              <button role="radio" aria-checked="true"><svg class="i"><use href="#i-sms"/></svg>SMS</button>
+            </div>
+            <div class="input c-tpl" aria-label="Template"><svg class="i"><use href="#i-file"/></svg>Comp plan overview<svg class="i chev"><use href="#i-chev"/></svg></div>
+          </div>
+          
+          <textarea class="c-msg" rows="4" aria-label="Message">Hi Marcus, it's Dana from Loan Factory. Here's the comp plan and tools overview we talked about: lfac.co/lo-plan. Happy to walk you through it on Thursday.</textarea>
+          <div class="c-meta">156 / 320</div>
+        </div>
+        <div class="c-when">
+          <div class="seg" role="radiogroup" aria-label="When to send">
+            <button role="radio" aria-checked="false"><svg class="i"><use href="#i-send"/></svg>Send now</button>
+            <button role="radio" aria-checked="true"><svg class="i"><use href="#i-caltime"/></svg>Schedule</button>
+          </div>
+          <div class="field field-date"><label class="lbl">Send on</label><div class="input"><svg class="i"><use href="#i-cal"/></svg>Thu, Oct 23, 2026</div></div>
+          <div class="field field-time"><label class="lbl">Time <span class="opt">(optional)</span></label><div class="input"><svg class="i"><use href="#i-clock"/></svg>10:00 AM</div></div>
+        </div>
+      </section>
+    </div>
+    <div class="m-foot"><button class="btn">Cancel</button><button class="btn btn-primary">Schedule SMS</button></div>
+  </div>
+</template>
+
+<script>
+  document.querySelectorAll('.slot').forEach((slot) => {
+    slot.appendChild(document.getElementById(slot.dataset.tpl).content.cloneNode(true));
+  });
+</script>
+</body>
+</html>
