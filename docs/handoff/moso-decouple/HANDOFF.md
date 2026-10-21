@@ -1,0 +1,127 @@
+# Recruit ⇢ off old MOSO — HANDOFF
+
+Session `460363a7` (21/10/2026). PAUSED by Bao, waiting for his go-ahead and decisions (§5). Nothing was coded, merged or deployed. All work so far is research.
+
+## RESUME HERE
+
+1. Read this file, then §4 (plan) and §5 (decisions).
+2. Ask Bao: does he approve the direction in §4, and what are his answers to §5?
+3. Once approved: create one bd epic "Recruit off old MOSO" with one child bead per phase (0–6), and wire the dependencies listed in §4. Don't create beads before he approves.
+4. Optional (offered, not asked for yet): publish §2–§5 as a shareable page for the team.
+
+## 1. What was done
+
+- Bao asked for **every** Recruit dependency on the old MOSO system. Three independent auditors read recruit-be @`8c064b0d` and recruit-fe @`0b353055` plus the MOSO repos (`git grep`/`git show`, read-only):
+  - `audits/A-code-forward.md`: 81 items, recruit code → outbound.
+  - `audits/B-reverse-from-moso.md`: 61 items, MOSO side → recruit (packs `3.64.1` treated as prod).
+  - `audits/C-business-flows.md`: 71 items, traced per business flow, with runtime config. (`C-fe-notes.md` was lost when /tmp was wiped; its findings are already in C §2.P.)
+- The lead merged and deduped them into **85 items in 12 groups**, verified the disputed points itself, and measured production (§3).
+- Bao then asked for a plan to become independent of old MOSO, by owning each capability in Recruit or by using other non-MOSO services. Two researchers mapped replacements across the whole org:
+  - `replacements/R1-replacements-leads-data.md`: lead intake, identity, Loan Officer data, opt-outs, webinars, referrals, moso-aid, Cold pool.
+  - `replacements/R2-replacements-comms-onboarding.md`: email, templates, reminders, e-sign, portal and fee, accounts, staff identity, bell, omni, hosting.
+  - Plus R2 helper notes: `email-templates-bell.md`, `esign-portal-payment-hr.md`, `identity-accounts-hosting.md`.
+- The audit files were rebuilt from the agents' transcripts after `/private/tmp` was wiped. If one is missing here, the facts in §2–§3 are the authoritative summary.
+
+## 2. Scope: what counts as "old MOSO"
+
+- **Remove:**
+  - `packs` + `moso`: the GAE monolith at `www.loanfactory.com/api/*`.
+  - MOSO Datastore: SystemProps and Templates.
+  - `moso-aid`: Node + Mongo, keyed by MOSO Admin keys, reads MOSO webplus.
+- **Keep** (these are platform services, not old MOSO):
+  - omni-service.
+  - moso-notifier: prod is notifier-be on Postgres since 18/10; the Go notification-service waves run 26/10–03/11.
+  - cron-service-go, tera-core, gateway.
+  - GCP project `lender-rate` and clusters `moso-gke`/`moso-kube`. This is simply the company GCP; **no move needed**.
+- **Platform-owned** (not Recruit's work):
+  - MOSO SSO in auth-service (`iss https://www.loanfactory.com`).
+  - user-service copying users from MOSO.
+  - zoom-go `los_user_id`.
+
+## 3. Facts verified by the lead (not just reported by agents)
+
+- **Prod recruit → packs write-back is OFF.** Measured with kubectl, read-only, on 21/10, context `gke_lender-rate_us-central1_moso-gke`, ns `recruit-be`, key names plus boolean flags only:
+  - Neither the deployment env nor `recruit-svc-secret` has `RECRUIT_FEATURES_PACKS_WRITEBACK`, `AGREEMENT_SEND`, `ONBOARDING_WRITEBACK` or `ONBOARDING_V2_HANDOFF`.
+  - So in prod an Offer is marked SENT and **no invite email goes out from Recruit**.
+  - Prod env flags that are set: `ONBOARDING_REMINDERS=true`, `NURTURE_FOLLOWUP=true`, `GOOGLE_CONNECT=true`, `HR_HANDOFF_PUBLISH=true`, `HR_HANDOFF_AUTO_SEND=false`, `POST_JOINED_PROGRESS=true`, `OMNI_INBOUND_REPLY_ENABLED=true`, `OMNI_FOLLOWER_ROLE_ENABLED=true`.
+  - The secret has 24 keys, including `MOSO_WEBHOOK_API_KEY`, `RECRUIT_API_KEY`, `PACKS_WRITEBACK_INTERNAL_API_KEY`, `RECRUIT_MOSO_SIGNED_RECONCILE_INTERNAL_API_KEY`, `RECRUIT_MOSO_AID_BASE_URL` and `RECRUIT_MOSO_AID_ROSTER_KEY`.
+  - Consequence: the signed-reconcile cron (20 min) **does** register in prod. Auditors B and C had guessed it did not.
+- **packs `GET /api/recruit/v1/webinars` exists on BOTH `3.64.1` and master** (`RecruitAPI.java:270`). Auditor C was wrong.
+- **The omni reply-address endpoint is missing** from omni master and production. It exists only on `origin/feat/subject-reply-address` (PR #608, no reviews). On staging, the recruit flag silently falls back to the recruiter as Reply-To.
+- **moso-notifier has no RECRUIT sender in production config.** It is in `application-staging.yml:41-49` only ("Production does not get RECRUIT").
+- **lf-homepage no longer calls recruit `register-status`** (commit `72cef7e3`, 29/09). The endpoint has no caller.
+- **ai-hr-be creates the MOSO Admin** for a hire via packs `InviteAdminsOp` (`internal/packsclient/client.go`).
+- **`lead-be` exists** in the org and is live (it serves borrower leads, not Loan Officers).
+- **Still unmeasured:**
+  - Prod DB settings: `referrals.enabled`, `program_sync.mode`, `onboarding.reminder.delivery_mode` (decides whether 1-1 reminder emails really go out in prod), `headhunter.auto_own_enabled`, `hot.idle_release_omni_check`.
+  - Which packs build GAE prod runs.
+  - The share of Recruit users on MOSO SSO.
+  - Which CloudSQL instance holds the prod Recruit Postgres.
+  - Who actually sends the invite to Loan Officers in prod today. **Guess (unverified):** staff press invite in MOSO admin.
+
+## 4. Plan (as presented to Bao, not yet approved)
+
+Principle (copied from how HR did it): go **per capability**. Recruit becomes the system of record for one capability at a time and only *notifies* packs while other MOSO consumers still need the data. Each step runs dual behind a flag, gets reconciled, then cuts over and the old code is removed. Don't wait for a company-wide MOSO shutdown.
+
+- **Phase 0 — Rescue data and lock decisions (now).** Some exports only work while MOSO is up (they need a MOSO admin session). This is the ONLY hard deadline.
+  - Cold pool export: about 72k open in MOSO vs 377 Cold rows in prod. Blocked by the owner-map decision, bead `agentflow-kzwcg`.
+  - Opt-out ledgers: BlackList and SMS/email/call opt-outs. First fix the 100-note STOP scan cap. Note the mismatch: ai-donotcall has 53 blacklist rows, recruit 121.
+  - moso-aid Mongo: the LO Recruiter Program roster and applications.
+  - The 5 email bodies packs sends: invite, webinar, welcome/pre_onboarding_done, agreement link, 1-1 reminder.
+  - Referral bonus state and webinar history.
+  - Rule from now on: no new `RecruitApiClient` write kinds.
+- **Phase 1 — Foundations.**
+  - (a) Recruit's own candidate UUID becomes the key; `legacy_key` becomes optional; the `requireMosoRecord` gate goes behind a flag. The candidate links to the user-service `user_id` at hire. This blocks phases 3 and 4. (M)
+  - (b) Add the RECRUIT prod sender in notifier, before Wave 5 on 02/11. Turn on mail-status intake. Move the logo off the `lender-rate` bucket. (S)
+  - (c) Port the 5 email bodies into recruit `message_templates`. Decide where the signature comes from. (M)
+- **Phase 2 — Recruit sends its own email (quick wins).**
+  - 1-1 reminders (S): Recruit already owns the schedule; only the final send goes to packs.
+  - Webinar confirmation (S).
+  - Nurture and Send info on in prod.
+  - Invite and welcome sent by Recruit, temporarily still linking to MOSO `/apply_loan_officer`.
+  - Ask the packs owner to switch off MOSO's own LORecruiting crons and mails (e.g. `ProcessLORecruitingFollowUpEDCCronOp`, B-113) for Recruit-owned rows, so nobody gets double mail.
+- **Phase 3 — Own lead intake.**
+  - Keyed public intake in recruit-be, ported from `lead-be`. (L)
+  - lf/lo-homepage forms (Register, Refer-a-LO, webinar, /join, /recruit) dual-post, then flip to Recruit as primary.
+  - Move FB lead ads and Calendly. Turn on `native-candidate-create`. Recruit stamps origin itself.
+  - Own webinars (M): a MOSO webinar is just a Google Calendar event with a Meet link, and recruit-be already has the Calendar client and Meet attendance.
+  - Watch the reverse dependency: crm-be-go's "LO recruiting" newsletter list reads MOSO.
+- **Phase 4 — Onboarding, contract, fee (hardest; these ship together).**
+  - Recruit public portal (token, not the MOSO key) replacing `/apply_loan_officer`. (L)
+  - PayPal server-side verification, recorded in accounting. (M)
+  - E-sign via `document-esign`, which is live in prod and already has Inkless plus 1099/W-2 templates. The DE team needs to add a RECRUIT caller, a service type and a candidate signer role. Recruit ports packs' required-document-per-state rules. Legal reviews the text. (M–L)
+  - Applies to new offers only; in-flight Loan Officers finish in MOSO, with the push and reconcile kept alive.
+  - HR hand-off (ai-hr-be) becomes the only path for "joined", adding the experience class and W-2/1099. Accounting turns on `COMMISSION_PLANS_FROM_HR` in prod.
+- **Phase 5 — Loan Officer data and programs (parallel to 3–4).**
+  - Loans: Modex only. (S)
+  - NMLS, licences, sponsorship: extend ai-hr-be's NMLS report puller. (M)
+  - Opt-outs: ai-donotcall plus omni SMS suppression; recruit keeps its ledger.
+  - Referral bonus state: owned by Recruit, paid via accounting-be or CSV.
+  - LO Recruiter Program: Recruit takes it over from moso-aid, and the lf-homepage console and Ally are repointed. (M–L)
+- **Phase 6 — Cut.**
+  - Turn off the MOSO push listener and remove `RecruitApiClient` kinds one by one. The "recruiter must be a MOSO Admin" lock (A-019) disappears with the last one.
+  - Remove about 150 "do X in MOSO" UI strings, the "Signed in MOSO" Exceptions desk and the MOSO sync trace.
+  - `legacy_key` becomes archive data.
+
+Order: 0 → 1 → 2 sequential; 3, 4 and 5 in parallel after 1; 6 last.
+
+**Tension flagged to Bao.** In-flight work still *adds* MOSO write-back:
+- 8oafx syncs NMLS, phone, email and name to MOSO (staging; packs #3721/#3722 wait for Khai).
+- bead `agentflow-61yi6` turns on packs-writeback in prod.
+
+Recommendation: treat these as a **thin, flagged bridge** while sign, pay and register still live in MOSO (until Phase 4), mark them for removal in Phase 6, and invest nothing more in them.
+
+## 5. Decisions waiting on Bao or other people
+
+1. Cold pool owner-map (`agentflow-kzwcg`). This blocks Phase 0.
+2. Email From: each recruiter or "Loan Factory Recruiting"? Where does the signature come from?
+3. E-sign: Inkless or document-esign's built-in signer? Who in legal reviews the text?
+4. Start-up fee: keep PayPal? Still $100? Must it land in accounting?
+5. Portal: in recruit-fe, or stay on lf-homepage with its API repointed?
+6. Who owns webinars after MOSO?
+7. Which sprint do the document-esign and accounting teams give this?
+8. Will the packs owner switch off MOSO's recruiting automation in Phase 2?
+
+## 6. Agents used (all finished; nothing running)
+
+`moso-dep-A`, `moso-dep-B`, `moso-dep-C`, `replace-map-1`, `replace-map-2`. All were read-only: no checkouts, builds or pushes. replace-map-1 made shallow clones only in its own scratchpad.
