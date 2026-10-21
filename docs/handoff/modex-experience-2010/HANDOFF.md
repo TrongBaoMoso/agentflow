@@ -113,3 +113,17 @@ Production: none of the above pushed to production (Bao decides prod).
 - When Vic/Miley say OK: open MMI kit (`cd ~/.mmi-research && node mmi_browser.js ~/.mmi-research/profile`, ram-gate chrome first; MMI allowed while US team is off), back up current CRM Push URL (`node hookurl.js save <new file>` — keep the old backup `crm_push_url.backup`), set it to `https://gateway.viet18.com/recruit-svc/public/v1/integrations/mmi/push/<token from Keychain recruit-mmi-push-token-staging>`, push 1–2 Loan Officers that exist on staging (match by NMLS), verify profile card + Hot/Cold cells + timeline, then decide prod.
 - Production go-live (only on Bao's word): hand-made `RECRUIT_MMI_PUSH_TOKEN` in lender-rate `recruit-svc-secret`, same `_Default` log exclusion in lender-rate, `RECRUIT_FEATURES_MMI_PUSH=true` in production values, promote staging→production; then point MMI at the production URL.
 - Open: tera-docs PR #757 review; Q: Bonzo forward (only if Vic/Miley want it); MMI email (API/extra fields) parked by Bao.
+
+## PAUSE 21/10 — resume point
+State: nothing running in background (no agents, Chrome closed, no dev servers). All PRs of this session merged + on staging (be #698–#702, fe #550 #552 #554); prod handled by the prod-pusher session (agentflow-48), answer given (all 9 safe; Big producer threshold now 30).
+
+**Item 8 — experience level on rows / filter / Reports (approved direction, NOT started in code):**
+- Mockup (3 screens + phone) saved in `mockup-experience/` here (index.html + PNGs). Shown to Bao; waiting for approval + 2 answers: (a) level-count strip on Hot/Cold too or only Pipeline? (b) Reports split by lead source as well, or by recruiter only?
+- Mockup error to fix when coding: "Newly licensed · 1 loan since 2022" is wrong — loans > 0 → Inexperienced.
+- CORRECTION given to Bao: BE is NOT done for this. `experience_level` is only on single-candidate detail. Needed BE: level on list payloads (Hot/Cold/Pipeline), filter by level (computed, not stored → SQL expression or stored column), Reports endpoint counting Joined/Onboarded by level (use the decided snapshot from #702 where present). Then FE per mockup.
+- Prod reality: ~750 LOs have MOSO figures (closed_loans_since_2021 + units_12mo) → classifiable; ~400 → "No figures".
+- Finding (MOSO 3.64.1 code): MOSO never auto-classifies. Recruiters pick the level by hand in the ILO list column "Experience / 12 months loans" (`LORecruitingListView.java:811-840`), which opens an "Enter value from MODEX" popup to type figures; a "Check Modex" link opens Modex by NMLS. Facebook-ad leads self-declare (`SaveILOFacebookAdOp.java:305`: yes → Experienced, else New). Explains 98/312 "Experienced" with <2 loans in 12 months. Proposal pending Bao: show recruit's computed level as primary + a small marker when MOSO's hand-picked level differs.
+
+**MMI:** another session shipped "MMI push → Recruit" to staging on 21/10 (be #707 D305, fe #557) — check its memory/HANDOFF (`project_mmi_push_staging_2110.md`) before doing more MMI work here, to avoid overlap. This session's MMI plan (checklist above) still valid for the API question; offered drafts (email to MMI about API; ask Brayan for the MMI account manager) not yet sent.
+
+**Still waiting on Bao:** message Khải to deploy packs 3.64.1 `e3f3f98093` (then smoke test → flag `packs.writeback.experience_enabled` on → backfill); grant MODEX_IMPORT to Vic?; #554 deferred review follow-ups.
