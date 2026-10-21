@@ -14,7 +14,7 @@ Decisions: `HANDOFF.md` (same folder). This file is the contract both repos buil
 | `dir` | `ASC`, `DESC` | default per sort: WAITING = oldest `waiting.since` first (longest wait first), others ASC |
 | `waiting_on` | `MANAGER`, `SPECIALIST`, `LOAN_OFFICER`, `HR`, `LICENSING` | filter on `waiting.kind` |
 | `waiting_on_user` | a user id | filter: that user is in `waiting.people` |
-| `step` | `APPROVE`, `BOOK_1ON1`, `MEET_1ON1`, `PAY_FEE`, `SIGN`, `FIX_FOR_HR`, `HR`, `LICENSING`, `SETUP_CALL` | filter on `waiting.step` |
+| `step` | `APPROVE`, `BOOK_1ON1`, `MEET_1ON1`, `PAY_FEE`, `SIGN`, `FIX_FOR_HR`, `HR_ACCOUNT`, `HR_TODO`, `HR_DOCS`, `LICENSING`, `SETUP_CALL` | filter on `waiting.step` |
 | `late` | `true` | only rows with `late = true` |
 
 Filters (`waiting_on`, `waiting_on_user`, `step`, `late`) narrow `items` and `total`. `counts` keep today's
@@ -38,7 +38,7 @@ few — in-memory sort/filter of the caller's rows is acceptable; say so in the 
     "kind": "MANAGER|SPECIALIST|LOAN_OFFICER|HR|LICENSING",
     "people": [{ "id": "...", "name": "..." }],   // MANAGER: every role-MANAGER holder; SPECIALIST: the assigned one,
                                                    // [] when none assigned; LOAN_OFFICER/HR/LICENSING: []
-    "step": "APPROVE|BOOK_1ON1|MEET_1ON1|PAY_FEE|SIGN|FIX_FOR_HR|HR|LICENSING|SETUP_CALL",
+    "step": "APPROVE|BOOK_1ON1|MEET_1ON1|PAY_FEE|SIGN|FIX_FOR_HR|HR_ACCOUNT|HR_TODO|HR_DOCS|LICENSING|SETUP_CALL",
     "since": "<instant>",                 // when this wait began (stage_since for pre-join; joined_at / sent_to_hr_at /
                                           // both_done_at after Joined, same rules as recruit-fe postJoinedView.waitingOn)
     "meeting_at": "<instant|null>",       // MEET_1ON1 only: the booked 1-1
@@ -64,8 +64,7 @@ Steps 5–11 come from `progress.post_joined` exactly as recruit-fe `handoffSegm
 | PAYING_SIGNING, fee done, not signed | LOAN_OFFICER | SIGN |
 | SIGNED (joined), not sent to HR | SPECIALIST | FIX_FOR_HR |
 | joined, setup call open | SPECIALIST | SETUP_CALL |
-| joined, sent, an HR step open | HR | HR |
-| joined, sent, only Licensing open | LICENSING | LICENSING |
+| joined, sent, post-Joined steps open | the FIRST open step's `PostJoinedStep.waitingOn()`: HR_ACCOUNT → HR, HR_TODO → LOAN_OFFICER, HR_DOCS → HR, LICENSING → LICENSING (order account, to-do, docs, licensing) | that step's key |
 | onboarded / DECLINED / EXPIRED | — (`waiting = null`) | |
 
 **Owner fix:** Book 1-1 / Meet 1-1 wait on the onboarding SPECIALIST (`OnboardingTask.BOOK_1ON1` is the
@@ -93,7 +92,7 @@ Rewrite `src/app/[locale]/(private)/invites/_components/InvitesClient/*` to boar
   (person: `OwnerBadge` photo + full name; several managers → stacked photos + names, tooltip lists all;
   SPECIALIST with no person → "Not assigned"; HR / Licensing → team icon + name; loan officer → initials avatar +
   name, NO "Loan Officer" chip; closed → "—") · **To do** (Approve invite, Book 1-1, Meet 1-1 · <day>, Pay fee,
-  Sign agreement, Add <fields> for HR, HR to-do, Sponsor license, Book setup call; closed → "—") ·
+  Sign agreement, Add <fields> for HR, Create HR account (HR), Finish HR to-do (loan officer), Verify HR docs (HR), Sponsor license, Book setup call; closed → "—") ·
   **Waiting for** (`TimeCell kind="elapsed"`, tone overdue when `late`; closed rows `kind="past"`) · action.
 - Sortable headers: Progress, Loan Officer, Waiting on, Waiting for (default Waiting for, longest first). Sort,
   filters, stage, range, q all live in the URL (`useInvitesFilterUrl`).
@@ -108,3 +107,5 @@ Rewrite `src/app/[locale]/(private)/invites/_components/InvitesClient/*` to boar
 
 BE first: branch from `origin/master`, IT + unit tests, PR, 2 reviewers. FE: branch from `origin/master`, tests,
 then LOCAL preview for the product owner BEFORE any push (memory feedback_local_preview_before_push).
+
+**Amendment 21/10 (lead):** post-Joined waits are per step (PostJoinedStep.waitingOn); HR to-do waits on the LOAN OFFICER. `step=HR` is replaced by HR_ACCOUNT / HR_TODO / HR_DOCS.
