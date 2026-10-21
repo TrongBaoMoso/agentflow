@@ -109,3 +109,9 @@ BE first: branch from `origin/master`, IT + unit tests, PR, 2 reviewers. FE: bra
 then LOCAL preview for the product owner BEFORE any push (memory feedback_local_preview_before_push).
 
 **Amendment 21/10 (lead):** post-Joined waits are per step (PostJoinedStep.waitingOn); HR to-do waits on the LOAN OFFICER. `step=HR` is replaced by HR_ACCOUNT / HR_TODO / HR_DOCS.
+
+**Amendment 2 (product owner, 21/10 evening):** the booked 1-1 splits in two. `MEET_1ON1` only while the booked
+slot is now or in the future; once the slot has passed and the 1-1 is not marked done the step is
+`MARK_1ON1_DONE` (kind SPECIALIST, `meeting_at` = the booked slot) — the same rule recruit-be's Today uses for
+`OnboardingTask.MARK_DONE`. To do labels: "Book 1-1" · "Meet 1-1" + day · "Mark 1-1 done" + day. The `step`
+filter accepts `MARK_1ON1_DONE`. Also: the Status cell shows no older-offer history (removed 21/10).
