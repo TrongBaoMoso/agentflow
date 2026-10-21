@@ -120,3 +120,16 @@ filter accepts `MARK_1ON1_DONE`. Also: the Status cell shows no older-offer hist
 Onboarding / Loan Officer / HR / Licensing (one role icon). Line 2 (muted): the single named approver for Manager
 (none when several — tooltip lists them), the specialist's name or "Not assigned" for Onboarding, nothing for the
 others. No stacked avatars. `sort=WAITING_ON` orders by role label, then name.
+
+**Amendment 4 (product owner, 21/10 evening) — onboarding specialists use My hand-offs too.**
+- Access: `GET /offers/mine` and the nav entry open to OFFER_REQUEST holders AND onboarding specialists (role
+  ONBOARDING). Rows = the union of offers the caller REQUESTED and the latest offer of every candidate whose
+  `onboarding_specialist_id` = the caller (one row per candidate, no duplicates). A user with both roles sees one
+  merged list (no toggle). Counts, filters and sort apply to that union.
+- Actions: Remind manager / Edit & resend stay requester-only (`can_*` false on rows the caller did not request);
+  never remind yourself. The unseen badge keeps counting the caller's requested offers only.
+- **Setup call waits on the RECRUITER**: new `waiting.kind = RECRUITER`, people = the requester of the offer.
+  The "HR and Licensing are done — book the setup call" bell (ONBOARDING_SETUP_CALL_READY) goes to the recruiter
+  (the requester) instead of the specialist. Who MAY book is unchanged (recruiter, specialist, admin).
+- FE: Waiting on line 1 "Recruiter", line 2 avatar + name (or "You" when it is the caller); the Waiting on filter
+  gains Recruiter.
