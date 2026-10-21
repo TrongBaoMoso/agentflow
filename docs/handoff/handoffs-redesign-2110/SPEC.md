@@ -115,3 +115,8 @@ slot is now or in the future; once the slot has passed and the 1-1 is not marked
 `MARK_1ON1_DONE` (kind SPECIALIST, `meeting_at` = the booked slot) — the same rule recruit-be's Today uses for
 `OnboardingTask.MARK_DONE`. To do labels: "Book 1-1" · "Meet 1-1" + day · "Mark 1-1 done" + day. The `step`
 filter accepts `MARK_1ON1_DONE`. Also: the Status cell shows no older-offer history (removed 21/10).
+
+**Amendment 3 (product owner, 21/10 evening):** the Waiting on cell is ROLE first, person second. Line 1: Manager /
+Onboarding / Loan Officer / HR / Licensing (one role icon). Line 2 (muted): the single named approver for Manager
+(none when several — tooltip lists them), the specialist's name or "Not assigned" for Onboarding, nothing for the
+others. No stacked avatars. `sort=WAITING_ON` orders by role label, then name.
