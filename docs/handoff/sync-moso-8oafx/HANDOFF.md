@@ -3,6 +3,16 @@
 Away window night 21->22/10 (memory feedback_away_window_2122_8oafx_sync.md): recruit-be/fe -> STAGING only, no prod. packs PR only.
 Design: `bd show agentflow-8oafx` notes "PROPOSAL CONFIRMED".
 
+## State — 21/10 ~11:30 +07: E-MAIL HALF LIVE ON STAGING
+| Piece | Status |
+|---|---|
+| packs #3721 (master) / #3722 (3.64.1) | MERGED by Bao's go (c76be35f477 / f461ba4775e). master deployed to viet18 via SWAT Rerun of install packs/loan (GAE b 2026-10-21T03:51:37Z). 3.64.1 NOT released to prod (Khai) |
+| recruit-be #706 | MERGED 6dccbc26, on staging: RECRUIT_FEATURES_IDENTITY_WRITEBACK_EMAIL on (staging only) |
+| live E2E | a) e-mail fix SYNCED -> MOSO + register form show it; b) taken e-mail -> 409 inline, nothing saved; c) signed LO -> REJECTED AFTER_SIGNING note; d) phone-only still SYNCED. All PASS (details in bd notes agentflow-8oafx) |
+| production | still nothing; both identity flags in agentflow-61yi6; needs #3722 released first |
+
+Test data left on staging: W1 bao.trinh+e2e21w1 now reads e2e21w1b in recruit while MOSO keeps e2e21w1 (the refused case, by design).
+
 ## State — 22/10 ~04:00: DONE TO STAGING
 | Piece | Status |
 |---|---|
