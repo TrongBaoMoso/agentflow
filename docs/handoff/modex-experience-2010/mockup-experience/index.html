@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Experience level mockup</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Recruit app look (Public Sans, TERA list kit), cool neutrals instead of the warm app grey (owner: no beige). */
+:root{
+  --page:#f5f6f8; --card:#fff; --line:#e6e8ec; --line-soft:#eff1f4; --line-strong:#d7dbe1;
+  --ink:#1c2128; --ink-mute:#636b78; --ink-faint:#8a919c; --hover:#f3f5f8;
+  --acc:#ea580c; --acc-soft:#fff1e6; --acc-ink:#9a3412; --acc-line:#f6a56f;
+  --ok:#059669; --ok-soft:#ecfdf5; --ok-ink:#047857; --ok-line:#86d8b9;
+  --info:#3b82f6; --info-soft:#eff6ff; --info-ink:#1d4ed8; --info-line:#a9c8fb;
+  --bad:#dc2626; --bad-soft:#fef2f2;
+  --nt:#94a3b8; --nt-ink:#3f4754;
+  --ground:#e4e7ec; --label:#20262f;
+  --r:10px; --sh:0 1px 2px rgb(16 24 40 / .05);
+  --f:"Public Sans",-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font:13px/1.45 var(--f);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+.review{display:grid;gap:36px;padding:28px 0 60px;justify-content:center}
+.shot{width:1280px}
+.shot-label{display:flex;align-items:baseline;gap:12px;margin:0 0 10px 4px;color:var(--label)}
+.shot-label b{font-size:15px}.shot-label span{color:#5b6472;font-size:12.5px}
+
+/* app shell */
+.app{display:grid;grid-template-columns:216px 1fr;background:var(--page);border-radius:14px;overflow:hidden;box-shadow:0 1px 0 rgb(0 0 0 / .04),0 18px 40px -24px rgb(16 24 40 / .35);min-height:640px}
+.side{background:var(--card);border-right:1px solid var(--line);padding:16px 10px;display:flex;flex-direction:column;gap:2px}
+.brand{display:flex;align-items:center;gap:9px;padding:4px 10px 16px;font-weight:800;font-size:14px;letter-spacing:-.01em}
+.brand i{width:26px;height:26px;border-radius:7px;background:var(--acc);display:grid;place-items:center;color:#fff;font-style:normal;font-size:13px}
+.nav{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:8px;color:var(--ink-mute);font-weight:500}
+.nav svg{width:17px;height:17px;flex:none}
+.nav[aria-current]{background:var(--acc-soft);color:var(--acc-ink);font-weight:650}
+.nav-gap{height:10px}
+.main{padding:22px 26px 28px;min-width:0}
+.head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:14px}
+.head h1{margin:0;font-size:22px;font-weight:750;letter-spacing:-.015em}
+.head .sub{color:var(--ink-mute);font-size:12.5px;margin-top:2px}
+.btn{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:7px;border:1px solid var(--line-strong);background:var(--card);font-weight:600;font-size:12.5px;cursor:pointer}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:#fff}
+.btn.sm{height:26px;padding:0 10px;font-size:12px}
+.btn:focus-visible,.pill:focus-visible,.pick:focus-visible,.seg button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+
+/* HR FilterBar */
+.toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;position:relative}
+.search svg{flex:none}
+.search{white-space:nowrap;overflow:hidden;display:flex;align-items:center;gap:7px;height:34px;width:240px;padding:0 10px;border:1px solid var(--line-strong);border-radius:8px;background:var(--card);color:var(--ink-faint)}
+.pick{display:inline-flex;align-items:center;gap:5px;height:34px;padding:0 9px 0 11px;border:1px solid var(--line-strong);border-radius:8px;background:var(--card);cursor:pointer;white-space:nowrap}
+.pick .pre{color:var(--ink-mute)}.pick .val{font-weight:600}
+.pick svg{width:14px;height:14px;color:var(--ink-faint)}
+.pick[data-active]{border-color:var(--acc-line);background:var(--acc-soft)}
+.pick[data-active] .val{color:var(--acc-ink)}
+.toolbar .end{margin-left:auto;color:var(--ink-mute);font-size:12.5px;display:flex;align-items:center;gap:10px}
+.menu{position:absolute;top:40px;z-index:4;width:228px;background:var(--card);border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 32px -10px rgb(16 24 40 / .28);padding:5px}
+.menu div{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 9px;border-radius:6px}
+.menu div[aria-selected]{background:var(--hover);font-weight:650}
+.menu .n{color:var(--ink-faint);font-variant-numeric:tabular-nums;font-size:12px}
+.menu .opt{display:inline-flex;align-items:center;gap:8px}
+
+/* level swatch + chip */
+.dot{width:8px;height:8px;border-radius:50%;flex:none;background:var(--c)}
+[data-lv=HIGH_PRODUCER]{--c:var(--acc);--cs:var(--acc-soft);--ci:var(--acc-ink);--cl:var(--acc-line)}
+[data-lv=EXPERIENCED]{--c:var(--ok);--cs:var(--ok-soft);--ci:var(--ok-ink);--cl:var(--ok-line)}
+[data-lv=INEXPERIENCED]{--c:var(--nt);--cs:#fff;--ci:var(--nt-ink);--cl:var(--line-strong)}
+[data-lv=NEWLY_LICENSED]{--c:var(--info);--cs:var(--info-soft);--ci:var(--info-ink);--cl:var(--info-line)}
+[data-lv=UNKNOWN]{--c:#cbd2db;--cs:#fff;--ci:var(--ink-mute);--cl:var(--line-strong)}
+.lv{display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 8px;border:1px solid var(--cl);border-radius:999px;background:var(--cs);color:var(--ci);font-size:11.5px;font-weight:650;white-space:nowrap}
+.lv[data-lv=HIGH_PRODUCER]{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:700}
+.lv[data-lv=UNKNOWN]{border-style:dashed;font-weight:550}
+.lv svg{width:12px;height:12px}
+
+/* table */
+.tbl{width:100%;border-collapse:separate;border-spacing:0;background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.tbl th{text-align:left;font-size:12px;font-weight:600;color:var(--ink-mute);padding:9px 12px;border-bottom:1px solid var(--line);background:#fafbfc;white-space:nowrap}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--line-soft);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:0}
+.tbl tbody tr:hover td{background:var(--hover)}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.who{display:flex;gap:10px;align-items:center;min-width:0}
+.av{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;flex:none;color:#fff}
+.nm{display:grid;gap:1px;min-width:0}
+.nm b{font-weight:650;font-size:13.5px}
+.nm a{color:var(--ink-mute);font-size:12px;text-decoration:none}
+.nm a:hover{text-decoration:underline}
+.meta{display:flex;align-items:center;gap:8px;margin-top:4px;color:var(--ink-mute);font-size:12px}
+.meta .loans{font-variant-numeric:tabular-nums}
+.meta .loans[data-zero]{color:var(--ink-faint)}
+.src{display:inline-flex;height:22px;align-items:center;padding:0 8px;border-radius:6px;background:var(--hover);font-size:12px;font-weight:550;color:var(--nt-ink)}
+.due{font-weight:600}.due.late{color:var(--bad)}
+.dim{color:var(--ink-faint)}
+.chk{width:15px;height:15px;border:1.5px solid var(--line-strong);border-radius:4px;display:inline-block}
+.stage{display:inline-flex;align-items:center;gap:6px;font-weight:550}
+.stage i{width:6px;height:6px;border-radius:50%;background:var(--ink-faint)}
+.owner{display:flex;align-items:center;gap:7px}
+.owner .av{width:22px;height:22px;font-size:9px}
+
+/* pipeline stage tabs + level strip */
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin-bottom:14px}
+.tabs span{padding:8px 12px;color:var(--ink-mute);font-weight:550;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tabs span em{font-style:normal;color:var(--ink-faint);font-weight:500;margin-left:5px;font-variant-numeric:tabular-nums}
+.tabs span[aria-selected]{color:var(--ink);border-color:var(--acc);font-weight:700}
+.strip{display:flex;align-items:center;gap:6px;margin:0 0 10px}
+.pill{display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 12px 0 10px;border:1px solid var(--line);border-radius:999px;background:var(--card);cursor:pointer;font-weight:600;font-size:12.5px;color:var(--ink)}
+.pill .n{font-variant-numeric:tabular-nums;color:var(--ink-mute);font-weight:600}
+.pill:hover{border-color:var(--cl)}
+.pill[aria-pressed=true]{background:var(--cs);border-color:var(--c);color:var(--ci)}
+.pill[aria-pressed=true] .n{color:var(--ci)}
+.pill[data-lv=UNKNOWN]{font-weight:550;color:var(--ink-mute)}
+.strip .sep{width:1px;height:18px;background:var(--line-strong);margin:0 4px}
+
+/* reports */
+.seg{display:inline-flex;padding:3px;background:#eceef2;border-radius:9px;gap:2px}
+.seg button{border:0;background:none;padding:5px 12px;border-radius:7px;font-weight:600;color:var(--ink-mute);cursor:pointer;font-size:12.5px}
+.seg button[aria-pressed=true]{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgb(16 24 40 / .12)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh);padding:18px 20px}
+.card h2{margin:0;font-size:15px;font-weight:700;letter-spacing:-.005em}
+.card-h{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.legend{display:flex;gap:6px 14px;flex-wrap:wrap;color:var(--ink-mute);font-size:12px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:10px;height:10px;border-radius:3px;background:var(--c);flex:none}
+.hatch{background:repeating-linear-gradient(135deg,#cbd2db 0 2px,#eef1f4 2px 5px)!important}
+.bars{display:grid;grid-template-columns:86px 1fr 40px;gap:22px 14px;margin-top:8px;align-items:center}
+.bars .lab{font-weight:650}.bars .tot{text-align:right;font-weight:700;font-variant-numeric:tabular-nums;font-size:15px}
+.bar{display:flex;gap:2px;height:36px}
+.seg-b{background:var(--c);display:flex;align-items:center;padding-left:8px;color:#fff;font-weight:700;font-size:12px;font-variant-numeric:tabular-nums;min-width:4px;cursor:default;position:relative}
+.seg-b[data-lv=INEXPERIENCED]{color:#1c2128}
+.seg-b[data-lv=UNKNOWN]{color:var(--ink-mute)}
+.bar .seg-b:first-child{border-radius:4px 0 0 4px}.bar .seg-b:last-child{border-radius:0 4px 4px 0}
+.seg-b:hover{filter:brightness(1.06);box-shadow:inset 0 0 0 2px rgb(255 255 255 / .55)}
+.grid2{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;margin-bottom:16px}
+.mini{width:100%;border-collapse:collapse;font-size:12.5px}
+.mini th,.mini td{padding:7px 8px;border-bottom:1px solid var(--line-soft);text-align:right}
+.mini th{font-weight:600;color:var(--ink-mute);font-size:12px}
+.mini th:first-child,.mini td:first-child{text-align:left}
+.mini tr:last-child td{border-bottom:0}
+.mini tfoot td{font-weight:700;border-top:1px solid var(--line)}
+.lvname{display:inline-flex;align-items:center;gap:8px}
+.mix{display:flex;gap:2px;height:10px;width:150px}
+.mix i{background:var(--c);display:block}
+.mix i:first-child{border-radius:3px 0 0 3px}.mix i:last-child{border-radius:0 3px 3px 0}
+.rtbl td.c,.rtbl th.c{text-align:right}
+.rtbl tfoot td{font-weight:700;background:#fafbfc;border-top:1px solid var(--line)}
+.tip{position:fixed;z-index:20;pointer-events:none;background:#1c2128;color:#fff;font-size:12px;padding:6px 9px;border-radius:7px;opacity:0;transition:opacity .1s;white-space:nowrap}
+.tip b{font-weight:700}
+
+/* phone */
+@media (max-width:700px){
+  .review{padding:0;gap:0}
+  .shot{width:100%}
+  .shot-label{display:none}
+  .app{grid-template-columns:1fr;border-radius:0;min-height:auto}
+  .side{display:none}
+  .main{padding:14px 16px 20px}
+  .head{align-items:center}
+  .head h1{font-size:20px}
+  .toolbar{flex-wrap:nowrap;overflow-x:auto;margin-inline:-16px;padding:0 16px;scrollbar-width:none}
+  .toolbar .search{width:170px;flex:none}
+  .toolbar .end,.menu{display:none}
+  .tbl thead{display:none}
+  .tbl,.tbl tbody,.tbl tr{display:block}
+  .tbl tr{display:grid;grid-template-columns:1fr auto;gap:6px 10px;padding:12px;border-bottom:1px solid var(--line-soft)}
+  .tbl td{display:block;padding:0;border:0}
+  .tbl td.c-who{grid-column:1 / -1}
+  .tbl td.c-src{grid-column:1}
+  .tbl td.c-wait{display:none}
+  .tbl td.c-due{grid-column:1;font-size:12px}
+  .tbl td.c-due .due:not(.late)::before{content:'Due ';color:var(--ink-mute);font-weight:500}
+  .tbl td.c-src{display:flex}
+  .tbl td.c-act{grid-column:2;grid-row:2 / span 2;align-self:center}
+  .mob-top{display:flex!important}
+}
+.mob-top{display:none;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--card);border-bottom:1px solid var(--line);font-weight:800}
+@media (prefers-reduced-motion:reduce){.tip{transition:none}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-award" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9m-6 0a6 6 0 1 0 12 0a6 6 0 1 0 -12 0"/><path d="M12 15l3.4 5.89l1.598 -3.233l3.598 .232l-3.4 -5.889"/><path d="M6.802 12l-3.4 5.89l3.598 -.233l1.598 3.232l3.4 -5.889"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/><path d="M21 21l-6 -6"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6l6 -6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10"/></symbol>
+  <symbol id="i-today" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"/><path d="M16 3v4M8 3v4M4 11h16"/></symbol>
+  <symbol id="i-pipe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6v16h-6zM14 4h6v10h-6z"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 10.941c2.333 -3.308 .167 -7.823 -1 -8.941c0 3.395 -2.235 5.299 -3.667 6.706c-1.43 1.408 -2.333 3.621 -2.333 5.588c0 3.704 3.134 6.706 7 6.706s7 -3.002 7 -6.706c0 -1.712 -1.232 -4.403 -2.333 -5.588c-2.084 3.353 -3.257 3.353 -4.667 2.235"/></symbol>
+  <symbol id="i-snow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4l2 1l2 -1M12 2v6.5l3 1.72M17.928 6.268l.134 2.232l1.866 1.232M20.66 7l-5.629 3.25l.01 3.458M19.928 14.268l-1.866 1.232l-.134 2.232M20.66 17l-5.629 -3.25l-2.99 1.738M14 20l-2 -1l-2 1M12 22v-6.5l-3 -1.72M6.072 17.732l-.134 -2.232l-1.866 -1.232M3.34 17l5.629 -3.25l-.01 -3.458M4.072 9.732l1.866 -1.232l.134 -2.232M3.34 7l5.629 3.25l2.99 -1.738"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1zM15 9a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1zM9 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1zM4 20h14"/></symbol>
+  <symbol id="i-msg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 9h8M8 13h6M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12z"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0zM12 16h.01"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+</svg>
+
+<main class="review">
+
+<!-- ============ 1 · HOT LEADS ============ -->
+<section class="shot" id="s-hot" aria-labelledby="h-hot">
+  <p class="shot-label"><b>1 · Hot leads</b><span>Level chip replaces "Big producer" in the candidate cell; new Experience filter (shown open)</span></p>
+  <div class="app">
+    <div class="mob-top"><span>Recruit</span><svg width="20" height="20"><use href="#i-menu"/></svg></div>
+    <nav class="side" aria-label="Main navigation"></nav>
+    <div class="main">
+      <div class="head"><div><h1 id="h-hot">Hot leads</h1><div class="sub">8 waiting for a first touch</div></div></div>
+      <div class="toolbar">
+        <label class="search"><svg width="15" height="15"><use href="#i-search"/></svg>Search name, NMLS, email</label>
+        <button class="pick"><span class="pre">Source:</span><span class="val">All sources</span><svg><use href="#i-down"/></svg></button>
+        <button class="pick" id="hot-exp" aria-expanded="true"><span class="pre">Experience:</span><span class="val">All</span><svg><use href="#i-down"/></svg></button>
+        <div class="menu" id="hot-menu" role="listbox"></div>
+        <button class="pick"><span class="pre">Due:</span><span class="val">Any time</span><svg><use href="#i-down"/></svg></button>
+        <div class="end">8 leads</div>
+      </div>
+      <table class="tbl">
+        <thead><tr><th>Candidate</th><th>Source</th><th>Waiting</th><th>First-touch due</th><th style="width:96px"></th></tr></thead>
+        <tbody id="hot-rows"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2 · PIPELINE ============ -->
+<section class="shot" id="s-pipe" aria-labelledby="h-pipe">
+  <p class="shot-label"><b>2 · Pipeline</b><span>Same chip and filter; the level strip above the table filters on click and stays in step with the picker</span></p>
+  <div class="app">
+    <nav class="side" aria-label="Main navigation"></nav>
+    <div class="main">
+      <div class="head"><div><h1 id="h-pipe">Pipeline</h1><div class="sub">184 candidates</div></div>
+        <div style="display:flex;gap:8px"><button class="btn">Export</button><button class="btn pri">Add lead</button></div></div>
+      <div class="tabs" role="tablist" aria-label="Filter by stage">
+        <span aria-selected="true">All<em>184</em></span><span>New lead<em>52</em></span><span>Engaged<em>41</em></span><span>Verified<em>27</em></span><span>Meeting<em>19</em></span><span>Offer<em>14</em></span><span>Joined<em>18</em></span><span>Onboarded<em>13</em></span>
+      </div>
+      <div class="toolbar">
+        <label class="search"><svg width="15" height="15"><use href="#i-search"/></svg>Search name, NMLS, email</label>
+        <div class="seg" role="group" aria-label="Owner"><button aria-pressed="false">Mine</button><button aria-pressed="true">All</button></div>
+        <button class="pick"><span class="pre">Status:</span><span class="val">Active</span><svg><use href="#i-down"/></svg></button>
+        <button class="pick" id="pipe-exp"><span class="pre">Experience:</span><span class="val">All</span><svg><use href="#i-down"/></svg></button>
+        <button class="pick"><span class="pre">Source:</span><span class="val">All sources</span><svg><use href="#i-down"/></svg></button>
+        <div class="end" id="pipe-count">184 candidates</div>
+      </div>
+      <div class="strip" id="pipe-strip" role="group" aria-label="Experience level"></div>
+      <table class="tbl">
+        <thead><tr><th style="width:36px"><span class="chk"></span></th><th>Candidate</th><th>Stage</th><th>Status</th><th>Owner</th><th>Last touch</th><th>Follow-up</th></tr></thead>
+        <tbody id="pipe-rows"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3 · REPORTS ============ -->
+<section class="shot" id="s-rep" aria-labelledby="h-rep">
+  <p class="shot-label"><b>3 · Reports, Experience tab</b><span>Joined and Onboarded split into the 4 levels, then the same split per recruiter</span></p>
+  <div class="app">
+    <nav class="side" aria-label="Main navigation"></nav>
+    <div class="main">
+      <div class="head"><div><h1 id="h-rep">Reports</h1><div class="sub">Sep 21 – Oct 20, 2026</div></div>
+        <div style="display:flex;gap:8px"><button class="pick"><span class="pre">Period:</span><span class="val">Last 30 days</span><svg><use href="#i-down"/></svg></button><button class="btn">Export CSV</button></div></div>
+      <div class="tabs" role="tablist" aria-label="Report view"><span>Activity</span><span>By month created</span><span aria-selected="true">Experience</span></div>
+      <div class="grid2">
+        <div class="card">
+          <div class="card-h"><h2>Joined and Onboarded by experience</h2></div>
+          <div class="legend" id="rep-legend" style="margin-bottom:18px"></div>
+          <div class="bars" id="rep-bars"></div>
+        </div>
+        <div class="card">
+          <div class="card-h"><h2>Counts</h2></div>
+          <table class="mini" id="rep-mini"></table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h2>By recruiter</h2>
+          <div class="seg" role="group" aria-label="Measure" id="rep-seg"><button aria-pressed="true" data-k="joined">Joined</button><button aria-pressed="false" data-k="onboarded">Onboarded</button></div></div>
+        <table class="tbl rtbl" id="rep-rec" style="box-shadow:none"></table>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+<div class="tip" id="tip" role="tooltip"></div>
+
+<script>
+const LV = [
+  {k:'HIGH_PRODUCER', name:'High producer'},
+  {k:'EXPERIENCED', name:'Experienced'},
+  {k:'INEXPERIENCED', name:'Inexperienced'},
+  {k:'NEWLY_LICENSED', name:'Newly licensed'},
+  {k:'UNKNOWN', name:'No figures', chip:'No loan figures yet'}
+];
+const lvName = k => LV.find(l => l.k === k).name;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const chip = k => {
+  const l = LV.find(x => x.k === k);
+  const ico = k === 'HIGH_PRODUCER' ? '<svg><use href="#i-award"/></svg>' : '';
+  return `<span class="lv" data-lv="${k}">${ico}${esc(l.chip || l.name)}</span>`;
+};
+const AVC = ['#64748b','#0f766e','#7c3aed','#be185d','#0369a1','#b45309','#4d7c0f','#9333ea'];
+const av = (name, i, size) => `<span class="av" style="background:${AVC[i % AVC.length]}">${name.split(' ').map(p => p[0]).join('')}</span>`;
+const loansText = (n, y) => n == null ? '' : `<span class="loans"${n === 0 ? ' data-zero' : ''}>${n} ${n === 1 ? 'loan' : 'loans'} since ${y}</span>`;
+const who = (r, i) => `<span class="who">${av(r.n, i)}<span class="nm"><b>${esc(r.n)}</b>${r.nmls ? `<a href="#">NMLS ${r.nmls}</a>` : '<a class="dim">No NMLS yet</a>'}<span class="meta">${chip(r.lv)}${loansText(r.loans, r.y || 2022)}</span></span></span>`;
+
+/* sidebar */
+const NAV = [['i-today','My work today'],['i-pipe','Pipeline'],['i-flame','Hot leads'],['i-snow','Cold list'],['i-msg','Conversations'],['i-alert','Exceptions'],['i-chart','Reports']];
+document.querySelectorAll('.side').forEach((el, idx) => {
+  const cur = ['Hot leads','Pipeline','Reports'][idx];
+  el.innerHTML = '<div class="brand"><i>R</i>Recruit</div>' + NAV.map(([ic, t]) =>
+    `<a class="nav"${t === cur ? ' aria-current="page"' : ''}><svg><use href="#${ic}"/></svg>${t}</a>`).join('');
+});
+
+/* 1 · Hot */
+const HOT = [
+  {n:'Marcus Bellamy', nmls:'1489203', lv:'HIGH_PRODUCER', loans:142, src:'Webinar', wait:'2h 14m', due:'in 46m'},
+  {n:'Alicia Romero', nmls:'2207718', lv:'EXPERIENCED', loans:23, src:'Join page', wait:'38m', due:'in 3h 22m'},
+  {n:'Trevor Nguyen', nmls:'2391044', lv:'NEWLY_LICENSED', loans:0, src:'Referral', wait:'5h 02m', due:'1h 02m late', late:1},
+  {n:'Danielle Okafor', nmls:'1876530', lv:'INEXPERIENCED', loans:3, src:'Modex', wait:'1h 05m', due:'in 1h 55m'},
+  {n:'Jordan Pike', nmls:null, lv:'UNKNOWN', loans:null, src:'Facebook ad', wait:'47m', due:'in 3h 13m'},
+  {n:'Renee Castillo', nmls:'1650092', lv:'EXPERIENCED', loans:12, y:2021, src:'Webinar', wait:'3h 40m', due:'in 20m'},
+  {n:'Samuel Whitaker', nmls:'1012877', lv:'HIGH_PRODUCER', loans:61, src:'Referral', wait:'1h 51m', due:'in 1h 09m'},
+  {n:'Hannah Lee', nmls:'2410355', lv:'NEWLY_LICENSED', loans:0, src:'Join page', wait:'12m', due:'in 3h 48m'}
+];
+document.getElementById('hot-rows').innerHTML = HOT.map((r, i) => `<tr>
+  <td class="c-who">${who(r, i)}</td><td class="c-src"><span class="src">${r.src}</span></td>
+  <td class="c-wait num">${r.wait}</td><td class="c-due num"><span class="due${r.late ? ' late' : ''}">${r.due}</span></td>
+  <td class="c-act" style="text-align:right"><button class="btn pri sm">Claim</button></td></tr>`).join('');
+const hotCounts = HOT.reduce((a, r) => (a[r.lv] = (a[r.lv] || 0) + 1, a), {});
+document.getElementById('hot-menu').innerHTML =
+  `<div aria-selected="true"><span class="opt">All</span><svg width="14" height="14" style="color:var(--acc)"><use href="#i-check"/></svg></div>` +
+  LV.map(l => `<div data-lv="${l.k}"><span class="opt"><span class="dot"></span>${l.name}</span><span class="n">${hotCounts[l.k] || 0}</span></div>`).join('');
+
+{const pk=document.getElementById('hot-exp');document.getElementById('hot-menu').style.left=pk.offsetLeft+'px';}
+/* 2 · Pipeline */
+const PIPE = [
+  {n:'Gabriel Moreno', nmls:'1203348', lv:'HIGH_PRODUCER', loans:88, st:'Offer', stc:'#ea580c', own:'Seth August', touch:'Today, 9:40 AM', fu:'Oct 22'},
+  {n:'Olivia Brandt', nmls:'1745521', lv:'EXPERIENCED', loans:17, st:'Meeting', stc:'#7c3aed', own:'Maya Torres', touch:'Yesterday', fu:'Oct 21'},
+  {n:'Kenji Watanabe', nmls:'2298761', lv:'NEWLY_LICENSED', loans:0, st:'Engaged', stc:'#0369a1', own:'Kevin Lam', touch:'Oct 18', fu:'Oct 23'},
+  {n:'Fatima Haddad', nmls:'1934410', lv:'INEXPERIENCED', loans:4, st:'Verified', stc:'#0f766e', own:'Priya Shah', touch:'Oct 17', fu:'—'},
+  {n:'Brian Kowalski', nmls:'1588002', lv:'EXPERIENCED', loans:31, y:2021, st:'Joined', stc:'#059669', own:'Seth August', touch:'Oct 16', fu:'Oct 24'},
+  {n:'Natalie Ruiz', nmls:'2034417', lv:'UNKNOWN', loans:null, st:'New lead', stc:'#8a919c', own:'Daniel Ortiz', touch:'Oct 15', fu:'Oct 21'},
+  {n:'Curtis Bell', nmls:'1120945', lv:'HIGH_PRODUCER', loans:204, st:'Meeting', stc:'#7c3aed', own:'Maya Torres', touch:'Oct 14', fu:'Oct 22'},
+  {n:'Lena Fischer', nmls:'2377815', lv:'NEWLY_LICENSED', loans:1, st:'Onboarded', stc:'#047857', own:'Kevin Lam', touch:'Oct 10', fu:'—'}
+];
+const PIPE_TOTAL = {HIGH_PRODUCER:21, EXPERIENCED:58, INEXPERIENCED:44, NEWLY_LICENSED:47, UNKNOWN:14};
+let pipeSel = null;
+function renderPipe() {
+  const rows = PIPE.filter(r => !pipeSel || r.lv === pipeSel);
+  document.getElementById('pipe-rows').innerHTML = rows.map((r, i) => `<tr>
+    <td><span class="chk"></span></td><td>${who(r, PIPE.indexOf(r) + 2)}</td>
+    <td><span class="stage"><i style="background:${r.stc}"></i>${r.st}</span></td>
+    <td>Active</td><td><span class="owner">${av(r.own, PIPE.indexOf(r) + 5)}${r.own}</span></td>
+    <td class="num">${r.touch}</td><td class="num">${r.fu}</td></tr>`).join('');
+  document.getElementById('pipe-strip').innerHTML = LV.map((l, i) =>
+    (l.k === 'UNKNOWN' ? '<span class="sep"></span>' : '') +
+    `<button class="pill" data-lv="${l.k}" aria-pressed="${pipeSel === l.k}"><span class="dot"></span>${l.name}<span class="n">${PIPE_TOTAL[l.k]}</span></button>`).join('');
+  const pick = document.getElementById('pipe-exp');
+  pick.querySelector('.val').textContent = pipeSel ? lvName(pipeSel) : 'All';
+  pipeSel ? pick.setAttribute('data-active', '') : pick.removeAttribute('data-active');
+  document.getElementById('pipe-count').textContent = `${pipeSel ? PIPE_TOTAL[pipeSel] : 184} candidates`;
+}
+document.getElementById('pipe-strip').addEventListener('click', e => {
+  const b = e.target.closest('.pill'); if (!b) return;
+  pipeSel = pipeSel === b.dataset.lv ? null : b.dataset.lv; renderPipe();
+});
+renderPipe();
+
+/* 3 · Reports */
+const ORDER = ['HIGH_PRODUCER','EXPERIENCED','INEXPERIENCED','NEWLY_LICENSED','UNKNOWN'];
+const TOTALS = {joined:[4,13,9,10,2], onboarded:[3,9,5,6,1]};
+const REC = [
+  {n:'Seth August', joined:[2,4,2,3,0], onboarded:[1,3,1,2,0]},
+  {n:'Maya Torres', joined:[1,4,3,2,1], onboarded:[1,3,2,1,1]},
+  {n:'Kevin Lam', joined:[1,2,1,3,0], onboarded:[1,1,1,2,0]},
+  {n:'Priya Shah', joined:[0,2,2,1,1], onboarded:[0,1,1,1,0]},
+  {n:'Daniel Ortiz', joined:[0,1,1,1,0], onboarded:[0,1,0,0,0]}
+];
+const sum = a => a.reduce((x, y) => x + y, 0);
+document.getElementById('rep-legend').innerHTML = LV.map(l =>
+  `<span data-lv="${l.k}"><i class="sw${l.k === 'UNKNOWN' ? ' hatch' : ''}"></i>${l.name}</span>`).join('');
+const maxT = Math.max(sum(TOTALS.joined), sum(TOTALS.onboarded));
+document.getElementById('rep-bars').innerHTML = [['Joined','joined'],['Onboarded','onboarded']].map(([lab, k]) => {
+  const t = sum(TOTALS[k]);
+  const segs = TOTALS[k].map((v, i) => v ? `<span class="seg-b${ORDER[i] === 'UNKNOWN' ? ' hatch' : ''}" data-lv="${ORDER[i]}" style="flex:${v}" data-tip="<b>${lab}</b> · ${lvName(ORDER[i])}: ${v} of ${t} (${Math.round(v / t * 100)}%)">${v >= 3 ? v : ''}</span>` : '').join('');
+  return `<span class="lab">${lab}</span><div class="bar" style="width:${t / maxT * 100}%">${segs}</div><span class="tot">${t}</span>`;
+}).join('');
+document.getElementById('rep-mini').innerHTML =
+  `<thead><tr><th>Level</th><th>Joined</th><th>Onboarded</th></tr></thead><tbody>` +
+  LV.map((l, i) => `<tr><td><span class="lvname" data-lv="${l.k}"><i class="sw${l.k === 'UNKNOWN' ? ' hatch' : ''}"></i>${l.name}</span></td><td class="num">${TOTALS.joined[i]}</td><td class="num">${TOTALS.onboarded[i]}</td></tr>`).join('') +
+  `</tbody><tfoot><tr><td>Total</td><td class="num">${sum(TOTALS.joined)}</td><td class="num">${sum(TOTALS.onboarded)}</td></tr></tfoot>`;
+let recK = 'joined';
+function renderRec() {
+  const head = `<thead><tr><th>Recruiter</th>${LV.map(l => `<th class="c"><span class="lvname" data-lv="${l.k}"><i class="sw${l.k === 'UNKNOWN' ? ' hatch' : ''}"></i>${l.name}</span></th>`).join('')}<th class="c">Total</th><th>Mix</th></tr></thead>`;
+  const row = (name, vals, i) => {
+    const t = sum(vals);
+    const mix = vals.map((v, j) => v ? `<i data-lv="${ORDER[j]}" class="${ORDER[j] === 'UNKNOWN' ? 'hatch' : ''}" style="flex:${v}" data-tip="<b>${esc(name)}</b> · ${lvName(ORDER[j])}: ${v} of ${t}"></i>` : '').join('');
+    return `<td>${i == null ? name : `<span class="owner">${av(name, i + 3)}<b style="font-weight:600">${esc(name)}</b></span>`}</td>${vals.map(v => `<td class="c num${v ? '' : ' dim'}">${v}</td>`).join('')}<td class="c num"><b>${t}</b></td><td><span class="mix">${mix}</span></td>`;
+  };
+  document.getElementById('rep-rec').innerHTML = head + '<tbody>' + REC.map((r, i) => `<tr>${row(r.n, r[recK], i)}</tr>`).join('') +
+    `</tbody><tfoot><tr>${row('Team', TOTALS[recK])}</tr></tfoot>`;
+}
+document.getElementById('rep-seg').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  recK = b.dataset.k;
+  document.querySelectorAll('#rep-seg button').forEach(x => x.setAttribute('aria-pressed', x === b));
+  renderRec();
+});
+renderRec();
+
+/* one shared tooltip for chart marks */
+const tip = document.getElementById('tip');
+document.addEventListener('mousemove', e => {
+  const m = e.target.closest('[data-tip]');
+  if (!m) { tip.style.opacity = 0; return; }
+  tip.innerHTML = m.dataset.tip; tip.style.opacity = 1;
+  tip.style.left = (e.clientX + 12) + 'px'; tip.style.top = (e.clientY - 34) + 'px';
+});
+</script>
+</body>
+</html>
