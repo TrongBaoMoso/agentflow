@@ -92,3 +92,10 @@ Production: none of the above pushed to production (Bao decides prod).
 - CRM Push History rows have a per-contact Sync Frequency (Never/Weekly/Monthly/Quarterly/Annually) → MMI can re-push a contact on a schedule (still same fields). Vic's history: realtor ("Agent Crypt") pushes to Bonzo on 10/4/2025, nothing newer.
 - Dynamic List test (list "ZZ TEST LF research - safe to delete", deleted after): Custom start date did NOT persist on save (start reset to today); with Filtered Units filter or even 12M only the list showed 0 rows; without filters it shows "Total Rows: 1,000" (looks capped). No "Export List" button in the current UI ("Save As" = copy/rename prompt). → Dynamic List is not a usable bulk-export path today.
 - Browser kit: launcher crashed once on a JS dialog (Playwright auto-dismiss race) — mmi_browser.js now ignores that error.
+
+## Bonzo check 21/10 ~11:45 (read-only, Bao logged in as miley.dau@loanfactory.com; victoria.pham has no Bonzo subscription — lands on Billing)
+- Bonzo org "Loan Factory": 1/1 seat (Miley Dau, team lead, MMI Seat = NO), last login 20/10/2026.
+- Bonzo Settings → Webhooks: the URL in Vic's MMI CRM Push URL = Bonzo webhook "MMI / MMI" owned by Miley, created 29/09/2024, Success/Failed last 7d = 0/0. Two more: "MMI/MMI" 16/09/2024, "Data Center / Refinder" 28/07/2026.
+- People: 25k+ prospects, latest Loan Officers in campaign "1000 FHA" created 12/08/2026, Source = CSV (imported, not MMI push). Prospect has a "Recruit" tab (NMLS #, LO transactions, volume, state licenses…) — empty for CSV imports.
+- Bonzo is actively used by Miley for mass email/SMS to Loan Officers; the MMI → Bonzo push path is unused (last MMI push 10/04/2025, realtors).
+- MMI profile "Export Summary/Export CSV" = one-row summary only (name, NMLS, company, 14m/7m volume, YTD volume+units, purchase/refi %, tier).
