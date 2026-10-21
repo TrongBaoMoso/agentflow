@@ -3,6 +3,27 @@
 Away window night 21->22/10 (memory feedback_away_window_2122_8oafx_sync.md): recruit-be/fe -> STAGING only, no prod. packs PR only.
 Design: `bd show agentflow-8oafx` notes "PROPOSAL CONFIRMED".
 
+## RESUME POINT — 21/10 ~12:00 +07 (Bao paused the session to go home)
+Whole session (6b7abf95) in one place. Nothing is running in the background; nothing is half-pushed.
+
+Done:
+- agentflow-uuy7w: prod readiness of the D207 hand-off measured (tenant, key, actors, packs V2 in the prod jar GAE f, one specialist miley.dau); staging E2E W1 (webinar LO -> hand-off -> 1-1 -> pre_onboarding_done e-mail -> link opens Basic information while the profile is empty, Pay once submitted -> pay -> sign) and W2 (recruiter edits did not reach MOSO -> became 8oafx).
+- agentflow-8oafx (D303): name/phone/NMLS/e-mail sync live on staging (this file, below).
+- recruit-be draft PR #703: five hand-off flags for production (PACKS_WRITEBACK, ONBOARDING_WRITEBACK, ONBOARDING_V2_HANDOFF, ONBOARDING_HIRE_CLASSIFICATION, ONBOARDING_LEGAL_NAME). NOT merged. Technically unblocked now.
+- agentflow-61yi6: go-live reminder, every flag ON on staging / OFF on prod (incl. the two identity flags). Remind Bao when prod gets real users.
+
+Bao's decisions so far: 8oafx before the hand-off go-live (done to staging); one specialist (Miley) OK; D137 order not formally decided but approve -> 1-1 -> fill -> pay -> sign is fine; register-page copy fix not required before go-live.
+
+Open (waiting on people):
+1. Khai: release packs 3.64.1 (#3722, f461ba4775e) to production.
+2. Bao: go-live decision -> merge #703, promote recruit staging -> production, add the identity flags to prod values (follow agentflow-61yi6).
+3. Bao, questions from the overnight report still unanswered: (a) a save that re-sends the same value does not re-freeze the field after CHANGED_IN_MOSO, OK? (b) add a muted "Changed in MOSO after your fix" note under the field (agentflow-swd7k)? (c) W3 staging LO left with NMLS cleared for viewing the REJECTED note, clean up after.
+4. Screenshots: the overnight D303-* shots were lost with the scratchpad; only D303-email-{a-regform,b-409,c-signed}-{desktop,mobile}.png exist (session scratchpad e2e/shots). Retake the bell + "Not updated in MOSO" shots if Bao asks (W3 data still on staging).
+
+Follow-up beads (fix later, Bao 21/10): agentflow-r0g2q (register page still says "We will call you"), agentflow-l21zt (Mark done accepted before the 1-1 start), agentflow-ax9hm (after pay+sign a plain ?key link shows "Payment successful", complete_percentage stuck at 0.25), agentflow-wzkts (packs e-mail case/lock helper), agentflow-swd7k (fe note in edit mode + CHANGED_IN_MOSO note). Minor: case c wording differs between BE ("Ask HR") and FE ("changed by HR").
+
+Security note: during the 20/10 measurement a loose filter printed the prod value of PACKS_WRITEBACK_INTERNAL_API_KEY into the session transcript (not sent anywhere). Bao/Khai to decide on rotation.
+
 ## State — 21/10 ~11:30 +07: E-MAIL HALF LIVE ON STAGING
 | Piece | Status |
 |---|---|
@@ -31,7 +52,5 @@ Follow-ups: agentflow-wzkts (packs), agentflow-swd7k (fe).
 - D303, V265 (`candidate_moso_field_sync`), R-number none. New endpoint GET /api/v1/candidates/{id}/moso-field-sync.
 - No local Docker tonight (swap nearly full): ITs run in CI only.
 
-## Next (for Bao / Khai)
-1. Bao: look at the screenshots (session scratchpad e2e/shots/D303-*.png) and staging.
-2. Khai: merge/deploy packs #3721 + #3722; then turn RECRUIT_FEATURES_IDENTITY_WRITEBACK_EMAIL on on staging and test the e-mail half live.
-3. Production: with the hand-off go-live (PR #703, agentflow-61yi6).
+## Next
+See RESUME POINT above (items 1-4). Steps 1-2 of the old list (merge packs, turn e-mail on on staging, live test) are done.
