@@ -137,3 +137,5 @@ Order: BE-1 then BE-2 then FE (local preview for Bao before any FE commit). BE P
 - 23/10 night, Bao chose (a): ship the LO site /join page (agent started: moso-aid -> lo-homepage -> lf redirect, STAGING only,
   2 reviewers + Repo Owner each) and switch My referrals referral_link to <site>/join once live. Editor stays in lo /lo-setting
   (Bao accepted: no real login there, ?loKey=). Empty bio hidden.
+- Night decision (mine, reversible, to report to Bao): My referrals shows ALL-TIME referrals and money (the BE default window is
+  Jan 1 this year; FE sends an early since). Day counts use the business timezone.
