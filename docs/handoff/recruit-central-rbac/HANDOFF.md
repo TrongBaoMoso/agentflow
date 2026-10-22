@@ -236,3 +236,27 @@ Morning proposal for production Recruit role grants: `~/.cache/claude-recruit/lf
   production does not enforce app access yet, so they can sign in. This is part of P6.
 - Gotcha: busybox wget in the pod has no PUT, so the single-user `PUT /grants/{id}` cannot be called from there.
   Use the bulk POST and pass argv directly (no `sh -c`), because an apostrophe in a note breaks shell quoting.
+
+## STAGING 23/10 (morning)
+
+- **Merged and promoted to staging:**
+  - recruit-be #717 (P2: D315, V268; squash 69f9d92c);
+  - recruit-be #716 (MOSO owner sync: D310, V269; 434e8696);
+  - recruit-fe #567 (tolerant FE plus the removal of the retired roles and copy; 045fd321).
+
+  Both deploys succeeded. Staging DB checks:
+  - Flyway is at 269;
+  - rbac_roles holds 7 roles, MANAGER with 29 permissions;
+  - 0 grants hold a removed role.
+- **Central staging cleanup:** HR, LICENSING and ACCOUNTING were deleted with `force=true` through an in-cluster
+  curl pod (`DELETE http://auth-service.auth-service.svc.cluster.local:8081/api/v1/admin/rbac/roles/{id}?force=true`,
+  no token needed). Central RECRUIT now holds the same 7 roles as recruit-be.
+- **Merge-order rule learned:** the D and V numbers race with other sessions. Run
+  `scripts/ci/check_flyway_versions.py --base-ref origin/master` right before merging. If a branch is BEHIND, use
+  `gh pr update-branch` + `gh pr merge --squash --auto`.
+- **PRODUCTION:** nothing promoted. #717 and #567 must go to production in the SAME promotion. #716's flag is
+  OFF on production; turn it on after Bao's go.
+- **Open:**
+  - #715 go-live script: round-2 fixes in progress, including the NMLS blacklist arm.
+  - Manager schedules 1-1: a BE+FE PR pair is in progress.
+  - P3–P5 next.
