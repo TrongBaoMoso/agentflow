@@ -180,3 +180,11 @@ Step A list for Bao: `~/.cache/claude-recruit/lfcheck/step_A_list.csv`, 11 rows:
 - **A2:** 5 archived or closed rows of people working at LF. Reopen 4 as S7; 1 already has a live S7 twin
   and stays archived.
 - **A3:** 2 pool rows to merge into their S6 twin.
+
+### Sizing for REFERRER (measured 22/10 by session agentflow-68, read-only; scripts in ~/.cache/claude-recruit/refsize/, data files hold e-mails, never commit)
+- Production MOSO: 722 distinct referrers all time (279 this year), 4,839 referral rows (721 this year); 3,428 OPEN / 1,411 MASKED.
+- Linkable (active, unlocked MOSO Admin with company e-mail): 552 all time (258 this year); 169 left/locked and can never link.
+- ~547 would need REFERRER (5 already hold a local recruit role); 698 of 722 are plain loan officers.
+- 0 production referrers have used My referrals yet (0 stored identity links), so nobody loses a working page today.
+- NOT measured: production auth-service account match (no read access). Needs a read-only prod auth_db user, Tai/DevOps running the SELECTs, or a prod admin@tera token for POST /admin/accounts/lookup. Staging: 58/58 referrers matched an auth account.
+- Concentration: top 10 referrers hold 2,659 of 4,839 rows; median referrer has 1.
