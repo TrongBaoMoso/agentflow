@@ -65,3 +65,32 @@ set `ROOT` in `gen_ring_v2.py` to the new folder, re-run, then publish `project/
   conversation icon per row, sticky header, % column widths.
 - **Production: NOT promoted.** Order: recruit-be production first (FE sends stage=ALL, old BE answers 400), then
   recruit-fe. Behaviour change on prod: Remind manager reaches MANAGER role only (victoria.pham), not ADMINs.
+
+## PAUSE 22/10 evening — RESUME POINT
+
+**On staging:** recruit-be #708 #710 #711 #712 (multi-value step/waiting_on) #713 (unseen rows first); recruit-fe #559.
+**Merged to master, NOT yet promoted to staging:** recruit-fe **#563** (round 2: grouped To do tree, multi Waiting on,
+HR-style date range, compact actions, Conversation icon last on every row, decline-note tooltip, "Invite email not
+sent" + compact Resend only before the 1-1 is booked, phone table scrolls sideways) — master 82fddb38.
+**Open PR, CI was running at pause:** recruit-fe **#564** `fix/phone-tables-stay-tables` (tables stay tables on phones
+everywhere, Table | Cards toggle on hand-offs/Hot/Cold/approval queue, one card look + hover incl. Pipeline cards/board,
+Cold Claim compact). Locally verified: jest 621/622 (only pre-existing followUp.test.ts), tsc, eslint, build.
+
+**Next steps on resume:**
+1. `gh pr checks 564` → green → squash-merge → `gh workflow run promote-staging.yml -f sha=<master sha>` (this ships
+   #563 + #564 together) → watch cd-staging → smoke /invites, /inbox/hot, /inbox/cold, /pipeline?view=cards at 1440+390.
+2. Approved, not started — **Exceptions** (separate PR): keep the 3 sections (NO "type" column — removed earlier by
+   feedback), add one page search (name/NMLS across sections), Owner filter, header sort per section, Refresh, one
+   page-level Table | Cards toggle. No pagination / saved / export / bulk.
+3. Proposed, NOT yet approved — list-page standard (audit result in this session): hand-offs + Reset/Refresh/Saved;
+   Hot/Cold Saved (+ Cold bulk Assign like Hot, manager-only); Dormant/Audit/Work: toggle, Refresh, Reset, Saved, row
+   count (Audit: search + date range); Conversations/Audit/Permissions onto the HrList kit, Permissions filters into the
+   URL (rule #5). Not for Reports/Duplicates/Templates/Checklist templates/My referrals. Extras proposed: active-filter
+   chips, "Clear filters" in empty state, remembered page size, column picker.
+4. Production: nothing promoted. Order recruit-be first, then recruit-fe. Remind manager reaches MANAGER role only.
+5. Known: Cold list overflows ~18px at 390 (pre-existing).
+
+Worktrees: fe `recruit-fe-worktrees/handoffs-redesign` (fix/handoffs-round2, merged) and `recruit-fe-worktrees/phone-tables`
+(#564); be `recruit-be-worktrees/handoffs-multi`. Local preview recipe: next dev -p 3311 in the worktree with
+NEXT_PUBLIC_DEV_USER_ID=<account id> + `~/.cache/claude-recruit/preview/front_rec.js stg_<port>.token <port>`, tokens via
+`~/.cache/claude-recruit/handoffs/tok.js` (3310 manager, 3320 recruiter, 3350 onb-test). All servers stopped at pause.
