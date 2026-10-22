@@ -118,8 +118,8 @@ recruit-be ── per request: GET /rbac/users/{actor}/permissions?app_code=RECR
 
   Per-person ADD/BLOCK permissions emit no event; they are read live. Old data is fixed with a
   one-off SQL datafix script.
-  **Dependency:** recruit-be production runs with Pub/Sub off (`PUBSUB_PROVIDER=none`). P4 needs
-  it on in production.
+  **Pub/Sub on production (measured 22/10 night):** `PUBSUB_PROVIDER=google`, `ENABLED_CLOUD=true` on the
+  recruit-be prod deployment, so no ops change is needed for the HR events (an older note said `none`).
 
 ## Phases (each is its own PR into master, merged only when green)
 
@@ -128,7 +128,7 @@ recruit-be ── per request: GET /rbac/users/{actor}/permissions?app_code=RECR
 | P1 cleanup | recruit-be | Remove the override path, `CANDIDATE_OVERRIDE_GATE` and both `stage_requirements` rows. Remove the licensing rules and sponsorship write actions. Duplicates owned by MERGE. DECISIONS entry superseding D35/V041 + comments/docs. No permission source change yet. |
 | P2 roles | recruit-be | Migration dropping HR / LICENSING / ACCOUNTING / OFFICER_RECRUITER (and their grants), `DEPARTMENT_ROLES` reduced to ONBOARDING, checklist `*_MANAGE_<DEPT>` collapsed to one `CHECKLIST_*_MANAGE` held by ONBOARDING. |
 | P3 catalog | recruit-be | Format-2 catalog file and the coverage test. Route splits for the conflicts that need them (`GET /candidates/unowned`, offer approve-now). The 14 unchecked endpoints are owned by baseline `RECRUIT_ACCESS`, which every role holds. |
-| P4 central source | recruit-be | Central permission resolver with cache, the HR_ASSOCIATE_* consumer + mapping table (assigns RECRUIT roles in auth-service), HEADHUNTER/TEAM_LEAD assignment on program join/leave, mirror sync (per-request refresh + reconcile job), scope-based row scope, flag `recruit.rbac.source`. Staging switches to `central`. Production needs Pub/Sub on. |
+| P4 central source | recruit-be | Central permission resolver with cache, the HR_ASSOCIATE_* consumer + mapping table (assigns RECRUIT roles in auth-service), HEADHUNTER/TEAM_LEAD assignment on program join/leave, mirror sync (per-request refresh + reconcile job), scope-based row scope, flag `recruit.rbac.source`. Staging switches to `central`. Production already runs Pub/Sub (google). |
 | P5 screens | recruit-fe | The Permissions/Access screen becomes read-only, with a "Manage in Account IAM" link. Grant editing and the bulk grant are removed. |
 | P6 production | ops | Push the catalog to production. Copy the 9 production grants to central (minus the removed roles), switch `recruit.rbac.source=central`, then ask Tai to put RECRUIT in the production enforce list. |
 
