@@ -82,3 +82,20 @@ Mockup: canvas board "My referrals v2" (1110px = real width at 1440 with the sid
   grant on the event when recruit receives a referral + one nightly reconcile (new referrers are 11–28/month);
   sizing written in docs/handoff/recruit-central-rbac/HANDOFF.md.
 - MOSO dependency: referral list, bonus eligibility/amount/checks all come live from MOSO via packs RecruitAPI.
+
+## PLAN — My referrals v2 build (Bao 22/10 night: only "Copy link" button; e-mail notifications IN this batch)
+Order: BE-1 then BE-2 then FE (local preview for Bao before any FE commit). BE PRs: 2 reviewers + CI, merge = master, promote staging.
+- BE-1 recruit-be referralview (contract for FE):
+  - Stop masking typed-e-mail referrals (Bao option 3); keep HIDDEN when the typed address is not the caller's current company e-mail. DECISIONS entry (supersedes design 6.3 masking).
+  - MyReferralItem adds: onboarding_specialist_name, recruiter_avatar_url, onboarding_specialist_avatar_url,
+    current_step (REFERRED|CONTACTED|OFFER_SENT|AGREEMENT_SIGNED|FEE_PAID|HR_FORMS|LICENSING|SETUP_CALL|JOINED = first step not done),
+    waiting_on (FRIEND|RECRUITING|HR|LICENSING|ONBOARDING|null), waiting_since (date the previous step finished), bonus_amount (MOSO).
+    Update MyReferralItemAllowListTest deliberately.
+  - Totals add bonus_on_the_way_amount_sum (eligible/waiting/requested, not paid). Response adds referral_link
+    (program member: /join/<slug>; else MOSO domain_url + /loan-officer; null if none).
+- BE-2 notifications: per-user preference GET/PUT /api/v1/referrals/notifications (default ON); periodic job compares each
+  opted-in referrer's items (current_step, joined, bonus status) with a last-notified snapshot and sends ONE digest e-mail per
+  referrer when something changed. Flag referrals.notify.enabled: staging ON (mail only to the staging allowlist), prod OFF
+  until Bao (bead agentflow-236t9.14 checklist for prod auto-emails).
+- FE recruit-fe my-referrals: desktop table per mockup (1110px, sideways scroll below 1440), mobile = one card per LO with
+  vertical steps, money cards, Copy link only, tabs, notification switch. Remove old cards/milestones/footnotes.
