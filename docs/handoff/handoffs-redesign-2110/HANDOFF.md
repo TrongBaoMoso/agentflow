@@ -94,3 +94,10 @@ Worktrees: fe `recruit-fe-worktrees/handoffs-redesign` (fix/handoffs-round2, mer
 (#564); be `recruit-be-worktrees/handoffs-multi`. Local preview recipe: next dev -p 3311 in the worktree with
 NEXT_PUBLIC_DEV_USER_ID=<account id> + `~/.cache/claude-recruit/preview/front_rec.js stg_<port>.token <port>`, tokens via
 `~/.cache/claude-recruit/handoffs/tok.js` (3310 manager, 3320 recruiter, 3350 onb-test). All servers stopped at pause.
+
+## RESUMED 22/10 night — #563 + #564 ON STAGING
+
+recruit-fe #564 merged (55469ede) and promoted together with #563; cd-staging success. Smoke on recruit.viet18.com as
+recruiter at 1440 and 390: /invites (table + cards), /inbox/hot, /inbox/cold, /pipeline in card view — no page errors,
+no sideways overflow except Cold at 390 (+18px, pre-existing). Next: Exceptions plan (step 2 above); list-page standard
+still awaits approval; production not promoted (BE first).
