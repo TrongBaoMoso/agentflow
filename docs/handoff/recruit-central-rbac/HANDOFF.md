@@ -188,3 +188,21 @@ Step A list for Bao: `~/.cache/claude-recruit/lfcheck/step_A_list.csv`, 11 rows:
 - 0 production referrers have used My referrals yet (0 stored identity links), so nobody loses a working page today.
 - NOT measured: production auth-service account match (no read access). Needs a read-only prod auth_db user, Tai/DevOps running the SELECTs, or a prod admin@tera token for POST /admin/accounts/lookup. Staging: 58/58 referrers matched an auth account.
 - Concentration: top 10 referrers hold 2,659 of 4,839 rows; median referrer has 1.
+
+## STEP A DONE on PROD (22/10 ~23:40 local; Bao said "chạy")
+
+- **A1, 4 rows, ARCHIVED** through the in-pod admin API (`POST /candidates/bulk-archive`, `X-User-ID` = bao.trinh's
+  prod user id `4b9afbbe-…`). Reason: "Left LoanFactory: MOSO shows a terminate date". Result: 4 OK.
+- **A3, 2 pool duplicates.** A merge is refused because both rows hold an open offer, and declining an offer is an
+  outward action, so the duplicates are archived instead, with a pointer to the S6 record.
+  - One row was archived (OK).
+  - The other had already been archived by a MOSO push at 15:49Z, so it was skipped.
+- **A2, 4 rows reopened to S7 ACTIVE** by a guarded SQL transaction (`~/.cache/claude-recruit/lfcheck/a2.sql`):
+  - it asserted 4 archived rows before writing;
+  - it wrote one NOTE activity per row, with a human actor, which makes the row "protected" so a later MOSO
+    push no longer overwrites stage/status (`MosoRowUpsertServiceImpl` `protectedRow`);
+  - it wrote a stage_history row for each of the 3 rows that changed stage.
+- **Re-measure after:** 1 mismatch left. It is intended: the person has a live S7 twin and stays archived.
+- **Rollback data:** the full JSON of every touched row from before the change is in
+  `~/.cache/claude-recruit/lfcheck/snap_before.txt`.
+- **No writeback to MOSO happens:** `RECRUIT_FEATURES_*WRITEBACK` are absent on prod, so they default to off.
