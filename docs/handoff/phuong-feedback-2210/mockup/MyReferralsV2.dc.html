@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>My referrals v2</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="width: 1110px; min-height: 1180px; box-sizing: border-box; padding: 24px 0; background: #f7f4ef; font-family: 'Be Vietnam Pro', system-ui, sans-serif; color: #231d18; font-size: 13px;">
+
+  <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 18px;">
+    <h1 style="margin: 0; font-size: 24px; font-weight: 800;">My referrals</h1>
+    <label style="display: inline-flex; align-items: center; gap: 10px; font-size: 13px; color: #4a423b; cursor: pointer;">
+      <button type="button" role="switch" aria-checked="{{notifyOn}}" onClick="{{toggleNotify}}" style="position: relative; width: 38px; height: 22px; border: 0; border-radius: 999px; background: {{notifyBg}}; cursor: pointer;">
+        <span style="position: absolute; top: 3px; left: {{notifyKnob}}; width: 16px; height: 16px; border-radius: 50%; background: #ffffff;"></span>
+      </button>
+      Email me when something changes
+    </label>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1.6fr; gap: 12px; margin-bottom: 18px;">
+    <div style="padding: 16px 18px; border-radius: 14px; background: #1d6b3f; color: #ffffff;">
+      <div style="font-size: 12.5px; opacity: 0.85;">Paid to you</div>
+      <div style="margin-top: 6px; font-size: 30px; font-weight: 800;">$500</div>
+    </div>
+    <div style="padding: 16px 18px; border: 1px solid #e6dfd6; border-radius: 14px; background: #ffffff;">
+      <div style="font-size: 12.5px; color: #6b625a;">On the way</div>
+      <div style="margin-top: 6px; font-size: 30px; font-weight: 800; color: #7a5200;">$1,000</div>
+    </div>
+    <div style="padding: 16px 18px; border: 1px solid #e6dfd6; border-radius: 14px; background: #ffffff;">
+      <div style="font-size: 12.5px; color: #6b625a;">People you referred</div>
+      <div style="margin-top: 6px; font-size: 30px; font-weight: 800;">15</div>
+    </div>
+    <div style="padding: 16px 18px; border: 1px solid #e6dfd6; border-radius: 14px; background: #ffffff; display: flex; flex-direction: column; gap: 10px;">
+      <div style="font-size: 12.5px; color: #6b625a;">Your referral link</div>
+      <div style="display: flex; gap: 8px;">
+        <span style="flex: 1; min-width: 0; padding: 8px 10px; border: 1px solid #e6dfd6; border-radius: 8px; background: #faf8f5; font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">loanfactory.com/join/jessica-nguyen</span>
+        <button type="button" onClick="{{copy}}" style="height: 34px; padding: 0 12px; border: 1px solid #ded6cc; border-radius: 8px; background: #ffffff; font-size: 12.5px; font-weight: 700; cursor: pointer;">{{copyLabel}}</button>
+        <button type="button" style="height: 34px; padding: 0 12px; border: 0; border-radius: 8px; background: #c2501b; color: #ffffff; font-size: 12.5px; font-weight: 700; cursor: pointer;">Refer someone</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+    <sc-for list="{{tabs}}" as="tb" hint-placeholder-count="4">
+      <button type="button" onClick="{{tb.pick}}" style="height: 32px; padding: 0 14px; border: 1px solid {{tb.line}}; border-radius: 999px; background: {{tb.bg}}; color: {{tb.ink}}; font-size: 12.5px; font-weight: 600; cursor: pointer;">{{tb.label}}</button>
+    </sc-for>
+  </div>
+
+  <section aria-label="Referrals" style="border: 1px solid #e6dfd6; border-radius: 14px; background: #ffffff; overflow: hidden;">
+    <div style="display: grid; grid-template-columns: 200px repeat(9, 52px) minmax(140px, 1fr) 120px; column-gap: 6px; align-items: start; padding: 12px 18px; background: #efedea; border-bottom: 1px solid #e6dfd6;">
+      <span style="align-self: end; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;">Loan officer</span>
+      <sc-for list="{{stepHeads}}" as="h" hint-placeholder-count="9">
+        <span style="align-self: stretch; display: grid; grid-template-rows: 18px 26px 12px; justify-items: center; align-items: start; row-gap: 4px; text-align: center;">
+          <span style="display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: #231d18; color: #ffffff; font-size: 10px; font-weight: 800;">{{h.n}}</span>
+          <span style="font-size: 10.5px; line-height: 1.2; font-weight: 600; color: #4a423b;">{{h.label}}</span>
+          <span style="font-size: 9.5px; line-height: 1.2; color: #8a8077; white-space: nowrap;">{{h.owner}}</span>
+        </span>
+      </sc-for>
+      <span style="align-self: end; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;">Taken care by</span>
+      <span style="align-self: end; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; text-align: right;">Bonus</span>
+    </div>
+
+    <sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
+      <div style="display: grid; grid-template-columns: 200px repeat(9, 52px) minmax(140px, 1fr) 120px; column-gap: 6px; align-items: center; padding: 14px 18px; border-bottom: 1px solid #efe9e2;">
+        <div style="display: flex; flex-direction: column; gap: 6px; min-width: 0;">
+          <span style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+            <span style="flex: none; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: #fdebe0; border: 1px solid #f3cdb6; color: #a84516; font-size: 11.5px; font-weight: 700;">{{r.initials}}</span>
+            <span style="display: flex; flex-direction: column; gap: 2px; min-width: 0;">
+              <b style="font-weight: 700;">{{r.name}}</b>
+              <span style="font-size: 11.5px; color: #6b625a;">{{r.nmls}}</span>
+              <span style="font-size: 11.5px; color: #6b625a;">{{r.referred}}</span>
+            </span>
+          </span>
+        </div>
+        <sc-for list="{{r.steps}}" as="st" hint-placeholder-count="9">
+          <span style="display: flex; flex-direction: column; align-items: center; gap: 3px; align-self: start; padding-top: 6px;">
+            <span style="display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: {{st.bg}}; border: 2px solid {{st.ring}}; color: #ffffff; font-size: 11px; font-weight: 800; box-sizing: border-box;">{{st.mark}}</span>
+            <span style="font-size: 10.5px; color: {{st.metaInk}}; font-weight: {{st.metaWeight}}; white-space: nowrap;">{{st.meta}}</span>
+            <sc-if value="{{st.hasChip}}" hint-placeholder-val="{{false}}">
+              <span style="align-self: {{st.chipAlign}}; margin-top: 2px; padding: 2px 8px; border-radius: 999px; background: {{st.chipBg}}; color: {{st.chipInk}}; font-size: 11px; font-weight: 700; white-space: nowrap;">{{st.chip}}</span>
+            </sc-if>
+          </span>
+        </sc-for>
+        <div style="display: flex; flex-direction: column; gap: 6px; min-width: 0;">
+          <sc-for list="{{r.people}}" as="pp" hint-placeholder-count="2">
+            <span style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+              <span style="flex: none; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: {{pp.avBg}}; color: {{pp.avInk}}; font-size: 9.5px; font-weight: 700;">{{pp.initials}}</span>
+              <span style="display: flex; flex-direction: column; min-width: 0; line-height: 1.2;">
+                <span style="font-weight: 600; color: {{pp.ink}}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{pp.name}}</span>
+                <span style="font-size: 10.5px; color: #8a8077;">{{pp.role}}</span>
+              </span>
+            </span>
+          </sc-for>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 3px; text-align: right;">
+          <b style="font-size: 15px; font-weight: 800; color: {{r.bonusInk}};">{{r.bonusBig}}</b>
+          <span style="font-size: 11.5px; color: #6b625a;">{{r.bonusSmall}}</span>
+        </div>
+      </div>
+    </sc-for>
+
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1110,"height":1180}}'>
+var STEPS = [
+  ['Referred', 'You'], ['Contacted', 'Recruiting'], ['Offer sent', 'Recruiting'], ['Agreement signed', 'Your friend'], ['Fee paid', 'Your friend'],
+  ['HR forms', 'Friend + HR'], ['Licensing', 'Licensing'], ['Setup call', 'Onboarding'], ['Joined', '']
+];
+var DATES = ['Sep 3', 'Sep 4', 'Sep 8', 'Sep 9', 'Sep 9', 'Sep 12', 'Sep 26', 'Oct 1', 'Oct 2'];
+var DATA = [
+  { name: 'Daniel Ortiz', nmls: 'NMLS 2400318', referred: 'referred Oct 8', group: 'progress', done: 3, days: '9d', who: 'friend', waitWho: 'Waiting on Daniel', rec: 'Bao Trinh', ob: '', bonusBig: '$500', bonusSmall: 'when Daniel joins', bonusKind: 'later' },
+  { name: 'Jessica Tran', nmls: 'NMLS 2214587', referred: 'referred Oct 2', group: 'progress', done: 5, days: '6d', who: 'friend', waitWho: 'Waiting on Jessica', rec: 'Bao Trinh', ob: 'Miley Dau', bonusBig: '$500', bonusSmall: 'when Jessica joins', bonusKind: 'later' },
+  { name: 'Kevin Brooks', nmls: 'NMLS 1765502', referred: 'referred Sep 22', group: 'progress', done: 6, days: '3d', who: 'us', waitWho: 'Waiting on Licensing', rec: 'Victoria Pham', ob: 'Thao Le', bonusBig: '$500', bonusSmall: 'when Kevin joins', bonusKind: 'later' },
+  { name: 'Hannah Kim', nmls: 'No NMLS yet', referred: 'referred Oct 12', group: 'progress', done: 1, days: '10d', who: 'us', waitWho: 'Waiting on Recruiting', rec: '', ob: '', bonusBig: '$500', bonusSmall: 'when Hannah joins', bonusKind: 'later' },
+  { name: 'Marcus Lee', nmls: 'NMLS 1987320', referred: 'referred Sep 3', group: 'joined', done: 9, who: 'done', waitWho: 'Joined Oct 2', rec: 'Victoria Pham', ob: 'Miley Dau', bonusBig: '$500', bonusSmall: 'yours on Dec 1 · in 40 days', bonusKind: 'soon' },
+  { name: 'Lauren Diaz', nmls: 'NMLS 2056671', referred: 'referred Aug 1', group: 'joined', done: 9, who: 'done', waitWho: 'Joined Aug 27', rec: 'Bao Trinh', ob: 'Thao Le', bonusBig: '$500', bonusSmall: 'being paid · requested Oct 20', bonusKind: 'soon' },
+  { name: 'Priya Shah', nmls: 'NMLS 2310045', referred: 'referred Jul 14', group: 'joined', done: 9, who: 'done', waitWho: 'Joined Aug 12', rec: 'Bao Trinh', ob: 'Thao Le', bonusBig: '$500 paid', bonusSmall: 'Oct 15', bonusKind: 'paid' },
+  { name: 'Tom Nguyen', nmls: 'NMLS 1877201', referred: 'referred Aug 20', group: 'stopped', done: 2, who: 'muted', waitWho: 'Stopped', rec: 'Bao Trinh', ob: '', bonusBig: 'No bonus', bonusSmall: '', bonusKind: 'none' }
+];
+var WAIT = { done: ['#e3f3e9', '#1d6b3f'], friend: ['#fbe9df', '#a84516'], us: ['#e8f0fb', '#1f4f8f'], muted: ['#f3f0ec', '#6b625a'] };
+var BONUS = { soon: '#7a5200', paid: '#1d6b3f', later: '#231d18', none: '#8a8077' };
+var initials = function (n) { return n.split(' ').map(function (p) { return p[0]; }).join('').slice(0, 2).toUpperCase(); };
+var person = function (name, role, bg, ink) {
+  var has = Boolean(name);
+  return { name: has ? name : 'Not assigned yet', role: role, initials: has ? initials(name) : '—', avBg: has ? bg : '#f3f0ec', avInk: has ? ink : '#8a8077', ink: has ? '#231d18' : '#8a8077' };
+};
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { tab: 'all', notify: true, copied: false }; }
+  renderVals() {
+    var self = this;
+    var shown = DATA.filter(function (d) { return self.state.tab === 'all' || d.group === self.state.tab; });
+    var rows = shown.map(function (d) {
+      var w = WAIT[d.who];
+      return {
+        name: d.name, nmls: d.nmls, referred: d.referred, initials: initials(d.name), waitWho: d.waitWho, waitBg: w[0], waitInk: w[1],
+        steps: STEPS.map(function (s, i) {
+          var on = i < d.done, now = i === d.done && d.group === 'progress', stopped = d.group === 'stopped';
+          var chipAt = d.group === 'progress' ? d.done : d.done - 1;
+          return {
+            bg: on ? (stopped ? '#c9c1b8' : '#2f8a57') : (now ? w[1] : '#ffffff'),
+            ring: on ? (stopped ? '#c9c1b8' : '#2f8a57') : (now ? w[1] : '#e2dbd3'),
+            mark: on ? '✓' : (now ? '•' : ''),
+            meta: on ? DATES[i] : (now ? d.days : ''), metaInk: now ? w[1] : '#8a8077', metaWeight: now ? 800 : 500,
+            hasChip: d.group === 'progress' && i === chipAt, chip: d.waitWho, chipBg: w[0], chipInk: w[1], chipAlign: i >= 7 ? 'flex-end' : 'center'
+          };
+        }),
+        people: [person(d.rec, 'Recruiter', '#fdebe0', '#a84516'), person(d.ob, 'Onboarding specialist', '#e8f0fb', '#1f4f8f')],
+        bonusBig: d.bonusBig, bonusSmall: d.bonusSmall, bonusInk: BONUS[d.bonusKind]
+      };
+    });
+    var tabs = [['all', 'All (15)'], ['progress', 'In progress (10)'], ['joined', 'Joined (3)'], ['stopped', 'Stopped (2)']].map(function (t) {
+      var on = self.state.tab === t[0];
+      return { label: t[1], bg: on ? '#231d18' : '#ffffff', ink: on ? '#ffffff' : '#231d18', line: on ? '#231d18' : '#e6dfd6', pick: function () { self.setState({ tab: t[0] }); } };
+    });
+    return {
+      stepHeads: STEPS.map(function (s, i) { return { n: String(i + 1), label: s[0], owner: s[1] }; }),
+      rows: rows, tabs: tabs,
+      notifyOn: self.state.notify ? 'true' : 'false', notifyBg: self.state.notify ? '#c2501b' : '#d8d0c6', notifyKnob: self.state.notify ? '19px' : '3px',
+      toggleNotify: function () { self.setState({ notify: !self.state.notify }); },
+      copyLabel: self.state.copied ? 'Copied' : 'Copy',
+      copy: function () { self.setState({ copied: true }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

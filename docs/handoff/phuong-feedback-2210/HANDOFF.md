@@ -99,3 +99,12 @@ Order: BE-1 then BE-2 then FE (local preview for Bao before any FE commit). BE P
   until Bao (bead agentflow-236t9.14 checklist for prod auto-emails).
 - FE recruit-fe my-referrals: desktop table per mockup (1110px, sideways scroll below 1440), mobile = one card per LO with
   vertical steps, money cards, Copy link only, tabs, notification switch. Remove old cards/milestones/footnotes.
+
+## Gap audit 22/10 night (both transcripts re-read) — still open, NOT in tonight's scope (Bao: My referrals only tonight)
+- Partly done: My work today for Victoria — 15/10 asked a fixed 5–10 rows per group + "More" (only Nothing scheduled is capped, 25).
+- Partly done: 22/10 (d) referrer / CS / LO support of an LO "in the profile / quick view" — not verified that the quick view shows them.
+- Not done: HR offboard event listener (onboard exists, offboard not) — overlaps session agentflow-99's HR_ASSOCIATE_DEACTIVE plan.
+- Not done: store every field for a future dashboard / AI Assistant reports (needs Phuong's spec; Bao: later).
+- Not done: post-hire Loan Officer tracking for LO Support (training done, onboarded, programs, Zoom Phone, Google Business Profile) — needs spec; Bao: later.
+- Unclear: 22/10 at 27:21 "cái cột này nhớ chỉnh lại" — transcript garbled; ask Bao/Phuong which column.
+- Done earlier: Qualified/Not qualified wording; one program per LO (D268, 16/10).
