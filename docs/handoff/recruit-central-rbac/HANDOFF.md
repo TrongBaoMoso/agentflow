@@ -118,3 +118,21 @@ inventory), all in this folder.
   - HR `640f08a2-45d4-4c9d-92f8-40100b5186cf`
   - LICENSING `df5ff0a1-d372-4d10-b270-a27e1ca7a590`
   - ACCOUNTING `2d95b4cb-fe37-4b60-9edc-7542028c9dc8`
+
+## OPEN ISSUE from session agentflow-68 (22/10 evening) — Loan Officer referrers lose My referrals
+
+Read before finishing PLAN.md and before APP_ACCESS_ENFORCE reaches production.
+
+- My referrals (`GET /referrals/mine`) needs NO recruit role by design: any signed-in person sees the people THEY
+  referred (verified e-mail match). The recruit-fe menu shows the entry to a person with no recruit role at all
+  ("noGrant" → only My referrals). Its main users are plain Loan Officers who refer other Loan Officers.
+- With `APP_ACCESS_ENFORCE` on, `/authorize` refuses RECRUIT to anyone without a central RECRUIT role, so those Loan
+  Officers are stopped at sign-in, never reach the page, and see no Recruit icon in the launcher. Already true on
+  staging; on production (referrals.enabled ON since 16/10) they would lose access the day enforcement ships.
+- PLAN.md keeps 7 roles and none covers a plain referrer (HEADHUNTER/TEAM_LEAD are for LO Recruiter Program members).
+- Options shown to Bao (not decided yet):
+  1. (recommended) A minimal role, e.g. `REFERRER`, granting only My referrals; recruit-be assigns it in auth-service
+     when a person gets their first referral (same mechanism as HEADHUNTER/TEAM_LEAD), removes it when none remain.
+  2. Give that role to every Loan Officer (e.g. from the HR app at onboarding) — simpler, but everyone sees the icon.
+  3. Move My referrals into an app Loan Officers already open — no auth change, larger work.
+- Bao's question that raised it: "LO chắc chắn không có role recruiter — có ảnh hưởng gì không?"
