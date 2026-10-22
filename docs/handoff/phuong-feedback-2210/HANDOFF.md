@@ -133,3 +133,7 @@ Order: BE-1 then BE-2 then FE (local preview for Bao before any FE commit). BE P
   pending Victoria+Matt and 2 open questions (editor location, empty-bio). So <site>/join is 404 today. Tonight #718 keeps
   <site>/loan-officer (works, attribution live since 06/10) and /join/<slug> only for dedicated headhunters. ASK BAO: (1) switch
   My referrals to <site>/join once the page ships and resume the lo-join-page work, or (2) keep /loan-officer until it is agreed.
+
+- 23/10 night, Bao chose (a): ship the LO site /join page (agent started: moso-aid -> lo-homepage -> lf redirect, STAGING only,
+  2 reviewers + Repo Owner each) and switch My referrals referral_link to <site>/join once live. Editor stays in lo /lo-setting
+  (Bao accepted: no real login there, ?loKey=). Empty bio hidden.
