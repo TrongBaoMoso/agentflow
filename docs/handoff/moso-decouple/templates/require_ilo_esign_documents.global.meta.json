@@ -1,0 +1,25 @@
+{
+  "title": "Action Required: Review and E-Sign Your Loan Officer Agreement",
+  "type": "email",
+  "from": "${iloOnboardingSpecialist.company_email}",
+  "to": [
+    "${ilo.email}"
+  ],
+  "cc": null,
+  "bcc": null,
+  "reply_to": null,
+  "context": "[{\"name\":\"ilo\",\"type\":\"JSON\"},{\"name\":\"iloOnboardingSpecialist\",\"type\":\"JSON\"},{\"name\":\"url\",\"type\":\"String\"}]",
+  "labels": [
+    "${ilo.key}"
+  ],
+  "updated": null,
+  "placeholders": [
+    "${Server.getCompanyWithDBAInfo().name}",
+    "${ilo.email}",
+    "${ilo.full_name}",
+    "${iloOnboardingSpecialist.company_email}",
+    "${template('signature', {admin:find.Admin.byKeyName(iloOnboardingSpecialist.n)})}",
+    "${url}"
+  ],
+  "source": "MOSO prod Datastore, project lender-rate, kind Template, global namespace '' (EFFECTIVE only when no tenant override exists)"
+}

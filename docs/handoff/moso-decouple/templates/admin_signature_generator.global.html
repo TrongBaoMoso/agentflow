@@ -1,0 +1,170 @@
+<!--#
+var company = Server.getCompanyWithDBAInfo();
+var primaryColor = Server.configuration().primary_color;
+-->
+<!--# if admin.kind == 'Escrow'-->
+${template('escrow_signature', {admin:admin})}
+<!--# elseif admin.kind == 'PartnerAgent' -->
+${template('partner_agent_signature', {admin:admin})}
+<!--# else-->
+<!--#
+  var branch = find.Branch.byId(admin.branch);
+  var company = Server.getCompanyWithDBAInfo();
+  var directPhone = !admin.company_phone ? admin.phone : admin.company_phone;
+  var corporatePhone = Server.isEnabledModule("multiple_branches") && !branch.outsourcing ? branch.phone : '';
+  if (!corporatePhone) {
+    corporatePhone = company.phone;
+  }
+ -->
+  <!--# if Server.isEnabledModule("INDEPENDENT_PROCESSING") && !!admin.is_independent_processor -->
+    <!--# var inDePrCompany = find.IndependentProcessingCompany.byId(admin.independent_processing_company); -->
+      <div>
+        <table border="0"
+               style="font-size:15px;border-collapse:collapse;color:${primaryColor};width:640px;font-family:sans-serif">
+          <tbody style="font-size:15px">
+          <tr valign="top" style="font-size:15px">
+            <td style="font-size:15px;padding:0;max-width:300px;width:70px">
+              <img src="${admin.avatar_thumbnail}" alt="avatar" style="font-size:15px;border:0;vertical-align:middle;border-radius:4px;margin-right:0;min-height:1px!important">
+              <br>
+              <br>
+              <a><img src="${company.email_logo}"  width="150"  alt="${company.name}"></a>
+              <br>
+              <br>
+              <a style="font-size:12.5px;color:${primaryColor};text-decoration:none;background-color:transparent">${company.description}</a>
+            </td>
+            <td style="font-size:15px;padding:0 10px;text-align:initial;color:${primaryColor}">
+              <a style="font-size:15px;color:${primaryColor};text-decoration:none;background-color:transparent">
+                <b> ${admin.full_name} <!--# if !!admin.team --> - ${admin.$team.name} <!--# -if--> - ${admin.title}</b>
+              </a><br><br>
+              <!--# if !!inDePrCompany.phone -->
+              <a style="color: ${primaryColor}">Corporate:</a>: <a style="font-size:12px;color:black;text-decoration:none;background-color:transparent"
+                            target="_blank" href="tel:${com.mvu.core.shared.util.Strings.toNumbersOnly(inDePrCompany.phone)}">${inDePrCompany.phone}</a>
+              <!--# -if-->
+              <!--# if !!directPhone -->
+              | <a style="color: ${primaryColor}">Direct:</a> <a style="font-size:12px;color:black;text-decoration:none;background-color:transparent"
+                         target="_blank" href="tel:${com.mvu.core.shared.util.Strings.toNumbersOnly(directPhone)}">${directPhone}</a><br>
+              <!--# -if-->
+
+              <br>
+              <div style="font-size:12px">
+                ${inDePrCompany.name}<!--# if !!inDePrCompany.full_address -->&nbsp;&nbsp;- ${inDePrCompany.full_address}<!--# -if-->
+              </div>
+              <br>
+              <div style="font-size:12px">
+                <!--# if !!admin.independent_processor_nmls -->
+                IN-NMLS: <a style="color:${primaryColor};font-size:12px;background-color:transparent;text-decoration:none"
+                            href="http://www.nmlsconsumeraccess.org/EntityDetails.aspx/INDIVIDUAL/${admin.independent_processor_nmls}"
+                            target="_blank">#${admin.independent_processor_nmls};</a>
+                <!--# -if-->
+                <!--# if !!inDePrCompany.nmls_number -->
+                CO-NMLS: <a style="color:${primaryColor};font-size:12px;background-color:transparent;text-decoration:none"
+                            href="https://www.nmlsconsumeraccess.org/EntityDetails.aspx/COMPANY/${inDePrCompany.nmls_number}"
+                            target="_blank">#${inDePrCompany.nmls_number}</a>
+                <!--# -if-->
+                <br>
+                <br>
+                <div class="im">
+                  <div style="font-size:15px;padding-top:3px">
+                    <!--# if !!admin.social_links -->
+                    ${template('social_icons', {root:admin, svg:false})}
+                    <!--# elseif !!company.social_links-->
+                    ${template('social_icons', {root:company, svg:false})}
+                    <!--# -if-->
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <p style="font-size: 10px;"><em><span style="font-family:sans-serif;"></span>${company.disclaimer}</em></p>
+      </div>
+  <!--# else -->
+    <div>
+      <table cellpadding="0" cellspacing="0" width="640"
+             style="margin-bottom:10px;font-size:12px;border-collapse:collapse;font-family:sans-serif;color:${primaryColor}">
+      </table>
+      <table border="0"
+             style="font-size:15px;border-collapse:collapse;color:${primaryColor};width:640px;font-family:sans-serif">
+        <tbody style="font-size:15px">
+        <tr valign="top" style="font-size:15px">
+          <td style="font-size:15px;padding:0;max-width:300px;width:70px">
+            <img src="${admin.avatar_thumbnail}" alt="avatar" style="font-size:15px;border:0;vertical-align:middle;border-radius:4px;margin-right:0;min-height:1px!important">
+            <br>
+            <br>
+            <a><img src="${company.email_logo}"  width="150"  alt="${company.name}"></a>
+            <br>
+            <br>
+            <a style="font-size:12.5px;color:${primaryColor};text-decoration:none;background-color:transparent">${company.description}</a>
+          </td>
+          <td style="font-size:15px;padding:0 10px;text-align:initial;color:${primaryColor}">
+            <a style="font-size:15px;color:${primaryColor};text-decoration:none;background-color:transparent">
+              <b> ${admin.full_name} <!--# if !!admin.team --> - ${admin.$team.name} <!--# -if--> - ${admin.title}</b>
+            </a><br><br>
+            <a style="color: ${primaryColor}">Corporate:</a> : <a style="font-size:12px;color:black;text-decoration:none;background-color:transparent"
+                          target="_blank" href="tel:${com.mvu.core.shared.util.Strings.toNumbersOnly(corporatePhone)}">${corporatePhone}</a>
+            <!--# if !!directPhone -->
+            | <a style="color: ${primaryColor}">Direct:</a>: <a style="font-size:12px;color:black;text-decoration:none;background-color:transparent"
+                         target="_blank" href="tel:${com.mvu.core.shared.util.Strings.toNumbersOnly(directPhone)}">${directPhone}</a>
+            <!--# -if-->
+            <br>
+            <br><a href="mailto:${admin.company_email}"
+                   style="font-size:12px;color:black ;;text-decoration:none;background-color:transparent"
+                   target="_blank">${admin.company_email} </a>
+            <br>
+            <!--# if !!admin.display_domain_on_signature -->
+            <br><a style="font-size:12px;color:black;text-decoration:none;background-color:transparent"
+                   target="_blank" href="${admin.domain_url}">${admin.domain_url}</a>
+            <!--# else -->
+            <br>
+            <br>
+            <div style="font-size:12px">
+              <!--# if !!admin.originator_nmls -->
+              IN-NMLS: <a style="color:${primaryColor};font-size:12px;background-color:transparent;text-decoration:none"
+                          href="http://www.nmlsconsumeraccess.org/EntityDetails.aspx/INDIVIDUAL/${admin.originator_nmls}"
+                          target="_blank">#${admin.originator_nmls};</a>
+              <!--# -if-->
+              <!--# if !admin.originator_nmls && !!admin.originator_assistatnt_nmls -->
+              IN-NMLS: <a style="color:${primaryColor};font-size:12px;background-color:transparent;text-decoration:none"
+                          href="http://www.nmlsconsumeraccess.org/EntityDetails.aspx/INDIVIDUAL/${admin.originator_assistatnt_nmls}"
+                          target="_blank">#${admin.originator_assistatnt_nmls};</a>
+              <!--# -if-->
+              <!--# if !!company.nmls_number -->
+              CO-NMLS: <a style="color:${primaryColor};font-size:12px;background-color:transparent;text-decoration:none"
+                          href="https://www.nmlsconsumeraccess.org/EntityDetails.aspx/COMPANY/${company.nmls_number}"
+                          target="_blank">#${company.nmls_number}</a>
+              <!--# -if-->
+              <!--# if !!admin.originator_nmls || !!admin.originator_assistatnt_nmls -->
+              <!--# if !!admin.re_nmls -->
+              <div>CalDRE: <a style="color:${primaryColor};font-size:12px;background-color:transparent;text-decoration:none"
+                              href="http://www.nmlsconsumeraccess.org/EntityDetails.aspx/INDIVIDUAL/${admin.re_nmls}"
+                              target="_blank">#${admin.re_nmls}</a></div>
+              <!--# -if-->
+              <!--# -if-->
+              <br style="font-size:15px">
+              <div style="font-size:12px">
+                <!--# if !!branch && !!branch.full_address && !branch.outsourcing-->
+                ${branch.full_address}
+                <!--#else-->
+                ${company.full_address}
+                <!--# -if-->
+                <br></div>
+              <br>
+              <div class="im">
+                <div style="font-size:15px;padding-top:3px">
+                  <!--# if !!admin.social_links -->
+                  ${template('social_icons', {root:admin, svg:false})}
+                  <!--# elseif !!company.social_links-->
+                  ${template('social_icons', {root:company, svg:false})}
+                  <!--# -if-->
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <p style="font-size: 10px;"><em><span style="font-family:sans-serif;"></span>${company.disclaimer}</em></p>
+    </div>
+  <!--# -if-->
+<!--# -if-->

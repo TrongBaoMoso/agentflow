@@ -1,0 +1,51 @@
+<!--#
+  var company = Server.getCompanyWithDBAInfo();
+  var officer = find.LORecruiting.byId(officerId);
+  var webinar = find.Webinar.byId(webinarId);
+  var recruiter = officer.$recruiter;
+
+  var Dates = com.mvu.core.shared.util.Dates;
+-->
+
+<p>Hi ${officer.first_name},</p>
+
+<p>
+  You've been registered for our <b>"Why Loan Factory"</b> webinar — held every Friday and hosted by our CEO, <b>Thuan Nguyen</b>, the #1 loan originator in the country.
+</p>
+
+<p>In this brief session, you'll see how Loan Factory helps LOs grow with:</p>
+
+<p>&#127775; Zero junk fees & higher payouts</p>
+<p>&#128187; Proprietary tech (LOS, CRM, POS, pricing & marketing automation)</p>
+<p>&#128736; Scalable back-end support so you can focus on production</p>
+<p>&#128640; $1000 Best Price Guarantee</p>
+
+<p>&#128197; Date & Time: ${Dates.dates.convertDateStringToFormat(webinar.time, "MM-dd-yyyy h:mm a")} PST</p>
+
+<p>&#128073; <a class="button" href="${webinar.meeting_url}" style="padding:15px;
+background-color:${Server.configuration().primary_color};color:white;border-radius:30px">JOIN THE WEBINAR</a></p>
+
+<p><i>(Webinar opens 5 minutes early)</i></p>
+
+<!--# if recruiter != null -->
+<p>For questions before the webinar, your assigned recruiter is:</p>
+<p>
+  <b>${recruiter.full_name}</b><br>
+  &#128222; ${recruiter.company_phone}<br>
+  &#9993;&#65039; <a href="mailto:${recruiter.company_email}">${recruiter.company_email}</a>
+</p>
+<!--# -if -->
+
+<p>If you need additional assistance, you may also contact Victoria, our Recruiting and Onboarding Manager:</p>
+<p>
+  &#128222; (714) 591-8143<br>
+  &#9993;&#65039; <a href="mailto:recruiting@loanfactory.com">recruiting@loanfactory.com</a>
+</p>
+
+<p>Looking forward to having you join us.</p>
+<p>Ready to join? Follow the steps below</p>
+<img src="https://storage.googleapis.com/lender-rate/CDN/images/5716104026521600/fast_track_to_loan_factory.png" alt="Fast track to Loan Factory" style="width: 560px; height: auto; margin-top: 20px;">
+
+<p style="padding-top: 30px">Best regards,</p>
+
+<p></p>${template('admin_signature_generator', {admin: Server.currentUser()})}<p></p>

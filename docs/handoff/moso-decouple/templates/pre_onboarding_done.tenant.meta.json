@@ -1,0 +1,26 @@
+{
+  "title": "Loan Factory Onboarding: Complete These Initial Steps",
+  "type": "email",
+  "from": "${Server.currentUser().company_email}",
+  "to": [
+    "${root.email}"
+  ],
+  "cc": null,
+  "bcc": null,
+  "reply_to": null,
+  "context": "[{\"name\":\"root\",\"type\":\"LORecruiting\"}]",
+  "labels": [
+    "${root.key}"
+  ],
+  "updated": "2026-07-23T04:34:17.240Z",
+  "placeholders": [
+    "${Server.baseUrl()}",
+    "${Server.configuration().primary_color}",
+    "${Server.currentUser().company_email}",
+    "${root.email}",
+    "${root.full_name}",
+    "${root.key}",
+    "${template('signature', {admin:Server.currentUser()})}"
+  ],
+  "source": "MOSO prod Datastore, project lender-rate, kind Template, namespace 5716104026521600 (tenant override, EFFECTIVE in prod)"
+}

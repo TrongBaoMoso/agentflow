@@ -1,0 +1,25 @@
+{
+  "title": "You're Registered! Why Loan Factory Every Friday",
+  "type": "email",
+  "from": null,
+  "to": null,
+  "cc": null,
+  "bcc": null,
+  "reply_to": null,
+  "context": "[{\"name\":\"officerId\",\"type\":\"Long\"},{\"name\":\"webinarId\",\"type\":\"Long\"}]",
+  "labels": [
+    "${officerid}"
+  ],
+  "updated": null,
+  "placeholders": [
+    "${Dates.dates.convertDateStringToFormat(webinar.time, \"MM-dd-yyyy h:mm a\")}",
+    "${Server.configuration().primary_color}",
+    "${officer.first_name}",
+    "${recruiter.company_email}",
+    "${recruiter.company_phone}",
+    "${recruiter.full_name}",
+    "${template('admin_signature_generator', {admin: Server.currentUser()})}",
+    "${webinar.meeting_url}"
+  ],
+  "source": "MOSO prod Datastore, project lender-rate, kind Template, global namespace '' (EFFECTIVE only when no tenant override exists)"
+}

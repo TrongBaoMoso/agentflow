@@ -1,0 +1,34 @@
+<p>Hi ${root.full_name},</p>
+
+<p>Thanks for speaking with me today. To complete your setup, please review your information, pay the
+  <b>$100 non-refundable joining fee</b>, and e-sign the agreement by clicking the button below. Please be sure to follow the steps <b>in order</b>:</p>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding: 20px 0;">
+  <tbody><tr>
+    <td align="center">
+      <table border="0" cellspacing="0" cellpadding="0">
+        <tbody><tr>
+          <td align="center" style="border-radius: 3px;" bgcolor="${Server.configuration().primary_color}">
+            <a href="${Server.baseUrl()}/apply_loan_officer?key=${root.key}&amp;selectTab=Review and Sign agreement" target="_blank" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; white-space: nowrap; border-radius: 3px; padding: 15px 25px; border: 1px solid ${Server.configuration().primary_color}; display: inline-block;">
+              View Loan Officer Information
+            </a>
+          </td>
+        </tr>
+      </tbody></table>
+    </td>
+  </tr>
+</tbody></table>
+
+<p>If the pay link does not work, you may use Zelle and send payment to <a href="mailto:accounting@loanfactory.com">accounting@loanfactory.com</a>, then email us the receipt.</p>
+
+<p><i>(Please disregard this step if you have already completed the payment.)</i></p>
+
+
+
+
+
+
+
+<p>Sincerely,</p>
+
+<p></p>${template('signature', {admin:Server.currentUser()})}<p></p>

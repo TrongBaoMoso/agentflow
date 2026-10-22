@@ -1,0 +1,14 @@
+<p>Sincerely,<br><br></p>
+<!--# if admin -->
+  <!--# if !!admin.active -->
+    <p>${template('admin_signature_generator', {admin:admin})}</p>
+  <!--# else-->
+    <p>${template('admin_signature_generator', {admin:Server.getCompany().$owner})}</p>
+  <!--# -if-->
+<!--# else-->
+<!--# if !forRealtorReview -->
+<p>${template('company_signature_generator')}</p>
+<!--# else-->
+<p>${template('company_signature_generator_for_realtor_review',{reviewConfig:reviewConfig})}</p>
+<!--# -if-->
+<!--# -if-->

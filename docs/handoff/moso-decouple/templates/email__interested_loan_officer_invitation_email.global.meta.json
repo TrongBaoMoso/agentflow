@@ -1,0 +1,26 @@
+{
+  "title": "Invitation to join ${Server.getCompanyWithDBAInfo().name}",
+  "type": "email",
+  "from": null,
+  "to": null,
+  "cc": null,
+  "bcc": null,
+  "reply_to": null,
+  "context": "[{\"name\":\"officer\",\"type\":\"JSON\"},{\"name\":\"url\",\"type\":\"String\"}]",
+  "labels": [
+    "${officer.id}"
+  ],
+  "updated": null,
+  "placeholders": [
+    "${Server.baseUrl()}",
+    "${Server.configuration().primary_color}",
+    "${Server.getCompanyWithDBAInfo().name}",
+    "${company.email}",
+    "${company.name}",
+    "${config.ilo_startup_fee$}",
+    "${officer.first_name}",
+    "${template('admin_signature_generator', {admin:Server.currentUser()})}",
+    "${url}"
+  ],
+  "source": "MOSO prod Datastore, project lender-rate, kind Template, global namespace '' (EFFECTIVE only when no tenant override exists)"
+}

@@ -1,0 +1,35 @@
+<p>Hi ${root.full_name},</p>
+
+<p>Thanks for speaking with me today. To complete your setup, please review your information, pay the
+  <b>$100 non-refundable joining fee</b>, and e-sign the agreement by clicking the button below. Please be sure to follow the steps <b>in order</b>:</p>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding: 20px 0;">
+  <tr>
+    <td align="center">
+      <table border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td align="center" style="border-radius: 3px;" bgcolor="${Server.configuration().primary_color}">
+            <a href="${Server.baseUrl()}/apply_loan_officer?key=${root.key}&selectTab=Review and Sign agreement" target="_blank"
+               style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; white-space: nowrap; border-radius: 3px; padding: 15px 25px; border: 1px solid ${Server.configuration().primary_color}; display: inline-block;">
+              View Loan Officer Information
+            </a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<p>If the pay link does not work, you may use Zelle and send payment to <a href="mailto:accounting@loanfactory.com">accounting@loanfactory.com</a>, then email us the receipt.</p>
+
+<p><i>(Please disregard this step if you have already completed the payment.)</i></p>
+
+<p>You may refer to the attached files for additional information.</p>
+
+<p><a href="https://docs.google.com/document/d/1GIXjkB0C1yybUFI4LXn8UKOGDM8O4bOoyVzEFGUz2UQ/edit?tab=t.0#heading=h.txo6vftjo4nb">Loan Factory Onboarding Process</a></p>
+
+<p><a href="https://www.canva.com/design/DAG7knw3YSQ/yHarRwWY_xQf6jYIpVC5aA/view?utm_content=DAG7knw3YSQ&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h966a99e724&continue_in_browser=true">Company Training - Loan Officer Onboarding Series</a></p>
+
+<p>Sincerely,</p>
+
+<p>${template('signature', {admin:Server.currentUser()})}</p>

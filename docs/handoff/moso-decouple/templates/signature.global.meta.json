@@ -1,0 +1,12 @@
+{
+  "title": "Signature",
+  "context": "[{\"name\":\"admin\",\"type\":\"Admin\"},{\"name\":\"forRealtorReview\",\"type\":\"Boolean\",\"sample\":false},{\"name\":\"reviewConfig\",\"type\":\"RealtorReferralConfig\"},{\"name\":\"signature_image\",\"type\":\"String\",\"sample\":\"\"}]",
+  "updated": "2019-03-04T04:44:18.834Z",
+  "placeholders": [
+    "${template('admin_signature_generator', {admin:Server.getCompany().$owner})}",
+    "${template('admin_signature_generator', {admin:admin})}",
+    "${template('company_signature_generator')}",
+    "${template('company_signature_generator_for_realtor_review',{reviewConfig:reviewConfig})}"
+  ],
+  "source": "MOSO prod Datastore, project lender-rate, kind Template, global namespace '' (EFFECTIVE only when no tenant override exists)"
+}
