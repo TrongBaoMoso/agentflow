@@ -101,3 +101,11 @@ recruit-fe #564 merged (55469ede) and promoted together with #563; cd-staging su
 recruiter at 1440 and 390: /invites (table + cards), /inbox/hot, /inbox/cold, /pipeline in card view — no page errors,
 no sideways overflow except Cold at 390 (+18px, pre-existing). Next: Exceptions plan (step 2 above); list-page standard
 still awaits approval; production not promoted (BE first).
+
+## NIGHT 22→23/10 (away window, staging only) — DONE
+
+- **recruit-be #719** (15d08ff1, D313): GET /admin/audit-events takes `q` (≤100 chars, contains over event text, actor/subject ids, grant e-mails, candidate name), `from`/`to` (yyyy-MM-dd, inclusive UTC days, 1900–9999, from>to = 400). Filters run before paging. 2 reviewers (security + correctness), ITs green on PG16 locally and in CI. Known limit in D313: actor names from the central directory are not searchable (id / grant e-mail only); leading-wildcard scan, pg_trgm if it gets slow.
+- **recruit-fe #566** (fd7328ce): list standard on every list page + Exceptions ("Needs attention") toolbar — search, owner filter, Reset, Refresh, Table|Cards, header sort, filtered chips, "No matches"; My hand-offs/Hot/Cold Reset+Refresh+Saved views (INVITES/HOT/COLD), Cold bulk Assign (managers, unowned rows); Dormant/Audit/Work/Conversations/Permissions on the HrList kit with Reset/Refresh/Saved/toggle/count (Permissions: no saved/toggle; filters now in the URL); Pipeline on the shared FilterReset (Reset now always shown, greyed at default); To do tree restyled (group header, count pill, 32px indent). 2 reviewers approve after one round of fixes (aae90682).
+- Staging smoke as manager, 1440 + 390: 10 pages, no page errors, no sideways overflow (Cold 390 no longer overflows), Reset on every page except Permissions (manager has no access — expected). Exceptions search "Claude" 88→12 and Reset back to 88; Audit "chi tran" → 8 events server-side.
+- Deferred (decided overnight, least behaviour change): Pipeline keeps its own default-preset logic; no sort control in Exceptions card view.
+- Production: NOTHING promoted. Order when Bao says go: recruit-be first (#708 #710 #711 #712 #713 #719 + other sessions' BE on staging), then recruit-fe.
