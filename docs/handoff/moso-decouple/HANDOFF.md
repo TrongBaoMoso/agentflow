@@ -1,13 +1,31 @@
 # Recruit ⇢ off old MOSO — HANDOFF
 
-Session `460363a7` (21/10/2026). PAUSED by Bao, waiting for his go-ahead and decisions (§5). Nothing was coded, merged or deployed. All work so far is research.
+Session `460363a7` (21/10/2026). Paused 21/10. **Approved by Bao 23/10**: see RESUME HERE. Nothing coded yet.
 
-## RESUME HERE
+## RESUME HERE (updated 23/10)
 
-1. Read this file, then §4 (plan) and §5 (decisions).
-2. Ask Bao: does he approve the direction in §4, and what are his answers to §5?
-3. Once approved: create one bd epic "Recruit off old MOSO" with one child bead per phase (0–6), and wire the dependencies listed in §4. Don't create beads before he approves.
-4. Optional (offered, not asked for yet): publish §2–§5 as a shareable page for the team.
+Bao APPROVED the plan on 23/10. Beads were created; no code yet.
+
+- Epic `agentflow-0gwad`, with children:
+  - `.1` P0 rescue data + measure prod settings
+  - `.2` P1 foundations
+  - `.3` P2 own emails
+  - `.4` P3 lead intake + webinars
+  - `.5` P4 portal / fee / e-sign
+  - `.6` P5 data + programs
+  - `.7` P6 cut
+- Dependency wiring:
+  - `.3`, `.4`, `.5` and `.6` depend on `.2`.
+  - `.5` also depends on `.3`.
+  - `.7` depends on `.3`–`.6`.
+  - `agentflow-kzwcg` (Cold import) depends on `.1`.
+- Bao's decisions (23/10):
+  1. Plan approved.
+  2. 8oafx and `agentflow-61yi6` stay as a **thin flagged bridge** until P4; remove them in P6; no new investment.
+  3. Email From = **the actual recruiter/OB**; the signature comes from that person's profile.
+  4. The Loan Officer portal **stays on lf-homepage**, with its API repointed to recruit-be (not packs).
+- New since 21/10: Bao's gcloud identity can READ MOSO prod Datastore, so P0 exports can read Datastore directly (HR pattern) with no MOSO admin cookie. Recruit prod DB is readable through a temporary pod in ns `recruit-be`.
+- Next: start `agentflow-0gwad.1` (P0) and `.2` (P1), unless Bao picks another order. Still open from §5: 1 (Cold owner-map), 3 (e-sign Inkless vs built-in plus legal review), 4 (fee), 6 (webinar owner), 7 (DE and accounting sprint), 8 (packs owner to switch off MOSO recruiting automation).
 
 ## 1. What was done
 
