@@ -108,3 +108,10 @@ Order: BE-1 then BE-2 then FE (local preview for Bao before any FE commit). BE P
 - Not done: post-hire Loan Officer tracking for LO Support (training done, onboarded, programs, Zoom Phone, Google Business Profile) — needs spec; Bao: later.
 - Unclear: 22/10 at 27:21 "cái cột này nhớ chỉnh lại" — transcript garbled; ask Bao/Phuong which column.
 - Done earlier: Qualified/Not qualified wording; one program per LO (D268, 16/10).
+
+## Bao's answers on the gap list (23/10 ~00:30)
+- My work today 5–10 rows per group + More: DECLINED.
+- Post-hire Loan Officer tracking for LO Support: DECLINED.
+- HR offboard event: DO IT tonight (agent started; candidate side only — left_company_at + timeline entry, flag hr.offboard.enabled staging ON / prod OFF; role removal stays with session agentflow-99's P4).
+- Quick view "who referred / who takes care (CS)": explained to Bao; not started.
+- "Store every field for a dashboard": explained to Bao; offered to draft report questions + missing-field list — awaiting answer.
