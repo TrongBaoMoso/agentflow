@@ -158,3 +158,18 @@ Order: BE-1 then BE-2 then FE (local preview for Bao before any FE commit). BE P
 - My referrals `referral_link` NOT yet switched to `<site>/join`, because production has no /join page yet. The URL format to use
   later: `https://www.loanfactory.com/<url>/join`, or `<domain_url>/join` when the Loan Officer has their own domain.
 - #723 (HR offboard): waits for #717 and #716 to merge. DevOps must create `HR_ASSOCIATE_DEACTIVE_SUBSCRIBE_RECRUIT_STAGING`.
+
+## 23/10 ~05:45 — My referrals v2 is fully on STAGING
+- recruit-fe #565 merged as f7a60d84 and deployed to staging.
+- recruit-be #725 (change e-mails, V272, D317) merged as 2cbd42da and deployed to staging. 2 reviewers approved; their
+  follow-ups are fixed:
+  - snapshot age limit 72 h, never less than 3 rotations, with a WARN when more than 5% of a pass is re-seeded;
+  - names that look like web addresses are neutralised;
+  - opt-out works for Headhunter and Team Lead users;
+  - fixed the race when the switch is flipped during a pass.
+- Checked on staging with the HH token: GET `/referrals/notifications` returns `{enabled:true}`; PUT false, then true, works;
+  an empty body returns 400.
+- STILL NEEDED before staging sends e-mails: create secret `RECRUIT_REFERRALS_NOTIFY_INTERNAL_API_KEY` (Secret Manager +
+  recruit-svc-secret, see BOOTSTRAP.md). Until then no cron is registered and nothing is mailed. Staging recipients are allowed
+  only for `bao.trinh+*@loanfactory.com`.
+- Production: nothing deployed, and the flag is absent there. The go-live list is in bead agentflow-236t9.14.
