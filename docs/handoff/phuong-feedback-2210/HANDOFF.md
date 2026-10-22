@@ -62,3 +62,23 @@ maybe sub-stage; `MyReferralItem` has an allow-list test `MyReferralItemAllowLis
 ## Next step on resume
 1. Ask Bao: OK the My referrals mockup? (and the transcript rename question).
 2. If OK → BE change in recruit-be, then FE, local preview, PRs, staging.
+
+## UPDATE 22/10 night (resumed) — My referrals v2 decisions (Bao)
+Mockup: canvas board "My referrals v2" (1110px = real width at 1440 with the sidebar).
+- Money first: Paid to you / On the way / People you referred (no sub-captions), referral link + Copy + "Refer someone"
+  (proposed: opens /refer/refer-a-loan-officer prefilled with the referrer — not confirmed by Bao).
+- Table: 9 detailed steps as columns, header numbered 1–9 with step name + who owns it (Referred·You, Contacted·Recruiting,
+  Offer sent·Recruiting, Agreement signed·Your friend, Fee paid·Your friend, HR forms·Friend+HR, Licensing·Licensing,
+  Setup call·Onboarding, Joined). Done = ✓ + date; current = colored dot + days waiting + chip "Waiting on X" UNDER that
+  dot (orange = the friend, blue = a Loan Factory team). No chip for joined/stopped rows. Recruiter + Onboarding
+  specialist with avatars, NO message buttons (Bao: don't load employees with LO questions). Bonus column.
+- Tabs All / In progress / Joined / Stopped; "Email me when something changes" switch (new feature).
+- **Typed-e-mail referrals (REFERRED_BY_EMAIL / self-declared, e.g. /refer/refer-a-loan-officer "Your email") are SHOWN
+  immediately — Bao chose option 3 (no masking, no confirmation).** BE: `ReferralAssembler.gate` must stop returning
+  MASKED (keep HIDDEN only if the typed address is not the caller's current company e-mail). Record as a recruit-be
+  DECISIONS entry when implementing (supersedes design §6.3 masking). Prod: 1,411 rows were masked.
+- Mobile: tables don't fit — one card per Loan Officer with the 9 steps vertical (proposed).
+- REFERRER central role (for Loan Officers without a recruit role) belongs to session agentflow-99's central-RBAC work:
+  grant on the event when recruit receives a referral + one nightly reconcile (new referrers are 11–28/month);
+  sizing written in docs/handoff/recruit-central-rbac/HANDOFF.md.
+- MOSO dependency: referral list, bonus eligibility/amount/checks all come live from MOSO via packs RecruitAPI.
