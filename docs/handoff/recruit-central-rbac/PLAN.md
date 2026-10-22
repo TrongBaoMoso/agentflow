@@ -92,6 +92,34 @@ recruit-be ── per request: GET /rbac/users/{actor}/permissions?app_code=RECR
   "nothing missed" guard.
 - **Switch.** The flag `recruit.rbac.source = local | central` (env `RECRUIT_RBAC_SOURCE`) lets
   staging run central while production stays local until it is seeded.
+- **Who assigns what (Tai, Slack 22/10 17:34–17:39; same as tera-be).** HR publishes four Pub/Sub
+  topics:
+  - `HR_ASSOCIATE_ONBOARD` (`role_codes`);
+  - `HR_ASSOCIATE_ROLE` (event `associate.role_changed`, with `platform_user_id`, `occurred_at`,
+    `add[]`, `remove[]`, `role_codes[]`);
+  - `HR_ASSOCIATE_UPDATE` (no roles);
+  - `HR_ASSOCIATE_DEACTIVE`.
+
+  recruit-be subscribes to ONBOARD, ROLE and DEACTIVE. It maps HR job-role codes through an
+  explicit table, where unknown codes are dropped and logged (like tera-be `HrRoleCodeMapper`).
+  It then calls auth-service `assign roles` / `remove role` itself. The ack comes only after the
+  write lands; on failure it nacks, so the message is redelivered (like tera-be
+  `HrAssociateEventHandler`). DEACTIVE removes every RECRUIT role.
+
+  | HR code (from HR staging `canonical_role`) | Recruit role |
+  |---|---|
+  | RECRUITER | RECRUITER |
+  | ONBOARDING_SPECIALIST | ONBOARDING |
+  | (none yet) | MANAGER: HR's `MANAGER` is generic across departments. A new HR code is needed, or assignment by hand in IAM. |
+  | (none yet) | LO_SUPPORT: a new HR code, or IAM by hand |
+  | — | ADMIN: IAM by hand only |
+  | — | HEADHUNTER, TEAM_LEAD: assigned by **recruit-be itself** when a loan officer joins or leaves the LO Recruiter Program, not by HR |
+  | TEAM_LEADER, INSIDE_RECRUITER, OUTSIDE_RECRUITER | not mapped (generic team lead / inactive in HR) |
+
+  Per-person ADD/BLOCK permissions emit no event; they are read live. Old data is fixed with a
+  one-off SQL datafix script.
+  **Dependency:** recruit-be production runs with Pub/Sub off (`PUBSUB_PROVIDER=none`). P4 needs
+  it on in production.
 
 ## Phases (each is its own PR into master, merged only when green)
 
@@ -100,7 +128,7 @@ recruit-be ── per request: GET /rbac/users/{actor}/permissions?app_code=RECR
 | P1 cleanup | recruit-be | Remove the override path, `CANDIDATE_OVERRIDE_GATE` and both `stage_requirements` rows. Remove the licensing rules and sponsorship write actions. Duplicates owned by MERGE. DECISIONS entry superseding D35/V041 + comments/docs. No permission source change yet. |
 | P2 roles | recruit-be | Migration dropping HR / LICENSING / ACCOUNTING / OFFICER_RECRUITER (and their grants), `DEPARTMENT_ROLES` reduced to ONBOARDING, checklist `*_MANAGE_<DEPT>` collapsed to one `CHECKLIST_*_MANAGE` held by ONBOARDING. |
 | P3 catalog | recruit-be | Format-2 catalog file and the coverage test. Route splits for the conflicts that need them (`GET /candidates/unowned`, offer approve-now). The 14 unchecked endpoints are owned by baseline `RECRUIT_ACCESS`, which every role holds. |
-| P4 central source | recruit-be | Central permission resolver with cache, mirror sync (event consumer + per-request refresh + reconcile job), scope-based row scope, flag `recruit.rbac.source`. Staging switches to `central`. |
+| P4 central source | recruit-be | Central permission resolver with cache, the HR_ASSOCIATE_* consumer + mapping table (assigns RECRUIT roles in auth-service), HEADHUNTER/TEAM_LEAD assignment on program join/leave, mirror sync (per-request refresh + reconcile job), scope-based row scope, flag `recruit.rbac.source`. Staging switches to `central`. Production needs Pub/Sub on. |
 | P5 screens | recruit-fe | The Permissions/Access screen becomes read-only, with a "Manage in Account IAM" link. Grant editing and the bulk grant are removed. |
 | P6 production | ops | Push the catalog to production. Copy the 9 production grants to central (minus the removed roles), switch `recruit.rbac.source=central`, then ask Tai to put RECRUIT in the production enforce list. |
 
