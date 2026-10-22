@@ -139,3 +139,22 @@ Order: BE-1 then BE-2 then FE (local preview for Bao before any FE commit). BE P
   (Bao accepted: no real login there, ?loKey=). Empty bio hidden.
 - Night decision (mine, reversible, to report to Bao): My referrals shows ALL-TIME referrals and money (the BE default window is
   Jan 1 this year; FE sends an early since). Day counts use the business timezone.
+
+## 23/10 early morning — state (STAGING only, nothing on production)
+- recruit-be #718 (D312) is on STAGING (deploy of 15d08ff1 succeeded). `/referrals/mine` returns current_step, waiting_on,
+  waiting_since, bonus_amount, onboarding_specialist_name and referral_link (verified with the HH token).
+- recruit-fe #565: 2 reviewers approved, CI green. Checked locally against staging at 1440/1280/390: no sideways scroll and no
+  page errors. Auto-merge is on, and a background loop keeps the branch updated and promotes staging after the merge.
+  The "Email me" switch stays hidden until #725 is on staging (its endpoint returns 404 today).
+- recruit-be #725 (change e-mails, V272, D317): both reviewers' findings fixed at 5f39dde6, CI green, re-review running.
+  Staging cron needs secret `RECRUIT_REFERRALS_NOTIFY_INTERNAL_API_KEY` (Secret Manager + recruit-svc-secret); production is dark.
+- LO /join page: moso-aid #194 and lo-homepage #910 are on STAGING (e.g. https://www.viet18.com/mama1/join). lf-homepage #2674
+  (redirect) is ON HOLD.
+- DECISION NEEDED from Bao, from the #2674 Repo Owner review: credit for sign-ups via the LO site.
+  - The site `/join` and register pages always send `referred_source=loan_officer`, so LO Recruiter Program members would lose
+    recruiter credit.
+  - Option (a): build "program follows the link owner" (D268/D269) in Recruit first.
+  - Option (b): the site sends recruiter credit when the owner is a program member.
+- My referrals `referral_link` NOT yet switched to `<site>/join`, because production has no /join page yet. The URL format to use
+  later: `https://www.loanfactory.com/<url>/join`, or `<domain_url>/join` when the Loan Officer has their own domain.
+- #723 (HR offboard): waits for #717 and #716 to merge. DevOps must create `HR_ASSOCIATE_DEACTIVE_SUBSCRIBE_RECRUIT_STAGING`.
