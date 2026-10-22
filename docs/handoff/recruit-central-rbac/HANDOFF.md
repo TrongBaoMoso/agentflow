@@ -159,3 +159,24 @@ Read before finishing PLAN.md and before APP_ACCESS_ENFORCE reaches production.
     `cands.csv`, `matches.json`, `lorecruiting_ids.json`, scripts `pull_admins.py`).
 - Read-only DB runner kept at `~/.cache/claude-recruit/rbac/rro.sh <stg|prod> <file.sql>` (the scratchpad is wiped
   between sessions).
+
+### CORRECTION 22/10 night: "working at LF" needs a join date
+
+`Admin.active=true` only means a MOSO account exists, and onboarding hires get one early. The correct
+classification uses the join date:
+- **WORKING** = active, `lo_joined_date` set, and no `terminate_date` (2,644);
+- **ONBOARDING_ACCOUNT** = active with no join date (70);
+- **LEFT** = `terminate_date` set (2,191).
+
+With this definition:
+- **The 66 S6 rows are ONBOARDING_ACCOUNT**, so S6 is correct and no action is needed. MOSO itself says
+  `interviewed_and_accepted` ("Onboarding") for them.
+- **The pool holds 0 WORKING loan officers.** 2 rows are duplicates of S6 rows, and 5 are former LF loan
+  officers.
+- **Cold import risk:** MOSO LORecruiting holds 3,869 rows for 2,615 WORKING loan officers.
+
+Step A list for Bao: `~/.cache/claude-recruit/lfcheck/step_A_list.csv`, 11 rows:
+- **A1:** 4 rows to archive, because the person left LoanFactory.
+- **A2:** 5 archived or closed rows of people working at LF. Reopen 4 as S7; 1 already has a live S7 twin
+  and stays archived.
+- **A3:** 2 pool rows to merge into their S6 twin.
