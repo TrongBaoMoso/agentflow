@@ -125,3 +125,5 @@ Order: BE-1 then BE-2 then FE (local preview for Bao before any FE commit). BE P
   logs), F5 (link lookup never breaks /mine), F6 (domain_url https only), F8 (join base URL per environment) requested before merge.
 - Avatars: null for now (staff avatars only in central user-svc behind the caller's own token) — needs a source decision.
 - Quick view "who takes care (CS)": "Referred by" already shown; recruit stores no CS person. Proposed to skip until Phuong defines CS.
+
+- 23/10 Bao: drop the "CS / who takes care" item for the quick view — Phuong had the wrong context. Closed.
