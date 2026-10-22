@@ -260,3 +260,20 @@ Morning proposal for production Recruit role grants: `~/.cache/claude-recruit/lf
   - #715 go-live script: round-2 fixes in progress, including the NMLS blacklist arm.
   - Manager schedules 1-1: a BE+FE PR pair is in progress.
   - P3–P5 next.
+
+## STAGING 23/10 (later)
+
+- **Merged and on staging:**
+  - recruit-be #726 "MANAGER schedules the onboarding 1-1 on behalf of the specialist" (D318, V273; fb4251c0);
+  - recruit-fe #570, its UI (e6777785);
+  - recruit-be #715, the go-live closing script (7c9c0370). It is a tool only; `--apply` has never been run.
+- **In review:** recruit-be #727, the P3 format-2 catalog (D319). Two reviewers requested changes, and fixes are
+  in progress:
+  - a `REFERRALS_SELF` split for plain-loan-officer referrers;
+  - tera-core routes catalogued under IMPORT_RUN;
+  - `--reconcile` guards and a dry run;
+  - plain-language names.
+- **Waiting on Bao:** the referrer access option. Recommended: a minimal REFERRER role that recruit-be assigns
+  automatically. See "OPEN ISSUE from session agentflow-68".
+- **Production:** still nothing promoted from this work. #717 must go together with #567, then #716 (flag OFF),
+  #726 and #570.
