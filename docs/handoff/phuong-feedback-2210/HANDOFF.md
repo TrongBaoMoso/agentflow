@@ -127,3 +127,9 @@ Order: BE-1 then BE-2 then FE (local preview for Bao before any FE commit). BE P
 - Quick view "who takes care (CS)": "Referred by" already shown; recruit stores no CS person. Proposed to skip until Phuong defines CS.
 
 - 23/10 Bao: drop the "CS / who takes care" item for the quick view — Phuong had the wrong context. Closed.
+
+- 23/10 night, Bao: "every LO has <site>/join" (decision 16/10, docs/handoff/lo-join-page, recruit-be Q63). Measured: that lo-homepage
+  page exists only as 3 LOCAL commits in _worktrees/lo-join-page (3e2c49081, 68714c087, c890937fb) — never pushed/PR'd/deployed,
+  pending Victoria+Matt and 2 open questions (editor location, empty-bio). So <site>/join is 404 today. Tonight #718 keeps
+  <site>/loan-officer (works, attribution live since 06/10) and /join/<slug> only for dedicated headhunters. ASK BAO: (1) switch
+  My referrals to <site>/join once the page ships and resume the lo-join-page work, or (2) keep /loan-officer until it is agreed.
