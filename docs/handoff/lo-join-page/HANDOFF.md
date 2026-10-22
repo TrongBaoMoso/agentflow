@@ -99,3 +99,42 @@ Bead: see `bd list | grep "join page on own site"`.
   `.playwright-mcp/join-after-save.png`.
 - Deploy needs: RECRUITER_PROFILE_SERVICE_KEY on lo-homepage Cloud Run (staging lo-homepage-master in lenderrate-master,
   prod lo-homepage-v2 in lender-rate), same value as moso-aid's in that environment.
+
+## 23/10 night — shipped to STAGING (session da43ac56)
+
+Bao 23/10: editor = lo-homepage `/lo-setting` (no real login, `?loKey=` accepted as risk), empty bio = HIDE, staging only.
+
+### What shipped
+| Order | Repo | PR | Merge commit | Staging deploy |
+|---|---|---|---|---|
+| 1 | moso-aid | #194 (feat/lo-join-page-profile → master) | `0745209814317afce1b0aca9de23ca8c52769d78` | Cloud Build 130c6962 SUCCESS → Cloud Run `moso-aid-00184-6zb`, image tag = merge sha |
+| 2 | lo-homepage | #910 (feature/lo-join-page → master; NOT release / produciton-v2) | `709ecd127cca5d30ec3c50ebc41343717262a4db` | Cloud Build ffb762a7 SUCCESS → Cloud Run `lo-homepage-master-00371-d57` |
+| 3 | lf-homepage | #2674 (feat/join-redirect-lo-site → master) | **NOT merged — HELD** | — |
+
+- Rebased all three on the latest bases. lo branch re-based onto `origin/master` (its tree == `produciton-v2` == `release` today) so the PR shows only the feature (42 files); a produciton-v2-based twin is kept locally as `feature/lo-join-page-pv2` (pre-review-fix commits only).
+- Fixes added after review: lo `2136cbe12` (no /join and no editor for partner-agent sites), lo `2b19f8b7b` (editor Save disabled until the saved values load — a failed load could blank the stored bio; /join 404s when the owner has no company email; keyframes `lop-rise-in`; `.env.example`), lf `809bf643` (query string kept across the redirect; reserved lf top-level slugs never redirect; /manage-join-page "view my page" → `/<site>/join`).
+- Reviews: moso-aid A/B/Repo Owner = APPROVE. lo A = REQUEST_CHANGES → fixed → APPROVE; B, Repo Owner = APPROVE. No CI exists on these repos (0 checks); tsc/eslint/stylelint/prettier/jest/build were run locally per repo.
+- Staging env: `RECRUITER_PROFILE_SERVICE_KEY` set on Cloud Run `lo-homepage-master` (lenderrate-master, revision 00370; copied from moso-aid staging, value never printed). Cloud Build uses `run services update`, so the deploy keeps it.
+
+### Why lf #2674 is held (decision for Bao)
+Verified: lf `/join/<slug>` sends `referred_source: recruiter` + lead_origin `JOIN_SLUG`, `/recruit/<slug>` stamps `RECRUIT_SLUG`. On the Loan Officer site, `/register-loan-officer` hard-sets `referred_source = loan_officer` (BasicInfoForm:352) and the new `/join` webinar form also sends `loan_officer`. moso-aid now gives `site_slug` to every LO Recruiter Program member who is also an active Loan Officer with a site, so merging the redirect would move those members' leads from the recruiter path (collecting stamp, auto-own, headhunter visibility: D189/D196/D202/D190) to Referral credit, until Recruit builds "program follows the link owner" (D268/D269, not built). Options: (a) build D268 in Recruit first, or (b) make lo `/join` + `/register-loan-officer` carry the recruiter stamp when the owner is a program member (moso-aid `/api/join-page` could return that). PR comment: lf #2674 issuecomment-6348129659.
+
+### Staging verification (real browser, Playwright, 1440 + 390)
+- `https://www.viet18.com/mama1/join` → 200, LO header/footer, owner card "Checking Firstimer 1", NO bio block (nothing saved), company video `hRZL6xSsxGk`, 2 webinar slots, "Start your application" → `/mama1/register-loan-officer?…referred_source=loan_officer&referred_by=<owner email>`, no horizontal overflow. Shots: `shots-2310/join-mama1-nobio-1440.png`, `-390.png`.
+- Editor route end to end: `PUT https://lo-homepage-master-233682574497.us-central1.run.app/webplus-api/join-page` with Mindie's key → 200, `<script>` and `javascript:` href stripped; unknown key → 404; non-YouTube link → 400; OPTIONS → 200.
+- `https://www.viet18.com/mindiebachdontchangeemail/join` → 302 → `https://tainguyen.viet18.com/join` (custom domain) → 200 with "ABOUT MINDIE" bio and her own video `dQw4w9WgXcQ`. Shots: `shots-2310/join-mindie-bio-1440.png`, `-390.png`. The test bio ("[STAGING TEST 23/10] …") is LEFT on staging for Bao to see; clear it with the same PUT and `"bio":"","video_url":""`.
+- The page reads the overlay with a 5-minute cache: a saved bio can take up to 5 minutes (two requests after expiry) to appear.
+- moso-aid staging: `GET /api/join-page?key=<LO key>` → 200 `{data:{}}`; unknown key → 404; no key → 400. `/api/recruiters` rows now carry `site_slug` (53 recruiters on staging; most staging recruiters have one).
+- lf redirect NOT verified (not merged).
+
+### Join URL format (for recruit-be My referrals `referral_link`)
+From MOSO Admin fields `url` and `domain_url`:
+- Always valid: `https://www.loanfactory.com/<url>/join` (staging `https://www.viet18.com/<url>/join`). Use `url` as stored (trim; it is lowercase in practice). Measured on staging: the site root is case-insensitive but sub-pages are not (`/MAMA1/register-loan-officer` 302s to `/MAMA1`), so do not change its case except to lowercase what moso-aid already lowercases.
+- When `domain_url` is set, MOSO 302s `loanfactory.com/<url>/join` → `<domain_url>/join` (measured: viet18 → `https://tainguyen.viet18.com/join`). Building it directly: `${domain_url.replace(/\/$/, '')}/join` (`domain_url` includes the scheme, per lf-homepage `mortgage-expert` usage — read from code, not measured).
+- Query strings pass through MOSO's redirect (measured with `?utm_source=x`).
+- PRODUCTION does not have the page yet (`/join` on loanfactory.com redirects home): switch `referral_link` only after the production rollout below.
+
+### Left for production (needs Bao's explicit OK)
+1. moso-aid `master → pro` (includes #194). Then lo-homepage: PR `feature/lo-join-page` (or a produciton-v2-based twin with the same 6 commits) → `release`, then `release → produciton-v2`; set `RECRUITER_PROFILE_SERVICE_KEY` on prod Cloud Run `lo-homepage-v2` (lender-rate) = moso-aid prod value BEFORE the deploy.
+2. lf #2674 only after the attribution decision above; then `master → production`.
+3. Follow-ups (LOW/MEDIUM from reviews): rate limit + Cache-Control on moso-aid `GET /api/join-page`; isolate the approval lookup so a Mongo error there does not 500 the LO join pages; `site_slug` collision logging; page-level redirect tests in lf; the no-webinar fallback form sends no `agent_email` (ported 1:1 from lf — confirm the lead reaches the owner); the `admin` flag in the editor save is client-supplied (audit label only).
