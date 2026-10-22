@@ -206,3 +206,18 @@ Step A list for Bao: `~/.cache/claude-recruit/lfcheck/step_A_list.csv`, 11 rows:
 - **Rollback data:** the full JSON of every touched row from before the change is in
   `~/.cache/claude-recruit/lfcheck/snap_before.txt`.
 - **No writeback to MOSO happens:** `RECRUIT_FEATURES_*WRITEBACK` are absent on prod, so they default to off.
+
+## Overnight 22→23/10 (Bao asleep; staging only, per memory feedback_away_window_2223_central_rbac)
+
+Started in parallel, each in its own recruit-be worktree; none merged yet:
+- **P2 roles:** `refactor/rbac-p2-roles`, V268 / D309. Drops HR / LICENSING / ACCOUNTING / OFFICER_RECRUITER, widens
+  MANAGER with the onboarding permissions, and removes the Licensing flow along with its documentation.
+- **MOSO owner sync:** `feature/moso-owner-sync`, V269 / D310. Sets the owner of S5/S6/S7 from the MOSO recruiter
+  and keeps it in sync on every push. Behind a flag: staging ON, production OFF.
+- **Go-live closing script:** `chore/golive-closing-script`. Re-runnable, dry-run by default, never applied tonight.
+
+Morning proposal for production Recruit role grants: `~/.cache/claude-recruit/lfcheck/prod_grant_proposal.csv`.
+- Source: 13 active MOSO staff flagged recruiter / onboarding / outsourcing recruiter, plus how many S5/S6/S7
+  rows each would own.
+- 5 legacy recruiter emails on recruit rows are not active MOSO recruiting staff, so they stay unowned.
+- Roles proposed: RECRUITER, plus ONBOARDING where MOSO says onboarding specialist (Bao confirmed both roles).
