@@ -115,3 +115,13 @@ Order: BE-1 then BE-2 then FE (local preview for Bao before any FE commit). BE P
 - HR offboard event: DO IT tonight (agent started; candidate side only — left_company_at + timeline entry, flag hr.offboard.enabled staging ON / prod OFF; role removal stays with session agentflow-99's P4).
 - Quick view "who referred / who takes care (CS)": explained to Bao; not started.
 - "Store every field for a dashboard": explained to Bao; offered to draft report questions + missing-field list — awaiting answer.
+
+## Night 23/10 progress log
+- BE-1: recruit-be #718 (D309). packs #3735 (domain_url in referrers/resolve) — PR only, for Khai.
+- FE: recruit-fe #565 (My referrals v2), built against the plan; contract matches #718.
+- Security review of #718: approve. For Bao (product, not blockers): a referrer who TYPED their own e-mail for an LO now sees that
+  LO's full step position, recruiter + onboarding specialist NAMES, licensed-state codes and bonus amounts (F2/F3); self-declared
+  rows are opened too, not only typed-e-mail rows (F1) — consistent with Bao's "show immediately" choice. Fixes F4 (no e-mail in
+  logs), F5 (link lookup never breaks /mine), F6 (domain_url https only), F8 (join base URL per environment) requested before merge.
+- Avatars: null for now (staff avatars only in central user-svc behind the caller's own token) — needs a source decision.
+- Quick view "who takes care (CS)": "Referred by" already shown; recruit stores no CS person. Proposed to skip until Phuong defines CS.
