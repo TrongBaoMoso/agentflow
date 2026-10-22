@@ -136,3 +136,26 @@ Read before finishing PLAN.md and before APP_ACCESS_ENFORCE reaches production.
   2. Give that role to every Loan Officer (e.g. from the HR app at onboarding) — simpler, but everyone sees the icon.
   3. Move My referrals into an app Loan Officers already open — no auth change, larger work.
 - Bao's question that raised it: "LO chắc chắn không có role recruiter — có ảnh hưởng gì không?"
+
+## UPDATE 22/10 evening (session agentflow-99, e19da9e9)
+
+- **PR #714 merged** (squash 0eaf0dea, V267, D308) and **promoted to staging** (cd-staging success, pod started
+  14:49Z). Production not promoted.
+- **Who in Recruit prod is already a LoanFactory loan officer.** Measured against MOSO prod Datastore (Bao has
+  READ, granted by Khai 09/10; project `lender-rate`, ns `5716104026521600`, kind `Admin`).
+  - **MOSO loan officers:** 6,277 Admin entities in MOSO. 4,905 of them are loan officers (`is_loan_originator`
+    or `lo_type` set), and 2,714 of those are currently active (active and no `terminate_date`).
+  - **Hot/Cold pool on Recruit prod:** 408 rows (unowned, ACTIVE, S0-S5). Of these, 2 are CURRENT LF loan
+    officers and 5 are former ones.
+  - **Rows outside the pool that are current LF loan officers:**
+    - 66 rows at S6 ACTIVE (Joined, but already working);
+    - 110 rows at S7 ACTIVE, which is correct;
+    - 6 rows at S5 ARCHIVED that are in fact working at LF.
+  - **Rows outside the pool that are former LF loan officers:** 3 rows at S7 ACTIVE.
+  - **Cold import risk:** MOSO `LORecruiting`, the source of the deferred Cold import (~131k rows), holds 3,960
+    rows that belong to 2,682 CURRENT LF loan officers (matched by NMLS or email). An unfiltered Cold import
+    would put almost every current LF loan officer into Cold.
+  - Evidence files (contain emails, chmod 700, never commit): `~/.cache/claude-recruit/lfcheck/` (`admins.json`,
+    `cands.csv`, `matches.json`, `lorecruiting_ids.json`, scripts `pull_admins.py`).
+- Read-only DB runner kept at `~/.cache/claude-recruit/rbac/rro.sh <stg|prod> <file.sql>` (the scratchpad is wiped
+  between sessions).
