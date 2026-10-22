@@ -54,3 +54,14 @@ Nothing is coded, nothing pushed in recruit-be / recruit-fe.
 `mockup-src/` holds the generators (`gen_v4.py` builds V4 and imports data from `gen_ring_v2.py`). They write into
 `scratchpad/artifact-files/<id>/project/`; on resume re-read the artifact files first (`Artifact read` with `path`),
 set `ROOT` in `gen_ring_v2.py` to the new folder, re-run, then publish `project/V4.dc.html` to the same artifact URL.
+
+## STATUS 22/10 — on staging
+
+- BE: recruit-be #708 (40f66f5f), #710 (c95936dd), #711 (af4fb80e) — D306 / D307. FE: recruit-fe #559 (1acf6f92).
+- Verified on recruit.viet18.com/invites as recruiter (63 rows) and onb-test (37 assigned rows, "You", conversation icon).
+- Decisions added after V4 (SPEC.md amendments 1–4): per-step post-Joined owners (HR to-do = loan officer), Mark 1-1
+  done, Waiting on = role + person avatar line, "Review offer", "Remind" label, no Open button, late on every open
+  step (lateDays), MEET never late, specialists see their assigned LOs, setup call waits on / rings the recruiter,
+  conversation icon per row, sticky header, % column widths.
+- **Production: NOT promoted.** Order: recruit-be production first (FE sends stage=ALL, old BE answers 400), then
+  recruit-fe. Behaviour change on prod: Remind manager reaches MANAGER role only (victoria.pham), not ADMINs.
