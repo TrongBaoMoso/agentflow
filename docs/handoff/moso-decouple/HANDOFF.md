@@ -27,6 +27,18 @@ Bao APPROVED the plan on 23/10. Beads were created; no code yet.
 - New since 21/10: Bao's gcloud identity can READ MOSO prod Datastore, so P0 exports can read Datastore directly (HR pattern) with no MOSO admin cookie. Recruit prod DB is readable through a temporary pod in ns `recruit-be`.
 - Next: start `agentflow-0gwad.1` (P0) and `.2` (P1), unless Bao picks another order. Still open from §5: 1 (Cold owner-map), 3 (e-sign Inkless vs built-in plus legal review), 4 (fee), 6 (webinar owner), 7 (DE and accounting sprint), 8 (packs owner to switch off MOSO recruiting automation).
 
+### Decisions round 2 (23/10)
+
+Bao 23/10 decisions (accepted all of the lead's recommendations):
+1. Cold import owner-map: EXCLUDE loan officers currently WORKING at LF (NMLS or email match against MOSO Admin: active, lo_joined_date set, no terminate_date) and not_eligible_for_rehire rows. A row MOSO marks as claimed by one of the active MOSO recruiting staff keeps that recruiter as owner (reuse the D310 / prod_grant_proposal mapping). Everything else is imported UNOWNED into Cold.
+2. E-sign: keep Inkless and the CURRENT agreement content and signing flow. Do it via document-esign's existing 1099/W-2 templates. No legal re-review; a person compares the new PDF to the current MOSO PDF before go-live.
+3. Start-up fee: keep PayPal, the same amount and the same waiver rules, using the same PayPal account. Port packs checkPayPalTransaction to recruit-be. No change for the Loan Officer.
+4. Webinars: Recruit owns them (Google Calendar + Meet; recruit-be already has the Calendar client and Meet attendance). The same team creates webinars, in Recruit instead of MOSO.
+5. document-esign and accounting changes: the lead writes the PRs; Khai reviews and merges. No sprint planning needed.
+6. MOSO recruiting automation: when Recruit's own emails go live in prod (P2), the lead sends a small packs PR so MOSO's LORecruiting follow-up crons/mails skip Recruit-managed rows; Khai deploys after Bao says "ok tắt".
+
+Next: P0 (`.1`) and P1 (`.2`) in progress, staging only.
+
 ## 1. What was done
 
 - Bao asked for **every** Recruit dependency on the old MOSO system. Three independent auditors read recruit-be @`8c064b0d` and recruit-fe @`0b353055` plus the MOSO repos (`git grep`/`git show`, read-only):
