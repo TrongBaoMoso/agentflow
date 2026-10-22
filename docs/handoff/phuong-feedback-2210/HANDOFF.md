@@ -5,7 +5,7 @@ Session: da43ac56-60ea-4ce0-8af1-2972ee58cfc7. Read this file top to bottom befo
 ## Sources
 - Meeting 22/10 transcript: `docs/transcripts/2026-10-22_phuong-nguyen_feedback-recruit-app-demo.md`
 - Meeting 15/10 with chị Phương (menu, My today, tracking…): **misfiled** at
-  `docs/transcripts/lf-homepage/2026-10-15_summary-the-register-loan-officer-form.md` (name says "register form",
+  `docs/transcripts/2026-10-15_phuong-nguyen_recruit-feedback.md` (name says "register form",
   content is the Vietnamese Phương meeting). The real register-form meeting is `…improve-the-register-loan-officer-form-discussion.md`.
   Bao has NOT answered whether to rename/move it — ask.
 - Slack #lo-recruiting (C0BJXSC5B8A): Phương's screenshots 22/10 (Qualified/waiver column, remove Type, Overdue above
