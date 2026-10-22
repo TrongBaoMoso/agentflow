@@ -221,3 +221,18 @@ Morning proposal for production Recruit role grants: `~/.cache/claude-recruit/lf
   rows each would own.
 - 5 legacy recruiter emails on recruit rows are not active MOSO recruiting staff, so they stay unowned.
 - Roles proposed: RECRUITER, plus ONBOARDING where MOSO says onboarding specialist (Bao confirmed both roles).
+
+## PROD Recruit grants (23/10 early morning; Bao approved prod_grant_proposal.csv, minus Matt and Phuong)
+
+- **How:** `POST /api/v1/admin/rbac/grants/bulk` (ASSIGN) from inside the recruit-be prod pod, with `X-User-ID` = bao.trinh.
+  User ids were resolved through user-service in-cluster `GET /api/v1/users/by-email` on port 8082. Each person's
+  gmail and company email resolve to the same id.
+- **RECRUITER + ONBOARDING:** Miley (was ONBOARDING only), Lisbeth, Tommy, Sara, Wegina.
+- **RECRUITER:** Geta, Lindsay, Denise.
+- **Unchanged:** Brayan, Seth (RECRUITER) and Victoria (MANAGER).
+- **Not granted:** Matt (Bao: not now), Phuong (Bao: no Recruit role), and the five legacy recruiter addresses
+  (two non-recruiters, three people who left).
+- **Central auth-service prod:** NOT done. The RECRUIT catalog has never been pushed to production central, and
+  production does not enforce app access yet, so they can sign in. This is part of P6.
+- Gotcha: busybox wget in the pod has no PUT, so the single-user `PUT /grants/{id}` cannot be called from there.
+  Use the bulk POST and pass argv directly (no `sh -c`), because an apostrophe in a note breaks shell quoting.
