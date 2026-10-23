@@ -186,3 +186,44 @@ Each `*.meta.json` holds the subject, from/to/cc/bcc/reply_to, context variables
 - **STOP cap:** `stop_cap/` and `stop_cap_summary.json`.
 - **Counts:** `ledger_counts.json`.
 - **Scripts:** `export_kind.py`, `cold_dryrun.py`, `calloptout_lookup.py`, `stop_cap_measure.py`, `websafe_key.py`, `build_templates.py`.
+
+## Bao action — moso-aid admin CSV export (approved by Bao 23/10, one read-only run)
+
+**Why Bao has to click.**
+- The only admin export path is the lf-homepage program console: `/manage-lo-programs/<slug>` → "Export CSV".
+- That link calls lf-homepage's server proxy `/webplus-api/lo-admin/lo-programs/applications/export`, which adds moso-aid's `LO_ADMIN_SERVICE_KEY` and checks the viewer's MOSO permissions.
+- Recruit's roster key does NOT cover it; moso-aid only accepts `RECRUIT_INBOUND_SERVICE_KEY` on `/lo-programs/recruit/members`.
+- I have no admin browser session of Bao's.
+- The proxy's identity check rides on an unverified `x-moso-user-id` (open item agentflow-048o). Calling it with Bao's key from a script would be exploiting that gap, not legitimate access, so I did not.
+- Bao's MOSO account holds both `RECRUITING` and `MARKETING`, so both consoles open for him (`canManageLoProgram`).
+
+**Steps** (logged in to www.loanfactory.com as bao.trinh@loanfactory.com, same browser):
+
+1. Open https://www.loanfactory.com/manage-lo-programs/lo-recruiter-program
+2. Leave every filter empty (Status = all, Level = all, search blank, no day range). This is the page's default.
+3. Click **Export CSV** (top right, next to the title). The browser downloads `lo-program-lo_recruiter-applications.csv`.
+4. Open https://www.loanfactory.com/manage-lo-programs/ambassador-program and repeat steps 2–3. The file is `lo-program-ambassador-applications.csv`.
+5. Optional, for the full audit trail (old level rows and grandfathered standing, which the default hides):
+   - Right-click **Export CSV** → Copy link address.
+   - Append `&include_superseded=true&include_standing=true` and open that URL in the same tab.
+   - Do this once per program. Rename the files `…-applications-audit.csv`.
+6. Move the files without opening them in a shared tool:
+
+   ```bash
+   mv ~/Downloads/lo-program-*-applications*.csv ~/.cache/claude-recruit/moso-snapshot-2310/moso-aid/ && chmod 600 ~/.cache/claude-recruit/moso-snapshot-2310/moso-aid/*.csv
+   ```
+
+**What the CSV holds** (moso-aid `services/lo-program.js` `exportCSV`), one row per application, newest first:
+- name, first/last name, email, NMLS, role.
+- level, status (approved / pending / withdrawn / revoked / rejected), submitted_at, decided_by (last decider).
+- audience totals, Ally state, social profiles.
+- every form answer as its own column.
+
+**Not in the CSV:**
+- the full `status_history` (only the last decider);
+- team-lead assignments (`/lo-programs/teams`, shown in the console but not exportable);
+- proof screenshots.
+
+The roster I already exported (§5) covers the current standings. If teams are needed, P5 has to read them through moso-aid, not through this export.
+
+After Bao drops the files, I (or the lead) record row counts per program and status here, as counts only.
