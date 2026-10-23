@@ -168,3 +168,10 @@ v5 FE (local preview for Bao before push); staging. Dev servers are all stopped.
 ### 24/10 resume — #738 rebased
 - #738 rebased on master and renumbered to **D332 / V287** (D328–D331, V284–V286 are held by open PRs p2-* and moso-record-flag). Pushed b2775c1a. Unit build green locally; ITs failed only because Docker was not running after the reboot (Testcontainers) — CI runs them. Next: CI green, merge, promote BE, then merge #576 (CI green, CLEAN) and promote FE.
 - v5 BE worktree recruit-be-worktrees/handoffs-v5 has 15 UNCOMMITTED files (agent never pushed) — commit them before anything else touches that worktree.
+
+### 24/10 — #738 and #576 ON STAGING
+- recruit-be #738 merged b3a4c7b6 (D332, V289) and promoted; recruit-fe #576 merged 6d664c84 and promoted.
+- Staging smoke as Manager: /today shows 7 Review rows with Qualified buttons, no "Showing N of M"; /exceptions has no
+  Pending approval card; /pipeline Status reads "Active, Nurture"; /today-old 404; no page errors.
+- Next: #746 (v5 BE, D334, V288) review fixes in progress (REPORT_TEAM-only gate + hiddenOwnerIds, assign flag vs
+  meetingReached, perf numbers prod 833 TEAM rows / 226 SIGNED); then v5 FE.
