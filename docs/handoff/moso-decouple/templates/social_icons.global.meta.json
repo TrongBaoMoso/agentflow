@@ -1,0 +1,11 @@
+{
+  "title": "social_icons",
+  "context": "root (Admin or Company: its social_links list), svg (Boolean), style (String, optional)",
+  "placeholders": [
+    "${media}",
+    "${com.mvu.core.shared.SocialType.getIconLink(media, svg)}",
+    "${style}"
+  ],
+  "note": "Icon choice = base SocialType.getIconLink: second-level domain of the URL (fb->facebook, goo->google, x->twitter), else 'www' when not in HAS_LOGO_NAMES; file <BUCKET>/CDN/social_icons/<name>.png?v=1 when svg=false. No tenant override exists (tenant lookup: missing). PII check: template code only, no data.",
+  "source": "MOSO prod Datastore, project lender-rate, kind Template, global namespace '' (EFFECTIVE: no tenant override), read 23/10"
+}
