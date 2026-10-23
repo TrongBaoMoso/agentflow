@@ -2,6 +2,50 @@
 
 Session `460363a7` (21/10/2026). Paused 21/10. **Approved by Bao 23/10**: see RESUME HERE. Nothing coded yet.
 
+## PAUSE 23/10 evening (Bao shut down) — RESUME FROM HERE
+
+Nothing is on prod. Agents were told to stop safely and append resume notes. Read them first:
+- `bd show agentflow-0gwad.2` (P1a)
+- `bd show agentflow-0gwad.3` (P2)
+- `bd show agentflow-flyuv` (previous recruiter line)
+- `bd show agentflow-kzwcg` (Cold import)
+
+Agents die on restart, so respawn fresh ones with the bead notes plus this section.
+
+### PR state at pause (measured with gh)
+
+| PR | What | State / next |
+|---|---|---|
+| be #722 `feat/moso-record-flag` dada2ffc | P1a flag moso-record-required (default TRUE), D314, **V286** | Approved; CI was running. Next: re-scan numbers, merge, promote staging, VERIFY DEPLOY. |
+| fe #569 `feat/moso-record-flag` 5329fe25 | P1a FE | 2/2 approved, green. Merge AFTER #722. |
+| be #737 `feat/p2-sender-profile` 9baaa497 | P2: LO mail sender, signature from user-service, start-up fee setting ($100 from MOSO), ledger `lo_mail_sends` **V284** | 2/2 approved. Java MEDIUM: add index `(dedupe_key, status)` in V284 before merge. |
+| be #739 `feat/p2-reminders-notifier` 7e074aff | P2: the 1-1 reminder is sent by Recruit (flag) | 2/2 approved. Merge after #737. |
+| be #740 `feat/p2-webinar-mail` 7ff77a27 | P2: webinar confirmation after packs registered:true | 2/2 approved. D330 must state the "first attempt only" rule. |
+| be #741 `feat/p2-invite-welcome-mail` 3189a53a | P2: Recruit sends invite (packs records only) + welcome | Approved with fixes: **V285 collides with #738** (other session), so renumber to the next free number; **M1 pool**: send after commit on an executor, no tx held; resend unit test (flag on/off); guard a resend when no new row was created; D331 "no sender, skip". |
+| be #742 `fix/cold-reimport-guard-test` e843e7f6 | Test-only flag-off IT for the D325 guard | Open. |
+| moso-notifier #350 / notification-service #363 | RECRUIT prod sender | Khai decided: copy ENGAGEMENT. #363 first (asked Khai who merges). #350 ONLY after Khai's announcement on notification-service#232 (Wave 3 Sun 25/10 or Wave 4 Mon 26/10). The java-acks PR goes out the same day #350 merges. |
+
+**Migration numbers at pause:**
+- master is at V283;
+- V284 = #737, V285 = #738 (another session), V286 = #722;
+- new PRs take V287+;
+- re-scan right before every merge;
+- never edit an applied migration.
+
+**Merge order:** #722 → #569; #737 → #739 → #740 → #741 (renumbered).
+
+### In flight / decisions today
+- "Previous MOSO recruiter" (agentflow-flyuv): the name is resolved (be #736 is merged on staging). **Bao decided: show it ONLY on Cold-imported rows** (cold_imported_at set). The BE change is in progress; the FE is local only and needs Bao's preview of BOTH a Cold row (line shown) and a push row (line absent) before pushing.
+- P2 design (approved by the lead):
+  - P2 mails do NOT appear in the Omni timeline (same as nurture; needs omni #602 / bead e3bg6, which Bao deferred). Bao was told.
+  - The welcome is sent by Recruit only when the ONBOARDING_MEETING write-back is off, so MOSO and Recruit never both send it.
+  - Staging mails go to bao.trinh+ only.
+- Progress estimate given to Bao: ~20% overall. P1+P2 on staging in ~1–2 days; P3/P5 ~1–1.5 weeks; P4 ~2 weeks; P6 a few days; ~4–5 weeks to finish on staging.
+- Waiting on Bao:
+  - the moso-aid CSV export ("Bao action" in P0-SNAPSHOT.md);
+  - when to promote staging → prod (staging is ~37 commits ahead; it includes #724/#732, needed for the prod Cold dry run → apply);
+  - the preview above.
+
 ## PROGRESS 23/10 afternoon — read this first on resume
 
 **Done (staging only, nothing on prod):**
