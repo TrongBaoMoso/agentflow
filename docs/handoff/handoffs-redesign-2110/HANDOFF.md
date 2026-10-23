@@ -140,8 +140,11 @@ still awaits approval; production not promoted (BE first).
 1. **recruit-be #738** `feat/today-setup-call-recruiter` (D329, V285): Book setup call on the RECRUITER's Today
    (requester of the latest offer, fallback specialist, shared `SetupCallOwnership`), Today decisions uncapped (cap 0).
    2 reviewers done; RBAC finding: no catalog / auth-service change needed (CHECKLIST_ITEM_MANAGE is checked in-app).
-   OPEN: (a) split `mayTick` so the requester can act ONLY on the setup call, not HR/Licensing ticks (scope leak);
-   (b) rebase on master (conflict in DECISIONS/STATUS/SCHEMA; renumber D/V if taken); then CI, merge, promote.
+   Scope split DONE (2965054f: mayTick back to owner/specialist/admin; new maySetupCall adds the requester for booking +
+   Mark done only; full gradle build green). LEFT: rebase on master (PR is "dirty": DECISIONS/STATUS/SCHEMA; renumber
+   D329/V285 if taken), CI, merge, promote. FOLLOW-UP: the profile's OnboardingProgressCard shows Mark done/Undo from
+   canTick, so a requester sees booking extras but no Mark done button there (Today row is fine) — needs a can_act_setup_call
+   flag + FE change; do it with v5 FE.
 2. **recruit-fe #576** `feat/approvals-and-pipeline-default` (worktree recruit-fe-worktrees/today-roles): approvals only on
    Today (Review rows, 14/10 decision); Needs attention has 4 cards, no approvals; /today-old DELETED (Bao OK 23/10);
    Pipeline Status multi-select default Active+Nurture (OR DSL verified on staging 6,256+43=6,299), neutral at default;
