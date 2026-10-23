@@ -83,7 +83,10 @@ Staging (`lenderrate-master`, listable by Bao), recruit subscriptions on 23/10:
 HR_ASSOCIATE_ONBOARD_SUBSCRIBE_RECRUIT_STAGING (+ _DLQ.monitor), HR_ASSOCIATE_UPDATE_SUBSCRIBE_RECRUIT_STAGING (+ _DLQ.monitor),
 SEARCH_INDEX_SYNC_SUBSCRIBE_RECRUIT-SVC-STAGING, SVC_STATUS_MAIL_RECRUIT_SUBSCRIPTION (+ _DLQ.monitor),
 omni-inbound-reply.recruit-be, omni-outbound-sent.recruit-be, recruit-meet-events-staging-pull (+ dlq-monitor).
-**Missing on staging:** HR_ASSOCIATE_DEACTIVE_SUBSCRIBE_RECRUIT_STAGING (needed by recruit-be #723, HR offboard) — ask DevOps.
+HR_ASSOCIATE_DEACTIVE_SUBSCRIBE_RECRUIT_STAGING (+ `_DLQ` topic + `_DLQ.monitor`) — created by Bao's account 23/10 for
+recruit-be #723 (HR offboard), same settings as the UPDATE one (ack 60s, 7d retention, retry 10s–600s, DLQ after 5).
+IAM bindings (recruit-be SA viewer+subscriber, Pub/Sub SA publisher on DLQ) requested from Khải — Bao's editor role cannot
+set IAM. After that: set `RECRUIT_HR_OFFBOARD_SUBSCRIPTION` in staging values.
 
 Production (`lender-rate`, NOT listable by Bao — known only from Khải):
 | Subscription | Status |
