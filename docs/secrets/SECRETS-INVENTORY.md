@@ -44,14 +44,49 @@ Created by our sessions (date = Secret Manager createTime):
 Older (2026-09-29, initial bootstrap): db-*, moso-webhook-api-key, packs-writeback-internal-api-key,
 recruit-api-key, recruit-host-subjects-access-token, hot-idle-release, hr-handoff, omni, omni-subject-alias.
 
-## recruit-be — production (`lender-rate`, cluster `moso-gke`)
+## recruit-be — production (`lender-rate`, cluster `moso-gke`, secret `recruit-svc-secret`)
 
-Created by hand, once (BOOTSTRAP "Create it (production)"). Not inventoried here yet — list with the
-commands above before assuming anything is missing.
+What Bao's account can see on production (measured 23/10):
+- Secret Manager in `lender-rate`: **list DENIED** (`secretmanager.secrets.list`). Nothing visible; ask Khải/DevOps.
+- Kubernetes `recruit-svc-secret` key NAMES: **readable** (command above with context `gke_lender-rate_us-central1_moso-gke`).
+- Pub/Sub in `lender-rate`: **list DENIED**. Ask Khải.
 
-## Pub/Sub (owner: Khải / DevOps)
+Key names present in `recruit-svc-secret` on 23/10 — staging vs production:
 
-| Subscription | Env | Status |
-|---|---|---|
-| HR_ASSOCIATE_ONBOARD_SUBSCRIBE_RECRUIT | production | EXISTS (Khải 07/10; set `RECRUIT_HR_ONBOARD_SUBSCRIPTION` to it; DLQ topic `HR_ASSOCIATE_ONBOARD_SUBSCRIBE_RECRUIT_DLQ` + `.monitor`). Do not create a `_PROD` variant. |
-| HR_ASSOCIATE_DEACTIVE_SUBSCRIBE_RECRUIT_STAGING | staging | NOT created — needed by recruit-be #723 (HR offboard). Ask DevOps. |
+| Key | Staging | Production | Note |
+|---|---|---|---|
+| DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USERNAME | yes | yes | |
+| GOOGLE_OAUTH_CLIENT_SECRET, RECRUIT_GOOGLE_OAUTH_STATE_KEY, RECRUIT_GOOGLE_TOKEN_KEYRING | yes | yes | Google Calendar/Meet |
+| MOSO_WEBHOOK_API_KEY, PACKS_WRITEBACK_INTERNAL_API_KEY, RECRUIT_API_KEY | yes | yes | MOSO/packs |
+| RECRUIT_HOST_SUBJECTS_ACCESS_TOKEN | yes | yes | |
+| RECRUIT_HOT_IDLE_RELEASE_INTERNAL_API_KEY | yes | yes | Hot idle-release cron |
+| RECRUIT_HR_HANDOFF_INTERNAL_API_KEY | yes | yes | HR hand-off cron |
+| RECRUIT_MEET_ATTENDANCE_INTERNAL_API_KEY | yes | yes | Meet attendance cron (missing from the BOOTSTRAP table too) |
+| RECRUIT_MOSO_AID_BASE_URL, RECRUIT_MOSO_AID_ROSTER_KEY | yes | yes | moso-aid |
+| RECRUIT_MOSO_SIGNED_RECONCILE_INTERNAL_API_KEY | yes | yes | signed reconcile cron (missing from the BOOTSTRAP table) |
+| RECRUIT_OMNI_INTERNAL_API_KEY, RECRUIT_OMNI_SUBJECT_ALIAS_INTERNAL_API_KEY | yes | yes | Omni |
+| RECRUIT_ONBOARDING_REMINDER_INTERNAL_API_KEY | yes | yes | onboarding reminders |
+| RECRUIT_PLATFORM_INBOX_INTERNAL_API_KEY | yes | yes | platform inbox (D188) |
+| RECRUIT_POST_JOINED_RECONCILE_INTERNAL_API_KEY | yes | yes | post-joined reconcile |
+| RECRUIT_PROGRAM_SYNC_INTERNAL_API_KEY | yes | yes | LO Recruiter Program sync (D202) |
+| RECRUIT_NURTURE_DRIP_INTERNAL_API_KEY | yes | **NO** | nurture drip cron — prod e-mails still off (bead agentflow-236t9.14) |
+| RECRUIT_UNSUBSCRIBE_HMAC_SECRET | yes | **NO** | unsubscribe links — needed before any prod auto e-mail |
+| RECRUIT_MMI_PUSH_TOKEN | yes | **NO** | MMI push (D305) — prod waits for Bao/Vic/Miley |
+| RECRUIT_REFERRALS_NOTIFY_INTERNAL_API_KEY | yes | **NO** | My referrals change e-mails (D317) — prod dark |
+
+Production "NO" rows are expected today (those features are dark on prod). Each must be created by
+hand before its go-live; add the row here when done.
+
+## Pub/Sub
+
+Staging (`lenderrate-master`, listable by Bao), recruit subscriptions on 23/10:
+HR_ASSOCIATE_ONBOARD_SUBSCRIBE_RECRUIT_STAGING (+ _DLQ.monitor), HR_ASSOCIATE_UPDATE_SUBSCRIBE_RECRUIT_STAGING (+ _DLQ.monitor),
+SEARCH_INDEX_SYNC_SUBSCRIBE_RECRUIT-SVC-STAGING, SVC_STATUS_MAIL_RECRUIT_SUBSCRIPTION (+ _DLQ.monitor),
+omni-inbound-reply.recruit-be, omni-outbound-sent.recruit-be, recruit-meet-events-staging-pull (+ dlq-monitor).
+**Missing on staging:** HR_ASSOCIATE_DEACTIVE_SUBSCRIBE_RECRUIT_STAGING (needed by recruit-be #723, HR offboard) — ask DevOps.
+
+Production (`lender-rate`, NOT listable by Bao — known only from Khải):
+| Subscription | Status |
+|---|---|
+| HR_ASSOCIATE_ONBOARD_SUBSCRIBE_RECRUIT | EXISTS (Khải 07/10, had 21 messages); set `RECRUIT_HR_ONBOARD_SUBSCRIPTION` to it; DLQ topic `HR_ASSOCIATE_ONBOARD_SUBSCRIBE_RECRUIT_DLQ` + `.monitor`. Do not create a `_PROD` variant. |
+| omni-inbound-reply / omni-outbound-sent | did not exist on 07/10 (Khải: "PROD chưa có 2 thằng này"); Khải said he would release them — re-ask before assuming. |
