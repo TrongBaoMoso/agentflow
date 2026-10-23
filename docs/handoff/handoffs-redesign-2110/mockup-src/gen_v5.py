@@ -109,7 +109,12 @@ def toolbar(seg=None, count='8 rows', extra=''):
           '<button class="ctl"><span style="color: #6b655d">Waiting on:</span> <b style="font-weight: 600">Anyone</b> ▾</button>'
           '<button class="ctl"><span style="color: #6b655d">To do:</span> <b style="font-weight: 600">Any step</b> ▾</button>'
           '<button class="ctl">Late only</button>'
-          f'<span style="margin-left: auto; font-size: 12.5px; color: #6b655d">{count}</span></div>')
+          '<button class="ctl" style="color: #9a948b" disabled>Reset filters</button>'
+          f'<span style="margin-left: auto; font-size: 12.5px; color: #6b655d">{count}</span>'
+          '<button class="ctl" aria-label="Saved views" style="padding: 0 9px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"></path></svg></button>'
+          '<span style="display: inline-flex; gap: 2px"><button class="ctl" aria-label="Table view" style="padding: 0 9px; border-color: #f2a57a; background: #fff4ee; color: #c2410c"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"></path></svg></button>'
+          '<button class="ctl" aria-label="Cards view" style="padding: 0 9px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg></button></span>'
+          '<button class="ctl" aria-label="Refresh" style="padding: 0 9px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"></path><path d="M20 4v7h-7"></path></svg></button></div>')
     return s
 
 def page(title, h, header_note, segment, extra_filter, card_vals, rows, file):
@@ -119,7 +124,7 @@ def page(title, h, header_note, segment, extra_filter, card_vals, rows, file):
             '<h1 style="margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.01em">My hand-offs</h1>'
             f'<span style="margin-left: 8px; font-size: 13px; color: #6b655d">{header_note}</span></div>'
             + cards(card_vals) + toolbar(segment, f'{len(rows)} rows', extra_filter)
-            + '<div style="background: #fff; border: 1px solid #e6e1da; border-radius: 12px; overflow: hidden">' + HEADROW + ''.join(rows) + '</div></div>')
+            + '<div style="background: #fff; border: 1px solid #e6e1da; border-radius: 12px; overflow: hidden">' + HEADROW + ''.join(rows) + '</div>' + ('<div style="display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: #6b655d"><span>Rows per page <button class="ctl" style="margin-left: 6px">25 ▾</button></span>' f'<span>Page 1 of 1 · {len(rows)} total</span></div>') + '</div>')
     html = HEAD.replace("{title}", title) + body + ('\n</x-dc>\n<script type="text/x-dc" data-dc-script data-props=\'{"$preview":{"width":1280,"height":%d}}\'>\n'
             'class Component extends DCLogic {\n  renderVals() { return {}; }\n}\n</script>\n</body>\n</html>\n') % h
     os.makedirs(os.path.join(ROOT, 'project'), exist_ok=True)
@@ -139,28 +144,28 @@ ob_rows = [
     row(18, 'CT', 'Chowfi Toni', '34555', status('pay'), who('Loan Officer'), todo('Pay fee'), wf('2w 2d', 'Tue, Oct 6 · 4:04pm'), ''),
     row(100, 'QT', 'QA Tenmain', '9931202', status('joined'), '<span style="color: #8a847c">—</span>', '<span style="color: #8a847c">—</span>', wf('10d ago', 'Mon, Oct 12', late=False), '', '#2b8a3e'),
 ]
-page('My hand-offs – OB with actions', 860, 'Onboarding specialist · replaces Team queue', None, '',
+page('My hand-offs – OB with actions', 920, 'Onboarding specialist · replaces Team queue', None, '',
      [('All', 37), ('In progress', 22), ('Waiting approval', 1), ('1-1 pending', 18), ('Paying &amp; signing', 3), ('Joined', 15), ('Not qualified', 0)], ob_rows, 'V5Ob.dc.html')
 
 # 2) Manager — Team
 team_rows = [
-    row(9, 'QB', 'QA Bfive', '9930626', status('1on1'), who('Onboarding', 'Thanh Pham', 'TP'), todo('Mark 1-1 done', 'Met Wed, Oct 7'), wf('2w 1d', 'Wed, Oct 7 · 3:30pm'), b('Mark done for Thanh')),
-    row(9, 'QC', 'QA Cadvisor', '9931823', status('1on1'), who('Onboarding', 'ONB Test Specialist', 'OL'), todo('Book 1-1'), wf('2w', 'Wed, Oct 7 · 11:15pm'), b('Schedule for ONB Test')),
+    row(9, 'QB', 'QA Bfive', '9930626', status('1on1'), who('Onboarding', 'Thanh Pham', 'TP'), todo('Mark 1-1 done', 'Met Wed, Oct 7'), wf('2w 1d', 'Wed, Oct 7 · 3:30pm'), b('Mark done')),
+    row(9, 'QC', 'QA Cadvisor', '9931823', status('1on1'), who('Onboarding', 'ONB Test Specialist', 'OL'), todo('Book 1-1'), wf('2w', 'Wed, Oct 7 · 11:15pm'), b('Schedule 1-1')),
     row(0, 'QA', 'QA AnewL', '9930243', status('appr'), who('Manager', 'Victoria Pham', 'VP'), todo('Review offer'), wf('2w 6d', 'Fri, Oct 2 · 12:37am'), b('Review', True)),
     row(18, 'CT', 'Chowfi Toni', '34555', status('pay'), who('Loan Officer'), todo('Pay fee'), wf('2w 2d', 'Tue, Oct 6 · 4:04pm'), ''),
     row(45, 'ES', 'E2E Stranger0929', '9290929', status('joined'), who('HR'), todo('Create HR account'), wf('3w 2d', 'Tue, Sep 29 · 2:50am'), ''),
     row(82, 'QC', 'QA Claudeself', '9931867', status('joined'), who('Recruiter', 'Manh Admin', 'MA'), todo('Book setup call'), wf('2d 4h', 'Tue, Oct 20 · 2:40pm', late=False), ''),
 ]
-page('My hand-offs – Manager · Team', 760, 'Manager view', [('Mine', False), ('Team', True), ('Needs owner', False)],
+page('My hand-offs – Manager · Team', 820, 'Manager view', [('Mine', False), ('Team', True), ('Needs owner', False)],
      '<button class="ctl"><span style="color: #6b655d">Onboarding:</span> <b style="font-weight: 600">Anyone</b> ▾</button>',
      [('All', 88), ('In progress', 61), ('Waiting approval', 6), ('1-1 pending', 41), ('Paying &amp; signing', 9), ('Joined', 27), ('Not qualified', 5)], team_rows, 'V5Team.dc.html')
 
 # 3) Manager — Needs owner
 need_rows = [
-    row(9, 'NS', 'Nesebis', '785746', status('1on1'), who('Onboarding', plain='Not assigned'), todo('Assign onboarding'), wf('2w 6d', 'Fri, Oct 2 · 12:02pm'), b('Assign OB', True)),
-    row(9, 'XO', 'Xomaxo', '2568229', status('1on1'), who('Onboarding', plain='Not assigned'), todo('Assign onboarding'), wf('2w 3d', 'Mon, Oct 5 · 2:05pm'), b('Assign OB', True)),
-    row(9, 'QE', 'QA Ejoin', '9931833', status('1on1'), who('Onboarding', plain='Not assigned'), todo('Assign onboarding'), wf('2w', 'Thu, Oct 8 · 12:42pm'), b('Assign OB', True)),
+    row(9, 'NS', 'Nesebis', '785746', status('1on1'), who('Onboarding', plain='Not assigned'), todo('Assign onboarding'), wf('2w 6d', 'Fri, Oct 2 · 12:02pm'), b('Assign', True)),
+    row(9, 'XO', 'Xomaxo', '2568229', status('1on1'), who('Onboarding', plain='Not assigned'), todo('Assign onboarding'), wf('2w 3d', 'Mon, Oct 5 · 2:05pm'), b('Assign', True)),
+    row(9, 'QE', 'QA Ejoin', '9931833', status('1on1'), who('Onboarding', plain='Not assigned'), todo('Assign onboarding'), wf('2w', 'Thu, Oct 8 · 12:42pm'), b('Assign', True)),
 ]
-page('My hand-offs – Manager · Needs owner', 560, 'Manager view · invites with no onboarding specialist', [('Mine', False), ('Team', False), ('Needs owner', True)], '',
+page('My hand-offs – Manager · Needs owner', 620, 'Manager view · invites with no onboarding specialist', [('Mine', False), ('Team', False), ('Needs owner', True)], '',
      [('All', 3), ('In progress', 3), ('Waiting approval', 0), ('1-1 pending', 3), ('Paying &amp; signing', 0), ('Joined', 0), ('Not qualified', 0)], need_rows, 'V5Need.dc.html')
 print('ok')
