@@ -21,7 +21,7 @@ Session `460363a7` (21/10/2026). Paused 21/10. **Approved by Bao 23/10**: see RE
 - P2 (`agentflow-0gwad.3`, agent p2-mail): Recruit sends its own LO mails through notifier v2 (reminders, webinar confirmation, invite, welcome). Flags OFF on prod. Staging mail goes only to bao.trinh+.
 - Notifier RECRUIT prod sender: moso-notifier #350 + notification-service #363.
   - Khai reviewed both: PASS, but HOLD. His nits are fixed (efe8be6 + the #350 body).
-  - Khai decides the merge order/timing (#363 first, then #350 before Wave 5, coordinated on notification-service#232) and the SendGrid account (copy ENGAGEMENT vs dedicated).
+  - **Khai DECIDED 23/10: RECRUIT copies ENGAGEMENT's mail identity** (SendGrid question closed). Order: #363 first (asked Khai who merges it), then #350 ONLY after Khai's announcement on notification-service#232 (Wave 3 Sun 25/10 or Wave 4 Mon 26/10, before Wave 5). Never merge #350 ourselves.
   - The same day #350 merges, send a one-line `_contract/java-acks.txt` PR on notification-service.
 
 **Rules learned today:**
