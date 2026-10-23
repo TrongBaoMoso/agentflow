@@ -173,3 +173,20 @@ Order: BE-1 then BE-2 then FE (local preview for Bao before any FE commit). BE P
   recruit-svc-secret, see BOOTSTRAP.md). Until then no cron is registered and nothing is mailed. Staging recipients are allowed
   only for `bao.trinh+*@loanfactory.com`.
 - Production: nothing deployed, and the flag is absent there. The go-live list is in bead agentflow-236t9.14.
+
+## RESUME POINT (pause 23/10 morning: Bao shutting down to go to the office)
+No background agents, dev servers or pending merges are running. Everything is pushed, and nothing is on production.
+Next steps, in order:
+1. Ask Bao for their answers to the open items in the previous section:
+   - #2674 credit, option a or b;
+   - who creates the staging cron secret;
+   - the self-decided items (all-time window, business timezone, avatar source, typed-e-mail exposure).
+2. If (b): lo-homepage `/join` and `register-loan-officer` send recruiter credit when the site owner is a LO Recruiter Program
+   member. Then merge lf #2674, staging only.
+3. After the cron secret exists on staging: wait for one hourly tick (minute 20), change a test referral's step, and confirm a
+   digest reaches bao.trinh+hh@loanfactory.com.
+4. When production gets /join: follow-up recruit-be PR to switch `referral_link` to `https://www.loanfactory.com/<url>/join`
+   (or `<domain_url>/join`).
+5. #723: merge after #716 (V269), check V-number order (#726 holds V273), then ask DevOps for the subscription.
+Staging tokens for previews: node scratch script hhtok.js equivalent = docs/handoff/recruit-e2e-lab/scripts/auth.js login
+(write `~/.cache/claude-recruit/preview/stg_<port>.token`, 3390 = bao.trinh+hh, 3370 = chauchau).
