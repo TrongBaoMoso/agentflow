@@ -164,3 +164,7 @@ column picker + remembered page size = server-side prefs later (bead agentflow-v
 
 **Resume:** say "resume My hand-offs". Order: finish #738, merge+promote BE; finish #576, merge+promote FE; v5 BE PR;
 v5 FE (local preview for Bao before push); staging. Dev servers are all stopped.
+
+### 24/10 resume — #738 rebased
+- #738 rebased on master and renumbered to **D332 / V287** (D328–D331, V284–V286 are held by open PRs p2-* and moso-record-flag). Pushed b2775c1a. Unit build green locally; ITs failed only because Docker was not running after the reboot (Testcontainers) — CI runs them. Next: CI green, merge, promote BE, then merge #576 (CI green, CLEAN) and promote FE.
+- v5 BE worktree recruit-be-worktrees/handoffs-v5 has 15 UNCOMMITTED files (agent never pushed) — commit them before anything else touches that worktree.
