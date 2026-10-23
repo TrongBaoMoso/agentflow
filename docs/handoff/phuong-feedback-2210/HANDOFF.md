@@ -239,3 +239,26 @@ Bao's answers:
   then running live verification, then taking lf #2674 off hold.
 - Open for Bao: should packs record recruiter credit in MOSO for approved members without the HR recruiter flag?
   Today MOSO records them as `loan_officer`, while Recruit counts them as program leads.
+
+## 23/10 afternoon — /join recruiter credit on STAGING (Bao: every page of an approved member's site)
+- moso-aid #195 merged as 3cb32a51 (Cloud Run moso-aid-00185-q2g). `recruiter_slug` goes to /join page holders, or to an
+  approved lo_recruiter whatever LO_RECRUITER_PAGE_REQUIRES_APPROVAL says (staging true, prod unset). The lookup is a single
+  findOne.
+- lo-homepage #911 merged as ad53c7d7 (lo-homepage-master-00372-spf).
+  - Pages covered: /join, register (+ -v1), /loan-officer GetInTouch, /loan-officer-old.
+  - Credit is sent on create only. A visitor's ?ref= is kept.
+  - Lookup: retries at 2s then 1s, logs `join-overlay-failed`, falls back to loan_officer.
+- Live check on mama1 (approved member):
+  - /join, /loan-officer and register all reached recruit as recruiter, with JOIN_SLUG / RECRUIT_SLUG, and referred_by =
+    the owner.
+  - Mindie (a plain Loan Officer) still reached recruit as loan_officer.
+  - Test leads: bao.trinh+cjm1, cjl1, crm4, crm5, cjp1, cpl1, cpr1, cpr2.
+- Anomalies seen:
+  - One `join-overlay-failed reason=TimeoutError`, from a cold moso-aid; it fell back as designed.
+  - The register attempt `crm3` returned 200 but never reached recruit. crm4 and crm5 did arrive. Suspected dedupe on the
+    random NMLS or phone; not confirmed.
+- lf #2674 (redirect from lf /join/<slug> to the Loan Officer's site): security approved. Correctness and Repo Owner reviews
+  were cut off by the usage limit and have been resumed. Merge it to master (staging) once all three approve.
+- Open for Bao:
+  - Should packs record recruiter credit in MOSO for approved members without the HR flag?
+  - Rate limit on /api/join-page (follow-up).
