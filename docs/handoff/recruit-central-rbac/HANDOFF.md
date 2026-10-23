@@ -316,3 +316,16 @@ staging holds the 7 RECRUIT roles. Production changes so far:
 
 **Tools:** `~/.cache/claude-recruit/rbac/rro.sh <stg|prod> file.sql` (read-only recruit DB) and `hro.sh` (HR staging).
 Evidence is in `~/.cache/claude-recruit/lfcheck/` (PII; never commit it).
+
+## Bao's answers, 23/10 (after the restart)
+
+- **DEACTIVE:** removes every RECRUIT role, including ADMIN, HEADHUNTER and TEAM_LEAD (confirmed).
+- **Peer hand-off:** a recruiter can already hand THEIR OWN lead to a colleague (D44/D141). This works today from
+  the LO profile's small "Hand off" button and from the Pipeline bulk bar ("Assign owner" → "Hand these to…").
+  Moving someone else's lead stays MANAGER-only. P4b shrinks to IAM wording only.
+- **Recruiter "Return to pool":** deferred. The backend supports it (D52), but there is no FE button for a
+  recruiter. Bead `agentflow-ssrql` (P4); do it when there is time or a request.
+- **REFERRER:** approved. A minimal role holding only REFERRALS_SELF, assigned and removed automatically by
+  recruit-be on a person's first and last referral. Build it after P4 (#728) merges.
+- **Production HR team codes for `rbac.hr.manager_unit_codes`:** `["RECRUITER","LO_ONBOARDING_SPECIALIST"]`.
+  The department `LO_RECRUITING` (Matt) is excluded on purpose.
