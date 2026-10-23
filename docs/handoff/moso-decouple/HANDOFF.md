@@ -2,6 +2,34 @@
 
 Session `460363a7` (21/10/2026). Paused 21/10. **Approved by Bao 23/10**: see RESUME HERE. Nothing coded yet.
 
+## PROGRESS 23/10 afternoon — read this first on resume
+
+**Done (staging only, nothing on prod):**
+- P0 (`agentflow-0gwad.1`): snapshot + measurements, `P0-SNAPSHOT.md`. Still waiting on Bao: the moso-aid CSV export ("Bao action").
+- P1b: e-mail logo off the MOSO bucket. fe #568 + be #721 (0900230b) are on staging and verified.
+- P1c: own LO e-mail templates. be #730 (bdf4d8ea, D324/V281) + fe #572 (icons, 26dc8997) are on staging.
+  - Signature = full MOSO layout from user-service: no team line (Bao), and "Corporate:"/"Direct:" without MOSO's double colon (Bao).
+  - INCIDENT: #730 edited an applied migration (V279). The staging deploy failed and helm rolled back. Fixed by #735 (036796d3), deploy verified. Bead `agentflow-tlpsq` tracks a CI guard against editing applied migrations.
+- Cold import safety: be #724 (012c3a48, D316) + be #732 (640ff76f, D325/V280, Cold rows exempt from D310 owner sync) are on staging.
+  - Staging run: 0 created (all rows already there), the safety checks are proven.
+  - PROD offline dry run: ~102,417 to create, all unowned. Bao: import the 33.6k MOSO-archived rows too, as ARCHIVED.
+  - The PROD apply needs: #724 + #732 on prod (prod runs dc2b54ec; staging is ~30 commits ahead) → a real server dry run → Bao's explicit go.
+
+**In flight:**
+- P1a: be #722 (V282/D314) → fe #569. Approved, finishing CI/merge (agent p1a-key2). The flag stays default TRUE. Bead `agentflow-0gwad.8` must be done before the flag is ever turned off.
+- "Previous MOSO recruiter" by NAME (e-mail only as a fallback): be #736 + an FE change (agent p0-coldfilter2). The FE needs Bao's local preview before push. Bead `agentflow-flyuv`.
+- P2 (`agentflow-0gwad.3`, agent p2-mail): Recruit sends its own LO mails through notifier v2 (reminders, webinar confirmation, invite, welcome). Flags OFF on prod. Staging mail goes only to bao.trinh+.
+- Notifier RECRUIT prod sender: moso-notifier #350 + notification-service #363.
+  - Khai reviewed both: PASS, but HOLD. His nits are fixed (efe8be6 + the #350 body).
+  - Khai decides the merge order/timing (#363 first, then #350 before Wave 5, coordinated on notification-service#232) and the SendGrid account (copy ENGAGEMENT vs dedicated).
+  - The same day #350 merges, send a one-line `_contract/java-acks.txt` PR on notification-service.
+
+**Rules learned today:**
+- `bd update --notes` OVERWRITES the field: always use `--append-notes`.
+- Never run a repo-wide replace that can touch `db/migration`.
+- Verify the DEPLOY (rollout, pod Ready with 0 restarts, Flyway), not just that a commit is on the staging branch.
+- Migration numbers race between sessions: re-scan right before merge.
+
 ## PAUSE 23/10 (Bao shut the machine down mid-work) — RESUME FROM HERE
 
 All 4 worker agents were told to stop at a safe point and to write exact resume notes into their beads. **Read those first:**
