@@ -145,9 +145,8 @@ still awaits approval; production not promoted (BE first).
 2. **recruit-fe #576** `feat/approvals-and-pipeline-default` (worktree recruit-fe-worktrees/today-roles): approvals only on
    Today (Review rows, 14/10 decision); Needs attention has 4 cards, no approvals; /today-old DELETED (Bao OK 23/10);
    Pipeline Status multi-select default Active+Nurture (OR DSL verified on staging 6,256+43=6,299), neutral at default;
-   "Showing N of M" notice (b5330021). 2 reviewers. OPEN reviewer-2 items: M1 render "Collected through X's page"
-   (program_collected_by) on Today decision rows; M2 port lost tests (waitingMinutes, useApprovalActions busy/400/refetch,
-   approvalRefusalText unknown code); M3 drop "nurture N" from Pipeline stage-tab hint; LOW dead code + orphan i18n.
+   "Showing N of M" notice (b5330021). 2 reviewers; ALL reviewer-2 items DONE in d4e761c6 (collected-by line on Today,
+   ported tests, nurture hint dropped, dead code + 15 orphan keys removed). Left: full jest run, CI.
    Merge ONLY after #738 is on staging.
 3. **v5 BE** `feat/handoffs-team-scope` (worktree recruit-be-worktrees/handoffs-v5): GET /offers/mine scope=MINE|TEAM|NEEDS_OWNER
    (TEAM/NEEDS_OWNER manager-only, 403 otherwise), specialist= filter, per-row action flags (can_schedule_1on1,
