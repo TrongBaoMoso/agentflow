@@ -15,6 +15,12 @@ Epic: **agentflow-3bzy5** (`bd show agentflow-3bzy5`; children .1–.5). Session
    - Then push FE.
    - The SDK redesign: local preview in tera-components `test/live/demo` for Bao, then a PR for Tai.
 
+
+## UPDATE 23/10 ~21:30
+- BE **PR #747 MERGED** (cdf1509b, D335, V292) after 2 independent reviewers APPROVE (2 rounds + final) and CI green; **on STAGING** (V292 applied). Flag `RECRUIT_URGENT_ENABLED` NOT set (dark) until Khai's RECRUIT notifier key; code also refuses to raise without a key. Follow-up bead: enable + verify on staging.
+- SDK redesign built locally: `tera-components/_wt/urgent-redesign` (`feat/urgent-redesign-3bzy5`, head e3398aee), tera-docs branch `docs/urgent-redesign-3bzy5`. Banner = dot + count + Review (no chips); popup search wired to Tai's new `q` (user-service #89, notifier #360). Preview: `cd tera-components/_wt/urgent-redesign/test/live/demo && LIVE_DEMO_PORT=3140 npm run dev` -> http://127.0.0.1:3140/dev/login?as=alice, Review. Waiting for Bao's review, then Mantine 7/8/9 suites, gallery + catalogue README, PR for Tai.
+- FE #318 + setting editor: still local, show Bao against staging (setting key `urgent_notifications` now exists on staging).
+
 ## Decisions (Bao + Tai, 23/10)
 
 **What raises an urgent.** Recruit sends URGENT platform notifications (moso-notifier v2: `priority=URGENT`, `correlationKey`, `resolutionOwner=PRODUCER`), only for:
@@ -35,7 +41,7 @@ Recruiter overdue follow-ups are NOT urgent (later). "Offer approved but not sen
 - Mockup: https://claude.ai/artifact/Mxv1JcWTDTHG37aTKyJoBy (copy in `mockup/project/`).
 - Banner: dot + "N urgent" + Review. The per-app chips are proposed for REMOVAL: they need `/urgent/stats` on every page. Waiting for Bao's OK.
 - Popup:
-  - Search field on its own row. HIDDEN for now: the server has no `q`. Asked Tai at 16:47 (user-service 19d32e6, notifier d9713959).
+  - Search field on its own row, server-side `q` (Tai added it 23/10: user-service #89, notifier #360; total follows q, stats do not).
   - App filter on its own row, scrolling horizontally.
   - FLAT list, longest waiting first. No grouping: the server pages 10 at a time by cursor.
   - Each row: pulsing dot + type tag + name; second line: app (in All only) · meta · "Xd overdue". No per-type icons.
