@@ -205,3 +205,17 @@ Bao's answers:
 - New request: on My referrals, add a date-range filter plus the standard list kit from #566 (search, filters, sort, paging,
   Reset, Refresh, saved filters, row count, URL state, Table/Cards). An agent is building it together with the avatars.
 - #723: master is at V273 now, so an agent is rebasing it and renumbering V270 to the next free version.
+
+## 23/10 midday
+- recruit-be #723 (HR offboard): rebased, migration V270 renamed to V276, D311 kept. Merged as 479237d1 and deployed to
+  STAGING. It stays dark until DevOps creates the subscription.
+- Draft for Bao to send to DevOps/Khải (NOT sent):
+  > Anh ơi, em cần 1 subscription Pub/Sub trên staging (lenderrate-master) cho recruit-be:
+  > `HR_ASSOCIATE_DEACTIVE_SUBSCRIBE_RECRUIT_STAGING` trên topic HR_ASSOCIATE_DEACTIVE, kèm DLQ + `.monitor`,
+  > và quyền subscriber cho SA runtime của recruit-be staging (giống HR_ASSOCIATE_ONBOARD_SUBSCRIBE_RECRUIT_STAGING).
+  > Thêm 1 câu hỏi cho Tài: khi 1 người còn employment khác ở LF thì HR có gửi sự kiện DEACTIVE không?
+- After it exists: set `RECRUIT_HR_OFFBOARD_SUBSCRIPTION` in the staging helm values, then add a row to
+  docs/secrets/SECRETS-INVENTORY.md.
+- In progress:
+  - /join recruiter credit on every page of an approved member's site: moso-aid #195 and lo-homepage #911, fix round.
+  - My referrals list kit: recruit-be #729, then a recruit-fe PR.
