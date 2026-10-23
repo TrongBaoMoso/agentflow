@@ -109,3 +109,25 @@ still awaits approval; production not promoted (BE first).
 - Staging smoke as manager, 1440 + 390: 10 pages, no page errors, no sideways overflow (Cold 390 no longer overflows), Reset on every page except Permissions (manager has no access — expected). Exceptions search "Claude" 88→12 and Reset back to 88; Audit "chi tran" → 8 events server-side.
 - Deferred (decided overnight, least behaviour change): Pipeline keeps its own default-preset logic; no sort control in Exceptions card view.
 - Production: NOTHING promoted. Order when Bao says go: recruit-be first (#708 #710 #711 #712 #713 #719 + other sessions' BE on staging), then recruit-fe.
+
+## 23/10 afternoon — follow-ups ON STAGING + Team queue plan (mockup v5, awaiting approval)
+
+- **recruit-fe #571** (c351e0eb): Pipeline on the shared useDefaultPreset (first answer decides; page/pageSize not filter keys;
+  apply keeps pageSize), Needs attention Cards per-section Sort select (340px), framed section headers in Cards, card footers
+  right-aligned at every width (approval queue phone stacking fixed), followUp.test ICU-agnostic, TodayQueueRow test clock
+  pinned (root cause: now+3h crosses the Pacific company day 21:00–24:00 PT → "no date" group, no chip). 2 reviewers, CI green.
+- **recruit-be #731** (1dbc6fa6, D322): My hand-offs date range trims only CLOSED rows (declined/expired in SQL; SIGNED closed
+  after derivation; archived/merged SIGNED = closed); open rows always listed and counted. 2 reviewers, ITs green.
+- Staging smoke 23/10: Needs attention cards + sort select, /today-old approval cards at 390, Pipeline cards — no errors, no
+  overflow. Staging data has no open invite older than 30 days, so D322 is proven by ITs only.
+- Bead **agentflow-vcsjs** (P3, later): per-user column picker + remembered page size, SERVER-side prefs (Bao: no localStorage).
+
+### Team queue (/work) — decision B (Bao 23/10), mockup v5 on artifact 2xqHaJerZt6VPToB9X5E2Q (boards V5Ob / V5Team / V5Need)
+- Measured: OB onb-test /today vs /work overlap 27/28 LOs. Prod checklist: N/A only by migrations, BLOCKED = 0,
+  ONB_ASSIGN_SUPPORT 94 open / 0 done (staging 185/0) → drop N/A, Blocked and Assign Support (retire migration like V222).
+- Plan: OB — hide Team queue; My hand-offs row actions (Schedule 1-1 / Reschedule / Mark done / Fix details / Send again
+  on MOSO sync failure). Manager — Mine | Team | Needs owner + Onboarding filter; on-behalf Mark done/Schedule (D216/D318);
+  Assign OB on Needs owner rows. Then delete /work — first move its modals (ScheduleMeeting, OnboardingMeeting,
+  OnboardingHireMeeting, HireExperienceCard, useScheduleMeetingActions) to shared code (Today + useSetupCallBooking import them);
+  fix checklist.json copy "mark this one from the Onboarding queue". No notifications/e-mails link to /work.
+- Manager in Team queue today sees ONLY onboarding work (1-1, setup call, unassigned), not recruiters' work.
