@@ -281,3 +281,50 @@ Bao's answers:
   - It checks moso-aid's public /join-page; any failure falls back to loan_officer, and only first touch is affected.
   - Khải must set the system property `moso_aid_base_url` (also the on/off switch).
   - 2 reviewers are running; then hand it to Khải.
+
+## RESUME POINT (pause 23/10 evening — Bao shutting down)
+Nothing is on PRODUCTION. On STAGING and done:
+- My referrals v2, with the list kit and avatars.
+- Change e-mails (cron live).
+- /join recruiter credit: moso-aid #195, lo #911, lf #2674.
+- #723 HR offboard (code only).
+
+Open, in order:
+1. packs #3739 (MOSO recruiter credit for approved members). Base master, head 1985e8fb or a newer `wip:` commit.
+   Security approved; correctness requested changes. The agent was mid fix-round at the pause.
+   - Fix items:
+     - an independent twin PR on origin/3.64.1 (prod runs 3.64.1);
+     - retry once, and log the distinct WARN `recruiter-standing-lookup-failed`;
+     - log 404 at info, and validate that the URL is https and ends in /api;
+     - total timeout ≤3s, plus a 60s per-owner cache (never cache failures);
+     - no redirects, and a 16KB body cap;
+     - log the Admin id, not the email.
+   - Bao chose option (1): widen every MOSO report that drives LO Recruiter Program pay so it includes approved members.
+     They filter on the Admin roles is_recruiter / is_out_sourcing_recruiter today, in:
+     - GenerateMonthlyReferILORecruiterCronOp:32
+     - UpdateReferrerLoanOfficerReport:27
+     - maybe GenerateRecruiterPerformanceReportOp:36
+     - PerformanceReportUtils:519
+   - Bao: NEVER set those roles on Loan Officers. They are MOSO staff-recruiter roles (the kind Victoria has).
+   - Flag the side effects of `recruiter=` on a lead: LoanOps:3899 default follow-up, CheckAdminHasActiveTransactions, and
+     the AssignOwnersOp reassign.
+   - Then: a re-review by 2 reviewers, then a message from Bao to Khải. Khải merges and deploys, and sets the system
+     property `moso_aid_base_url`, which is also the on/off switch:
+     - staging: https://moso-aid-233682574497.us-central1.run.app/api
+     - prod: https://moso-aid-444859640964.us-central1.run.app/api
+   - Before prod: `curl moso-aid /join-page?key=<websafe key of a real member>` must return recruiter_slug.
+2. #723 HR offboard. Bao sent Khải the staging IAM bindings and the prod create commands on 23/10. When Khải confirms:
+   - set `RECRUIT_HR_OFFBOARD_SUBSCRIPTION=HR_ASSOCIATE_DEACTIVE_SUBSCRIBE_RECRUIT_STAGING` in the recruit-be staging values
+     (PR, 2 reviewers, promote);
+   - test it with a staging offboard;
+   - add the prod subscription to docs/secrets/SECRETS-INVENTORY.md.
+3. Before any PRODUCTION push of the /join work:
+   - release in this order: moso-aid master→pro, then lo-homepage #910+#911 release→produciton-v2, then lf
+     master→production;
+   - every prod `/<site_slug>/jumbo` must return 200, not 302.
+4. Follow-ups:
+   - a rate limit on moso-aid /api/join-page;
+   - watch the `join-overlay-failed` rate;
+   - the `crm3` register lead never arrived (suspected dedupe);
+   - My referrals referral_link is still `www.viet18.com/join/<slug>`. lf now redirects that to the site, so decide whether
+     to switch it to `<site>/join`.
