@@ -329,3 +329,23 @@ Evidence is in `~/.cache/claude-recruit/lfcheck/` (PII; never commit it).
   recruit-be on a person's first and last referral. Build it after P4 (#728) merges.
 - **Production HR team codes for `rbac.hr.manager_unit_codes`:** `["RECRUITER","LO_ONBOARDING_SPECIALIST"]`.
   The department `LO_RECRUITING` (Matt) is excluded on purpose.
+
+## STAGING 23/10 ~12:20: P4 is live with source=CENTRAL
+
+- **#728 merged and promoted:** squash 609e5729, V279, D320.
+- **Pre-flip catalog push.** The catalog was pushed to central staging before the source switch, in-cluster with
+  `reconcile=false`: 38 permissions and 196 endpoints created, 7 roles updated, 137 grants. Without this push every
+  role would have held only the old RECRUIT_ACCESS.
+- **Grants match central:** all 26 recruit grants match central roles. The one extra is chauchau RECRUITER, which is
+  harmless.
+- **Smoke test.** Effective permissions per account:
+  - ONB 14, MANAGER 32, RECRUITER 16, HEADHUNTER 14, ADMIN 40.
+  - All of them get 200 on candidates.
+  - A no-role user (chi.tran@) gets 200 on `/referrals/mine` and `/me/nav-context`, and 403 on candidates.
+  - An unknown id gets 503 instead of 403 (bead agentflow-6i5nc, low priority).
+- **Reconcile cron not registered.** `RECRUIT_RBAC_RECONCILE_INTERNAL_API_KEY` is unset, so the mirror is
+  refreshed per request only.
+- **HR role sync is inert.** No Pub/Sub subscriptions exist yet.
+- **In progress:**
+  - the REFERRER role (be, `feature/referrer-role`);
+  - P5 (fe, `feature/p5-iam-readonly`), with a local preview for Bao before staging.
