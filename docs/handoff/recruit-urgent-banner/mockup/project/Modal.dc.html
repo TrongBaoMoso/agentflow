@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Urgent popup, desktop</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#b54613}a:hover{color:#9e3a0a}
+.um-seg{flex-shrink:0;border:0;background:transparent;font:inherit;font-size:13px;font-weight:600;color:#495057;padding:6px 12px;border-radius:6px;cursor:pointer;white-space:nowrap}
+.um-seg:hover{color:#212529}
+.um-seg-on{background:#ffffff;color:#212529;box-shadow:0 1px 2px rgba(0,0,0,0.08)}
+.um-row{transition:background 120ms}
+.um-row:hover{background:#fcfbfa}
+.um-open{flex-shrink:0;width:84px;border:0;border-radius:8px;background:#fff0e5;color:#9e3a0a;font:inherit;font-size:13px;font-weight:600;height:32px;padding:0;display:inline-flex;align-items:center;justify-content:center;gap:4px;cursor:pointer;white-space:nowrap}
+.um-open:hover{background:#fddfd2}
+.um-go{background:#ffffff;color:#212529;box-shadow:inset 0 0 0 1px #ced4da}
+.um-go:hover{background:#f8f9fa}
+.um-open:focus-visible,.um-seg:focus-visible{outline:2px solid #e4642a;outline-offset:2px}
+.um-dot{position:relative;width:8px;height:8px;border-radius:50%;background:#e03131;flex-shrink:0}
+.um-dot::after{content:"";position:absolute;inset:0;border-radius:50%;background:#e03131;animation:um-pulse 1.6s ease-out infinite}
+@keyframes um-pulse{0%{transform:scale(1);opacity:0.6}100%{transform:scale(2.8);opacity:0}}
+@media (prefers-reduced-motion: reduce){.um-dot::after{animation:none}}
+.um-tag{flex-shrink:0;font-size:12px;font-weight:600;color:#c92a2a;background:#fff5f5;padding:1px 8px;border-radius:6px;white-space:nowrap}
+</style>
+</helmet>
+<div style="width: 1440px; height: 940px; position: relative; overflow: hidden; background: #f8f7f5; font-family: 'Public Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #212529">
+  <div aria-hidden="true" style="position: absolute; inset: 0; display: flex; flex-direction: column">
+    <div style="height: 64px; background: #ffffff; border-bottom: 1px solid #dee2e6"></div>
+    <div style="height: 44px; background: #c92a2a"></div>
+  </div>
+  <div aria-hidden="true" style="position: absolute; inset: 0; background: rgba(33,37,41,0.55)"></div>
+
+  <section role="dialog" aria-modal="true" aria-labelledby="um-title" style="position: absolute; left: 400px; top: 72px; width: 640px; box-sizing: border-box; background: #ffffff; border-radius: 16px; box-shadow: 0 24px 48px rgba(0,0,0,0.22); padding: 24px; display: flex; flex-direction: column; gap: 16px">
+    <div style="display: flex; align-items: center; gap: 12px">
+      <span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 10px; background: #fff5f5; color: #e03131; display: grid; place-items: center; flex-shrink: 0">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"></path><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z"></path><path d="M12 16h.01"></path></svg>
+      </span>
+      <div style="flex: 1; min-width: 0">
+        <h2 id="um-title" style="margin: 0; font-size: 18px; font-weight: 700">26 urgent</h2>
+        <div style="font-size: 13px; color: #495057">Longest waiting first. Stays until it's done.</div>
+      </div>
+      <button type="button" aria-label="Close" style="width: 32px; height: 32px; border: 0; background: transparent; border-radius: 8px; color: #495057; display: grid; place-items: center; cursor: pointer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6l-12 12"></path><path d="M6 6l12 12"></path></svg>
+      </button>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 10px">
+      <label style="height: 36px; box-sizing: border-box; display: flex; align-items: center; gap: 8px; padding: 0 12px; border: 1px solid #dee2e6; border-radius: 8px; color: #495057">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg>
+        <input type="search" aria-label="Search urgent items" placeholder="Search name, loan, task" style="flex: 1; min-width: 0; border: 0; outline: 0; font: inherit; font-size: 14px; color: #212529; background: transparent">
+      </label>
+      <div style="overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin">
+        <div role="group" aria-label="Filter by app" style="display: inline-flex; flex-wrap: nowrap; gap: 2px; padding: 3px; background: #f1f3f5; border-radius: 8px">
+          <sc-for list="{{segments}}" as="seg" hint-placeholder-count="3">
+            <button type="button" class="{{seg.cls}}" aria-pressed="{{seg.on}}" onClick="{{seg.pick}}">{{seg.label}} <span style="color: #868e96; font-weight: 500">{{seg.count}}</span></button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <ul style="list-style: none; margin: 0; padding: 0 4px 0 0; max-height: 600px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px">
+      <sc-for list="{{rows}}" as="it" hint-placeholder-count="9">
+        <li class="um-row" style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid #dee2e6; border-radius: 10px; background: #ffffff">
+          <div style="flex: 1; min-width: 0">
+            <div style="display: flex; align-items: center; gap: 8px; min-width: 0"><span class="um-dot" aria-hidden="true"></span><span class="um-tag">{{it.title}}</span><span style="font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{it.who}}</span></div>
+            <div style="font-size: 13px; color: #495057; white-space: nowrap; overflow: hidden; text-overflow: ellipsis"><sc-if value="{{showApp}}" hint-placeholder-val="{{ true }}"><span style="font-weight: 600; color: #212529">{{it.app}}</span> · </sc-if>{{it.meta}} · <span style="color: #c92a2a; font-weight: 600">{{it.age}} overdue</span></div>
+          </div>
+          <sc-if value="{{it.here}}" hint-placeholder-val="{{ false }}">
+            <button type="button" class="um-open">Open</button>
+          </sc-if>
+          <sc-if value="{{it.away}}" hint-placeholder-val="{{ true }}">
+            <button type="button" class="um-open um-go" aria-label="Go to {{it.app}}">Go to
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 7l-10 10"></path><path d="M8 7l9 0l0 9"></path></svg>
+            </button>
+          </sc-if>
+        </li>
+      </sc-for>
+    </ul>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":940}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { filter: 'all' };
+}
+renderVals() {
+const s = this.state;
+const segs = [['all', 'All', 26], ['Recruit', 'Recruit', 2], ['Tera', 'Tera', 24]];
+const all = [
+{ app: 'Recruit', title: 'Log call result', who: 'Jing Huang', meta: 'Called Oct 15 · 11:57 AM', age: '6d' },
+{ app: 'Tera', title: 'Task overdue', who: 'Send Loan Factory disclosures', meta: 'Transaction 261006-0003', age: '3d' },
+{ app: 'Recruit', title: 'Approval overdue', who: 'QA Hlateapproval', meta: 'Requested Oct 21', age: '2d' },
+{ app: 'Tera', title: 'Task overdue', who: 'QA_TASKS_R2_C_DEADLINE_DESCRIPTION', meta: 'Due Oct 22 · 8:35 PM PT', age: '1d' },
+{ app: 'Tera', title: 'Task overdue', who: 'QA_TASKS_20261022_A_LINKED_TODO', meta: 'Transaction 261023-0002', age: '1d' },
+{ app: 'Tera', title: 'Rate alert hit', who: 'QA_BP_20261012C AlertC', meta: 'Target 7.500, today 7.000', age: '15h' },
+{ app: 'Tera', title: 'Rate alert hit', who: 'PricingSecond QA20261006D', meta: 'Target 7.125, today 7.125', age: '11h' },
+{ app: 'Tera', title: 'Rate alert hit', who: 'QA_RAM18_1009A C13MULTI', meta: 'Target 7.125, today 6.750', age: '5h' },
+{ app: 'Tera', title: 'Rate alert hit', who: 'QA_RAM18_1009A E11WEEKLY', meta: 'Target 7.000, today 6.750', age: '1h' }
+];
+const current = 'Recruit';
+return {
+segments: segs.map(([id, label, count]) => ({
+label, count, on: s.filter === id ? 'true' : 'false',
+cls: s.filter === id ? 'um-seg um-seg-on' : 'um-seg',
+pick: () => this.setState({ filter: id })
+})),
+showApp: s.filter === 'all',
+rows: all.filter((r) => s.filter === 'all' || r.app === s.filter).map((r) => ({ ...r, here: r.app === current, away: r.app !== current }))
+};
+}
+}
+</script>
+</body>
+</html>

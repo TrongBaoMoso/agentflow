@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Urgent popup, phone</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#b54613}a:hover{color:#9e3a0a}
+.up-seg{flex-shrink:0;border:0;background:transparent;font:inherit;font-size:13px;font-weight:600;color:#495057;height:36px;padding:0 14px;border-radius:6px;cursor:pointer;white-space:nowrap}
+.up-seg-on{background:#ffffff;color:#212529;box-shadow:0 1px 2px rgba(0,0,0,0.08)}
+.up-open{flex-shrink:0;width:84px;border:0;border-radius:8px;background:#fff0e5;color:#9e3a0a;font:inherit;font-size:13px;font-weight:600;height:44px;padding:0;display:inline-flex;align-items:center;justify-content:center;gap:4px;cursor:pointer;white-space:nowrap}
+.up-open:hover{background:#fddfd2}
+.up-go{background:#ffffff;color:#212529;box-shadow:inset 0 0 0 1px #ced4da}
+.up-go:hover{background:#f8f9fa}
+.up-dot{position:relative;width:8px;height:8px;border-radius:50%;background:#e03131;flex-shrink:0}
+.up-dot::after{content:"";position:absolute;inset:0;border-radius:50%;background:#e03131;animation:up-pulse 1.6s ease-out infinite}
+@keyframes up-pulse{0%{transform:scale(1);opacity:0.6}100%{transform:scale(2.8);opacity:0}}
+@media (prefers-reduced-motion: reduce){.up-dot::after{animation:none}}
+.up-tag{flex-shrink:0;font-size:12px;font-weight:600;color:#c92a2a;background:#fff5f5;padding:1px 8px;border-radius:6px;white-space:nowrap}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #ffffff; font-family: 'Public Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #212529; display: flex; flex-direction: column">
+  <div style="padding: 16px 16px 12px; display: flex; align-items: center; gap: 12px">
+    <span aria-hidden="true" style="width: 36px; height: 36px; border-radius: 10px; background: #fff5f5; color: #e03131; display: grid; place-items: center; flex-shrink: 0">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4"></path><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z"></path><path d="M12 16h.01"></path></svg>
+    </span>
+    <h2 style="flex: 1; margin: 0; font-size: 18px; font-weight: 700">26 urgent</h2>
+    <button type="button" aria-label="Close" style="width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px; color: #495057; display: grid; place-items: center; cursor: pointer">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6l-12 12"></path><path d="M6 6l12 12"></path></svg>
+    </button>
+  </div>
+
+  <div style="padding: 0 16px 10px; display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid #f1f3f5">
+    <label style="height: 44px; box-sizing: border-box; display: flex; align-items: center; gap: 8px; padding: 0 12px; border: 1px solid #dee2e6; border-radius: 8px; color: #495057">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg>
+      <input type="search" aria-label="Search urgent items" placeholder="Search name, loan, task" style="flex: 1; min-width: 0; border: 0; outline: 0; font: inherit; font-size: 16px; color: #212529; background: transparent">
+    </label>
+    <div style="overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none">
+      <div role="group" aria-label="Filter by app" style="display: inline-flex; flex-wrap: nowrap; gap: 2px; padding: 3px; background: #f1f3f5; border-radius: 8px">
+        <sc-for list="{{segments}}" as="seg" hint-placeholder-count="3">
+          <button type="button" class="{{seg.cls}}" aria-pressed="{{seg.on}}" onClick="{{seg.pick}}">{{seg.label}} <span style="color: #868e96; font-weight: 500">{{seg.count}}</span></button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <ul style="flex: 1; min-height: 0; overflow-y: auto; list-style: none; margin: 0; padding: 14px 16px 24px; display: flex; flex-direction: column; gap: 8px">
+    <sc-for list="{{rows}}" as="it" hint-placeholder-count="7">
+      <li style="display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid #dee2e6; border-radius: 10px">
+        <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+          <div style="display: flex; align-items: center; gap: 8px"><span class="up-dot" aria-hidden="true"></span><span class="up-tag">{{it.title}}</span></div>
+          <div style="font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{it.who}}</div>
+          <div style="font-size: 13px; color: #495057"><sc-if value="{{showApp}}" hint-placeholder-val="{{ true }}"><span style="font-weight: 600; color: #212529">{{it.app}}</span> · </sc-if><span style="color: #c92a2a; font-weight: 600">{{it.age}} overdue</span></div>
+        </div>
+        <sc-if value="{{it.here}}" hint-placeholder-val="{{ false }}">
+          <button type="button" class="up-open">Open</button>
+        </sc-if>
+        <sc-if value="{{it.away}}" hint-placeholder-val="{{ true }}">
+          <button type="button" class="up-open up-go" aria-label="Go to {{it.app}}">Go to
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 7l-10 10"></path><path d="M8 7l9 0l0 9"></path></svg>
+          </button>
+        </sc-if>
+      </li>
+    </sc-for>
+  </ul>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { filter: 'all' };
+}
+renderVals() {
+const s = this.state;
+const segs = [['all', 'All', 26], ['Recruit', 'Recruit', 2], ['Tera', 'Tera', 24]];
+const all = [
+{ app: 'Recruit', title: 'Log call result', who: 'Jing Huang', age: '6d' },
+{ app: 'Tera', title: 'Task overdue', who: 'Send Loan Factory disclosures', age: '3d' },
+{ app: 'Recruit', title: 'Approval overdue', who: 'QA Hlateapproval', age: '2d' },
+{ app: 'Tera', title: 'Task overdue', who: 'QA_TASKS_R2_C_DEADLINE_DESCRIPTION', age: '1d' },
+{ app: 'Tera', title: 'Rate alert hit', who: 'QA_BP_20261012C AlertC', age: '15h' },
+{ app: 'Tera', title: 'Rate alert hit', who: 'PricingSecond QA20261006D', age: '11h' },
+{ app: 'Tera', title: 'Rate alert hit', who: 'QA_RAM18_1009A C13MULTI', age: '5h' }
+];
+return {
+segments: segs.map(([id, label, count]) => ({
+label, count, on: s.filter === id ? 'true' : 'false',
+cls: s.filter === id ? 'up-seg up-seg-on' : 'up-seg',
+pick: () => this.setState({ filter: id })
+})),
+showApp: s.filter === 'all',
+rows: all.filter((r) => s.filter === 'all' || r.app === s.filter).map((r) => ({ ...r, here: r.app === 'Recruit', away: r.app !== 'Recruit' }))
+};
+}
+}
+</script>
+</body>
+</html>

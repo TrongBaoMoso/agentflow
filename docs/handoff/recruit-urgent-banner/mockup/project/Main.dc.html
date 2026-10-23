@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Urgent banner in Recruit</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#b54613}a:hover{color:#9e3a0a}
+.ub-chip:hover{background:rgba(255,255,255,0.26)}
+.ub-review:hover{background:#fff5f5}
+.ub-name:hover{text-decoration:underline}
+</style>
+</helmet>
+<div style="width: 1440px; height: 560px; box-sizing: border-box; background: #f8f7f5; font-family: 'Public Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #212529; display: flex; overflow: hidden">
+  <nav aria-label="Main" style="width: 240px; flex-shrink: 0; background: #ffffff; border-right: 1px solid #dee2e6; display: flex; flex-direction: column">
+    <div style="height: 64px; display: flex; align-items: center; gap: 10px; padding: 0 20px; border-bottom: 1px solid #f1f3f5">
+      <div style="width: 28px; height: 28px; border-radius: 8px; background: #e4642a"></div>
+      <div style="display: flex; flex-direction: column; line-height: 1.1">
+        <span style="font-weight: 700; font-size: 13px; letter-spacing: 0.04em">LOAN FACTORY</span>
+        <span style="font-size: 12px; color: #495057">Recruit</span>
+      </div>
+    </div>
+    <div style="padding: 12px; display: flex; flex-direction: column; gap: 2px; font-size: 14px">
+      <a href="#" style="display: flex; justify-content: space-between; align-items: center; padding: 9px 12px; border-radius: 8px; background: #fff0e5; color: #9e3a0a; font-weight: 600; text-decoration: none">My work today <span style="background: #ca5018; color: #fff; font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 10px">6</span></a>
+      <a href="#" style="padding: 9px 12px; border-radius: 8px; color: #212529; text-decoration: none">Hot leads</a>
+      <a href="#" style="padding: 9px 12px; border-radius: 8px; color: #212529; text-decoration: none">Cold list</a>
+      <a href="#" style="padding: 9px 12px; border-radius: 8px; color: #212529; text-decoration: none">Pipeline</a>
+      <a href="#" style="padding: 9px 12px; border-radius: 8px; color: #212529; text-decoration: none">Dormant</a>
+    </div>
+  </nav>
+  <div style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+    <header style="height: 64px; flex-shrink: 0; background: #ffffff; border-bottom: 1px solid #dee2e6; display: flex; align-items: center; justify-content: center; position: relative; padding: 0 24px">
+      <div style="width: 420px; height: 36px; border-radius: 8px; background: #f1f3f5; display: flex; align-items: center; padding: 0 12px; font-size: 14px; color: #495057">Search candidates, NMLS, companies…</div>
+      <div style="position: absolute; right: 24px; display: flex; gap: 16px; align-items: center">
+        <button type="button" aria-label="Notifications" style="position: relative; width: 36px; height: 36px; border: 0; background: transparent; border-radius: 8px; color: #495057; display: grid; place-items: center; cursor: pointer">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6"></path><path d="M9 17v1a3 3 0 0 0 6 0v-1"></path></svg>
+          <span style="position: absolute; top: 0; right: -2px; background: #e03131; color: #fff; font-size: 10px; font-weight: 700; padding: 0 5px; border-radius: 8px; line-height: 16px">37</span>
+        </button>
+        <div style="width: 32px; height: 32px; border-radius: 50%; background: #ced4da"></div>
+      </div>
+    </header>
+
+    <section aria-label="Urgent items" style="height: 44px; flex-shrink: 0; background: #c92a2a; color: #ffffff; display: flex; align-items: center; gap: 12px; padding: 0 16px 0 20px; font-size: 14px">
+      <span aria-hidden="true" style="width: 9px; height: 9px; border-radius: 50%; background: #ffffff; box-shadow: 0 0 0 4px rgba(255,255,255,0.25); flex-shrink: 0"></span>
+      <button type="button" class="ub-name" style="border: 0; background: transparent; color: inherit; font: inherit; font-weight: 700; padding: 0; cursor: pointer; white-space: nowrap">26 urgent</button>
+      <span aria-hidden="true" style="width: 1px; height: 18px; background: rgba(255,255,255,0.35)"></span>
+      <div role="group" aria-label="By app" style="display: flex; gap: 6px; flex-shrink: 0">
+        <button type="button" class="ub-chip" style="border: 0; border-radius: 12px; background: rgba(255,255,255,0.16); color: #ffffff; font: inherit; font-size: 13px; font-weight: 600; padding: 3px 10px; cursor: pointer">Recruit 2</button>
+        <button type="button" class="ub-chip" style="border: 0; border-radius: 12px; background: rgba(255,255,255,0.16); color: #ffffff; font: inherit; font-size: 13px; font-weight: 600; padding: 3px 10px; cursor: pointer">Tera 24</button>
+      </div>
+      <div aria-hidden="true" style="flex: 1"></div>
+      <button type="button" class="ub-review" style="flex-shrink: 0; border: 0; border-radius: 8px; background: #ffffff; color: #c92a2a; font: inherit; font-size: 13px; font-weight: 700; height: 30px; padding: 0 12px; display: flex; align-items: center; gap: 6px; cursor: pointer">Review
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 18l6 -6"></path><path d="M13 6l6 6"></path></svg>
+      </button>
+    </section>
+
+    <main style="flex: 1; padding: 28px 32px; display: flex; flex-direction: column; gap: 20px; opacity: 0.55">
+      <div style="display: flex; align-items: center; gap: 14px">
+        <div style="width: 44px; height: 44px; border-radius: 12px; background: #fff0e5"></div>
+        <div>
+          <h1 style="margin: 0; font-size: 28px; font-weight: 700">My work today</h1>
+          <div style="font-size: 14px; color: #495057">Friday, October 23</div>
+        </div>
+      </div>
+      <div style="height: 96px; border-radius: 12px; background: #ffffff; border: 1px solid #dee2e6"></div>
+      <div style="height: 150px; border-radius: 12px; background: #fff9db; border: 1px solid #fab005"></div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":560}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>
