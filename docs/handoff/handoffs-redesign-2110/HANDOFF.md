@@ -131,3 +131,34 @@ still awaits approval; production not promoted (BE first).
   OnboardingHireMeeting, HireExperienceCard, useScheduleMeetingActions) to shared code (Today + useSetupCallBooking import them);
   fix checklist.json copy "mark this one from the Onboarding queue". No notifications/e-mails link to /work.
 - Manager in Team queue today sees ONLY onboarding work (1-1, setup call, unassigned), not recruiters' work.
+
+## PAUSE 23/10 evening — RESUME POINT (Bao shutting down)
+
+**On staging:** fe #559 #563 #564 #566 #571, be #708 #710 #711 #712 #713 #719 #731. Production: nothing.
+
+**In flight (agents pushed WIP before shutdown — check `git log` of each branch):**
+1. **recruit-be #738** `feat/today-setup-call-recruiter` (D329, V285): Book setup call on the RECRUITER's Today
+   (requester of the latest offer, fallback specialist, shared `SetupCallOwnership`), Today decisions uncapped (cap 0).
+   2 reviewers done; RBAC finding: no catalog / auth-service change needed (CHECKLIST_ITEM_MANAGE is checked in-app).
+   OPEN: (a) split `mayTick` so the requester can act ONLY on the setup call, not HR/Licensing ticks (scope leak);
+   (b) rebase on master (conflict in DECISIONS/STATUS/SCHEMA; renumber D/V if taken); then CI, merge, promote.
+2. **recruit-fe #576** `feat/approvals-and-pipeline-default` (worktree recruit-fe-worktrees/today-roles): approvals only on
+   Today (Review rows, 14/10 decision); Needs attention has 4 cards, no approvals; /today-old DELETED (Bao OK 23/10);
+   Pipeline Status multi-select default Active+Nurture (OR DSL verified on staging 6,256+43=6,299), neutral at default;
+   "Showing N of M" notice (b5330021). 2 reviewers. OPEN reviewer-2 items: M1 render "Collected through X's page"
+   (program_collected_by) on Today decision rows; M2 port lost tests (waitingMinutes, useApprovalActions busy/400/refetch,
+   approvalRefusalText unknown code); M3 drop "nurture N" from Pipeline stage-tab hint; LOW dead code + orphan i18n.
+   Merge ONLY after #738 is on staging.
+3. **v5 BE** `feat/handoffs-team-scope` (worktree recruit-be-worktrees/handoffs-v5): GET /offers/mine scope=MINE|TEAM|NEEDS_OWNER
+   (TEAM/NEEDS_OWNER manager-only, 403 otherwise), specialist= filter, per-row action flags (can_schedule_1on1,
+   can_mark_1on1_done, can_assign_specialist, can_resend_1on1_sync + checklist ids), migration retiring ONB_ASSIGN_SUPPORT
+   (prod 94 open / staging 185 to NA). WIP, no PR yet.
+4. **v5 FE** not started: My hand-offs row actions (OB), Mine|Team|Needs owner for Manager, hide Team queue for OB, move
+   /work modals to shared code, delete /work, fix checklist.json "mark from the Onboarding queue" copy. Mockup v5 APPROVED
+   23/10 (short labels: Mark done / Schedule 1-1 / Assign; full list standard), artifact 2xqHaJerZt6VPToB9X5E2Q.
+
+**Decisions 23/10:** approvals = one shared queue (bead agentflow-edqao: a "My team" filter when a 2nd manager exists);
+column picker + remembered page size = server-side prefs later (bead agentflow-vcsjs); no chip bar; Team queue to My hand-offs (B).
+
+**Resume:** say "resume My hand-offs". Order: finish #738, merge+promote BE; finish #576, merge+promote FE; v5 BE PR;
+v5 FE (local preview for Bao before push); staging. Dev servers are all stopped.
