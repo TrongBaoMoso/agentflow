@@ -190,3 +190,18 @@ Next steps, in order:
 5. #723: merge after #716 (V269), check V-number order (#726 holds V273), then ask DevOps for the subscription.
 Staging tokens for previews: node scratch script hhtok.js equivalent = docs/handoff/recruit-e2e-lab/scripts/auth.js login
 (write `~/.cache/claude-recruit/preview/stg_<port>.token`, 3390 = bao.trinh+hh, 3370 = chauchau).
+
+## 23/10 resumed (Bao back) — answers and actions
+Bao's answers:
+- #2674 credit: (b). The site's /join and register pages send recruiter credit when the owner is an LO Recruiter Program member.
+  An agent is building it (lo-homepage, maybe moso-aid), then merging lf #2674 to staging.
+- Staging cron secret: done by me.
+  - Secret Manager `recruit-be-recruit-referrals-notify-internal-api-key` (lenderrate-master, v1) created and patched into
+    `recruit-svc-secret`; the recruit-be staging deployment was restarted.
+  - Bao's account can add versions but cannot read the value back.
+  - Cron `recruit-referral-change-emails-tick` (minute 20 hourly) is registered.
+  - First tick 02:20 UTC: referrers=22, seeded=22, failed=0. Digests go out from the next change onward, to bao.trinh+* only.
+- Kept: the all-time window, the business timezone, typed-e-mail visibility. Avatars: use central user-svc.
+- New request: on My referrals, add a date-range filter plus the standard list kit from #566 (search, filters, sort, paging,
+  Reset, Refresh, saved filters, row count, URL state, Table/Cards). An agent is building it together with the avatars.
+- #723: master is at V273 now, so an agent is rebasing it and renumbering V270 to the next free version.
