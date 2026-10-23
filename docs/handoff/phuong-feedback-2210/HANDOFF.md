@@ -290,8 +290,27 @@ Nothing is on PRODUCTION. On STAGING and done:
 - #723 HR offboard (code only).
 
 Open, in order:
-1. packs #3739 (MOSO recruiter credit for approved members). Base master, head 1985e8fb or a newer `wip:` commit.
-   Security approved; correctness requested changes. The agent was mid fix-round at the pause.
+1. packs #3739 (MOSO recruiter credit for approved members). Branch agent/recruiter-credit-lo-program, base master, WIP head
+   026bb37b. Security approved; correctness requested changes.
+   - Paused state: fix items 2-6 are DONE:
+     - one retry, and an "unverified" label in lo_labels when the lookup fails;
+     - the 404 and URL-shape checks;
+     - a 2.8s total timeout plus a 60s cache;
+     - https only, no redirects, a 16KB body cap;
+     - logs show a hashed admin id.
+   - Tests: 28 green, and the negative control broke 11 of them.
+   - NOT done:
+     - the twin PR on 3.64.1, plus fixing the PR body;
+     - a re-run of the related suites;
+     - finishing the report inventory and the report changes;
+     - the side-effect analysis.
+   - Report inventory so far:
+     - GenerateMonthlyReferILORecruiterCronOp and UpdateReferrerLoanOfficerReport can include Admins that appear as
+       `recruiter=` on leads.
+     - GenerateRecruiterPerformanceReportOp needs report rows (gated by PerformanceReportUtils:519 and
+       StatisticProcessor:572).
+     - Not yet looked at: UpdateRecruitedLoanOfficerSummaryStatistics:37 and RecruitAPI:1524.
+     - No payout code in packs reads `recruiter=`. Ask which report Accounting actually pays from.
    - Fix items:
      - an independent twin PR on origin/3.64.1 (prod runs 3.64.1);
      - retry once, and log the distinct WARN `recruiter-standing-lookup-failed`;
