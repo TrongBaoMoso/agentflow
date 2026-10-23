@@ -219,3 +219,23 @@ Bao's answers:
 - In progress:
   - /join recruiter credit on every page of an approved member's site: moso-aid #195 and lo-homepage #911, fix round.
   - My referrals list kit: recruit-be #729, then a recruit-fe PR.
+
+## 23/10 afternoon — My referrals list kit on STAGING
+- recruit-be #729 (D321, no migration) merged as a45509c7. `/referrals/mine` now takes q, to, current_step, waiting_on, sort
+  and dir, all applied before paging.
+- recruit-fe #573 merged as 0ed780ff. It adds the list standard: search, date-range pill, Step and Waiting-on filters, Sort,
+  row count, saved views (`MY_REFERRALS`), Table|Cards, Refresh, Reset, state in the URL. Staff avatars come from user-svc
+  `/users/search` with the caller's token, falling back to initials.
+- Both are on STAGING. Screenshots are in `shots-list-kit/`. My referrals stays all-time by default; the Admin page keeps "this year".
+- Choices for Bao to review:
+  - `to` is applied after the packs fetch (packs takes only `since`).
+  - The date range also narrows the money cards and the tab counts.
+  - Saved views are hidden for viewers without CANDIDATE_READ.
+  - The toolbar is the full kit on phones too.
+- Process notes:
+  - The agent ran its reviewers as headless `claude -p` runs: 2 per PR, all approved.
+  - One jest/tsc run happened after a ram-gate denial (exit code not checked).
+- /join recruiter credit: moso-aid #195 and lo-homepage #911 are approved by all 3 reviewers. The agent is merging to staging,
+  then running live verification, then taking lf #2674 off hold.
+- Open for Bao: should packs record recruiter credit in MOSO for approved members without the HR recruiter flag?
+  Today MOSO records them as `loan_officer`, while Recruit counts them as program leads.
