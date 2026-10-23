@@ -2,6 +2,42 @@
 
 Session `460363a7` (21/10/2026). Paused 21/10. **Approved by Bao 23/10**: see RESUME HERE. Nothing coded yet.
 
+## PAUSE 23/10 (Bao shut the machine down mid-work) — RESUME FROM HERE
+
+All 4 worker agents were told to stop at a safe point and to write exact resume notes into their beads. **Read those first:**
+- `bd show agentflow-0gwad.1` (P0 snapshot)
+- `bd show agentflow-0gwad.2` (P1a flag + P1b mail/logo)
+- `bd show agentflow-kzwcg` (Cold import filter)
+
+### PR state, measured with gh at pause time
+
+| PR | What | State |
+|---|---|---|
+| recruit-be #722 `feat/moso-record-flag` | P1a: flag `recruit.features.moso-record-required` (default TRUE = no change), D314, V271 | OPEN. 2 reviewers APPROVED; was waiting on CI. Next: green CI → merge (staging). |
+| recruit-fe #569 `feat/moso-record-flag` | P1a FE: invite modal + duplicates follow the flag; honest "saved, not sent" toast | OPEN. 2 reviewers APPROVED. LOW to check: `onSent` callers WorkspaceOfferSlot / MosoSyncSection. Merge AFTER #722. |
+| recruit-fe #568 `chore/email-logo-asset` | P1b: logo hosted in recruit-fe | MERGED (staging) |
+| recruit-be #721 `chore/email-logo-url` | P1b: e-mail logo URL from recruit-fe, off the MOSO bucket | OPEN. Check CI/reviews; merge after the logo URL returns 200 on staging. |
+| moso-notifier #350 `chore/recruit-prod-mail-identity` | P1b: RECRUIT prod mail config copied from ENGAGEMENT | OPEN, **PR only. Khai reviews/merges.** The SendGrid-account question for Khai is in the PR body. |
+| recruit-be #724 `feat/cold-import-filter` | Cold import safe by default (D316) | OPEN. java-reviewer APPROVED. code-reviewer has **1 HIGH open**: runner `--target` is not verified against `--import-base` (could hit prod). Also 2 MEDIUMs: `--exclusions FILE` 24h age check; record `limit` in the manifest and refuse apply. Also implement Bao's owner rule NONE (below). **No prod run.** |
+
+### Bao decisions (23/10, round 3)
+- **Cold owner rule = NONE:** every Cold row is imported UNOWNED. The old MOSO recruiter is stored as read-only reference info only, never as owner, never feeding Mine/claim/auto-own. (P0 found `claimed_profile` = the Loan Officer claiming their public profile, not a recruiter claim; MOSO `recruiter` alone would have given 3,354 rows to 6 staff.)
+- **moso-aid data:** Bao approves ONE read-only admin CSV export of the LO Recruiter Program applications, approvals and roster. Steps or result are in P0-SNAPSHOT.md / `agentflow-0gwad.1` notes. Do NOT use the Cloud Run env secrets.
+
+### P0 results (details in `P0-SNAPSHOT.md`, committed 8893126)
+- **Prod settings:** referrals.enabled=true; program_sync.mode=DRY_RUN; onboarding.reminder.delivery_mode=DRY_RUN with 0 allowed emails (**prod sends NO 1-1 reminder emails**); headhunter.auto_own=false; hot.idle_release_omni_check=true; nurture off. packs_writeback_outbox has 0 rows.
+- **Snapshot** in `~/.cache/claude-recruit/moso-snapshot-2310/` (PII, chmod 700, never commit): LORecruiting 131,201; Admin 6,278; BlackListUser 83; SMSOptOut 7,828; OptOutRequest 51,502; referral Checks 484; Webinar 200. CallOptOut is the federal DNC list (looked up by phone, 0 non-federal hits).
+- **Cold dry-run:** 71,935 open → minus 56 already in recruit, 458 WORKING at LF, 2 no-rehire → **71,419 to import**.
+- **Templates** in `templates/`. The prod welcome email has no onboarding-doc or Canva links; keep it as-is (Bao: keep current content). The 1-1 reminder has no MOSO template; recruit writes its own.
+- **SECURITY (tell Bao/DevOps):** moso-aid on Cloud Run keeps MONGO_URI, JWT_SECRET and the SSO client secret as plain env vars.
+
+### Next after resume
+1. Re-read the bead notes. Re-check each PR (`gh pr view`); CI may have finished while the machine was off.
+2. Finish #722 then #569, and #721 (staging only).
+3. #724: owner rule NONE + the HIGH/MEDIUM fixes, re-review, merge (staging), staging dry-run. A prod run only with Bao's explicit go.
+4. P1c: port the 4 templates plus a new 1-1 reminder body into recruit `message_templates` (From = recruiter/OB).
+5. Ping Khai on moso-notifier #350.
+
 ## RESUME HERE (updated 23/10)
 
 Bao APPROVED the plan on 23/10. Beads were created; no code yet.
