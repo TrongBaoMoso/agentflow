@@ -277,3 +277,42 @@ Morning proposal for production Recruit role grants: `~/.cache/claude-recruit/lf
   automatically. See "OPEN ISSUE from session agentflow-68".
 - **Production:** still nothing promoted from this work. #717 must go together with #567, then #716 (flag OFF),
   #726 and #570.
+
+## RESUME POINT — paused 23/10 ~08:00 (Bao shutting down; session agentflow-99, e19da9e9-86b0-46df-8d2b-98380dd4ef50)
+
+**Done and on STAGING (not production):** be #714, #717, #716, #726, #715, #727 and fe #567, #570. Central
+staging holds the 7 RECRUIT roles. Production changes so far:
+- step A datafix (11 rows);
+- Recruit grants for 8 recruiters and OB staff (prod_grant_proposal.csv).
+
+**In flight: be #728, P4 (central permission source + HR role sync; D320, V274).**
+- **State:** CI was green at a9e7615d. Then the Java reviewer and the security reviewer both requested changes, and
+  the agent was mid-fix at shutdown.
+- **On resume:**
+  1. Check the branch for a `wip:` commit and the "P4 WIP STATE" note below.
+  2. Start a new dev-be agent, or resume one, to finish the remaining items. The full list is in this session's
+     review findings; the key items are:
+     - Java: HIGH 1 (unknown override type is treated as ADD), HIGH 2 (back-off only on transport errors and 5xx),
+       HIGH 3 (record the headship MANAGER mark only if the sync added the role); MEDIUM 4 to 12.
+     - Security: H1 (id allowlist, `..` path injection to admin routes), M1 (an unreadable `expires_at` must fail
+       closed), M2 (stale reads only after retryable errors; maximum grace 900 s), M3 (boot push additive only and
+       forced `app_code`), M4 (reject future `occurred_at`, dedupe on `event_id`, atomic per-user handling,
+       publisher IAM, `manager_unit_codes` editable by ADMIN only); L1 to L4.
+  3. Re-review with the same two reviewers, then merge and promote to staging.
+- **Then:** P5 recruit-fe. The access screen becomes read-only with an IAM link. The schedule-on-behalf route,
+  503 handling and unknown codes need FE work too (the FE list is in the #728 PR body).
+
+**Waiting on Bao:**
+1. Run `! gcloud auth login` (expired). Needed to read the production HR org-unit codes for
+   `rbac.hr.manager_unit_codes` (in-cluster `GET http://ai-hr-backend.hr-prod.svc.cluster.local:8312/internal/v1/org-units`
+   from the recruit-be prod pod).
+2. On DEACTIVE (the person left the company), remove every RECRUIT role, including ADMIN, HEADHUNTER and
+   TEAM_LEAD? (Recommended: yes.)
+3. Do plan decision 5 (a recruiter releases their own leads at SELF, a manager moves anyone's at ALL) as P4b? (Recommended: yes.)
+4. Referrer access: a minimal REFERRER role that recruit-be assigns automatically? (Recommended.) See "OPEN ISSUE
+   from session agentflow-68".
+5. When to promote to production. Required order: #717 and #567 together, then #716 (flag OFF), #726 and #570, then
+   #727 and #728 per the D320 production checklist.
+
+**Tools:** `~/.cache/claude-recruit/rbac/rro.sh <stg|prod> file.sql` (read-only recruit DB) and `hro.sh` (HR staging).
+Evidence is in `~/.cache/claude-recruit/lfcheck/` (PII; never commit it).
