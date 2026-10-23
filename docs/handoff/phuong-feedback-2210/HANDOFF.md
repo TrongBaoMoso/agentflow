@@ -332,6 +332,21 @@ Open, in order:
      - staging: https://moso-aid-233682574497.us-central1.run.app/api
      - prod: https://moso-aid-444859640964.us-central1.run.app/api
    - Before prod: `curl moso-aid /join-page?key=<websafe key of a real member>` must return recruiter_slug.
+   - UPDATE 23/10 night: DONE and ready for Khải. Both reviewers (correctness, security) APPROVED.
+     - PRs: #3739 (master, f3fcbed9) and #3740 (3.64.1, 3f6775a7). They are equivalent and independent.
+     - The G1 forged-recruiter hole is closed:
+       - public bodies are stripped of recruiter / referred_lo;
+       - a server-set marker `lead_origin_recruiter_credit` is required;
+       - the marker counts only while recruiter == lead_origin_owner_key.
+     - Pay reports: GenerateMonthlyReferILORecruiterCronOp and UpdateReferrerLoanOfficerReport. They count a non-staff Loan
+       Officer only for marked leads.
+     - Tests: 238 green.
+     - Open for Accounting:
+       - revoked members keep their old rows;
+       - manual/CSV leads don't count for non-staff Loan Officers;
+       - there is no backfill;
+       - the ilo_return email template was not inspected;
+       - Accounting's own tooling may also filter on the flags.
 2. #723 HR offboard. Bao sent Khải the staging IAM bindings and the prod create commands on 23/10. When Khải confirms:
    - set `RECRUIT_HR_OFFBOARD_SUBSCRIPTION=HR_ASSOCIATE_DEACTIVE_SUBSCRIBE_RECRUIT_STAGING` in the recruit-be staging values
      (PR, 2 reviewers, promote);
