@@ -349,3 +349,30 @@ Evidence is in `~/.cache/claude-recruit/lfcheck/` (PII; never commit it).
 - **In progress:**
   - the REFERRER role (be, `feature/referrer-role`);
   - P5 (fe, `feature/p5-iam-readonly`), with a local preview for Bao before staging.
+
+## STAGING 23/10 ~16:30: REFERRER role + rbac_source live
+
+- **Merged and promoted:** be #734 (REFERRER role, D326, V283; 89b6fc12) and be #733 (`rbac_source` on
+  `/me/nav-context`; 6cb05605). The staging pod booted cleanly at V283 with source CENTRAL.
+  - Another session's #730 had altered V279. #735 restored it and fixed the crash-loop.
+- **Manual catalog run on central staging** (`reconcile=false`, full role grants): 1 grant created.
+  - MANAGER now holds ONBOARDING_MEETING_SCHEDULE_ANY.
+  - Every staff role holds REFERRALS_SELF.
+- **#734 design choices:**
+  - No automatic REFERRER removal (R62).
+  - No local `rbac_roles` row (R61).
+  - In-app deny-by-default for REFERRER-only callers.
+  - An outage answers 503.
+  - The bell is empty for REFERRER-only callers.
+  - Waiting on Bao's confirmation.
+- **Before production:**
+  - Gateway enforcement verified live with a real REFERRER token.
+  - agentflow-5ryt2 closed.
+  - Account-disable process covers REFERRER.
+  - Alert on `rbac_central_outbox` FAILED rows.
+- **fe #574 (P5 read-only Permissions):**
+  - Review fixes are in at 267795df.
+  - Local preview running at http://localhost:3570/permissions (next dev on 3511 in the p5 worktree, proxy
+    `front_p5.js` in MODE=central with the chauchau admin token).
+  - Waiting on Bao's OK before staging. Stop both processes and release the ram-gate token
+    (scratchpad `p5-next.tok`) when done.
