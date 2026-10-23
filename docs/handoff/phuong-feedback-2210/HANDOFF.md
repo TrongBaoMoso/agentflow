@@ -262,3 +262,22 @@ Bao's answers:
 - Open for Bao:
   - Should packs record recruiter credit in MOSO for approved members without the HR flag?
   - Rate limit on /api/join-page (follow-up).
+
+## 23/10 evening
+- lf-homepage #2674 merged as fc23cff1 and deployed to STAGING (lf-homepage-master-01573-k4w).
+  - The redirects work: /join/<slug> goes to /<site>/join, and /recruit/<slug> goes to /<site>/register-loan-officer-v1.
+  - The query string is kept and internal* params are stripped. A recruiter without a site stays on lf.
+  - The pre-commit hook ran `npm run build` outside ram-gate.
+- Before PRODUCTION:
+  - Check each prod `site_slug`: `/<site_slug>/jumbo` must return 200, not 302 (case sensitivity). This can only run once
+    moso-aid #194/#195 are on pro.
+  - Release order: moso-aid master→pro, lo-homepage #910+#911 release→produciton-v2, then lf master→production.
+- HR offboard (#723): staging subscription HR_ASSOCIATE_DEACTIVE_SUBSCRIBE_RECRUIT_STAGING (+DLQ, .monitor) was created by me.
+  Bao sent Khải the IAM bindings plus the production create commands (HR_ASSOCIATE_DEACTIVE_SUBSCRIBE_RECRUIT, no _PROD).
+  - Once Khải is done: set RECRUIT_HR_OFFBOARD_SUBSCRIPTION in the staging values and test it.
+  - The multi-employment question is answered from ai-hr-be code: DEACTIVE is sent per employment, and #723 reads back
+    whether the person is still live, so there is no need to ask Tài.
+- packs #3739 (Bao chose option a): MOSO records recruiter credit for approved program members without the HR flag.
+  - It checks moso-aid's public /join-page; any failure falls back to loan_officer, and only first touch is affected.
+  - Khải must set the system property `moso_aid_base_url` (also the on/off switch).
+  - 2 reviewers are running; then hand it to Khải.
