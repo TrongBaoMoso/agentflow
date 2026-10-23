@@ -376,3 +376,46 @@ Evidence is in `~/.cache/claude-recruit/lfcheck/` (PII; never commit it).
     `front_p5.js` in MODE=central with the chauchau admin token).
   - Waiting on Bao's OK before staging. Stop both processes and release the ram-gate token
     (scratchpad `p5-next.tok`) when done.
+
+## RESUME POINT — paused 23/10 ~18:00 (Bao going home; session agentflow-99, e19da9e9-86b0-46df-8d2b-98380dd4ef50)
+
+**On STAGING (nothing on production from this work):**
+- recruit-be: #714, #717, #716, #726, #715, #727, #728 (P4 central source, D320, V279), #733 (`rbac_source`),
+  #734 (REFERRER, D326, V283)
+- recruit-fe: #567, #570
+- Central staging catalog pushed with full role grants: MANAGER has SCHEDULE_ANY and every role has REFERRALS_SELF.
+
+**Paused: the Permissions page redesign.**
+- fe #574 (P5 read-only Permissions, head 267795df) is NOT merged. Bao viewed the local preview on 23/10 and asked
+  for a FULL REDESIGN:
+  - Drop the "Can take work?" column (it is redundant with roles).
+  - Hide the Program members tab. It is documented in bead `agentflow-ouror`.
+  - In the read-only drawer, remove the "Tick beyond a role…" hint and show plain permission names, not codes.
+- Research report comparing the other LF apps:
+  - Report: `~/.cache/claude-recruit/perm-research/report.html` (11 screenshots; contains staging staff names,
+    so keep it local).
+  - The best model is HR Center → Roles & access → Apps → Recruit: roles on the left with counts; on the right,
+    Members and "What this role can do".
+  - Plain names first, code second, with reach (Self/Team/All).
+  - A "Managed in Account IAM" banner with a per-person deep link.
+  - ADD/BLOCK shown as badges with reason and expiry; Admin shown as "Full control".
+  - Search by name or email; "member since" dates.
+  - Account IAM itself was not screenshotted: the test account is not an Account admin. It is described from code.
+- **Next:**
+  1. Bao picks a direction. Recommended: the HR-style layout with ideas 1–5, minus "Can take work?".
+  2. Build a mockup (artifact) for approval.
+  3. Then code it on top of the #574 branch (feature/p5-iam-readonly), with a local preview, then staging.
+
+**Waiting on Bao:**
+1. The Permissions redesign direction (above).
+2. Confirm two REFERRER choices: no automatic removal (R62), and no local `rbac_roles` row (R61).
+3. Before production: Tai enables RECRUIT gateway enforcement on production; test it with a real REFERRER token;
+   close bead agentflow-5ryt2 (tera-core routes with no in-app check); the account-disable process covers REFERRER;
+   alert on `rbac_central_outbox` FAILED rows.
+4. When to promote to production. Order: #717+#567 together, then #716 (flag OFF), #726+#570, #727, #728 per the
+   D320 checklist, #733, #734 per D326.
+
+**Incident 23/10 ~17:30:** the research agent's login as bao.trinh@loanfactory.com failed twice, and Account SSO
+locked the account for about 4 minutes. The password in the test-accounts file may be stale.
+**Low-priority bugs filed:** agentflow-k89t8 (an unknown id gets 503 instead of 403), agentflow-ssrql (recruiter
+"Return to pool" button, deferred).
