@@ -419,3 +419,20 @@ Evidence is in `~/.cache/claude-recruit/lfcheck/` (PII; never commit it).
 locked the account for about 4 minutes. The password in the test-accounts file may be stale.
 **Low-priority bugs filed:** agentflow-k89t8 (an unknown id gets 503 instead of 403), agentflow-ssrql (recruiter
 "Return to pool" button, deferred).
+
+## 23/10 ~18:50: Permissions redesign mockup v1
+- HR-style mockup at https://claude.ai/artifact/NyFpHs6obJoGnw4DZPvVA3. Its sources are in this session's scratchpad
+  `permdesign/project/`.
+- Main board (interactive):
+  - A roles list on the left: 8 roles with counts and a one-line purpose.
+  - The selected role on the right: what it is for, plus "How people get it" (HR title, team head, program, first
+    referral, or IAM by hand).
+  - A Members tab: search; "Also has"; changes for this person shown as Allowed/Blocked badges; member since; View
+    and "Manage in IAM".
+  - A "What this role can do" tab: plain names grouped by module, with All/Team/Own reach badges.
+  - Banner: "Roles are given in Account → IAM, or automatically from the HR app".
+  - No "Can take work?" column and no Program members tab.
+- Person board: a read-only View drawer with roles and their source, changes for this person with reason and expiry,
+  and what the person can do.
+- Members and counts are SAMPLE data.
+- Waiting on Bao's feedback before coding on fe#574's branch.
