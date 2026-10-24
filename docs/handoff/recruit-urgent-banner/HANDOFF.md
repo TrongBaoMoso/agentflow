@@ -64,3 +64,16 @@ Recruiter overdue follow-ups are NOT urgent (later). "Offer approved but not sen
 - recruit-be has no notifier x-api-key.
 - The staging notifier link hosts include `recruit.viet18.com`.
 - Unrelated thread (moso-decouple session owns it): Khai asked to HOLD moso-notifier #350 and to fix the text in notification-service #363. Bao handed that to the owning session.
+
+## STATE 24/10 evening — SDK redesign PRs open
+- tera-components #749 (feat/urgent-redesign-3bzy5): local gates green (except pre-existing ICU chat/time test), CI green, 2 agent reviewers APPROVE. Waiting for Tai to review, merge and release (0.4.59).
+- tera-docs #805 (docs/urgent-redesign-3bzy5): 2 agent reviewers APPROVE, waiting for Tai.
+- Next: after release, adopter pin PRs per ADOPTERS.md (ask Bao before other teams' repos); recruit-fe #318 one bell + setting editor still local, show Bao screenshots first.
+
+## CLOSE-OUT AUDIT 24/10 ~23:40 (measured, not from memory)
+- 0.4.59 was released to tera-components production on 24/10 06:44 WITHOUT the redesign. The CHANGELOG entry moved to Unreleased (0.4.60) (e9fcddce); tera-docs #805 retargeted to 0.4.60 (fd12100); #749 body updated.
+- recruit-be #747 merged (cdf1509b) and on staging (master = staging). Staging deploy env: RECRUIT_URGENT_ENABLED unset (dark), RECRUIT_URGENT_NOTIFIER_BASE_URL set, NO notifier key in recruit-svc-secret. Setting `urgent_notifications.call_no_result_business_days` validated by BE. Not on prod (by design).
+- Tai's BE: user-service #87/#89, moso-notifier #358/#360 all MERGED 23/10.
+- recruit-fe: `_wt/318-one-bell` (4 commits on master, behind 4) and `_wt/3bzy5-setting` @093df0ce (1 commit, behind 5) are LOCAL ONLY. Remote PR #318 still the old draft (head 8aca9b87, 14/10). Not shown to Bao yet.
+- Open beads: .2 (FE editor push), .3 (#318), .5 (waiting Tai), .6 (blocked on Khai key). No Slack trace found that the Khai key request was sent.
+- No dev server / ram-gate token left from this session.
