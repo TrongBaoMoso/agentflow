@@ -175,3 +175,10 @@ v5 FE (local preview for Bao before push); staging. Dev servers are all stopped.
   Pending approval card; /pipeline Status reads "Active, Nurture"; /today-old 404; no page errors.
 - Next: #746 (v5 BE, D334, V288) review fixes in progress (REPORT_TEAM-only gate + hiddenOwnerIds, assign flag vs
   meetingReached, perf numbers prod 833 TEAM rows / 226 SIGNED); then v5 FE.
+
+### 24/10 evening — v5 FE #578 ON STAGING (session a2033d60, took over from c12550de)
+- recruit-fe #578 merged 53e5cc22 (squash of 7 commits incl. review fixes b9f8dc8f) and promoted; Deploy staging (GKE) success.
+- Review fixes: /work -> /invites redirect (next.config.mjs), placeholder rows only while paging the same scope, list re-read on Mark done / Send again error, seen-marking only on Mine, time-bomb fixture in handoffView.test.ts (at(23) passed on 23/10).
+- Staging smoke (saved sessions): Manager sees Mine | Team | Needs owner (Needs owner 791 rows, Assign / Fix details buttons), OB sees no tabs and no Team queue, /work redirects to /invites for both, no page errors.
+- Bao 24/10: staging first; PRODUCTION BLOCKED on bead agentflow-tylw9 (P1): show the 1-1 MOSO dead-letter reason + fix path (BE row field + FE copy), plus useHandoffActions hook test and the welcome-email-blocked banner decision.
+- Production order when Bao says go: recruit-be first (#738 #746 + rest on staging), then recruit-fe.
