@@ -347,6 +347,26 @@ Open, in order:
        - there is no backfill;
        - the ilo_return email template was not inspected;
        - Accounting's own tooling may also filter on the flags.
+   - REDESIGN 25/10 (Bao). The approvals above no longer apply; the agent is reworking #3739 and #3740.
+     - Credit does not depend on the channel. If a Loan Officer such as Anna is approved into the program, every lead with
+       Anna as referrer counts as program credit, whatever the channel:
+       - her site or /join
+       - an lf link
+       - Vic adding the lead by hand
+       - a CSV import
+       - Anna's email typed into a public form
+     - Membership is evaluated when the referrer is attached. A member revoked later keeps her old credit. A lead from
+       before approval stays Referral.
+     - `recruiter` stays the staff handler. Program credit = `referred_lo` + a server-set marker. This fixes:
+       - ilo_return going to the Loan Officer
+       - leads left with no handler because round-robin was skipped
+     - One decision point, in MOSO. No second check on the site.
+     - packs caches the moso-aid member list with approved_at / revoked_at; this needs a new moso-aid endpoint (PR).
+     - A nightly reconcile job handles "unverified" leads.
+     - The pay reports count members via the marker + referred_lo.
+     - The CSV import gets an optional "Referred by (email)" column. An unknown email still imports the row and lists it
+       in the result.
+     - Recruit must read the same marker to show Program vs Referral (a recruit-be follow-up).
 2. #723 HR offboard. Bao sent Khải the staging IAM bindings and the prod create commands on 23/10. When Khải confirms:
    - set `RECRUIT_HR_OFFBOARD_SUBSCRIPTION=HR_ASSOCIATE_DEACTIVE_SUBSCRIBE_RECRUIT_STAGING` in the recruit-be staging values
      (PR, 2 reviewers, promote);
