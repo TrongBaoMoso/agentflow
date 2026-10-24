@@ -77,6 +77,24 @@ Key names present in `recruit-svc-secret` on 23/10 — staging vs production:
 Production "NO" rows are expected today (those features are dark on prod). Each must be created by
 hand before its go-live; add the row here when done.
 
+## moso-aid — staging (Cloud Run `moso-aid`, `lenderrate-master`, us-central1)
+
+moso-aid keeps its keys as **plain Cloud Run env vars** (no Secret Manager). Names are readable with
+`gcloud run services describe moso-aid --project lenderrate-master --region us-central1 --format=json`.
+17 vars on 24/10 (rev 00185): ALLY_API_KEY, ALLY_API_URL, ALLY_INBOUND_SERVICE_KEY, API_CRAWL, ENV, IS_CRAWL,
+JWT_SECRET, LF_GATEWAY_URL, LOL_RBAC_ENFORCE, LOL_SSO_CLIENT_ID, LOL_SSO_CLIENT_SECRET, LO_ADMIN_SERVICE_KEY,
+LO_RECRUITER_PAGE_REQUIRES_APPROVAL, LO_TEAMS_WRITE_ENABLED, MONGO_URI, RECRUITER_PROFILE_SERVICE_KEY, RECRUIT_INBOUND_SERVICE_KEY.
+
+| Env var | Purpose | Created |
+|---|---|---|
+| PACKS_INBOUND_SERVICE_KEY | packs → `GET /api/lo-programs/standing/members` (moso-aid #196, LO Recruiter Program credit). Same value must go into packs property `moso_aid_packs_service_key`. Value in Keychain `moso-aid-packs-inbound-service-key-staging`. | 2026-10-25 (rev 00187) |
+
+**Never use `--env-vars-file` / `--set-env-vars` on this service — they REPLACE every var.** Use
+`--update-env-vars`. Incident 25/10: a draft command with `--env-vars-file` wiped all 17 vars; the new
+revision 00186 failed to start, traffic stayed on 00185 (no outage); restored from rev 00185 into rev 00187.
+
+Production moso-aid: PACKS_INBOUND_SERVICE_KEY **not created** — Khải, before #196 reaches `pro`.
+
 ## Pub/Sub
 
 Staging (`lenderrate-master`, listable by Bao), recruit subscriptions on 23/10:
