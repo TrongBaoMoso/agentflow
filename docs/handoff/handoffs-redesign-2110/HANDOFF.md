@@ -182,3 +182,26 @@ v5 FE (local preview for Bao before push); staging. Dev servers are all stopped.
 - Staging smoke (saved sessions): Manager sees Mine | Team | Needs owner (Needs owner 791 rows, Assign / Fix details buttons), OB sees no tabs and no Team queue, /work redirects to /invites for both, no page errors.
 - Bao 24/10: staging first; PRODUCTION BLOCKED on bead agentflow-tylw9 (P1): show the 1-1 MOSO dead-letter reason + fix path (BE row field + FE copy), plus useHandoffActions hook test and the welcome-email-blocked banner decision.
 - Production order when Bao says go: recruit-be first (#738 #746 + rest on staging), then recruit-fe.
+
+### 24→25/10 night — agentflow-tylw9 (MOSO dead-letter reason) ON STAGING (session a2033d60, away window: staging only)
+- recruit-be **#748** merged cf0f55dc (D336) and promoted; staging deploy success. GET /offers/mine rows carry
+  `onboarding_sync_failure {reason_code, missing_fields, actor_name, lo_type}` for the 1-1 audience (CHECKLIST_ITEM_MANAGE,
+  live stage, specialist or REPORT_TEAM) when the newest ONBOARDING_MEETING write-back is DEAD_LETTER; actor_name only for
+  MOSO_ACTOR_LACKS_RECRUITING (never the e-mail); POST .../onboarding-meeting/resend now 409s for
+  MOSO_HIRE_CLASSIFICATION_IGNORED and can_resend_1on1_sync is false for it; newest row = created_date DESC NULLS LAST, id DESC.
+  Review caught an NPE (Map.of().get(null) for a nameless LACKS_RECRUITING row) — fixed with a RED-first unit test.
+- recruit-fe **#580** merged 05c3f928 and promoted (rebuilt on #582, which owns returnPathOf + candidateProfileRoute fix target).
+  Row: short red line ("Not sent to MOSO", or "MOSO ignored the W-2/1099 choice" for IGNORED) + info icon; tooltip and
+  accessible description give the /work reason. Fix profile -> /candidates/<id> Profile > Licensing in edit mode (no modal,
+  Bao 24/10), Back to the list. Helpers in src/shared/components/Onboarding/syncFailure.ts. useHandoffActions hook test added.
+- recruit-fe **#584** merged 86169b67 and promoted (CSS): the IGNORED line overflowed into Waiting on (found in the staging
+  smoke); wraps inside the column now, 14px icon with overflow visible so its ::after touch area works (Mantine's Button is
+  overflow: hidden). Measured on staging: overflowing lines 1 -> 0; tap 4-5px outside the icon hits it on 3 of 4 sides.
+- Final staging smoke on the real build (86169b67 FE / cf0f55dc BE), Manager + OB, 1440 and 390: field present, short line +
+  tooltip, no overflow, Fix profile -> Licensing editing, Back -> /invites, no page errors, no horizontal page scroll.
+- Staging smoke (saved sessions, sample failures injected in the browser only — staging has no dead-lettered 1-1): Manager and
+  OB see the field, tooltip text, Fix profile lands on Licensing editing, Back returns to /invites, no page errors.
+- Still open (non-blocking): Agreement.welcome_blocked* keys unused (welcome-email-blocked banner not rebuilt — Bao to decide);
+  Fix profile not gated by CANDIDATE_UPDATE (same as Fix details); resend's JPA nullsLast may be ignored (created_date is
+  auditing-populated).
+- PRODUCTION: nothing. Order when Bao says go: recruit-be (#738 #746 #748 + rest on staging) then recruit-fe (#576 #578 #580 #584 + rest).
