@@ -382,3 +382,18 @@ Open, in order:
    - the `crm3` register lead never arrived (suspected dedupe);
    - My referrals referral_link is still `www.viet18.com/join/<slug>`. lf now redirects that to the site, so decide whether
      to switch it to `<site>/join`.
+
+## 25/10 — program credit redesign: reviews done, moso-aid on staging
+
+- **moso-aid #196 MERGED** (3f9b3a7c), Cloud Build SUCCESS, staging revision `moso-aid-00188-6nj`.
+  - `GET /api/lo-programs/standing/members?program_id=lo_recruiter`: 401 without a key, 200 with the key, 53 members on staging.
+- **`PACKS_INBOUND_SERVICE_KEY`** is created on moso-aid staging; the value is in Bao's Keychain at `moso-aid-packs-inbound-service-key-staging`. See SECRETS-INVENTORY, which also records the 25/10 env-wipe incident (`--env-vars-file` replaced all vars; no outage; restored).
+- **packs #3739 (843fbf05) and #3740 (b606b75a)** are APPROVED by the security and correctness reviewers after 5 rounds. The patch-ids are identical. 289 tests are green. They are NOT merged: Khải merges and deploys.
+  - Packs config per environment: `moso_aid_base_url` and `moso_aid_packs_service_key`.
+  - Schedule `cron.ReconcileLoRecruiterProgramCreditCronOp` nightly.
+  - With the config unset, the feature is off.
+- **Still open with Bao:**
+  - Double pay: credit confirmed after the LO-referral bonus started is only labelled, never reversed.
+  - CSV "Referred by" for a plain Loan Officer gives Referral even with the feature off.
+  - Adding a referrer to an existing lead.
+- **Follow-up:** a recruit-be PR to read `lo_recruiter_program_credit` for the Program/Referral chip.
