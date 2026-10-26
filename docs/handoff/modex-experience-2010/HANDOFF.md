@@ -127,3 +127,9 @@ State: nothing running in background (no agents, Chrome closed, no dev servers).
 **MMI:** another session shipped "MMI push → Recruit" to staging on 21/10 (be #707 D305, fe #557) — check its memory/HANDOFF (`project_mmi_push_staging_2110.md`) before doing more MMI work here, to avoid overlap. This session's MMI plan (checklist above) still valid for the API question; offered drafts (email to MMI about API; ask Brayan for the MMI account manager) not yet sent.
 
 **Still waiting on Bao:** message Khải to deploy packs 3.64.1 `e3f3f98093` (then smoke test → flag `packs.writeback.experience_enabled` on → backfill); grant MODEX_IMPORT to Vic?; #554 deferred review follow-ups.
+
+## Vic's answer (26/10, Google Chat Brayan+Victoria)
+- Without the 12-month count, loans since 2022, the transaction list and licence history the MMI push is "not very helpful".
+- Bonzo is no longer used (Thuận moved everyone to our own CRM) → replacing the CRM Push URL is fine.
+- More MMI seats ≈ $120/month each → not worth it; 1 seat is enough.
+- Consequence: the webhook-only path (D305, staging) does not meet Vic's need. Those four items exist in MMI's UI (Transaction History / License History tabs) but only an API (paid, Thuận decides) can deliver them automatically. Do NOT promote D305 to production until Bao decides.
