@@ -103,3 +103,5 @@ Recruiter overdue follow-ups are NOT urgent (later). "Offer approved but not sen
 - Epic agentflow-3bzy5 auto-closed when its last child closed. Prod go-live is now tracked in **agentflow-4m6jy**: Khai grants Pub/Sub IAM, Bao decides, then the prod flag is turned on and promoted.
 
 - 26/10 night (Bao approved): rewrote link on the 11 OPEN staging call urgents in moso-notifier-sta notification_inbox (published 03:42Z, before #752). Changed /today?c=<id> to /today?ws=<id>&wsTab=result in one guarded transaction (count==11). notif_event history was left untouched. Verified in a browser: Open on the Megeh row opens the Call result popup. Prod is unaffected (flag off; every prod row will be raised with the new link).
+
+- 27/10 final close-out (measured): no open PRs; staging be 208eee13 contains #752; 11 open staging call urgents all carry the new link (0 open on the old one); prod flag absent (off); removed leftover recruit-be worktrees .worktrees/one-bell/recruit-be(+ -master) (clean, PR #514 merged; local branch kept). Only open item: agentflow-4m6jy (prod go-live).
