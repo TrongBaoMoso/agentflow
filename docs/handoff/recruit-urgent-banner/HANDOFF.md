@@ -77,3 +77,10 @@ Recruiter overdue follow-ups are NOT urgent (later). "Offer approved but not sen
 - recruit-fe: `_wt/318-one-bell` (4 commits on master, behind 4) and `_wt/3bzy5-setting` @093df0ce (1 commit, behind 5) are LOCAL ONLY. Remote PR #318 still the old draft (head 8aca9b87, 14/10). Not shown to Bao yet.
 - Open beads: .2 (FE editor push), .3 (#318), .5 (waiting Tai), .6 (blocked on Khai key). No Slack trace found that the Khai key request was sent.
 - No dev server / ram-gate token left from this session.
+
+## STATE 26/10 ~12:00 — staging done end to end
+- Keys: Tai issued staging + prod notifier keys. Staging: Secret Manager `recruit-be-recruit-urgent-notifier-api-key` v1 + `recruit-svc-secret` (BOOTSTRAP rebuild updated in be #749). Prod: hand-made `recruit-svc-secret` (probe 200). See docs/secrets/SECRETS-INVENTORY.md.
+- recruit-be #749 (staging flag on) + #751 (read `payload.resolved`, throttle grace WARN) merged and promoted. First sweep claimed=36 published=36; auto-resolve verified (QA Bnine approved 04:07:07Z, cleared 04:07:31Z).
+- tera-components #749 merged by Tai, 0.4.60 released 26/10 10:31. tera-docs #805 still open (check).
+- recruit-fe #588 (SDK 0.4.60), #587 (setting), #318 (one bell) merged and promoted; staging verified: one bell, new banner/popup, Recruit tags from catalogue, no Done on PRODUCER rows.
+- Open: (1) production go-live of all of the above = Bao's call + Khai's Pub/Sub IAM for prod; (2) SDK 0.4.60 bumps in other teams' repos (ask Bao); (3) optional copy nit: urgent body "Open it in Recruit." is redundant inside Recruit.
