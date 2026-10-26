@@ -205,3 +205,9 @@ v5 FE (local preview for Bao before push); staging. Dev servers are all stopped.
   Fix profile not gated by CANDIDATE_UPDATE (same as Fix details); resend's JPA nullsLast may be ignored (created_date is
   auditing-populated).
 - PRODUCTION: nothing. Order when Bao says go: recruit-be (#738 #746 #748 + rest on staging) then recruit-fe (#576 #578 #580 #584 + rest).
+
+## CLOSE-OUT 27/10 (measured, session closed)
+- Merged and on origin/staging (cd-staging green, be 208eee13 / fe 379e9054): recruit-be #708 #710 #711 #712 #713 #719 #731 #738 #746 #748; recruit-fe #559 #563 #564 #566 #571 #576 #578 #580 #584. NONE on origin/production.
+- No unpushed or uncommitted code; the 9 worktrees of this work were removed (all branches merged).
+- Open beads: agentflow-cbuks (promote to production, waits for Bao, BE first); agentflow-7yebt (requester cannot Mark done the setup call on the profile card; Today works); agentflow-vcsjs (column picker + page size, server-side); agentflow-edqao (approvals "My team" once there is a 2nd Manager). agentflow-10v0e closed.
+- Undecided, non-blocking: welcome-email-blocked banner (Agreement.welcome_blocked* unused); Fix profile not gated by CANDIDATE_UPDATE.
