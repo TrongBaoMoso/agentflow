@@ -84,3 +84,8 @@ Recruiter overdue follow-ups are NOT urgent (later). "Offer approved but not sen
 - tera-components #749 merged by Tai, 0.4.60 released 26/10 10:31. tera-docs #805 still open (check).
 - recruit-fe #588 (SDK 0.4.60), #587 (setting), #318 (one bell) merged and promoted; staging verified: one bell, new banner/popup, Recruit tags from catalogue, no Done on PRODUCER rows.
 - Open: (1) production go-live of all of the above = Bao's call + Khai's Pub/Sub IAM for prod; (2) SDK 0.4.60 bumps in other teams' repos (ask Bao); (3) optional copy nit: urgent body "Open it in Recruit." is redundant inside Recruit.
+
+## 26/10 afternoon: call-result urgent opens the Call result popup
+- Bao: Open on "Log call result — <lead>" opened the quick view. Fix recruit-be #752 (merged 33d1a883, promoted, cd-staging success): `Target.CALL_RESULT` -> `/today?ws=<id>&wsTab=result`. A cold load of that address on staging opens the Log result tab (Megeh, Jing Huang checked).
+- Rows published before the deploy keep `/today?c=<id>` (the notifier stores the link at publish time).
+- Session worktrees removed (Bao OK). Bead .5 closed: other apps bump 0.4.60 themselves (Bao). "Open it in Recruit." body kept (shared by every Recruit row in every app's bell).
