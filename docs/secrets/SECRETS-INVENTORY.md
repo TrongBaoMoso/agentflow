@@ -111,3 +111,4 @@ Production (`lender-rate`, NOT listable by Bao — known only from Khải):
 |---|---|
 | HR_ASSOCIATE_ONBOARD_SUBSCRIBE_RECRUIT | EXISTS (Khải 07/10, had 21 messages); set `RECRUIT_HR_ONBOARD_SUBSCRIPTION` to it; DLQ topic `HR_ASSOCIATE_ONBOARD_SUBSCRIBE_RECRUIT_DLQ` + `.monitor`. Do not create a `_PROD` variant. |
 | omni-inbound-reply / omni-outbound-sent | did not exist on 07/10 (Khải: "PROD chưa có 2 thằng này"); Khải said he would release them — re-ask before assuming. |
+| RECRUIT_URGENT_NOTIFIER_API_KEY (staging) | Added 26/10 by Bao (value from Tai, never printed) to k8s secret `recruit-svc-secret`, ns `recruit-be`, cluster moso-kube (lenderrate-master); 40 chars. Probe 26/10: notifier knows the key (403, not 401) but "not bound to application RECRUIT"; Tai must bind RECRUIT. Prod key not stored yet. Bead agentflow-3bzy5.6. |
