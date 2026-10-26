@@ -94,3 +94,10 @@ Recruiter overdue follow-ups are NOT urgent (later). "Offer approved but not sen
 - State: everything of this session is merged and on STAGING (be #749 #751 #752, fe #318 #587 #588, SDK 0.4.60). Nothing in flight: no open PR, no worktree, no running process.
 - Open only: (1) PROD go-live = Bao's decision + Khai Pub/Sub IAM for recruit-be-runtime@lender-rate (prod key already in prod recruit-svc-secret, probe 200; prod flag RECRUIT_URGENT_ENABLED unset = false). (2) Optional: re-raise the 2 old staging call urgents (Megeh, Jing Huang) so they carry the new ?ws= link (needs staging DB edit; only if Bao asks).
 - Resume: `cd ~/Projects/agentflow && claude --resume 9d6e7072-d477-4c94-b77f-b141a064f645`, then read this file + `bd show agentflow-3bzy5`.
+
+## CLOSE-OUT 26/10 night (measured)
+
+- No open 3bzy5 PRs. be #749 #751 #752 and fe #318 #587 #588 are MERGED. be cd-staging at 33d1a883 succeeded. fe staging ef5fc7b0 contains #588.
+- Prod: `RECRUIT_URGENT_ENABLED` is absent from `helm-chart/config/production/values.yaml`, so it is off.
+- Removed 3 more leftover fe worktrees: `_wt/318-one-bell`, `_wt/3bzy5-setting`, `.worktrees/one-bell`. Before removing, each branch was checked to have no content missing from master.
+- Epic agentflow-3bzy5 auto-closed when its last child closed. Prod go-live is now tracked in **agentflow-4m6jy**: Khai grants Pub/Sub IAM, Bao decides, then the prod flag is turned on and promoted.
