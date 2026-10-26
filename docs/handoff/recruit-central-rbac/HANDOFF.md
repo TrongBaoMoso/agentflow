@@ -436,3 +436,13 @@ locked the account for about 4 minutes. The password in the test-accounts file m
   and what the person can do.
 - Members and counts are SAMPLE data.
 - Waiting on Bao's feedback before coding on fe#574's branch.
+
+## STAGING 27/10: Permissions redesign (fe #574) live
+
+- Bao approved the redesign (roles left with counts; Members / "What this role can do" tabs; no scope chips; no
+  explanatory copy; per-person View drawer dropped). Mockup + screenshots: https://claude.ai/artifact/NyFpHs6obJoGnw4DZPvVA3
+- Row action: central mode = "Manage in IAM" link only; local mode (prod today) = Edit button opening GrantDrawer.
+- Program members tab hidden (agentflow-ouror). Override expiry date not shown (needs a BE field, follow-up).
+- #574 merged as 379e9054 (squash; master merged in first, RecruitShell conflict resolved keeping both
+  PermissionsReadBanner and NotificationPoll), promoted, Deploy staging (GKE) success.
+- Local preview stopped. Production: nothing. Production order unchanged (see RESUME POINT), add fe #574 after #733.
