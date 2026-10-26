@@ -49,3 +49,10 @@ locally, tests green, **NOT yet shown to Bao locally, NOT pushed, no PR**.
 - If "You can't record a result": `localStorage.removeItem('recruit-dev-user')`.
 - Stop: kill by PID (NOT `pkill -f front_note.js` inside a compound command — it killed the gradle run once).
 - Staging omni already holds one test chat on QA Tenfcall from the 1-line version ("Call result · Interested — Test Note append Omni").
+
+## DONE 26/10 evening
+- recruit-be #753 merged (d4dfbf2b), promoted to staging, "Deploy staging" succeeded.
+- Verified with the real BE: Log result NO_ANSWER + note on QA Tenfcall → omni INTERNAL message `📞 Call result: No answer\nStaging verify g9tn5 22:04`.
+- Production: no flag, rides the next recruit-be go-live (Bao).
+- Local preview stopped, ram-gate token released.
+- Follow-up parked by Bao: agentflow-3k5e3 (auto-follow an author who is not on the cast) — remind Bao when free.
