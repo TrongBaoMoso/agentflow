@@ -397,3 +397,37 @@ Open, in order:
   - CSV "Referred by" for a plain Loan Officer gives Referral even with the feature off.
   - Adding a referrer to an existing lead.
 - **Follow-up:** a recruit-be PR to read `lo_recruiter_program_credit` for the Program/Referral chip.
+
+## CLOSE-OUT 26/10 (measured, Bao closing the session)
+Measured on GitHub and staging on 26/10. Nothing from this session is on PRODUCTION: recruit `production`, moso-aid `pro`,
+lo-homepage `produciton-v2` and lf `production` contain none of the merge commits.
+
+On STAGING and verified today:
+- recruit-fe #560 #561 #562 #565 #573; recruit-be #718 #723 #725 #729.
+- moso-aid #194 #195 #196: rev 00188, 18 env vars; the members endpoint answers 401 without a key.
+- lo-homepage #910 #911: mama1/join answers 200. lf #2674.
+- The change-e-mail cron ticks hourly; 80 ticks so far. Every tick had sent=0 (no referral changed since). One tick, 26/10
+  02:20 UTC, failed=22 and the next one recovered.
+
+Open (none can be finished by this session alone):
+1. Khải: packs #3739/#3740 (credit) and #3735 (domain_url for My referrals Copy link). All 3 are OPEN, CLEAN, with no
+   GitHub comments.
+   - #3735 has no 3.64.1 twin and its tests were never run locally.
+   - Packs config `moso_aid_base_url` + `moso_aid_packs_service_key`, plus the nightly reconcile cron.
+   - On moso-aid prod: `PACKS_INBOUND_SERVICE_KEY`.
+2. Khải: the IAM on `HR_ASSOCIATE_DEACTIVE_SUBSCRIBE_RECRUIT_STAGING`. The subscription exists; Bao's account cannot read
+   its IAM. After that, set `RECRUIT_HR_OFFBOARD_SUBSCRIPTION` (not set today; `RECRUIT_HR_OFFBOARD_ENABLED=true` is set).
+   The offboard listener is dark until then.
+3. Bao decisions:
+   - the 3 packs questions: double-pay label only; CSV plain Loan Officer gives Referral; adding a referrer to an existing
+     lead;
+   - production for all of the above;
+   - switching My referrals referral_link to `<site>/join`.
+4. Follow-ups (not started):
+   - recruit-be reads `lo_recruiter_program_credit` for the Program/Referral chip (after packs deploys);
+   - a rate limit on /api/join-page;
+   - the crm3 lead that never arrived;
+   - an end-to-end check that a digest e-mail is actually received (needs a test referral's step changed in MOSO staging).
+
+Cleaned: 9 worktrees of merged PRs removed (all clean and pushed). The packs worktrees `packs-worktrees/recruiter-credit-*`
+and `referrers-domain-url` are kept until Khải merges.
