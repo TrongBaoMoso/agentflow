@@ -101,3 +101,5 @@ Recruiter overdue follow-ups are NOT urgent (later). "Offer approved but not sen
 - Prod: `RECRUIT_URGENT_ENABLED` is absent from `helm-chart/config/production/values.yaml`, so it is off.
 - Removed 3 more leftover fe worktrees: `_wt/318-one-bell`, `_wt/3bzy5-setting`, `.worktrees/one-bell`. Before removing, each branch was checked to have no content missing from master.
 - Epic agentflow-3bzy5 auto-closed when its last child closed. Prod go-live is now tracked in **agentflow-4m6jy**: Khai grants Pub/Sub IAM, Bao decides, then the prod flag is turned on and promoted.
+
+- 26/10 night (Bao approved): rewrote link on the 11 OPEN staging call urgents in moso-notifier-sta notification_inbox (published 03:42Z, before #752). Changed /today?c=<id> to /today?ws=<id>&wsTab=result in one guarded transaction (count==11). notif_event history was left untouched. Verified in a browser: Open on the Megeh row opens the Call result popup. Prod is unaffected (flag off; every prod row will be raised with the new link).
