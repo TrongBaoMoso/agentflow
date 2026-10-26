@@ -89,3 +89,8 @@ Recruiter overdue follow-ups are NOT urgent (later). "Offer approved but not sen
 - Bao: Open on "Log call result — <lead>" opened the quick view. Fix recruit-be #752 (merged 33d1a883, promoted, cd-staging success): `Target.CALL_RESULT` -> `/today?ws=<id>&wsTab=result`. A cold load of that address on staging opens the Log result tab (Megeh, Jing Huang checked).
 - Rows published before the deploy keep `/today?c=<id>` (the notifier stores the link at publish time).
 - Session worktrees removed (Bao OK). Bead .5 closed: other apps bump 0.4.60 themselves (Bao). "Open it in Recruit." body kept (shared by every Recruit row in every app's bell).
+
+## RESUME POINT (pause 26/10 evening, Bao shuts down)
+- State: everything of this session is merged and on STAGING (be #749 #751 #752, fe #318 #587 #588, SDK 0.4.60). Nothing in flight: no open PR, no worktree, no running process.
+- Open only: (1) PROD go-live = Bao's decision + Khai Pub/Sub IAM for recruit-be-runtime@lender-rate (prod key already in prod recruit-svc-secret, probe 200; prod flag RECRUIT_URGENT_ENABLED unset = false). (2) Optional: re-raise the 2 old staging call urgents (Megeh, Jing Huang) so they carry the new ?ws= link (needs staging DB edit; only if Bao asks).
+- Resume: `cd ~/Projects/agentflow && claude --resume 9d6e7072-d477-4c94-b77f-b141a064f645`, then read this file + `bd show agentflow-3bzy5`.
