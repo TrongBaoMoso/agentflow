@@ -23,3 +23,10 @@ Resume: `claude --resume 15297c09-59ed-49cc-b5da-67d3cf96e298` from ~/Projects/a
 ## Small open items
 - PageTabs/ListPager build "+" themselves instead of useCountLabel (LOW, reviewer note).
 - Bao's earlier list: Hùng to fix HR to-do "câc" #124; Slack draft to Hùng not sent; beads p45by, q6kia (LOW).
+
+## CLOSE-OUT 29/10 (session 15297c09 closed, measured on origin)
+- All 5 PRs of this session are MERGED and on STAGING, none on PRODUCTION: recruit-fe #549 #551 #553 #555, recruit-be #697.
+- PRODUCTION has not moved since 20/10 02:05Z (fe e80f45b8, be dc2b54ec). Staging is now 53 (fe) / 56 (be) commits ahead, from many sessions. The batch prod push waited for Bao's OK, which never came. A future prod push must re-list origin/production..origin/staging and ask each PR owner (memory feedback_prod_pusher_ask_pr_owner_first).
+- Prod setting hot.queue_cap = 500 (still in effect, measured 29/10).
+- Beads: agentflow-676kt closed (today-old deleted by #576 on 23/10); agentflow-odtil open (cold /conversations skeleton, code still present); agentflow-vg1fu open (omni spinner/dark mode in tera-components).
+- No worktree, branch, preview server or open PR of this session remains.
