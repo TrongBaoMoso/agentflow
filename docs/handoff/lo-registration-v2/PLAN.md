@@ -86,3 +86,40 @@ History API URLs per step, slide transitions, resume `/join/license` and `/join/
 ## 5. Placeholders Matt left open
 [X HOURS] for stalled follow-up; call length; TERA walkthrough + 2 videos + YouTube URL; confirm hero proof points
 (240+ wholesale lenders, 2,600+ loan officers) with marketing.
+
+## 6. Decisions by Bao (28/10)
+
+### URL map (confirmed)
+| Today | Content | After |
+|---|---|---|
+| `/register-loan-officer` | old form | **kept as is** (compare) |
+| — | Matt's new form | **`/join`** → `/join/license` → `/join/book` → `/join/booked` |
+| lf `/join/<slug>` | recruiter landing (invitation, bio, video, webinar, FAQ) | **`/recruit/<slug>`** |
+| lf `/recruit/<slug>` | hero + old form (redundant) | **removed** |
+| lo `/<site>/join` | Loan Officer recruiting landing (bio, video…) | **`/<site>/recruit`** |
+| — | new form on a Loan Officer site | **`/<site>/join`** (credits the site owner, as today) |
+
+- No `?r=` in shared links. The recruiter shares `/recruit/<slug>`; its "Ready to join" button carries the referrer to `/join` internally. Bare `/join` = no referrer → referral question (claimed referrer, confirmed in Recruit; 07/09 rule kept).
+- Bio/video editors stay (lo `/lo-setting` "Recruiting page", lf `/manage-join-page`, moso-aid `/api/join-page` + recruiter-profile): they serve the landing that moves to `/recruit`.
+- Old `/join/<slug>` and `/recruit/<slug>` links are dropped, NO redirects. Measured 28/10 on production:
+  Cloud Run lf-homepage requests 30 days → only team traffic (seth-august 23+28 human hits over 3–5 days, mattmo 3+12,
+  phuong-nguyen 1+1, the rest test slugs 404); MOSO prod Datastore `LORecruiting.lead_origin` JOIN_SLUG = 0,
+  RECRUIT_SLUG = 0 (positive control REFER_LO_PAGE = 1, so the query works).
+- Follow-ups: rename the lead-origin stamps' meaning (JOIN_SLUG/RECRUIT_SLUG are tied to paths in packs/recruit-be),
+  moso-aid/lf `site_slug` redirect targets, lo map-urls/RELEASE_PAGES, recruit-be docs §4.3.
+
+### Booking (Step 3) — keeps the CLAIM model (no auto-assign)
+- Recruit today: new lead → Hot leads, first recruiter to Claim owns it (D55, D66); auto-own only for LO Recruiter
+  Program members' own pages (D196). The intro call is the recruiter's, NOT onboarding's (Matt's wireframe said
+  onboarding specialist — to be told).
+- Slots: only times when ≥1 recruiter is free on Google Calendar (business hours); capacity per slot = free
+  recruiters; full slots disappear; concurrent booking of the last seat → "pick another time". Calendly dropped (D151, Bao 28/10).
+- Booked lead lands in Hot leads with a "Call booked Tue 10:00" badge + bell to recruiters; whoever claims takes the
+  call; the Google Calendar + Meet event is created on the claimer's calendar at claim; LO gets the confirmation.
+- From a recruiter's landing (`/recruit/<slug>`): only that recruiter's free times; lead goes to them (D196 path).
+- **Claim deadline for a booked lead = min(normal SLA deadline, booked time − 30 min)** — reuses the existing SLA
+  alerts (no new alert type). Scenarios it fixes (Bao 28/10): booked 10:00 at 9:00 with a 4 h REFERRAL SLA (deadline
+  would be 13:00); booked in the evening for 8:00 next morning (business-hours clock paused); WEBINAR 24 h SLA.
+- After claim: Today item + calendar event; reminder 15 min before. Not logged 15 min after the booked time →
+  existing CALL_NO_RESULT urgent (covers claimer sick/busy).
+- "None of these times work" → normal Hot lead (claim + SLA as today).
