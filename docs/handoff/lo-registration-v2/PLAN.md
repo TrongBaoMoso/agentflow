@@ -164,3 +164,13 @@ Measured 28/10 on MOSO prod Datastore (kind Admin, ns 5716104026521600; name fie
 2,724 active Loan Officers (active, no terminate_date, LO, not broker). Exact same first+last name: 7 groups, 15 people
 (largest group 3) — all 15 have an NMLS and a state, so photo + name + state + NMLS tells them apart. Same first name +
 same last initial: 174 groups / 394 people; most common last name shared by 91 people → per-word search matters.
+
+### DECISION (Bao 28/10 night): candidates may pick their referring Loan Officer on COMPANY pages again
+- Reverses the 07/09 rule for the "Loan Officer referred me" path: on company pages the candidate searches and PICKS a
+  Loan Officer; the pick is TRUSTED and credited (sends the Loan Officer's company email → packs resolves it to the
+  `referred_lo` FK, which Recruit already treats as a confirmed referrer → REFERRAL, D54/D169 unchanged because it is a
+  pick from the roster, not free text). A recruiter MAY double-check on the call; not required.
+- Evidence that drove it: after-party's picker (the one place that still allows it) shows "David Tran" ×2 and
+  "Trang Nguyen" ×3 with no way to tell them apart (Bao's screenshots 28/10); prod has 7 such name groups / 15 people.
+- So every Loan Officer picker shows photo + name + state + NMLS and searches per word (+ email/NMLS).
+- Links still lock the referrer (Loan Officer site, recruiter page, `?ref=`) and hide the question.
