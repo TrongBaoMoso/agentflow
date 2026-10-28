@@ -160,3 +160,7 @@ picking the wrong person with the same name, or giving up when nothing matches. 
 1. **Easier search:** match every typed word separately ("Mat Mogh" → Matt Moghaddam), and also match email and NMLS.
 2. **No wrong pick between same names:** each option shows photo + full name + state + NMLS.
 (Needs a safe Loan Officer search endpoint returning only public fields — not packs `getAdmins`.)
+Measured 28/10 on MOSO prod Datastore (kind Admin, ns 5716104026521600; name fields are arrays [Original, lowercase]):
+2,724 active Loan Officers (active, no terminate_date, LO, not broker). Exact same first+last name: 7 groups, 15 people
+(largest group 3) — all 15 have an NMLS and a state, so photo + name + state + NMLS tells them apart. Same first name +
+same last initial: 174 groups / 394 people; most common last name shared by 91 people → per-word search matters.
