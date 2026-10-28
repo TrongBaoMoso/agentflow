@@ -134,3 +134,20 @@ History API URLs per step, slide transitions, resume `/join/license` and `/join/
   nothing for Matt to confirm.
 - **Videos:** ask Matt only whether he has specific videos; otherwise use the existing "Loan Factory explained" video +
   the LF YouTube channel link.
+
+### Matt's reply (28/10 night, New Landing Page chat)
+- Bao sent the message without the referral item (item 3 held back pending Phuong/Thuan on the company-page rule).
+- **Wording:** pages say "onboarding specialist" for the person who takes the intro call — Loan Officers tend to dislike
+  "recruiters". It is a LABEL only: inside Recruit the slots are still the recruiters' calendars and the claim model is
+  unchanged. Booking screen, confirmation page and emails show "onboarding specialist" + the caller's name.
+- **Videos:** use "Loan Factory Explained" now; add 3 thumbnails under the main video that open YouTube; the main
+  video (and the 3) must be easy to swap later without a code change → store the 4 YouTube links in an editable setting.
+
+### Referral question — still OPEN (Bao 28/10)
+Matt's design: "How did you hear?" → "A Loan Factory LO referred me" → typeahead of active Loan Officers, credited as
+referral ("We'll make sure they get credit"), on ANY page including the company site. This conflicts with the rule agreed
+with Phuong: company site = company lead; a Loan Officer's own page / a recruiter's page = credited to them.
+Options weighed: (1) strict rule, no question; (2) Matt's auto-credit (risk: anyone types a friend's name → wrong payout);
+(3) optional question recorded as a CLAIM, credited only after confirmation (recruiter on the intro call and/or the named
+Loan Officer), first-come via link or "Refer a Loan Officer"; (4) rely on "Refer a Loan Officer" beforehand.
+Recommendation 3+4; Bao to check with Phuong/Thuan before answering Matt.
