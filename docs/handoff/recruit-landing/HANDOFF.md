@@ -33,6 +33,31 @@ Paused 2026-10-15 ~17:45 (Bao shut the machine down). Session d11ae72d-de7f-4ddd
 - Luna shows a letter because its favicon is unreachable, the same as in the other apps.
 - A real Loan Officer, Armando, tested on production: he landed on My referrals with an empty state, as expected.
 
+## CLOSE-OUT AUDIT 28/10 (measured, session closed)
+
+**Shipped, verified on origin:**
+- recruit-fe #487 (290f0d5c) and #489 (bacae1de) are on production.
+- recruit-be #648 (747b9130) is on production.
+- lf-homepage #2671 (e3ad06d5) is on master/staging only.
+  - Since the 22/10 revert the card shows only on www.viet18.com/loan-officer-old.
+  - Production /loan-officer and /loan-officer-old show no card.
+- The recruit landing is live on prod and staging, titled "Loan Factory Recruit".
+- Prod `referrals.enabled` is true (since 15/10 17:38:21Z).
+- Prod `referrer_identity` has 5 LAZY_SSO rows.
+- Beads ztjoj and rsnyo are closed. No stray pods and no worktrees remain.
+
+**Open, nothing blocked:**
+- Bead agentflow-w6d5v (P3, rsnyo follow-ups) is not started.
+  - Unlink revokes only ADMIN_CONFIRMED rows.
+  - The presence and packs caches are not invalidated on unlink.
+- A zero-grant Loan Officer with 0 referrals gets an empty menu. The cause is `recruitNav.tsx` `myReferralsOn` requiring `has_referrals !== false`; the gate still lands them on /my-referrals. This needs Bao's decision.
+- Deferred minors are unchanged: keyframes not rl-prefixed, hex regex {3,8}, light overscroll band, Luna favicon.
+- These merged remote branches still exist (safe to delete):
+  - recruit-fe feat/recruit-landing
+  - recruit-fe fix/landing-launcher-icons
+  - recruit-be fix/rsnyo-revoked-link
+  - lf-homepage feat/loan-officer-recruit-card
+
 ## RESUME POINT (historical)
 
 **Done**
