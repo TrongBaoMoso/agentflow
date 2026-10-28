@@ -446,3 +446,11 @@ locked the account for about 4 minutes. The password in the test-accounts file m
 - #574 merged as 379e9054 (squash; master merged in first, RecruitShell conflict resolved keeping both
   PermissionsReadBanner and NotificationPoll), promoted, Deploy staging (GKE) success.
 - Local preview stopped. Production: nothing. Production order unchanged (see RESUME POINT), add fe #574 after #733.
+
+## STAGING 28/10: Permissions polish (fe #598) live
+
+- Bao's 28/10 review of #574: one rule under each permission group title only (no per-permission dividers);
+  "Manage in IAM" is now the outlined default button; roles card sticky from 1100px under the top bar + urgent band
+  (`--rec-sticky-top`). Screenshots in the artifact's "28/10" sections (Version 14).
+- #598 merged as 8bf3d103, promoted alone (staging..master = only #598), Deploy staging (GKE) success.
+- Local preview stopped. Production: nothing; ship #598 together with #574.
