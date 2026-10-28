@@ -58,6 +58,22 @@ Paused 2026-10-15 ~17:45 (Bao shut the machine down). Session d11ae72d-de7f-4ddd
   - recruit-be fix/rsnyo-revoked-link
   - lf-homepage feat/loan-officer-recruit-card
 
+## UPDATE 28/10 afternoon (after the close-out audit)
+
+- **Shipped to STAGING:** recruit-fe #601 (c72bfec0). It was reviewed by 2 reviewers, and staging was checked live.
+  - A no-role Loan Officer always sees My referrals in the menu. The staff rule is unchanged.
+  - Landing keyframes now use the `rl-` prefix.
+  - The landing has no light overscroll band.
+  - The hex check is strict.
+- **Not shipped:** Luna's icon, which needs a fix on Luna's side.
+- **Beads:** w6d5v is merged into agentflow-ouror and closed. Its fix will be done when the Program members tab comes back. That tab is hidden on staging and its Unlink has never been used on prod.
+- **Branches:** the 4 merged remote branches are deleted.
+- **Prod promote (Bao: go if nothing reaches real Loan Officers automatically):**
+  - 3 independent audits all came back SAFE.
+  - It is blocked on the Secret Manager confirmation in recruit-be PR #756; I commented there.
+  - Bead **agentflow-g9j11** has the details and the order of steps.
+  - Gateway `APP_ACCESS_ENFORCE` is still off on prod.
+
 ## RESUME POINT (historical)
 
 **Done**
