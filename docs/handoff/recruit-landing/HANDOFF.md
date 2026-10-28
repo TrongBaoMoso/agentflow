@@ -58,6 +58,34 @@ Paused 2026-10-15 ~17:45 (Bao shut the machine down). Session d11ae72d-de7f-4ddd
   - recruit-be fix/rsnyo-revoked-link
   - lf-homepage feat/loan-officer-recruit-card
 
+## RESUME POINT: paused 28/10 evening (Bao going home)
+
+Session d11ae72d ("Landing page Ambassador program"). Nothing is running: no dev server, no worktree, no ram-gate token.
+
+**1. Prod promote (bead agentflow-g9j11).**
+- Waits on ThanhTranLF's answer in recruit-be PR #756 (comment 6466630039). Check it with `gh pr view 756 -R LoanFactory-Inc/recruit-be --comments`.
+- Once the Secret Manager prod sources are confirmed:
+  1. Fast-forward recruit-be `production` to `origin/staging`.
+  2. Watch cd-production, including the "Sync secrets from Secret Manager" step, and run a smoke check.
+  3. Then do the same for recruit-fe.
+- Bao already said go, as long as nothing reaches real Loan Officers automatically. 3 audits found nothing that does.
+
+**2. Public app catalogue shrank. Bao chose (a): ask Tai/Khai first. The draft below is NOT SENT yet.**
+- Measured 28/10, `gateway.loanfactory.com/engagement-svc/public/applications`:
+  - prod returns 2 apps (AI, ALLY);
+  - staging returns 4 (AI, ALLY, MARKETPLACE, NOVA);
+  - on 15/10 it returned 14.
+- tera-engagement-be has had no code change since July.
+- The CRM signed-out launcher shows the same 2 apps.
+- Ally shows 13 because it hardcodes `launcherApps` when signed out and calls the API only when signed in (read from ally.loanfactory.com/assets/index-*.js).
+- Guess, not verified: the auth-service app-access PRIVATE visibility (#176) hides these apps.
+- Recruit adds CRM itself (`publicApps.ts` `MISSING_FROM_CATALOGUE`), because the engagement catalogue is CRM's own list.
+- Draft for Tai and Khai (Vietnamese). Ask Bao whether to send it on Slack, and to which channel or person:
+  > Anh Tài, anh Khải ơi, em hỏi về danh sách app công khai (`gateway.loanfactory.com/engagement-svc/public/applications`) mà menu 9 chấm dùng khi CHƯA đăng nhập: hôm nay prod chỉ trả 2 app (AI, Ally), staging 4 (AI, Ally, Marketplace, Nova); ngày 15/10 prod trả 14. Code tera-engagement-be không đổi từ tháng 7 nên em đoán đổi ở dữ liệu, có phải do chuyển app sang PRIVATE (app access, auth-service #176)? Hệ quả: trang CRM và landing Recruit khi chưa đăng nhập chỉ còn 2–3 app; Ally vẫn đủ 13 vì Ally viết cứng danh sách. (1) Đây là cố ý hay lỗi dữ liệu? (2) Nếu cố ý, menu 9 chấm khi chưa đăng nhập nên hiện app nào và lấy từ đâu — mỗi app tự viết cứng như Ally, hay platform có nguồn chung?
+- If it is intended, option (b) is a hardcoded signed-out list like Ally's. Bao has not chosen that.
+
+**3. Optional:** Bao can test the staging menu with a no-role Loan Officer account (#601).
+
 ## UPDATE 28/10 afternoon (after the close-out audit)
 
 - **Shipped to STAGING:** recruit-fe #601 (c72bfec0). It was reviewed by 2 reviewers, and staging was checked live.
