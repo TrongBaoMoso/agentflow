@@ -123,3 +123,14 @@ History API URLs per step, slide transitions, resume `/join/license` and `/join/
 - After claim: Today item + calendar event; reminder 15 min before. Not logged 15 min after the booked time →
   existing CALL_NO_RESULT urgent (covers claimer sick/busy).
 - "None of these times work" → normal Hot lead (claim + SLA as today).
+
+### More decisions (Bao, 28/10 night)
+- **No [X hours] stalled-sign-up timer.** A Step-1 save already creates a Hot lead with its normal SLA (recruiters +
+  managers alerted). Add only a badge "Sign-up not finished" on the lead (Step 2 / booking not done) so the recruiter
+  knows to help them finish. Phase 2 drops the stalled-after-Step-1 tick.
+- **Intro call length = 30 minutes.** Slots every 30 min (9:00, 9:30, …), 30-min Google Calendar event, "30 min" on the
+  booking screen and the confirmation email.
+- **Hero numbers come from live data** (same `findLenders` / `countLoanOfficers` used by the Loan Officer page) —
+  nothing for Matt to confirm.
+- **Videos:** ask Matt only whether he has specific videos; otherwise use the existing "Loan Factory explained" video +
+  the LF YouTube channel link.
