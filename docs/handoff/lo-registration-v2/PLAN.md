@@ -151,3 +151,12 @@ Options weighed: (1) strict rule, no question; (2) Matt's auto-credit (risk: any
 (3) optional question recorded as a CLAIM, credited only after confirmation (recruiter on the intro call and/or the named
 Loan Officer), first-come via link or "Refer a Loan Officer"; (4) rely on "Refer a Loan Officer" beforehand.
 Recommendation 3+4; Bao to check with Phuong/Thuan before answering Matt.
+
+### Referrer picker improvements (Bao 28/10, applies whichever referral rule is chosen)
+How the existing pickers work (lf `after-party-event` `ReferredFields.tsx`): a searchable Mantine Select — typing only
+FILTERS the list (case-insensitive substring), the user must pick a real Loan Officer, and the form sends that person's
+company email; free text is never saved, so a typo cannot credit the wrong person (it just finds nothing). Real risks:
+picking the wrong person with the same name, or giving up when nothing matches. For the new form's picker:
+1. **Easier search:** match every typed word separately ("Mat Mogh" → Matt Moghaddam), and also match email and NMLS.
+2. **No wrong pick between same names:** each option shows photo + full name + state + NMLS.
+(Needs a safe Loan Officer search endpoint returning only public fields — not packs `getAdmins`.)
