@@ -3,6 +3,12 @@
 Away window night 21->22/10 (memory feedback_away_window_2122_8oafx_sync.md): recruit-be/fe -> STAGING only, no prod. packs PR only.
 Design: `bd show agentflow-8oafx` notes "PROPOSAL CONFIRMED".
 
+## NIGHT 29→30/10 (Bao asleep; STAGING only, no prod, no messages) — see memory feedback_away_window_2930_changedby_staging
+Done before the night: r0g2q LIVE on lf PROD (promote PR #2692 = only #2691, Cloud Run lf-homepage-00757; first prod build failed on a transient next/font Google download, re-run of trigger e9e6d7f4 succeeded). recruit-be #767 (033e5a9c) and recruit-fe #610 (4d57fe54), #613 (8f99ba83) on STAGING. packs #3805/#3806/#3807/#3808/#3810/#3811 merged; MOSO staging still GAE b (has #3805 changed-by, NOT wzkts/#3810) because packs master does not compile.
+
+Draft message for Bao to send in the morning (NOT sent):
+> Anh/chị Tuấn ơi, packs `master` đang không build được từ commit `39ded1e5c59` (Accounting API: export compensation resolution…, 29/10 18:56). `AccountingAPI.java` (dòng 38, 462, 556) và `LoanOps` import `com.mvu.loan.server.op.loan.CompensationResolution` nhưng file đó không có trong repo — có lẽ quên add. SWAT install packs/loan trên master đang failed nên các fix khác (vd #3807 recruit new_email) chưa lên staging được. Anh/chị add giúp file đó nhé. Cảm ơn!
+
 ## RESUME POINT — 29/10 ~18:00 +07 (Bao paused to go home; session 6b7abf95)
 Read this block first. Everything below it is older history.
 
