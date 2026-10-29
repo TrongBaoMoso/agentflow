@@ -3,6 +3,15 @@
 Away window night 21->22/10 (memory feedback_away_window_2122_8oafx_sync.md): recruit-be/fe -> STAGING only, no prod. packs PR only.
 Design: `bd show agentflow-8oafx` notes "PROPOSAL CONFIRMED".
 
+## CLOSE-OUT — 29/10 (session 6b7abf95 closed by Bao), all measured
+- Code: be #704/#706, fe #556 are in origin/production (29/10 release). packs #3722 is live on MOSO prod (GAE c, 28/10; `POST /api/recruit/v1/candidate/emailAvailable` 401 vs bogus path 404).
+- Flags: live staging deployment has all 7 ON; live prod deployment has none of them set (all default false).
+- Draft PR #703 still open, merges cleanly into master. The only thing left before hand-off works on prod: merge #703 + add RECRUIT_FEATURES_IDENTITY_WRITEBACK(_EMAIL) to prod values. Trigger = first real user on prod (still none on 29/10: every offer/activity by super.admin). Bead agentflow-61yi6.
+- Beads closed: uuy7w, 8oafx. Still open (fix later): r0g2q (copy still on lf master+production), l21zt, ax9hm, wzkts, swd7k.
+- Still unanswered by Bao: questions 3a/3b below; W3 test LO (bao.trinh+e2e22w3, NMLS empty, REJECTED row) still on staging.
+- Not measurable by Bao's account: whether PACKS_WRITEBACK_INTERNAL_API_KEY was rotated (no secretmanager.versions.list) - ask Khai.
+- Worktrees identity-8oafx (be, fe) and staging-email-flag removed; prod-handoff-flags kept for #703.
+
 ## RESUME POINT — 21/10 ~12:00 +07 (Bao paused the session to go home)
 Whole session (6b7abf95) in one place. Nothing is running in the background; nothing is half-pushed.
 
