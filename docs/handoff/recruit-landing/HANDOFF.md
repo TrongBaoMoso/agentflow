@@ -33,6 +33,14 @@ Paused 2026-10-15 ~17:45 (Bao shut the machine down). Session d11ae72d-de7f-4ddd
 - Luna shows a letter because its favicon is unreachable, the same as in the other apps.
 - A real Loan Officer, Armando, tested on production: he landed on My referrals with an empty state, as expected.
 
+## PROD RELEASED 29/10 (~09:40 VN), session closed
+
+- **Secret Manager check (measured, not taken on trust):** the lender-rate audit log shows thanh.t.tran created all 25 `recruit-be-*` sources on 27/10 11:55Z, each with version 1 and `secretAccessor` for `recruit-be-deploy@lender-rate` (50 SetIamPolicy calls, 0 errors, no deletes). Values cannot be read with Bao's account.
+- **recruit-be:** production fast-forwarded dc2b54ec → 9869ec37 (56 commits, includes #759 HOT auto-assign, shipped OFF). Run 40805719701 succeeded, including "Sync secrets from Secret Manager". Flyway applied 22 migrations, now at v296. 2/2 pods Running, 0 ERROR lines. Read-only check: `hot.auto_assign_enabled=false`, `hot.idle_release_enabled=false`, 0 owner changes in the 30 min after the deploy.
+- **recruit-fe:** production fast-forwarded e80f45b8 → c72bfec0 (53 commits, includes #601). Run 40806811739 succeeded. The landing returns 200 and serves the new `rl-` CSS.
+- Bead agentflow-g9j11 is closed.
+- **Still open, not blocking:** the public catalogue question for Tai/Khai (draft in the RESUME POINT below, NOT SENT). Bead agentflow-ouror (P4) waits for the Program members tab.
+
 ## CLOSE-OUT AUDIT 28/10 (measured, session closed)
 
 **Shipped, verified on origin:**
