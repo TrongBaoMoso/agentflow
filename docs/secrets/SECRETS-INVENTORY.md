@@ -93,7 +93,7 @@ LO_RECRUITER_PAGE_REQUIRES_APPROVAL, LO_TEAMS_WRITE_ENABLED, MONGO_URI, RECRUITE
 `--update-env-vars`. Incident 25/10: a draft command with `--env-vars-file` wiped all 17 vars; the new
 revision 00186 failed to start, traffic stayed on 00185 (no outage); restored from rev 00185 into rev 00187.
 
-Production moso-aid: PACKS_INBOUND_SERVICE_KEY **not created** — Khải, before #196 reaches `pro`.
+Production moso-aid: PACKS_INBOUND_SERVICE_KEY **created 2026-10-29** (rev moso-aid-00120-75x, `--update-env-vars`, 16 vars after, all inbound keys distinct; `/api/lo-programs/standing/members` wrong key 401 / right key 200). Value in Bao's Keychain `moso-aid-packs-inbound-service-key-production`. **Still to do (needs MOSO admin, Khải):** packs prod System Properties `moso_aid_packs_service_key` = that value and `moso_aid_base_url` = moso-aid prod `/api` root. Both unset = packs program credit stays off (no error).
 
 ## Pub/Sub
 
