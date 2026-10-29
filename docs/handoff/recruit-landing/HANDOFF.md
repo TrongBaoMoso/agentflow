@@ -33,6 +33,12 @@ Paused 2026-10-15 ~17:45 (Bao shut the machine down). Session d11ae72d-de7f-4ddd
 - Luna shows a letter because its favicon is unreachable, the same as in the other apps.
 - A real Loan Officer, Armando, tested on production: he landed on My referrals with an empty state, as expected.
 
+## STAGING 29/10 ~11:50 VN: landing CTA for referrers only (recruit-fe #604)
+
+- **Bao 29/10 decided:** Recruit stays PRIVATE; a Loan Officer with no referral is not let in (bead agentflow-y89cf, memory feedback_recruit_private_no_zero_referral_lo_2910).
+- **#604 (squash 351d0abf) is on STAGING:** hero button "Already referred someone? Sign in →"; new line "No referral yet? Share your own website + /loan-officer with Loan Officers you know. Come back here after your first referral."; chip "Free for every Loan Officer" removed; header Sign in unchanged; en + vi. Bao approved the wording in a local preview; 2 reviewers APPROVE; CI green.
+- Goes to prod with #602 in the end-of-day batch (bead agentflow-sc1ip).
+
 ## STAGING 29/10 ~10:40 VN: landing 9-dot on auth-service catalogue (recruit-fe #602)
 
 - **Why:** Tai (auth-service owner) said apps should not read CRM's engagement catalogue. auth-service #174 (19/10) serves `GET /auth-svc/public/api/v1/applications` (PUBLIC + ACTIVE, tera-docs `auth/APP_ACCESS_MODEL.md`). The catalogue shrink is intended: apps went PRIVATE. Tai set RECRUIT to PUBLIC on prod as a test (29/10).
