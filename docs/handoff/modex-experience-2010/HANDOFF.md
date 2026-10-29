@@ -186,3 +186,10 @@ Measure first (`git fetch`, `gh pr view`); do not trust this list blindly.
 6. Small: dead i18n key `save_SEND_INFO` (recruit-fe en/vi outcome.json:111); OutcomeSection split later ("nào báo rồi làm"); memory line: experience prod flag is ON since 29/10 07:19 UTC.
 
 Worktrees on disk: `recruit-be-worktrees/fix-handoff-test` (merged, removable), `recruit-be-worktrees/experience-lists` (#763), `recruit-be-worktrees/scheduled-sms` (#764).
+
+## UPDATE 29/10 ~22:05 (resumed evening)
+
+- recruit-be **production = staging = 434d0ab6** (cd-production success): #763 (item 8 BE, D343), #764 (scheduled SMS auto-send, D342, `scheduled_send_info.sms_enabled` false), #768 (docs, other session), #769 (MMI token masked in error envelopes/logs, bead agentflow-7xj77 closed).
+- Prod probe 22:03: real token + non-JSON → 400, token NOT in body, path masked `.../push/***`; wrong token → 404.
+- Item 8 FE (bead agentflow-2dyj6): built in `recruit-fe-worktrees/experience-ui`, branch `feat/experience-level-lists`, commits e163b7c6 + 982c1945, **NOT pushed** — local preview for Bao at http://localhost:3061 (read-only proxy :8199 to staging; PIDs next 92676, proxy 14954; ram-gate next-dev token 1793282667-92085-5019). Screenshots `ui-preview/`. Waiting Bao's look. Open points for Bao: "No loan figures yet" dominates staging; dropped "N loans since 2022" from Pipeline rows; no period selector on the report yet; Kanban/card views lack picker+strip; the Next dev "1 Issue" badge to check before PR.
+- Still TODO: FE for #764 (Schedule SMS label/status/reason codes); MMI URL switch after 23:00 with Brayan's 2FA (token = Keychain `recruit-mmi-push-token-production`, v2).
