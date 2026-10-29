@@ -136,3 +136,20 @@ Migration numbers: V296 is on master and V295 belongs to open PR #741. I used V2
 1. **Seth and the packs marker: (A).** Change packs PR #3739/#3740 to match D340: a staff recruiter who is also an approved member is credited under the program like any member. Edit the PR only; Khải still merges and deploys.
 2. **Which loan count to trust.** Recruit never trusts the Loan Officer's own numbers. Until Modex/MMI are integrated, the recruiter checks Modex/MMI by eye and types the figure into Recruit, and Recruit trusts that figure. After integration, Recruit trusts only Modex/MMI. Codebase check 29/10: this already holds for `units_12mo` (see the rule in section 3); the only change is that section 3 now counts PERSON as trusted.
 3. **Show the label to the referrer: (B).** `referral.program_status_visible_to_referrer` goes on with the feature; My referrals shows the label only (qualifying / below bar / not checked yet), never the loan count.
+
+## STATUS 29/10 07:00 (session 8658d500)
+
+**D340.1 (role follows the MOSO recruiter flag): ON STAGING, prod not started.**
+- moso-aid #198 merged d1c0836c → staging rev moso-aid-00189-fsd. Roster sends `is_recruiter` true/false/null per approved member (null when the row has no boolean flag, the key is not an active account, or duplicate rows disagree).
+- recruit-be #761 merged 21d9e2e4 → staging. V297 `program_members.recruiter_flag`; setting `program_sync.require_recruiter_flag` (default false).
+- Staging only: `require_recruiter_flag=true` since 06:51Z, `program_sync.mode` still DRY_RUN. 07:00 tick: `would_deny_no_flag` = the 2 linked members (both flag false), `flag_unknown=0`, nothing changed.
+- Prod order when Bao approves: moso-aid `pro` → recruit-be prod → set prod `require_recruiter_flag=true` (prod mode is DRY_RUN) → read the report → APPLY is a separate Bao decision.
+- Not done: alert rules on `flag_unknown` / `flag_stale_used` (outside the code).
+
+**packs #3739 / #3740 (Seth = option A): pushed, Khải merges.**
+- A staff recruiter who is also an approved member gets program credit; monthly row = union of handled + credited leads, deduplicated.
+- Self-credit (signed-in staff names himself as referrer, program could apply to him): no marker, `referred_lo` cleared, no LO-referral bonus at conversion; server-only `lo_recruiter_program_self_credit_hold` + label; nothing clears the hold automatically (manual decision later).
+- No backfill: a dual-role member's leads before deploy stay as they were; the first monthly run after deploy is partial for him.
+- Tell Accounting: a dual-role referrer no longer gets the LO-referral bonus on program-credited leads (D268 one program).
+
+**Next (not started):** D268/D269 program snapshot table (V298+), D269.2 qualification with the trusted-sources rule (section 3), FE QualifyingChip (label only in My referrals) with a local preview for Bao.
