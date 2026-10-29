@@ -206,3 +206,12 @@ Worktrees on disk: `recruit-be-worktrees/fix-handoff-test` (merged, removable), 
 - MMI 7-day device trust CONFIRMED: login with password only, no 2FA (~23:50). Logged out right after (Vic's team shares the seat). Test push of NMLS 1040852 = morning.
 - recruit-fe **#618 merged (74446db7) → STAGING** (cd-staging success): item 8 UI redone to the mockup (dot pills strip on Pipeline+Cold, colored level chips + "N loans since 2022", Experience picker, Reports Experience tab + Period picker). 2 reviewers approved. Staging check 320/1440: no horizontal scroll, chips render (`ui-preview/stg-pipeline-*.png`). Prod waits for Bao. Local preview (:3061 + demo proxy) can be stopped.
 - recruit-fe **#619** (scheduled SMS FE, flag off): reviewer A approve, B requested changes (manual Send shown on OMNI_NO_ANSWER = double-text risk; explicit config false must win over cache; loading label) — agent fixing.
+
+## Morning report 30/10 (night work done, measured)
+
+- recruit-fe STAGING = 5aa5a746: #618 item 8 UI (redo to mockup) · #619 scheduled SMS UI (flag off; no manual Send / composer locked on OMNI_NO_ANSWER) · #621 follow-ups (shadow tokens, midnight-safe period). Each had 2 reviewers.
+- recruit-be PROD = STAGING = 434d0ab6 (#763 #764 #768 #769).
+- Prod for recruit-fe #618/#619/#621: waits for Bao.
+- MMI: device trust works (no 2FA). Morning TODO: log in (password only), push NMLS 1040852, verify on prod, log out at once (Vic's team shares the seat).
+- Leftovers: delete branch `shots/scheduled-sms-autosend` after attaching images to PR #619 in the browser; `save_SEND_INFO` key is NOT dead (eager `save_${kind}` lookup in OutcomeSection) — keep.
+- Worktrees all removed; local preview stopped; no ram-gate tokens held.
