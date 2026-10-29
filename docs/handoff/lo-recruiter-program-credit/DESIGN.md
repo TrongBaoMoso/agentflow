@@ -84,9 +84,14 @@ The D339 company-form pick arrives as a confirmed FK, so it is covered by step 1
 - Columns: `status` (QUALIFYING | BELOW_BAR | UNKNOWN), `loan_count`, `window_start`, `window_end`, `data_source` (MODEX | MOSO | PERSON | MMI_14MO), `verified`, `source_as_of`, `threshold`, `checked_at`, `modex_snapshot_id` (nullable, from `candidate_modex_snapshot`, V263).
 
 **Rule** (`QualifyingRecruitEvaluator`, only for snapshot program = LO_RECRUITER_PROGRAM):
-- Verified means `units_12mo_source = MODEX` (`CandidateEntity.java:435-446`, `ModexCandidateMapper.java:80-81`, and the "only verified source" comment in `ProgramInviteReview.java:100-110`).
-- MODEX with a count of 12 or more gives QUALIFYING; MODEX with fewer gives BELOW_BAR.
-- Any other source (MOSO, PERSON, MMI_14MO) or no figure gives UNKNOWN. The facts are still recorded, with `verified=false`.
+- **Superseded 29/10 by Bao's decision 2 (below).** Trusted figure = one a staff member put in Recruit or a machine source fed by Modex: `units_12mo_source` in (PERSON, MODEX, MOSO).
+  - PERSON is only ever written by `PUT/POST /candidates` (`CandidateServiceImpl.java:1645-1647`), and a row-scoped HEADHUNTER/TEAM_LEAD is refused `units12mo` (`CandidateFacadeImpl.SCOPED_REFUSED_FIELDS`). So PERSON = a Recruiter/Manager/Admin typed it after checking Modex/MMI. The audit log has who.
+  - MOSO = `LORecruiting.closed_loan_past_12_months`, which packs fills from Modex (`UpdateDataUsingModexQueueOp.java:109-110`).
+  - MMI_14MO stays UNKNOWN (a 14-month count, D305 "never verified"); a recruiter who checks MMI types the 12-month figure, which becomes PERSON and locks out the MMI write.
+- Trusted with a count of 12 or more gives QUALIFYING; trusted with fewer gives BELOW_BAR.
+- MMI_14MO or no figure gives UNKNOWN. The facts are still recorded, with `verified=false`.
+- The Loan Officer's own typed numbers (`self_reported_closed_loans`, `self_reported_volume`) never reach `units_12mo` (`MosoRowMapper.java:1139-1141`, D14/Q30) and never decide the status.
+- Later, once Modex/MMI are integrated, narrow the trusted set to MODEX (and MMI) only; keep it a setting (`referral.program_qualification_trusted_sources`, default `PERSON,MODEX,MOSO`).
 - Window end is the Modex export day (`ModexPerformance.exportedOn`); window start is that day minus 12 months.
 
 **Re-evaluation:**
@@ -127,7 +132,7 @@ The D339 company-form pick arrives as a confirmed FK, so it is covered by step 1
 
 Migration numbers: V296 is on master and V295 belongs to open PR #741. I used V297 and V298; re-check before pushing.
 
-### Open questions
-1. **Seth and the packs marker.** packs' "dual role never gets the marker" conflicts with D340(2). Does Bao want packs changed, or should Recruit's mirror override packs for a flagged recruiter who is also an approved member?
-2. **UNKNOWN versus a low self-reported count.** I treat a non-Modex figure as UNKNOWN, even when it is below 12. Is that what Bao wants?
-3. **Showing BELOW_BAR to the referrer.** Is that acceptable in My referrals (flag default off)?
+### Decisions (Bao, 29/10)
+1. **Seth and the packs marker: (A).** Change packs PR #3739/#3740 to match D340: a staff recruiter who is also an approved member is credited under the program like any member. Edit the PR only; Khải still merges and deploys.
+2. **Which loan count to trust.** Recruit never trusts the Loan Officer's own numbers. Until Modex/MMI are integrated, the recruiter checks Modex/MMI by eye and types the figure into Recruit, and Recruit trusts that figure. After integration, Recruit trusts only Modex/MMI. Codebase check 29/10: this already holds for `units_12mo` (see the rule in section 3); the only change is that section 3 now counts PERSON as trusted.
+3. **Show the label to the referrer: (B).** `referral.program_status_visible_to_referrer` goes on with the feature; My referrals shows the label only (qualifying / below bar / not checked yet), never the loan count.
