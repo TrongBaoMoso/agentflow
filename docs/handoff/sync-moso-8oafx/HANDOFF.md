@@ -3,6 +3,32 @@
 Away window night 21->22/10 (memory feedback_away_window_2122_8oafx_sync.md): recruit-be/fe -> STAGING only, no prod. packs PR only.
 Design: `bd show agentflow-8oafx` notes "PROPOSAL CONFIRMED".
 
+## RESUME POINT — 29/10 ~18:00 +07 (Bao paused to go home; session 6b7abf95)
+Read this block first. Everything below it is older history.
+
+### Done today (measured)
+- recruit-be prod: hand-off + identity flags ON (#703, 20bf683f); then CALL_WORKSPACE, GOOGLE_CALENDAR_EVENTS, MEET_ATTENDANCE, WEBINAR_SIGNALS ON (#766, f0f3a3a2). Live prod pod shows all true. Later someone else promoted be to 0d63d20d (master=staging=production).
+- packs #3805 (master 83eae70aa88) + #3806 (3.64.1 fef2056685b) MERGED: push carries `__changed_by {kind LOAN_OFFICER|STAFF|SYSTEM, name, email}`. master deployed to MOSO staging via SWAT Rerun (GAE b 2026-10-29T10:33Z). 3.64.1 -> prod = Khai.
+- Bead ax9hm CLOSED (not reproducible: W1 pct 0.5 opens "Agreement signed").
+- Bao decisions 29/10: bell for MOSO changes = INFO ONLY (no click action, no yellow card, no "It had been fixed in recruit" note, no "MOSO" wording); STAFF copy "{field} của {lo} được {name} đổi: a → b"; l21zt = confirm popup, allowed early; r0g2q copy approved; markdone UI approved; wzkts "merge đi"; swd7k item 1 = do it with new plain copy (no "in MOSO").
+
+### Open PRs / in-flight (resume here)
+| Item | Where | Next step |
+|---|---|---|
+| recruit-be #767 (changed_by in bell payload, D344) | branch feature/changedby-moso-field | CI was running (integration tests). 2 reviews: packs-side APPROVE; be reviewer blocking (INTEGRATIONS row) FIXED. When green: `gh pr update-branch 767` if BEHIND, merge, promote staging. Prod later with the fe change. |
+| recruit-be #768 (comment-only) | auto-merge ON | nothing; merges itself when green |
+| recruit-fe #610 (l21zt early Mark done confirm, incl. checklist setup call) | auto-merge ON, 2 reviews APPROVE, CI green | after it merges: `git log origin/staging..origin/master` (only promote others' commits after asking their session), `gh workflow run promote-staging.yml -R LoanFactory-Inc/recruit-fe`, check cd-staging |
+| lf-homepage #2691 (r0g2q post-1-1 register copy) | branch agent/r0g2q-post-1-1-register-copy, worktree _worktrees/lfh-r0g2q | reviewer A blocking: catch-path false + reset on mount, ~5 s timeout fallback, flow-hook test (agent was on it; see its WIP commit). Then re-review, merge to master (= staging). Prod = master->production PR, ask Bao |
+| recruit-fe changed-by bell rework + swd7k item 1 | worktree recruit-fe-worktrees/changedby (branch feature/changedby-bell) + new branch feature/swd7k-rejected-note-in-edit | NOT pushed (UI). Rework per Bao decisions above + rejected-note copy table (EN/VI) in the agent brief; screenshots -> show Bao locally -> reviews -> push |
+| packs #3807/#3808 (wzkts lock + helper) | PR branches | 2nd reviewer REQUEST CHANGES: hash e-mail in lock key (PII in logs), rethrow the body's own exception, namespace check; plus follow-up PR for #3805 marker-clear test + Javadoc. Then re-review and merge (Bao said merge). |
+| 36f0b E2E | staging | after #767 on staging: LO changes phone on www.viet18.com/register-loan-officer for a candidate with a recruit fix -> bell says "<LO> tự đổi Phone…"; staff edit in MOSO -> "<field> của <lo> được <name> đổi…" |
+
+### Still OFF on prod by decision (bead agentflow-61yi6)
+MOSO_OWNER_SYNC (dry run first; up to 1341 S5-S7 rows), HR_HANDOFF_AUTO_SEND (ask HR), AGREEMENT_SEND (not needed). Inert group needs Thanh (secrets/subscriptions), Khai (moso-notifier mail config, omni #608/#609, reply domain), Bao (central RBAC, DRY_RUN->SEND).
+
+### Rules in force
+Bao is the only prod approver; packs prod = Khai; UI must be shown locally before push; 2 reviewers before merge; ram-gate before Chrome/jest/gradle/next; test e-mails bao.trinh+tag only.
+
 ## PROD FLIP — 29/10 ~15:30 +07 (Bao: "bật prod đi")
 - PR #703 merged 20bf683f with all 7 flags (5 hand-off + IDENTITY_WRITEBACK + _EMAIL); staging promoted; production FF 21d9e2e4..20bf683f; live prod deployment shows all 7 true, 2/2 pods Running.
 - Pre/post checks: outbox 0 -> 0, candidate_moso_field_sync 0 -> 0, onboarding.reminder.delivery_mode DRY_RUN, five ONBOARDING grants all MOSO specialists. Two reviews: auto-trigger audit SAFE, config review APPROVE.
