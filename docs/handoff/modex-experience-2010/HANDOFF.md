@@ -200,3 +200,9 @@ Worktrees on disk: `recruit-be-worktrees/fix-handoff-test` (merged, removable), 
 - CRM Push URL was the Bonzo webhook (= `~/.mmi-research/crm_push_url.backup`, verified equal) → now `https://gateway.loanfactory.com/recruit-svc/public/v1/integrations/mmi/push/<Keychain recruit-mmi-push-token-production>`; re-read after reload = equal.
 - **Test push NOT done** (session logged out first). Bao: test tomorrow morning. Plan: push NMLS 1040852 (Matthew Laird, prod candidate 7b533401-…, S0, no figures) → check `webhook_events` provider MMI row, candidate figures + timeline on prod (read-only pod: scratchpad `ro.sh`). Rollback = `node hookurl.js restore crm_push_url.backup`.
 - Item 8 FE preview restarted on http://localhost:3061 (next dev + proxy :8199), still not pushed, waiting Bao.
+
+## Night 29→30/10 (away window: to STAGING, not prod)
+
+- MMI 7-day device trust CONFIRMED: login with password only, no 2FA (~23:50). Logged out right after (Vic's team shares the seat). Test push of NMLS 1040852 = morning.
+- recruit-fe **#618 merged (74446db7) → STAGING** (cd-staging success): item 8 UI redone to the mockup (dot pills strip on Pipeline+Cold, colored level chips + "N loans since 2022", Experience picker, Reports Experience tab + Period picker). 2 reviewers approved. Staging check 320/1440: no horizontal scroll, chips render (`ui-preview/stg-pipeline-*.png`). Prod waits for Bao. Local preview (:3061 + demo proxy) can be stopped.
+- recruit-fe **#619** (scheduled SMS FE, flag off): reviewer A approve, B requested changes (manual Send shown on OMNI_NO_ANSWER = double-text risk; explicit config false must win over cache; loading label) — agent fixing.
