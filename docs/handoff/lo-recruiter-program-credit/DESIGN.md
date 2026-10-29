@@ -152,4 +152,11 @@ Migration numbers: V296 is on master and V295 belongs to open PR #741. I used V2
 - No backfill: a dual-role member's leads before deploy stay as they were; the first monthly run after deploy is partial for him.
 - Tell Accounting: a dual-role referrer no longer gets the LO-referral bonus on program-credited leads (D268 one program).
 
-**Next (not started):** D268/D269 program snapshot table (V298+), D269.2 qualification with the trusted-sources rule (section 3), FE QualifyingChip (label only in My referrals) with a local preview for Bao.
+**D268/D269 backend (in progress, not pushed, all dark):** worktree `_worktrees/rbe-program-snapshot`, branch `feat/referral-program-snapshot`.
+- Migrations actually used: V299 `candidate_referral_program` (+ write-once trigger), V300 backfill, V301 qualification (+ history), V302 manual decision (`manual_decided_by/_at/_reason`, `decision_source=MANUAL`). V298 belongs to open PR #764 (scheduled SMS); section 2's "V297/V298" numbers are superseded.
+- packs fields mapped in `MosoRowMapper` (credit, member, credit_at, unverified, self_credit_hold); `self_credit_hold` → PENDING (`PendingReason.SELF_CREDIT_HOLD`).
+- Tightening in progress: clear `pending_reason` on settle; MANUAL needs actor + reason, automatic sources must leave manual_* null; `referrer_key` immutable after insert (first touch).
+- ITs need Docker (stopped on Bao's Mac): CI runs them; trigger rules also proven at SQL level on a throwaway Postgres.
+- Then: 2 reviewers → PR → staging (flags off). FE QualifyingChip (label only in My referrals) with a local preview for Bao after that.
+
+**Other 29/10:** recruit-fe #609 (d0d0739e) on staging: the profile "Referral" block is the self-reported channel ("How they heard about us"), display-only (bead agentflow-yzgo0). Bead agentflow-rken6: Recruit-side self-referral guard + manual decision UI for when Recruit owns referrer edits.
