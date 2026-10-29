@@ -3,6 +3,19 @@
 Away window night 21->22/10 (memory feedback_away_window_2122_8oafx_sync.md): recruit-be/fe -> STAGING only, no prod. packs PR only.
 Design: `bd show agentflow-8oafx` notes "PROPOSAL CONFIRMED".
 
+## MORNING REPORT — 30/10 (night 29→30 done, STAGING only)
+| Item | State (measured) |
+|---|---|
+| r0g2q register copy after 1-1 | PROD (lf promote #2692, Cloud Run lf-homepage-00757) |
+| l21zt early Mark done | STAGING: recruit-fe #610 (dialog) + #620 (button offered once booked) + recruit-be #771 (D345). Live E2E PASS (Today + My hand-offs, Cancel pressed) |
+| swd7k plain refused-fix note + no edit modal | STAGING: recruit-fe #613. Live E2E PASS |
+| 36f0b who-changed bell | STAGING: packs #3805/#3806 (MOSO staging GAE b), recruit-be #767 + #770, recruit-fe #612. LO case PASS end to end; STAFF case payload PASS, bell sentence untested (MOSO staging login expired) |
+| wzkts packs email lock | MERGED (#3807/#3808), NOT on MOSO staging: packs master does not compile (39ded1e5c59, Tuan) — draft message above |
+| Prod decisions for Bao | recruit-be #767 #770 #771 and recruit-fe #610 #612 #613 #620 are on staging only. #770 widens privacy rule R1 for these bells (phone/email values + staff name go to the shared notifier) — Bao to accept before prod. packs 3.64.1 prod = Khai. |
+| Staging test data left | bao.trinh+e2e30cb1 (CHANGED_IN_MOSO, MOSO phone 3199), +e2e30cb2 (SYNCED 3122, MOSO career/lang filled), t08e1 1-1 booked 30/10 03:28 local, t08q10 setup call booked 30/10 |
+| To finish | Bao logs into MOSO staging → edit cb2 phone as staff → bell "Số điện thoại của Cbtwo Echo được <name> đổi: …" |
+All session worktrees removed; SWAT Chrome closed.
+
 ## NIGHT 29→30/10 (Bao asleep; STAGING only, no prod, no messages) — see memory feedback_away_window_2930_changedby_staging
 Done before the night: r0g2q LIVE on lf PROD (promote PR #2692 = only #2691, Cloud Run lf-homepage-00757; first prod build failed on a transient next/font Google download, re-run of trigger e9e6d7f4 succeeded). recruit-be #767 (033e5a9c) and recruit-fe #610 (4d57fe54), #613 (8f99ba83) on STAGING. packs #3805/#3806/#3807/#3808/#3810/#3811 merged; MOSO staging still GAE b (has #3805 changed-by, NOT wzkts/#3810) because packs master does not compile.
 
