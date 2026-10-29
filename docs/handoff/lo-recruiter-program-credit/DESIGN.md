@@ -188,8 +188,10 @@ Migration numbers: V296 is on master and V295 belongs to open PR #741. I used V2
 - The implementer committed its partial work as a `wip:` commit whose body lists DONE / PARTIAL / NOT STARTED per item — read `git log -1` in the worktree.
 - ITs need Docker (stopped on Bao's Mac); CI runs them. Trigger rules are also proven at SQL level on a throwaway Postgres 14.
 
+**UPDATE 29/10 ~17:55:** the implementer reported ALL 10 items DONE inside `f95d72e8` (pushed to origin/feat/referral-program-snapshot): V302/V303 folded into V299 (231 migrations, highest V301); evidence defined once in a `candidate_referral_evidence` view + `candidate_referral_program_catch_up()` function (used by V300 and by `ReferralProgramCatchUp` on the sync tick when the snapshot flag is on); CHECKs + trigger clears pending_reason; history refuses UPDATE/DELETE (merge copies history to the survivor); hold settles only MANUAL; metrics `referral_program_settle_refused{reason}`, `referral_program_carry_skipped{reason}`; sweep = no-check-yet + UNKNOWN (partial index). `./gradlew test` 6542/0 failures (gated). ITs NOT run (Docker off) — CI is their first run. Known gap: no automated parity test between the SQL view and the recorder's Java evidence. The wip commit message should become a proper conventional message when squash-merged.
+
 ### Next steps on resume
-1. Read the wip commit body; spawn a dev-be agent to finish the remaining items (give it this section + the hard-stop ram-gate wrapper).
+1. Re-review `f95d72e8` against `36103b1a` (what changed) with the same two reviewers' angles (java + database); fix findings.
 2. Re-review with two reviewers (java + database) → PR (squash) → CI (first real IT run) → merge → `promote-staging.yml` → check flags are off on staging.
 3. FE: QualifyingChip — label only (qualifying / below bar / not checked) in My referrals; local preview for Bao before push.
 4. Remind Bao: Khải (packs deploy + 2 SystemProp), rotate the GitHub CLI token (an agent printed `~/.npmrc` into its own log on 29/10).
