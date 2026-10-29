@@ -2,6 +2,45 @@
 
 Session `460363a7` (21/10/2026). Paused 21/10. **Approved by Bao 23/10**: see RESUME HERE. Nothing coded yet.
 
+## CLOSE-OUT 29/10 (session 460363a7 closed by Bao) — START HERE
+
+Everything below was measured on 29/10 (gh, git ancestry, kubectl, staging DB). The older sections are history.
+
+**Shipped:** all of these are on staging AND production. Production came from another session's release on 29/10.
+- be: #721 #722 #724 #730 #732 #735 #736 #737 #739 #742 #744.
+- fe: #568 #569 #572 #577.
+- Clusters: prod = `gke_lender-rate_us-central1_moso-gke` ns `recruit-be`; staging = `gke_lenderrate-master_us-central1_moso-kube` ns `recruit-be`.
+- Production has no `RECRUIT_FEATURES_LO_MAIL_*` env, so the four lo-mail flags are false there.
+- `moso-record-required` is TRUE by default and has no prod env, so production behaviour is unchanged.
+
+**Unfinished (P2, `agentflow-0gwad.3`):**
+- be #740 (webinar mail, 5085cd2a) is CONFLICTING with master.
+- be #741 (invite + welcome, cad881ac) is stacked on #740 and is also CONFLICTING.
+  - #741 still carries V294, which is already on master, plus **V295**. V295 is now a gap below master's V298. Prod runs with out-of-order OFF, so renumber it to the next free number (V299+ on 29/10) and re-scan right before merge.
+  - D330 and D331 are still free (master tops out at D344).
+- Staging e2e was never done.
+  - `RECRUIT_FEATURES_LO_MAIL_REMINDERS=true` and the allowlist is `bao.trinh+*@loanfactory.com`.
+  - `lo_mail_sends` has 0 rows.
+- Next: rebase, then CI, then 2 reviewers, then merge #740 and then #741. Verify each deploy, then run the e2e to bao.trinh+ only.
+- Worktrees were removed; the branches are on origin.
+- Query helper `~/.cache/claude-recruit/pgq_stg.sh <NEW-temp-pod-name> "<SQL>"`. The FIRST ARG IS A NEW POD NAME, and the script deletes that pod at the end. Never pass the app pod's name.
+
+**Waiting on others:**
+- moso-notifier #350 (Khai), since 26/10. Production already has a live RECRUIT `mail_config` row, so #350 did not ride Wave 4.
+  - Khai's options: keep the existing row, or allow one read-only query of its non-secret columns.
+  - The lead recommended option 2. The draft reply was **never posted** because Bao did not confirm.
+  - The Java notifier turn-off is planned for about 09/11, so re-check with Khai whether #350 is still needed.
+  - notification-service #363 merged 25/10. The java-acks PR goes out only after #350 merges.
+- Prod Cold import (`agentflow-kzwcg`): #724 and #732 are now on prod. Next is a real prod server dry run, then Bao's explicit go.
+- moso-aid CSV export (Bao action in `P0-SNAPSHOT.md`): not done. Only the two roster JSON files exist in the snapshot dir.
+- `agentflow-0gwad.8` must be done before `moso-record-required` is turned off anywhere.
+
+**Open beads:**
+- Epic `0gwad`, `.1` (CSV), `.2` (#350), `.3` (P2).
+- `.4`–`.7` (P3–P6, not started).
+- `.8`, `.9`, `kzwcg`, `tlpsq` (CI migration guard), `v5enx` (staging admin test account).
+- `flyuv` was closed (done on prod).
+
 ## PAUSE 23/10 evening (Bao shut down) — RESUME FROM HERE
 
 Nothing is on prod. Agents were told to stop safely and append resume notes. Read them first:
