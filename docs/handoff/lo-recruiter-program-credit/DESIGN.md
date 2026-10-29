@@ -161,6 +161,18 @@ Migration numbers: V296 is on master and V295 belongs to open PR #741. I used V2
 
 **Other 29/10:** recruit-fe #609 (d0d0739e) on staging: the profile "Referral" block is the self-reported channel ("How they heard about us"), display-only (bead agentflow-yzgo0). Bead agentflow-rken6: Recruit-side self-referral guard + manual decision UI for when Recruit owns referrer edits.
 
+## STATUS 30/10 ~02:30 (+07): D268/D269 BACKEND + FE CHIP ON STAGING, FLAGS STILL OFF
+
+Night 29→30/10 (Bao asleep; mandate: end-to-end to STAGING, no prod, staging flag may be turned on).
+
+- **recruit-be #772** squash `03a162f1` → staging (promote run 40937955778, deploy 40937996356). Six review rounds (java + database reviewers, both APPROVE on the final range). CI integration tests on Docker: first run caught 46 failures (our TRUNCATE trigger blocked other ITs' `TRUNCATE candidates CASCADE`); fixed by refusing TRUNCATE only while history has rows; rerun green (1962 ITs).
+  - Final design deltas vs above: catch-up is a **safety net** (any candidate with evidence and no row older than `referral.program_catch_up_grace_minutes`=15, batch `referral.program_catch_up_batch`=5000, oldest first); decides REFERRAL only when certain, else PENDING/NO_PACKS_VERDICT, never LO_RECRUITER_PROGRAM; runs only when `program_sync.mode` != OFF and the last tick succeeded recently with an approved roster; skips + counts overlong keys and undated candidates. PENDING waiting for packs settles only from a packs verdict or MANUAL. History append-only; DELETE via FK cascade or `purge_candidate_program_records(candidate_id)`.
+  - Metrics: `referral_program_pending{reason}`, `referral_program_catch_up_written{window}`, `referral_program_catch_up_skipped{reason}`, `referral_program_recorder_skipped{reason}`, `referral_program_settle_refused{reason}`, `referral_program_carry_skipped{reason}`.
+- **recruit-fe #616** squash `267f923a` → staging. QualifyingChip (label only) in My referrals table + cards; admin row shows "Referrer: … program" chip + label. Renders nothing while fields are null. Shots: `shots/qualifying-chip-*.png` (mocked) and `shots/staging-*-flags-off.png` (real staging).
+- **Verified on staging (API, manager token):** `/referrals` items carry `program`/`qualifying_status`, all null (flags off). Pages load without errors.
+- **NOT done: turning the staging flags on and measuring.** gcloud credentials on the Mac expired (kubectl "Reauthentication failed"), and no self-login staging test account has ADMIN (settings API 403). Needs Bao: `! gcloud auth login` (then in-cluster PUT `/api/v1/admin/settings/referral.program_snapshot_enabled` etc. as staging admin a0aa8a66-…), or do it from Bao's admin session.
+- **Before PROD flag-on:** packs #3739/#3740 deployed (Khải) else most referrals land PENDING/NO_PACKS_VERDICT; MANUAL writer = bead agentflow-rken6; do not toggle the flag off/on casually (safety net covers it, but watch `catch_up_written{window=on}`).
+
 ## RESUME POINT — PAUSED 29/10 ~17:45 (+07) (session 8658d500, Bao shut the Mac down)
 
 **Read this first, then `bd show agentflow-k1obs`.** Everything below is the real state; nothing was half-pushed.
