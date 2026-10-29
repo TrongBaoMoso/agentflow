@@ -38,7 +38,7 @@ Paused 2026-10-15 ~17:45 (Bao shut the machine down). Session d11ae72d-de7f-4ddd
 - **Why:** Tai (auth-service owner) said apps should not read CRM's engagement catalogue. auth-service #174 (19/10) serves `GET /auth-svc/public/api/v1/applications` (PUBLIC + ACTIVE, tera-docs `auth/APP_ACCESS_MODEL.md`). The catalogue shrink is intended: apps went PRIVATE. Tai set RECRUIT to PUBLIC on prod as a test (29/10).
 - **#602 (squash 068e7662) is on STAGING, NOT production.** The landing reads only the auth-service endpoint, drops the CRM addition and the `/origins` call, and still hides Recruit on its own page. Bao approved the local preview; 2 reviewers APPROVE; CI green.
 - **Staging check in a browser:** the launcher shows AI, Ally, Marketplace, Nova, with no CRM.
-- **Prod effect once promoted:** AI and Ally (the endpoint returns AI, ALLY, RECRUIT, and Recruit is hidden on its own page). Prod waits on Bao's go.
+- **Prod effect once promoted:** AI and Ally (CRM drops out). Bao 29/10: goes to prod in the END-OF-DAY batch push with the rest of staging, not separately (bead agentflow-sc1ip). Not blocked by APP_ACCESS_ENFORCE: it only reads the anonymous list.
 - **Related, in bead agentflow-y89cf:** a Loan Officer with 0 referrals has no REFERRER role. If RECRUIT is PRIVATE and enforced on prod, they get Access Denied. Bao told Tai not to add RECRUIT to the prod enforce list until the D320/D326 steps are done.
 - The draft for Tai/Khai in the RESUME POINT below is superseded; the conversation happened on Slack 29/10.
 
