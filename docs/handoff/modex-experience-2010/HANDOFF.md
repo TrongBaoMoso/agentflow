@@ -165,3 +165,24 @@ State: nothing running in background (no agents, Chrome closed, no dev servers).
 - Item 8 APPROVED (count strip on Pipeline + Cold, filter on Hot/Cold/Pipeline, Reports by recruiter AND by source toggle). Bao: UI must match existing pages (Today, Hot leads, Pipeline) — font sizes, colours, buttons, filters; the mockup only fixes the content. BE in progress (worktree recruit-be-worktrees/experience-lists); FE after BE, local preview first.
 - MMI → prod: log exclusion `recruit-mmi-push-token` CREATED on lender-rate `_Default` (enabled, 29/10, by bao.trinh). tera-docs #757 + #886 MERGED. Secret `recruit-be-recruit-mmi-push-token` NOT created: bao.trinh lacks secretmanager create on lender-rate (IAM_PERMISSION_DENIED) → ask Thanh/DevOps (created the other 25 prod secrets 27/10). DO NOT merge/promote recruit-be #762 before the secret exists (prod secret-sync fails closed → whole prod release blocked). MMI URL switch: tonight after 23:00 VN with Brayan's 2FA code.
 - FE polish in progress (worktree recruit-fe-worktrees/sendinfo-polish, local only): Send-now message required, OnBehalfConfirm anchor required, Escape-in-Drawer test, 320px switch overflow.
+
+## RESUME POINT — PAUSE 29/10 ~18:10 (Bao shut the machine down; session a8ef2df9)
+
+Measure first (`git fetch`, `gh pr view`); do not trust this list blindly.
+
+**Done 29/10 afternoon**
+- recruit-be #765 merged (b38af58a): fixed master test `OnboardingV2HandoffFlagDefaultTest` broken by #703.
+- recruit-be #762 merged (0d63d20d) = MMI push ON in prod. Staging AND production deployed at 0d63d20d (cd-production success incl. secret sync → Thanh's accessor grant works).
+- Prod secret `recruit-be-recruit-mmi-push-token` (lender-rate): Thanh created it, we set v1 (piped from Keychain, never printed).
+- Probe: real token + non-JSON body → 400; wrong token → 404. **The 400 error body echoes the request path incl. the token** (error envelope `error.path`). My probe printed ~9 leading chars of v1 → **rotated**: v2 added; Keychain `recruit-mmi-push-token-production` (account recruit-be) holds v2. `secret-sync.yml --ref production` run 40860201269 SUCCESS and restarted pods; v2 probe → 400 (live). v1 still enabled in Secret Manager (only Thanh/Đạt can disable; harmless, sync reads latest).
+- Bead created: MMI push stores raw body in webhook_events (store knownKeysOnly) — non-blocking security note.
+
+**TODO on resume, in order**
+1. File a bead + fix: error envelope `path` echoes the token for `/public/v1/integrations/mmi/push/**` (and check whether the 400 is logged with the path; prod log exclusion covers jsonPayload.path/textPayload/url). Mask the path for that route.
+2. #764 (scheduled SMS auto-send, D342, `scheduled_send_info.sms_enabled` false everywhere): 2 reviewers APPROVED at 41de8b5e, branch updated, auto-merge enabled. After merge: `gh workflow run promote-staging.yml -R LoanFactory-Inc/recruit-be -f sha=<master sha>`, check cd-staging. FE still to do (label "Schedule SMS", time label, status chip, new reason codes). Go-live prereqs: 10DLC test SMS on staging, omni COMM_QUESTIONS_ENABLED prod, allowlist — bead agentflow-236t9.16.
+3. #763 (item 8 BE, now **D343**, head 0f756458, CI green): needs 2 independent reviewers → squash-merge → promote staging. API: rows carry `experience_level`; filter `experience=`; `GET /candidates/experience-counts`, `GET /inbox/cold/experience-counts`; `GET /reports/experience?from&to&by=recruiter|source`.
+4. Item 8 FE (recruit-fe): must MATCH Today / Hot leads / Pipeline (font size, colors, buttons, filters) — Bao's note on the mockup (artifact SFDAcNqB5pqGN9rDzUZhd7). Local preview for Bao BEFORE push.
+5. After 23:00 VN (Bao pings Brayan for MMI 2FA): set Victoria's MMI CRM Push URL to `https://gateway.loanfactory.com/recruit-svc/public/v1/integrations/mmi/push/<Keychain recruit-mmi-push-token-production>` (back up old URL), push 1 Loan Officer, verify card/cells/timeline and logs hide the path. Update docs/secrets/SECRETS-INVENTORY.md (~line 74) + BOOTSTRAP.md MMI note (v2, rotated 29/10).
+6. Small: dead i18n key `save_SEND_INFO` (recruit-fe en/vi outcome.json:111); OutcomeSection split later ("nào báo rồi làm"); memory line: experience prod flag is ON since 29/10 07:19 UTC.
+
+Worktrees on disk: `recruit-be-worktrees/fix-handoff-test` (merged, removable), `recruit-be-worktrees/experience-lists` (#763), `recruit-be-worktrees/scheduled-sms` (#764).
