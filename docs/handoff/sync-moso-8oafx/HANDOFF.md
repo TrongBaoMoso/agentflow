@@ -3,6 +3,12 @@
 Away window night 21->22/10 (memory feedback_away_window_2122_8oafx_sync.md): recruit-be/fe -> STAGING only, no prod. packs PR only.
 Design: `bd show agentflow-8oafx` notes "PROPOSAL CONFIRMED".
 
+## PROD FLIP — 29/10 ~15:30 +07 (Bao: "bật prod đi")
+- PR #703 merged 20bf683f with all 7 flags (5 hand-off + IDENTITY_WRITEBACK + _EMAIL); staging promoted; production FF 21d9e2e4..20bf683f; live prod deployment shows all 7 true, 2/2 pods Running.
+- Pre/post checks: outbox 0 -> 0, candidate_moso_field_sync 0 -> 0, onboarding.reminder.delivery_mode DRY_RUN, five ONBOARDING grants all MOSO specialists. Two reviews: auto-trigger audit SAFE, config review APPROVE.
+- From now on any Send/Approve offer, 1-1 Done or profile save on prod writes to MOSO prod (and can e-mail a real Loan Officer).
+- Bao decisions: (a) re-save of same value does not re-freeze - keep; (b) no note under the field - dropped; new bead for bell click -> profile with the changed field highlighted (only from the bell), open question who-changed wording; keep W1-W3 test data; key rotation / leaked gho token: leave; beads stay local.
+
 ## CLOSE-OUT — 29/10 (session 6b7abf95 closed by Bao), all measured
 - Code: be #704/#706, fe #556 are in origin/production (29/10 release). packs #3722 is live on MOSO prod (GAE c, 28/10; `POST /api/recruit/v1/candidate/emailAvailable` 401 vs bogus path 404).
 - Flags: live staging deployment has all 7 ON; live prod deployment has none of them set (all default false).
