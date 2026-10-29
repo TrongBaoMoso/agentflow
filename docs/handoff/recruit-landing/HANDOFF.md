@@ -33,6 +33,15 @@ Paused 2026-10-15 ~17:45 (Bao shut the machine down). Session d11ae72d-de7f-4ddd
 - Luna shows a letter because its favicon is unreachable, the same as in the other apps.
 - A real Loan Officer, Armando, tested on production: he landed on My referrals with an empty state, as expected.
 
+## STAGING 29/10 ~10:40 VN: landing 9-dot on auth-service catalogue (recruit-fe #602)
+
+- **Why:** Tai (auth-service owner) said apps should not read CRM's engagement catalogue. auth-service #174 (19/10) serves `GET /auth-svc/public/api/v1/applications` (PUBLIC + ACTIVE, tera-docs `auth/APP_ACCESS_MODEL.md`). The catalogue shrink is intended: apps went PRIVATE. Tai set RECRUIT to PUBLIC on prod as a test (29/10).
+- **#602 (squash 068e7662) is on STAGING, NOT production.** The landing reads only the auth-service endpoint, drops the CRM addition and the `/origins` call, and still hides Recruit on its own page. Bao approved the local preview; 2 reviewers APPROVE; CI green.
+- **Staging check in a browser:** the launcher shows AI, Ally, Marketplace, Nova, with no CRM.
+- **Prod effect once promoted:** AI and Ally (the endpoint returns AI, ALLY, RECRUIT, and Recruit is hidden on its own page). Prod waits on Bao's go.
+- **Related, in bead agentflow-y89cf:** a Loan Officer with 0 referrals has no REFERRER role. If RECRUIT is PRIVATE and enforced on prod, they get Access Denied. Bao told Tai not to add RECRUIT to the prod enforce list until the D320/D326 steps are done.
+- The draft for Tai/Khai in the RESUME POINT below is superseded; the conversation happened on Slack 29/10.
+
 ## PROD RELEASED 29/10 (~09:40 VN), session closed
 
 - **Secret Manager check (measured, not taken on trust):** the lender-rate audit log shows thanh.t.tran created all 25 `recruit-be-*` sources on 27/10 11:55Z, each with version 1 and `secretAccessor` for `recruit-be-deploy@lender-rate` (50 SetIamPolicy calls, 0 errors, no deletes). Values cannot be read with Bao's account.
