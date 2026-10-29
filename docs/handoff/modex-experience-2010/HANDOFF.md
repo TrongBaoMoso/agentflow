@@ -193,3 +193,10 @@ Worktrees on disk: `recruit-be-worktrees/fix-handoff-test` (merged, removable), 
 - Prod probe 22:03: real token + non-JSON → 400, token NOT in body, path masked `.../push/***`; wrong token → 404.
 - Item 8 FE (bead agentflow-2dyj6): built in `recruit-fe-worktrees/experience-ui`, branch `feat/experience-level-lists`, commits e163b7c6 + 982c1945, **NOT pushed** — local preview for Bao at http://localhost:3061 (read-only proxy :8199 to staging; PIDs next 92676, proxy 14954; ram-gate next-dev token 1793282667-92085-5019). Screenshots `ui-preview/`. Waiting Bao's look. Open points for Bao: "No loan figures yet" dominates staging; dropped "N loans since 2022" from Pipeline rows; no period selector on the report yet; Kanban/card views lack picker+strip; the Next dev "1 Issue" badge to check before PR.
 - Still TODO: FE for #764 (Schedule SMS label/status/reason codes); MMI URL switch after 23:00 with Brayan's 2FA (token = Keychain `recruit-mmi-push-token-production`, v2).
+
+## 29/10 ~23:20 — MMI CRM Push URL switched to production
+
+- Bao logged into Victoria's MMI (2FA via Brayan). MMI moved to **new.mmi.run** (login = email + password on one page; webhooks page `/settings/user/webhooks`; LO profile `/nmls/<id>`; push menu = paper-plane icon top right).
+- CRM Push URL was the Bonzo webhook (= `~/.mmi-research/crm_push_url.backup`, verified equal) → now `https://gateway.loanfactory.com/recruit-svc/public/v1/integrations/mmi/push/<Keychain recruit-mmi-push-token-production>`; re-read after reload = equal.
+- **Test push NOT done** (session logged out first). Bao: test tomorrow morning. Plan: push NMLS 1040852 (Matthew Laird, prod candidate 7b533401-…, S0, no figures) → check `webhook_events` provider MMI row, candidate figures + timeline on prod (read-only pod: scratchpad `ro.sh`). Rollback = `node hookurl.js restore crm_push_url.backup`.
+- Item 8 FE preview restarted on http://localhost:3061 (next dev + proxy :8199), still not pushed, waiting Bao.
