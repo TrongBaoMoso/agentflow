@@ -160,3 +160,36 @@ Migration numbers: V296 is on master and V295 belongs to open PR #741. I used V2
 - Then: 2 reviewers → PR → staging (flags off). FE QualifyingChip (label only in My referrals) with a local preview for Bao after that.
 
 **Other 29/10:** recruit-fe #609 (d0d0739e) on staging: the profile "Referral" block is the self-reported channel ("How they heard about us"), display-only (bead agentflow-yzgo0). Bead agentflow-rken6: Recruit-side self-referral guard + manual decision UI for when Recruit owns referrer edits.
+
+## RESUME POINT — PAUSED 29/10 ~17:45 (+07) (session 8658d500, Bao shut the Mac down)
+
+**Read this first, then `bd show agentflow-k1obs`.** Everything below is the real state; nothing was half-pushed.
+
+### Done
+- **D340.1 on PROD (dry-run).** moso-aid prod rev 00120 (key `PACKS_INBOUND_SERVICE_KEY` added 29/10, Keychain `moso-aid-packs-inbound-service-key-production`); recruit-be prod 21d9e2e4; prod `program_sync.require_recruiter_flag=true`, `program_sync.mode=DRY_RUN`. Prod members: Matt Moghaddam (team_lead, out-sourcing recruiter flag TRUE) and Destiny Stroman (associate_recruiter, no flag), both **pending**. When one is approved: read the 10-minute tick log (`would_grant` / `would_deny_no_flag`), report to Bao; APPLY only on Bao's word.
+- **packs #3739 / #3740 merged** (7e14cd22dc master, 7788c20ab4 3.64.1). Deploy = Khải. Still needed (MOSO admin / Datastore write on `lender-rate`, kind `SystemProp`, default namespace): `moso_aid_base_url` (moso-aid prod `/api` root) and `moso_aid_packs_service_key` (the Keychain value). Unset = packs program credit simply off.
+- **recruit-fe #609** (d0d0739e) on STAGING: profile "Referral" block → "How they heard about us", display-only (bead agentflow-yzgo0). Prod with the next recruit-fe prod batch, Bao's ok.
+- Bead agentflow-rken6: Recruit-side self-referral guard + manual-decision UI (for when Recruit owns referrer edits).
+
+### In progress — D268/D269 backend (NOT pushed, all flags off)
+- Worktree `/Users/apple/Projects/agentflow/_worktrees/rbe-program-snapshot`, branch `feat/referral-program-snapshot` (also pushed to origin as a backup, no PR).
+- Review round 1 (rev-snapshot-a java, rev-snapshot-b database): REQUEST CHANGES. Fix list sent to the implementer (10 items):
+  1. HIGH: V300 backfill must use the recorder's evidence rules (collecting + server-resolved origin stamp; confirmed FK; member key `coalesce(admin_key_name, company_email)`; program_id from setting) + ITs.
+  2. CHECK constraints covering INSERT (pending_reason enum, null unless PENDING, MANUAL ⇔ actor + reason, manual_decided_at); trigger clears pending_reason on settle; history truly append-only (no UPDATE/DELETE), ON DELETE RESTRICT.
+  3. SELF_CREDIT_HOLD is never settled automatically (only MANUAL).
+  4. PENDING→PENDING allowed for the automatic path; referrer_key / basis immutable once set; fix the header comment.
+  5. Refused settle → count-only WARN + metric; a packs-judged push with NULL referrer may settle against the stored key.
+  6. Merge carry only when the referrer matches (decided beats PENDING with the same key); otherwise leave on loser + metric.
+  7. Drop 3-value indexes; sweep only `status='UNKNOWN'` (partial index).
+  8. Catch-up step (same evidence definition, idempotent) with the sweep when the snapshot flag is on.
+  9. Recorder must not swallow the candidate's own save failure; isolate its write.
+  10. Keep manual-decision columns, no Java writer; say so.
+  Plus: FOLD V302+V303 into V299 (never ran anywhere) → V299 snapshot, V300 backfill, V301 qualification. V298 belongs to open PR #764.
+- The implementer committed its partial work as a `wip:` commit whose body lists DONE / PARTIAL / NOT STARTED per item — read `git log -1` in the worktree.
+- ITs need Docker (stopped on Bao's Mac); CI runs them. Trigger rules are also proven at SQL level on a throwaway Postgres 14.
+
+### Next steps on resume
+1. Read the wip commit body; spawn a dev-be agent to finish the remaining items (give it this section + the hard-stop ram-gate wrapper).
+2. Re-review with two reviewers (java + database) → PR (squash) → CI (first real IT run) → merge → `promote-staging.yml` → check flags are off on staging.
+3. FE: QualifyingChip — label only (qualifying / below bar / not checked) in My referrals; local preview for Bao before push.
+4. Remind Bao: Khải (packs deploy + 2 SystemProp), rotate the GitHub CLI token (an agent printed `~/.npmrc` into its own log on 29/10).
