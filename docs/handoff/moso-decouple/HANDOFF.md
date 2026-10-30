@@ -2,6 +2,61 @@
 
 Session `460363a7` (21/10/2026). Paused 21/10. **Approved by Bao 23/10**: see RESUME HERE. Nothing coded yet.
 
+## NIGHT 30->31/10 (Bao asleep, go: P2 to prod flags OFF + prod Cold import if sane) — RESUME HERE FIRST
+
+Measured, with gh / git / kubectl until 02:15 VN, when Bao's gcloud reauth expired. After that, kubectl and the DB helpers fail on BOTH clusters.
+
+**Done:**
+- moso-notifier #350: option-2 comment posted 30/10 (read-only look at the existing RECRUIT row + is #350 moot after Java-off ~09/11). Waiting on Khai.
+- Staging `SPRING_FLYWAY_OUT_OF_ORDER` removed (set by hand 05/10 by us). All 232 staging migrations were already applied; the new pod validated 232 and is up to date. Staging now matches prod.
+- `agentflow-v5enx`: staging ADMIN account `bao.trinh+admin@loanfactory.com` (user-service register + auth-service role, staging only), verified; HANDOFF recruit-central-rbac "STAGING 30/10".
+- moso-aid CSVs: Bao exported both programs (ambassador 29 rows, lo_recruiter 16) into the snapshot dir.
+- tera-components #579: Khai's 2 defects fixed + scope arg, tests R1-R3, 2 reviewers, pushed, Khai re-requested (comment 6529189334). Do not merge (Khai).
+- Routed to owners: #608 follow-up -> bead agentflow-236t9 + nurture-drip HANDOFF.
+- Merged to master and STAGING:
+  - be #740 c60885e2 (D330 webinar mail);
+  - #741 51300fc5 (D331 invite + welcome, **V303**);
+  - #779 3a4c4f53 (tlpsq CI guard, bead closed);
+  - #782 fd389aca (0gwad.9 BE, D350, `invite-status.recruit_mail`);
+  - #776 d7416133 (runner: client-side Datastore filter);
+  - fe #631 6c998c62 (0gwad.8, bead closed).
+- PRODUCTION:
+  - recruit-fe FF to 6c998c62: #631 only, deploy success.
+  - recruit-be #740 rode to prod with another session's FF (4cffcfd7), dark.
+  - **recruit-be #741/#782 NOT on prod.** Staging carries #778 (yw9i7, another session, prod waiting on Bao) below them, so a FF would ship it. Bao decides.
+- Staging e2e to bao.trinh+:
+  - webinar SENT+DELIVERED;
+  - reminder SENT+DELIVERED;
+  - invite resend SENT+DELIVERED, second resend 409;
+  - **first-send invite of offer 35dbe927 wrote no lo_mail_sends row (unexplained; needs logs/DB)**;
+  - welcome not run (MOSO sends it on staging by design).
+  - `lo_mail.delivery_mode` = SEND on staging.
+
+**Prod Cold import (bead agentflow-kzwcg): PARTIAL.**
+- Dry run (fresh Datastore, as Bao's prod ADMIN id via port-forward), errors 0:
+  - CREATE_UNOWNED 105,742;
+  - EXCLUDED_WORKING 624; NOT_ELIGIBLE 4; SKIPPED_EXISTING 331.
+- Runner bug found and fixed (#776): `SMSOptOut.active` is unindexed, so the SMS ledger dumped 0 rows; it is now 7,832.
+- CallOptOut is millions of federal DNC rows, so it was done as a keyed lookup of the 80,195 Cold phones: 42,659 hits.
+- APPLIED, ledgers first:
+  - black_list 83;
+  - sms 7,443 (+389 un-normalizable junk phones);
+  - email 51,649;
+  - call 42,649 (+10 junk).
+- LO_RECRUITING reached ~150/534 chunks (~30k rows). Then the prod rollout of 4cffcfd7 restarted the pods, and gcloud expired.
+- **Resume:** `gcloud auth login`, then port-forward 18091, then run only the lo_recruiting line of `~/.cache/claude-recruit/prod-cold-dryrun-3010/apply.sh`. It is idempotent. Run it before ~16:50Z 31/10 (24h dump freshness), else re-dump.
+
+**Morning checks (need gcloud):**
+- staging pod Flyway 303;
+- offer 35dbe927 logs + `lo_mail_sends`;
+- invite row subject/signature;
+- fe pod for #631/#636.
+
+**Open beads:**
+- 0gwad.10 (approvals toast, other states);
+- 0gwad.11 (go-live gates before lo-mail-invite ON: legacy SENT offers resend rule, CLAIMED stuck, DROPPED wording);
+- #775 (other session) must renumber V302.
+
 ## PAUSE 30/10 morning (Bao shut down, session 460363a7 NOT closed) — RESUME HERE FIRST
 
 On 29/10 Bao got a plain-language explanation of every PR plus the list below, and has **not answered yet**. On resume, re-ask these and wait for his reply. The state is unchanged from the CLOSE-OUT 29/10 section below.
