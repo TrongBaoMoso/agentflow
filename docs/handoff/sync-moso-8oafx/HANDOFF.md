@@ -119,3 +119,18 @@ Follow-ups: agentflow-wzkts (packs), agentflow-swd7k (fe).
 
 ## Next
 See RESUME POINT above (items 1-4). Steps 1-2 of the old list (merge packs, turn e-mail on on staging, live test) are done.
+
+## UPDATE 30/10 ~13:15 — grouped MOSO bell + edit modal removed (STAGING, verified)
+
+- recruit-be #774 (D346): one bell per MOSO overwrite listing every changed field; new copy
+  ("{lo} updated their profile" / "{lo}'s profile was updated" + "By X · Phone: a → b"); R1 accepted by Bao.
+- recruit-fe #626: edit-mode CandidateEditModal removed (AddLeadModal create-only); `?pm=1` redirect kept;
+  own bell reads `changes`, MOSO kinds never folded.
+- Live E2E 12:09 VN: Chau Chau on viet18.com changed Cbtwo Echo phone 3122→3155 (+ first name "Cbtwoo", not
+  recruiter-fixed so not in the bell). One row, published 05:11:30Z; Bao saw it in the QA Test Recruiter
+  platform bell, English: "Cbtwoo Echo's profile was…" / "By Chau Chau · Phone: (714) 555-3122 → (714) 555-3155".
+  Bao: "tạm ổn". Title truncates at popup width (accepted).
+- Older rows keep the language they were sent in → notification-service#436 (Khải).
+- Test data left on staging: Cbtwo Echo first name "Cbtwoo", phone (714) 555-3155.
+- Prod: nothing pushed. Waiting Bao: be #767 #770 #771 #774, fe #610 #612 #613 #620 #626.
+- Worktrees rbe-moso-bell-group / rfe-modal-remove-bell removed; SWAT Chrome closed.
