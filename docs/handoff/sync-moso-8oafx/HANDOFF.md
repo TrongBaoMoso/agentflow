@@ -3,6 +3,11 @@
 Away window night 21->22/10 (memory feedback_away_window_2122_8oafx_sync.md): recruit-be/fe -> STAGING only, no prod. packs PR only.
 Design: `bd show agentflow-8oafx` notes "PROPOSAL CONFIRMED".
 
+## UPDATE 30/10 ~09:30 (measured)
+- packs master build FIXED by Tuan himself: 16b257705f8 (29/10 19:57Z) adds CompensationResolution. Draft message to Tuan is OBSOLETE, do not send.
+- Next: SWAT Rerun install packs/loan on master to put wzkts (#3807) + #3810 on MOSO staging (needs Bao login to x.moso.com + gcloud).
+- recruit be/fe staging = master (be 03a162f1, fe 85702d2f), Deploy staging (GKE) success; production unchanged (be 434d0ab6, fe c72bfec0).
+
 ## MORNING REPORT — 30/10 (night 29→30 done, STAGING only)
 | Item | State (measured) |
 |---|---|
