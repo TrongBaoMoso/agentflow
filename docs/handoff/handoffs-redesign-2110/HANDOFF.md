@@ -211,3 +211,8 @@ v5 FE (local preview for Bao before push); staging. Dev servers are all stopped.
 - No unpushed or uncommitted code; the 9 worktrees of this work were removed (all branches merged).
 - Open beads: agentflow-cbuks (promote to production, waits for Bao, BE first); agentflow-7yebt (requester cannot Mark done the setup call on the profile card; Today works); agentflow-vcsjs (column picker + page size, server-side); agentflow-edqao (approvals "My team" once there is a 2nd Manager). agentflow-10v0e closed.
 - Undecided, non-blocking: welcome-email-blocked banner (Agreement.welcome_blocked* unused); Fix profile not gated by CANDIDATE_UPDATE.
+
+## RE-AUDIT 30/10 (measured)
+- All 19 PRs (be #708–#748 above, fe #559–#584 above) are on origin/production. agentflow-cbuks closed.
+- agentflow-7yebt closed: fixed by recruit-fe #600 (card gate = can_tick), on production.
+- Still open, deferred only: agentflow-vcsjs, agentflow-edqao. Undecided: welcome-blocked banner, Fix profile vs CANDIDATE_UPDATE.
