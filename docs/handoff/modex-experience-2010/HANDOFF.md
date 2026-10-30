@@ -266,3 +266,10 @@ recruit-be is NOT released yet: production...staging is ahead 6 (#767 #770 #771 
 - Prod DB: 1 MMI webhook event ever (the 03:28 UTC test, PROCESSED); `scheduled_send_info_sends` 0 rows; `sms_enabled=false`, allowlist `[]`; `packs.writeback.experience_enabled` latest row true; `packs_writeback_outbox` empty; no ONB_PREMEETING checklist template on prod at all → write-back has nothing to send; Modex snapshots/exports 0; flyway V298 (staging V301).
 - Prod NMLS links still open `new.mmi.run/nmls/<id>` (decision pending).
 - Bead agentflow-2dyj6 closed (item 8 on prod). Still open: 236t9.16, q571r, s4wpp, k6d0z, d2uzb, 9syty (BE prod release).
+
+## 30/10 evening (~23:10) — recruit-be released + Bao's answers
+- recruit-be production = staging = `65b464f8` (#767 #770 #771 #772 #773 #774), pushed by this session after GO from 8658d500 (#772 owner); checks for 8658d500 all pass (V299–V301 ok, referral.program_* false, new tables 0 rows, 0 ERROR lines). bd agentflow-9syty closed.
+- Item 8 eyeballed on PROD with Bao's login (1440 + 320, no horizontal scroll): Pipeline strip HP 47 / Exp 114 / Inexp 170 / Newly 123 / No figures 215; Cold HP 31 / Exp 66 / Inexp 74 / Newly 42 / No figures 89; Reports Experience Joined 26 / Onboarded 30. Chips read "N loans since 2021" on prod (MOSO fallback, no 2022 anchor yet) — by design.
+- Bao decisions: KEEP NMLS links → MMI; MMI API waits for Thuận (bd agentflow-n7bec reminder); experience write-back depends on users (no offer ever sent through Recruit prod: all 941 offers created by super.admin = MOSO copies → no ONB_PREMEETING item → nothing to send).
+- SMS go-live on prod needs 4 things, not 3: 10DLC (Twilio owner), omni COMM_QUESTIONS_ENABLED (needs topic `omni-question-events` in lender-rate — absent — + omni prod values + omni release by Khải), recruit `RECRUIT_FEATURES_SCHEDULED_SEND_INFO` on prod (absent by design = email auto-send also off, Bao 18/10), allowlist/ANY. Asked Bao whether to start topic + omni PR now.
+- Waiting on Bao: phone number + staging admin login to preview scheduled SMS on staging (allowlist = only that number); whether to code Modex proposal parts 2–3.
