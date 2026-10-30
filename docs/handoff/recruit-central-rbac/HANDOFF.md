@@ -454,3 +454,20 @@ locked the account for about 4 minutes. The password in the test-accounts file m
   (`--rec-sticky-top`). Screenshots in the artifact's "28/10" sections (Version 14).
 - #598 merged as 8bf3d103, promoted alone (staging..master = only #598), Deploy staging (GKE) success.
 - Local preview stopped. Production: nothing; ship #598 together with #574.
+
+## STAGING 30/10: dedicated ADMIN test account (agentflow-v5enx)
+
+- `bao.trinh+admin@loanfactory.com`, central user id `e1987874-a6ea-46d7-82e3-b034440d0afd`, name "QA Test Admin".
+  STAGING ONLY; nothing on production. Approved by Bao 30/10.
+- Created like `+hh`: user-service in-cluster `POST /public/api/v1/users/register` (port-forward svc/user-service,
+  status ACTIVE, verify true, BASIC password). No email step. Password only in
+  `.worktrees/_designs/staging-test-accounts.local.md` (never printed).
+- Role: central RECRUIT ADMIN (`6a9c5e3b-…`) via auth-service in-cluster `POST /api/v1/admin/rbac/accounts/{id}/roles`
+  (no token in-cluster, same path as the 22/10 grants). Recruit runs `rbac_source=central`, so the `rbac_grants`
+  mirror filled itself on first request (`["ADMIN"]`). No direct DB write.
+- Token: `POST https://gateway.viet18.com/auth-svc/public/api/v1/auth/login` {username, password, product RECRUIT},
+  or `auth.js` login. Listed in `~/.cache/claude-recruit/preview/alltokens.js` as 3440.
+- Verified through the gateway with its own token: `/me/nav-context` role_codes [ADMIN]; `GET /admin/rbac/grants` 200;
+  `POST /admin/import/moso` DRY RUN with one fake row `{"__probe":"v5enx"}` → 200 (dry_run true, created 0).
+  Controls: same call as +recruiter → 403, no token → 401.
+- Use this account for admin-only staging calls. Never use a real admin's id as X-User-ID again.
