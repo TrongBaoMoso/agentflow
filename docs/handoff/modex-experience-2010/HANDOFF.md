@@ -260,3 +260,9 @@ On resume: re-measure branch heads before acting (other sessions may promote), t
 Khai fast-forwarded recruit-fe staging -> production: production = staging = `46ebc4e3` (Deploy production run 41057239836 green, release issue #606 closed). It carries fe #602–#621, #623, #625–#628 (platform SDK 0.4.82). `scheduled_send_sms` is seeded false on production.
 
 recruit-be is NOT released yet: production...staging is ahead 6 (#767 #770 #771 #772 #773 #774). The FE falls back safely without them (checked on origin/production), so those features stay dark on production until recruit-be ships. Tracked in bd agentflow-9syty.
+
+## AUDIT 30/10 ~20:30 (resumed evening, measured)
+- Ancestry: be #763 #764 #769 and fe #607 #618 #619 #621 are all in `production`. be #773 (docs) is staging-only, inside the 6 tracked by agentflow-9syty.
+- Prod DB: 1 MMI webhook event ever (the 03:28 UTC test, PROCESSED); `scheduled_send_info_sends` 0 rows; `sms_enabled=false`, allowlist `[]`; `packs.writeback.experience_enabled` latest row true; `packs_writeback_outbox` empty; no ONB_PREMEETING checklist template on prod at all → write-back has nothing to send; Modex snapshots/exports 0; flyway V298 (staging V301).
+- Prod NMLS links still open `new.mmi.run/nmls/<id>` (decision pending).
+- Bead agentflow-2dyj6 closed (item 8 on prod). Still open: 236t9.16, q571r, s4wpp, k6d0z, d2uzb, 9syty (BE prod release).
