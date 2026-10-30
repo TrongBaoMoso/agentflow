@@ -173,7 +173,18 @@ Night 29→30/10 (Bao asleep; mandate: end-to-end to STAGING, no prod, staging f
 - **NOT done: turning the staging flags on and measuring.** gcloud credentials on the Mac expired (kubectl "Reauthentication failed"), and no self-login staging test account has ADMIN (settings API 403). Needs Bao: `! gcloud auth login` (then in-cluster PUT `/api/v1/admin/settings/referral.program_snapshot_enabled` etc. as staging admin a0aa8a66-…), or do it from Bao's admin session.
 - **Before PROD flag-on:** packs #3739/#3740 deployed (Khải) else most referrals land PENDING/NO_PACKS_VERDICT; MANUAL writer = bead agentflow-rken6; do not toggle the flag off/on casually (safety net covers it, but watch `catch_up_written{window=on}`).
 
-## RESUME POINT — PAUSED 29/10 ~17:45 (+07) (session 8658d500, Bao shut the Mac down)
+## RESUME POINT — PAUSED 30/10 morning (+07) (session 8658d500, Bao shut the Mac down to go to the office)
+
+**Read this first, then `bd show agentflow-k1obs`.** Nothing is half-pushed: be #772 and fe #616 are merged and on staging, flags OFF, prod untouched. This session's background agents are gone after the shutdown (all were idle; their work is merged). Worktrees `_worktrees/rbe-program-snapshot` (6309ee98) and `_worktrees/rfe-qualifying-chip` (c5b5efbc) are clean and merged; remove them when no longer needed.
+
+### Next steps on resume
+1. **Blocker: gcloud login.** Ask Bao to run `! gcloud auth login` (plus `gcloud auth login --update-adc` if ADC is needed). Check with `kubectl --context gke_lenderrate-master_us-central1_moso-kube -n recruit-be get pods`.
+2. **Turn on staging flags (Bao approved staging only):** in-cluster PUT `/api/v1/admin/settings/<key>` as staging admin a0aa8a66-dedc-4dc5-8954-80522c632fd9, in order: `referral.program_snapshot_enabled`, `referral.program_qualification_enabled`, `referral.program_status_visible_to_referrer`. Never print env values.
+3. **Measure on staging:** after at least one program-sync tick plus the 15-minute grace, count `candidate_referral_program` rows by program / pending_reason; read the metrics listed in STATUS 30/10; check that `/referrals` returns non-null `program` / `qualifying_status`; screenshot My referrals and admin referrals with chips (ram-gate chrome; test emails bao.trinh+tag only).
+4. Report to Bao in Vietnamese; update this file, bead agentflow-k1obs and memory project_d340_role_flag_staging_2910.md.
+5. **Prod still waits on:** Khải deploys packs #3739/#3740 + the 2 SystemProps; Bao's explicit prod promote; APPLY for program sync is a separate decision; rken6 (manual decision UI); fe #609 with the next FE prod batch; FE detail view only if the backend adds detail fields.
+
+## (SUPERSEDED) RESUME POINT — PAUSED 29/10 ~17:45 (+07) (session 8658d500, Bao shut the Mac down)
 
 **Read this first, then `bd show agentflow-k1obs`.** Everything below is the real state; nothing was half-pushed.
 
