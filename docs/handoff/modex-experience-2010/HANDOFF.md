@@ -273,3 +273,9 @@ recruit-be is NOT released yet: production...staging is ahead 6 (#767 #770 #771 
 - Bao decisions: KEEP NMLS links → MMI; MMI API waits for Thuận (bd agentflow-n7bec reminder); experience write-back depends on users (no offer ever sent through Recruit prod: all 941 offers created by super.admin = MOSO copies → no ONB_PREMEETING item → nothing to send).
 - SMS go-live on prod needs 4 things, not 3: 10DLC (Twilio owner), omni COMM_QUESTIONS_ENABLED (needs topic `omni-question-events` in lender-rate — absent — + omni prod values + omni release by Khải), recruit `RECRUIT_FEATURES_SCHEDULED_SEND_INFO` on prod (absent by design = email auto-send also off, Bao 18/10), allowlist/ANY. Asked Bao whether to start topic + omni PR now.
 - Waiting on Bao: phone number + staging admin login to preview scheduled SMS on staging (allowlist = only that number); whether to code Modex proposal parts 2–3.
+
+## 30/10 ~23:30 — scheduled SMS proven on staging; omni prod flag merged
+- STAGING (left ON on purpose): `scheduled_send_info.sms_enabled=true`, `allowed_sms_numbers=["+14085381464"]` (Bao's Zoom number only), set from chauchau's admin session 16:18 UTC. Flag-on UI seen: "Schedule SMS", "Time (optional)", 8am–9pm hint.
+- Scheduled SMS on QA candidate ba96a139 (TRINH BAO #1, CA) for 23:30 VN → ledger `scheduled_send_info_sends` SENT 16:30:00 UTC with omni message ref (delivery status not back yet when checked). To turn off: PUT both settings back (false / []).
+- omni-service #659 MERGED (27e83a3e): production values COMM_QUESTIONS_ENABLED + OMNI_QUESTION_EVENTS_TOPIC; 2 reviewers approved; promoted to omni staging. Production release + topic `omni-question-events` in lender-rate = Khải (draft message given to Bao; bao.trinh has only pubsub.viewer).
+- Modex proposal parts 2–3: NOT built (Bao: API with Modex/MMI is the future). One combined question for Thuận — bd agentflow-n7bec.
