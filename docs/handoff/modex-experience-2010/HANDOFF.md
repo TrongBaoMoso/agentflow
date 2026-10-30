@@ -236,3 +236,20 @@ Next, in order:
 - Prod measured: webhook_events `crm.push.mortgage` PROCESSED (no error); candidate `7b533401…` units_12mo 40→41 source MOSO→MMI_14MO, career_production ∅→10,133,482, office phone filled (change log stores no phone value by design); loans_since_anchor untouched (MOSO's 143 is higher — rule: never lower); timeline SYSTEM "Production updated from MMI · 41 loans / 14 months · pushed by victoria.pham@…".
 - Docs: SECRETS-INVENTORY row → live; recruit-be BOOTSTRAP PR #773 (auto-merge).
 - Remaining: recruit-fe prod (#618/#619/#621) waits for Bao's staging review; branch `shots/scheduled-sms-autosend` after images go into PR #619.
+
+## RESUME POINT — PAUSE 30/10 evening (Bao going home; session a8ef2df9)
+
+State measured at pause (audit done this afternoon, all read-only):
+- recruit-fe: staging `85702d2f` is 20 commits ahead of prod `c72bfec0`. This session's 4: #607 #618 #619 #621; the other 16 belong to other sessions (#612 #616 #620 pair with BE #767 #772 #771).
+- recruit-be: prod `434d0ab6`; staging `03a162f1` (+4 from other sessions: #767 #770 #771 #772); master `8198aa5c` (#773 docs).
+- Flyway: staging V301, prod V298. `scheduled_send_info.sms_enabled=false` and `allowed_sms_numbers=[]` on both envs (empty list = no SMS to anyone). `packs.writeback.experience_enabled` prod = true, but no 1-1 marked done on prod yet → nothing written back.
+- MMI logged out. No browser, dev server, worktree or ram-gate token held.
+
+Waiting on Bao (4 questions asked in chat, unanswered):
+1. After staging review (/pipeline, /inbox/cold, /inbox/hot, /reports?tab=experience, Log result → Send info), push recruit-be staging → prod FIRST, then recruit-fe staging → prod (all 20 commits).
+2. NMLS links open new.mmi.run (one MMI seat) — keep or revert `src/shared/utils/nmlsLookupUrl.ts`?
+3. Turn on `scheduled_send_info.sms_enabled` on STAGING with allowlist = Bao's phone only, to preview the flag-on SMS UI? (needs Bao's number)
+4. Delete branch `shots/scheduled-sms-autosend` once Bao has seen the PR #619 images.
+Also open: 26/10 Modex manual-steps proposal unanswered; beads 2dyj6, 236t9.16, q571r, s4wpp, k6d0z, d2uzb.
+
+On resume: re-measure branch heads before acting (other sessions may promote), then ask the 4 questions again.
