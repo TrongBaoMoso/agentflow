@@ -34,7 +34,9 @@ Resume: `claude --resume 8658d500-15e8-4830-b017-aaec2ebd2e74`, or a new session
 Session a8ef2df9 asked to fast-forward recruit-be staging→production (bd agentflow-9syty, includes our be #772
 V299–V301). Replied GO with conditions: prod pre-check no `referral.program%` settings rows; after deploy Flyway
 299–301 success, all 3 flags false, 0 rows in candidate_referral_program / candidate_program_qualification after ~10 min,
-no ReferralProgramCatchUp errors; flags stay OFF on prod. On resume: read their results (or measure prod yourself).
+no ReferralProgramCatchUp errors; flags stay OFF on prod.
+**DONE 30/10 ~16:07 UTC, all checks PASS** (a8ef2df9 report; re-verified here: 03a162f1 ancestor of origin/production
+65b464f8, 2 prod pods Running 0 restarts). D268/D269 BE is now on prod, dark. bd 9syty closed.
 
 ### Unrelated items from the 30/10 morning audit still unanswered by Bao
 - Turn on the 3 D268/D269 staging flags and measure (DESIGN.md lo-recruiter-program-credit)?
