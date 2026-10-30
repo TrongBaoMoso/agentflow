@@ -497,3 +497,15 @@ Done:
 - HR role sync: 4 NEW subscriptions needed on prod AND staging (none exist; the 3 existing HR_ASSOCIATE_*_SUBSCRIBE_RECRUIT
   are other features). Message for Bao to send Khai: `MESSAGE-KHAI-3110.md`.
 - In flight: be #777 (prod values RECRUIT_RBAC_SOURCE=central), fix PR for 5ryt2 + k89t8 (+ R61/R62 docs).
+
+### P6 continued (31/10 ~02:15 local)
+- be #780 (28c0010c, D349 — renumbered from D347, taken by open #775/#778): 5ryt2 guard + k89t8 404→403. Reviewers: Java
+  (REQUEST CHANGES → fixed → APPROVE), security APPROVE.
+- be #777 (4cffcfd7): production `RECRUIT_RBAC_SOURCE=central`. Reviewers: code + security APPROVE.
+- Promoted to staging (deploy ok; smoke in-pod: recruiter POST batch/run 403, clear-index 403, /candidates 200, zero uuid 403),
+  then production FF 65b464f8..4cffcfd7 (carried #740 dark — agentflow-bf said YES — and #779 CI-only). Prod rollout OK 19:15Z.
+- NOT verified in the prod pod: gcloud reauth expired right after the deploy. On Bao's login: in-pod `/api/v1/admin/rbac/me` for 2
+  people vs parity, pod log `rbac catalog pushed`, a no-role id 403.
+- be #781 (prod REFERRER flag) OPEN, do not merge before the prod dry run `POST /api/v1/admin/referrer-role/backfill?dry_run=true`
+  (X-User-ID = Bao's prod id, approved). Then merge → staging → prod FF → apply backfill page by page → outbox FAILED = 0 → spot-check.
+- Beads 5ryt2, k89t8, dvipz closed.
