@@ -174,3 +174,85 @@ same last initial: 174 groups / 394 people; most common last name shared by 91 p
   "Trang Nguyen" ×3 with no way to tell them apart (Bao's screenshots 28/10); prod has 7 such name groups / 15 people.
 - So every Loan Officer picker shows photo + name + state + NMLS and searches per word (+ email/NMLS).
 - Links still lock the referrer (Loan Officer site, recruiter page, `?ref=`) and hide the question.
+
+## 7. Decisions 29–30/10 (Victoria meeting 29/10 + Bao 30/10)
+
+Sources: New Landing Page chat 29/10 (Victoria, Matt, Chi Tran), meeting transcript
+`docs/transcripts/lf-homepage/2026-10-29_register-loan-officer-new-flow-victoria-pham.md`, Bao 30/10.
+Mockup (brand colours/fonts, Matt's layout): claude.ai artifact `92Yarua4tCB9TwhQontgn7`.
+
+### Flow
+- Steps 1 About you → 2 License details → 3 Next step → 4 Details for your agreement → Review → Pay $100 → Sign → NMLS access.
+  The stepper shows only 1-2-3 up front (Matt: don't overwhelm); 4+ appear only when reached.
+- **Step 3 has two paths** (Victoria): "Book a 30-min intro call" or "I'm ready to join" (already spoke with our team).
+  Shown as two choice cards at the top of Step 3 (Bao 30/10: the skip must be easy to see). No word "recruiter" anywhere.
+- **Pay/sign stay locked until the onboarding specialist sets `onboarding_meeting_status = pre_onboarding_done`
+  ("option Y", Bao 30/10).** Ready-to-join path: Step 4 saved → "our team will review and email you a link to sign and pay".
+  Victoria filters candidates and does not want anyone paying before approval. The gate already exists in lf
+  (`startupFeeGates.ts`), no change needed.
+- **Opening a link with `?key=`** goes to the FIRST step that still misses a required field (checked in order 1 → 2 → 4);
+  missing fields are highlighted. Step 3 is skipped once `pre_onboarding_done` is set. Completed steps show ✓ and stay
+  editable. (Bao 30/10: "almost complete" is still incomplete → open that step.)
+- Loan Officers fill everything themselves; staff never type it for them (Victoria: past lawsuit threat after a staff typo).
+  Matt agreed two calls are fine.
+
+### Booking (replaces the 28/10 "real free-busy booking" design)
+- Victoria: the team is large and uses personal Calendly links, so no calendar sync. The Loan Officer picks **up to 3
+  two-hour windows** (9–11, 11–1, 1–3, 3–5) on business days, from a month calendar (Matt's layout), plus an
+  **"Any time works, call me ASAP"** option. No suggested times (Victoria rejected pre-suggesting).
+- Windows are shown in the Loan Officer's own time zone (auto-detected, changeable); stored in UTC.
+- Matt's "None of these times work? Have an onboarding specialist call me" link is dropped (redundant with ASAP).
+- Recruit: the lead shows the chosen windows; the specialist confirms one → Recruit creates the Google Calendar event
+  with Meet (code exists on recruit-be production, `google/calendar/*`, not yet enabled for real users — bead 61yi6).
+  No Calendly. Freebusy / slot capacity / claim-deadline rules from 28/10 §6 "Booking" are no longer needed for Phase 1.
+
+### Step 4 "Details for your agreement" (counted 30/10 on lf origin/master)
+Live form = 48 inputs (32 seen by a typical applicant, 20 always required). Matt keeps 12 of them in Steps 1–2.
+Remaining = 14 questions (22 boxes), matching Victoria's "~14":
+- Required: legal first/last name (prefill from name), citizenship, home address (street/zip/city; Apt optional),
+  mailing address (default "same as home" ticked), licensed states (prefill from sponsor states), main target comp,
+  correspondent target comp, website-approval tick, final accuracy tick (moved to Review).
+- Read-only: W-2/1099 (set by the specialist on the call; packs `protectMeetingClassification`).
+- Optional (no marker): alias first name, not-exclusive checkbox, preferred languages, social links.
+- Move to Step 2: SC/AR/NE sponsorship confirmation, Indiana license type (they decide whether we can sponsor).
+- Drop (as Matt): referrer name/phone/Zelle fields.
+- Required fields carry a small "Required" chip; optional fields carry nothing; checkboxes (disclaimer, acks) carry no chip.
+- Conflicts to fix in code: SMS consent is must-be-true on every step today (Matt: unticked/optional);
+  phone and last name are optional today (Matt: required).
+
+### Review screen instead of Matt's "attestation email"
+- End of Step 4: grouped summary with Edit per group; fields set by our team (W-2/1099, legal name if entered by staff)
+  marked "Set by our team" with a "This is wrong" link; existing `is_acknowledgment_checkbox` tick here. Then pay → Inkless
+  sign (the agreement prints the same data; the signature is the attestation).
+- After signing: a receipt email with the summary and a link back to the form — informational, no action required.
+- Staff edits to address/NMLS/type after review already rebuild the Inkless envelope (packs `LORecruiting.java:1270`),
+  so the Loan Officer re-signs and sees the change.
+
+### Name lock
+- First/last name `readOnly={key}` (BasicInfoForm 445/458, PersonalInfoPart 125/132) came from PR #136 (11/2024, no reason
+  given). packs saves first/last on a keyed save; the agreement uses the legal name. → make first/last editable, FE only.
+- Keep email locked: dedupe key for key-less re-registration, blacklist check, Inkless signer email (not rebuilt on change).
+
+### Special requests (Thuan ticket via Phuong)
+- Step 4 group "Special requests": one request per row, "+ Add a request", example quick-add chips (Team name, Powered by,
+  Coaching waiver, Fee waiver) that start a row; free text per row. Disclaimer checkbox with Thuan's exact sentence,
+  required when ≥1 row, stored with a tamper-proof timestamp (copy `mortgage_website_approval_ack(_at)`).
+- packs: new LORecruiting fields + push to recruit. Recruit side tracked in bead agentflow-oxwsb.
+- Brand guide p.12: team names need Marketing approval and must not read as another entity/DBA → show next to team-name rows.
+
+### Sources measured 30/10 (MOSO prod, 24,601 inbound LORecruiting rows)
+| Entry point | Leads | Joined | Join rate | Share of joins (12 mo) |
+|---|---|---|---|---|
+| Staff-created (manual/CSV) | 10,654 | 1,504 | 14% | 35% |
+| Webinar sign-up | 6,143 | 1,456 | 24% | 28% |
+| Register form direct | 1,482 | 896 | 60% | 24% |
+| Refer-a-Loan-Officer page | 2,503 | 467 | 19% | 12% |
+| Ads / events | 503 | 27 | ~5% | ~1% |
+~76% of joiners start elsewhere with only name/email/phone/NMLS → the keyed link + first-missing-step rule matters.
+96% of joiners end up on the register form (fee + agreement live there).
+
+### Brand (Brand Guidelines 2022, Bao 30/10)
+Web fonts Montserrat (headings) + Lato (body) — lf loads Montserrat only today; orange #F36F23, black, white, grays
+#EFEFEF/#DBDBDB/#999999/#323232; max 3 type sizes; sentence case body. Matt's wireframe keeps a good layout but uses a
+darker rust orange, warm near-black, cream/peach backgrounds, an Inter-like font, ~7 type sizes and the abbreviation "LO".
+Build with brand tokens; black text on orange buttons (white on #F36F23 is ~3:1).
