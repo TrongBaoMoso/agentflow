@@ -216,3 +216,12 @@ v5 FE (local preview for Bao before push); staging. Dev servers are all stopped.
 - All 19 PRs (be #708–#748 above, fe #559–#584 above) are on origin/production. agentflow-cbuks closed.
 - agentflow-7yebt closed: fixed by recruit-fe #600 (card gate = can_tick), on production.
 - Still open, deferred only: agentflow-vcsjs, agentflow-edqao. Undecided: welcome-blocked banner, Fix profile vs CANDIDATE_UPDATE.
+
+## NIGHT 30→31/10 — welcome-blocked line (agentflow-yw9i7, D348) — STAGING, not prod
+Bao 31/10 picked 1B (rebuild the /work "welcome e-mail not sent" banner as a My hand-offs row line) and 2A (Fix profile stays ungated).
+- recruit-be #778 (ef520af7, D348): `GET /offers/mine` rows gain `welcome_email_blocked {status, reason, actor_name, blocked_at, send_status}`. Rule = OnboardingActionNeededSelector (newest ONBOARDING_MEETING block inside `onboarding.welcome_block_queue_days`, cleared by a later SENT AGREEMENT_SEND, never for signed/archived/blocked/merged) + one red line at a time (yields to a shown D336 sync failure, waits while the newest 1-1 write is PENDING). 2 reviewers x2 rounds, ITs 24/24 + negative controls. D347 was taken by open #775 -> renumbered D348.
+- recruit-fe #632 (79a0c5e4): `WelcomeBlockedLine` under Status + the old "E-mail the signing link…" button (AGREEMENT_SEND, one read per click, same AgreementConfirmModal); sending line refreshes the list every 10 s. #635 (5091fc3e) = label line-height follow-up, ON STAGING.
+- Staging: be ef520af7 deployed; fe 57a539db deployed (includes #632 + another session's #633). API verified: real `/offers/mine` carries the key (Manager + onb-test).
+- Screenshots (SIMULATED block injected browser-side, real deployed UI): scratchpad wbshots/sim-*.png, 1440/390 table/cards, line + button stay inside the cell.
+- NOT DONE: the real staging seed. gcloud auth expired (needs `gcloud auth login`). Seed = UPDATE packs_writeback_outbox SET welcome_email_status='unsignable_actor_no_branch', welcome_email_reason='NullPointerException' WHERE id='19faf534-bc46-4758-b81f-44203883ba9f' (QA Claudeadvisor, specialist onb-test). Undo = set both NULL.
+- Measured 31/10: prod has 0 blocks and 0 1-1 write-backs (switch off), so prod cannot show the line yet.
