@@ -215,3 +215,17 @@ Worktrees on disk: `recruit-be-worktrees/fix-handoff-test` (merged, removable), 
 - MMI: device trust works (no 2FA). Morning TODO: log in (password only), push NMLS 1040852, verify on prod, log out at once (Vic's team shares the seat).
 - Leftovers: delete branch `shots/scheduled-sms-autosend` after attaching images to PR #619 in the browser; `save_SEND_INFO` key is NOT dead (eager `save_${kind}` lookup in OutcomeSection) — keep.
 - Worktrees all removed; local preview stopped; no ram-gate tokens held.
+
+## RESUME POINT — PAUSE 30/10 morning (Bao going to the office; session a8ef2df9)
+
+State measured at pause:
+- recruit-be prod = staging = `434d0ab6` (MMI push ON, token v2, error path masked).
+- recruit-fe staging = `5aa5a746` (#618 item 8 UI, #619 scheduled SMS FE, #621 follow-ups). Prod NOT pushed — waits for Bao's staging review.
+- No MMI browser running, no dev server, no worktree, no ram-gate token held. MMI is logged out.
+
+Next, in order:
+1. MMI test push — only when Bao says Vic's team is not using MMI. Log in with password only (Keychain `mmi-recruit-research`, device trust, no 2FA), push NMLS 1040852 (Matthew Laird, prod candidate `7b533401-…`), log out at once. Verify on prod with `ro.sh` (webhook_events provider MMI, candidate figures, timeline). Rollback: `node ~/.mmi-research/hookurl.js restore crm_push_url.backup`.
+2. Then update docs/secrets/SECRETS-INVENTORY.md + BOOTSTRAP.md MMI note (token v2, rotated 29/10).
+3. Bao reviews staging (/pipeline, /inbox/cold, /inbox/hot, /reports?tab=experience) → on OK push recruit-fe staging → prod.
+4. Delete branch `shots/scheduled-sms-autosend` after Bao drags the images into PR #619.
+5. Open beads: agentflow-2dyj6 (item 8 prod), agentflow-236t9.16 (SMS go-live prereqs), MMI raw-body bead, agentflow-q571r.
