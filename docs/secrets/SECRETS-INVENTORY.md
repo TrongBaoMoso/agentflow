@@ -40,6 +40,7 @@ Created by our sessions (date = Secret Manager createTime):
 | recruit-be-recruit-post-joined-reconcile-internal-api-key | RECRUIT_POST_JOINED_RECONCILE_INTERNAL_API_KEY | post-joined reconcile cron | 2026-10-19 |
 | recruit-be-recruit-mmi-push-token | RECRUIT_MMI_PUSH_TOKEN | MMI CRM push (D305); value in Keychain `recruit-mmi-push-token-staging` | 2026-10-21 |
 | recruit-be-recruit-referrals-notify-internal-api-key | RECRUIT_REFERRALS_NOTIFY_INTERNAL_API_KEY | My referrals change e-mails cron (D317, #725); patched into recruit-svc-secret + rollout restart 23/10; cron `recruit-referral-change-emails-tick` registered | 2026-10-23 |
+| recruit-be-recruit-rbac-reconcile-internal-api-key | RECRUIT_RBAC_RECONCILE_INTERNAL_API_KEY | RBAC mirror reconcile + REFERRER sweep cron (D320/D326); created by Bao's account 31/10 (version 1, random 64-hex, never printed). NOT usable yet: Bao cannot setIamPolicy, so `recruit-be-deploy@` has no secretAccessor; not in `secret-keys.txt` yet — Khai asked 31/10 | 2026-10-31 |
 
 Older (2026-09-29, initial bootstrap): db-*, moso-webhook-api-key, packs-writeback-internal-api-key,
 recruit-api-key, recruit-host-subjects-access-token, hot-idle-release, hr-handoff, omni, omni-subject-alias.

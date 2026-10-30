@@ -471,3 +471,29 @@ locked the account for about 4 minutes. The password in the test-accounts file m
   `POST /admin/import/moso` DRY RUN with one fake row `{"__probe":"v5enx"}` → 200 (dry_run true, created 0).
   Controls: same call as +recruiter → 403, no token → 401.
 - Use this account for admin-only staging calls. Never use a real admin's id as X-User-ID again.
+
+## PRODUCTION P6, night 31/10→01/11 (Bao approved; memory feedback_away_window_3101_rbac_p6)
+
+Audit 31/10 first: every PR of this work was already in production CODE (release 29-30/10 by other sessions) but DARK
+(prod pod: no RECRUIT_RBAC_SOURCE, owner-sync / HR sync / REFERRER absent). auth-service prod boot log 30/10 09:15Z:
+`app-access enforce=[]` (shadow for every app) — measured via `gcloud logging read` (Bao can read lender-rate logs, not pods).
+Recruit prod human activity: 0 since 22/10 (12 rows ever, all ours) → cutover has no user impact.
+
+Done:
+- R61 + R62 CONFIRMED by Bao 31/10 (REFERRER central-only; never removed automatically).
+- **Central prod catalog** pushed in-cluster (tooling `~/.cache/claude-recruit/p6/run.sh` = scripts/recruit-rbac-setup.py with
+  BASE=http://auth-service.auth-service.svc.cluster.local:8081/api/v1, no token): 38 perms created + 1 updated, 201 endpoints,
+  4 roles created + 4 updated, 141 role grants; verified 39 perms / 201 endpoints; 8 roles incl. REFERRER.
+- Retired central roles HR / LICENSING / ACCOUNTING deleted (force) after measuring 0 holders (positive control: same search
+  on app HR returned 6,463 rows).
+- **13 prod grants copied** to central account_roles (ADMIN 2, MANAGER 1, RECRUITER 10, 5 of them also ONBOARDING). 0 overrides.
+  Parity per person (central runtime vs local role set): nothing lost; extras only RECRUIT_ACCESS + REFERRALS_SELF.
+  Evidence (ids, chmod 600): `~/.cache/claude-recruit/p6/` (central_holders_before.txt = 0 rows, runtime.txt, grants.json).
+- **MOSO owner sync DRY RUN only** (Bao: do not turn on): 928 examined, 884 would get an owner (Sara 440, Wegina 125,
+  Miley 123, Lisbeth 113, Brayan 45, Tommy 30, Lindsay 8), 6 rows with a non-staff MOSO recruiter (5 addresses), 34 no
+  recruiter, 4 protected. File `~/.cache/claude-recruit/p6/owner_dry.json`.
+- Staging Secret Manager: created `recruit-be-recruit-rbac-reconcile-internal-api-key` (v1); Bao cannot setIamPolicy, so the
+  deploy SA cannot read it yet. Prod: Bao has no Secret Manager access. → Khai (message below).
+- HR role sync: 4 NEW subscriptions needed on prod AND staging (none exist; the 3 existing HR_ASSOCIATE_*_SUBSCRIBE_RECRUIT
+  are other features). Message for Bao to send Khai: `MESSAGE-KHAI-3110.md`.
+- In flight: be #777 (prod values RECRUIT_RBAC_SOURCE=central), fix PR for 5ryt2 + k89t8 (+ R61/R62 docs).
