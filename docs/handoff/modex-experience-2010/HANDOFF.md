@@ -253,3 +253,10 @@ Waiting on Bao (4 questions asked in chat, unanswered):
 Also open: 26/10 Modex manual-steps proposal unanswered; beads 2dyj6, 236t9.16, q571r, s4wpp, k6d0z, d2uzb.
 
 On resume: re-measure branch heads before acting (other sessions may promote), then ask the 4 questions again.
+
+
+## UPDATE 30/10 19:49 — recruit-fe released to production (measured)
+
+Khai fast-forwarded recruit-fe staging -> production: production = staging = `46ebc4e3` (Deploy production run 41057239836 green, release issue #606 closed). It carries fe #602–#621, #623, #625–#628 (platform SDK 0.4.82). `scheduled_send_sms` is seeded false on production.
+
+recruit-be is NOT released yet: production...staging is ahead 6 (#767 #770 #771 #772 #773 #774). The FE falls back safely without them (checked on origin/production), so those features stay dark on production until recruit-be ships. Tracked in bd agentflow-9syty.

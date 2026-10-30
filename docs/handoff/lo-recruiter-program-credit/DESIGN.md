@@ -218,3 +218,10 @@ Night 29→30/10 (Bao asleep; mandate: end-to-end to STAGING, no prod, staging f
 2. Re-review with two reviewers (java + database) → PR (squash) → CI (first real IT run) → merge → `promote-staging.yml` → check flags are off on staging.
 3. FE: QualifyingChip — label only (qualifying / below bar / not checked) in My referrals; local preview for Bao before push.
 4. Remind Bao: Khải (packs deploy + 2 SystemProp), rotate the GitHub CLI token (an agent printed `~/.npmrc` into its own log on 29/10).
+
+
+## UPDATE 30/10 19:49 — recruit-fe released to production (measured)
+
+Khai fast-forwarded recruit-fe staging -> production: production = staging = `46ebc4e3` (Deploy production run 41057239836 green, release issue #606 closed). It carries fe #602–#621, #623, #625–#628 (platform SDK 0.4.82). `scheduled_send_sms` is seeded false on production.
+
+recruit-be is NOT released yet: production...staging is ahead 6 (#767 #770 #771 #772 #773 #774). The FE falls back safely without them (checked on origin/production), so those features stay dark on production until recruit-be ships. Tracked in bd agentflow-9syty.

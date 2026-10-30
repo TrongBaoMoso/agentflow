@@ -140,3 +140,10 @@ See RESUME POINT above (items 1-4). Steps 1-2 of the old list (merge packs, turn
 - packs #3806 (__changed_by, merged 3.64.1 17:12 VN) was merged BEFORE that build → in prod (the build takes the 3.64.1 head; SWAT "Report" only opens github.com, no commit shown).
 - packs #3808 (wzkts email lock) and #3811 (tests/docs), merged 21:36 VN, are NOT in prod → next 3.64.1 hotfix (Khai/Tho).
 - Bao 30/10: " · " join accepted (no tera-components change). Recruit prod promote WAITS: staging also holds fe #618/#619 (Modex item 8 + SMS, waiting Bao's review in that session) and be #772/fe #616 (D268/D269, waiting Khai packs + Bao). Bao: "lên prod nếu có thể hoặc đợi các session kia tuỳ bạn" → chose to wait.
+
+
+## UPDATE 30/10 19:49 — recruit-fe released to production (measured)
+
+Khai fast-forwarded recruit-fe staging -> production: production = staging = `46ebc4e3` (Deploy production run 41057239836 green, release issue #606 closed). It carries fe #602–#621, #623, #625–#628 (platform SDK 0.4.82). `scheduled_send_sms` is seeded false on production.
+
+recruit-be is NOT released yet: production...staging is ahead 6 (#767 #770 #771 #772 #773 #774). The FE falls back safely without them (checked on origin/production), so those features stay dark on production until recruit-be ships. Tracked in bd agentflow-9syty.
