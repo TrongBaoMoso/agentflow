@@ -229,3 +229,10 @@ Next, in order:
 3. Bao reviews staging (/pipeline, /inbox/cold, /inbox/hot, /reports?tab=experience) → on OK push recruit-fe staging → prod.
 4. Delete branch `shots/scheduled-sms-autosend` after Bao drags the images into PR #619.
 5. Open beads: agentflow-2dyj6 (item 8 prod), agentflow-236t9.16 (SMS go-live prereqs), MMI raw-body bead, agentflow-q571r.
+
+## 30/10 ~10:30 — MMI test push DONE on production
+- Logged in with password only (device trust, no 2FA). The login is now two steps (email → Continue → password → Sign In); `~/.mmi-research/login2.js` handles it. The push button on the new site is the "CRM Quick Push" icon on `/nmls/<id>`, then "Confirm Push" (uses 1 of 2500 monthly exports).
+- Pushed NMLS 1040852 (Matthew Laird) at 03:28 UTC. Logged out immediately (verified "LOGGED OUT"), browser closed, ram-gate released.
+- Prod measured: webhook_events `crm.push.mortgage` PROCESSED (no error); candidate `7b533401…` units_12mo 40→41 source MOSO→MMI_14MO, career_production ∅→10,133,482, office phone filled (change log stores no phone value by design); loans_since_anchor untouched (MOSO's 143 is higher — rule: never lower); timeline SYSTEM "Production updated from MMI · 41 loans / 14 months · pushed by victoria.pham@…".
+- Docs: SECRETS-INVENTORY row → live; recruit-be BOOTSTRAP PR #773 (auto-merge).
+- Remaining: recruit-fe prod (#618/#619/#621) waits for Bao's staging review; branch `shots/scheduled-sms-autosend` after images go into PR #619.

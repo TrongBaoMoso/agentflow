@@ -71,7 +71,7 @@ Key names present in `recruit-svc-secret` on 23/10 — staging vs production:
 | RECRUIT_PROGRAM_SYNC_INTERNAL_API_KEY | yes | yes | LO Recruiter Program sync (D202) |
 | RECRUIT_NURTURE_DRIP_INTERNAL_API_KEY | yes | **NO** | nurture drip cron — prod e-mails still off (bead agentflow-236t9.14) |
 | RECRUIT_UNSUBSCRIBE_HMAC_SECRET | yes | **NO** | unsubscribe links — needed before any prod auto e-mail |
-| RECRUIT_MMI_PUSH_TOKEN | yes | **NO** | MMI push (D305) — prod waits for Bao/Vic/Miley |
+| RECRUIT_MMI_PUSH_TOKEN | yes | yes | MMI push (D305) — LIVE on prod; secret v2 added 29/10 (v1 rotated out), Keychain `recruit-mmi-push-token-production`; first Loan Officer push verified 30/10 |
 | RECRUIT_REFERRALS_NOTIFY_INTERNAL_API_KEY | yes | **NO** | My referrals change e-mails (D317) — prod dark |
 
 Production "NO" rows are expected today (those features are dark on prod). Each must be created by
