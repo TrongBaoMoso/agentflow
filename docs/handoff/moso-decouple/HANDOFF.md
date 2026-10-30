@@ -2,6 +2,26 @@
 
 Session `460363a7` (21/10/2026). Paused 21/10. **Approved by Bao 23/10**: see RESUME HERE. Nothing coded yet.
 
+## PAUSE 30/10 morning (Bao shut down, session 460363a7 NOT closed) — RESUME HERE FIRST
+
+On 29/10 Bao got a plain-language explanation of every PR plus the list below, and has **not answered yet**. On resume, re-ask these and wait for his reply. The state is unchanged from the CLOSE-OUT 29/10 section below.
+
+**Self-do (start when Bao says "làm tiếp"; staging only):**
+1. Rebase be #740/#741, renumber #741 V295→next free (re-scan), CI, 2 reviewers, merge, verify staging deploy.
+2. Staging e2e of the 4 lo-mail types to bao.trinh+ only.
+3. `agentflow-0gwad.8` (queue toast says "invite sent" when skipped).
+4. `agentflow-tlpsq` (CI guard against editing applied migrations).
+
+**Needs Bao:**
+1. "ok" to post the drafted option-B comment on moso-notifier #350, and ask Khai whether #350 is still needed given Java off ~09/11.
+2. Go for a prod Cold import server dry run (count only), then a separate go for the real import.
+3. moso-aid CSV export: Bao clicks Export on the lo-recruiter-program and ambassador-program pages and drops the files into `~/.cache/claude-recruit/moso-snapshot-2310/moso-aid/`.
+4. Confirm rotation of `RECRUIT_ONBOARDING_REMINDER_INTERNAL_API_KEY` (40 chars were printed in a local log on 29/10). Then draft the ask to DevOps/Khai.
+5. Low priority: ask DevOps whether staging `SPRING_FLYWAY_OUT_OF_ORDER=true` is intentional.
+6. OK to create a staging ADMIN test account `bao.trinh+admin@` (`agentflow-v5enx`).
+
+Still unrouted from 26/10: Khai's findings on omni-service #608 (nurture session) and tera-components #579 (bead `agentflow-2kqyf`). Not this session's scope; ask Bao whether to route them.
+
 ## CLOSE-OUT 29/10 (session 460363a7 closed by Bao) — START HERE
 
 Everything below was measured on 29/10 (gh, git ancestry, kubectl, staging DB). The older sections are history.
