@@ -256,3 +256,44 @@ Web fonts Montserrat (headings) + Lato (body) — lf loads Montserrat only today
 #EFEFEF/#DBDBDB/#999999/#323232; max 3 type sizes; sentence case body. Matt's wireframe keeps a good layout but uses a
 darker rust orange, warm near-black, cream/peach backgrounds, an Inter-like font, ~7 type sizes and the abbreviation "LO".
 Build with brand tokens; black text on orange buttons (white on #F36F23 is ~3:1).
+
+## 8. Mockup decisions (Bao 30/10 afternoon)
+
+Full-flow mockup (every control interactive, scenarios switchable): claude.ai artifact `92Yarua4tCB9TwhQontgn7`.
+Copy rule: Matt's wireframes/handoff first; never add a field Matt doesn't have; screens Matt didn't design use the plain
+rewritten copy shown in the mockup (Bao chose it over the old form's verbatim labels).
+
+- **Layout:** the page sits inside the site's global header/footer (no own logo bar). Step 1 = Matt's full dark hero
+  (eyebrow, headline, 3 stats with orange rules); Steps 2–3 = slim dark strip; after the call = "Welcome back, <name>".
+- **Step bar:** before the call only 3 steps (About you · License details · Book your call). From Step 4 on, all 7:
+  ✓About you · ✓License details · ✓Intro call · 4 Application · 5 Review · 6 Pay & sign · 7 NMLS access.
+- **Step 1:** all fields required (Matt: "All fields required"). "How did you hear" options per Matt; "Other" has NO
+  extra text box. Referral picker on company pages: search input ("Search by first name, last name, email or NMLS"),
+  per-word match on name/email/NMLS; options and the picked card show avatar + full name + NMLS · email; × clears.
+  On a Loan Officer's own page (e.g. `/mattmoghaddam/join`) the question is hidden and a read-only "Referred by" card
+  (avatar, name, NMLS, email) is shown.
+- **Step 2:** sponsor states multi-select ("Add" placeholder only while empty). Conditional blocks (hard-coded in lf and
+  lo today, 4 copies: `@constants/state` + inline CA/IN/SC-AR-NE + `ALWAYS_CORPORATE_STATES`):
+  CA DFPI → "Do you also have a California DRE real estate license?" (Yes → DRE number/type);
+  CA DRE → "Do you want to practice real estate with Loan Factory too?" + DRE number/type; IN → license type;
+  SC/AR/NE → sponsorship confirmation. Website Yes → repeatable URL rows ("+ Add another website").
+  Website-approval tick lives here, always shown and required.
+- **Step 3:** title "Would you like a quick call first?"; cards "Yes, book a 30-min call" / "No, I'm ready to join ·
+  I already spoke with your team". Calendar month view + 4 two-hour windows, up to 3; "Any time works for me" hides the
+  calendar (no chip, no "ASAP"). No time-zone line (device time zone stored silently). No onboarding-specialist column.
+  Matt's "None of these times work…" link dropped.
+- **Call requested (/join/booked):** centred, Matt's confirmation layout: ✓, "You're all set, <name>!", one sentence with
+  the mobile number, chosen windows as chips; main video + 3 thumbnails + YouTube button. No "Add to calendar" /
+  "Change times" (time not confirmed yet), no mini step list.
+- **Step 4 "Finish your application"** (6 groups): Personal details (legal first/last, alias first name — packs only has
+  `alias_first_name`, citizenship, preferred languages full width) · Address (street 2/3 + apt 1/3, ZIP 1/3 + city 2/3,
+  "Mailing address is the same" toggles the mailing rows) · Licensing (licensed states, not-exclusive tick) ·
+  Compensation (main/correspondent dropdowns 0.5–2.5% step 0.125; employment type shown 3 ways: set on the call →
+  read-only line "Set on your call"; forced by state → "Required in <state>"; free → two cards 1099 / W-2 with
+  "We'll confirm this with you before your agreement") · Online presence (Yes/No, rows of platform select ~160px +
+  URL) · Special requests (rows + disclaimer). Required fields carry a "Required" chip; optional nothing; ticks no chip.
+- **W-2/1099 is not a free choice** (state law decides; Montana/Indiana require W-2, HUD requires W-2 for FHA lenders):
+  keep today's rules (10 always-W-2 states, CA DFPI / IN no-SOS → W-2) and the call lock.
+- **Review:** 7 groups with Edit; values as label-over-value tiles; each website and each social link listed;
+  "Set by our team · This is wrong" under legal name / employment type (both can be entered by staff).
+- **Waiting for review / Done:** centred, info as two small tiles (email, questions).
