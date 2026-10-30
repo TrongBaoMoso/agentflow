@@ -30,6 +30,12 @@ Resume: `claude --resume 8658d500-15e8-4830-b017-aaec2ebd2e74`, or a new session
    disclaimer ack). Make first/last name editable on keyed links (FE only); keep email locked.
 3. Re-fetch all repos before coding.
 
+### recruit-be prod release (30/10 evening)
+Session a8ef2df9 asked to fast-forward recruit-be staging→production (bd agentflow-9syty, includes our be #772
+V299–V301). Replied GO with conditions: prod pre-check no `referral.program%` settings rows; after deploy Flyway
+299–301 success, all 3 flags false, 0 rows in candidate_referral_program / candidate_program_qualification after ~10 min,
+no ReferralProgramCatchUp errors; flags stay OFF on prod. On resume: read their results (or measure prod yourself).
+
 ### Unrelated items from the 30/10 morning audit still unanswered by Bao
 - Turn on the 3 D268/D269 staging flags and measure (DESIGN.md lo-recruiter-program-credit)?
 - Close done-but-open beads tdqcv, zo816, tax65, lr5an?
