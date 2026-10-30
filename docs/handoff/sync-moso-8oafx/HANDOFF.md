@@ -134,3 +134,9 @@ See RESUME POINT above (items 1-4). Steps 1-2 of the old list (merge packs, turn
 - Test data left on staging: Cbtwo Echo first name "Cbtwoo", phone (714) 555-3155.
 - Prod: nothing pushed. Waiting Bao: be #767 #770 #771 #774, fe #610 #612 #613 #620 #626.
 - Worktrees rbe-moso-bell-group / rfe-modal-remove-bell removed; SWAT Chrome closed.
+
+## UPDATE 30/10 ~16:00 — what MOSO prod runs (SWAT builds, measured)
+- MOSO prod = GAE lender-rate version d (created 2026-10-29T11:59Z), from SWAT "Deploy Hot Fix for Moso v3.64.1 (d)" by Tho Le: started 18:05 VN, finished by "Continue" run 18:42 VN (20m38s). No later deploy_hot_fix since.
+- packs #3806 (__changed_by, merged 3.64.1 17:12 VN) was merged BEFORE that build → in prod (the build takes the 3.64.1 head; SWAT "Report" only opens github.com, no commit shown).
+- packs #3808 (wzkts email lock) and #3811 (tests/docs), merged 21:36 VN, are NOT in prod → next 3.64.1 hotfix (Khai/Tho).
+- Bao 30/10: " · " join accepted (no tera-components change). Recruit prod promote WAITS: staging also holds fe #618/#619 (Modex item 8 + SMS, waiting Bao's review in that session) and be #772/fe #616 (D268/D269, waiting Khai packs + Bao). Bao: "lên prod nếu có thể hoặc đợi các session kia tuỳ bạn" → chose to wait.
