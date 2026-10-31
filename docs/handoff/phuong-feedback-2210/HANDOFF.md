@@ -431,3 +431,8 @@ Open (none can be finished by this session alone):
 
 Cleaned: 9 worktrees of merged PRs removed (all clean and pushed). The packs worktrees `packs-worktrees/recruiter-credit-*`
 and `referrers-domain-url` are kept until Khải merges.
+
+## UPDATE 31/10 (measured)
+The recruit side of this session is now on PRODUCTION: be #718 #723 #725 #729 and fe #560 #561 #562 #565 #573. They went
+out in other sessions' fast-forwards of 29–30/10. moso-aid, lo-homepage and lf (/join) and packs #3735/#3739/#3740 were
+not re-measured here; see CLOSE-OUT 26/10.
