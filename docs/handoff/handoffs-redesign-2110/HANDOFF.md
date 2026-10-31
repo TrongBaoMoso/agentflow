@@ -234,3 +234,9 @@ Bao 31/10 picked 1B (rebuild the /work "welcome e-mail not sent" banner as a My 
 - Measured: be #778, fe #632, #635 on origin/staging, NOT on origin/production. All 19 earlier PRs are on production.
 - Prod pusher (session a8ef2df9) asked 31/10: answered GO technically (no flag, no data step, inert on prod: 0 blocks); final call is Bao's.
 - Open: Bao reviews 2 new vi strings; yw9i7 stays in progress until prod; worktrees recruit-{be,fe}-worktrees/welcome-blocked are clean, remove after prod.
+
+## CLOSED 31/10 — welcome-blocked line ON PRODUCTION
+
+- Bao approved prod + the 2 vi strings. Prod FF by session a8ef2df9: recruit-be production 3ac0b3f5 (incl #778), recruit-fe production a96b5069 (incl #632 #635); both deploys green.
+- Staging seed on outbox 19faf534 undone; both welcome-blocked worktrees removed; agentflow-yw9i7 closed.
+- Only follow-up: agentflow-6wr0y (show the actor name for central UUID ids).
