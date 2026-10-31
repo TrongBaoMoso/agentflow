@@ -378,3 +378,13 @@ Recommendation: treat these as a **thin, flagged bridge** while sign, pay and re
 ## 6. Agents used (all finished; nothing running)
 
 `moso-dep-A`, `moso-dep-B`, `moso-dep-C`, `replace-map-1`, `replace-map-2`. All were read-only: no checkouts, builds or pushes. replace-map-1 made shallow clones only in its own scratchpad.
+
+## MORNING 31/10: prod Cold import DONE
+
+- Resumed 04:01Z after the gcloud re-login; finished 04:30Z with exit 0 and 0 errors.
+- Prod `candidates`: 104,331 total, of which 102,266 have `cold_imported_at` (30,812 from the night run plus 71,454 from the resume).
+- The dry run said CREATE_UNOWNED 105,742. The extra 3,476 rows were duplicates inside the dump; the import skipped them as SKIPPED_EXISTING.
+- Ledgers were already applied during the night: black_list 83, sms 7,443, email 51,649, call 42,649. The LO pass added 5,471 suppressions.
+- The port-forward is stopped. The PII dump stays in `~/.cache/claude-recruit/prod-cold-dryrun-3010/`; never commit it.
+- recruit-fe #636 (0gwad.9 FE) was merged as 64973ee0 and is on staging. Bead 0gwad.9 is closed.
+- agentflow-9a will FF recruit-be to prod (it needs #783). I said YES for #741 and #782 with the flags unchanged. #778 is Bao's call.
