@@ -436,3 +436,10 @@ and `referrers-domain-url` are kept until Khải merges.
 The recruit side of this session is now on PRODUCTION: be #718 #723 #725 #729 and fe #560 #561 #562 #565 #573. They went
 out in other sessions' fast-forwards of 29–30/10. moso-aid, lo-homepage and lf (/join) and packs #3735/#3739/#3740 were
 not re-measured here; see CLOSE-OUT 26/10.
+- 31/10 re-measure:
+  - packs #3739/#3740 were MERGED 29/10 by session 8658d500, which adopted them for D268/D269 (see
+    docs/handoff/lo-recruiter-program-credit/DESIGN.md). Deploy, SystemProps and the 3 product questions are owned there now.
+  - packs #3735 is still OPEN.
+  - moso-aid `pro` has the join-page + standing routes.
+  - lo-homepage `produciton-v2` has no /join, and lf #2674 is not on production.
+  - Staging RECRUIT_HR_OFFBOARD_SUBSCRIPTION is still unset (waiting on Khải's IAM).
