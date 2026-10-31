@@ -225,3 +225,12 @@ Bao 31/10 picked 1B (rebuild the /work "welcome e-mail not sent" banner as a My 
 - Screenshots (SIMULATED block injected browser-side, real deployed UI): scratchpad wbshots/sim-*.png, 1440/390 table/cards, line + button stay inside the cell.
 - NOT DONE: the real staging seed. gcloud auth expired (needs `gcloud auth login`). Seed = UPDATE packs_writeback_outbox SET welcome_email_status='unsignable_actor_no_branch', welcome_email_reason='NullPointerException' WHERE id='19faf534-bc46-4758-b81f-44203883ba9f' (QA Claudeadvisor, specialist onb-test). Undo = set both NULL.
 - Measured 31/10: prod has 0 blocks and 0 1-1 write-backs (switch off), so prod cannot show the line yet.
+
+## AUDIT 31/10 midday — welcome-blocked line verified with REAL staging data
+
+- gcloud login done. Seed on STAGING: packs_writeback_outbox 19faf534 (LO "QA Claudeadvisor", specialist onb-test) now has welcome_email_status=unsignable_actor_no_branch. Undo: `UPDATE packs_writeback_outbox SET welcome_email_status=NULL, welcome_email_reason=NULL WHERE id='19faf534-bc46-4758-b81f-44203883ba9f';`
+- Real /offers/mine (Manager + onb-test) returns welcome_email_blocked for that row; UI shows the red line + "E-mail the signing link…" at 1440/390, table/cards, inside the Status cell, no page overflow (no browser injection).
+- Finding: actor_name is null because ActorDisplayNameResolverImpl drops central UUID user ids → line uses the nameless sentence. Follow-up bead agentflow-6wr0y.
+- Measured: be #778, fe #632, #635 on origin/staging, NOT on origin/production. All 19 earlier PRs are on production.
+- Prod pusher (session a8ef2df9) asked 31/10: answered GO technically (no flag, no data step, inert on prod: 0 blocks); final call is Bao's.
+- Open: Bao reviews 2 new vi strings; yw9i7 stays in progress until prod; worktrees recruit-{be,fe}-worktrees/welcome-blocked are clean, remove after prod.
