@@ -316,3 +316,11 @@ recruit-be is NOT released yet: production...staging is ahead 6 (#767 #770 #771 
   - The omni release carries Khải's #658, so it goes after the topic.
   - The recruit RECRUIT_FEATURES_SCHEDULED_SEND_INFO flag gates email too, so it is Bao's decision.
   - 10DLC/Zoom prod sender is a question for Khải.
+
+## 31/10 ~22:15 VN — rchrl CLOSED (staging retest verified)
+- Text B (owner has Zoom) arrived on Bao's Zoom at 22:03 VN (Bao's screenshot). Text A (owner has no Zoom) did not arrive.
+- Ledger f8277499 (ba96a139): status SENT, delivery_status FAILED, delivery_status_code PROVIDER_REJECTED, at 15:06:51Z.
+- recruit-be staging log 15:06:52Z: `scheduled text not delivered: candidate=ba96a139… code=PROVIDER_REJECTED reopened=true`, so the Send info follow-up was reopened.
+- Ledger cc5c4a31 (e407d013): SENT, no failure reported.
+- The "Not delivered" chip in the UI was not checked in a browser; it reads the same ledger fields.
+- bd agentflow-rchrl closed. Still open: pgziz (Monday, Khải).
