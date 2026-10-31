@@ -80,15 +80,17 @@ hand before its go-live; add the row here when done.
 
 ## moso-aid — staging (Cloud Run `moso-aid`, `lenderrate-master`, us-central1)
 
-moso-aid keeps its keys as **plain Cloud Run env vars** (no Secret Manager). Names are readable with
+moso-aid keeps its keys as **plain Cloud Run env vars**; from 31/10 new ones also get a Secret Manager copy (`moso-aid-*`). Names are readable with
 `gcloud run services describe moso-aid --project lenderrate-master --region us-central1 --format=json`.
-17 vars on 24/10 (rev 00185): ALLY_API_KEY, ALLY_API_URL, ALLY_INBOUND_SERVICE_KEY, API_CRAWL, ENV, IS_CRAWL,
+17 vars on 24/10 (rev 00185; 20 on 31/10, rev 00194-j95): ALLY_API_KEY, ALLY_API_URL, ALLY_INBOUND_SERVICE_KEY, API_CRAWL, ENV, IS_CRAWL,
 JWT_SECRET, LF_GATEWAY_URL, LOL_RBAC_ENFORCE, LOL_SSO_CLIENT_ID, LOL_SSO_CLIENT_SECRET, LO_ADMIN_SERVICE_KEY,
 LO_RECRUITER_PAGE_REQUIRES_APPROVAL, LO_TEAMS_WRITE_ENABLED, MONGO_URI, RECRUITER_PROFILE_SERVICE_KEY, RECRUIT_INBOUND_SERVICE_KEY.
 
 | Env var | Purpose | Created |
 |---|---|---|
 | PACKS_INBOUND_SERVICE_KEY | packs → `GET /api/lo-programs/standing/members` (moso-aid #196, LO Recruiter Program credit). Same value must go into packs property `moso_aid_packs_service_key`. Value in Keychain `moso-aid-packs-inbound-service-key-staging`. | 2026-10-25 (rev 00187) |
+| MOSO_ADMINS_API_KEY | OUTBOUND: moso-aid → MOSO AIAPI `GET /api/ai/v1/{ns}/getAdmins` as a staff login, so rows keep `key` after packs#3761 (moso-aid #202 / issue #197; without it every `/api/join-page` is 404). It is the MOSO **ApiKey** of the dedicated service Admin **`svc-moso-aid@viet18.com`** (staging Datastore ns 5716104026521600, created 31/10 by direct Datastore insert): `active=false`, no permissions, no Credential (cannot log in), only first/last name. An Admin-kind caller is enough for full rows (`ListAdminsFromCachedOp.STAFF_KINDS`). Secret Manager **`moso-aid-moso-admins-api-key`** (lenderrate-master, v1) + Keychain `moso-aid-moso-admins-api-key-staging`. | 2026-10-31 (rev 00191-h7q, 19 vars) |
+| JOIN_PAGE_READ_KEY | INBOUND, read-only: lo-homepage server → `GET /api/join-page` with `x-join-page-read-key` skips the #201 rate limit and opens nothing else (moso-aid #203, lo-homepage #927). Same value on lo-homepage. Must never equal RECRUITER_PROFILE_SERVICE_KEY (startup check reports it). Secret Manager **`moso-aid-join-page-read-key`** (lenderrate-master, v1) + Keychain `join-page-read-key-staging`. Also set on Cloud Run **`lo-homepage-master`** (same value, `--update-env-vars`, rev 00378 → 3 vars). | 2026-10-31 (moso-aid rev 00194-j95, 20 vars; no startup missing/shared-key warning) |
 
 **Never use `--env-vars-file` / `--set-env-vars` on this service — they REPLACE every var.** Use
 `--update-env-vars`. Incident 25/10: a draft command with `--env-vars-file` wiped all 17 vars; the new
