@@ -388,3 +388,12 @@ Recommendation: treat these as a **thin, flagged bridge** while sign, pay and re
 - The port-forward is stopped. The PII dump stays in `~/.cache/claude-recruit/prod-cold-dryrun-3010/`; never commit it.
 - recruit-fe #636 (0gwad.9 FE) was merged as 64973ee0 and is on staging. Bead 0gwad.9 is closed.
 - agentflow-9a will FF recruit-be to prod (it needs #783). I said YES for #741 and #782 with the flags unchanged. #778 is Bao's call.
+
+## AUDIT 31/10 midday (measured: gh, git ancestry, staging/prod DB, Cloud Logging)
+
+- Prod recruit-be = 4cffcfd7 (V301). Staging = ec9e39ee (V304); 5 commits ahead incl. #741, #782, #776, #778, #775. agentflow-9a will FF with #783 once Bao OKs #778.
+- Prod recruit-fe lacks #636 (64973ee0); staging is 14 commits ahead with other sessions' design work, so FF needs those owners.
+- Prod settings re-measured: lo_mail / onboarding.reminder / nurture.drip DRY_RUN, drip off, auto-assign off, fee 100. No LO_MAIL env on prod.
+- Staging lo_mail_sends: INVITE, REMINDER, WEBINAR each 1 SENT/DELIVERED.
+- **Invite mystery SOLVED, real bug** -> agentflow-0gwad.11.2: first send went HANDOFF (specialist auto-assigned), MOSO refused the specialist, the tick cleared it and retried record-only, so nobody mailed. Blocks lo-mail-invite ON in prod; no prod impact now.
+- Closed beads: 0gwad.1 (P0, incl. moso-aid CSVs), kzwcg (Cold import), 0gwad.9. Worktrees fe-0gwad9 and runner-sms-optout removed.
