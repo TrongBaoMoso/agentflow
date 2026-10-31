@@ -443,3 +443,36 @@ not re-measured here; see CLOSE-OUT 26/10.
   - moso-aid `pro` has the join-page + standing routes.
   - lo-homepage `produciton-v2` has no /join, and lf #2674 is not on production.
   - Staging RECRUIT_HR_OFFBOARD_SUBSCRIPTION is still unset (waiting on Khải's IAM).
+
+## 31/10 — Bao's go-aheads and the day's work (measured 31/10 ~18:40 +07)
+Bao approved: /join to PROD; merge packs #3735; switch the My referrals link to `<site>/join` after /join is on prod; do the
+small follow-ups now; remind Bao on Monday 02/11 to chase Khải about the offboard IAM (memory project_remind_khai_omni_questions_0211).
+
+Done and verified on STAGING:
+- moso-aid #201 (9f940d34): rate limit on GET /api/join-page, 30/min per IP per key and 600/min per IP.
+- moso-aid #202 (32a3848c): ROOT-CAUSE FIX for /api/join-page answering 404 since 29/10.
+  - Cause: packs #3761/#3774 stopped anonymous getAdmins from returning `key`.
+  - Fix: moso-aid now reads AIAPI getAdmins with the service Admin `svc-moso-aid@viet18.com`'s key (MOSO_ADMINS_API_KEY).
+  - On staging: /api/recruiters went from 0 to 44, the roster read went from 503 to 200 (53 members), and mama1 join-page returns 200.
+- moso-aid #203 (b0261029) + lo-homepage #927 (54e7400b): a separate read-only JOIN_PAGE_READ_KEY exempts lo-homepage's
+  server reads from the rate limit. It is not RECRUITER_PROFILE_SERVICE_KEY.
+- crm3 explained: a push failed during a recruit-be rollout. base OpServlet answers 200, so Cloud Tasks never retried it.
+  - PROD, 30 days: 36 dropped pushes over 35 rows. 27 arrived late (median 2.1h, max 13 days), 4 updates are stale, and 2 old
+    rows never reached Recruit: 37060607095 and 4990509947551744.
+
+Open PRs (nothing merged to prod):
+- lo-homepage #926 (draft, into produciton-v2, 13 picks: #910 #911 #927) and lf #2693 (draft, into production, #2674).
+  Reviewed and built. HELD on two things:
+  - Khải creates the prod service Admin + ApiKey and sets MOSO_ADMINS_API_KEY (+ JOIN_PAGE_READ_KEY) on moso-aid prod; then
+    PR moso-aid master→pro (only #201–#203 differ).
+  - Bao decides security HIGH-1: the /join editor save trusts the public loKey. Options:
+    - (a) ship without RECRUITER_PROFILE_SERVICE_KEY, editor off (recommended);
+    - (b) accept the risk;
+    - (c) hold for real auth.
+- packs #3817/#3818: Cloud Tasks retry for SendLORecruitingToRecruitOp, re-enqueue at 1/2/5/15/60 min. 2 reviewers approve.
+  Waiting for Bao's OK to merge.
+- packs #3735/#3816: domain_url. The tests were rewritten (computed field) but have not run (RAM gate); a second review is
+  needed, then merge.
+- My referrals link switch: not started; waits for /join on prod (recruit-be DefaultReferralLinks: `/loan-officer` → `/join`).
+- Digest e-mail end-to-end check: not done. The staging browser login was denied twice by the RAM gate.
+- The 68 prod Loan Officer sites already broken (67 redirect to the home page + "tamera wilkins") are reported to Bao, unrelated.
