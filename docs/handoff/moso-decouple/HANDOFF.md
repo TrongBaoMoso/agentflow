@@ -397,3 +397,9 @@ Recommendation: treat these as a **thin, flagged bridge** while sign, pay and re
 - Staging lo_mail_sends: INVITE, REMINDER, WEBINAR each 1 SENT/DELIVERED.
 - **Invite mystery SOLVED, real bug** -> agentflow-0gwad.11.2: first send went HANDOFF (specialist auto-assigned), MOSO refused the specialist, the tick cleared it and retried record-only, so nobody mailed. Blocks lo-mail-invite ON in prod; no prod impact now.
 - Closed beads: 0gwad.1 (P0, incl. moso-aid CSVs), kzwcg (Cold import), 0gwad.9. Worktrees fe-0gwad9 and runner-sms-optout removed.
+
+## 31/10 afternoon: P2 on prod (flags OFF), invite-loss fix on staging
+
+- agentflow-82 FF'd the whole staging batch to prod around 08:20Z, after every owner said GO (Bao's condition): be 3ac0b3f5 (#741 #782 #776 #778 #775 #783, Flyway 304), fe a96b5069 (#636). Re-measured: lo_mail / reminder / drip are DRY_RUN, auto-assign is off, and there is no LO_MAIL env.
+- recruit-be #784 (D351, agentflow-0gwad.11.2) merged as 99d2003d and is on staging only. When MOSO refuses the onboarding specialist on a Recruit-mailed INVITE, Recruit mails the invite once after commit. It skips when an invite under any key is already SENT or CLAIMED. Two reviewers APPROVE; CI and the IT suite are green.
+- Before lo-mail-invite ON in prod: #784 on prod, plus the rest of agentflow-0gwad.11.
