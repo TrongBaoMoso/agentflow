@@ -522,3 +522,20 @@ Done:
 - Prod FF: session agentflow-82 does ONE FF to 3ac0b3f5 (~08:20Z) carrying #778, #741 (V303), #782, #776, #775, #783.
   agentflow-bf asks: after deploy check Flyway reached V304/V303 and both pods healthy; prod flags untouched.
 - Then: dry run → step 8 (one person by hand) → merge #781 → staging → prod → apply page by page → outbox FAILED = 0.
+
+### P6 DONE on PROD (31/10 ~10:10Z)
+- Prod FF by agentflow-82 to 3ac0b3f5 (#778 #741 #782 #776 #775 #783; Flyway v304, 2 pods ok). Then this session FF'd
+  9e20ef35 = only #781 (REFERRER flag on), after GO from agentflow-82 and agentflow-bf. Pods show the flag `true`.
+- Dry run (prod): 625 referrers, 477 would_assign, 9 has_staff_role, 135 no_company_email, 4 packs_unavailable.
+- Step 8: one plain-LO referrer (00c34bd1…) given REFERRER by hand: /candidates /inbox/hot /today 403, /referrals/mine
+  /me/nav-context /notifications 200 on both pods (evidence on #781).
+- Apply: attempts 1 and 2 died on MOSO 502/503 mid-read (MOSO GAE flaky on many paths, nothing written); attempt 3
+  OK: **assigned 480**, has_staff_role 9, no_company_email 136. `rbac_central_outbox`: 480 REFERRER/ASSIGN DONE, 0 FAILED.
+  Spot-check 2 random: role_codes [REFERRER], /candidates /today 403, /referrals/mine 200.
+- `referrer_role.max_owners_per_run` was raised 200→1000 for the runs (one packs read per run) and restored to 200.
+- **be #785** (retry a byOwner page on 5xx/timeout, 3 tries; 2 reviews; auto-merge) — staging-only until the next
+  prod lot; non-blocking review note: self-view /referrals/mine can wait ~3 min in a packs outage (consider attempts=1
+  for the self-view).
+- Note: REFERRER only matters once Tai enables gateway app-access enforce for RECRUIT (prod enforce=[] today).
+- Still open: D326 step 9 (alert on FAILED outbox rows), step 10 (leaver check); Khai items (4 HR subs + reconcile
+  key; Monday reminder); MOSO owner sync stays OFF (dry run only).
