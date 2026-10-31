@@ -281,3 +281,16 @@ recruit-be is NOT released yet: production...staging is ahead 6 (#767 #770 #771 
 - Modex proposal parts 2–3: NOT built (Bao: API with Modex/MMI is the future). One combined question for Thuận — bd agentflow-n7bec.
 - 23:45: Bao saw NO text on Zoom. omni-sta log 16:30:02 `SMS comm_message rejected by zoom-go: failing without retry` code USER_NOT_FOUND — the owning recruiter (Bao Trinh 3e228b0a on staging) has no Zoom Phone user, so omni had no sender. Recruit still shows SENT + "Scheduled info sent · text message"; the DELIVERY_FAILED landed only on `activities.delivery_failed_at`, which recruit-fe never renders → bug bd agentflow-rchrl (P1, fix before prod go-live). Retest needs an owner with a Zoom user on staging.
 - Reminder for Bao Mon 02/11 (ask Khải: topic + omni prod release): bd agentflow-pgziz + memory.
+
+## 31/10 ~11:30 VN — rchrl fix on STAGING (not prod)
+
+- recruit-be #775 squash-merged as ec9e39ee and promoted to staging. Deploy and flyway both succeeded.
+  - The migration was renumbered **V302 → V304**, because master took V303 and V303 had already been applied on staging.
+  - V304 is applied on staging, and `delivery_status_code` is now varchar(32).
+- recruit-fe #630 squash-merged as d30478b4 and promoted to staging. The deploy succeeded.
+- Reviewers A (java) and B (code) both approved after the DLQ doc and the advisory-lock fix (a961e59c).
+- Overnight stall: the session stopped at about 01:40 VN and nothing ran until about 11:00 VN. CI had not started because the PR conflicted with master.
+- **Still open:**
+  - A live SMS test on staging (happy path e407d013, failure path ba96a139). The staging office-hours gate (Mon–Fri 08–17 PT) holds weekend sends.
+  - Bao has been asked whether to open the hours temporarily or wait until Monday.
+- The pre-send check was not built. R65 records why it was rejected as unreliable.
