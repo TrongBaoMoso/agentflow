@@ -302,3 +302,17 @@ recruit-be is NOT released yet: production...staging is ahead 6 (#767 #770 #771 
 - Staging DB: flyway V304; sms_enabled=true, allowlist ["+14085381464"], business_hours Mon–Fri 08–17; ledger: ba96a139 SENT (16:30 UTC 30/10, pre-fix, delivery_status empty, so it is not re-marked), e407d013 SENT 17:30 UTC (delivered, Bao confirmed).
 - Prod DB: flyway V301; sms_enabled=false, allowlist []; nurture.drip DRY_RUN; packs.writeback.experience_enabled=true; 1 MMI webhook event ever; writeback outbox 0; ONB_PREMEETING items 0.
 - Branch `shots/scheduled-sms-autosend` still exists (recruit-fe). Worktrees recruit-be-rchrl / recruit-fe-rchrl removed.
+
+## 31/10 ~15:30 VN — PROD release + staging SMS retest (measured)
+- Every owning session replied GO (bf/460363a7: #741 #776 #782 #636; 9b/c12550de: #778 #632 #635; 9a: #783). The 2026 design FE PRs are imkhai's own and the switch stays off in prod. Bao's condition was "every owner has nothing pending", and it was met.
+- **recruit-be production = staging = `3ac0b3f5`.** Deploy and flyway succeeded; prod flyway 303 and 304 succeeded; 2 pods Ready with 0 restarts and 0 ERROR lines.
+- **recruit-fe production = staging = `a96b5069`.** Deploy succeeded. No prod flag or setting was touched.
+- Staging retest: at 15:00 VN Recruit sent both texts (A = ba96a139, owner has no Zoom; B = e407d013, owner has Zoom).
+  - omni-sta held both under its own QUIET_HOURS env (08:00 PT), so they release at ~22:03 and ~22:06 VN tonight.
+  - Bao will check Zoom tonight and send screenshots. Expected: B arrives, A is refused, and Recruit shows "Not delivered" with a hand-back follow-up.
+- The Recruit staging business_hours and SMS window were opened only for this test (07:32Z) and restored at 08:05Z.
+- SMS prod go-live (bd pgziz notes):
+  - The topic needs Khải or DevOps: bao.trinh has only pubsub.topics.get, and omni does not auto-create publish topics.
+  - The omni release carries Khải's #658, so it goes after the topic.
+  - The recruit RECRUIT_FEATURES_SCHEDULED_SEND_INFO flag gates email too, so it is Bao's decision.
+  - 10DLC/Zoom prod sender is a question for Khải.
