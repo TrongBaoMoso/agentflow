@@ -509,3 +509,16 @@ Done:
 - be #781 (prod REFERRER flag) OPEN, do not merge before the prod dry run `POST /api/v1/admin/referrer-role/backfill?dry_run=true`
   (X-User-ID = Bao's prod id, approved). Then merge → staging → prod FF → apply backfill page by page → outbox FAILED = 0 → spot-check.
 - Beads 5ryt2, k89t8, dvipz closed.
+
+### P6 31/10 morning (Bao logged in again)
+- Prod central mode verified in-pod: boot log `RBAC source = CENTRAL`, catalog push no-op; `/admin/rbac/me` matches the
+  pre-cutover runtime for 13/13 grant holders (ADMIN also shows `*`); unknown id → 403 on /candidates; admin → 200.
+- REFERRER dry run FAILED 3/3: recruit-be gives up on packs `referrals/byOwner` after 10s, MOSO prod GAE log shows
+  the same calls answered 200 in 16.4/19.3/21.9s (even with since=2026-09-01). Fix: **be #783** (read-only packs ops
+  get `recruit.recruit-api.read-timeout-ms`, default 60s; writes keep 10s), 2 reviews, merged 3ac0b3f5, staging promote
+  running. Note: byOwner pages 200 rows, so a full dry run can take minutes.
+- Mistake: a promote fired while #783's merge was refused, so master ec9e39ee (#776, #775 V304) went to staging early.
+  Harmless (V304 > V303) and Bao wants the whole staging lot on prod today anyway.
+- Prod FF: session agentflow-82 does ONE FF to 3ac0b3f5 (~08:20Z) carrying #778, #741 (V303), #782, #776, #775, #783.
+  agentflow-bf asks: after deploy check Flyway reached V304/V303 and both pods healthy; prod flags untouched.
+- Then: dry run → step 8 (one person by hand) → merge #781 → staging → prod → apply page by page → outbox FAILED = 0.
