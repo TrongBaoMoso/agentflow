@@ -294,3 +294,11 @@ recruit-be is NOT released yet: production...staging is ahead 6 (#767 #770 #771 
   - A live SMS test on staging (happy path e407d013, failure path ba96a139). The staging office-hours gate (Mon–Fri 08–17 PT) holds weekend sends.
   - Bao has been asked whether to open the hours temporarily or wait until Monday.
 - The pre-send check was not built. R65 records why it was rejected as unreliable.
+
+## AUDIT 31/10 ~12:30 VN (measured, read-only)
+- recruit-be: prod `4cffcfd7`, staging = master `ec9e39ee` (staging +5 over prod: D348, D349/D350 invite mail, runner fix, **#775 rchrl**). All earlier session BE PRs (#698–#702 #707 #762–#764 #769 #773) are in prod.
+- recruit-fe: prod `6c998c62`, staging = master `a96b5069` (staging +14 over prod, mostly the 2026 design work of other sessions + **#630 rchrl**). All earlier session FE PRs (#550 #552 #554 #557 #607 #618 #619 #621) are in prod.
+- omni-service: master = staging `27e83a3e` (#659); production `71012e89` (28/10) does NOT have #659. Topic `omni-question-events` in lender-rate: NOT_FOUND.
+- Staging DB: flyway V304; sms_enabled=true, allowlist ["+14085381464"], business_hours Mon–Fri 08–17; ledger: ba96a139 SENT (16:30 UTC 30/10, pre-fix, delivery_status empty, so it is not re-marked), e407d013 SENT 17:30 UTC (delivered, Bao confirmed).
+- Prod DB: flyway V301; sms_enabled=false, allowlist []; nurture.drip DRY_RUN; packs.writeback.experience_enabled=true; 1 MMI webhook event ever; writeback outbox 0; ONB_PREMEETING items 0.
+- Branch `shots/scheduled-sms-autosend` still exists (recruit-fe). Worktrees recruit-be-rchrl / recruit-fe-rchrl removed.
