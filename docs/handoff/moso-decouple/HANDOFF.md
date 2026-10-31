@@ -403,3 +403,12 @@ Recommendation: treat these as a **thin, flagged bridge** while sign, pay and re
 - agentflow-82 FF'd the whole staging batch to prod around 08:20Z, after every owner said GO (Bao's condition): be 3ac0b3f5 (#741 #782 #776 #778 #775 #783, Flyway 304), fe a96b5069 (#636). Re-measured: lo_mail / reminder / drip are DRY_RUN, auto-assign is off, and there is no LO_MAIL env.
 - recruit-be #784 (D351, agentflow-0gwad.11.2) merged as 99d2003d and is on staging only. When MOSO refuses the onboarding specialist on a Recruit-mailed INVITE, Recruit mails the invite once after commit. It skips when an invite under any key is already SENT or CLAIMED. Two reviewers APPROVE; CI and the IT suite are green.
 - Before lo-mail-invite ON in prod: #784 on prod, plus the rest of agentflow-0gwad.11.
+
+## AUDIT 31/10 evening (re-measured: gh, kubectl, prod/staging DB)
+
+- recruit-be: prod 9e20ef35 (Flyway 304, 2 pods Ready 0 restarts; rev 79 at 14:15Z = RBAC session adding RECRUIT_FEATURES_REFERRER_ROLE, not ours). Staging 99d2003d = prod + #784 only.
+- recruit-fe: prod = staging = a96b5069.
+- Prod: lo_mail and onboarding.reminder DRY_RUN, drip off, auto-assign off, no LO_MAIL env, lo_mail_sends 0 rows. Candidates 104,331 / cold 102,266.
+- Staging lo_mail_sends: INVITE, REMINDER, WEBINAR each 1 SENT/DELIVERED. #784's refused-specialist path not yet exercised live on staging (needs MOSO to refuse a specialist).
+- Closed agentflow-0gwad.11.1 as a duplicate of .11.2.
+- Still open: 0gwad.11 (legacy SENT resend rule, CLAIMED stuck, DROPPED wording), 0gwad.10, P3-P6, 0gwad.2 tail (notifier #350 waits on Khai), tera-components #579 (Khai), fe #515 draft (after #579). `bd dolt push` returns 403.
