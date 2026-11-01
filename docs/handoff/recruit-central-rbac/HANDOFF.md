@@ -539,3 +539,6 @@ Done:
 - Note: REFERRER only matters once Tai enables gateway app-access enforce for RECRUIT (prod enforce=[] today).
 - Still open: D326 step 9 (alert on FAILED outbox rows), step 10 (leaver check); Khai items (4 HR subs + reconcile
   key; Monday reminder); MOSO owner sync stays OFF (dry run only).
+
+### #785 on PROD (01/11)
+- agentflow-bf FF recruit-be production to ca0503cd (#784 #785 #786 #787, Flyway 305), deploy green. #785 = packs byOwner page retry (3 tries). Verified in pod: source=central and REFERRER flag still on. Follow-ups: beads y89cf.1 (outbox FAILED alert), y89cf.2 (leaver check), y89cf.3 (self-view should not wait through retries). New referrers are not auto-granted until the RBAC reconcile key and the cron-service tick exist (MESSAGE-KHAI-3110).
