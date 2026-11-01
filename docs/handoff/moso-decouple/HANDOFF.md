@@ -412,3 +412,10 @@ Recommendation: treat these as a **thin, flagged bridge** while sign, pay and re
 - Staging lo_mail_sends: INVITE, REMINDER, WEBINAR each 1 SENT/DELIVERED. #784's refused-specialist path not yet exercised live on staging (needs MOSO to refuse a specialist).
 - Closed agentflow-0gwad.11.1 as a duplicate of .11.2.
 - Still open: 0gwad.11 (legacy SENT resend rule, CLAIMED stuck, DROPPED wording), 0gwad.10, P3-P6, 0gwad.2 tail (notifier #350 waits on Khai), tera-components #579 (Khai), fe #515 draft (after #579). `bd dolt push` returns 403.
+
+## 01/11: 0gwad.11 + .12 done, batch on PROD (flags OFF)
+
+- Measured progress (audits/D-recheck-0111.md, E-shipped-vs-plan-0111.md): built ~25% (by items) / 38% (effort), live ~14% / 20%; live MOSO coupling grew since 21/10 (prod write-back flags 2 -> 11 after #703 on 29/10).
+- Merged + staging: be #786 8e1c6928 (D352, V305 `lo_mail.invite_owned_from`), fe #649 fb0d259e (stale wording, DROPPED copy), be #787 ca0503cd (D353, My invites row same rule). Beads 0gwad.11, .11.1 (dup), .12 closed.
+- PROD FF ~15:10Z after GO from agentflow-9a (#785) and agentflow-82 (#648 is Khai's docs): be 9e20ef35 -> ca0503cd (#784 #785 #786 #787), fe a96b5069 -> fb0d259e (#648 #649). Verified: 2 pods Ready 0 restarts, Flyway 305, 0 ERROR lines, `lo_mail.invite_owned_from` = 2026-11-01T15:13:23Z, lo_mail/reminder DRY_RUN, drip off, auto-assign off, no LO_MAIL env, lo_mail_sends 0 rows.
+- Before lo-mail-invite ON in prod: a packs PR so MOSO's LORecruiting crons/mails skip Recruit-owned rows (Khai deploys), then Bao's go. If the write-back is OFF at flag-on, re-stamp `lo_mail.invite_owned_from`.
