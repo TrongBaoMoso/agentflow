@@ -13,7 +13,14 @@ Session a8ef2df9. Spec: `SPEC.md` in this folder. Mockup: https://claude.ai/arti
   - Today row showed "Text to … scheduled for …", a Send now button and "Your note: …".
   - Clicking Send now in the UI gave SENT 10:27:17Z with message_ref stored. The omni mirror came back as an OUTBOUND SMS by the recruiter, and **the Call again stayed open** (D278 amendment verified). The row then read "You texted … at 5:27 PM · no reply yet".
 - **Found on staging:** an LO with no state got `sms_time_zone` null, so the card showed the send time in the viewer's zone (9:00 PM VN) while the sender uses LA. Fixed in #793: the field now returns the business zone.
-- **recruit-be #793** (review follow-ups + 3c2vc + zone fix): CI and review in progress. Next: merge, then promote to staging.
+- **recruit-be #793** (review follow-ups, 3c2vc, zone fix): MERGED as a359aff0 and on STAGING (cd 41433897449 success). Staging check: `sms_time_zone` = America/Los_Angeles for the test LO.
+- A message_ref index was dropped from #793 to avoid a V308/V309 race with #794 (lead intake). Tracked as bead agentflow-j1jd0, to add after #794 merges.
+- **STAGING IS COMPLETE.** Left:
+  - prod: Bao's SMS go-live decision, plus Khải promoting omni #663;
+  - agentflow-ex16t: Conversations redesign;
+  - agentflow-j1jd0: index;
+  - an SMS template for the Text-first card. Staging has none for the recruiter account, so the Message box starts empty.
+- The test LO 07001ba1 is still owned by bao.trinh+recruiter, with a SENT text and an open Call again.
 
 ## RESUME POINT: PAUSED 02/11 ~16:30 VN (Bao shut the machine down)
 
