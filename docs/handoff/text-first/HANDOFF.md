@@ -13,7 +13,7 @@ Session a8ef2df9. Spec: `SPEC.md` in this folder. Mockup: https://claude.ai/arti
   - Khải was asked in the PR to decide whether content may go on the event (#177 rule). If he says no, revert `preview`/`subject` before any promotion.
 - **recruit-be #792**
   - Merged as master 0836cfff. Promote-staging dispatched; origin/staging = 0836cfff.
-  - cd-staging result was NOT yet confirmed when we paused. Check with `gh run list -R LoanFactory-Inc/recruit-be --workflow cd-staging.yml -L 3`.
+  - cd-staging run 41419108432 = success (confirmed 02/11 after the pause note).
   - Decision D355, migration V307 (renumbered from D354/V306 after #788–#791 took them).
   - Flag `RECRUIT_FEATURES_CALL_TEXT_FIRST` is "true" in staging values only.
 - **recruit-fe #655**
@@ -21,7 +21,7 @@ Session a8ef2df9. Spec: `SPEC.md` in this folder. Mockup: https://claude.ai/arti
 
 ### Not done (in order)
 
-1. **Confirm BE cd-staging success, then check on staging** (recruit.viet18.com, recruiter account):
+1. **Check on staging** (both deploys succeeded) (recruit.viet18.com, recruiter account):
    - the Log result card "Text <First> before the call";
    - the Today rows;
    - the reply rows "Reply to <First>".
