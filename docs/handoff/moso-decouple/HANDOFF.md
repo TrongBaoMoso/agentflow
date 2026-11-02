@@ -426,3 +426,30 @@ Bao 02/11 (option A): only the onboarding specialist contacts the loan officer. 
 - recruit-be #788 (eacd3599), IT #789; recruit-fe #653 (02544057). STAGING since 02/11 ~15:25, V306 applied, flag ON there; production flag OFF (not in prod values).
 - Correction recorded: Recruit's main path already matched "OB sends" (hand-off ON on prod); only the no-OB fallback mailed From the recruiter.
 - Gaps (D354 row): a later OB clear does not ring the assigners; a waiting invite counts as invite_trouble on Today.
+
+## RESUME POINT: PAUSED 02/11 evening (session 460363a7)
+
+Done today, all on STAGING (production unchanged, flags off there):
+- D354 no invite email without an OB: recruit-be #788 #789 #790 #791, recruit-fe #653. Bao 02/11: OB role hearing the
+  "needs OB" bell is OK; turn the prod flag on WHEN the team starts sending offers from Recruit. Bead wqdol closed.
+- 0gwad.10 approve toast follows the invite state: recruit-fe #654 (staging 53855674). Close the bead after a look.
+- Staging now: recruit-be 018e578f, recruit-fe 53855674.
+
+IN PROGRESS: P3a lead intake (bead agentflow-0gwad.4.1, child of 0gwad.4). Bao OK'd the plan.
+- Design: recruit-be branch `feature/lead-intake`, file `docs/LEAD-INTAKE.md` (commit ac755e55). Read it first.
+- Code: WIP commit c6b49bd0 on the same branch (pushed, NO PR). Worktree
+  /Users/apple/Projects/agentflow/recruit-be-worktrees/lead-intake. NOT compiled, NOT tested; a dev-be agent was
+  stopped mid-way. Started: package `leadintake/` (ApiKeys, Flag, Linker, Origin, RateLimiter, Request, RowMapper),
+  V307__lead_intake.sql, changes in CandidateEntity, ProgramTrustReader, MosoRowUpsertService(+Impl).
+- Still to do (the brief): controller `POST /public/api/v1/intake/lo-lead` + service (one person one candidate,
+  advisory lock), link-on-push in the upsert create branch, settings rows, application.yml flag
+  `recruit.features.lead-intake` + `recruit.lead-intake.api-keys`, staging values (flag ON, key from a new secret
+  `recruit-be-recruit-lead-intake-api-keys`, never in repo), docs INTEGRATIONS/DECISIONS D355/STATUS/SCHEMA, unit + IT
+  (`ItPostgres`), then PR, review, merge, promote staging.
+- Then: lf-homepage + lo-homepage server route `/webplus-api/recruit-intake` (verify reCAPTCHA, forward with a
+  server-only key + x-client-ip), dual-post after packs returns `key` -> `moso_key`; staging only.
+- Research facts (forms, packs ops, lead-be pattern, linking) are summarised in docs/LEAD-INTAKE.md.
+
+Next phases after P3a (Bao 02/11: the session's main job is Recruit fully off MOSO): P3b own webinars, P4 onboarding
+portal on lf via recruit-be + fee + e-sign (DE team), P5 opt-outs / referral bonus / LO Recruiter Program off moso-aid
+/ NMLS, P1 rest (Khai: notifier #350), P6 cut.
