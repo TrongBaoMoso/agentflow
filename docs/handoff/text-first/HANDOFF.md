@@ -2,6 +2,19 @@
 
 Session a8ef2df9. Spec: `SPEC.md` in this folder. Mockup: https://claude.ai/artifact/6RTG8qnybihtRhHyU4oqLr (v32; the board "Today — LO replied rows (A)" is item A).
 
+## 02/11 evening (resumed): Bao away, "end to end, do not stop", STAGING only
+
+- **Bao's answers:**
+  - System texts do NOT count as a person's contact (bead agentflow-3c2vc). This is done in recruit-be #793.
+  - Real test SMS only to +14085381464.
+- **Staging E2E done 02/11 ~17:27 VN:**
+  - Test LO "TRINH VU TRONG BAO" (07001ba1, phone = Bao's Zoom) was transferred to bao.trinh+recruiter (d8186688) by the manager account.
+  - Call outcome posted via API: Interested → Call again at now+8h with `text_first`. Result: `call_text_first` PENDING, send_at = call − 1h.
+  - Today row showed "Text to … scheduled for …", a Send now button and "Your note: …".
+  - Clicking Send now in the UI gave SENT 10:27:17Z with message_ref stored. The omni mirror came back as an OUTBOUND SMS by the recruiter, and **the Call again stayed open** (D278 amendment verified). The row then read "You texted … at 5:27 PM · no reply yet".
+- **Found on staging:** an LO with no state got `sms_time_zone` null, so the card showed the send time in the viewer's zone (9:00 PM VN) while the sender uses LA. Fixed in #793: the field now returns the business zone.
+- **recruit-be #793** (review follow-ups + 3c2vc + zone fix): CI and review in progress. Next: merge, then promote to staging.
+
 ## RESUME POINT: PAUSED 02/11 ~16:30 VN (Bao shut the machine down)
 
 ### Done
