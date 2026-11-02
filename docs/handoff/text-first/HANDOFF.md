@@ -2,6 +2,20 @@
 
 Session a8ef2df9. Spec: `SPEC.md` in this folder. Mockup: https://claude.ai/artifact/6RTG8qnybihtRhHyU4oqLr (v32; the board "Today — LO replied rows (A)" is item A).
 
+## PRODUCTION 02/11 ~19:30 VN
+
+- recruit-be production is a359aff0 (cd 41440648883 success). This also carries D354 #788–#791, with OK from session 460363a7. Their flag stays off.
+- recruit-fe production is dabe4de0 (cd 41442191758 success). This also carries #653 and #654.
+- The Text-first flag is ABSENT in prod, so the Log result card is hidden.
+- Visible on prod with the flag off:
+  - the Reply button is gone;
+  - reply rows read "Reply to <First>" with a how-they-replied line;
+  - Call again rows show "Your note:".
+- Turning the flag on in prod sends real SMS to LOs. That needs Bao, the prod Zoom/10DLC sender (Khải), and omni #663 promoted.
+- Staging SMS template "Text before a Call again" was created and approved as the manager account (id 84f90ee2).
+- Mockup B (Conversations) was added to the artifact (v33), waiting for Bao.
+- Bug agentflow-lhz67: Send now outside the LO's hours shows "You texted" while omni holds the text for quiet hours.
+
 ## 02/11 evening (resumed): Bao away, "end to end, do not stop", STAGING only
 
 - **Bao's answers:**
