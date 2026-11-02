@@ -453,3 +453,12 @@ IN PROGRESS: P3a lead intake (bead agentflow-0gwad.4.1, child of 0gwad.4). Bao O
 Next phases after P3a (Bao 02/11: the session's main job is Recruit fully off MOSO): P3b own webinars, P4 onboarding
 portal on lf via recruit-be + fee + e-sign (DE team), P5 opt-outs / referral bonus / LO Recruiter Program off moso-aid
 / NMLS, P1 rest (Khai: notifier #350), P6 cut.
+
+## P3a lead intake — STATUS 02/11 ~20:15 (session 460363a7)
+
+- recruit-be #794 (D356, V308) merged d6ec3a25; #797 (25c969a0) removed `RECRUIT_LEAD_INTAKE_API_KEYS` from `helm-chart/config/staging/secret-keys.txt` because the staging deploy failed at "Sync secrets": `recruit-be-deploy@` has no secretAccessor on `recruit-be-recruit-lead-intake-api-keys` and Bao's account cannot setIamPolicy.
+- Staging now: pod 25c969a0, Flyway 308 OK, `RECRUIT_FEATURES_LEAD_INTAKE=true`, key absent → intake answers 401 (fail-closed). Forms keep posting to packs.
+- lf #2694 (b218f41) and lo #928 (50d987f) merged to master (staging builds). Both read `payload.duplicate` (tera envelope). Cloud Run staging has RECRUIT_INTAKE_* env; MIN_SCORE=0.1 is TEMPORARY.
+- BLOCKER (admin: Khai or dat.vo): `gcloud secrets add-iam-policy-binding recruit-be-recruit-lead-intake-api-keys --project lenderrate-master --member=serviceAccount:recruit-be-deploy@lenderrate-master.iam.gserviceaccount.com --role=roles/secretmanager.secretAccessor`
+- After the grant: PR re-adding `RECRUIT_LEAD_INTAKE_API_KEYS=recruit-be-recruit-lead-intake-api-keys` to secret-keys.txt → promote → verify KEYS_LEN>0 → fill lf/lo staging forms (bao.trinh+lead-…) → measure one candidate per person + legacy_key after push → restore RECRUIT_INTAKE_MIN_SCORE (0.5 or remove).
+- Production: untouched; anything at/after d6ec3a25 needs this session's OK (told session a8ef2df9).
