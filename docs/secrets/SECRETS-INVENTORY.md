@@ -98,6 +98,8 @@ revision 00186 failed to start, traffic stayed on 00185 (no outage); restored fr
 
 Production moso-aid: PACKS_INBOUND_SERVICE_KEY **created 2026-10-29** (rev moso-aid-00120-75x, `--update-env-vars`, 16 vars after, all inbound keys distinct; `/api/lo-programs/standing/members` wrong key 401 / right key 200). Value in Bao's Keychain `moso-aid-packs-inbound-service-key-production`. **Still to do (needs MOSO admin, Khải):** packs prod System Properties `moso_aid_packs_service_key` = that value and `moso_aid_base_url` = moso-aid prod `/api` root. Both unset = packs program credit stays off (no error).
 
+Production moso-aid: **JOIN_PAGE_READ_KEY created 2026-11-02** (rev moso-aid-00123-mxw, `--update-env-vars`, 16 → 17 vars; random 64 chars, distinct from RECRUITER_PROFILE_SERVICE_KEY). Value in Bao's Keychain service `join-page-read-key-prod` (account moso-aid). Same value set on Cloud Run **`lo-homepage-v2`** (lender-rate, prod) together with **RECRUITER_PROFILE_SERVICE_KEY** (copied from moso-aid prod's value), rev lo-homepage-v2-00293-2pr, 0 → 2 vars. Code using them went live 02/11 (moso-aid #208 rev 00124; lo-homepage #926). Production has **no MOSO_ADMINS_API_KEY** on purpose: #207 reads one person by key (GetOp) when the directory is key-less, so the startup warning naming it is expected.
+
 ## Pub/Sub
 
 Staging (`lenderrate-master`, listable by Bao), recruit subscriptions on 23/10:

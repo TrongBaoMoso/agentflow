@@ -30,3 +30,12 @@
 
 ## Context already finished this session (do not redo)
 - moso-aid #200 (+ #205 warn log) live on pro (#204, #206; rev moso-aid-00122-b2r); Tài told on #200. user-service prod is `mode=shadow`.
+
+## DONE ON PROD — 02/11 evening (session bb6ab172)
+- moso-aid #207 (GetOp per key when the directory is key-less) + review fix 6c594a4 → master 26a81c1; promoted with #201/#202/#203 via **#208** → pro 99b0284 → prod rev **moso-aid-00124-nfv**.
+  Measured: `/api/join-page?key=<Suong>` **200** (was 404), `/api/lo-setting` 200; startup warns MOSO_ADMINS_API_KEY missing (expected). Only post-deploy 5xx = old lo-setting 500 (agentflow-ahgee, 15 of them in the 90 min before deploy).
+- lo-homepage **#926** → produciton-v2 44e63a2 → rev **lo-homepage-v2-00294-zht**. Measured: suongloanofficer.com/join **200 "Join Loan Factory — invited by Suong Nguyen"**; /, /loan-officer, /register-loan-officer 200; no ERROR logs. No test sign-up submitted.
+- lf-homepage **#2693** → production 813282f (build at time of writing). Prod has 12 recruiters, 0 with a Loan Officer site → the redirect is a no-op today; /join/<slug> stays on lf.
+- Reviews: #207 code+security APPROVE; #926 code+security APPROVE (branch == master); #2693 code+security APPROVE. loanfactory.com/<site>/* → 302 to the LO domain verified.
+- Follow-ups: **agentflow-ip7uw** (HIGH-1 real auth on editor + lo-setting save, CORS, rate limit, encode loKey in lo-setting.js:55); agentflow-ahgee (lo-setting 500).
+- lf #2693 build SUCCESS 12:02 UTC; measured /join/tommy-le + /join/mattmo 200 (stay on lf), unknown slug → home, /loan-officer + / 200, suongloanofficer.com/join 200.
