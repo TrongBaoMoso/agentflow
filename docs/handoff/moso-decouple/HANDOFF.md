@@ -419,3 +419,10 @@ Recommendation: treat these as a **thin, flagged bridge** while sign, pay and re
 - Merged + staging: be #786 8e1c6928 (D352, V305 `lo_mail.invite_owned_from`), fe #649 fb0d259e (stale wording, DROPPED copy), be #787 ca0503cd (D353, My invites row same rule). Beads 0gwad.11, .11.1 (dup), .12 closed.
 - PROD FF ~15:10Z after GO from agentflow-9a (#785) and agentflow-82 (#648 is Khai's docs): be 9e20ef35 -> ca0503cd (#784 #785 #786 #787), fe a96b5069 -> fb0d259e (#648 #649). Verified: 2 pods Ready 0 restarts, Flyway 305, 0 ERROR lines, `lo_mail.invite_owned_from` = 2026-11-01T15:13:23Z, lo_mail/reminder DRY_RUN, drip off, auto-assign off, no LO_MAIL env, lo_mail_sends 0 rows.
 - Before lo-mail-invite ON in prod: a packs PR so MOSO's LORecruiting crons/mails skip Recruit-owned rows (Khai deploys), then Bao's go. If the write-back is OFF at flag-on, re-stamp `lo_mail.invite_owned_from`.
+
+## 02/11: D354, no invite email without an OB (agentflow-wqdol)
+
+Bao 02/11 (option A): only the onboarding specialist contacts the loan officer. With `recruit.features.invite-waits-for-specialist` on, an offer whose LO has no OB in Recruit sends no invite email (packs or Recruit). The INVITE waits on `WAIT_SPECIALIST`; assigning an OB releases it as the D207 hand-off. Bell `INVITE_WAITING_FOR_SPECIALIST` goes to ONBOARDING_SPECIALIST_ASSIGN holders (MANAGER, ADMIN and ONBOARDING) and the owner.
+- recruit-be #788 (eacd3599), IT #789; recruit-fe #653 (02544057). STAGING since 02/11 ~15:25, V306 applied, flag ON there; production flag OFF (not in prod values).
+- Correction recorded: Recruit's main path already matched "OB sends" (hand-off ON on prod); only the no-OB fallback mailed From the recruiter.
+- Gaps (D354 row): a later OB clear does not ring the assigners; a waiting invite counts as invite_trouble on Today.
