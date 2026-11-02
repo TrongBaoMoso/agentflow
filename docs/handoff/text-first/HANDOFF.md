@@ -2,6 +2,13 @@
 
 Session a8ef2df9. Spec: `SPEC.md` in this folder. Mockup: https://claude.ai/artifact/6RTG8qnybihtRhHyU4oqLr (v32; the board "Today — LO replied rows (A)" is item A).
 
+## 02/11 late evening
+
+- **recruit-be #796** (V309 message_ref index, agentflow-j1jd0): merged as 63d71b78 and on STAGING. Prod needs OK from session 460363a7 (lead intake d6ec3a25 sits before it).
+- **recruit-fe #657** (conversation opens on the tab and channel of the newest unread, via omni messages/stats; spinner; 500 ms timeout; last click wins; no composer wipe): merged as 6ed7ab28 and on STAGING (cd 41468536359).
+  - Prod is BLOCKED: fe #656 (Tera Assistant, "staging only") from another session sits before it on staging. Ask its owner before any FF.
+- Mockup B (Conversations) v38: shared list chrome, no title icon, unread dot left of the avatar, channel icons, a Team row, the click rule. Bao is OK with the click rule. The page redesign is not coded yet (bead agentflow-ex16t).
+
 ## PRODUCTION 02/11 ~19:30 VN
 
 - recruit-be production is a359aff0 (cd 41440648883 success). This also carries D354 #788–#791, with OK from session 460363a7. Their flag stays off.
