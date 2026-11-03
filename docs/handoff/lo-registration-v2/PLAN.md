@@ -257,7 +257,7 @@ Web fonts Montserrat (headings) + Lato (body) — lf loads Montserrat only today
 darker rust orange, warm near-black, cream/peach backgrounds, an Inter-like font, ~7 type sizes and the abbreviation "LO".
 Build with brand tokens; black text on orange buttons (white on #F36F23 is ~3:1).
 Victoria 31/10: the hero (Step 1) and the top strip (later steps) use brand orange, not black — black "gives a strange vibe".
-White text on that orange band; only the 24px bold heading/stat numbers pass contrast (large-text 3:1), so keep small text there short.
+Bao 31/10: black text on that orange band (heading, body, stats, divider lines), white only for the small eyebrow, so the band uses all three brand colors; black on #F36F23 is ~7:1.
 
 ## 8. Mockup decisions (Bao 30/10 afternoon)
 
