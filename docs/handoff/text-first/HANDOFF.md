@@ -128,3 +128,17 @@ Session a8ef2df9. Spec: `SPEC.md` in this folder. Mockup: https://claude.ai/arti
 - Flaky IT filed: ReferralViewIT:255 fails 07:00–08:00 UTC after the Nov DST change.
 - STAGING 03/11 ~15:25 VN: be 4c31d905 (#802) + fe d5aba8f5 (#664). Checked: bao.trinh+recruiter opens Connections → card "Not linked"; staging log `zoom-link-on-demand: user d8186688… not linked (NO_MATCH)` (no MOSO Admin for that e-mail, expected). The positive path (no row → row created) is covered by unit tests only: the saved staging sessions for +hh and manhadmin had expired, so the live delete-and-relink test was not run. Shot: shots/zoom-card-not-linked-staging-1440.png
 - 03/11 16:46 VN, verified live on STAGING: HH got 403 on /me/zoom-link (row-scoped allowlist) → fixed be #804 f945c629 + fe #667 aa46e37c. Then admin (chauchau11) DELETEd +hh's row, +hh reopened Settings → Connections: card "Linked to MOSO" and DB row re-created `auto on demand: MOSO Admin bao.trinh+hh@loanfactory.com` (09:46:17Z). On-demand linking proven end to end. Note: on staging bao.trinh is RECRUITER+ONBOARDING (not ADMIN); use chauchau11 for admin calls; staging gateway is gateway.viet18.com.
+
+## RESUME POINT — PAUSED 03/11 ~17:45 VN (Bao shutting down; session a8ef2df9 / agentflow-3d)
+
+**Next step = PROD release of recruit-be + recruit-fe (Bao "có" 03/11; all owners OK).**
+- Owners asked 03/11: lead-intake + webinar session 460363a7 OK (features dark on prod, Flyway V308/V310/V311 expand-only, verify pods + Flyway ≥ v311 after); HOT auto-assign 1070c582 OK (be 88a7bb2a3, fe b17b41d1d); Thanh (human) OK on Slack 17:27 for be #795, fe #656/#659/#660. Others: not theirs.
+- Keep on prod: RECRUIT_URGENT_ENABLED untouched; RECRUIT_RBAC_SOURCE=central, RECRUIT_FEATURES_REFERRER_ROLE=true.
+- State at pause: be #806 (zoom autolink ON in prod values) MERGED; fe #668 (Sends preview uses Settings hours) MERGED; be #807 (candidate detail `sms_window`) and be #808 (LA-midnight flaky ITs, agentflow-prlmb) OPEN with auto-merge on, CI was running (may need `gh pr update-branch` if BEHIND).
+- To resume:
+  1. `gh pr view 807 808 -R LoanFactory-Inc/recruit-be` → merged? else update-branch / wait CI.
+  2. Promote: `gh workflow run promote-staging.yml -R LoanFactory-Inc/recruit-be -f sha=<master tip>` and same for recruit-fe; check `compare/staging...master` first (only ours + others already OK'd).
+  3. Wait cd-staging success; quick staging check of the Sends preview (Log result, Text first ticked).
+  4. Prod: `git fetch && git log origin/production..origin/staging` then `git push origin origin/staging:refs/heads/production` in recruit-be and recruit-fe (release team = TrongBaoMoso). Watch cd-production.
+  5. Verify prod: pods healthy, Flyway ≥ v311, `pgq.sh` read recruiter_zoom_link (on-demand links appear as recruiters use it; 8 Zoom-connected expected over time), FE Settings → Connections card.
+- Messages: Khải asked 17:23 to release omni #665 + #663 (explained #663 = preview/subject/call result on inbound-reply event for My work today). Thanh OK.
