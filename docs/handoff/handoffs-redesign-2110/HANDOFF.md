@@ -240,3 +240,18 @@ Bao 31/10 picked 1B (rebuild the /work "welcome e-mail not sent" banner as a My 
 - Bao approved prod + the 2 vi strings. Prod FF by session a8ef2df9: recruit-be production 3ac0b3f5 (incl #778), recruit-fe production a96b5069 (incl #632 #635); both deploys green.
 - Staging seed on outbox 19faf534 undone; both welcome-blocked worktrees removed; agentflow-yw9i7 closed.
 - Only follow-up: agentflow-6wr0y (show the actor name for central UUID ids).
+
+## OPEN 03/11 — setup call owner rule changes (agentflow-v1srh, not coded)
+
+Bao (product owner) 03/11: the setup call belongs to the loan officer's **current owner**, not to whoever requested the offer, and a **Manager** sees every button the owner sees. This supersedes D307 (3)(4) and D332 (1)(3) once built.
+
+Measured on recruit-be origin/master 03/11:
+- Offer request (D209, `OfferRequestPermission`): owner or `OFFER_APPROVE` (MANAGER, ADMIN). So requester != owner only after an owner transfer, or when a Manager pressed the invite.
+- `SetupCallOwnership` today = requester of the latest non-draft offer, else the specialist. It feeds the bell `ONBOARDING_SETUP_CALL_READY`, Today's `BOOK_SETUP_CALL` row, Today's progress bar and `maySetupCall`.
+- `mayTick` = owner, onboarding specialist or `RBAC_MANAGE`. MANAGER has `OFFER_APPROVE` + `CHECKLIST_ITEM_MANAGE` but not `RBAC_MANAGE`, so `can_tick` is false for a Manager and the profile shows no buttons.
+
+Wanted:
+1. Transfer: Lan sent the offer, the lead moved to Hung. Once HR + Licensing are done, the Today row, the bell and the profile buttons go to Hung.
+2. Manager: Tuan sees on the profile every button Hung sees.
+
+To build (waits on Bao's GO): `SetupCallOwnership` -> `candidates.owner_id`, fallback specialist; `mayTick` / `maySetupCall` include the Manager (permission to confirm with Bao); new DECISIONS entry; ITs for transfer + manager. FE needs no change if `can_tick` widens.
