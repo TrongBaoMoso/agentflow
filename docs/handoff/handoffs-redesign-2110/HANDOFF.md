@@ -282,3 +282,13 @@ Next steps on resume:
 - Left: Bao's read-only staging check (owner sees Today row + profile buttons; manager sees profile buttons; former requester sees none). Follow-ups: `agentflow-rf9sm`.
 
 - 04/11: Bao checked staging (owner / manager / transfer via Hand off) and confirmed OK. Left: prod with Bao's approval.
+
+## 04/11 night — D362 on PRODUCTION, D363 (rf9sm gaps) on STAGING
+
+- D362 production: recruit-be prod FF 79b19e25b..cea1f014f (owners of #808 #809 #811 #813 said OK), cd-production 41682421528 green, Flyway v313, 2/2 pods. Bead agentflow-v1srh closed.
+- D363 (agentflow-rf9sm), Bao's away window (Headhunter owner -> specialist; staging only; FE no local preview):
+  - recruit-be #814 bca432ca0: setup call owner must be STAFF (grant row, not a program member), else the specialist (departed, Headhunter / Team lead, none); a notifying transfer rings the new owner after commit; My hand-offs Mine lists JOINED leads the caller owns; progress read `setup_call.owner_id`; progress bar uses the same rule.
+  - recruit-fe #676 be04be12: card + Needs-action line say "Waiting on {owner}" (fallback specialist).
+  - Both on staging (cd-staging 41690650078, 41690792872 green). 2 reviewers per PR, local ITs green, negative controls red.
+  - Staging data (read-only): no staff counted as a program member; 347 owed setup calls = 327 unowned + 20 staff-owned, so nothing changed hands.
+- Left for Bao: look on staging (profile of a Joined LO at the setup call shows "Waiting on <owner>"), then approve prod. Not done: catalog CANDIDATE_UPDATE description (needs a catalog push).
