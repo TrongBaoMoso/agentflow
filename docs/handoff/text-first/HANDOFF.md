@@ -97,3 +97,13 @@ Session a8ef2df9. Spec: `SPEC.md` in this folder. Mockup: https://claude.ai/arti
   - `NEXT_PUBLIC_TERA_DESIGN=true npx next dev -p 3311` in the FE worktree. Use webpack, not turbopack: turbopack cannot resolve design-2026-caps.css in a worktree.
 - Refresh the token: `onetoken.js` with `NODE_PATH=.worktrees/_designs/e2e-lab-scratch/seed/node_modules`.
 - URL: http://localhost:3320/en/today
+
+## 03/11 ~11:31 VN: real SMS from Recruit PROD works (Brayan)
+
+- Prod has NO users yet (Bao 03/11); all trials on staging. Noted in recruit-be #798 / recruit-fe #658 CLAUDE.md.
+- Prod `recruiter_zoom_link` was EMPTY, so no recruiter could text from Recruit prod ("You don't have a Zoom account linked").
+- zoom-go identifies a sender by `users.los_user_id` = the MOSO `Admin` urlsafe key (app `s~lender-rate`, kind Admin, name = Admin email, namespace 5716104026521600).
+- Bao (ADMIN) ran `PUT https://gateway.loanfactory.com/recruit-svc/api/v1/admin/zoom-links/06ca50ef-…` with Brayan's Admin key (brsuarez2001@gmail.com) → 200 at 04:30Z.
+- Test LO "Bao Test" (a328b47e) phone set to +1 408-538-1464, owner → Brayan. Brayan (Bao in incognito) sent "test 10DLC Brayan" from the conversation → arrived on the 1464 line at 11:31 from (832) 241-6541 with the 10DLC footer "Reply STOP to cancel". So: Brayan's number is in 10DLC and Recruit → Omni → zoom-go works on prod.
+- MOSO: 629 Admins have `zoom_phone_connected=true`; ZoomSubscription holds each number (Vic (714) 591-8143, Brayan (832) 241-6541).
+- Left: link the other recruiters (Vic …) the same way (proposal: a job that fills recruiter_zoom_link from MOSO for every Recruit user with a connected Zoom); hand "Bao Test" back to Bao.
