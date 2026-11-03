@@ -280,3 +280,5 @@ Next steps on resume:
 - Rebuilt as one commit on master after #809 merged D361 (webinar); D362 row sits above D361 in DECISIONS.
 - Worktree and branch removed. Prod: waits on Bao (prod has no users).
 - Left: Bao's read-only staging check (owner sees Today row + profile buttons; manager sees profile buttons; former requester sees none). Follow-ups: `agentflow-rf9sm`.
+
+- 04/11: Bao checked staging (owner / manager / transfer via Hand off) and confirmed OK. Left: prod with Bao's approval.
