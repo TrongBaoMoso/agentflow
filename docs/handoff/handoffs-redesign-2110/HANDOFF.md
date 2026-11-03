@@ -255,3 +255,21 @@ Wanted:
 2. Manager: Tuan sees on the profile every button Hung sees.
 
 To build (waits on Bao's GO): `SetupCallOwnership` -> `candidates.owner_id`, fallback specialist; `mayTick` / `maySetupCall` include the Manager (permission to confirm with Bao); new DECISIONS entry; ITs for transfer + manager. FE needs no change if `can_tick` widens.
+
+## RESUME POINT — PAUSED 03/11 evening (session 1d8db712, Bao shut the machine down)
+
+Bao said GO 03/11 for D362 (setup call follows the current owner; Manager = `REPORT_TEAM` acts like the owner; to STAGING, prod waits on Bao).
+
+State at pause (all pushed, nothing local only):
+- recruit-be PR **#810**, branch `feat/setup-call-current-owner` (tip a5fe27b0e, rebased on master 03/11). Worktree `recruit-be-worktrees/setup-call-owner`.
+- Decision renumbered **D361 -> D362** (D361 is taken by open #809). DECISIONS D362 + §4 reversal row + STATUS line are in the PR.
+- Local tests green: 96 unit + PostJoinedProgressIT / MyInvitesHandoffsIT / MyInvitesTeamScopeIT / TodayProgressIT / MeetAttendanceIT / TodayRolesIT. Negative controls red as expected.
+- 2 reviewer COMMENTs on #810, both "Verdict: OK to merge" (java reviewer after the fix commit; consistency reviewer).
+- CI at pause: decision-number guard PASS after the renumber; Integration tests, pr-check, Assistant MCP, Go-live script were still PENDING.
+
+Next steps on resume:
+1. `gh pr checks 810 -R LoanFactory-Inc/recruit-be` — all green? If red, read the log (`gh api repos/LoanFactory-Inc/recruit-be/actions/jobs/<id>/logs`). If BEHIND master, rebase + check no new D362 collision (`gh pr list` diffs).
+2. Squash-merge #810, then `gh workflow run promote-staging.yml` in recruit-be (check `git log origin/staging..origin/master` first: other sessions' commits ride along), wait cd-staging green.
+3. Staging check (read only, do NOT click confirm Mark done): a Joined LO at the setup call — owner sees Today row + buttons; a manager account sees the buttons on the profile; former requester sees none.
+4. Tell Bao in Vietnamese; prod only with Bao's approval (prod has no users).
+- Follow-up gaps (not in #810): bead `agentflow-rf9sm` (My hand-offs Mine after transfer, departed owner, re-ring on transfer, Headhunter owner routes, FE JourneyWaitNotice "Waiting on specialist", catalog description).
