@@ -462,3 +462,58 @@ portal on lf via recruit-be + fee + e-sign (DE team), P5 opt-outs / referral bon
 - BLOCKER (admin: Khai or dat.vo): `gcloud secrets add-iam-policy-binding recruit-be-recruit-lead-intake-api-keys --project lenderrate-master --member=serviceAccount:recruit-be-deploy@lenderrate-master.iam.gserviceaccount.com --role=roles/secretmanager.secretAccessor`
 - After the grant: PR re-adding `RECRUIT_LEAD_INTAKE_API_KEYS=recruit-be-recruit-lead-intake-api-keys` to secret-keys.txt → promote → verify KEYS_LEN>0 → fill lf/lo staging forms (bao.trinh+lead-…) → measure one candidate per person + legacy_key after push → restore RECRUIT_INTAKE_MIN_SCORE (0.5 or remove).
 - Production: untouched; anything at/after d6ec3a25 needs this session's OK (told session a8ef2df9).
+
+## RESUME POINT: PAUSED 03/11 17:35 (session 460363a7)
+
+Bao shut the machine down to go home. Resume the session and continue from here. Everything below was measured at 17:30.
+
+### 1. MOSO webinar drip, 2-month and 3-month emails (bead agentflow-t9gsi)
+- **Request:** MOSO ticket of 16/07/2026, from Victoria's team.
+- **Code:** moso #1809 merged to master as e983c7a122. #1810 merged to prod branch 3.64.1 as a661c92898; it is still on 3.64.1, with 2 later hot fixes from other people.
+- **Who gets it:** statuses no_response, denied_by_LO, hiatus and invited_to_join. Fail closed: inactive records are skipped. plusMonths fixes the 1-month repeat.
+- **Templates:** created in MOSO prod through the Email Templates UI.
+  - `webinar_registration_after_2_months`, subject "Ready to join Loan Factory? Here are your next steps".
+  - `webinar_registration_after_3_months`, subject "Loan Factory: Still here if you're ready".
+  - From and Reply-To are `${Server.getCompanyWithDBAInfo().recruiting_dept_email}`, which resolves to recruiting@loanfactory.com (Bao's choice). The signature is Victoria's (Bao: keep).
+  - Test sends went to bao.trinh+lo-prod-test@: 2 from victoria.pham@, then 2 from recruiting@. All SENT.
+- **NOT DEPLOYED:** GAE lender-rate/default is still `c` (02/11 18:26). Bao's SWAT role (Dev) has no Rerun on deploy_hot_fix rows. Bao asked Khai on Slack at 14:18 ("deploy moso giúp em nha"). DON'T work around this.
+- **Deadline:** the first real 2-month send is 04/11 14:00 PT, about 05:00 VN on 05/11, for the 04/09 webinar. The first 3-month send is 07/11, for the 07/08 webinar.
+- **After the deploy:**
+  - Check that `gcloud app versions list --project lender-rate --service default` shows a new version at traffic 1.00.
+  - On 05/11, count EmailHistory rows where template = webinar_registration_after_2_months (sent / errors) with scratchpad ds.py. scratchpad may be wiped: ds.py is a runQuery loop on lender-rate, ns 5716104026521600, using `gcloud auth print-access-token`.
+- **Local build cache:** ~/.cache/m2-build-1809 (scratch m2). The GWT compile must run with caps: localWorkers=1, xmx 2500M, draftCompile.
+
+### 2. Recruit webinar B0 and B1: on STAGING, E2E passed
+- **Code:**
+  - be #801 (8b5042e9d, D359, V310) and #805 (802c9f23d, D360, V311).
+  - fe #663 (669a2129, bell) and #665 (d211ecdc, the /webinar-schedule page).
+- **Flags and settings:** the flags `webinar-schedule` and `webinar-mail` are staging only. Settings `webinar.schedule.enabled` and `webinar.confirmation_mail.enabled` are true on staging.
+- **Series row:** `series-why-loan-factory` (Fri 13:00 LA, 90 min, meeting_url meet.google.com/usw-rroo-jgy), created by SQL.
+- **E2E:**
+  - Registration of bao.trinh+crm3 (candidate f0757c39-…): 201, then a repeat 200, and 409 on another session.
+  - Confirmation mail DELIVERED; the signed .ics is valid.
+  - A skip moved the registrant to 13/11 and the moved mail was SENT; the session was then restored.
+  - MANAGER can skip after the central RBAC push on staging (`~/.cache/claude-recruit/webinar-rbac/run_stg.sh`, additive, 4 role grants).
+- **Screenshots:** docs/handoff/moso-decouple/webinar-b1-shots/staging-*.png.
+- **Prod release:** session agentflow-3d is fast-forwarding staging to prod (Bao approved). I answered OK for my commits; everything is dark on prod. Verify after: prod Flyway at v311, pods healthy.
+
+### 3. Recruit webinar B2, IN PROGRESS (bead agentflow-0gwad.4.5)
+- **PR:** recruit-be #809, branch feat/webinar-b2-calendar-meet, worktree recruit-be-worktrees/webinar-b2, commit 3831d827d (D361). At 17:30 CI was still pending.
+- **Scope:** the organizer's Google connection creates a Calendar event with a Meet link for each SCHEDULED session (no guests). Skip and cancel delete it; keep and restore recreate it; a host change moves the events. Registrants are emailed when the link first appears or changes. There is a new organizer candidates endpoint `GET /api/v1/admin/webinar-organizer-candidates`. The new setting `webinar.calendar_sync.enabled` is seeded false.
+- **Next:**
+  1. Read the B2 agent's report (the PR body and the D361 doc).
+  2. CI green, then an independent code-reviewer, then fix HIGH/MEDIUM.
+  3. Merge and promote to staging; check the pod and Flyway.
+  4. Set `webinar.calendar_sync.enabled=true` on staging.
+  5. E2E: a staging account with Google connected as organizer. That may need Bao to log in to recruit staging and click Connect Google once. Then check Calendar events with Meet, skip, delete.
+- **FE follow-ups after B2:**
+  - The organizer picker shows each person's Google status from the candidates endpoint.
+  - The holidays card shows the next 12 months instead of "next year" (2026's 27/11 and 25/12 are missing today).
+  - The empty-state sentence: Bao has not answered keep or remove.
+
+### 4. Answers Bao gave 03/11
+- No shared Google account: recruiting@ is a Google Group with 8 members. Khai prefers an organizer who is a normal user connecting once, because it saves a seat and has nobody reading its notifications.
+- Organizer on prod: Victoria or Brayan, not decided yet.
+- MANAGER gets WEBINAR_SCHEDULE_MANAGE.
+- The status filter includes Denied by LO, as the ticket says.
+- All replies to Bao in VIETNAMESE (memory feedback_always_vietnamese_to_bao).
