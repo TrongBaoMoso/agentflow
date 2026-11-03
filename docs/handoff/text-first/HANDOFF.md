@@ -117,3 +117,12 @@ Session a8ef2df9. Spec: `SPEC.md` in this folder. Mockup: https://claude.ai/arti
 - Prod zoom-link dry run (read-only): 13 recruiting users, 1 linked (Brayan), 11 resolve to one active MOSO Admin (9 with Zoom connected), 1 inactive (denise.stelljes). Real prod run needs Bao's ADMIN token (console PUT) since the code stays on staging.
 - Zoom auto-link: recruit-be #799 (e89a4162, D358) on STAGING behind `recruit.features.zoom-link-autolink` (prod absent). Staging run: 21 examined, 8 linked (all test personas), 1 already linked, 5 no email, 7 no match. Prod real run is ready as a console snippet (11 PUTs, Bao's ADMIN token) in the session scratchpad `prod_zoomlink_console.js`; or ship #799 to prod with the prod app/namespace values and run its dry run then real run.
 - The 07001ba1 staging Text first (lhz67 check) is PENDING. Its sender bao.trinh+recruiter is still NOT linked on staging (no matching MOSO Admin), so it will fail PROVIDER_REJECTED again; linked staging users are bao.trinh, bao.trinh+hh, +role-teamlead+1, chi.tran+* and manhadmin.
+
+## 03/11 afternoon: Zoom link on demand (Bao: "làm theo những gì bạn đề xuất")
+
+- Problem: `recruiter_zoom_link` is filled only by an admin PUT or the D358 batch; a new recruiter, or someone who connects Zoom in MOSO later, would silently fail to text.
+- recruit-be #802: `ZoomLinkAutoLinkService.findOrLink(userId)` used by omni's `sender-identity` and by `GET /me/zoom-link`. No row → derive the MOSO Admin key from the person's company e-mail (same rule as the batch), insert, return. Never throws; miss cached 15 min, fault 1 min; serialized so two people cannot share one Admin. Same staging-only flag `recruit.features.zoom-link-autolink`.
+- recruit-fe #664: Settings → Connections gets a **Zoom Phone** card (Linked to MOSO / Not linked, one sentence, no Connect button: Zoom Phone is connected in MOSO). Conversation banner copy made neutral.
+- Vic changing her Zoom number needs nothing: the row stores the MOSO Admin, zoom-go resolves the current number.
+- Prod: Bao chose not to run the console script; prod gets this with the next batch (flag + prod app/namespace values) when Recruit has real users. Geta / Bao: MOSO `zoom_phone_connected` empty on 03/11.
+- Flaky IT filed: ReferralViewIT:255 fails 07:00–08:00 UTC after the Nov DST change.
