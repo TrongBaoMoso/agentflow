@@ -273,3 +273,10 @@ Next steps on resume:
 3. Staging check (read only, do NOT click confirm Mark done): a Joined LO at the setup call — owner sees Today row + buttons; a manager account sees the buttons on the profile; former requester sees none.
 4. Tell Bao in Vietnamese; prod only with Bao's approval (prod has no users).
 - Follow-up gaps (not in #810): bead `agentflow-rf9sm` (My hand-offs Mine after transfer, departed owner, re-ring on transfer, Headhunter owner routes, FE JourneyWaitNotice "Waiting on specialist", catalog description).
+
+## STAGING 03/11 night — D362 live on staging
+
+- recruit-be #810 merged as e7cdb6ddf (squash), promoted to staging, cd-staging run 41633615527 success, pod up 12:19Z.
+- Rebuilt as one commit on master after #809 merged D361 (webinar); D362 row sits above D361 in DECISIONS.
+- Worktree and branch removed. Prod: waits on Bao (prod has no users).
+- Left: Bao's read-only staging check (owner sees Today row + profile buttons; manager sees profile buttons; former requester sees none). Follow-ups: `agentflow-rf9sm`.
