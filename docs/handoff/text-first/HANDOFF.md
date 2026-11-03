@@ -107,3 +107,11 @@ Session a8ef2df9. Spec: `SPEC.md` in this folder. Mockup: https://claude.ai/arti
 - Test LO "Bao Test" (a328b47e) phone set to +1 408-538-1464, owner → Brayan. Brayan (Bao in incognito) sent "test 10DLC Brayan" from the conversation → arrived on the 1464 line at 11:31 from (832) 241-6541 with the 10DLC footer "Reply STOP to cancel". So: Brayan's number is in 10DLC and Recruit → Omni → zoom-go works on prod.
 - MOSO: 629 Admins have `zoom_phone_connected=true`; ZoomSubscription holds each number (Vic (714) 591-8143, Brayan (832) 241-6541).
 - Left: link the other recruiters (Vic …) the same way (proposal: a job that fills recruiter_zoom_link from MOSO for every Recruit user with a connected Zoom); hand "Bao Test" back to Bao.
+
+## 03/11 afternoon (Bao away, end-to-end to STAGING)
+
+- Conversations redesign fe #661 (10b23fc9) on STAGING, checked: 181 rows, unread next to name, full date/time, nav badge, whole-row click opens the conversation. Latest-message column falls back to our last outreach time until omni #665 is promoted.
+- omni #665 `GET /api/v1/comm/latest` merged to master a7f0e89a after an independent security review (+ fix: skip legacy rows with sys_type). Promotion = Khải.
+- lhz67 on STAGING: be #800 (eb18a194, 409 OUTSIDE_LO_WINDOW, `text_first.lo_window` on Today) + fe #662 (20085a6a, Send now disabled + tooltip). Verified on staging at 22:30 PT: API 409, button disabled, tooltip text right.
+- Finding: the 02/11 staging Text first test is FAILED PROVIDER_REJECTED ("Zoom does not recognise the account"), because the staging test recruiter has no recruiter_zoom_link. The text never left; omni quiet hours were not the whole story.
+- Prod zoom-link dry run (read-only): 13 recruiting users, 1 linked (Brayan), 11 resolve to one active MOSO Admin (9 with Zoom connected), 1 inactive (denise.stelljes). Real prod run needs Bao's ADMIN token (console PUT) since the code stays on staging.
