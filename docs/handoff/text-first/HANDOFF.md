@@ -126,3 +126,4 @@ Session a8ef2df9. Spec: `SPEC.md` in this folder. Mockup: https://claude.ai/arti
 - Vic changing her Zoom number needs nothing: the row stores the MOSO Admin, zoom-go resolves the current number.
 - Prod: Bao chose not to run the console script; prod gets this with the next batch (flag + prod app/namespace values) when Recruit has real users. Geta / Bao: MOSO `zoom_phone_connected` empty on 03/11.
 - Flaky IT filed: ReferralViewIT:255 fails 07:00–08:00 UTC after the Nov DST change.
+- STAGING 03/11 ~15:25 VN: be 4c31d905 (#802) + fe d5aba8f5 (#664). Checked: bao.trinh+recruiter opens Connections → card "Not linked"; staging log `zoom-link-on-demand: user d8186688… not linked (NO_MATCH)` (no MOSO Admin for that e-mail, expected). The positive path (no row → row created) is covered by unit tests only: the saved staging sessions for +hh and manhadmin had expired, so the live delete-and-relink test was not run. Shot: shots/zoom-card-not-linked-staging-1440.png
