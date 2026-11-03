@@ -9,7 +9,9 @@
 - Tests 14 new (5 RED on old code), full suite 1053/1053. code-reviewer + security-reviewer APPROVE.
 - Staging smoke: real staging LO (patricklotest) 60/60 × 200, unknown key 404, LO page 200. A MOSO outage cannot be forced on staging — covered by unit tests.
 
-## Production: NOT promoted (Bao 03/11: "tới staging"). To promote: PR master → pro on moso-aid, then run `check-prod.sh`.
+## Production: PROMOTED 03/11 (Bao "ok đưa đi") — moso-aid #210 → pro 5c2846d → rev **moso-aid-00125-pfx** (100%), live from ~2026-11-03T08:20:30Z.
+Smoke right after: Suong lo-setting 30/30 × 200, unknown key 404, join-page 200, suongloanofficer.com /, /join, /loan-officer 200, no ERROR logs.
+Baseline before (24 h): 174 × 500, 0 stale served. Bao ran check-prod.sh 300 before deploy: A 300×200, B 300×200.
 Expected after prod: part C 500s drop sharply, "served the last good copy" > 0.
 
 ## Separate finding (not this bead)
