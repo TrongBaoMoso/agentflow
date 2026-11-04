@@ -128,3 +128,37 @@ Recruiter overdue follow-ups are NOT urgent (later). "Offer approved but not sen
   - Last auto-resolve was 04/11.
   - No stale call urgents.
 - Removed the leftover worktree tera-components/_wt/urgent-redesign (#749 merged).
+
+## RESUME POINT (pause 05/11 evening, Bao shuts down) - PROD GO-LIVE IN FLIGHT
+
+Bao said "đưa prod đi" (05/11). Done so far:
+- recruit-be **#833 MERGED** (d22d1edd5), 2 reviewers plus CI green. It adds 4 prod env (platform inbox + urgent), a chart-lint line, and a STATUS row. It is promoted to **staging** (cd-staging success). **Production NOT pushed yet** (prod still cea1f014f).
+- Pre-deploy prod probes:
+  - Resolve with the RECRUIT key against moso-notifier-prod returns 200 `{"resolved":0}`, so the key binding and the network path are OK.
+  - Day-one urgent volume is 0: there are 0 PENDING_APPROVAL offers and 0 pending calls.
+  - The bell gets about 11 rows per week.
+
+A prod FF (`git push origin origin/staging:refs/heads/production`, release team = TrongBaoMoso) carries 16 commits, #814–#828 plus #833. Owners' answers:
+- GO from 460363a7 (agentflow-8b): #816 #820–#826. Their ask: after the push, check Flyway reaches v320 and the app starts, then report back.
+- GO from a8ef2df9 (agentflow-aa): #815.
+- GO from da43ac56 (agentflow-f4): #827 #828.
+- GO from 1d8db712 (agentflow-87): #814, Bao-approved. Tell them the prod sha.
+- #817 is docs; #818 was ready for prod on 04/11.
+- **#819 (6o9sa.1 referral totals API): waiting for Bao's yes/no.** On prod it is inert: no key, so it answers 503.
+- **#829 HR offboard (hr-offboard agent under agentflow-f4): Bao-approved.** It will be merged and promoted to staging, and its sha sent to me. Include it in the same FF. Do not let it push on its own. After the deploy, send it the prod sha and the result.
+
+To resume:
+1. `git fetch && git log --oneline origin/production..origin/staging`.
+2. Confirm #819 with Bao, and that #829 is on staging (or skip it).
+3. Push the FF and watch the cd-production run.
+4. Post-deploy checks:
+   - the pod is Ready;
+   - Flyway is at v320;
+   - `platform_inbox_state` shows active with `enabled_since`;
+   - cron-service-go stores `recruit-be-svc/recruit-platform-inbox-tick`;
+   - unread-count answers `platform_inbox: true`;
+   - one bell shows on recruit.loanfactory.com;
+   - no "notifier refused" or "abandoned" errors.
+5. Message agentflow-8b, -87, -f4/hr-offboard with the sha and the result.
+
+Rollback order (urgent off plus drain first, inbox off last) is in prod values.yaml and in the #833 body.
