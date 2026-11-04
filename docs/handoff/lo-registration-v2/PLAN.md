@@ -328,6 +328,8 @@ Supersedes the matching items of §7–§8.
 | 12 | Brayan re-posted Thuan's special-requests ticket | Already in Step 4; status workflow (Approved / Rejected / Addressed + note + timestamp) stays in Recruit, bead oxwsb |
 | 13 | Victoria 05/11: no "Waiver" quick-add chips (people click them for convenience; waivers are rarely approved) | Special requests quick-add keeps only Team name + Powered by; Coaching waiver / Fee waiver chips removed. A Loan Officer can still type any request; a staff-approved fee waiver at Pay $100 stays. Mockup v18 |
 
+**Sign-off 05/11:** Brayan reviewed mockup v18 — "everything seems good" (compensation merge + special requests confirmed). Still open: Victoria hero A/B; Licensing on NC/KY exclusivity; Bao on MS 1099 + RI distance fixes.
+
 ### State rules vs Loan Factory "Licenses" settings (screenshot 04/11, 62 rows) — measured on lf + lo origin/master
 - **Sponsorable states:** Licenses lists 48 states + DC, no **CT / NY** (matches `/add-more-state-license` copy "48 states
   except Connecticut and New York"). But `@constants/state` STATES (lf + lo) includes **CT, NY and VI**, and the register
