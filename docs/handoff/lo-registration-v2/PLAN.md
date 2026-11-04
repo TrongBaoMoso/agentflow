@@ -329,6 +329,7 @@ Supersedes the matching items of §7–§8.
 | 13 | Victoria 05/11: no "Waiver" quick-add chips (people click them for convenience; waivers are rarely approved) | Special requests quick-add keeps only Team name + Powered by; Coaching waiver / Fee waiver chips removed. A Loan Officer can still type any request; a staff-approved fee waiver at Pay $100 stays. Mockup v18 |
 
 **Sign-off 05/11:** Brayan reviewed mockup v18 — "everything seems good" (compensation merge + special requests confirmed). Still open: Victoria hero A/B; Licensing on NC/KY exclusivity; Bao on MS 1099 + RI distance fixes.
+**Bao 05/11 decisions:** hero **A**; NC/KY exclusivity question **skipped** (keep form code as is); RI supervisory-distance copy **skipped**; MS → allow 1099 (Licenses "Both") on staging; CT/NY/VI fix → **production** (lf #2700, lo #931, cherry-pick only).
 
 ### State rules vs Loan Factory "Licenses" settings (screenshot 04/11, 62 rows) — measured on lf + lo origin/master
 - **Sponsorable states:** Licenses lists 48 states + DC, no **CT / NY** (matches `/add-more-state-license` copy "48 states
@@ -341,7 +342,7 @@ Supersedes the matching items of §7–§8.
   Licenses "MLO compensation" W-2 = GA MA MT NC NJ NV RI SC VT → **MS differs**: Licenses says **Both**, and
   `/add-more-state-license` says MS 1099 Loan Officers must sign an Exclusive Agent Agreement. Code forces W-2 for MS.
   packs already builds a 1099 + Exclusive Agent Agreement for MS (`LICENSED_CONFIRMATION_STATES` = VA, MS), so MS allows 1099;
-  the form's W-2 lock for MS looks outdated. OPEN: Licensing to confirm before changing it (Bao 05/11: wait).
+  the form's W-2 lock for MS looks outdated. **Bao 05/11: follow Licenses → MS allows 1099 (fix on staging).**
 - **CA:** Licenses DFPI row = Both, DRE row = 1099; code + `/add-more-state-license` = CA-DFPI requires W-2, DRE 1099.
   **IN:** both Licenses rows = Both; code = no SOS → W-2, SOS → 1099; page = IN-DFI requires W-2. Code and public page
   agree; the Licenses "Both" values are per-license and may just mean the company holds both kinds. OPEN: confirm with Licensing.
