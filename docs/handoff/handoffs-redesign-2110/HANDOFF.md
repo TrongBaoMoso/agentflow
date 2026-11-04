@@ -310,3 +310,10 @@ Next steps on resume:
 - recruit-be production 88973c020 (pushed by session 9d6e7072) contains #814 (D363); verified 2 pods Ready, 0 ERROR lines in 2h.
 - recruit-be #839 (CANDIDATE_UPDATE description: owner while still staff, specialist, manager, admin) merged 0257c6683, on staging; boot push answered permissions_updated=1. Goes to prod with the next recruit-be prod push.
 - Left: recruit-fe #676 rides the next shared recruit-fe prod push (Bao 04/11: do not push FE alone). Then close agentflow-rf9sm.
+
+## 04/11 late — D363 FE on PRODUCTION, bead closed
+
+- recruit-fe `production` fast-forwarded `cf5fc1b2` -> `be04be12` (carries only #671 holidays-card removal and #676 "Waiting on {owner}"). cd-production success; 4 pods Ready.
+- Later FE staging commits (#675 .. #692) were NOT pushed; they belong to other sessions.
+- recruit-be #839 (catalog description text) stays on staging; it goes with the next BE prod push (commits ahead of it, #834/#843, are not cleared for prod).
+- agentflow-rf9sm closed.
