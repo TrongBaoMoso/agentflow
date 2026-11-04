@@ -493,3 +493,22 @@ Open PRs (nothing merged to prod):
     because /join is on prod.
   - Digest e-mail: 0 ever sent on staging, no end-to-end check.
   - HR offboard: RECRUIT_HR_OFFBOARD_SUBSCRIPTION still unset on staging (Khải IAM); prod has no offboard env.
+
+## 04/11 — HR offboard (D311) wired on STAGING (measured)
+- recruit-be #828 merged as `8132e619`, promoted, cd-staging green. Staging values now set
+  `RECRUIT_HR_OFFBOARD_SUBSCRIPTION=HR_ASSOCIATE_DEACTIVE_SUBSCRIBE_RECRUIT_STAGING` (`RECRUIT_HR_OFFBOARD_ENABLED=true` was
+  already there). 2 agent reviewers (correctness + security) approved; CI green.
+- Before switching on, measured from the staging pod as recruit-be@ (`testIamPermissions`): subscription consume+get,
+  topic get. Not measured: the Pub/Sub service agent's publisher grant on the `_DLQ` topic (Bao cannot read IAM there).
+- Pod `recruit-be-7666fbfc7c-cpjq6`, 09:08 UTC: `started bean ...HrAssociateDeactivatedMessageHandler`; all 7 subscribers
+  started; 0 ERROR lines; no permission error. The 1 waiting message (HR event 20362, ~5 days old, not a candidate) →
+  `NOT_APPLICABLE`, acked. Backlog 1 → 0 at 09:11 UTC; DLQ monitor 0.
+- E2E: NOT done yet. All 25 staging candidates linked to an HR account are test people and all are `probation` in HR, so
+  the positive path needs a real offboard in the HR app (`POST /employees/{id}/offboard` needs a logged-in HR user;
+  there is no credential-free route). Chosen test person: candidate `af38421a-6018-428a-a52b-824f49db0155`
+  (bao.trinh+a3009c, "QA Anewc", S6, HR work e-mail qa.anewc@loanfactory.com, platform user 306a426e). Before:
+  `left_company_at/on/event_id` all null. No synthetic message was published: a fake deactivation of a live person would
+  also reach accounting, CAMS, TERA and marketplace and make them disagree with HR.
+- Production: draft recruit-be #829 (subscription + enable flag). Prod subscription `HR_ASSOCIATE_DEACTIVE_SUBSCRIBE_RECRUIT`
+  exists (Khải); prod pod as recruit-be-runtime@ has consume+get on it and get on the topic; 15 messages waiting.
+  Waits for Bao.

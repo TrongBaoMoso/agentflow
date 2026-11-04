@@ -110,11 +110,18 @@ HR_ASSOCIATE_DEACTIVE_SUBSCRIBE_RECRUIT_STAGING (+ `_DLQ` topic + `_DLQ.monitor`
 recruit-be #723 (HR offboard), same settings as the UPDATE one (ack 60s, 7d retention, retry 10s–600s, DLQ after 5).
 IAM bindings (recruit-be SA viewer+subscriber, Pub/Sub SA publisher on DLQ) requested from Khải — Bao's editor role cannot
 set IAM. After that: set `RECRUIT_HR_OFFBOARD_SUBSCRIPTION` in staging values.
+**WIRED 04/11/2026:** recruit-be #828 (merge 8132e619) sets `RECRUIT_HR_OFFBOARD_SUBSCRIPTION=HR_ASSOCIATE_DEACTIVE_SUBSCRIBE_RECRUIT_STAGING`
+in staging values (`RECRUIT_HR_OFFBOARD_ENABLED=true` already there); promoted to staging the same day. Measured before
+switching on, from the staging pod as recruit-be@ (`testIamPermissions`): subscription consume+get, topic get. Pod
+09:08 UTC: `started bean ...HrAssociateDeactivatedMessageHandler`, no permission error, the 1 waiting message (HR event
+20362, not a candidate) acked. NOT measured: the Pub/Sub service agent's publisher grant on the `_DLQ` topic (Bao's
+account cannot read IAM there); without it a message failing 5 times keeps retrying instead of going to the DLQ.
 
 Production (`lender-rate`, NOT listable by Bao — known only from Khải):
 | Subscription | Status |
 |---|---|
 | HR_ASSOCIATE_ONBOARD_SUBSCRIBE_RECRUIT | EXISTS (Khải 07/10, had 21 messages); set `RECRUIT_HR_ONBOARD_SUBSCRIPTION` to it; DLQ topic `HR_ASSOCIATE_ONBOARD_SUBSCRIBE_RECRUIT_DLQ` + `.monitor`. Do not create a `_PROD` variant. |
+| HR_ASSOCIATE_DEACTIVE_SUBSCRIBE_RECRUIT | EXISTS (created by Khải; HR offboard D311). NOT wired: production values set neither `RECRUIT_HR_OFFBOARD_SUBSCRIPTION` nor `RECRUIT_HR_OFFBOARD_ENABLED` (off). Draft PR prepared 04/11, waits for Bao. Do not create a `_PROD` variant. |
 | omni-inbound-reply / omni-outbound-sent | did not exist on 07/10 (Khải: "PROD chưa có 2 thằng này"); Khải said he would release them — re-ask before assuming. |
 | RECRUIT_URGENT_NOTIFIER_API_KEY (staging) | Added 26/10 by Bao (value from Tai, never printed) to k8s secret `recruit-svc-secret`, ns `recruit-be`, cluster moso-kube (lenderrate-master); 40 chars. Probe 26/10: notifier knows the key (403, not 401) but "not bound to application RECRUIT"; Tai must bind RECRUIT. Prod key not stored yet. Bead agentflow-3bzy5.6. |
 | RECRUIT_URGENT_NOTIFIER_API_KEY (production) | Added 26/10 by Bao (value from Tai, never printed) to k8s secret `recruit-svc-secret`, ns `recruit-be`, cluster moso-gke (lender-rate); 32 chars. Probe 26/10 via https://svc.loanfactory.com/notifier/v2/notifications/resolve: 200 {"resolved":0} for appCode RECRUIT (no key: 401). Prod flag RECRUIT_URGENT_ENABLED not set (off). Bead agentflow-3bzy5.6. |
