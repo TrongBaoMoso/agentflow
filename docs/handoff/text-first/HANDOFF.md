@@ -194,3 +194,11 @@ What it means for Recruit:
 - Bao sent Khải the Connect Zoom message for staging AND prod (Slack 9:07). Suggested correction (to send): omni #663/#665 must NOT go to prod before omni #672 is on staging and Khải answers yes/no on preview/subject.
 - GO given to agentflow-bc (9d6e7072) to carry #815 in its recruit-be prod FF: prod has no zoom-connect flag/secrets, so /me/zoom/* stays 404 there.
 - Resume: ask Bao whether Khải replied → if staging secrets have versions (`gcloud secrets versions list recruit-be-recruit-zoomgo-api-key --project lenderrate-master`), add the two secret-keys lines, promote staging, Bao clicks Connect Zoom.
+
+## 04/11 evening (Bao: end to end; prod waits for Bao's own staging click)
+
+- Khải: staging secrets have versions (10:40Z), zoom-go #179 merged (staging configmap now allows recruit.viet18.com/api/zoom/callback), prod values given (= ours).
+- recruit-be **#840** (DRAFT): staging secret-keys lines. BLOCKED: `recruit-be-deploy@lenderrate-master` has NO secretAccessor on the two zoomgo secrets (get-iam-policy empty; Bao cannot setIamPolicy). Poller in session scratchpad `wait_grant.sh`. When granted: ready + merge #840, promote, check `/me/zoom/status` 200, Bao clicks Connect.
+- recruit-be **#844** (DRAFT): production flag + zoom-prod URLs + secret-keys + chart-lint line; ZoomConnectFlagTest 3/3. Merge only after Bao's staging click works (Bao's choice 04/11). recruit-fe #677 also needs to reach production.
+- recruit-be prod is 88973c020 (agentflow-47 release) and carries #815 with the flag off (verified).
+- moso-notifier #350 (not this session's): blocked by the required `wave-freeze` check, not by Khải's review. Khải must comment on notification-service#232 naming moso-notifier#350; then add `Wave freeze approved: <comment URL>` on its own line in #350's body.
