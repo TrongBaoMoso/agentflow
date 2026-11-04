@@ -216,3 +216,8 @@ What it means for Recruit:
 - Prod DB: Flyway 320; recruiter_zoom_link 1 row; 1 MMI webhook ever (our 30/10 test, so Vic's team has not pushed since); scheduled sends 0.
 - Topic omni-question-events now exists in lender-rate and omni prod has #659: bead pgziz closed. ex16t closed (Conversations on prod).
 - Staging zoomgo secretAccessor grant still missing at 21:50.
+
+## 04/11 ~22:30 VN: Bao "bật SMS thật trên prod nếu không có gì tự gửi cho LO" (session a8ef2df9)
+- Checked origin/production: no autonomous sender opens. Text first and scheduled Send info start from a recruiter; nurture drip (flag absent) and webinar reminder texts (settings false) stay off by their own switches.
+- recruit-be **#851** (DRAFT): prod flags SCHEDULED_SEND_INFO + CALL_TEXT_FIRST + ALLOW_ANY_RECIPIENT + unsubscribe base URL, secret-keys drip key + unsubscribe HMAC. Prod recruit-svc-secret has neither key today (26 keys, names only), so: Khai creates both in lender-rate + secretAccessor for recruit-be-deploy@, then merge, release, then admin settings (delivery_mode SEND, recipient_policy ANY, sms_enabled true). Senders also need Connect Zoom on prod (#844 + fe #677).
+- Bao: keep staging SMS (1464 only). Deleted recruit-fe branch shots/scheduled-sms-autosend.
