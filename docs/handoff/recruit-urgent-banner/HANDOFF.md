@@ -162,3 +162,18 @@ To resume:
 5. Message agentflow-8b, -87, -f4/hr-offboard with the sha and the result.
 
 Rollback order (urgent off plus drain first, inbox off last) is in prod values.yaml and in the #833 body.
+
+## PROD GO-LIVE DONE 05/11 (measured)
+
+- Bao answered: #819 go (inert on prod, no key), and merge #829 into the same batch.
+- #829 merged (88973c020) and promoted to staging (cd-staging success).
+- Production fast-forwarded cea1f014f -> **88973c020** (19 commits). cd-production succeeded.
+- Measured after the deploy:
+  - 2 pods Ready; Flyway at V320, all migrations ok.
+  - Boot log: "Platform inbox: copy ON at boot" and "declared the RECRUIT template catalog (42 templates)". `platform_inbox_state` is active=true since 2026-11-04 10:56:51Z.
+  - cron-service-go (Cloud Logging, ns cron-service) fires `recruit-be-svc/recruit-platform-inbox-tick` every 30 s, HTTP, outcome SUCCESS. Recruit's prod request log does not print this path, so read the tick in cron-service logs, not in recruit logs.
+  - `GET /notifications/unread-count` answers `platform_inbox: true`, so recruit-fe shows one bell.
+  - `urgent_notifications` has 0 rows, as expected (0 pending approvals, 0 pending calls). The resolve probe returned 200 before the deploy.
+  - HR offboard listener (#829) started and drained its backlog; every person was NOT_APPLICABLE (not a candidate).
+  - MOSO owner sync (#831, Bao 04/11): ran dry_run=false once. 883 assigned (S5 708, S6 55, S7 120). A re-read shows 883 already_set.
+- All live sessions were told the prod sha. Bead agentflow-4m6jy closed.
