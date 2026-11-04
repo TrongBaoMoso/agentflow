@@ -263,8 +263,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
           <div class="f" data-show="catype:dre"><div class="lbl">Do you want to practice real estate with Loan Factory too? <span class="req">Required</span></div><div class="seg"><button type="button">Yes</button><button type="button" aria-pressed="true">No</button></div></div>
           <div class="g2" data-show="catype:dre dreRe:yes"><div class="f"><label for="dren">DRE license number</label><input class="in" id="dren" placeholder="01234567"></div><div class="f"><label for="dret">DRE license type</label><select class="in" id="dret"><option>Select</option><option>Salesperson</option><option>Broker</option></select></div></div>
         </div>
-        <div class="sub" data-show="in:yes"><div class="lbl">Indiana license type <span class="req">Required</span></div><div class="seg"><button type="button" aria-pressed="true">SOS licensed</button><button type="button">Not SOS licensed</button></div></div>
+        <div class="sub" data-show="in:yes"><div class="lbl">Indiana license type <span class="req">Required</span></div><div class="seg" data-tog="insos"><button type="button" data-v="yes" aria-pressed="true">SOS licensed</button><button type="button" data-v="no">Not SOS licensed</button></div></div>
         <div class="sub" data-show="sc:yes"><div class="lbl">South Carolina sponsorship <span class="req">Required</span></div><div class="hint">We sponsor South Carolina only under specific conditions. Do you confirm?</div><div class="seg"><button type="button" aria-pressed="true">Confirm</button><button type="button">Cancel</button></div></div>
+        <div class="f" data-show="emp:free"><div class="lbl">Employment type <span class="req">Required</span></div>
+          <div class="typecards"><button class="tc" type="button" aria-pressed="true"><b>Independent (1099)</b><small>Keep 100% of your commission. You handle your own taxes.</small></button><button class="tc" type="button"><b>Employee (W-2)</b><small>90% of the commission. Payroll taxes are withheld.</small></button></div>
+          <div class="hint">Prefilled from the states you want us to sponsor. You can change it. We'll confirm it with you on your call.</div></div>
+        <div class="info" data-show="emp:forced"><span>Employment type: <b>Employee (W-2)</b></span><span class="tag" id="empwhy">Required in South Carolina</span></div>
         <div class="f"><div class="lbl">Do you have a website or landing page that promotes mortgages? <span class="req">Required</span></div>
           <div class="seg" data-tog="web"><button type="button" data-v="yes" aria-pressed="true">Yes</button><button type="button" data-v="no">No</button></div></div>
         <div class="f" data-show="web:yes"><div class="lbl">Website URL <span class="req">Required</span></div><div class="rows" id="webrows"></div><button class="add" type="button" id="addweb">+ Add another website</button></div>
@@ -320,9 +324,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 
 <div class="pad"><div class="wrap" id="s4">
   <div class="flabel"><b>Step 4 · Finish your application</b><span>opened from the team's link, or after "No, I'm ready to join"</span></div>
-  <div class="scen" data-group="s4"><span>Employment type:</span>
-    <button type="button" data-s="free" aria-pressed="true">Prefilled from states, can change (e.g. TX)</button>
-    <button type="button" data-s="forced">Required by state (e.g. GA)</button>
+  <div class="scen" data-group="s4"><span>Path:</span>
+    <button type="button" data-s="after" aria-pressed="true">After the 1-1 call</button>
+    <button type="button" data-s="ready">"I'm ready to join" (no call yet)</button>
   </div>
   <div class="frame" data-chrome="welcome" data-step="4">
     <div class="pad main"><div class="layout"><div class="col">
@@ -343,10 +347,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       <section class="group"><div class="ghead"><i>4</i><b>Compensation</b></div><div class="gbody">
         <div class="g2"><div class="f"><label for="mc">Target compensation <span class="req">Required</span></label><select class="in comp" id="mc"></select></div><div></div></div>
         <div class="hint">This value controls the rates/pricing on your pricing engine (on your website) when displaying based on borrower-paid comp (BPC). This value will also be sent to Rocket to serve as your Rocket Correspondent Target Comp (built into your pricing on Correspondent loans with Rocket), and it will be used to determine which Pylon Lender-Paid Comp/LPC environment to place you in (≤1.00% maps to 1% LPC; &gt;1.00% maps to 2% LPC). Once set, changes are entered under Future Target Compensation and take effect on the first day of the next quarter. There may be other use cases not noted here. Regardless of the lender or use case, anti-steering rules require you to offer pricing consistently based on this compensation across all channels. For more information, view our <a href="#" style="color:var(--orange-ink)">Compensation Policy</a>.</div>
-        <div class="info" data-show="s4:forced"><span>Employment type: <b>Employee (W-2)</b></span><span class="tag">Required in Georgia</span></div>
-        <div class="f" data-show="s4:free"><div class="lbl">Employment type <span class="req">Required</span></div>
+        <div class="f" data-show="s4:after"><div class="info"><span>Employment type: <b>Independent (1099)</b></span><span class="tag">Confirmed on your call</span></div>
+          <div class="hint">Need to change it? Tell your onboarding specialist.</div></div>
+        <div class="f" data-show="s4:ready"><div class="lbl">Employment type <span class="req">Required</span></div>
           <div class="typecards"><button class="tc" type="button" aria-pressed="true"><b>Independent (1099)</b><small>Keep 100% of your commission. You handle your own taxes.</small></button><button class="tc" type="button"><b>Employee (W-2)</b><small>90% of the commission. Payroll taxes are withheld.</small></button></div>
-          <div class="hint">Prefilled from the states you want us to sponsor. You can change it.</div></div>
+          <div class="hint">Our team will confirm it before your agreement.</div></div>
       </div></section>
       <section class="group"><div class="ghead"><i>5</i><b>Online presence</b></div><div class="gbody">
         <div class="lbl">Social media profiles for your mortgage business <span class="req">Required</span></div>
@@ -381,7 +386,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       <section class="group"><div class="ghead"><i>5</i><b>Mailing address</b><a href="#s4">Edit</a></div><div class="gbody"><dl class="dl">
         <div class="wide"><dt>Address</dt><dd>1200 Main St, Irvine, CA 92614</dd></div></dl></div></section>
       <section class="group"><div class="ghead"><i>6</i><b>Compensation</b><a href="#s4">Edit</a></div><div class="gbody"><dl class="dl">
-        <div><dt>Target compensation</dt><dd>1.75%</dd></div><div><dt>Employment type</dt><dd>Independent (1099)</dd></div></dl></div></section>
+        <div><dt>Target compensation</dt><dd>1.75%</dd></div><div><dt>Employment type</dt><dd>Independent (1099)<span class="meta"><span class="team">Confirmed on your call</span></span></dd></div></dl></div></section>
       <section class="group"><div class="ghead"><i>7</i><b>Online presence &amp; requests</b><a href="#s4">Edit</a></div><div class="gbody"><dl class="dl">
         <div class="wide"><dt>Social media (2)</dt><dd><ul class="ul"><li>LinkedIn · https://linkedin.com/in/janesmith</li><li>Facebook · https://facebook.com/janesmithloans</li></ul></dd></div><div class="wide"><dt>Special requests (2)</dt><dd><ol class="ul"><li>Team name: Smith Lending Group</li><li>Fee waiver</li></ol></dd></div></dl></div></section>
       <label class="check"><input type="checkbox" id="true1"> I confirm all information I provided is true and correct.</label>
@@ -475,8 +480,16 @@ document.querySelectorAll(".frame").forEach(fr=>{
   const bar=list.map((n,i)=>{const s=i+1,c=s<st?"done":s===st?"cur":"";return `<div class="step ${c}"><i>${s<st?"✓":s}</i><span>${n}</span></div>`;}).join("");
   fr.querySelector(".main").insertAdjacentHTML("afterbegin",`<div class="steps">${bar}</div>`);
 });
-const state={page:"company",heard:"lo",s3b:"times",s4:"free",s6:"pay",web:"yes",catype:"dfpi",dreRe:"no",ca:"no",in:"no",sc:"no",s2:"tx"};
-function apply(){document.querySelectorAll("[data-show]").forEach(el=>{
+const state={page:"company",heard:"lo",s3b:"times",s4:"after",emp:"free",insos:"yes",sp:["TX"],s6:"pay",web:"yes",catype:"dfpi",dreRe:"no",ca:"no",in:"no",sc:"no",s2:"tx"};
+const ALWAYS_W2={GA:"Georgia",MA:"Massachusetts",MT:"Montana",NC:"North Carolina",NJ:"New Jersey",NV:"Nevada",RI:"Rhode Island",SC:"South Carolina",VT:"Vermont"};
+function empRule(){
+  const sp=state.sp,w=sp.find(k=>ALWAYS_W2[k]);let why="";
+  if(w)why="Required in "+ALWAYS_W2[w];
+  else if(sp.includes("CA")&&state.catype==="dfpi")why="Required for a California DFPI license";
+  else if(sp.includes("IN")&&state.insos==="no")why="Required in Indiana without an SOS license";
+  state.emp=why?"forced":"free";const e=document.getElementById("empwhy");if(e&&why)e.textContent=why;
+}
+function apply(){empRule();document.querySelectorAll("[data-show]").forEach(el=>{
   el.classList.toggle("on",el.dataset.show.split(" ").some(t=>{const [g,v]=t.split(":");return state[g]===v;}));});}
 document.querySelectorAll(".scen").forEach(sc=>sc.querySelectorAll("button").forEach(b=>b.onclick=()=>{
   state[sc.dataset.group]=b.dataset.s;if(sc.dataset.group==="herostyle")document.body.classList.toggle("hb",b.dataset.s==="b");sc.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
@@ -499,7 +512,7 @@ function multi(el,opts,init,onChange){
   draw();
   return v=>{sel=[...v];draw();onChange&&onChange(sel);};
 }
-const setSponsor=multi($("sponsor"),SPONSORABLE,["TX"],s=>{state.ca=s.includes("CA")?"yes":"no";state.in=s.includes("IN")?"yes":"no";state.sc=s.includes("SC")?"yes":"no";apply();});
+const setSponsor=multi($("sponsor"),SPONSORABLE,["TX"],s=>{state.sp=[...s];state.ca=s.includes("CA")?"yes":"no";state.in=s.includes("IN")?"yes":"no";state.sc=s.includes("SC")?"yes":"no";apply();});
 multi($("licensed"),STATES,["CA","TX"]);
 multi($("langs"),{en:"English",es:"Spanish",vi:"Vietnamese",zh:"Chinese",ko:"Korean",tl:"Tagalog"},["en","vi"]);
 document.querySelectorAll("select.comp").forEach(s=>{s.innerHTML=`<option value="">Select</option>`+Array.from({length:17},(_,i)=>`<option>${+(0.5+i*0.125).toFixed(3)}%</option>`).join("");});

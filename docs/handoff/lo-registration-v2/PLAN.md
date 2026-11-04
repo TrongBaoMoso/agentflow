@@ -322,7 +322,7 @@ Supersedes the matching items of §7–§8.
 | 6 | Alias first name | Removed |
 | 7 | "Mailing address is the same" box | Removed. One address group titled "Mailing address"; on save copy it into packs' home + mailing fields |
 | 8 | Main + Correspondent target comp are confusing; Brayan: **already fused into one field** (Jessica's update) | One **"Target compensation"** dropdown + the platform's own help text under it (verbatim from the Loan Officer settings page, links to Compensation Policy). Verify which packs field(s) to write before coding |
-| 9 | Employment type should not wait for the call | **Prefilled from sponsor states, Loan Officer can change it**; locked only where a state requires W-2 ("Required in <state>"). Brayan: a 1099-classified Loan Officer may switch to W-2. Drops §8 "call lock" and the "Set by our team" marker on employment type |
+| 9 | Employment type should not wait for the call | **Bao 05/11: moved to Step 2 (before the 1-1).** Prefilled from sponsor states, Loan Officer can change it; locked where a state requires W-2 (always-W-2 list, CA DFPI, IN without SOS) with "Required in <state>". OB still confirms/changes it at Mark done (OnboardingHireMeetingModal, unchanged). After the meeting the packs guard (`protectMeetingClassification`, prod too) drops public-form changes, so Step 4 + Review show it read-only "Confirmed on your call" + "Need to change it? Tell your onboarding specialist." The "I'm ready to join" path (no meeting yet) can still edit it in Step 4. A staff change before signing rebuilds the agreement envelope (`force_regenerate`). Mockup v17 |
 | 10 | Online presence must be **required** (Thuan) | No Yes/No question; at least one social profile row required |
 | 11 | Brayan: missing **Tech Literacy & Computer Proficiency** disclaimer | Second box in Step 2 quick check with Brayan's text verbatim + required tick "I meet this expectation" (tick label is new copy) |
 | 12 | Brayan re-posted Thuan's special-requests ticket | Already in Step 4; status workflow (Approved / Rejected / Addressed + note + timestamp) stays in Recruit, bead oxwsb |
@@ -331,11 +331,12 @@ Supersedes the matching items of §7–§8.
 - **Sponsorable states:** Licenses lists 48 states + DC, no **CT / NY** (matches `/add-more-state-license` copy "48 states
   except Connecticut and New York"). But `@constants/state` STATES (lf + lo) includes **CT, NY and VI**, and the register
   form's sponsor-state picker uses it → candidates can ask for sponsorship in CT / NY / VI. v2: sponsor picker excludes
-  them (licensed-states picker keeps all).
+  them (licensed-states picker keeps all). Bao 05/11: fix the live form too (lf + lo) → staging.
 - **Always-W-2 list in code** (`ALWAYS_CORPORATE_STATES`, 4 copies lf+lo) = GA MA MS MT NC NJ NV RI SC VT.
   Licenses "MLO compensation" W-2 = GA MA MT NC NJ NV RI SC VT → **MS differs**: Licenses says **Both**, and
   `/add-more-state-license` says MS 1099 Loan Officers must sign an Exclusive Agent Agreement. Code forces W-2 for MS.
-  OPEN: ask Licensing/Brayan whether MS should allow 1099.
+  packs already builds a 1099 + Exclusive Agent Agreement for MS (`LICENSED_CONFIRMATION_STATES` = VA, MS), so MS allows 1099;
+  the form's W-2 lock for MS looks outdated. OPEN: Licensing to confirm before changing it (Bao 05/11: wait).
 - **CA:** Licenses DFPI row = Both, DRE row = 1099; code + `/add-more-state-license` = CA-DFPI requires W-2, DRE 1099.
   **IN:** both Licenses rows = Both; code = no SOS → W-2, SOS → 1099; page = IN-DFI requires W-2. Code and public page
   agree; the Licenses "Both" values are per-license and may just mean the company holds both kinds. OPEN: confirm with Licensing.
