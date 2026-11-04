@@ -235,7 +235,7 @@ Remaining = 14 questions (22 boxes), matching Victoria's "~14":
 
 ### Special requests (Thuan ticket via Phuong)
 - Step 4 group "Special requests": one request per row, "+ Add a request", example quick-add chips (Team name, Powered by,
-  Coaching waiver, Fee waiver) that start a row; free text per row. Disclaimer checkbox with Thuan's exact sentence,
+  ~~Coaching waiver, Fee waiver~~ removed 05/11 per Victoria, see §9 #13) that start a row; free text per row. Disclaimer checkbox with Thuan's exact sentence,
   required when ≥1 row, stored with a tamper-proof timestamp (copy `mortgage_website_approval_ack(_at)`).
 - packs: new LORecruiting fields + push to recruit. Recruit side tracked in bead agentflow-oxwsb.
 - Brand guide p.12: team names need Marketing approval and must not read as another entity/DBA → show next to team-name rows.
@@ -324,8 +324,9 @@ Supersedes the matching items of §7–§8.
 | 8 | Main + Correspondent target comp are confusing; Brayan: **already fused into one field** (Jessica's update) | One **"Target compensation"** dropdown + the platform's own help text under it (verbatim from the Loan Officer settings page, links to Compensation Policy). Verify which packs field(s) to write before coding |
 | 9 | Employment type should not wait for the call | **Bao 05/11: moved to Step 2 (before the 1-1).** Prefilled from sponsor states, Loan Officer can change it; locked where a state requires W-2 (always-W-2 list, CA DFPI, IN without SOS) with "Required in <state>". OB still confirms/changes it at Mark done (OnboardingHireMeetingModal, unchanged). After the meeting the packs guard (`protectMeetingClassification`, prod too) drops public-form changes, so Step 4 + Review show it read-only "Confirmed on your call" + "Need to change it? Tell your onboarding specialist." The "I'm ready to join" path (no meeting yet) can still edit it in Step 4. A staff change before signing rebuilds the agreement envelope (`force_regenerate`). Mockup v17 |
 | 10 | Online presence must be **required** (Thuan) | No Yes/No question; at least one social profile row required |
-| 11 | Brayan: missing **Tech Literacy & Computer Proficiency** disclaimer | Second box in Step 2 quick check with Brayan's text verbatim + required tick "I meet this expectation" (tick label is new copy) |
+| 11 | Brayan: missing **Tech Literacy & Computer Proficiency** disclaimer | Brayan's text verbatim + required tick "I meet this expectation" (tick label is new copy). **Victoria 05/11: not a licensing item → moved out of Step 2 to the LAST section (7) of Step 4 "Finish your application"**, shown on Review. Mockup v18 |
 | 12 | Brayan re-posted Thuan's special-requests ticket | Already in Step 4; status workflow (Approved / Rejected / Addressed + note + timestamp) stays in Recruit, bead oxwsb |
+| 13 | Victoria 05/11: no "Waiver" quick-add chips (people click them for convenience; waivers are rarely approved) | Special requests quick-add keeps only Team name + Powered by; Coaching waiver / Fee waiver chips removed. A Loan Officer can still type any request; a staff-approved fee waiver at Pay $100 stays. Mockup v18 |
 
 ### State rules vs Loan Factory "Licenses" settings (screenshot 04/11, 62 rows) — measured on lf + lo origin/master
 - **Sponsorable states:** Licenses lists 48 states + DC, no **CT / NY** (matches `/add-more-state-license` copy "48 states

@@ -253,8 +253,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       <div class="box">
         <div class="fit"><b>Quick check before you continue</b><ul><li>You have an NMLS ID</li><li>Your license in each state below is Active or Approved-Inactive (expired? renew on NMLS first)</li><li>You're committed to closing at least 1 loan every 6 months</li></ul>
           <label class="check"><input type="checkbox" id="fit" checked> I meet these requirements</label></div>
-        <div class="fit"><b>Tech literacy &amp; computer proficiency</b><div><b>We are a Tech-First Company:</b> Loan Factory prides itself on proprietary, cutting-edge technology. While we are always happy to guide you through our unique features and tools, we expect a baseline level of tech literacy.</div><div><b>The Expectation:</b> You should be comfortable navigating modern software, basic computer tasks, and adapting to digital workflows independently to efficiently manage your pipeline.</div>
-          <label class="check"><input type="checkbox" id="tech"> I meet this expectation</label></div>
         <div class="g2"><div class="f"><label for="nmls">NMLS ID <span class="req">Required</span></label><input class="in" id="nmls" value="1234567"></div><div></div></div>
         <div class="f"><div class="lbl">States you want us to sponsor <span class="req">Required</span></div><div class="multi" id="sponsor"></div></div>
         <div class="sub" data-show="ca:yes"><div class="lbl">California license type <span class="req">Required</span></div>
@@ -361,8 +359,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       </div></section>
       <section class="group"><div class="ghead"><i>6</i><b>Special requests</b><small>One request per row</small></div><div class="gbody">
         <div id="reqs" class="rows"></div>
-        <div class="tools"><button class="add" type="button" id="addreq">+ Add a request</button><button class="ex" type="button" data-t="Team name: ">Team name</button><button class="ex" type="button" data-t="Powered by: ">Powered by</button><button class="ex" type="button" data-t="Coaching waiver">Coaching waiver</button><button class="ex" type="button" data-t="Fee waiver">Fee waiver</button></div>
+        <div class="tools"><button class="add" type="button" id="addreq">+ Add a request</button><button class="ex" type="button" data-t="Team name: ">Team name</button><button class="ex" type="button" data-t="Powered by: ">Powered by</button></div>
         <label class="check sep"><input type="checkbox" id="disc"> All approved requests/terms remain subject to state/federal lending regulations and company policy updates required to maintain legal compliance.</label>
+      </div></section>
+      <section class="group"><div class="ghead"><i>7</i><b>Tech literacy &amp; computer proficiency</b></div><div class="gbody">
+        <div><b>We are a Tech-First Company:</b> Loan Factory prides itself on proprietary, cutting-edge technology. While we are always happy to guide you through our unique features and tools, we expect a baseline level of tech literacy.</div>
+        <div><b>The Expectation:</b> You should be comfortable navigating modern software, basic computer tasks, and adapting to digital workflows independently to efficiently manage your pipeline.</div>
+        <label class="check"><input type="checkbox" id="tech"> I meet this expectation <span class="req">Required</span></label>
       </div></section>
       <div class="actions"><button class="btn2" type="button">Back</button><button class="btn" type="button">Review my details</button></div>
     </div>
@@ -387,8 +390,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
         <div class="wide"><dt>Address</dt><dd>1200 Main St, Irvine, CA 92614</dd></div></dl></div></section>
       <section class="group"><div class="ghead"><i>6</i><b>Compensation</b><a href="#s4">Edit</a></div><div class="gbody"><dl class="dl">
         <div><dt>Target compensation</dt><dd>1.75%</dd></div><div><dt>Employment type</dt><dd>Independent (1099)<span class="meta"><span class="team">Confirmed on your call</span></span></dd></div></dl></div></section>
-      <section class="group"><div class="ghead"><i>7</i><b>Online presence &amp; requests</b><a href="#s4">Edit</a></div><div class="gbody"><dl class="dl">
-        <div class="wide"><dt>Social media (2)</dt><dd><ul class="ul"><li>LinkedIn · https://linkedin.com/in/janesmith</li><li>Facebook · https://facebook.com/janesmithloans</li></ul></dd></div><div class="wide"><dt>Special requests (2)</dt><dd><ol class="ul"><li>Team name: Smith Lending Group</li><li>Fee waiver</li></ol></dd></div></dl></div></section>
+      <section class="group"><div class="ghead"><i>7</i><b>Online presence, requests &amp; tech</b><a href="#s4">Edit</a></div><div class="gbody"><dl class="dl">
+        <div class="wide"><dt>Social media (2)</dt><dd><ul class="ul"><li>LinkedIn · https://linkedin.com/in/janesmith</li><li>Facebook · https://facebook.com/janesmithloans</li></ul></dd></div><div class="wide"><dt>Special requests (2)</dt><dd><ol class="ul"><li>Team name: Smith Lending Group</li><li>Powered by: Smith Realty</li></ol></dd></div><div class="wide"><dt>Tech literacy</dt><dd>I meet this expectation</dd></div></dl></div></section>
       <label class="check"><input type="checkbox" id="true1"> I confirm all information I provided is true and correct.</label>
       <div class="actions"><button class="btn2" type="button">Back</button><button class="btn" type="button">Continue to payment</button></div>
     </div></div>
@@ -527,7 +530,7 @@ const reqs=$("reqs");
 function renum(){[...reqs.children].forEach((r,i)=>r.querySelector(".n").textContent=i+1);}
 function addReq(v){const r=document.createElement("div");r.className="reqrow";r.innerHTML=`<span class="n"></span><input class="in" aria-label="Request" placeholder="Describe one request" value="${v||""}"><button class="x" type="button" aria-label="Remove request">×</button>`;
   r.querySelector("button").onclick=()=>{r.remove();renum();};reqs.appendChild(r);renum();return r.querySelector("input");}
-addReq("Team name: Smith Lending Group");addReq("Fee waiver");
+addReq("Team name: Smith Lending Group");addReq("Powered by: Smith Realty");
 $("addreq").onclick=()=>addReq("").focus();
 document.querySelectorAll(".ex").forEach(b=>b.onclick=()=>{const i=addReq(b.dataset.t);i.focus();i.setSelectionRange(i.value.length,i.value.length);});
 const ROSTER=[["Matt Moghaddam","1234567","matt@loanfactory.com","MM"],["Alex Carter","2034511","alex.carter@loanfactory.com","AC"],["Alex Carter","1887420","acarter@loanfactory.com","AC"],["Linh Pham","1500321","linh.pham@loanfactory.com","LP"],["Maria Gomez","1777210","maria.gomez@loanfactory.com","MG"],["Kevin Brooks","1650099","kevin.brooks@loanfactory.com","KB"]];
