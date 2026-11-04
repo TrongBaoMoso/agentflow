@@ -331,7 +331,9 @@ Supersedes the matching items of §7–§8.
 - **Sponsorable states:** Licenses lists 48 states + DC, no **CT / NY** (matches `/add-more-state-license` copy "48 states
   except Connecticut and New York"). But `@constants/state` STATES (lf + lo) includes **CT, NY and VI**, and the register
   form's sponsor-state picker uses it → candidates can ask for sponsorship in CT / NY / VI. v2: sponsor picker excludes
-  them (licensed-states picker keeps all). Bao 05/11: fix the live form too (lf + lo) → staging.
+  them (licensed-states picker keeps all). **DONE 05/11 on STAGING:** lf #2698 (f4c6cf8ed) + lo #929 (0e06a890b) drop
+  CT/NY/VI from the 3 sponsor pickers + both `?sponsor_states=` prefills; verified on www.viet18.com (sponsor list 49 options,
+  prefill NY,TX,CT → Texas only). Saved records keep old CT/NY values (no Joi reject, on purpose). Prod not done.
 - **Always-W-2 list in code** (`ALWAYS_CORPORATE_STATES`, 4 copies lf+lo) = GA MA MS MT NC NJ NV RI SC VT.
   Licenses "MLO compensation" W-2 = GA MA MT NC NJ NV RI SC VT → **MS differs**: Licenses says **Both**, and
   `/add-more-state-license` says MS 1099 Loan Officers must sign an Exclusive Agent Agreement. Code forces W-2 for MS.
