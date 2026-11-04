@@ -29,3 +29,5 @@ On Bao OK: push both, open 2 PRs, 2 reviewers + CI, merge, promote staging, re-s
 - Separate tick secret: should, not urgent; before prod ON; blocked on secretAccessor grant (bd 0gwad.4.2). Both the auto-assign and the webinar-schedule (D359) ticks borrow the idle-release key.
 - HR auto-send (D231): built; staging ON; prod OFF by Bao 08/10 until prod opens to users.
 - Leaked password (agents printed it twice 03/11): staging `bao.trinh+onb-test@loanfactory.com` — suggest rotating.
+
+_05/11: paused again by Bao, nothing changed since 03/11 evening; same resume point._
