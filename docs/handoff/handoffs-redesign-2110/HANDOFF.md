@@ -296,3 +296,11 @@ Next steps on resume:
 ## 05/11 self-test seed
 
 - Staging outbox 19faf534 (LO "QA Claudeadvisor") re-seeded as blocked so Bao can self-test; verified Manager TEAM + onb-test, 1440/390, en+vi. Undo after the test (SQL in bead agentflow-6wr0y notes).
+
+## RESUME POINT — PAUSED 04/11 afternoon (session 1d8db712)
+
+- Bao approved D363 for prod (04/11). GO sent to agentflow-bc (session 9d6e7072), who pushes recruit-be prod with #833 urgent banner; that FF carries #814. At pause: be production still cea1f014f, D363 NOT on prod yet.
+- fe #676 (be04be12) GO given too, but nobody has scheduled a recruit-fe prod push (staging is 13 commits ahead, mostly other sessions). Ask Bao whether to push fe prod (ask the PR-owner sessions first).
+- On resume: `git -C recruit-be fetch && git -C recruit-be merge-base --is-ancestor bca432ca0 origin/production` -> if yes, check cd-production run + pods, then `bd close agentflow-rf9sm`.
+- Not done: catalog CANDIDATE_UPDATE description still says "(the owner, the specialist or an admin)"; it should name the manager (D362). Needs a catalog push.
+- Self-test guide given to Bao: QA Tenbbelow 2afc3b27 (owner bao.trinh+recruiter, OB bao.trinh@), manager bao.trinh+manager; QA Claudeflow 1acd5fd6 (owner bao.trinh@, OB onb-test) for the transfer-bell test; bao.trinh+hh for the Headhunter case. Never confirm Mark done.
