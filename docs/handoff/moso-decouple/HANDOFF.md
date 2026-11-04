@@ -427,6 +427,43 @@ Bao 02/11 (option A): only the onboarding specialist contacts the loan officer. 
 - Correction recorded: Recruit's main path already matched "OB sends" (hand-off ON on prod); only the no-OB fallback mailed From the recruiter.
 - Gaps (D354 row): a later OB clear does not ring the assigners; a waiting invite counts as invite_trouble on Today.
 
+## RESUME POINT: PAUSED 04/11 07:35 VN (session 460363a7), webinar B3
+
+**State**
+- B3 is on STAGING: recruit-be #816 merged (8fd15b83, V314, D365), recruit-fe #675 merged (536fae6e). Both promoted and deployed.
+- Staging settings ON: `webinar.reminders.enabled`, `webinar.sms_reminder.enabled`, `webinar.attendance.enabled`.
+- Review findings (late registrants, re-check before send, cap starvation, empty participants) were fixed in #816 before the merge.
+
+**Staging test data**
+- Attendance test: series `dbc1af2a-e414-45e4-af4e-f217dd0e9e38`, session `8905f2d0-7ce5-493a-8ada-0c5ea5c2e94f`, 04/11 09:00–09:30 VN, Meet https://meet.google.com/zjh-nrwb-twg, host Bao (3e228b0a).
+  - Registered: crm3 `f0757c39` (expect NO_SHOW), crm4 `aec96bcc`, and the Zoom-phone LO `07001ba1-360b-491f-b9e1-c1b45766739d`.
+  - Bao joins with his own account AND as a guest named `bao.trinh+crm4@loanfactory.com` (the organizer is never counted). crm4 should then read ATTENDED ~3m.
+- SMS retest: series `b0031775-88b4-4063-b33b-09485b042601`, session 04/11 11:00 VN.
+  - The LO 07001ba1 was moved to owner bao.trinh+hh (`2d21fc2c`).
+  - It must be registered to that session BEFORE 09:00 VN, or the SMS_2H is skipped. A Monitor was doing this at the 08:00 tick and dies with the shutdown, so check it.
+- 2-day email test: crm5 `85b89b27` registered on the 06/11 session `7d30491c`. EMAIL_2D is due 05/11 04:00 VN.
+
+**Measured**
+- EMAIL_2H went out 04/11 07:00:02 VN to crm3 and crm4 (timeline "Final Countdown ... in 2 hours").
+- SMS_2H was sent 07:00:04 with owner = Bao (3e228b0a), then `delivery_failed_at` +1 s. The reason is unread, because there is no token for Bao's own account (omni 403).
+  - Suspected cause: sender and recipient are the same Zoom number.
+  - Read the reason through `stg_hh.token` on the retest: `GET https://gateway.viet18.com/omni-svc/api/v1/subjects/LO_CANDIDATE/07001ba1-.../messages`.
+
+**Tools**
+- Admin token: `~/.cache/claude-recruit/preview/stg_3370.token`. Refresh with alltokens.js, under ram-gate chrome.
+- API: `https://gateway.viet18.com/recruit-svc/api/v1`.
+- Settings: `PUT /admin/settings/{key}` `{"value":...}`.
+- gcloud auth EXPIRED 04/11 02:40, so there is no kubectl and no pgq_stg. Bao must run `! gcloud auth login`.
+
+**Still to do**
+1. Read attendance after 10:00 VN: `GET /admin/webinar-sessions/8905f2d0-.../registrations?page=0&size=50`. Then screenshot the FE `/webinar-schedule/sessions/8905f2d0-...` page.
+2. Confirm the SMS retest at 09:00, and get the failure reason of the first SMS.
+3. 05/11 ~05:23 VN:
+   - Measure the MOSO 2-month EmailHistory sends (bead agentflow-t9gsi).
+   - Check the crm5 EMAIL_2D.
+4. Cleanup only when Bao says "dọn lịch" (the test calendar events, the 2 test series).
+5. Report to Bao in Vietnamese. Bead agentflow-0gwad.4.6 stays open until the attendance read is verified.
+
 ## RESUME POINT: PAUSED 02/11 evening (session 460363a7)
 
 Done today, all on STAGING (production unchanged, flags off there):
