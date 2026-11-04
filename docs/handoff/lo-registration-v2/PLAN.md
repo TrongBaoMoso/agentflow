@@ -299,3 +299,49 @@ rewritten copy shown in the mockup (Bao chose it over the old form's verbatim la
 - **Review:** 7 groups with Edit; values as label-over-value tiles; each website and each social link listed;
   "Set by our team · This is wrong" under legal name / employment type (both can be entered by staff).
 - **Waiting for review / Done:** centred, info as two small tiles (email, questions).
+
+## 9. Review feedback 04/11 (Victoria doc + Brayan notes, New Landing Page chat) — Bao GO 04/11
+
+Source: Victoria's doc "Feedback for the landing page" (Google Doc 1hlnCe8dANHZBWKa4Op02nxBZwZi2Zm5DvRlDaYVTDGs),
+Brayan's notes and comments inside it, Victoria's chat replies 03/11 23:30. Mockup updated (artifact version 16).
+Supersedes the matching items of §7–§8.
+
+### Answers to our open questions
+- Step 3 "up to 3 two-hour windows, team confirms one and sends a Google Calendar invite": **OK** (Victoria).
+- Special requests approver: **the Recruiting Manager** (Victoria today, Benjamin Huynh soon) → bead oxwsb.
+- Hero style A/B: not answered yet (mockup keeps A as default).
+
+### Changes
+| # | Feedback | Decision |
+|---|---|---|
+| 1 | "$100" stat next to 240+ lenders / 2,600+ Loan Officers is off | Third hero stat = **"$1,000+ monthly savings on recurring fees"** |
+| 2 | SMS consent tick "is new, when do texts go out?" | Keep: it already exists on today's form (`is_consent_checkbox`) and in Matt's wireframe. Explain to Victoria: only application/recruiting texts (Recruit Text first) |
+| 3 | Step 2 sponsor-state chips "why only a few states?" | They are mockup preview controls, not form fields. Preview bars now striped + labelled "Preview only, not on the real page". The real picker lists every state Loan Factory can sponsor |
+| 4 | "Grow your mortgage business…" strip redundant | Marketing strip only on Step 1 (hero); none on Steps 2–3 |
+| 5 | Call requested: "We'll email you the exact time" | → "We will contact you ASAP to confirm the time" (team mostly phones) |
+| 6 | Alias first name | Removed |
+| 7 | "Mailing address is the same" box | Removed. One address group titled "Mailing address"; on save copy it into packs' home + mailing fields |
+| 8 | Main + Correspondent target comp are confusing; Brayan: **already fused into one field** (Jessica's update) | One **"Target compensation"** dropdown + the platform's own help text under it (verbatim from the Loan Officer settings page, links to Compensation Policy). Verify which packs field(s) to write before coding |
+| 9 | Employment type should not wait for the call | **Prefilled from sponsor states, Loan Officer can change it**; locked only where a state requires W-2 ("Required in <state>"). Brayan: a 1099-classified Loan Officer may switch to W-2. Drops §8 "call lock" and the "Set by our team" marker on employment type |
+| 10 | Online presence must be **required** (Thuan) | No Yes/No question; at least one social profile row required |
+| 11 | Brayan: missing **Tech Literacy & Computer Proficiency** disclaimer | Second box in Step 2 quick check with Brayan's text verbatim + required tick "I meet this expectation" (tick label is new copy) |
+| 12 | Brayan re-posted Thuan's special-requests ticket | Already in Step 4; status workflow (Approved / Rejected / Addressed + note + timestamp) stays in Recruit, bead oxwsb |
+
+### State rules vs Loan Factory "Licenses" settings (screenshot 04/11, 62 rows) — measured on lf + lo origin/master
+- **Sponsorable states:** Licenses lists 48 states + DC, no **CT / NY** (matches `/add-more-state-license` copy "48 states
+  except Connecticut and New York"). But `@constants/state` STATES (lf + lo) includes **CT, NY and VI**, and the register
+  form's sponsor-state picker uses it → candidates can ask for sponsorship in CT / NY / VI. v2: sponsor picker excludes
+  them (licensed-states picker keeps all).
+- **Always-W-2 list in code** (`ALWAYS_CORPORATE_STATES`, 4 copies lf+lo) = GA MA MS MT NC NJ NV RI SC VT.
+  Licenses "MLO compensation" W-2 = GA MA MT NC NJ NV RI SC VT → **MS differs**: Licenses says **Both**, and
+  `/add-more-state-license` says MS 1099 Loan Officers must sign an Exclusive Agent Agreement. Code forces W-2 for MS.
+  OPEN: ask Licensing/Brayan whether MS should allow 1099.
+- **CA:** Licenses DFPI row = Both, DRE row = 1099; code + `/add-more-state-license` = CA-DFPI requires W-2, DRE 1099.
+  **IN:** both Licenses rows = Both; code = no SOS → W-2, SOS → 1099; page = IN-DFI requires W-2. Code and public page
+  agree; the Licenses "Both" values are per-license and may just mean the company holds both kinds. OPEN: confirm with Licensing.
+- **Exclusivity groups in the form** (`EXCLUSIVE_GROUP_1` = GA MT OH OR PA, `EXCLUSIVE_GROUP_2` = AR NE SC) vs
+  `/add-more-state-license` copy (group 1 = GA MT OH OR **NC** PA, group 2 = AR **KY** NE SC, plus MS 1099 + VA rules):
+  **NC and KY are missing from the form code** (lf + lo). Not in the Licenses settings (no column), so ask Licensing which is right.
+- **Supervisory distance** (Licenses "Require commuting distance" = Yes): NE, NJ, RI, SC (lender), WI, WY.
+  `/add-more-state-license` lists SC, WI, WY, NE, NJ → **RI missing** from the public page (lf + lo).
+- Additional hours on `/add-more-state-license` come live from MOSO (`getAdditionalHours`) → no drift.

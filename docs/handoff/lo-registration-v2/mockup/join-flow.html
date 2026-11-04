@@ -24,7 +24,8 @@ body{background:var(--white);color:var(--black);font-family:var(--body);font-siz
 .flabel{margin:32px 0 0;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
 .flabel b{font-family:var(--head);font-size:var(--t-md)}
 .flabel span{font-size:var(--t-sm);color:var(--gray-mid2)}
-.scen{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center;font-size:var(--t-sm);color:var(--gray-dark)}
+.scen{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center;font-size:var(--t-sm);color:var(--gray-dark);border:1px dashed var(--gray-mid2);border-radius:8px;padding:6px 10px;background:repeating-linear-gradient(-45deg,var(--white) 0 8px,var(--gray-light) 8px 9px)}
+.scen::before{content:"Preview only, not on the real page";font-weight:700;color:var(--gray-mid2);text-transform:uppercase;letter-spacing:.06em;font-size:11px;margin-right:6px}
 .scen button{font:inherit;font-size:var(--t-sm);font-weight:700;border:1px solid var(--gray-mid1);background:var(--white);color:var(--gray-dark);border-radius:99px;padding:3px 10px;cursor:pointer}
 .scen button[aria-pressed="true"]{background:var(--black);border-color:var(--black);color:var(--white)}
 .frame{margin:10px 0 0;border:1px solid var(--gray-mid1);border-radius:12px;overflow:hidden;background:var(--page)}
@@ -197,7 +198,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 
 <div class="pad"><div class="wrap toc">
   <h1>/join · full flow</h1>
-  <p>Every control works: pick, type, add rows. The site's global header and footer sit above and below each screen.</p>
+  <p>Every control works: pick, type, add rows. The site's global header and footer sit above and below each screen. The striped "Preview only" bars switch between cases in this mockup; they are not part of the form.</p>
   <nav aria-label="Screens">
     <a href="#s1">1 About you</a><a href="#s2">2 License details</a><a href="#s3">3 Quick call?</a><a href="#s3b">Call requested</a>
     <a href="#s4">4 Finish your application</a><a href="#s5">5 Review</a><a href="#s5b">Waiting for review</a>
@@ -252,6 +253,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
       <div class="box">
         <div class="fit"><b>Quick check before you continue</b><ul><li>You have an NMLS ID</li><li>Your license in each state below is Active or Approved-Inactive (expired? renew on NMLS first)</li><li>You're committed to closing at least 1 loan every 6 months</li></ul>
           <label class="check"><input type="checkbox" id="fit" checked> I meet these requirements</label></div>
+        <div class="fit"><b>Tech literacy &amp; computer proficiency</b><div><b>We are a Tech-First Company:</b> Loan Factory prides itself on proprietary, cutting-edge technology. While we are always happy to guide you through our unique features and tools, we expect a baseline level of tech literacy.</div><div><b>The Expectation:</b> You should be comfortable navigating modern software, basic computer tasks, and adapting to digital workflows independently to efficiently manage your pipeline.</div>
+          <label class="check"><input type="checkbox" id="tech"> I meet this expectation</label></div>
         <div class="g2"><div class="f"><label for="nmls">NMLS ID <span class="req">Required</span></label><input class="in" id="nmls" value="1234567"></div><div></div></div>
         <div class="f"><div class="lbl">States you want us to sponsor <span class="req">Required</span></div><div class="multi" id="sponsor"></div></div>
         <div class="sub" data-show="ca:yes"><div class="lbl">California license type <span class="req">Required</span></div>
@@ -302,7 +305,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
     <div class="pad main"><div class="booked">
       <div class="big">✓</div>
       <h2>You're all set, Jane!</h2>
-      <p data-show="s3b:times">An onboarding specialist will call <b>(714) 555-0142</b> in one of these times. We'll email you the exact time.</p>
+      <p data-show="s3b:times">An onboarding specialist will call <b>(714) 555-0142</b> in one of these times. We will contact you ASAP to confirm the time.</p>
       <div class="when" data-show="s3b:times"><span class="chip">Wed, Nov 4 · 11 AM–1 PM</span><span class="chip">Thu, Nov 5 · 1–3 PM</span></div>
       <p data-show="s3b:any">An onboarding specialist will call <b>(714) 555-0142</b> soon.</p>
       <div class="vidwrap sep">
@@ -318,41 +321,38 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 <div class="pad"><div class="wrap" id="s4">
   <div class="flabel"><b>Step 4 · Finish your application</b><span>opened from the team's link, or after "No, I'm ready to join"</span></div>
   <div class="scen" data-group="s4"><span>Employment type:</span>
-    <button type="button" data-s="call" aria-pressed="true">Set on the call</button>
+    <button type="button" data-s="free" aria-pressed="true">Prefilled from states, can change (e.g. TX)</button>
     <button type="button" data-s="forced">Required by state (e.g. GA)</button>
-    <button type="button" data-s="free">Loan Officer picks</button>
   </div>
   <div class="frame" data-chrome="welcome" data-step="4">
     <div class="pad main"><div class="layout"><div class="col">
       <h1>Finish your application</h1>
       <section class="group"><div class="ghead"><i>1</i><b>Personal details</b></div><div class="gbody">
         <div class="g2"><div class="f"><label for="lf">Legal first name <span class="req">Required</span></label><input class="in" id="lf" value="Jane"></div><div class="f"><label for="ll">Legal last name <span class="req">Required</span></label><input class="in" id="ll" value="Smith"></div></div>
-        <div class="g2"><div class="f"><label for="al">Alias first name</label><input class="in" id="al" placeholder="e.g. JJ"></div><div class="f"><label for="ci">Citizenship <span class="req">Required</span></label><select class="in" id="ci"><option>Select</option><option>U.S. citizen</option><option>Permanent resident</option><option>Work visa</option><option>Other</option></select></div></div>
+        <div class="g2"><div class="f"><label for="ci">Citizenship <span class="req">Required</span></label><select class="in" id="ci"><option>Select</option><option>U.S. citizen</option><option>Permanent resident</option><option>Work visa</option><option>Other</option></select></div><div></div></div>
         <div class="f"><div class="lbl">Preferred languages</div><div class="multi" id="langs"></div></div>
       </div></section>
-      <section class="group"><div class="ghead"><i>2</i><b>Address</b></div><div class="gbody">
+      <section class="group"><div class="ghead"><i>2</i><b>Mailing address</b></div><div class="gbody">
         <div class="g3"><div class="f"><label for="st">Street address <span class="req">Required</span></label><input class="in" id="st" value="1200 Main St"></div><div class="f"><label for="apt">Apt / Unit</label><input class="in" id="apt"></div></div>
         <div class="g3r"><div class="f"><label for="zip">ZIP <span class="req">Required</span></label><input class="in" id="zip" value="92614"></div><div class="f"><label for="city">City <span class="req">Required</span></label><input class="in" id="city" value="Irvine"></div></div>
-        <label class="check"><input type="checkbox" id="same" checked> Mailing address is the same</label>
-        <div data-show="mail:diff" class="g3"><div class="f"><label for="mst">Mailing street <span class="req">Required</span></label><input class="in" id="mst"></div><div class="f"><label for="mapt">Apt / Unit</label><input class="in" id="mapt"></div></div>
-        <div data-show="mail:diff" class="g3r"><div class="f"><label for="mzip">ZIP <span class="req">Required</span></label><input class="in" id="mzip"></div><div class="f"><label for="mcity">City <span class="req">Required</span></label><input class="in" id="mcity"></div></div>
       </div></section>
       <section class="group"><div class="ghead"><i>3</i><b>Licensing</b></div><div class="gbody">
         <div class="f"><div class="lbl">States where you're licensed <span class="req">Required</span></div><div class="multi" id="licensed"></div></div>
         <label class="check"><input type="checkbox" id="nonex"> I also originate loans with another company</label>
       </div></section>
       <section class="group"><div class="ghead"><i>4</i><b>Compensation</b></div><div class="gbody">
-        <div class="g2"><div class="f"><label for="mc">Main target compensation <span class="req">Required</span></label><select class="in comp" id="mc"></select></div><div class="f"><label for="cc">Correspondent target compensation <span class="req">Required</span></label><select class="in comp" id="cc"></select></div></div>
-        <div class="info" data-show="s4:call"><span>Employment type: <b>Independent (1099)</b></span><span class="tag">Set on your call</span></div>
+        <div class="g2"><div class="f"><label for="mc">Target compensation <span class="req">Required</span></label><select class="in comp" id="mc"></select></div><div></div></div>
+        <div class="hint">This value controls the rates/pricing on your pricing engine (on your website) when displaying based on borrower-paid comp (BPC). This value will also be sent to Rocket to serve as your Rocket Correspondent Target Comp (built into your pricing on Correspondent loans with Rocket), and it will be used to determine which Pylon Lender-Paid Comp/LPC environment to place you in (≤1.00% maps to 1% LPC; &gt;1.00% maps to 2% LPC). Once set, changes are entered under Future Target Compensation and take effect on the first day of the next quarter. There may be other use cases not noted here. Regardless of the lender or use case, anti-steering rules require you to offer pricing consistently based on this compensation across all channels. For more information, view our <a href="#" style="color:var(--orange-ink)">Compensation Policy</a>.</div>
         <div class="info" data-show="s4:forced"><span>Employment type: <b>Employee (W-2)</b></span><span class="tag">Required in Georgia</span></div>
         <div class="f" data-show="s4:free"><div class="lbl">Employment type <span class="req">Required</span></div>
           <div class="typecards"><button class="tc" type="button" aria-pressed="true"><b>Independent (1099)</b><small>Keep 100% of your commission. You handle your own taxes.</small></button><button class="tc" type="button"><b>Employee (W-2)</b><small>90% of the commission. Payroll taxes are withheld.</small></button></div>
-          <div class="hint">We'll confirm this with you before your agreement.</div></div>
+          <div class="hint">Prefilled from the states you want us to sponsor. You can change it.</div></div>
       </div></section>
       <section class="group"><div class="ghead"><i>5</i><b>Online presence</b></div><div class="gbody">
-        <div class="f"><div class="lbl">Do you have social media profiles for your mortgage business?</div><div class="seg" data-tog="soc"><button type="button" data-v="yes" aria-pressed="true">Yes</button><button type="button" data-v="no">No</button></div></div>
-        <div data-show="soc:yes" class="rows" id="socrows"></div>
-        <button data-show="soc:yes" class="add" type="button" id="addsoc">+ Add another profile</button>
+        <div class="lbl">Social media profiles for your mortgage business <span class="req">Required</span></div>
+        <div class="hint">Add at least one profile.</div>
+        <div class="rows" id="socrows"></div>
+        <button class="add" type="button" id="addsoc">+ Add another profile</button>
       </div></section>
       <section class="group"><div class="ghead"><i>6</i><b>Special requests</b><small>One request per row</small></div><div class="gbody">
         <div id="reqs" class="rows"></div>
@@ -378,10 +378,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
         <div class="wide"><dt>Websites (3)</dt><dd><ul class="ul"><li>https://janesmithloans.com</li><li>https://jane-smith.loanfactory.com</li><li>https://homesbyjane.com</li></ul></dd></div></dl></div></section>
       <section class="group"><div class="ghead"><i>4</i><b>Personal details</b><a href="#s4">Edit</a></div><div class="gbody"><dl class="dl">
         <div><dt>Legal name</dt><dd>Jane Smith<span class="meta"><span class="team">Set by our team</span><a href="#">This is wrong</a></span></dd></div><div><dt>Citizenship</dt><dd>U.S. citizen</dd></div><div><dt>Languages</dt><dd>English, Vietnamese</dd></div></dl></div></section>
-      <section class="group"><div class="ghead"><i>5</i><b>Address</b><a href="#s4">Edit</a></div><div class="gbody"><dl class="dl">
-        <div><dt>Home</dt><dd>1200 Main St, Irvine, CA 92614</dd></div><div><dt>Mailing</dt><dd>Same as home</dd></div></dl></div></section>
+      <section class="group"><div class="ghead"><i>5</i><b>Mailing address</b><a href="#s4">Edit</a></div><div class="gbody"><dl class="dl">
+        <div class="wide"><dt>Address</dt><dd>1200 Main St, Irvine, CA 92614</dd></div></dl></div></section>
       <section class="group"><div class="ghead"><i>6</i><b>Compensation</b><a href="#s4">Edit</a></div><div class="gbody"><dl class="dl">
-        <div><dt>Main target</dt><dd>1.75%</dd></div><div><dt>Correspondent target</dt><dd>1.5%</dd></div><div><dt>Employment type</dt><dd>Independent (1099)<span class="meta"><span class="team">Set by our team</span><a href="#">This is wrong</a></span></dd></div></dl></div></section>
+        <div><dt>Target compensation</dt><dd>1.75%</dd></div><div><dt>Employment type</dt><dd>Independent (1099)</dd></div></dl></div></section>
       <section class="group"><div class="ghead"><i>7</i><b>Online presence &amp; requests</b><a href="#s4">Edit</a></div><div class="gbody"><dl class="dl">
         <div class="wide"><dt>Social media (2)</dt><dd><ul class="ul"><li>LinkedIn · https://linkedin.com/in/janesmith</li><li>Facebook · https://facebook.com/janesmithloans</li></ul></dd></div><div class="wide"><dt>Special requests (2)</dt><dd><ol class="ul"><li>Team name: Smith Lending Group</li><li>Fee waiver</li></ol></dd></div></dl></div></section>
       <label class="check"><input type="checkbox" id="true1"> I confirm all information I provided is true and correct.</label>
@@ -460,13 +460,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 
 <script>
 const $=id=>document.getElementById(id);
-const STATES={AL:"Alabama",AZ:"Arizona",CA:"California",CO:"Colorado",FL:"Florida",GA:"Georgia",IL:"Illinois",IN:"Indiana",NY:"New York",NC:"North Carolina",SC:"South Carolina",TX:"Texas",WA:"Washington"};
+const STATES={AL:"Alabama",AZ:"Arizona",CA:"California",CO:"Colorado",CT:"Connecticut",FL:"Florida",GA:"Georgia",IL:"Illinois",IN:"Indiana",NY:"New York",NC:"North Carolina",SC:"South Carolina",TX:"Texas",WA:"Washington"};
+const SPONSORABLE=Object.fromEntries(Object.entries(STATES).filter(([k])=>k!=="CT"&&k!=="NY"));
 const STEPS=["About you","License details","Intro call","Application","Review","Pay & sign","NMLS access"];
 document.querySelectorAll(".frame").forEach(fr=>{
   const k=fr.dataset.chrome,st=+fr.dataset.step||0;
   let band="";
-  if(k==="hero")band=`<div class="pad herobig"><div class="eyebrow">JOIN LOAN FACTORY</div><h2>Grow your mortgage business on a platform built for loan officers</h2><p>Access to the lenders you need, the tech to run your pipeline, and a team that gets your license sponsored fast.</p><div class="herostats"><div><b>240+</b>wholesale lenders</div><div><b>2,600+</b>loan officers on the platform</div><div><b>$100</b>one-time fee, only after your call</div></div></div>`;
-  else if(k==="stats")band=`<div class="pad strip"><b>Grow your mortgage business on a platform built for loan officers</b><span class="stats"><span><em>240+</em> wholesale lenders</span><span><em>2,600+</em> loan officers</span><span><em>$100</em> fee only after your call</span></span></div>`;
+  if(k==="hero")band=`<div class="pad herobig"><div class="eyebrow">JOIN LOAN FACTORY</div><h2>Grow your mortgage business on a platform built for loan officers</h2><p>Access to the lenders you need, the tech to run your pipeline, and a team that gets your license sponsored fast.</p><div class="herostats"><div><b>240+</b>wholesale lenders</div><div><b>2,600+</b>loan officers on the platform</div><div><b>$1,000+</b>monthly savings on recurring fees</div></div></div>`;
   else if(k==="welcome")band=`<div class="pad strip"><b>Welcome back, Jane</b></div>`;
   fr.insertAdjacentHTML("afterbegin",`<div class="gh">Site header (global)</div>${band}`);
   fr.insertAdjacentHTML("beforeend",`<div class="gh" style="border-top:1px dashed var(--gray-mid1);border-bottom:0">Site footer (global)</div>`);
@@ -475,7 +475,7 @@ document.querySelectorAll(".frame").forEach(fr=>{
   const bar=list.map((n,i)=>{const s=i+1,c=s<st?"done":s===st?"cur":"";return `<div class="step ${c}"><i>${s<st?"✓":s}</i><span>${n}</span></div>`;}).join("");
   fr.querySelector(".main").insertAdjacentHTML("afterbegin",`<div class="steps">${bar}</div>`);
 });
-const state={page:"company",heard:"lo",s3b:"times",s4:"call",s6:"pay",web:"yes",soc:"yes",mail:"same",catype:"dfpi",dreRe:"no",ca:"no",in:"no",sc:"no",s2:"tx"};
+const state={page:"company",heard:"lo",s3b:"times",s4:"free",s6:"pay",web:"yes",catype:"dfpi",dreRe:"no",ca:"no",in:"no",sc:"no",s2:"tx"};
 function apply(){document.querySelectorAll("[data-show]").forEach(el=>{
   el.classList.toggle("on",el.dataset.show.split(" ").some(t=>{const [g,v]=t.split(":");return state[g]===v;}));});}
 document.querySelectorAll(".scen").forEach(sc=>sc.querySelectorAll("button").forEach(b=>b.onclick=()=>{
@@ -488,7 +488,6 @@ document.querySelectorAll("[data-tog]").forEach(sg=>sg.querySelectorAll("button"
 document.querySelectorAll(".seg:not([data-tog]) button,.typecards .tc").forEach(b=>b.addEventListener("click",()=>{
   [...b.parentElement.children].forEach(x=>x.setAttribute("aria-pressed",String(x===b)));}));
 $("heard").onchange=e=>{state.heard=e.target.value==="lo"?"lo":"x";apply();};
-$("same").onchange=e=>{state.mail=e.target.checked?"same":"diff";apply();};
 function multi(el,opts,init,onChange){
   let sel=[...init];
   function draw(){
@@ -500,7 +499,7 @@ function multi(el,opts,init,onChange){
   draw();
   return v=>{sel=[...v];draw();onChange&&onChange(sel);};
 }
-const setSponsor=multi($("sponsor"),STATES,["TX"],s=>{state.ca=s.includes("CA")?"yes":"no";state.in=s.includes("IN")?"yes":"no";state.sc=s.includes("SC")?"yes":"no";apply();});
+const setSponsor=multi($("sponsor"),SPONSORABLE,["TX"],s=>{state.ca=s.includes("CA")?"yes":"no";state.in=s.includes("IN")?"yes":"no";state.sc=s.includes("SC")?"yes":"no";apply();});
 multi($("licensed"),STATES,["CA","TX"]);
 multi($("langs"),{en:"English",es:"Spanish",vi:"Vietnamese",zh:"Chinese",ko:"Korean",tl:"Tagalog"},["en","vi"]);
 document.querySelectorAll("select.comp").forEach(s=>{s.innerHTML=`<option value="">Select</option>`+Array.from({length:17},(_,i)=>`<option>${+(0.5+i*0.125).toFixed(3)}%</option>`).join("");});
