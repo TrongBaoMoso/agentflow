@@ -518,3 +518,21 @@ Open PRs (nothing merged to prod):
   later; candidate af38421a `left_company_at` 09:19:50.77Z, `left_company_on` 2026-11-04, `left_company_event_id` 21314;
   exactly 1 internal SYSTEM entry "Left Loan Factory (HR offboarding)"; stage S6/ACTIVE unchanged; backlog and DLQ 0.
   Not tested: another live employment, and rehire ("Rejoined"), which waits for Bao.
+
+## 04/11 — My referrals Copy link: packs domain_url merged, link switched to `<site>/join` (READY FOR PROD)
+- packs #3735 (master) squash `90b468e3` and twin #3816 (3.64.1) squash `140da2db`: MERGED, NOT deployed (Khải deploys).
+  - Test rewrite: `Admin.domain_url` is computed; `role` is derived from flags, so the tests set `is_loan_originator`,
+    `using_own_domain`, `domain`. Added locked, null-key, trimmed-key and RECRUITING-actor cases.
+  - Each branch: ReferralReadOpsTest 30 + recruiting package = 364 tests, 0 failures. The 3.64.1 run needed base
+    3.64.1 built into an isolated maven repo (`-Dmaven.repo.local=<dir> -Dmaven.repo.local.tail=~/.m2/repository`).
+  - Negative controls: `domainUrl` forced to null -> 3 red; active/locked guard removed -> inactive case red.
+  - Reviews: correctness APPROVE, security APPROVE (LOW only: the `<baseUrl>/<slug>` branch of the computed field is untested).
+- recruit-be #827 squash `84057c99` (D373): `<domain_url>/join` instead of `/loan-officer`; program members without
+  `domain_url` keep `<join-base>/join/<slug>`. CI green (incl. integration tests); 2 reviewers APPROVE. FE needs no change.
+  - On STAGING: promote-staging run 41807713156, cd-staging 41807748932 success.
+  - Measured on staging (GET /referrals/mine): hh (program member) -> `https://www.viet18.com/join/bao-trinhhh`, same as
+    before the deploy; recruiter/admin/manager -> no link (not linked). One 503 for hh right after the rollout, then 200 twice.
+  - NOT verified on staging: the `domain_url` -> `<site>/join` path, because packs #3735 is not deployed on staging.
+    Covered by DefaultReferralLinksTest (6) + DefaultReferralLinksIT. Re-check after Khải deploys packs.
+- **READY FOR PROD:** recruit-be `84057c99` can go out with the next fast-forward of `production` (no flag; /join is live
+  on prod). Until packs prod has #3735, prod behaves as today (program members get the join link, others none).
