@@ -542,3 +542,23 @@ Done:
 
 ### #785 on PROD (01/11)
 - agentflow-bf FF recruit-be production to ca0503cd (#784 #785 #786 #787, Flyway 305), deploy green. #785 = packs byOwner page retry (3 tries). Verified in pod: source=central and REFERRER flag still on. Follow-ups: beads y89cf.1 (outbox FAILED alert), y89cf.2 (leaver check), y89cf.3 (self-view should not wait through retries). New referrers are not auto-granted until the RBAC reconcile key and the cron-service tick exist (MESSAGE-KHAI-3110).
+
+### PAUSE 04/11 17:25 (session e19da9e9): state and next steps
+
+**Done 04/11**
+- Measured prod: Recruit grants/revokes nothing today. Outbox = 480 REFERRER ASSIGN DONE (31/10) only, `program_sync.mode=DRY_RUN`, HR role sync off, sweep not running (no reconcile key).
+- MOSO owner sync: Bao approved prod. recruit-be **#831** (prod values `RECRUIT_FEATURES_MOSO_OWNER_SYNC=true`) is merged to master and rides the **NEXT normal prod release** (Bao chose this over pushing prod now). Then run `POST /api/v1/admin/moso-owner-sync?dry_run=false` once, using the refrun.sh pattern in `~/.cache/claude-recruit/p6/`. Dry run 04/11 09:18Z: 928 examined, 883 would get an owner (`~/.cache/claude-recruit/p6/owner_dry_0411.json`).
+- y89cf.3: recruit-be **#832** merged (44b077a48). byOwner asks once; `byOwnerPatiently` (retry) is used by ReferrerRoleService only. The promote to staging raced another session's promote; re-run 41813367918 with `-f sha=44b077a48…`. **Check that it landed:** `git merge-base --is-ancestor 44b077a48 origin/staging`.
+- y89cf.2: no code needed. `HrRoleSyncService.deactivated` removes every RECRUIT role, including REFERRER, once HR role sync is live. Remaining: on go-live day, re-check holders who left between 31/10 and that day.
+- y89cf.1 (outbox FAILED alert): deferred until a writer goes live (Khai unblock).
+- Staging: Claude created the 4 HR role-sync subscriptions, each with `_DLQ` and `_DLQ.monitor` (RECRUIT_HR_ASSOCIATE_{ONBOARD_ROLES,ROLE,DEACTIVE,UPDATE_HEADSHIP}_SUBSCRIBE) on lenderrate-master. IAM is NOT bound yet.
+- Prod secret `recruit-be-recruit-rbac-reconcile-internal-api-key`: **created EMPTY by Tan Thanh 04/11 17:10**. recruit-be-deploy@ has secretAccessor; Bao has secretVersionAdder. Bao cannot read or describe it.
+- Bao SENT Khai (Slack DM, 04/11 ~17:20, in Bao's own style): staging IAM bindings for the 4 subs plus the reconcile secret accessor; prod creation of the 4 subs plus bindings.
+
+**Next (after Khai answers)**
+1. Verify the staging and prod subscription IAM and the staging secret binding (`gcloud secrets get-iam-policy …` on staging).
+2. PR: add `RECRUIT_RBAC_RECONCILE_INTERNAL_API_KEY` to `helm-chart/config/{staging,production}/secret-keys.txt`, plus the HR role-sync subscription env and `RECRUIT_FEATURES_HR_ROLE_SYNC` (staging first).
+3. Staging: put a random value in the staging secret, run Sync secrets, register the cron-service mirror tick, and measure the sweep plus the HR sync.
+4. Prod: after a release carries the keys file, Bao sets the value with `tera-docs/infrastructure/secrets/release-secret.sh recruit-be production RECRUIT_RBAC_RECONCILE_INTERNAL_API_KEY` (the value never passes through Claude), then register the prod tick.
+5. Then do y89cf.1 (alert) and the y89cf.2 one-time leaver check.
+Note: the old draft MESSAGE-KHAI-3110.md is superseded by what Bao sent (secret creation is Tan Thanh's job, per RELEASE_TEAM_SECRETS.md).
