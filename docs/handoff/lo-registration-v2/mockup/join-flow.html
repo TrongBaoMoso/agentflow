@@ -42,13 +42,6 @@ body{background:var(--white);color:var(--black);font-family:var(--body);font-siz
 .herostats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .herostats div{background:var(--white);border-radius:10px;padding:12px 14px;color:var(--gray-dark);font-size:var(--t-sm)}
 .herostats b{display:block;color:var(--orange-ink);font-family:var(--head);font-size:var(--t-xl)}
-body.hb .herobig{background:var(--tint);color:var(--black);border-bottom:3px solid var(--orange)}
-body.hb .herobig .eyebrow{color:var(--orange-ink)}
-body.hb .herobig h2{color:var(--black)}
-body.hb .herobig p{color:var(--gray-dark)}
-body.hb .herostats div{background:none;border-radius:0;padding:10px 0 0;border-top:2px solid var(--orange)}
-body.hb .strip{background:var(--tint);color:var(--black);border-bottom:2px solid var(--orange)}
-body.hb .strip .stats > span{background:none;padding:0}
 .main{padding-block:24px 28px;display:grid;gap:18px}
 .steps{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:10px}
 .step{display:flex;gap:6px;align-items:center;padding-bottom:8px;border-bottom:3px solid var(--gray-mid1);font-size:var(--t-sm);color:var(--gray-dark);min-width:0;white-space:nowrap;overflow:hidden}
@@ -211,10 +204,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
   <div class="scen" data-group="page"><span>Page:</span>
     <button type="button" data-s="company" aria-pressed="true">Company page</button>
     <button type="button" data-s="lopage">A Loan Officer's own page (e.g. /mattmoghaddam/join)</button>
-  </div>
-  <div class="scen" data-group="herostyle"><span>Hero style:</span>
-    <button type="button" data-s="a" aria-pressed="true">A · Orange band, white stat cards</button>
-    <button type="button" data-s="b">B · Light orange band, orange accents</button>
   </div>
   <div class="frame" data-chrome="hero" data-step="1">
     <div class="pad main">
@@ -495,7 +484,7 @@ function empRule(){
 function apply(){empRule();document.querySelectorAll("[data-show]").forEach(el=>{
   el.classList.toggle("on",el.dataset.show.split(" ").some(t=>{const [g,v]=t.split(":");return state[g]===v;}));});}
 document.querySelectorAll(".scen").forEach(sc=>sc.querySelectorAll("button").forEach(b=>b.onclick=()=>{
-  state[sc.dataset.group]=b.dataset.s;if(sc.dataset.group==="herostyle")document.body.classList.toggle("hb",b.dataset.s==="b");sc.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
+  state[sc.dataset.group]=b.dataset.s;sc.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
   if(sc.dataset.group==="s2"){const v=b.dataset.s;setSponsor(v==="tx"?["TX"]:v==="in"?["IN","TX"]:v==="sc"?["SC","TX"]:["CA","TX"]);
     if(v==="cadfpi"||v==="cadre"){state.catype=v==="cadfpi"?"dfpi":"dre";document.querySelectorAll('[data-tog="catype"] button').forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.v===state.catype)));}}
   if(sc.dataset.group==="page")state.heard=state.page==="company"&&$("heard").value==="lo"?"lo":"x";apply();}));
