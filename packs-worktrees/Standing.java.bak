@@ -1,0 +1,134 @@
+package com.mvu.loan.server.op.recruiting;
+
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import com.moso.core.Logger;
+import com.mvu.appengine.db.Bean;
+import com.mvu.core.server.CanBeStored;
+import com.mvu.core.server.JSON;
+import com.mvu.core.server.Server;
+import com.mvu.core.shared.util.Strings;
+import com.mvu.loan.shared.entity.LORecruiting;
+import com.mvu.loan.shared.typekey.LoanOfficerReferredSource;
+import org.apache.commons.io.IOUtils;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+
+/**
+ * Decides whether a sign-up through a Loan Officer's own site is credited as RECRUITER credit
+ * (agentflow, Bao 23/10 option a): the owner is an approved LO Recruiter Program member but does not carry
+ * the HR "recruiter" flag. Accounting still pays the program from MOSO, so the lead must be stored exactly as
+ * an HR-flagged recruiter's lead is ({@code referred_source=recruiter}, {@code recruiter=<owner key name>}).
+ *
+ * <p><b>Membership is never taken from the visitor.</b> Two independent proofs are both required:</p>
+ * <ol>
+ *   <li>the origin stamp resolved on the server ({@link LeadOriginStamp#MATCH_SLUG_SERVER_RESOLVED}: exactly
+ *       one active Admin owns the {@code referred_by} e-mail and the slug is that Admin's own slug) and names
+ *       the Admin the caller is about to credit; and</li>
+ *   <li>moso-aid, which owns the program roster ({@code LOProgramApplication}, {@code lo_recruiter},
+ *       {@code approved}), says that Admin holds recruiter standing, answered by the public
+ *       {@code GET <moso_aid_base_url>/join-page?key=<websafe Admin key>} (the same read lo-homepage uses to
+ *       stamp the form: {@code data.recruiter_slug} is present only for a member). The key sent is the Admin's
+ *       own key, chosen by packs from the Admin table, never anything the visitor posted.</li>
+ * </ol>
+ *
+ * <p><b>Fail safe.</b> Anything short of a clear "member" (not configured, timeout, non-2xx, unparseable body,
+ * a different slug) keeps today's behaviour: the lead is credited as a Loan Officer referral. The lead is
+ * always saved; a failed lookup is logged and never thrown.</p>
+ *
+ * <p>Evaluated only inside {@code LORecruiting.beforeCreated}, i.e. at first touch: a sign-up after approval
+ * is credited, an existing lead is never re-credited (update paths never reach this class).</p>
+ */
+public final class LoRecruiterProgramStanding {
+
+  /** System property: moso-aid's {@code /api} root, e.g. {@code https://moso-aid-....run.app/api}. Unset = feature off. */
+  public static final String BASE_URL_PROPERTY = "moso_aid_base_url";
+
+  private static final Logger logger = Logger.getLogger(LoRecruiterProgramStanding.class.getSimpleName());
+  private static final int TIMEOUT_SECONDS = 5;
+
+  private static final OkHttpClient client = new OkHttpClient.Builder()
+          .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+          .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+          .callTimeout(TIMEOUT_SECONDS + 2, TimeUnit.SECONDS)
+          .build();
+
+  private LoRecruiterProgramStanding() {
+  }
+
+  /**
+   * True when a lead that claims {@code referred_source=recruiter} through {@code owner}'s site must be
+   * credited as recruiter credit even though {@code owner} has no HR recruiter flag.
+   */
+  public static boolean creditsAsRecruiter(CanBeStored<?> lead, Bean owner) {
+    if (!lead.is(LORecruiting.referred_source, LoanOfficerReferredSource.recruiter)) {
+      return false;
+    }
+    if (!isServerResolvedSlugStampFor(lead, owner)) {
+      return false;
+    }
+    String expectedSlug = lead.get(LORecruiting.lead_origin_slug);
+    return isMember(owner, expectedSlug);
+  }
+
+  private static boolean isServerResolvedSlugStampFor(CanBeStored<?> lead, Bean owner) {
+    String origin = lead.get(LORecruiting.lead_origin);
+    boolean slugOrigin = LeadOriginStamp.JOIN_SLUG.equals(origin) || LeadOriginStamp.RECRUIT_SLUG.equals(origin);
+    return slugOrigin
+            && LeadOriginStamp.MATCH_SLUG_SERVER_RESOLVED.equals(lead.get(LORecruiting.lead_origin_owner_match))
+            && Strings.isNotEmpty(lead.get(LORecruiting.lead_origin_slug))
+            && owner.keyName().equals(lead.get(LORecruiting.lead_origin_owner_key));
+  }
+
+  private static boolean isMember(Bean owner, String expectedSlug) {
+    String baseUrl = Server.getSystemProperty(BASE_URL_PROPERTY);
+    if (Strings.isEmpty(baseUrl) || Strings.isEmpty(baseUrl.trim())) {
+      logger.warn("recruiter-credit: " + BASE_URL_PROPERTY + " is not configured; crediting " + owner.keyName()
+              + " as a Loan Officer referral");
+      return false;
+    }
+    String url = baseUrl.trim().replaceAll("/+$", "") + "/join-page?key="
+            + URLEncoder.encode(owner.key(), StandardCharsets.UTF_8);
+    Request request = new Request.Builder().url(url).get().build();
+    try (Response response = client.newCall(request).execute()) {
+      int status = response.code();
+      if (status == 404) {
+        // moso-aid does not know an active Loan Officer with a site under this key: a clear "no".
+        return false;
+      }
+      ResponseBody body = response.body();
+      if (!response.isSuccessful() || body == null) {
+        logger.warn("recruiter-credit: moso-aid answered " + status + " for " + owner.keyName()
+                + "; crediting as a Loan Officer referral");
+        return false;
+      }
+      String slug = recruiterSlugOf(IOUtils.toString(body.byteStream(), StandardCharsets.UTF_8));
+      return slug != null && slug.trim().toLowerCase(Locale.ROOT).equals(expectedSlug);
+    } catch (Exception exception) {
+      logger.warn("recruiter-credit: moso-aid lookup failed for " + owner.keyName() + " ("
+              + exception.getClass().getSimpleName() + "); crediting as a Loan Officer referral");
+      return false;
+    }
+  }
+
+  /** {@code data.recruiter_slug} of a moso-aid {@code /join-page} answer, or null when absent/unparseable. */
+  static String recruiterSlugOf(String responseBody) {
+    Object parsed;
+    try {
+      parsed = JSON.parse(responseBody);
+    } catch (RuntimeException notJson) {
+      return null;
+    }
+    Object data = parsed instanceof JSON json ? json.getRaw("data") : null;
+    Object slug = data instanceof JSON dataJson ? dataJson.getRaw("recruiter_slug")
+            : data instanceof Map<?, ?> map ? map.get("recruiter_slug") : null;
+    return slug instanceof String text && Strings.isNotEmpty(text) ? text : null;
+  }
+}

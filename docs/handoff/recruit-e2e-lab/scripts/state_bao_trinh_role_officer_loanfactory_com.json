@@ -1,0 +1,83 @@
+{
+  "cookies": [
+    {
+      "name": "NEXT_LOCALE",
+      "value": "en",
+      "domain": "recruit.viet18.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "NEXT_LOCALE",
+      "value": "en",
+      "domain": "account.viet18.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "__Host-lf_account_refresh",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4NjA2YzA1Zi1iYWYwLTQzNzYtODBmZi02ZDFiMWRmYjJiZTgiLCJpc3MiOiJodHRwczovL2FjY291bnQudmlldDE4LmNvbSIsImFjY291bnRfaWQiOiIyNzA5NTI1Mi0yN2RiLTQxZDctYjgzMi1hMTBlYzNjM2RlOWYiLCJ1c2VyX2lkIjoiODYwNmMwNWYtYmFmMC00Mzc2LTgwZmYtNmQxYjFkZmIyYmU4IiwidGltZV96b25lIjoiWiIsImlhdCI6MTc5MzcwNzgxOCwiZXhwIjoxNzkzOTY3MDE4LCJhY2Nlc3NfdHlwZSI6IlJFRlJFU0hfVE9LRU4iLCJpZGVudGlmaWVycyI6WyJiYW8udHJpbmgrcm9sZS1vZmZpY2VyKzFAbG9hbmZhY3RvcnkuY29tIiwiYmFvLnRyaW5oK3JvbGUtb2ZmaWNlckBsb2FuZmFjdG9yeS5jb20iXSwic3RhdHVzIjoiQUNUSVZFIiwidmVyaWZ5Ijp0cnVlLCJhdXRob3JpdGllcyI6WyJNQVJLRVRQTEFDRSNFTVBMT1lFRSIsIkxPUyNFTVBMT1lFRSIsIlJFQ1JVSVQjTUFOQUdFUiIsIlJFQ1JVSVQjT05CT0FSRElORyIsIkhSI0VNUExPWUVFIiwiQUNDT1VOVCNVU0VSIiwiSFIjUkVDUlVJVEVSIiwiSFIjT05CT0FSRElOR19TUEVDSUFMSVNUIiwiUkVDUlVJVCNSRUNSVUlURVIiXSwicHJvZHVjdCI6IkxPUyIsInNpZCI6IjU2MTJmNGYwLWI1M2YtNDBjYy1hYzgwLWQxOGNmODk3OTZlOCJ9.b55FC3XinTIAaiHDAJ9O0Ur2k9Ni2uH2mjhpNSMBuZM",
+      "domain": "account.viet18.com",
+      "path": "/",
+      "expires": 1793967018.981605,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "lf_session",
+      "value": "1",
+      "domain": ".viet18.com",
+      "path": "/",
+      "expires": 1793967018.982669,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Strict"
+    },
+    {
+      "name": "lf_app",
+      "value": "1",
+      "domain": "recruit.viet18.com",
+      "path": "/",
+      "expires": 1794312620.812688,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "GCLB",
+      "value": "CKq67KDl_vXtKxAD",
+      "domain": "msg.viet18.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://recruit.viet18.com",
+      "localStorage": [
+        {
+          "name": "tera-assistant.arrival-day:RECRUIT:8606c05f-baf0-4376-80ff-6d1b1dfb2be8",
+          "value": "{\"id\":\"day-2026-11-03\",\"at\":1793707823768}"
+        },
+        {
+          "name": "recruit-fe-auth-storage",
+          "value": "{\"state\":{\"accessToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4NjA2YzA1Zi1iYWYwLTQzNzYtODBmZi02ZDFiMWRmYjJiZTgiLCJpc3MiOiJodHRwczovL2FjY291bnQudmlldDE4LmNvbSIsImFjY291bnRfaWQiOiIyNzA5NTI1Mi0yN2RiLTQxZDctYjgzMi1hMTBlYzNjM2RlOWYiLCJ1c2VyX2lkIjoiODYwNmMwNWYtYmFmMC00Mzc2LTgwZmYtNmQxYjFkZmIyYmU4IiwidGltZV96b25lIjoiWiIsImlhdCI6MTc5MzcwNzgyMCwiZXhwIjoxNzkzNzE1MDIwLCJhY2Nlc3NfdHlwZSI6IkFDQ0VTU19UT0tFTiIsImlkZW50aWZpZXJzIjpbImJhby50cmluaCtyb2xlLW9mZmljZXIrMUBsb2FuZmFjdG9yeS5jb20iLCJiYW8udHJpbmgrcm9sZS1vZmZpY2VyQGxvYW5mYWN0b3J5LmNvbSJdLCJzdGF0dXMiOiJBQ1RJVkUiLCJ2ZXJpZnkiOnRydWUsImF1dGhvcml0aWVzIjpbIk1BUktFVFBMQUNFI0VNUExPWUVFIiwiTE9TI0VNUExPWUVFIiwiUkVDUlVJVCNNQU5BR0VSIiwiUkVDUlVJVCNPTkJPQVJESU5HIiwiSFIjRU1QTE9ZRUUiLCJBQ0NPVU5UI1VTRVIiLCJIUiNSRUNSVUlURVIiLCJIUiNPTkJPQVJESU5HX1NQRUNJQUxJU1QiLCJSRUNSVUlUI1JFQ1JVSVRFUiJdLCJwcm9kdWN0IjoiUkVDUlVJVCIsInNpZCI6IjU2MTJmNGYwLWI1M2YtNDBjYy1hYzgwLWQxOGNmODk3OTZlOCJ9.jUi-ezq2Bo1tXW_KBPcbuu5j2YgbwNreX5_h0VypoPo\",\"refreshToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4NjA2YzA1Zi1iYWYwLTQzNzYtODBmZi02ZDFiMWRmYjJiZTgiLCJpc3MiOiJodHRwczovL2FjY291bnQudmlldDE4LmNvbSIsImFjY291bnRfaWQiOiIyNzA5NTI1Mi0yN2RiLTQxZDctYjgzMi1hMTBlYzNjM2RlOWYiLCJ1c2VyX2lkIjoiODYwNmMwNWYtYmFmMC00Mzc2LTgwZmYtNmQxYjFkZmIyYmU4IiwidGltZV96b25lIjoiWiIsImlhdCI6MTc5MzcwNzgyMCwiZXhwIjoxNzkzOTY3MDE3LCJhY2Nlc3NfdHlwZSI6IlJFRlJFU0hfVE9LRU4iLCJpZGVudGlmaWVycyI6WyJiYW8udHJpbmgrcm9sZS1vZmZpY2VyKzFAbG9hbmZhY3RvcnkuY29tIiwiYmFvLnRyaW5oK3JvbGUtb2ZmaWNlckBsb2FuZmFjdG9yeS5jb20iXSwic3RhdHVzIjoiQUNUSVZFIiwidmVyaWZ5Ijp0cnVlLCJhdXRob3JpdGllcyI6WyJNQVJLRVRQTEFDRSNFTVBMT1lFRSIsIkxPUyNFTVBMT1lFRSIsIlJFQ1JVSVQjTUFOQUdFUiIsIlJFQ1JVSVQjT05CT0FSRElORyIsIkhSI0VNUExPWUVFIiwiQUNDT1VOVCNVU0VSIiwiSFIjUkVDUlVJVEVSIiwiSFIjT05CT0FSRElOR19TUEVDSUFMSVNUIiwiUkVDUlVJVCNSRUNSVUlURVIiXSwicHJvZHVjdCI6IlJFQ1JVSVQiLCJzaWQiOiI1NjEyZjRmMC1iNTNmLTQwY2MtYWM4MC1kMThjZjg5Nzk2ZTgifQ.0gGn-s51e_6N1sCErxha9fKgv0q0D7Tvcdzurqo7DQ8\",\"user\":{\"id\":\"8606c05f-baf0-4376-80ff-6d1b1dfb2be8\",\"created_by\":\"super.admin@viet18.com\",\"created_date\":{\"timestamp\":1791624568,\"formatted\":\"2026-10-10T09:29:28.894374\",\"zone\":\"Z\"},\"last_modified_by\":\"super.admin@viet18.com\",\"last_modified_date\":{\"timestamp\":1792862116,\"formatted\":\"2026-10-24T17:15:16.216261\",\"zone\":\"Z\"},\"key\":\"ahNzfmxlbmRlcnJhdGUtbWFzdGVycjELEgVBZG1pbiImYmFvLnRyaW5oK3JvbGUtb2ZmaWNlckBsb2FuZmFjdG9yeS5jb20MogEQNTcxNjEwNDAyNjUyMTYwMA\",\"ref_keys\":[\"610d24bf-8d15-4471-992f-e96e814b5998\",\"ahNzfmxlbmRlcnJhdGUtbWFzdGVycjELEgVBZG1pbiImYmFvLnRyaW5oK3JvbGUtb2ZmaWNlckBsb2FuZmFjdG9yeS5jb20MogEQNTcxNjEwNDAyNjUyMTYwMA\"],\"first_name\":\"QA\",\"middle_name\":null,\"last_name\":\"Officer Role\",\"email\":\"bao.trinh+role-officer@loanfactory.com\",\"phone\":null,\"avatar\":null,\"date_of_birth\":null,\"gender\":\"UNKNOWN\",\"status\":\"ACTIVE\",\"source\":\"HR\",\"mfa_enabled\":false,\"settings\":{\"language\":\"en\",\"time_zone\":null,\"preferred_languages\":[\"en\"],\"theme\":null,\"email_signature\":null},\"favorite_apps\":null,\"legal_first_name\":\"QA\",\"legal_last_name\":\"Officer Role\",\"marital_status\":null,\"citizenship\":null,\"company_email\":\"bao.trinh+role-officer+1@loanfactory.com\",\"company_phone\":null,\"social_links\":null,\"addresses\":[{\"type\":\"RESIDENTIAL\",\"label\":null,\"street\":\"1 Test St\",\"street2\":null,\"city\":null,\"state\":null,\"zip\":null,\"county_name\":null,\"country\":\"US\"}],\"nmls\":null,\"title\":\"QA Test\",\"office_address\":\"2195 Tully Road, San Jose, CA\",\"self_declared_states\":null,\"signature_logo\":null,\"websites\":null,\"licenses\":null,\"national_type\":null,\"national_number\":null,\"identify_type\":null,\"identify_number\":null,\"ssn\":null,\"authorities\":{\"MARKETPLACE\":[\"EMPLOYEE\"],\"LOS\":[\"EMPLOYEE\"],\"RECRUIT\":[\"MANAGER\",\"ONBOARDING\",\"RECRUITER\"],\"HR\":[\"EMPLOYEE\",\"RECRUITER\",\"ONBOARDING_SPECIALIST\"],\"ACCOUNT\":[\"USER\"]},\"licensed_states\":[],\"full_name\":\"QA Officer Role\"}},\"version\":0}"
+        },
+        {
+          "name": "lf_recruit_nav_seen",
+          "value": "[\"leads\",\"manage\",\"setup\",\"handoffs\",\"referrals\"]"
+        }
+      ]
+    }
+  ]
+}

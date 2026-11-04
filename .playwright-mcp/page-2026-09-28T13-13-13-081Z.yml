@@ -1,0 +1,61 @@
+- generic [active] [ref=f7e1]:
+  - alert [ref=f7e2]
+  - generic [ref=f7e3]:
+    - banner [ref=f7e4]:
+      - generic [ref=f7e5]:
+        - img "Loan Factory" [ref=f7e6]
+        - generic [ref=f7e7]: Recruit
+      - generic [aria-hidden] [ref=f7e8]:
+        - generic [ref=f7e12]: Search candidates, NMLS, companies…
+        - generic [ref=f7e13]: ⌘ K
+      - generic [ref=f7e14]:
+        - button "Notifications" [ref=f7e15] [cursor=pointer]
+        - generic [ref=f7e20]:
+          - button "Change language" [ref=f7e21] [cursor=pointer]:
+            - generic [ref=f7e22]: English
+          - button "Switch to dark mode" [ref=f7e32] [cursor=pointer]
+        - button "Your account" [ref=f7e36] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f7e37]: OL
+          - generic [ref=f7e38]:
+            - generic [ref=f7e39]: ONB Test Specialist LF
+            - generic [ref=f7e40]: bao.trinh+onb-test@loanfactory.com
+    - navigation [ref=f7e41]:
+      - navigation [ref=f7e42]:
+        - generic [ref=f7e43]: Frequent
+        - link [ref=f7e44] [cursor=pointer]:
+          - /url: /today
+        - link [ref=f7e49] [cursor=pointer]:
+          - /url: /inbox/hot
+        - link [ref=f7e53] [cursor=pointer]:
+          - /url: /inbox/cold
+        - link [ref=f7e68] [cursor=pointer]:
+          - /url: /pipeline
+        - link [ref=f7e73] [cursor=pointer]:
+          - /url: /exceptions
+        - link [ref=f7e77] [cursor=pointer]:
+          - /url: /reports
+        - link [ref=f7e83] [cursor=pointer]:
+          - /url: /work
+        - link [ref=f7e88] [cursor=pointer]:
+          - /url: /sponsorships
+      - navigation [ref=f7e94]:
+        - generic [ref=f7e95]: Configuration
+        - link [ref=f7e96] [cursor=pointer]:
+          - /url: /templates
+        - link [ref=f7e101] [cursor=pointer]:
+          - /url: /duplicates
+        - link [ref=f7e107] [cursor=pointer]:
+          - /url: /dormant
+        - link [ref=f7e112] [cursor=pointer]:
+          - /url: /conversations
+        - link [ref=f7e116] [cursor=pointer]:
+          - /url: /audit
+        - link [ref=f7e121] [cursor=pointer]:
+          - /url: /settings
+        - link [ref=f7e126] [cursor=pointer]:
+          - /url: /checklist-templates
+        - link [ref=f7e132] [cursor=pointer]:
+          - /url: /licensing-rules
+        - link [ref=f7e137] [cursor=pointer]:
+          - /url: /permissions
+    - main [ref=f7e142]

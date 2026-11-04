@@ -1,0 +1,11 @@
+fix(lo-programs): merge level-move spells, stable approval dates, legacy-branch tests
+
+- A level move writes the old row's revocation and the new row's approval a few ms
+  apart: spells of one person that overlap or sit within ~1 s are merged before
+  replying, so packs sees one continuous membership.
+- Approval dates never come from updated_at (it moves on every later edit). Every
+  status change and the grandfather script write history, so the pre-history
+  branches are legacy; they use only stable timestamps (first history event, else
+  created_at; an unrecorded end is the last event) and are covered by tests.
+
+Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>

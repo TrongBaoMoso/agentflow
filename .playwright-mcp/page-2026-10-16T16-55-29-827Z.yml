@@ -1,0 +1,436 @@
+- generic [active] [ref=f8e1]:
+  - alert [ref=f8e7]:
+    - generic [ref=f8e11]:
+      - generic [ref=f8e12]: Success!
+      - generic [ref=f8e13]: Recruiting page saved
+    - button [ref=f8e14] [cursor=pointer]
+  - alert [ref=f8e4]
+  - generic [ref=f8e17]:
+    - generic [ref=f8e18]:
+      - generic [ref=f8e19]:
+        - heading "Important notes" [level=2] [ref=f8e20]
+        - button "Learn how to setup your website" [ref=f8e21] [cursor=pointer]
+      - paragraph [ref=f8e28]: After edit your setting, it will take effect after 5 minutes for some settings. We need to clear your browser cache to see the changes.
+    - generic [ref=f8e29]:
+      - generic [ref=f8e30]:
+        - generic [ref=f8e31]:
+          - paragraph [ref=f8e32]: Domain
+          - img [ref=f8e34] [cursor=pointer]
+        - generic [ref=f8e36]:
+          - textbox [disabled] [ref=f8e39]: tainguyen.viet18.com
+          - button "Add" [ref=f8e40] [cursor=pointer]
+      - paragraph [ref=f8e44]: In New Jersey (NJ), Rhode Island (RI), Idaho (ID) and Oregon (OR), a loan officer's website URL must include either the company name, the loan officer's name, or a registered DBA (Doing Business As) name. Show more
+      - paragraph [ref=f8e45]: If you want to remove your own domain name, please contact the IT Team.
+    - generic [ref=f8e46]:
+      - generic [ref=f8e47]:
+        - generic [ref=f8e48]: Show my website URL on my email signature *
+        - generic [ref=f8e49]:
+          - button "Yes" [ref=f8e50] [cursor=pointer]
+          - button "No" [ref=f8e53] [cursor=pointer]
+      - paragraph [ref=f8e56]: If you select 'Yes' your website URL will be automatically included in your email signature.
+    - generic [ref=f8e57]:
+      - paragraph [ref=f8e58]: Do you want to join and promote the $2,000 BEST PRICE GUARANTEE? *
+      - generic [ref=f8e59]:
+        - button "Yes" [ref=f8e60] [cursor=pointer]
+        - button "No" [ref=f8e63] [cursor=pointer]
+      - generic [ref=f8e66]: If you select 'Yes', this program will be visible to users on your website.Show more
+      - generic [ref=f8e68]:
+        - button "View Agreed Terms and Conditions" [ref=f8e69] [cursor=pointer]
+        - paragraph [ref=f8e76]: Agreed on Aug 27, 2026 at 9:55 PM
+    - generic [ref=f8e80]:
+      - generic [ref=f8e81]:
+        - generic [ref=f8e82]: Do you want to show your email on your website? *
+        - generic [ref=f8e83]:
+          - button "Yes" [ref=f8e84] [cursor=pointer]
+          - button "No" [ref=f8e87] [cursor=pointer]
+      - paragraph [ref=f8e90]: If you select 'Yes' your email will be displayed on your website (It could be attack by spam bots)
+    - generic [ref=f8e91]:
+      - generic [ref=f8e92]:
+        - generic [ref=f8e93]: Do you want to show your phone number on your website? *
+        - generic [ref=f8e94]:
+          - button "Yes" [ref=f8e95] [cursor=pointer]
+          - button "No" [ref=f8e98] [cursor=pointer]
+      - paragraph [ref=f8e101]: If you select 'Yes' your phone number will be displayed on your website (It could be attack by spam bots)
+    - generic [ref=f8e102]:
+      - generic [ref=f8e103]:
+        - paragraph [ref=f8e104]: My video
+        - img [ref=f8e106] [cursor=pointer]
+      - paragraph [ref=f8e108]: This video will be displayed on your homepage
+      - generic [ref=f8e109]:
+        - textbox "https://www.youtube.com/watch?v=..." [ref=f8e111]
+        - paragraph [ref=f8e112]: "Eg: https://www.youtube.com/watch?v=VquyDC1lpkl"
+    - generic [ref=f8e113]:
+      - paragraph [ref=f8e114]: Background profile
+      - paragraph [ref=f8e115]: "Background image for your profile section (recommended: 1440 x 600)"
+      - generic [ref=f8e119] [cursor=pointer]:
+        - button "Choose File" [ref=f8e120]
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - paragraph: Drag & drop
+                  - paragraph: Or click to upload
+    - generic [ref=f8e121]:
+      - paragraph [ref=f8e122]: Image replace
+      - paragraph [ref=f8e123]: "Replace the image for the Best Price Guarantee section when this section is turned off (recommended: 1440 x 600)"
+      - generic [ref=f8e126]:
+        - generic [ref=f8e127] [cursor=pointer]:
+          - button "Choose File" [ref=f8e128]
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - img "Preview"
+        - button "Remove file" [ref=f8e129] [cursor=pointer]
+    - generic [ref=f8e133]:
+      - paragraph [ref=f8e134]: Thumbnail link preview logo (optional)
+      - paragraph [ref=f8e135]: A small image that appears alongside a preview of a web link when shared on platforms like social media, messaging apps, or websites.
+      - generic [ref=f8e139] [cursor=pointer]:
+        - button "Choose File" [ref=f8e140]
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - paragraph: Drag & drop
+                  - paragraph: Or click to upload
+    - generic [ref=f8e141]:
+      - paragraph [ref=f8e142]: Your Slogan
+      - paragraph [ref=f8e143]: Your Slogan is the description that will be displayed on your profile section.
+      - textbox "Enter your Slogan" [ref=f8e146]
+    - generic [ref=f8e147]:
+      - paragraph [ref=f8e148]: Bio
+      - generic [ref=f8e150]:
+        - generic [ref=f8e151]:
+          - textbox "Font size" [ref=f8e155] [cursor=pointer]: 16px
+          - generic [ref=f8e156]:
+            - button "Bold" [ref=f8e157] [cursor=pointer]
+            - button "Italic" [ref=f8e162] [cursor=pointer]
+            - button "Underline" [ref=f8e166] [cursor=pointer]
+            - button "Strikethrough" [ref=f8e170] [cursor=pointer]
+            - button "Clear formatting" [ref=f8e174] [cursor=pointer]
+            - button "Highlight text" [ref=f8e180] [cursor=pointer]
+            - button "Code" [ref=f8e187] [cursor=pointer]
+          - generic [ref=f8e193]:
+            - button "Heading 1" [ref=f8e194] [cursor=pointer]
+            - button "Heading 2" [ref=f8e198] [cursor=pointer]
+            - button "Heading 3" [ref=f8e202] [cursor=pointer]
+            - button "Heading 4" [ref=f8e207] [cursor=pointer]
+          - generic [ref=f8e211]:
+            - button "Blockquote" [ref=f8e212] [cursor=pointer]
+            - button "Horizontal line" [ref=f8e217] [cursor=pointer]
+            - button "Bullet list" [ref=f8e220] [cursor=pointer]
+            - button "Ordered list" [ref=f8e223] [cursor=pointer]
+            - button "Subscript" [ref=f8e228] [cursor=pointer]
+            - button "Superscript" [ref=f8e233] [cursor=pointer]
+          - generic [ref=f8e238]:
+            - button "Link" [ref=f8e239] [cursor=pointer]
+            - button "Remove link" [ref=f8e245] [cursor=pointer]
+          - button "Insert image" [ref=f8e252] [cursor=pointer]
+          - generic [ref=f8e257]:
+            - 'button "Align text: left" [ref=f8e258] [cursor=pointer]'
+            - 'button "Align text: center" [ref=f8e261] [cursor=pointer]'
+            - 'button "Align text: justify" [ref=f8e264] [cursor=pointer]'
+            - 'button "Align text: right" [ref=f8e267] [cursor=pointer]'
+          - generic [ref=f8e270]:
+            - button "Undo" [ref=f8e271] [cursor=pointer]
+            - button "Redo" [disabled] [ref=f8e276]
+        - generic [ref=f8e283]:
+          - paragraph [ref=f8e284]:
+            - strong [ref=f8e286]: My Goals, Your Results
+          - list [ref=f8e287]:
+            - listitem [ref=f8e288]:
+              - paragraph [ref=f8e289]:
+                - generic [ref=f8e290]:
+                  - strong [ref=f8e291]: "Stress-Free Process:"
+                  - text: I’m committed to making your mortgage experience as easy and stress-free as possible. You’re not just a number; you matter.
+            - listitem [ref=f8e292]:
+              - paragraph [ref=f8e293]:
+                - generic [ref=f8e294]:
+                  - strong [ref=f8e295]: "Unbeatable Combination:"
+                  - text: Expect the best in rates, cost, experience, and execution.
+            - listitem [ref=f8e296]:
+              - paragraph [ref=f8e297]:
+                - generic [ref=f8e298]:
+                  - strong [ref=f8e299]: "Customized Solutions:"
+                  - text: No “one size fits all” here; every solution is tailored for you.
+            - listitem [ref=f8e300]:
+              - paragraph [ref=f8e301]:
+                - generic [ref=f8e302]:
+                  - strong [ref=f8e303]: "Transparency and Communication:"
+                  - text: 100% clarity in every step, understand the "why."
+            - listitem [ref=f8e304]:
+              - paragraph [ref=f8e305]:
+                - generic [ref=f8e306]:
+                  - strong [ref=f8e307]: "Exceptional Service:"
+                  - text: I aim to be the best loan officer you’ll ever work with. If I exceed your expectations, I’d love for you to share your experience with friends and family.
+          - paragraph [ref=f8e308]: I’m empowering consumers with direct access to personalized pricing, automated alerts, and a simple online application process enhanced by next gen tools. There’s nothing more fulfilling than helping clients achieve remarkable transformations.
+          - paragraph [ref=f8e309]
+          - paragraph [ref=f8e310]: With a unique blend of experience and dedication, I go the extra mile for my clients. Prior to joining Loan Factory in fall 2024, I directly funded nearly $300 million in home loans and was a catalyst for over $200 million more. I previously led the mortgage sales division at a top-rated private mortgage bank, helping build the business from the ground up over eight years. Having analyzed thousands of loan scenarios, credit profiles and tax returns, I'm well-equipped to get you to the finish line as succinctly as possible.
+          - paragraph [ref=f8e311]
+          - paragraph [ref=f8e312]: "From my days as a three-sport athlete to playing NCAA golf at North Dakota State University, my competitive spirit has always been the primary driver of my success. I later earned a master’s degree in sport management from the University of San Francisco, graduating at the top of my class, and spent a handful of years as a professional hockey agent. That same drive now fuels my current mission: pairing top-tier technology and premier infrastructure with a low-fee structure to deliver the most competitive rates in the business. I don’t just compete, I win for my clients."
+          - list [ref=f8e313]:
+            - listitem [ref=f8e314]:
+              - paragraph [ref=f8e315]: NCAA
+            - listitem [ref=f8e316]:
+              - paragraph [ref=f8e317]: University
+            - listitem [ref=f8e318]:
+              - paragraph [ref=f8e319]: San Francisco
+          - paragraph [ref=f8e320]:
+            - generic [ref=f8e321]:
+              - text: Outside of work, I’m a dedicated husband and father, with my family at the heart of everything. I coach little league baseball, have a passion for sports, and stay engaged with innovative business and emerging technology throughout San
+              - mark [ref=f8e322]: Diego County
+              - text: .
+          - paragraph [ref=f8e323]
+          - paragraph [ref=f8e324]:
+            - text: Learn more about me on
+            - link "LinkedIn" [ref=f8e325]:
+              - /url: https://www.linkedin.com/in/nickstromberg/
+            - text: ", and subscribe to my YouTube Channel"
+            - link "@MortgageABCs" [ref=f8e326]:
+              - /url: https://www.youtube.com/@MortgageABCs
+            - text: for key mortgage tips and insights.
+          - paragraph [ref=f8e327]
+      - paragraph [ref=f8e328]: It is mandatory to write a bio to promote yourself as a Loan Officer. This bio will be displayed on your LO website.
+    - generic [ref=f8e329]:
+      - generic [ref=f8e330]:
+        - paragraph [ref=f8e331]: Custom scripts
+        - img [ref=f8e333] [cursor=pointer]
+      - paragraph [ref=f8e335]: These scripts will be inserted at the end of the body of all web pages. Useful for inserting scripts like Google Remarketing AdWords.
+      - button "Add" [ref=f8e337] [cursor=pointer]
+    - generic [ref=f8e342]:
+      - generic [ref=f8e343]:
+        - paragraph [ref=f8e344]: Custom meta data
+        - img [ref=f8e346] [cursor=pointer]
+      - paragraph [ref=f8e348]:
+        - text: These meta tags will be inserted into the
+        - strong [ref=f8e349]: head
+        - text: of all web pages.
+      - button "Add" [ref=f8e351] [cursor=pointer]
+    - generic [ref=f8e356]:
+      - paragraph [ref=f8e357]: Recruiting page
+      - paragraph [ref=f8e358]: Shown on your recruiting page. These are separate from the bio and video on your homepage.
+      - paragraph [ref=f8e359]:
+        - text: "Your recruiting page:"
+        - link "https://www.viet18.com/mindiebachdontchangeemail/join" [ref=f8e360] [cursor=pointer]:
+          - /url: https://www.viet18.com/mindiebachdontchangeemail/join
+        - text: (
+        - link "Open page" [ref=f8e361] [cursor=pointer]:
+          - /url: https://www.viet18.com/mindiebachdontchangeemail/join
+        - text: )
+      - generic [ref=f8e362]:
+        - paragraph [ref=f8e363]: Recruiting bio
+        - generic [ref=f8e365]:
+          - generic [ref=f8e366]:
+            - textbox "Font size" [ref=f8e370] [cursor=pointer]: 16px
+            - generic [ref=f8e371]:
+              - button "Bold" [ref=f8e372] [cursor=pointer]
+              - button "Italic" [ref=f8e377] [cursor=pointer]
+              - button "Underline" [ref=f8e381] [cursor=pointer]
+              - button "Strikethrough" [ref=f8e385] [cursor=pointer]
+              - button "Clear formatting" [ref=f8e389] [cursor=pointer]
+              - button "Highlight text" [ref=f8e395] [cursor=pointer]
+              - button "Code" [ref=f8e402] [cursor=pointer]
+            - generic [ref=f8e408]:
+              - button "Heading 1" [ref=f8e409] [cursor=pointer]
+              - button "Heading 2" [ref=f8e413] [cursor=pointer]
+              - button "Heading 3" [ref=f8e417] [cursor=pointer]
+              - button "Heading 4" [ref=f8e422] [cursor=pointer]
+            - generic [ref=f8e426]:
+              - button "Blockquote" [ref=f8e427] [cursor=pointer]
+              - button "Horizontal line" [ref=f8e432] [cursor=pointer]
+              - button "Bullet list" [ref=f8e435] [cursor=pointer]
+              - button "Ordered list" [ref=f8e438] [cursor=pointer]
+              - button "Subscript" [ref=f8e443] [cursor=pointer]
+              - button "Superscript" [ref=f8e448] [cursor=pointer]
+            - generic [ref=f8e453]:
+              - button "Link" [ref=f8e454] [cursor=pointer]
+              - button "Remove link" [ref=f8e460] [cursor=pointer]
+            - generic [ref=f8e466]:
+              - 'button "Align text: left" [ref=f8e467] [cursor=pointer]'
+              - 'button "Align text: center" [ref=f8e470] [cursor=pointer]'
+              - 'button "Align text: justify" [ref=f8e473] [cursor=pointer]'
+              - 'button "Align text: right" [ref=f8e476] [cursor=pointer]'
+            - generic [ref=f8e479]:
+              - button "Undo" [ref=f8e480] [cursor=pointer]
+              - button "Redo" [disabled] [ref=f8e485]
+          - paragraph [ref=f8e493]: Twelve years closing loans in California. I moved to Loan Factory to keep more of every deal, and I can show you my own numbers on the webinar. (TEST BIO)
+        - paragraph [ref=f8e494]: Leave it empty and the bio block is hidden on your recruiting page.
+      - generic [ref=f8e495]:
+        - paragraph [ref=f8e496]: Recruiting video
+        - paragraph [ref=f8e497]: Leave it empty and the company video plays on your recruiting page.
+        - generic [ref=f8e498]:
+          - textbox "https://www.youtube.com/watch?v=..." [ref=f8e500]: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+          - paragraph [ref=f8e501]: "Eg: https://www.youtube.com/watch?v=VquyDC1lpkl"
+      - button "Save recruiting page" [ref=f8e503] [cursor=pointer]
+    - generic [ref=f8e507]:
+      - generic [ref=f8e508]:
+        - heading "Working Schedule" [level=2] [ref=f8e509]
+        - button "Quick Setup for Multiple Days" [ref=f8e510] [cursor=pointer]
+      - generic [ref=f8e516]:
+        - generic [ref=f8e522]:
+          - checkbox "Monday" [ref=f8e524]
+          - generic [ref=f8e525]: Monday
+        - generic [ref=f8e532]:
+          - checkbox "Tuesday" [ref=f8e534]
+          - generic [ref=f8e535]: Tuesday
+        - generic [ref=f8e542]:
+          - checkbox "Wednesday" [ref=f8e544]
+          - generic [ref=f8e545]: Wednesday
+        - generic [ref=f8e552]:
+          - checkbox "Thursday" [ref=f8e554]
+          - generic [ref=f8e555]: Thursday
+        - generic [ref=f8e562]:
+          - checkbox "Friday" [ref=f8e564]
+          - generic [ref=f8e565]: Friday
+        - generic [ref=f8e572]:
+          - checkbox "Saturday" [ref=f8e574]
+          - generic [ref=f8e575]: Saturday
+        - generic [ref=f8e582]:
+          - checkbox "Sunday" [ref=f8e584]
+          - generic [ref=f8e585]: Sunday
+    - generic [ref=f8e587]:
+      - heading "Custom Header Menu" [level=2] [ref=f8e588]
+      - paragraph [ref=f8e589]: "Note: You can check or uncheck the section to show or hide it on the website."
+      - generic [ref=f8e590]:
+        - generic [ref=f8e591]:
+          - paragraph [ref=f8e592]: HELOC application link
+          - generic [ref=f8e593]: Auto generated
+        - paragraph [ref=f8e595]: The HELOC entry below opens this link. It comes from your Loan Factory account and cannot be edited here.
+        - paragraph [ref=f8e596]: Not set yet — the HELOC entry opens the application page on your own website instead.
+      - generic [ref=f8e597]:
+        - generic [ref=f8e598]:
+          - paragraph [ref=f8e599]: Loan products menu
+          - button "Add loan product" [ref=f8e600] [cursor=pointer]
+        - generic [ref=f8e605]:
+          - generic [ref=f8e607]:
+            - generic [ref=f8e609]:
+              - checkbox "Chattel (Mobile Home) Loans" [checked] [ref=f8e611]
+              - generic [ref=f8e612]: Chattel (Mobile Home) Loans
+            - button [ref=f8e614] [cursor=pointer]
+          - generic [ref=f8e620]:
+            - generic [ref=f8e622]:
+              - checkbox "Commercial Loans" [checked] [ref=f8e624]
+              - generic [ref=f8e625]: Commercial Loans
+            - button [ref=f8e627] [cursor=pointer]
+          - generic [ref=f8e633]:
+            - generic [ref=f8e635]:
+              - checkbox "Home Equity Loans" [checked] [ref=f8e637]
+              - generic [ref=f8e638]: Home Equity Loans
+            - button [ref=f8e640] [cursor=pointer]
+          - generic [ref=f8e646]:
+            - generic [ref=f8e648]:
+              - checkbox "Reverse Mortgage" [checked] [ref=f8e650]
+              - generic [ref=f8e651]: Reverse Mortgage
+            - button [ref=f8e653] [cursor=pointer]
+          - generic [ref=f8e659]:
+            - generic [ref=f8e661]:
+              - checkbox "Jumbo Loans" [checked] [ref=f8e663]
+              - generic [ref=f8e664]: Jumbo Loans
+            - button [ref=f8e666] [cursor=pointer]
+          - generic [ref=f8e672]:
+            - generic [ref=f8e674]:
+              - checkbox "SBA Loans" [checked] [ref=f8e676]
+              - generic [ref=f8e677]: SBA Loans
+            - button [ref=f8e679] [cursor=pointer]
+          - generic [ref=f8e685]:
+            - generic [ref=f8e687]:
+              - checkbox "California Dream For All" [checked] [ref=f8e689]
+              - generic [ref=f8e690]: California Dream For All
+            - button [ref=f8e692] [cursor=pointer]
+          - generic [ref=f8e698]:
+            - generic [ref=f8e700]:
+              - checkbox "DSCR Loans" [checked] [ref=f8e702]
+              - generic [ref=f8e703]: DSCR Loans
+            - button [ref=f8e705] [cursor=pointer]
+          - generic [ref=f8e711]:
+            - generic [ref=f8e713]:
+              - checkbox "HELOC" [checked] [ref=f8e715]
+              - generic [ref=f8e716]: HELOC
+            - button [ref=f8e718] [cursor=pointer]
+      - generic [ref=f8e723]:
+        - generic [ref=f8e724]:
+          - paragraph [ref=f8e725]: Resources menu
+          - button "Add resource" [ref=f8e726] [cursor=pointer]
+        - generic [ref=f8e731]:
+          - generic [ref=f8e734]:
+            - checkbox "Historical Rates" [checked] [ref=f8e736]
+            - generic [ref=f8e737]: Historical Rates
+          - generic [ref=f8e741]:
+            - checkbox "Qualification Mortgage Calculator" [checked] [ref=f8e743]
+            - generic [ref=f8e744]: Qualification Mortgage Calculator
+          - generic [ref=f8e748]:
+            - checkbox "Rate Alert" [checked] [ref=f8e750]
+            - generic [ref=f8e751]: Rate Alert
+          - generic [ref=f8e755]:
+            - checkbox "Why Loan Factory Every Friday" [checked] [ref=f8e757]
+            - generic [ref=f8e758]: Why Loan Factory Every Friday
+          - generic [ref=f8e762]:
+            - checkbox "Learning Center" [checked] [ref=f8e764]
+            - generic [ref=f8e765]: Learning Center
+    - generic [ref=f8e767]:
+      - heading "Section Position" [level=2] [ref=f8e768]
+      - paragraph [ref=f8e769]: "Note: You can check or uncheck the section to show or hide it on the website."
+      - generic [ref=f8e770]:
+        - paragraph [ref=f8e771]: Section Name
+        - paragraph [ref=f8e772]: Order
+      - generic [ref=f8e773]:
+        - generic [ref=f8e774]:
+          - generic [ref=f8e776]:
+            - checkbox "Get Quote" [checked] [ref=f8e778]
+            - generic [ref=f8e779]: Get Quote
+          - textbox [ref=f8e783] [cursor=pointer]: "#1"
+        - generic [ref=f8e784]:
+          - generic [ref=f8e786]:
+            - checkbox "User Profile & My Video" [checked] [ref=f8e788]
+            - generic [ref=f8e789]: User Profile & My Video
+          - textbox [ref=f8e793] [cursor=pointer]: "#2"
+        - generic [ref=f8e794]:
+          - generic [ref=f8e796]:
+            - checkbox "Create Rate Alert" [checked] [ref=f8e798]
+            - generic [ref=f8e799]: Create Rate Alert
+          - textbox [ref=f8e803] [cursor=pointer]: "#3"
+        - generic [ref=f8e804]:
+          - generic [ref=f8e806]:
+            - checkbox "Mortgage Rates" [checked] [ref=f8e808]
+            - generic [ref=f8e809]: Mortgage Rates
+          - textbox [ref=f8e813] [cursor=pointer]: "#4"
+        - generic [ref=f8e814]:
+          - generic [ref=f8e816]:
+            - checkbox "What Customer Say" [checked] [ref=f8e818]
+            - generic [ref=f8e819]: What Customer Say
+          - textbox [ref=f8e823] [cursor=pointer]: "#5"
+        - generic [ref=f8e824]:
+          - generic [ref=f8e826]:
+            - checkbox "Our Accomplishments" [checked] [ref=f8e828]
+            - generic [ref=f8e829]: Our Accomplishments
+          - textbox [ref=f8e833] [cursor=pointer]: "#6"
+        - generic [ref=f8e834]:
+          - generic [ref=f8e836]:
+            - checkbox "Why are our rates so low" [checked] [ref=f8e838]
+            - generic [ref=f8e839]: Why are our rates so low
+          - textbox [ref=f8e843] [cursor=pointer]: "#7"
+        - generic [ref=f8e844]:
+          - generic [ref=f8e846]:
+            - checkbox "Why We’re Different" [checked] [ref=f8e848]
+            - generic [ref=f8e849]: Why We’re Different
+          - textbox [ref=f8e853] [cursor=pointer]: "#8"
+        - generic [ref=f8e854]:
+          - generic [ref=f8e856]:
+            - checkbox "Loan Options" [checked] [ref=f8e858]
+            - generic [ref=f8e859]: Loan Options
+          - textbox [ref=f8e863] [cursor=pointer]: "#9"
+        - generic [ref=f8e864]:
+          - generic [ref=f8e866]:
+            - checkbox "Mobile App Download" [checked] [ref=f8e868]
+            - generic [ref=f8e869]: Mobile App Download
+          - textbox [ref=f8e873] [cursor=pointer]: "#11"
+        - generic [ref=f8e874]:
+          - generic [ref=f8e876]:
+            - checkbox "Lender Logos" [checked] [ref=f8e878]
+            - generic [ref=f8e879]: Lender Logos
+          - textbox [ref=f8e883] [cursor=pointer]: "#10"
+    - generic [ref=f8e884]:
+      - button "Preview" [ref=f8e885] [cursor=pointer]
+      - button "Save" [ref=f8e888] [cursor=pointer]

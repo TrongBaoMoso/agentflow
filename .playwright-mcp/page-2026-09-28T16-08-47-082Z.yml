@@ -1,0 +1,50 @@
+- generic [active] [ref=f17e1]:
+  - alert [ref=f17e2]
+  - generic [ref=f17e3]:
+    - banner [ref=f17e4]:
+      - button [ref=f17e5] [cursor=pointer]
+      - generic [ref=f17e7]: Recruit
+      - generic [ref=f17e9]:
+        - button "Notifications" [ref=f17e10] [cursor=pointer]
+        - button "Your account" [ref=f17e15] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f17e16]: OL
+    - navigation [ref=f17e17]:
+      - navigation [ref=f17e18]:
+        - generic [ref=f17e19]: Frequent
+        - link [ref=f17e20] [cursor=pointer]:
+          - /url: /today
+        - link [ref=f17e25] [cursor=pointer]:
+          - /url: /inbox/hot
+        - link [ref=f17e29] [cursor=pointer]:
+          - /url: /inbox/cold
+        - link [ref=f17e44] [cursor=pointer]:
+          - /url: /pipeline
+        - link [ref=f17e49] [cursor=pointer]:
+          - /url: /exceptions
+        - link [ref=f17e53] [cursor=pointer]:
+          - /url: /reports
+        - link [ref=f17e59] [cursor=pointer]:
+          - /url: /work
+        - link [ref=f17e64] [cursor=pointer]:
+          - /url: /sponsorships
+      - navigation [ref=f17e70]:
+        - generic [ref=f17e71]: Configuration
+        - link [ref=f17e72] [cursor=pointer]:
+          - /url: /templates
+        - link [ref=f17e77] [cursor=pointer]:
+          - /url: /duplicates
+        - link [ref=f17e83] [cursor=pointer]:
+          - /url: /dormant
+        - link [ref=f17e88] [cursor=pointer]:
+          - /url: /conversations
+        - link [ref=f17e92] [cursor=pointer]:
+          - /url: /audit
+        - link [ref=f17e97] [cursor=pointer]:
+          - /url: /settings
+        - link [ref=f17e102] [cursor=pointer]:
+          - /url: /checklist-templates
+        - link [ref=f17e108] [cursor=pointer]:
+          - /url: /licensing-rules
+        - link [ref=f17e113] [cursor=pointer]:
+          - /url: /permissions
+    - main [ref=f17e118]

@@ -28,3 +28,8 @@ Committed and pushed earlier: a66decdc (PR #2627, draft). Everything from round 
 - RegisterLoanOfficerForms/BasicInfoFormV1/index.tsx, parts/AnswerSummary.tsx (round 1)
 - RegisterLoanOfficerView.tsx (round 2)
 - __tests__/V1Hero.test.tsx, registerLoanOfficerJourney.test.ts, AnswerSummary.test.tsx
+
+## Round 4 (v1 action bar vs video popup)
+- Action bar is no longer sticky: `.rlo-actions` is position:relative, `ActionBar` uses `mt-auto`; the content column chain (variant wrapper in RegisterLoanOfficerForms/index.tsx, BasicInfoFormV1 root, BeforeYouBeginV1 root) is `flex flex-1 flex-col`, so the bar sits at the bottom of the column (matches the stepper height on short steps). Site video widget untouched.
+- Files: RegisterLoanOfficerForms/index.tsx, BasicInfoFormV1/index.tsx, BasicInfoFormV1/ui/ActionBar.tsx, BasicInfoFormV1/ui/v1.css, BeforeYouBegin/BeforeYouBeginV1.tsx.
+- Shots: docs/handoff/tdqcv/v1-shots/round4/ (gate-bar, basic-part1, short-step at 1440 and 375). Basic info part 4 NOT captured (parts are locked until reached; needs a fully valid form walk). At 1440, if the applicant scrolls so the bar sits at the very bottom-right of the viewport it still passes under the video popup (fixed widget); at the end of the page the footer follows, so it can always be scrolled clear.

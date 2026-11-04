@@ -1,0 +1,115 @@
+- generic [active] [ref=f9e1]:
+  - generic [ref=f9e2]:
+    - banner [ref=f9e3]:
+      - generic [ref=f9e4]:
+        - generic [ref=f9e5]:
+          - generic [ref=f9e7]:
+            - combobox "Search candidates, NMLS, companies…" [ref=f9e12]
+            - generic:
+              - generic "Press ⌘ K to search from anywhere": ⌘ K
+          - status [ref=f9e13]
+        - generic [ref=f9e14]:
+          - textbox "Dev persona" [ref=f9e26] [cursor=pointer]: Brayan — Recruiter
+          - button "Switch to dark mode" [ref=f9e27] [cursor=pointer]
+          - button "Notifications" [ref=f9e33] [cursor=pointer]
+          - button "Apps" [ref=f9e38] [cursor=pointer]
+          - button "Account menu" [ref=f9e50] [cursor=pointer]:
+            - generic [ref=f9e51]: "?"
+    - navigation [ref=f9e53]:
+      - generic [ref=f9e54]:
+        - link "Go to the start of this app" [ref=f9e55] [cursor=pointer]:
+          - /url: /today
+          - generic [ref=f9e57]:
+            - img "Loan Factory" [ref=f9e58]
+            - generic [ref=f9e59]: Recruit
+        - button "Collapse menu" [expanded] [ref=f9e62] [cursor=pointer]
+      - navigation "Main navigation" [ref=f9e67]:
+        - list [ref=f9e69]:
+          - listitem [ref=f9e70]:
+            - link "My work today" [ref=f9e71] [cursor=pointer]:
+              - /url: /today
+        - generic [ref=f9e77]:
+          - button "Leads" [expanded] [ref=f9e78] [cursor=pointer]
+          - list "Leads" [ref=f9e83]:
+            - listitem [ref=f9e246]:
+              - link "Hot leads, 53 new" [ref=f9e247] [cursor=pointer]:
+                - /url: /inbox/hot
+                - generic [ref=f9e251]: Hot leads
+                - generic [aria-hidden] [ref=f9e254]: "53"
+            - listitem [ref=f9e255]:
+              - link "Cold list" [ref=f9e256] [cursor=pointer]:
+                - /url: /inbox/cold
+            - listitem [ref=f9e272]:
+              - link "Pipeline" [ref=f9e273] [cursor=pointer]:
+                - /url: /pipeline
+            - listitem [ref=f9e279]:
+              - link "Dormant" [ref=f9e280] [cursor=pointer]:
+                - /url: /dormant
+        - generic [ref=f9e286]:
+          - button "Hand-offs" [expanded] [ref=f9e287] [cursor=pointer]
+          - list "Hand-offs" [ref=f9e292]:
+            - listitem [ref=f9e293]:
+              - link "My hand-offs, 2 new" [ref=f9e294] [cursor=pointer]:
+                - /url: /invites
+                - generic [ref=f9e299]: My hand-offs
+                - generic [aria-hidden] [ref=f9e302]: "2"
+            - listitem [ref=f9e303]:
+              - link "Conversations" [ref=f9e304] [cursor=pointer]:
+                - /url: /conversations
+        - generic [ref=f9e309]:
+          - button "Setup" [expanded] [ref=f9e310] [cursor=pointer]
+          - list "Setup" [ref=f9e315]:
+            - listitem [ref=f9e316]:
+              - link "Templates" [ref=f9e317] [cursor=pointer]:
+                - /url: /templates
+            - listitem [ref=f9e323]:
+              - link "Connections" [ref=f9e324] [cursor=pointer]:
+                - /url: /settings/connections
+      - button "TERA assistant" [ref=f9e144] [cursor=pointer]
+    - main [ref=f9e150]:
+      - generic [ref=f9e154]:
+        - group "Conversation scope" [ref=f9e334]:
+          - button "Mine" [pressed] [ref=f9e335] [cursor=pointer]
+          - button "All" [ref=f9e337] [cursor=pointer]
+        - generic [ref=f9e155]:
+          - generic [ref=f9e156]:
+            - heading "Conversations" [level=1] [ref=f9e159]
+            - generic [ref=f9e160]:
+              - button "Saved filters" [ref=f9e161] [cursor=pointer]
+              - group "Switch between table and card view" [ref=f9e165]:
+                - button "Table view" [pressed] [ref=f9e166] [cursor=pointer]
+                - button "Card view" [ref=f9e168] [cursor=pointer]
+              - button "Refresh" [ref=f9e174] [cursor=pointer]
+          - generic [ref=f9e180]:
+            - textbox "Search by name, email or phone" [ref=f9e187]
+            - generic [ref=f9e189]:
+              - generic: "Channel:"
+              - textbox "Channel" [ref=f9e190] [cursor=pointer]: All channels
+            - generic [ref=f9e192]:
+              - generic: "Status:"
+              - button "Status" [ref=f9e193] [cursor=pointer]:
+                - generic [ref=f9e194]: Active, Nurture
+            - generic [ref=f9e196]:
+              - generic: "Stage:"
+              - textbox "Stage" [ref=f9e197] [cursor=pointer]: All stages
+            - generic [ref=f9e199]:
+              - generic: "Sort:"
+              - textbox "Sort" [ref=f9e200] [cursor=pointer]: Most recent
+            - button "Unread only" [ref=f9e201] [cursor=pointer]
+            - button "Reset filters" [disabled] [ref=f9e210]
+            - generic [ref=f9e339]: 0 conversations
+          - generic [ref=f9e218]:
+            - table [ref=f9e219]:
+              - rowgroup [ref=f9e220]:
+                - row [ref=f9e221]:
+                  - columnheader "Loan officer" [ref=f9e222]
+                  - columnheader "Latest message" [ref=f9e223]
+                  - columnheader "Stage" [ref=f9e224]
+                  - columnheader "Status" [ref=f9e225]
+                  - columnheader "People on it" [ref=f9e226]
+              - rowgroup
+            - generic [ref=f9e341]:
+              - generic [ref=f9e345]: No conversations yet
+              - paragraph [ref=f9e346]: A conversation appears here once somebody on the team has messaged or called the candidate.
+  - button "Open Next.js Dev Tools" [ref=f9e352] [cursor=pointer]
+  - alert [ref=f9e356]

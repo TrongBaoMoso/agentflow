@@ -1,0 +1,896 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]:
+          - generic [ref=e7]:
+            - combobox "Search candidates, NMLS, companies…" [ref=e12]
+            - generic:
+              - generic "Press ⌘ K to search from anywhere": ⌘ K
+          - status [ref=e13]
+        - generic [ref=e14]:
+          - textbox "Dev persona" [ref=e26] [cursor=pointer]: Brayan — Recruiter
+          - button "Switch to dark mode" [ref=e27] [cursor=pointer]
+          - button "Notifications" [ref=e33] [cursor=pointer]
+          - button "Apps" [ref=e38] [cursor=pointer]
+          - button "Account menu" [ref=e50] [cursor=pointer]:
+            - generic [ref=e51]: "?"
+    - navigation [ref=e53]:
+      - generic [ref=e54]:
+        - link "Go to the start of this app" [ref=e55] [cursor=pointer]:
+          - /url: /today
+          - generic [ref=e57]:
+            - img "Loan Factory" [ref=e58]
+            - generic [ref=e59]: Recruit
+        - button "Collapse menu" [expanded] [ref=e62] [cursor=pointer]
+      - navigation "Main navigation" [ref=e67]:
+        - list [ref=e69]:
+          - listitem [ref=e70]:
+            - link "My work today" [ref=e71] [cursor=pointer]:
+              - /url: /today
+        - generic [ref=e77]:
+          - button "Leads" [expanded] [ref=e78] [cursor=pointer]
+          - list "Leads" [ref=e83]:
+            - listitem [ref=e246]:
+              - link "Hot leads, 53 new" [ref=e247] [cursor=pointer]:
+                - /url: /inbox/hot
+                - generic [ref=e251]: Hot leads
+                - generic [aria-hidden] [ref=e254]: "53"
+            - listitem [ref=e255]:
+              - link "Cold list" [ref=e256] [cursor=pointer]:
+                - /url: /inbox/cold
+            - listitem [ref=e272]:
+              - link "Pipeline" [ref=e273] [cursor=pointer]:
+                - /url: /pipeline
+            - listitem [ref=e279]:
+              - link "Dormant" [ref=e280] [cursor=pointer]:
+                - /url: /dormant
+        - generic [ref=e286]:
+          - button "Hand-offs" [expanded] [ref=e287] [cursor=pointer]
+          - list "Hand-offs" [ref=e292]:
+            - listitem [ref=e293]:
+              - link "My hand-offs, 2 new" [ref=e294] [cursor=pointer]:
+                - /url: /invites
+                - generic [ref=e299]: My hand-offs
+                - generic [aria-hidden] [ref=e302]: "2"
+            - listitem [ref=e303]:
+              - link "Conversations" [ref=e304] [cursor=pointer]:
+                - /url: /conversations
+        - generic [ref=e309]:
+          - button "Setup" [expanded] [ref=e310] [cursor=pointer]
+          - list "Setup" [ref=e315]:
+            - listitem [ref=e316]:
+              - link "Templates" [ref=e317] [cursor=pointer]:
+                - /url: /templates
+            - listitem [ref=e323]:
+              - link "Connections" [ref=e324] [cursor=pointer]:
+                - /url: /settings/connections
+      - button "TERA assistant" [ref=e144] [cursor=pointer]
+    - main [ref=e150]:
+      - generic [ref=e154]:
+        - group "Conversation scope" [ref=e334]:
+          - button "Mine" [ref=e335] [cursor=pointer]
+          - button "All" [pressed] [ref=e337] [cursor=pointer]
+        - generic [ref=e155]:
+          - generic [ref=e156]:
+            - heading "Conversations" [level=1] [ref=e159]
+            - generic [ref=e160]:
+              - button "Saved filters" [ref=e161] [cursor=pointer]
+              - group "Switch between table and card view" [ref=e165]:
+                - button "Table view" [pressed] [ref=e166] [cursor=pointer]
+                - button "Card view" [ref=e168] [cursor=pointer]
+              - button "Refresh" [ref=e174] [cursor=pointer]
+          - generic [ref=e180]:
+            - textbox "Search by name, email or phone" [ref=e187]
+            - generic [ref=e189]:
+              - generic: "Channel:"
+              - textbox "Channel" [ref=e190] [cursor=pointer]: All channels
+            - generic [ref=e192]:
+              - generic: "Status:"
+              - button "Status" [ref=e193] [cursor=pointer]:
+                - generic [ref=e194]: Active, Nurture
+            - generic [ref=e196]:
+              - generic: "Stage:"
+              - textbox "Stage" [ref=e197] [cursor=pointer]: All stages
+            - generic [ref=e199]:
+              - generic: "Sort:"
+              - textbox "Sort" [ref=e200] [cursor=pointer]: Most recent
+            - button "Unread only, 2 with unread messages" [ref=e339] [cursor=pointer]:
+              - generic [ref=e209]:
+                - text: Unread only
+                - generic [ref=e340]: "2"
+            - button "Reset filters" [disabled] [ref=e210]
+            - generic [ref=e341]: 181 conversations
+          - table [ref=e219]:
+            - rowgroup [ref=e220]:
+              - row [ref=e221]:
+                - columnheader "Loan officer" [ref=e222]
+                - columnheader "Latest message" [ref=e223]
+                - columnheader "Stage" [ref=e224]
+                - columnheader "Status" [ref=e225]
+                - columnheader "People on it" [ref=e226]
+            - rowgroup [ref=e227]:
+              - row "Open conversation with TRINH VU TRONG BAO" [ref=e343] [cursor=pointer]:
+                - cell "TRINH VU TRONG BAO 29 unread NMLS 121212" [ref=e344]:
+                  - generic [ref=e345]:
+                    - generic [aria-hidden] [ref=e346]: TB
+                    - generic [ref=e347]:
+                      - generic [ref=e348]:
+                        - generic [ref=e349]: TRINH VU TRONG BAO
+                        - generic "29 unread" [ref=e350]: "29"
+                      - generic [ref=e351]: NMLS 121212
+                - cell "Nov 2, 2026, 5:27 PM" [ref=e352]
+                - cell "Engaged" [ref=e356]
+                - cell "Active" [ref=e357]
+                - cell "Bao Trinh" [ref=e360]:
+                  - generic [ref=e362]:
+                    - generic [aria-hidden] [ref=e363]: BT
+                    - generic [ref=e364]: Bao Trinh
+              - row "Open conversation with Secoxe" [ref=e365] [cursor=pointer]:
+                - cell "Secoxe NMLS 121212" [ref=e366]:
+                  - generic [ref=e367]:
+                    - generic [aria-hidden] [ref=e368]: S
+                    - generic [ref=e369]:
+                      - generic [ref=e370]: Secoxe
+                      - generic [ref=e372]: NMLS 121212
+                - cell "Oct 31, 2026, 3:00 PM" [ref=e373]
+                - cell "Engaged" [ref=e377]
+                - cell "Active" [ref=e378]
+                - cell "Manhadmin" [ref=e381]:
+                  - generic [ref=e383]:
+                    - generic [aria-hidden] [ref=e384]: M
+                    - generic [ref=e385]: Manhadmin
+              - 'row "Open conversation with TRINH BAO #1" [ref=e386] [cursor=pointer]':
+                - 'cell "TRINH BAO #1 NMLS 785746" [ref=e387]':
+                  - generic [ref=e388]:
+                    - generic [aria-hidden] [ref=e389]: T#
+                    - generic [ref=e390]:
+                      - generic [ref=e391]: "TRINH BAO #1"
+                      - generic [ref=e393]: NMLS 785746
+                - cell "Oct 31, 2026, 3:00 PM" [ref=e394]
+                - cell "Engaged" [ref=e398]
+                - cell "Active" [ref=e399]
+                - cell "Bao Trinh" [ref=e402]:
+                  - generic [ref=e404]:
+                    - generic [aria-hidden] [ref=e405]: BT
+                    - generic [ref=e406]: Bao Trinh
+              - row "Open conversation with Cbtwoo Echo" [ref=e407] [cursor=pointer]:
+                - cell "Cbtwoo Echo NMLS 9930002" [ref=e408]:
+                  - generic [ref=e409]:
+                    - generic [aria-hidden] [ref=e410]: CE
+                    - generic [ref=e411]:
+                      - generic [ref=e412]: Cbtwoo Echo
+                      - generic [ref=e414]: NMLS 9930002
+                - cell "Oct 31, 2026, 1:21 AM" [ref=e415]
+                - cell "Engaged" [ref=e419]
+                - cell "Active" [ref=e420]
+                - cell "Bao Trinh" [ref=e423]:
+                  - generic [ref=e425]:
+                    - generic [aria-hidden] [ref=e426]: BT
+                    - generic [ref=e427]: Bao Trinh
+              - row "Open conversation with Cbone Echo" [ref=e428] [cursor=pointer]:
+                - cell "Cbone Echo NMLS 9930001" [ref=e429]:
+                  - generic [ref=e430]:
+                    - generic [aria-hidden] [ref=e431]: CE
+                    - generic [ref=e432]:
+                      - generic [ref=e433]: Cbone Echo
+                      - generic [ref=e435]: NMLS 9930001
+                - cell "Oct 31, 2026, 1:19 AM" [ref=e436]
+                - cell "Engaged" [ref=e440]
+                - cell "Active" [ref=e441]
+                - cell "Bao Trinh" [ref=e444]:
+                  - generic [ref=e446]:
+                    - generic [aria-hidden] [ref=e447]: BT
+                    - generic [ref=e448]: Bao Trinh
+              - row "Open conversation with QA Tenfcall" [ref=e449] [cursor=pointer]:
+                - cell "QA Tenfcall NMLS 9931226" [ref=e450]:
+                  - generic [ref=e451]:
+                    - generic [aria-hidden] [ref=e452]: QT
+                    - generic [ref=e453]:
+                      - generic [ref=e454]: QA Tenfcall
+                      - generic [ref=e456]: NMLS 9931226
+                - cell "Oct 26, 2026, 10:04 PM" [ref=e457]
+                - cell "Engaged" [ref=e461]
+                - cell "Active" [ref=e462]
+                - cell "Bao Trinh" [ref=e465]:
+                  - generic [ref=e467]:
+                    - generic [aria-hidden] [ref=e468]: BT
+                    - generic [ref=e469]: Bao Trinh
+              - row "Open conversation with QA Dtwostate" [ref=e470] [cursor=pointer]:
+                - cell "QA Dtwostate NMLS 9931826" [ref=e471]:
+                  - generic [ref=e472]:
+                    - generic [aria-hidden] [ref=e473]: QD
+                    - generic [ref=e474]:
+                      - generic [ref=e475]: QA Dtwostate
+                      - generic [ref=e477]: NMLS 9931826
+                - cell "Oct 26, 2026, 5:52 PM" [ref=e478]
+                - cell "Onboarding" [ref=e482]
+                - cell "Active" [ref=e483]
+                - cell "Chi Tran Bao Trinh · Onboarding" [ref=e486]:
+                  - generic [ref=e487]:
+                    - generic [ref=e488]:
+                      - generic [aria-hidden] [ref=e489]: CT
+                      - generic [ref=e490]: Chi Tran
+                    - generic [ref=e491]:
+                      - generic [ref=e492]:
+                        - generic [aria-hidden] [ref=e493]: BT
+                        - generic [ref=e494]: Bao Trinh
+                      - generic [ref=e495]: · Onboarding
+              - row "Open conversation with Abc Ddf" [ref=e496] [cursor=pointer]:
+                - cell "Abc Ddf No NMLS" [ref=e497]:
+                  - generic [ref=e498]:
+                    - generic [aria-hidden] [ref=e499]: AD
+                    - generic [ref=e500]:
+                      - generic [ref=e501]: Abc Ddf
+                      - generic [ref=e503]: No NMLS
+                - cell "Oct 26, 2026, 3:46 PM" [ref=e504]
+                - cell "Onboarding" [ref=e508]
+                - cell "Active" [ref=e509]
+                - cell "Someone" [ref=e512]:
+                  - generic [ref=e514]:
+                    - generic [aria-hidden] [ref=e515]: S
+                    - generic [ref=e516]: Someone
+              - row "Open conversation with Dad Alert01" [ref=e517] [cursor=pointer]:
+                - cell "Dad Alert01 NMLS 22222" [ref=e518]:
+                  - generic [ref=e519]:
+                    - generic [aria-hidden] [ref=e520]: DA
+                    - generic [ref=e521]:
+                      - generic [ref=e522]: Dad Alert01
+                      - generic [ref=e524]: NMLS 22222
+                - cell "Oct 26, 2026, 3:43 PM" [ref=e525]
+                - cell "Onboarding" [ref=e529]
+                - cell "Active" [ref=e530]
+                - cell "Someone" [ref=e533]:
+                  - generic [ref=e535]:
+                    - generic [aria-hidden] [ref=e536]: S
+                    - generic [ref=e537]: Someone
+              - row "Open conversation with QA Doregon" [ref=e538] [cursor=pointer]:
+                - cell "QA Doregon NMLS 9931825" [ref=e539]:
+                  - generic [ref=e540]:
+                    - generic [aria-hidden] [ref=e541]: QD
+                    - generic [ref=e542]:
+                      - generic [ref=e543]: QA Doregon
+                      - generic [ref=e545]: NMLS 9931825
+                - cell "Oct 26, 2026, 3:35 PM" [ref=e546]
+                - cell "Engaged" [ref=e550]
+                - cell "Active" [ref=e551]
+                - cell "Chi Tran" [ref=e554]:
+                  - generic [ref=e556]:
+                    - generic [aria-hidden] [ref=e557]: CT
+                    - generic [ref=e558]: Chi Tran
+              - row "Open conversation with QA Tenkpay" [ref=e559] [cursor=pointer]:
+                - cell "QA Tenkpay NMLS 9931252" [ref=e560]:
+                  - generic [ref=e561]:
+                    - generic [aria-hidden] [ref=e562]: QT
+                    - generic [ref=e563]:
+                      - generic [ref=e564]: QA Tenkpay
+                      - generic [ref=e566]: NMLS 9931252
+                - cell "Oct 26, 2026, 3:04 PM" [ref=e567]
+                - cell "Onboarding" [ref=e571]
+                - cell "Active" [ref=e572]
+                - cell "Chi Tran" [ref=e575]:
+                  - generic [ref=e577]:
+                    - generic [aria-hidden] [ref=e578]: CT
+                    - generic [ref=e579]: Chi Tran
+              - row "Open conversation with QA Teneparty" [ref=e580] [cursor=pointer]:
+                - cell "QA Teneparty NMLS 9931274" [ref=e581]:
+                  - generic [ref=e582]:
+                    - generic [aria-hidden] [ref=e583]: QT
+                    - generic [ref=e584]:
+                      - generic [ref=e585]: QA Teneparty
+                      - generic [ref=e587]: NMLS 9931274
+                - cell "Oct 25, 2026, 5:36 PM" [ref=e588]
+                - cell "Onboarding" [ref=e592]
+                - cell "Active" [ref=e593]
+                - cell "Bao Trinh Bao Trinh · Onboarding" [ref=e596]:
+                  - generic [ref=e597]:
+                    - generic [ref=e598]:
+                      - generic [aria-hidden] [ref=e599]: BT
+                      - generic [ref=e600]: Bao Trinh
+                    - generic [ref=e601]:
+                      - generic [ref=e602]:
+                        - generic [aria-hidden] [ref=e603]: BT
+                        - generic [ref=e604]: Bao Trinh
+                      - generic [ref=e605]: · Onboarding
+              - row "Open conversation with QA Bmgrself" [ref=e606] [cursor=pointer]:
+                - cell "QA Bmgrself NMLS 9931820" [ref=e607]:
+                  - generic [ref=e608]:
+                    - generic [aria-hidden] [ref=e609]: QB
+                    - generic [ref=e610]:
+                      - generic [ref=e611]: QA Bmgrself
+                      - generic [ref=e613]: NMLS 9931820
+                - cell "Oct 23, 2026, 6:22 PM" [ref=e614]
+                - cell "Engaged" [ref=e618]
+                - cell "Active" [ref=e619]
+                - cell "Chi Tran" [ref=e622]:
+                  - generic [ref=e624]:
+                    - generic [aria-hidden] [ref=e625]: CT
+                    - generic [ref=e626]: Chi Tran
+              - row "Open conversation with QA Bwaive" [ref=e627] [cursor=pointer]:
+                - cell "QA Bwaive NMLS 463658" [ref=e628]:
+                  - generic [ref=e629]:
+                    - generic [aria-hidden] [ref=e630]: QB
+                    - generic [ref=e631]:
+                      - generic [ref=e632]: QA Bwaive
+                      - generic [ref=e634]: NMLS 463658
+                - cell "Oct 23, 2026, 2:29 PM" [ref=e635]
+                - cell "New lead" [ref=e639]
+                - cell "Active" [ref=e640]
+                - cell "Chi Tran" [ref=e643]:
+                  - generic [ref=e645]:
+                    - generic [aria-hidden] [ref=e646]: CT
+                    - generic [ref=e647]: Chi Tran
+              - row "Open conversation with QA QA" [ref=e648] [cursor=pointer]:
+                - cell "QA QA NMLS 785746" [ref=e649]:
+                  - generic [ref=e650]:
+                    - generic [aria-hidden] [ref=e651]: QQ
+                    - generic [ref=e652]:
+                      - generic [ref=e653]: QA QA
+                      - generic [ref=e655]: NMLS 785746
+                - cell "Oct 23, 2026, 2:09 PM" [ref=e656]
+                - cell "Onboarding" [ref=e660]
+                - cell "Active" [ref=e661]
+                - cell "Bao Trinh Bao Trinh · Onboarding" [ref=e664]:
+                  - generic [ref=e665]:
+                    - generic [ref=e666]:
+                      - generic [aria-hidden] [ref=e667]: BT
+                      - generic [ref=e668]: Bao Trinh
+                    - generic [ref=e669]:
+                      - generic [ref=e670]:
+                        - generic [aria-hidden] [ref=e671]: BT
+                        - generic [ref=e672]: Bao Trinh
+                      - generic [ref=e673]: · Onboarding
+              - row "Open conversation with Megeh" [ref=e674] [cursor=pointer]:
+                - cell "Megeh NMLS 785746" [ref=e675]:
+                  - generic [ref=e676]:
+                    - generic [aria-hidden] [ref=e677]: M
+                    - generic [ref=e678]:
+                      - generic [ref=e679]: Megeh
+                      - generic [ref=e681]: NMLS 785746
+                - cell "Oct 22, 2026, 11:38 AM" [ref=e682]
+                - cell "Onboarding" [ref=e686]
+                - cell "Active" [ref=e687]
+                - cell "Someone" [ref=e690]:
+                  - generic [ref=e692]:
+                    - generic [aria-hidden] [ref=e693]: S
+                    - generic [ref=e694]: Someone
+              - row "Open conversation with QA Handoffwebone" [ref=e695] [cursor=pointer]:
+                - cell "QA Handoffwebone NMLS 9932141" [ref=e696]:
+                  - generic [ref=e697]:
+                    - generic [aria-hidden] [ref=e698]: QH
+                    - generic [ref=e699]:
+                      - generic [ref=e700]: QA Handoffwebone
+                      - generic [ref=e702]: NMLS 9932141
+                - cell "Oct 21, 2026, 12:06 AM" [ref=e703]
+                - cell "Joined" [ref=e707]
+                - cell "Active" [ref=e708]
+                - cell "Bao Trinh Bao Trinh · Onboarding" [ref=e711]:
+                  - generic [ref=e712]:
+                    - generic [ref=e713]:
+                      - generic [aria-hidden] [ref=e714]: BT
+                      - generic [ref=e715]: Bao Trinh
+                    - generic [ref=e716]:
+                      - generic [ref=e717]:
+                        - generic [aria-hidden] [ref=e718]: BT
+                        - generic [ref=e719]: Bao Trinh
+                      - generic [ref=e720]: · Onboarding
+              - row "Open conversation with Revav" [ref=e721] [cursor=pointer]:
+                - cell "Revav NMLS 121212" [ref=e722]:
+                  - generic [ref=e723]:
+                    - generic [aria-hidden] [ref=e724]: R
+                    - generic [ref=e725]:
+                      - generic [ref=e726]: Revav
+                      - generic [ref=e728]: NMLS 121212
+                - cell "Oct 20, 2026, 3:56 PM" [ref=e729]
+                - cell "Engaged" [ref=e733]
+                - cell "Active" [ref=e734]
+                - cell "Manhadmin" [ref=e737]:
+                  - generic [ref=e739]:
+                    - generic [aria-hidden] [ref=e740]: M
+                    - generic [ref=e741]: Manhadmin
+              - row "Open conversation with QA Fone" [ref=e742] [cursor=pointer]:
+                - cell "QA Fone NMLS 9930642" [ref=e743]:
+                  - generic [ref=e744]:
+                    - generic [aria-hidden] [ref=e745]: QF
+                    - generic [ref=e746]:
+                      - generic [ref=e747]: QA Fone
+                      - generic [ref=e749]: NMLS 9930642
+                - cell "Oct 20, 2026, 3:52 PM" [ref=e750]
+                - cell "Engaged" [ref=e754]
+                - cell "Active" [ref=e755]
+                - cell "Manhadmin" [ref=e758]:
+                  - generic [ref=e760]:
+                    - generic [aria-hidden] [ref=e761]: M
+                    - generic [ref=e762]: Manhadmin
+              - row "Open conversation with QA Bkeep" [ref=e763] [cursor=pointer]:
+                - cell "QA Bkeep NMLS 9931816" [ref=e764]:
+                  - generic [ref=e765]:
+                    - generic [aria-hidden] [ref=e766]: QB
+                    - generic [ref=e767]:
+                      - generic [ref=e768]: QA Bkeep
+                      - generic [ref=e770]: NMLS 9931816
+                - cell "Oct 20, 2026, 11:21 AM" [ref=e771]
+                - cell "Engaged" [ref=e775]
+                - cell "Active" [ref=e776]
+                - cell "Bao Trinh" [ref=e779]:
+                  - generic [ref=e781]:
+                    - generic [aria-hidden] [ref=e782]: BT
+                    - generic [ref=e783]: Bao Trinh
+              - row "Open conversation with QA Bbelow" [ref=e784] [cursor=pointer]:
+                - cell "QA Bbelow NMLS 9931814" [ref=e785]:
+                  - generic [ref=e786]:
+                    - generic [aria-hidden] [ref=e787]: QB
+                    - generic [ref=e788]:
+                      - generic [ref=e789]: QA Bbelow
+                      - generic [ref=e791]: NMLS 9931814
+                - cell "Oct 20, 2026, 9:23 AM" [ref=e792]
+                - cell "Engaged" [ref=e796]
+                - cell "Active" [ref=e797]
+                - cell "Bao Trinh" [ref=e800]:
+                  - generic [ref=e802]:
+                    - generic [aria-hidden] [ref=e803]: BT
+                    - generic [ref=e804]: Bao Trinh
+              - row "Open conversation with QA Bauto" [ref=e805] [cursor=pointer]:
+                - cell "QA Bauto NMLS 9931812" [ref=e806]:
+                  - generic [ref=e807]:
+                    - generic [aria-hidden] [ref=e808]: QB
+                    - generic [ref=e809]:
+                      - generic [ref=e810]: QA Bauto
+                      - generic [ref=e812]: NMLS 9931812
+                - cell "Oct 19, 2026, 4:54 PM" [ref=e813]
+                - cell "Onboarding" [ref=e817]
+                - cell "Active" [ref=e818]
+                - cell "Manhadmin" [ref=e821]:
+                  - generic [ref=e823]:
+                    - generic [aria-hidden] [ref=e824]: M
+                    - generic [ref=e825]: Manhadmin
+              - row "Open conversation with QA Tenbdecline" [ref=e826] [cursor=pointer]:
+                - cell "QA Tenbdecline NMLS 9931214" [ref=e827]:
+                  - generic [ref=e828]:
+                    - generic [aria-hidden] [ref=e829]: QT
+                    - generic [ref=e830]:
+                      - generic [ref=e831]: QA Tenbdecline
+                      - generic [ref=e833]: NMLS 9931214
+                - cell "Oct 19, 2026, 4:50 PM" [ref=e834]
+                - cell "Joined" [ref=e838]
+                - cell "Active" [ref=e839]
+                - cell "Bao Trinh Bao Trinh · Onboarding" [ref=e842]:
+                  - generic [ref=e843]:
+                    - generic [ref=e844]:
+                      - generic [aria-hidden] [ref=e845]: BT
+                      - generic [ref=e846]: Bao Trinh
+                    - generic [ref=e847]:
+                      - generic [ref=e848]:
+                        - generic [aria-hidden] [ref=e849]: BT
+                        - generic [ref=e850]: Bao Trinh
+                      - generic [ref=e851]: · Onboarding
+              - row "Open conversation with QA Claudeboard" [ref=e852] [cursor=pointer]:
+                - cell "QA Claudeboard 1 unread NMLS 9931984" [ref=e853]:
+                  - generic [ref=e854]:
+                    - generic [aria-hidden] [ref=e855]: QC
+                    - generic [ref=e856]:
+                      - generic [ref=e857]:
+                        - generic [ref=e858]: QA Claudeboard
+                        - generic "1 unread" [ref=e859]: "1"
+                      - generic [ref=e860]: NMLS 9931984
+                - cell "Oct 17, 2026, 8:09 PM" [ref=e861]
+                - cell "Engaged" [ref=e865]
+                - cell "Active" [ref=e866]
+                - cell "Bao Trinh" [ref=e869]:
+                  - generic [ref=e871]:
+                    - generic [aria-hidden] [ref=e872]: BT
+                    - generic [ref=e873]: Bao Trinh
+              - row "Open conversation with QA Fneutral" [ref=e874] [cursor=pointer]:
+                - cell "QA Fneutral NMLS 9931839" [ref=e875]:
+                  - generic [ref=e876]:
+                    - generic [aria-hidden] [ref=e877]: QF
+                    - generic [ref=e878]:
+                      - generic [ref=e879]: QA Fneutral
+                      - generic [ref=e881]: NMLS 9931839
+                - cell "Oct 17, 2026, 2:06 AM" [ref=e882]
+                - cell "Engaged" [ref=e886]
+                - cell "Active" [ref=e887]
+                - cell "Bao Trinh" [ref=e890]:
+                  - generic [ref=e892]:
+                    - generic [aria-hidden] [ref=e893]: BT
+                    - generic [ref=e894]: Bao Trinh
+              - row "Open conversation with QA Fnoanswer" [ref=e895] [cursor=pointer]:
+                - cell "QA Fnoanswer NMLS 9931838" [ref=e896]:
+                  - generic [ref=e897]:
+                    - generic [aria-hidden] [ref=e898]: QF
+                    - generic [ref=e899]:
+                      - generic [ref=e900]: QA Fnoanswer
+                      - generic [ref=e902]: NMLS 9931838
+                - cell "Oct 16, 2026, 12:53 PM" [ref=e903]
+                - cell "New lead" [ref=e907]
+                - cell "Active" [ref=e908]
+                - cell "Bao Trinh" [ref=e911]:
+                  - generic [ref=e913]:
+                    - generic [aria-hidden] [ref=e914]: BT
+                    - generic [ref=e915]: Bao Trinh
+              - row "Open conversation with QA Fcallagain" [ref=e916] [cursor=pointer]:
+                - cell "QA Fcallagain NMLS 9931837" [ref=e917]:
+                  - generic [ref=e918]:
+                    - generic [aria-hidden] [ref=e919]: QF
+                    - generic [ref=e920]:
+                      - generic [ref=e921]: QA Fcallagain
+                      - generic [ref=e923]: NMLS 9931837
+                - cell "Oct 16, 2026, 12:53 PM" [ref=e924]
+                - cell "New lead" [ref=e928]
+                - cell "Active" [ref=e929]
+                - cell "Bao Trinh" [ref=e932]:
+                  - generic [ref=e934]:
+                    - generic [aria-hidden] [ref=e935]: BT
+                    - generic [ref=e936]: Bao Trinh
+              - row "Open conversation with QA Fmeet" [ref=e937] [cursor=pointer]:
+                - cell "QA Fmeet NMLS 9931842" [ref=e938]:
+                  - generic [ref=e939]:
+                    - generic [aria-hidden] [ref=e940]: QF
+                    - generic [ref=e941]:
+                      - generic [ref=e942]: QA Fmeet
+                      - generic [ref=e944]: NMLS 9931842
+                - cell "Oct 16, 2026, 11:20 AM" [ref=e945]
+                - cell "New lead" [ref=e949]
+                - cell "Active" [ref=e950]
+                - cell "Bao Trinh" [ref=e953]:
+                  - generic [ref=e955]:
+                    - generic [aria-hidden] [ref=e956]: BT
+                    - generic [ref=e957]: Bao Trinh
+              - row "Open conversation with QA Autob" [ref=e958] [cursor=pointer]:
+                - cell "QA Autob NMLS 9930612" [ref=e959]:
+                  - generic [ref=e960]:
+                    - generic [aria-hidden] [ref=e961]: QA
+                    - generic [ref=e962]:
+                      - generic [ref=e963]: QA Autob
+                      - generic [ref=e965]: NMLS 9930612
+                - cell "Oct 16, 2026, 10:12 AM" [ref=e966]
+                - cell "Onboarding" [ref=e970]
+                - cell "Active" [ref=e971]
+                - cell "Bao Trinh Bao Trinh · Onboarding" [ref=e974]:
+                  - generic [ref=e975]:
+                    - generic [ref=e976]:
+                      - generic [aria-hidden] [ref=e977]: BT
+                      - generic [ref=e978]: Bao Trinh
+                    - generic [ref=e979]:
+                      - generic [ref=e980]:
+                        - generic [aria-hidden] [ref=e981]: BT
+                        - generic [ref=e982]: Bao Trinh
+                      - generic [ref=e983]: · Onboarding
+              - row "Open conversation with QA Claudenoanswer" [ref=e984] [cursor=pointer]:
+                - cell "QA Claudenoanswer NMLS 9931963" [ref=e985]:
+                  - generic [ref=e986]:
+                    - generic [aria-hidden] [ref=e987]: QC
+                    - generic [ref=e988]:
+                      - generic [ref=e989]: QA Claudenoanswer
+                      - generic [ref=e991]: NMLS 9931963
+                - cell "Oct 16, 2026, 9:42 AM" [ref=e992]
+                - cell "Onboarding" [ref=e996]
+                - cell "Active" [ref=e997]
+                - cell "Bao Trinh" [ref=e1000]:
+                  - generic [ref=e1002]:
+                    - generic [aria-hidden] [ref=e1003]: BT
+                    - generic [ref=e1004]: Bao Trinh
+              - row "Open conversation with QA Claudewebinar" [ref=e1005] [cursor=pointer]:
+                - cell "QA Claudewebinar NMLS 9931886" [ref=e1006]:
+                  - generic [ref=e1007]:
+                    - generic [aria-hidden] [ref=e1008]: QC
+                    - generic [ref=e1009]:
+                      - generic [ref=e1010]: QA Claudewebinar
+                      - generic [ref=e1012]: NMLS 9931886
+                - cell "Oct 16, 2026, 9:36 AM" [ref=e1013]
+                - cell "Engaged" [ref=e1017]
+                - cell "Active" [ref=e1018]
+                - cell "Bao Trinh" [ref=e1021]:
+                  - generic [ref=e1023]:
+                    - generic [aria-hidden] [ref=e1024]: BT
+                    - generic [ref=e1025]: Bao Trinh
+              - row "Open conversation with QA Tenaeboard" [ref=e1026] [cursor=pointer]:
+                - cell "QA Tenaeboard NMLS 9931284" [ref=e1027]:
+                  - generic [ref=e1028]:
+                    - generic [aria-hidden] [ref=e1029]: QT
+                    - generic [ref=e1030]:
+                      - generic [ref=e1031]: QA Tenaeboard
+                      - generic [ref=e1033]: NMLS 9931284
+                - cell "Oct 16, 2026, 4:23 AM" [ref=e1034]
+                - cell "Onboarding" [ref=e1038]
+                - cell "Active" [ref=e1039]
+                - cell "Bao Trinh" [ref=e1042]:
+                  - generic [ref=e1044]:
+                    - generic [aria-hidden] [ref=e1045]: BT
+                    - generic [ref=e1046]: Bao Trinh
+              - row "Open conversation with QA Claudeladder" [ref=e1047] [cursor=pointer]:
+                - cell "QA Claudeladder NMLS 9931982" [ref=e1048]:
+                  - generic [ref=e1049]:
+                    - generic [aria-hidden] [ref=e1050]: QC
+                    - generic [ref=e1051]:
+                      - generic [ref=e1052]: QA Claudeladder
+                      - generic [ref=e1054]: NMLS 9931982
+                - cell "Oct 16, 2026, 4:16 AM" [ref=e1055]
+                - cell "Engaged" [ref=e1059]
+                - cell "Active" [ref=e1060]
+                - cell "Bao Trinh" [ref=e1063]:
+                  - generic [ref=e1065]:
+                    - generic [aria-hidden] [ref=e1066]: BT
+                    - generic [ref=e1067]: Bao Trinh
+              - row "Open conversation with Jing Huang" [ref=e1068] [cursor=pointer]:
+                - cell "Jing Huang NMLS 1985910" [ref=e1069]:
+                  - generic [ref=e1070]:
+                    - generic [aria-hidden] [ref=e1071]: JH
+                    - generic [ref=e1072]:
+                      - generic [ref=e1073]: Jing Huang
+                      - generic [ref=e1075]: NMLS 1985910
+                - cell "Oct 15, 2026, 11:57 AM" [ref=e1076]
+                - cell "New lead" [ref=e1080]
+                - cell "Active" [ref=e1081]
+                - cell "Someone" [ref=e1084]:
+                  - generic [ref=e1086]:
+                    - generic [aria-hidden] [ref=e1087]: S
+                    - generic [ref=e1088]: Someone
+              - row "Open conversation with QA Bfive" [ref=e1089] [cursor=pointer]:
+                - cell "QA Bfive NMLS 9930626" [ref=e1090]:
+                  - generic [ref=e1091]:
+                    - generic [aria-hidden] [ref=e1092]: QB
+                    - generic [ref=e1093]:
+                      - generic [ref=e1094]: QA Bfive
+                      - generic [ref=e1096]: NMLS 9930626
+                - cell "Oct 15, 2026, 11:52 AM" [ref=e1097]
+                - cell "Onboarding" [ref=e1101]
+                - cell "Active" [ref=e1102]
+                - cell "Bao Trinh Bao Trinh · Onboarding" [ref=e1105]:
+                  - generic [ref=e1106]:
+                    - generic [ref=e1107]:
+                      - generic [aria-hidden] [ref=e1108]: BT
+                      - generic [ref=e1109]: Bao Trinh
+                    - generic [ref=e1110]:
+                      - generic [ref=e1111]:
+                        - generic [aria-hidden] [ref=e1112]: BT
+                        - generic [ref=e1113]: Bao Trinh
+                      - generic [ref=e1114]: · Onboarding
+              - row "Open conversation with Freddie Claudepast" [ref=e1115] [cursor=pointer]:
+                - cell "Freddie Claudepast NMLS 9931964" [ref=e1116]:
+                  - generic [ref=e1117]:
+                    - generic [aria-hidden] [ref=e1118]: FC
+                    - generic [ref=e1119]:
+                      - generic [ref=e1120]: Freddie Claudepast
+                      - generic [ref=e1122]: NMLS 9931964
+                - cell "Oct 14, 2026, 9:31 AM" [ref=e1123]
+                - cell "Onboarding" [ref=e1127]
+                - cell "Active" [ref=e1128]
+                - cell "Bao Trinh" [ref=e1131]:
+                  - generic [ref=e1133]:
+                    - generic [aria-hidden] [ref=e1134]: BT
+                    - generic [ref=e1135]: Bao Trinh
+              - row "Open conversation with QA Claudesendinfo" [ref=e1136] [cursor=pointer]:
+                - cell "QA Claudesendinfo NMLS 9931885" [ref=e1137]:
+                  - generic [ref=e1138]:
+                    - generic [aria-hidden] [ref=e1139]: QC
+                    - generic [ref=e1140]:
+                      - generic [ref=e1141]: QA Claudesendinfo
+                      - generic [ref=e1143]: NMLS 9931885
+                - cell "Oct 14, 2026, 9:31 AM" [ref=e1144]
+                - cell "Engaged" [ref=e1148]
+                - cell "Active" [ref=e1149]
+                - cell "Bao Trinh" [ref=e1152]:
+                  - generic [ref=e1154]:
+                    - generic [aria-hidden] [ref=e1155]: BT
+                    - generic [ref=e1156]: Bao Trinh
+              - row "Open conversation with QA Claudereminder" [ref=e1157] [cursor=pointer]:
+                - cell "QA Claudereminder NMLS 9931887" [ref=e1158]:
+                  - generic [ref=e1159]:
+                    - generic [aria-hidden] [ref=e1160]: QC
+                    - generic [ref=e1161]:
+                      - generic [ref=e1162]: QA Claudereminder
+                      - generic [ref=e1164]: NMLS 9931887
+                - cell "Oct 13, 2026, 11:01 PM" [ref=e1165]
+                - cell "Engaged" [ref=e1169]
+                - cell "Active" [ref=e1170]
+                - cell "Bao Trinh" [ref=e1173]:
+                  - generic [ref=e1175]:
+                    - generic [aria-hidden] [ref=e1176]: BT
+                    - generic [ref=e1177]: Bao Trinh
+              - row "Open conversation with QA Probeone" [ref=e1178] [cursor=pointer]:
+                - cell "QA Probeone NMLS 9930801" [ref=e1179]:
+                  - generic [ref=e1180]:
+                    - generic [aria-hidden] [ref=e1181]: QP
+                    - generic [ref=e1182]:
+                      - generic [ref=e1183]: QA Probeone
+                      - generic [ref=e1185]: NMLS 9930801
+                - cell "Oct 13, 2026, 6:51 AM" [ref=e1186]
+                - cell "Offer" [ref=e1190]
+                - cell "Active" [ref=e1191]
+                - cell "Bao Trinh" [ref=e1194]:
+                  - generic [ref=e1196]:
+                    - generic [aria-hidden] [ref=e1197]: BT
+                    - generic [ref=e1198]: Bao Trinh
+              - row "Open conversation with QA Tengcontact" [ref=e1199] [cursor=pointer]:
+                - cell "QA Tengcontact NMLS 9931240" [ref=e1200]:
+                  - generic [ref=e1201]:
+                    - generic [aria-hidden] [ref=e1202]: QT
+                    - generic [ref=e1203]:
+                      - generic [ref=e1204]: QA Tengcontact
+                      - generic [ref=e1206]: NMLS 9931240
+                - cell "Oct 13, 2026, 1:01 AM" [ref=e1207]
+                - cell "New lead" [ref=e1211]
+                - cell "Active" [ref=e1212]
+                - cell "Bao Trinh" [ref=e1215]:
+                  - generic [ref=e1217]:
+                    - generic [aria-hidden] [ref=e1218]: BT
+                    - generic [ref=e1219]: Bao Trinh
+              - row "Open conversation with QA Tenfladder" [ref=e1220] [cursor=pointer]:
+                - cell "QA Tenfladder NMLS 9931239" [ref=e1221]:
+                  - generic [ref=e1222]:
+                    - generic [aria-hidden] [ref=e1223]: QT
+                    - generic [ref=e1224]:
+                      - generic [ref=e1225]: QA Tenfladder
+                      - generic [ref=e1227]: NMLS 9931239
+                - cell "Oct 13, 2026, 12:33 AM" [ref=e1228]
+                - cell "New lead" [ref=e1232]
+                - cell "Active" [ref=e1233]
+                - cell "Bao Trinh" [ref=e1236]:
+                  - generic [ref=e1238]:
+                    - generic [aria-hidden] [ref=e1239]: BT
+                    - generic [ref=e1240]: Bao Trinh
+              - row "Open conversation with QA Tenfsend" [ref=e1241] [cursor=pointer]:
+                - cell "QA Tenfsend NMLS 9931237" [ref=e1242]:
+                  - generic [ref=e1243]:
+                    - generic [aria-hidden] [ref=e1244]: QT
+                    - generic [ref=e1245]:
+                      - generic [ref=e1246]: QA Tenfsend
+                      - generic [ref=e1248]: NMLS 9931237
+                - cell "Oct 13, 2026, 12:30 AM" [ref=e1249]
+                - cell "Engaged" [ref=e1253]
+                - cell "Active" [ref=e1254]
+                - cell "Bao Trinh" [ref=e1257]:
+                  - generic [ref=e1259]:
+                    - generic [aria-hidden] [ref=e1260]: BT
+                    - generic [ref=e1261]: Bao Trinh
+              - row "Open conversation with QA Tenfmeet" [ref=e1262] [cursor=pointer]:
+                - cell "QA Tenfmeet NMLS 9931233" [ref=e1263]:
+                  - generic [ref=e1264]:
+                    - generic [aria-hidden] [ref=e1265]: QT
+                    - generic [ref=e1266]:
+                      - generic [ref=e1267]: QA Tenfmeet
+                      - generic [ref=e1269]: NMLS 9931233
+                - cell "Oct 13, 2026, 12:18 AM" [ref=e1270]
+                - cell "Engaged" [ref=e1274]
+                - cell "Active" [ref=e1275]
+                - cell "Bao Trinh" [ref=e1278]:
+                  - generic [ref=e1280]:
+                    - generic [aria-hidden] [ref=e1281]: BT
+                    - generic [ref=e1282]: Bao Trinh
+              - row "Open conversation with QA Tenfwebinar" [ref=e1283] [cursor=pointer]:
+                - cell "QA Tenfwebinar NMLS 9931232" [ref=e1284]:
+                  - generic [ref=e1285]:
+                    - generic [aria-hidden] [ref=e1286]: QT
+                    - generic [ref=e1287]:
+                      - generic [ref=e1288]: QA Tenfwebinar
+                      - generic [ref=e1290]: NMLS 9931232
+                - cell "Oct 13, 2026, 12:10 AM" [ref=e1291]
+                - cell "Engaged" [ref=e1295]
+                - cell "Active" [ref=e1296]
+                - cell "Bao Trinh" [ref=e1299]:
+                  - generic [ref=e1301]:
+                    - generic [aria-hidden] [ref=e1302]: BT
+                    - generic [ref=e1303]: Bao Trinh
+              - row "Open conversation with QA Tenfneutral" [ref=e1304] [cursor=pointer]:
+                - cell "QA Tenfneutral NMLS 9931228" [ref=e1305]:
+                  - generic [ref=e1306]:
+                    - generic [aria-hidden] [ref=e1307]: QT
+                    - generic [ref=e1308]:
+                      - generic [ref=e1309]: QA Tenfneutral
+                      - generic [ref=e1311]: NMLS 9931228
+                - cell "Oct 13, 2026, 12:06 AM" [ref=e1312]
+                - cell "Engaged" [ref=e1316]
+                - cell "Active" [ref=e1317]
+                - cell "Bao Trinh" [ref=e1320]:
+                  - generic [ref=e1322]:
+                    - generic [aria-hidden] [ref=e1323]: BT
+                    - generic [ref=e1324]: Bao Trinh
+              - row "Open conversation with QA Tenfnoans" [ref=e1325] [cursor=pointer]:
+                - cell "QA Tenfnoans NMLS 9931227" [ref=e1326]:
+                  - generic [ref=e1327]:
+                    - generic [aria-hidden] [ref=e1328]: QT
+                    - generic [ref=e1329]:
+                      - generic [ref=e1330]: QA Tenfnoans
+                      - generic [ref=e1332]: NMLS 9931227
+                - cell "Oct 13, 2026, 12:05 AM" [ref=e1333]
+                - cell "New lead" [ref=e1337]
+                - cell "Active" [ref=e1338]
+                - cell "Bao Trinh" [ref=e1341]:
+                  - generic [ref=e1343]:
+                    - generic [aria-hidden] [ref=e1344]: BT
+                    - generic [ref=e1345]: Bao Trinh
+              - row "Open conversation with QA Tencswitch" [ref=e1346] [cursor=pointer]:
+                - cell "QA Tencswitch NMLS 9931219" [ref=e1347]:
+                  - generic [ref=e1348]:
+                    - generic [aria-hidden] [ref=e1349]: QT
+                    - generic [ref=e1350]:
+                      - generic [ref=e1351]: QA Tencswitch
+                      - generic [ref=e1353]: NMLS 9931219
+                - cell "Oct 12, 2026, 5:09 PM" [ref=e1354]
+                - cell "Onboarded" [ref=e1358]
+                - cell "Active" [ref=e1359]
+                - cell "Bao Trinh Bao Trinh · Onboarding" [ref=e1362]:
+                  - generic [ref=e1363]:
+                    - generic [ref=e1364]:
+                      - generic [aria-hidden] [ref=e1365]: BT
+                      - generic [ref=e1366]: Bao Trinh
+                    - generic [ref=e1367]:
+                      - generic [ref=e1368]:
+                        - generic [aria-hidden] [ref=e1369]: BT
+                        - generic [ref=e1370]: Bao Trinh
+                      - generic [ref=e1371]: · Onboarding
+              - row "Open conversation with QA Tencadvisor" [ref=e1372] [cursor=pointer]:
+                - cell "QA Tencadvisor NMLS 9931218" [ref=e1373]:
+                  - generic [ref=e1374]:
+                    - generic [aria-hidden] [ref=e1375]: QT
+                    - generic [ref=e1376]:
+                      - generic [ref=e1377]: QA Tencadvisor
+                      - generic [ref=e1379]: NMLS 9931218
+                - cell "Oct 12, 2026, 5:09 PM" [ref=e1380]
+                - cell "Onboarding" [ref=e1384]
+                - cell "Active" [ref=e1385]
+                - cell "Bao Trinh Bao Trinh · Onboarding" [ref=e1388]:
+                  - generic [ref=e1389]:
+                    - generic [ref=e1390]:
+                      - generic [aria-hidden] [ref=e1391]: BT
+                      - generic [ref=e1392]: Bao Trinh
+                    - generic [ref=e1393]:
+                      - generic [ref=e1394]:
+                        - generic [aria-hidden] [ref=e1395]: BT
+                        - generic [ref=e1396]: Bao Trinh
+                      - generic [ref=e1397]: · Onboarding
+              - row "Open conversation with QA Tenccorp" [ref=e1398] [cursor=pointer]:
+                - cell "QA Tenccorp NMLS 9931217" [ref=e1399]:
+                  - generic [ref=e1400]:
+                    - generic [aria-hidden] [ref=e1401]: QT
+                    - generic [ref=e1402]:
+                      - generic [ref=e1403]: QA Tenccorp
+                      - generic [ref=e1405]: NMLS 9931217
+                - cell "Oct 12, 2026, 4:40 PM" [ref=e1406]
+                - cell "Onboarding" [ref=e1410]
+                - cell "Active" [ref=e1411]
+                - cell "Bao Trinh Bao Trinh · Onboarding" [ref=e1414]:
+                  - generic [ref=e1415]:
+                    - generic [ref=e1416]:
+                      - generic [aria-hidden] [ref=e1417]: BT
+                      - generic [ref=e1418]: Bao Trinh
+                    - generic [ref=e1419]:
+                      - generic [ref=e1420]:
+                        - generic [aria-hidden] [ref=e1421]: BT
+                        - generic [ref=e1422]: Bao Trinh
+                      - generic [ref=e1423]: · Onboarding
+              - row "Open conversation with QA Tencindie" [ref=e1424] [cursor=pointer]:
+                - cell "QA Tencindie NMLS 9931216" [ref=e1425]:
+                  - generic [ref=e1426]:
+                    - generic [aria-hidden] [ref=e1427]: QT
+                    - generic [ref=e1428]:
+                      - generic [ref=e1429]: QA Tencindie
+                      - generic [ref=e1431]: NMLS 9931216
+                - cell "Oct 12, 2026, 4:25 PM" [ref=e1432]
+                - cell "Joined" [ref=e1436]
+                - cell "Active" [ref=e1437]
+                - cell "Bao Trinh Bao Trinh · Onboarding" [ref=e1440]:
+                  - generic [ref=e1441]:
+                    - generic [ref=e1442]:
+                      - generic [aria-hidden] [ref=e1443]: BT
+                      - generic [ref=e1444]: Bao Trinh
+                    - generic [ref=e1445]:
+                      - generic [ref=e1446]:
+                        - generic [aria-hidden] [ref=e1447]: BT
+                        - generic [ref=e1448]: Bao Trinh
+                      - generic [ref=e1449]: · Onboarding
+          - generic [ref=e1450]:
+            - generic [ref=e1451]:
+              - generic [ref=e1452]: Rows per page
+              - textbox "Rows per page" [ref=e1455] [cursor=pointer]: "50"
+            - generic [ref=e1456]:
+              - generic [ref=e1457]: Page 1 of 4 · 181 total
+              - generic [ref=e1458]:
+                - button "Previous page" [disabled] [ref=e1459]
+                - button "Page 1" [ref=e1462] [cursor=pointer]: "1"
+                - button "Page 2" [ref=e1463] [cursor=pointer]: "2"
+                - button "Page 3" [ref=e1464] [cursor=pointer]: "3"
+                - button "Page 4" [ref=e1465] [cursor=pointer]: "4"
+                - button "Next page" [ref=e1466] [cursor=pointer]
+  - alert [ref=e1469]

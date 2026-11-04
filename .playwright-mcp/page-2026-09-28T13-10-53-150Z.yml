@@ -1,0 +1,61 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]:
+          - img "Loan Factory" [ref=e6]
+          - generic [ref=e7]:
+            - paragraph [ref=e8]: Loan Factory
+            - paragraph [ref=e9]: Account
+        - generic [ref=e10]:
+          - button "Switch to dark mode" [ref=e11] [cursor=pointer]
+          - button "Notifications" [ref=e16] [cursor=pointer]
+          - button "Notification settings" [ref=e22] [cursor=pointer]
+          - button "Discovery" [ref=e32] [cursor=pointer]
+          - button "Account menu" [ref=e44] [cursor=pointer]:
+            - generic [ref=e45]: "?"
+    - navigation [ref=e47]:
+      - navigation "Main navigation" [ref=e48]:
+        - link "Discovery" [ref=e49] [cursor=pointer]:
+          - /url: /home
+        - link "Information" [ref=e55] [cursor=pointer]:
+          - /url: /personal-info
+        - link "Security" [ref=e62] [cursor=pointer]:
+          - /url: /security
+        - link "Your Apps" [ref=e68] [cursor=pointer]:
+          - /url: /your-apps
+        - link "Preferences" [ref=e75] [cursor=pointer]:
+          - /url: /preferences
+        - link "Recent Activity" [ref=e82] [cursor=pointer]:
+          - /url: /activity
+    - main [ref=e88]:
+      - generic [ref=e90]:
+        - generic [ref=e94]:
+          - paragraph [ref=e98]: Discover
+          - paragraph [ref=e100]: Find the Loan Factory tools built for the way you work.
+          - generic [ref=e101]:
+            - generic [ref=e108]:
+              - paragraph [ref=e109]: "0"
+              - paragraph [ref=e110]: available to you
+            - generic [ref=e115]:
+              - paragraph [ref=e116]: "0"
+              - paragraph [ref=e117]: in use
+            - generic [ref=e121]:
+              - paragraph [ref=e122]: One
+              - paragraph [ref=e123]: login for every app
+        - generic [ref=e125]:
+          - generic [ref=e126]:
+            - generic [ref=e130]:
+              - paragraph [ref=e131]: Apps for you
+              - paragraph [ref=e132]: You use 0 of 0 · Open the ones you use, or try something new.
+            - generic [ref=e133]:
+              - generic [ref=e134]:
+                - paragraph [ref=e138]: Access
+                - paragraph [ref=e139]: you already use this
+              - generic [ref=e140]:
+                - paragraph [ref=e145]: Try Now
+                - paragraph [ref=e146]: not used yet
+          - generic [ref=e147]:
+            - paragraph [ref=e148]: No apps available yet
+            - paragraph [ref=e149]: Check back soon — new tools are on the way.
+  - alert [ref=e150]

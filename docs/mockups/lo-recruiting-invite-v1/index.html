@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InviteModal + Tiến trình gia nhập — mockup duyệt V1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* ===== Tokens — copy nguyên từ lo-recruiting-app-v5/app.css (LF Account design language) ===== */
+:root{
+  --orange:#E8570E; --orange-soft:#FDEDE3; --orange-deep:#C2410C;
+  --green:#2E7D57; --green-soft:#E7F3EC; --red:#D93025; --red-soft:#FDE8E6;
+  --amber:#B45309; --amber-soft:#FEF3D9; --blue:#1D4ED8; --blue-soft:#E8EEFC;
+  --ink:#1F2430; --ink-2:#5B6472; --ink-3:#8A93A2;
+  --bg:#F7F3EF; --cream:#FBF3EC; --card:#FFFFFF; --line:#ECE7E1; --line-2:#F3EFEA;
+  --r:12px; --shadow:0 1px 2px rgba(31,36,48,.05),0 4px 14px rgba(31,36,48,.05);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Inter",-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);font-size:13.5px;line-height:1.45}
+
+/* mock bar (như v5) */
+.mock-bar{position:sticky;top:0;z-index:60;background:#1F2430;color:#fff;display:flex;align-items:center;gap:10px;padding:9px 20px;font-size:12.5px;flex-wrap:wrap}
+.mock-bar b{font-weight:600}
+.mock-bar .sp{margin-left:auto;color:#B9C0CE}
+
+/* shared bits từ v5 */
+.chip{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:2px 9px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.chip.red{background:var(--red-soft);color:var(--red)} .chip.amber{background:var(--amber-soft);color:var(--amber)}
+.chip.green{background:var(--green-soft);color:var(--green)} .chip.blue{background:var(--blue-soft);color:var(--blue)}
+.chip.grey{background:#EFECE8;color:var(--ink-2)} .chip.orange{background:var(--orange-soft);color:var(--orange-deep)}
+.btn{border:0;border-radius:9px;padding:7px 14px;font-size:12.5px;font-weight:600;cursor:pointer;transition:transform .06s}
+.btn:active{transform:scale(.96)}
+.btn.primary{background:var(--orange);color:#fff} .btn.green{background:var(--green);color:#fff}
+.btn.amber{background:var(--amber);color:#fff}
+.btn.ghost{background:#fff;border:1px solid var(--line);color:var(--ink-2)}
+.btn.ghost:hover{border-color:var(--ink-3)}
+.btn.sm{padding:4px 10px;font-size:11.5px;border-radius:7px}
+.btn.w{display:block;width:100%;text-align:left;margin-bottom:8px}
+.fld label{display:block;font-size:11.5px;color:var(--ink-3);margin-bottom:4px;font-weight:600}
+.fld input,.fld select,.fld textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px;font-family:inherit}
+.fld input:focus,.fld textarea:focus{outline:2px solid var(--orange-soft);border-color:var(--orange)}
+
+/* modal — dựng inline (bỏ overlay fixed) để xem mọi state trên 1 trang */
+.modal{background:#fff;border-radius:14px;width:480px;max-width:100%;box-shadow:0 18px 50px rgba(31,36,48,.22);overflow:hidden}
+.modal .mh{padding:14px 18px;background:var(--cream);border-bottom:1px solid var(--line);font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.modal .mb{padding:16px 18px;display:flex;flex-direction:column;gap:13px}
+.modal .mf{padding:13px 18px;border-top:1px solid var(--line);display:flex;gap:9px;justify-content:flex-end;align-items:center;background:#FCFAF8;flex-wrap:wrap}
+.hint-p{font-size:12px;color:var(--ink-2)}
+
+/* ===== review-page chrome (mới, cho trang duyệt) ===== */
+.wrap{max-width:1080px;margin:0 auto;padding:26px 22px 80px}
+.lead{background:linear-gradient(105deg,var(--cream),#FDF9F4 70%);border:1px solid var(--line);border-radius:16px;padding:20px 24px;margin-bottom:26px}
+.lead h1{font-size:20px;letter-spacing:-.01em}
+.lead p{color:var(--ink-2);font-size:12.5px;margin-top:6px;max-width:74ch}
+.lead .tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.rev-sec{margin-bottom:34px}
+.rev-h{display:flex;align-items:center;gap:11px;margin-bottom:6px}
+.rev-h .no{width:26px;height:26px;border-radius:8px;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:700;flex:none}
+.rev-h h2{font-size:16px}
+.rev-note{color:var(--ink-2);font-size:12.5px;margin:2px 0 16px;max-width:80ch}
+.rev-note code{background:#EFECE8;border-radius:5px;padding:1px 6px;font-size:11.5px}
+.stage-grid{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start}
+.stage{flex:1 1 320px;min-width:300px;background:
+   repeating-linear-gradient(45deg,#F1ECE6 0 10px,#F5F1EB 10px 20px);
+   border:1px solid var(--line);border-radius:16px;padding:16px}
+.state-tag{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:700;color:var(--ink-2);background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 11px;margin-bottom:12px}
+.state-tag .dot{width:8px;height:8px;border-radius:50%}
+.state-tag .dot.auto{background:var(--green)} .state-tag .dot.review{background:var(--amber)} .state-tag .dot.fill{background:var(--blue)}
+
+/* InviteModal — khối nội bộ */
+.blk{border:1px solid var(--line);border-radius:11px;overflow:hidden}
+.blk>.bh{display:flex;align-items:center;gap:8px;padding:9px 12px;font-weight:700;font-size:12px;border-bottom:1px solid var(--line-2);background:#FCFAF8}
+.blk>.bh .req{margin-left:auto;font-weight:600}
+.blk>.bb{padding:11px 12px;display:flex;flex-direction:column;gap:9px}
+.okrow{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--ink-2)}
+.okrow .tick{width:20px;height:20px;border-radius:50%;background:var(--green-soft);color:var(--green);display:grid;place-items:center;font-size:12px;flex:none}
+.okrow b{color:var(--ink)}
+.numgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.numcell{background:#FCFAF8;border:1px solid var(--line);border-radius:9px;padding:9px 11px}
+.numcell.miss{background:#fff;border-style:dashed;border-color:var(--blue)}
+.numcell span{font-size:10.5px;color:var(--ink-3);display:block}
+.numcell b{font-size:16px;display:block;margin-top:1px}
+.numcell b .u{font-size:10.5px;color:var(--ink-3);font-weight:500}
+.numcell .mini{margin-top:6px}
+.numcell input{width:100%;border:1px solid var(--blue);border-radius:7px;padding:6px 8px;font-size:13px;font-family:inherit;margin-top:4px}
+.warnline{display:flex;gap:8px;font-size:11.5px;color:var(--amber);background:var(--amber-soft);border-radius:8px;padding:7px 10px;line-height:1.4}
+.warnline.blue{color:var(--blue);background:var(--blue-soft)}
+
+/* fee segmented */
+.seg{display:flex;gap:8px}
+.segopt{flex:1;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;cursor:default;background:#fff}
+.segopt.on{border-color:var(--orange);background:var(--orange-soft)}
+.segopt.on.waive{border-color:var(--amber);background:var(--amber-soft)}
+.segopt .t{font-weight:700;font-size:12.5px;display:flex;align-items:center;gap:6px}
+.segopt .d{font-size:11px;color:var(--ink-3);margin-top:3px}
+
+/* email preview */
+.email{border:1px solid var(--line);border-radius:11px;overflow:hidden;background:#fff}
+.email .eh{padding:9px 12px;border-bottom:1px solid var(--line-2);font-size:11.5px;color:var(--ink-3);background:#FCFAF8}
+.email .eh b{color:var(--ink)}
+.email .eb{padding:12px 13px;font-size:12px;color:var(--ink-2);line-height:1.55}
+.email .eb .subj{font-weight:700;color:var(--ink);font-size:12.5px;margin-bottom:6px}
+.email .link{display:inline-block;margin:8px 0 2px;background:var(--orange);color:#fff;border-radius:8px;padding:6px 13px;font-size:12px;font-weight:600;text-decoration:none}
+.email .url{font-size:10.5px;color:var(--blue);word-break:break-all;display:block;margin-top:5px}
+
+/* rule result bar */
+.rulebar{display:flex;gap:10px;align-items:flex-start;border-radius:11px;padding:11px 13px;font-size:12px;line-height:1.45}
+.rulebar.auto{background:var(--green-soft);color:var(--green)}
+.rulebar.review{background:var(--amber-soft);color:var(--amber)}
+.rulebar .ic{font-size:15px;line-height:1.2}
+.rulebar b{display:block;font-size:12.5px;margin-bottom:2px}
+.rulebar span{color:var(--ink-2);font-weight:500}
+
+/* entry-point contexts */
+.ctx{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.ctx .ch{padding:16px 18px;background:var(--cream);border-bottom:1px solid var(--line);display:flex;gap:13px;align-items:center}
+.ctx .av{width:44px;height:44px;border-radius:50%;color:#fff;display:grid;place-items:center;font-weight:700;font-size:15px;background:var(--green)}
+.ctx .ch h3{font-size:15px} .ctx .ch .sub{font-size:12px;color:var(--ink-2);margin-top:2px}
+.ctx .ch .hbtns{margin-left:auto;display:flex;gap:8px}
+.ctx .cb{padding:14px 18px;display:flex;flex-direction:column;gap:8px}
+.mark{outline:2px solid var(--orange);outline-offset:2px;border-radius:11px}
+.callout{position:relative}
+.callout::after{content:attr(data-note);position:absolute;right:-8px;top:-11px;background:var(--orange);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
+
+/* progress card (drawer) */
+.drawer-demo{width:400px;max-width:100%;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.drawer-demo .dh{padding:13px 16px;background:var(--cream);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.drawer-demo .dh .av{width:34px;height:34px;border-radius:50%;color:#fff;display:grid;place-items:center;font-weight:700;font-size:12px;background:var(--green)}
+.drawer-demo .dh b{font-size:13.5px} .drawer-demo .dh small{color:var(--ink-3);font-size:11px;display:block}
+.jcard{padding:14px 16px}
+.jcard .jt{font-weight:700;font-size:12.5px;display:flex;align-items:center;gap:8px;margin-bottom:3px}
+.jcard .jsub{font-size:11px;color:var(--ink-3);margin-bottom:12px}
+.mstone{display:flex;gap:12px;position:relative;padding-bottom:16px}
+.mstone:last-child{padding-bottom:0}
+.mstone .rail{display:flex;flex-direction:column;align-items:center;flex:none}
+.mstone .pip{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;z-index:2}
+.mstone .pip.done{background:var(--green);color:#fff}
+.mstone .pip.wait{background:#EFECE8;color:var(--ink-3)}
+.mstone .pip.waive{background:var(--amber);color:#fff}
+.mstone .line{width:2px;flex:1;background:#EFECE8;margin:2px 0}
+.mstone.done .line{background:var(--green)}
+.mstone .body{padding-top:2px;flex:1}
+.mstone .body b{font-size:12.5px;display:block}
+.mstone .body .ts{font-size:11px;color:var(--ink-2);margin-top:2px}
+.mstone .body .pend{font-size:11.5px;color:var(--ink-3);margin-top:2px}
+.pmnote{font-size:10.5px;color:var(--ink-3);margin-top:10px;padding-top:10px;border-top:1px dashed var(--line-2);line-height:1.5}
+.resend-wrap{margin-top:12px;padding-top:12px;border-top:1px solid var(--line-2)}
+.resend-hidden{font-size:11px;color:var(--ink-3);display:flex;gap:6px;align-items:center}
+.offer-status{margin:0 16px 14px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#FCFAF8}
+.offer-status.breach{border-color:var(--red);background:var(--red-soft)}
+.offer-status .osrow{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-2)}
+.offer-status .osrow b{color:var(--ink)}
+.judgment{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:18px 22px;margin-top:10px}
+.judgment h3{font-size:14px;margin-bottom:10px}
+.judgment ol{margin:0 0 0 18px;display:flex;flex-direction:column;gap:11px}
+.judgment li{font-size:12.5px;color:var(--ink-2);line-height:1.5}
+.judgment li b{color:var(--ink)}
+.src-note{color:var(--ink-3);font-size:11.5px;margin-top:14px;line-height:1.5}
+@media(max-width:620px){.stage{min-width:0;flex-basis:100%}}
+</style>
+</head>
+<body>
+
+<div class="mock-bar">
+  <b>MOCKUP DUYỆT · "Mời gia nhập" (Invite to Join) — V1</b>
+  <span class="sp">tĩnh, để anh Bao duyệt trước khi build recruit-fe · style bám lo-recruiting-app-v5 · chưa phải code thật</span>
+</div>
+
+<div class="wrap">
+
+  <div class="lead">
+    <h1>🤝 Mời gia nhập — 2 màn đề xuất</h1>
+    <p>Đây là bản vẽ duyệt cho <b>mảnh 6 + mảnh 7</b> của <code>lo-recruiting-invite-to-join-design.md</code>.
+    Nhánh <code>kind==='join'</code> (app.js:433) hôm nay chỉ bắn toast — đây là <b>InviteModal</b> mà nó
+    <i>nên</i> mở, cùng <b>card Tiến trình gia nhập</b> trong hồ sơ. Mọi field bám §7 mảnh 6 · §8 · quyết định
+    D-I6 / D-I7 / D-I9. Rule chấm ở server (§5.2): <b>AUTO</b> khi loans-từ-2022 ≥ 5 <b>VÀ</b> loans-12-tháng ≥ 2,
+    còn lại (kể cả thiếu số, kể cả Miễn phí) → <b>REVIEW</b>.</p>
+    <div class="tags">
+      <span class="chip orange">Surface 1 · InviteModal</span>
+      <span class="chip green">Surface 2 · Tiến trình gia nhập</span>
+      <span class="chip grey">Vietnamese copy</span>
+      <span class="chip blue">rule chấm phía server</span>
+    </div>
+  </div>
+
+  <!-- ============ ENTRY POINTS ============ -->
+  <div class="rev-sec">
+    <div class="rev-h"><div class="no">0</div><h2>Hai lối vào (bối cảnh)</h2></div>
+    <p class="rev-note">Modal chỉ mở từ 2 chỗ. <b>(a)</b> lựa chọn thứ 5 trong OutcomeModal khi thái độ = INTERESTED
+    (cạnh 4 next-step đã có). <b>(b)</b> nút có điều kiện trên header hồ sơ — <b>chỉ hiện ở stage S6 · Offer</b>.</p>
+    <div class="stage-grid">
+
+      <!-- Entry A: outcome modal 5th option -->
+      <div class="stage">
+        <span class="state-tag"><span class="dot" style="background:var(--orange)"></span>Lối vào (a) — OutcomeModal, thái độ INTERESTED</span>
+        <div class="modal">
+          <div class="mh">✅ Minh Trần QUAN TÂM — bạn quyết định bước kế tiếp <span class="chip grey">bước 2/2</span></div>
+          <div class="mb" style="gap:8px">
+            <p class="hint-p">Mỗi lựa chọn sinh đúng 1 task có hạn. Chọn theo độ chín của lead:</p>
+            <button class="btn ghost w">📞 Hẹn cuộc gọi / Zoom kế tiếp</button>
+            <button class="btn ghost w">📄 Gửi comp sheet / info package</button>
+            <button class="btn ghost w">🎥 Mời tham gia webinar kế tiếp</button>
+            <button class="btn ghost w">🗓 Mời book 1-1 (Calendly)</button>
+            <div class="callout" data-note="MỚI · mở InviteModal">
+              <button class="btn ghost w mark" style="border-color:var(--green);margin-bottom:0">🤝 <b>Mời gia nhập</b> — đủ điều kiện chốt → mở form mời + chấm rule</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Entry B: candidate header at S6 -->
+      <div class="stage">
+        <span class="state-tag"><span class="dot" style="background:var(--orange)"></span>Lối vào (b) — header hồ sơ, chỉ ở S6 · Offer</span>
+        <div class="ctx">
+          <div class="ch">
+            <div class="av">MT</div>
+            <div>
+              <h3>Minh Trần</h3>
+              <div class="sub">NMLS 1076215 · <span class="chip green" style="font-size:10.5px">S6 · Offer</span></div>
+            </div>
+            <div class="hbtns">
+              <button class="btn ghost sm">✎ Sửa</button>
+              <div class="callout" data-note="chỉ hiện ở S6">
+                <button class="btn green sm mark">🤝 Mời gia nhập</button>
+              </div>
+            </div>
+          </div>
+          <div class="cb">
+            <p class="hint-p">Ở stage &lt; S6 nút này <b>không tồn tại</b> (không disable — ẩn hẳn, giống Greenhouse/Lever:
+            nút chốt xuất hiện có điều kiện sau khi vào Offer). Cùng nút, cùng modal như lối vào (a).</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============ SURFACE 1 — INVITE MODAL ============ -->
+  <div class="rev-sec">
+    <div class="rev-h"><div class="no">1</div><h2>Surface 1 — InviteModal</h2></div>
+    <p class="rev-note">Referral source <b>bắt buộc</b>, prefill từ <code>referred_source</code> (sửa được) · NMLS thiếu → verify
+    tại chỗ trước khi gửi · hai con số <b>chỉ kiểm, không thu lại</b> (D-I9), thiếu thì điền tại chỗ · Phí: mặc định
+    [Thu $100], hoặc [Miễn + lý do BẮT BUỘC] → luôn REVIEW (D-I7) · preview email có link <code>/apply_loan_officer?key=</code> ·
+    nút gửi đổi nhãn theo kết quả rule.</p>
+    <div class="stage-grid">
+
+      <!-- STATE A: AUTO -->
+      <div class="stage">
+        <span class="state-tag"><span class="dot auto"></span>Trạng thái A — đủ 2 số, NMLS có, Thu $100 → AUTO</span>
+        <div class="modal">
+          <div class="mh">🤝 Mời gia nhập — Minh Trần</div>
+          <div class="mb">
+            <div class="blk">
+              <div class="bh">🔗 Nguồn giới thiệu <span class="req chip amber">bắt buộc</span></div>
+              <div class="bb">
+                <div class="fld"><label>referral source — prefill từ hồ sơ, sửa được</label>
+                  <input value="Webinar 08/2026 — Duyên Nguyễn giới thiệu"></div>
+              </div>
+            </div>
+            <div class="blk">
+              <div class="bh">🔢 NMLS</div>
+              <div class="bb"><div class="okrow"><span class="tick">✓</span><span><b>NMLS 1076215</b> — đã verify, Modex khớp production</span></div></div>
+            </div>
+            <div class="blk">
+              <div class="bh">📊 Hai con số <span class="req" style="font-weight:500;color:var(--ink-3)">chỉ kiểm — không thu lại (D-I9)</span></div>
+              <div class="bb">
+                <div class="numgrid">
+                  <div class="numcell"><span>Loans từ 2022</span><b>7 <span class="u">khoản</span></b></div>
+                  <div class="numcell"><span>Loans 12 tháng</span><b>4 <span class="u">khoản</span></b></div>
+                </div>
+              </div>
+            </div>
+            <div class="blk">
+              <div class="bh">💵 Phí khởi động</div>
+              <div class="bb">
+                <div class="seg">
+                  <div class="segopt on"><div class="t">💵 Thu $100</div><div class="d">mặc định — bộ lọc bảo vệ lịch onboarding</div></div>
+                  <div class="segopt waive"><div class="t">🎁 Miễn + lý do</div><div class="d">→ luôn xin duyệt</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="email">
+              <div class="eh">Tới: <b>minh.tran@email.com</b> · Từ: LoanFactory Recruiting</div>
+              <div class="eb">
+                <div class="subj">Lời mời gia nhập LoanFactory</div>
+                Chào Minh, sau trao đổi vừa rồi, mời anh hoàn tất hồ sơ gia nhập đội LoanFactory. Bấm nút bên dưới để điền form, ký, và đóng phí khởi động $100.
+                <a class="link" href="#">Hoàn tất hồ sơ →</a>
+                <span class="url">https://loanfactory.com/apply_loan_officer?key=b1f0…c7a2</span>
+              </div>
+            </div>
+            <div class="rulebar auto">
+              <div class="ic">⚡</div>
+              <div><b>Rule: AUTO — đủ điều kiện tự gửi</b>
+                <span>7 ≥ 5 loans từ 2022 <b>VÀ</b> 4 ≥ 2 loans 12 tháng. Gửi ngay, không cần duyệt.</span></div>
+            </div>
+          </div>
+          <div class="mf">
+            <button class="btn ghost">Huỷ</button>
+            <button class="btn green">Gửi lời mời ngay →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATE B: WAIVE -> REVIEW -->
+      <div class="stage">
+        <span class="state-tag"><span class="dot review"></span>Trạng thái B — chọn Miễn phí → luôn REVIEW (D-I7)</span>
+        <div class="modal">
+          <div class="mh">🤝 Mời gia nhập — Minh Trần</div>
+          <div class="mb">
+            <div class="blk">
+              <div class="bh">🔗 Nguồn giới thiệu <span class="req chip amber">bắt buộc</span></div>
+              <div class="bb"><div class="fld"><label>referral source — prefill từ hồ sơ, sửa được</label>
+                <input value="Webinar 08/2026 — Duyên Nguyễn giới thiệu"></div></div>
+            </div>
+            <div class="blk">
+              <div class="bh">💵 Phí khởi động</div>
+              <div class="bb">
+                <div class="seg">
+                  <div class="segopt"><div class="t">💵 Thu $100</div><div class="d">mặc định</div></div>
+                  <div class="segopt on waive"><div class="t">🎁 Miễn + lý do</div><div class="d">đã chọn</div></div>
+                </div>
+                <div class="fld" style="margin-top:9px"><label>Lý do miễn — BẮT BUỘC (audit)</label>
+                  <select><option>Top producer — 40+ khoản/năm, ưu tiên chốt nhanh</option><option>Chuyển cả team, thoả thuận cấp quản lý</option><option>Khác — ghi rõ…</option></select></div>
+                <div class="warnline">⚠️ Miễn phí là quyết định tiền — <b>luôn chuyển chị Victoria duyệt</b>, recruiter không tự gửi được (D-I7).</div>
+              </div>
+            </div>
+            <div class="email">
+              <div class="eh">Tới: <b>minh.tran@email.com</b> · Từ: LoanFactory Recruiting</div>
+              <div class="eb">
+                <div class="subj">Lời mời gia nhập LoanFactory</div>
+                Chào Minh, mời anh hoàn tất hồ sơ gia nhập. <b>Phí khởi động được miễn.</b>
+                <a class="link" href="#">Hoàn tất hồ sơ →</a>
+                <span class="url">https://loanfactory.com/apply_loan_officer?key=b1f0…c7a2</span>
+              </div>
+            </div>
+            <div class="rulebar review">
+              <div class="ic">🔎</div>
+              <div><b>Rule: REVIEW — cần duyệt</b>
+                <span>Miễn phí → luôn xin duyệt (D-I7), bất kể hai con số. Chị Victoria có 24h để quyết (SLA).</span></div>
+            </div>
+          </div>
+          <div class="mf">
+            <button class="btn ghost">Huỷ</button>
+            <button class="btn amber">Xin duyệt trước →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATE C: MISSING NUMBER + NMLS -> inline fill -->
+      <div class="stage">
+        <span class="state-tag"><span class="dot fill"></span>Trạng thái C — thiếu 1 số + thiếu NMLS → điền tại chỗ</span>
+        <div class="modal">
+          <div class="mh">🤝 Mời gia nhập — Lan Phạm</div>
+          <div class="mb">
+            <div class="blk">
+              <div class="bh">🔗 Nguồn giới thiệu <span class="req chip amber">bắt buộc</span></div>
+              <div class="bb"><div class="fld"><label>referral source — prefill từ hồ sơ, sửa được</label>
+                <input value="Self-apply — trang tuyển dụng"></div></div>
+            </div>
+            <div class="blk">
+              <div class="bh">🔢 NMLS <span class="req chip blue">cần verify trước</span></div>
+              <div class="bb">
+                <div class="fld"><label>Chưa có NMLS — nhập để verify (Modex tự kéo production)</label>
+                  <input placeholder="Vd: 1076215"></div>
+                <div class="warnline blue">ℹ️ Phải verify NMLS <b>trước khi gửi</b> — nút gửi khoá cho tới khi có.</div>
+              </div>
+            </div>
+            <div class="blk">
+              <div class="bh">📊 Hai con số <span class="req" style="font-weight:500;color:var(--ink-3)">thiếu 1 → điền tại chỗ (D-I9)</span></div>
+              <div class="bb">
+                <div class="numgrid">
+                  <div class="numcell"><span>Loans từ 2022</span><b>6 <span class="u">khoản</span></b></div>
+                  <div class="numcell miss"><span>Loans 12 tháng — chưa có</span>
+                    <input placeholder="nhập số khoản…"></div>
+                </div>
+              </div>
+            </div>
+            <div class="blk">
+              <div class="bh">💵 Phí khởi động</div>
+              <div class="bb"><div class="seg">
+                <div class="segopt on"><div class="t">💵 Thu $100</div><div class="d">mặc định</div></div>
+                <div class="segopt waive"><div class="t">🎁 Miễn + lý do</div><div class="d">→ luôn xin duyệt</div></div>
+              </div></div>
+            </div>
+            <div class="rulebar review">
+              <div class="ic">🔎</div>
+              <div><b>Rule: REVIEW — thiếu dữ liệu (fail-closed, D-I8)</b>
+                <span>Còn thiếu loans-12-tháng → "không biết" ≠ "đạt" → gửi duyệt. Điền đủ số, nút có thể đổi thành "Gửi ngay".</span></div>
+            </div>
+          </div>
+          <div class="mf">
+            <button class="btn ghost">Huỷ</button>
+            <button class="btn amber" disabled style="opacity:.5">Xin duyệt trước →</button>
+            <span class="chip grey">khoá tới khi verify NMLS</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============ SURFACE 2 — PROGRESS CARD ============ -->
+  <div class="rev-sec">
+    <div class="rev-h"><div class="no">2</div><h2>Surface 2 — card "Tiến trình gia nhập"</h2></div>
+    <p class="rev-note"><b>Chỉ 3 mốc</b> (§8 cắt 5→3 vì 2 mốc không có nguồn dữ liệu): ① Đã mời · ② Đã trả phí <i>(hoặc Miễn)</i> · ③ Đã ký.
+    Mỗi mốc ghi <i>"thời điểm hệ thống ghi nhận, ±60 giây"</i>. Nút "Gửi lại lời mời" chỉ hiện khi mốc ① xong, ② chưa, và
+    đã quá cửa sổ gửi lại (<code>invite_resend_after_days</code> = 3). Badge "Quá hạn duyệt" cho offer kẹt chờ duyệt quá SLA 24h.</p>
+    <div class="stage-grid">
+
+      <!-- CARD A: just invited -->
+      <div class="stage">
+        <span class="state-tag"><span class="dot auto"></span>Card A — vừa mời (trong cửa sổ, chưa hiện gửi lại)</span>
+        <div class="drawer-demo">
+          <div class="dh"><div class="av">MT</div><div><b>Minh Trần</b><small>NMLS 1076215 · đang gia nhập</small></div></div>
+          <div class="jcard">
+            <div class="jt">🧭 Tiến trình gia nhập</div>
+            <div class="jsub">3 mốc có nguồn thật · timestamp = lúc hệ thống ghi nhận</div>
+            <div class="mstone done">
+              <div class="rail"><div class="pip done">✓</div><div class="line"></div></div>
+              <div class="body"><b>① Đã mời</b><div class="ts">18/09/2026 · 14:32 <span class="chip grey" style="font-size:10px">±60s</span></div></div>
+            </div>
+            <div class="mstone">
+              <div class="rail"><div class="pip wait">2</div><div class="line"></div></div>
+              <div class="body"><b>② Đã trả phí <span style="font-weight:500;color:var(--ink-3)">(hoặc Miễn)</span></b><div class="pend">chờ — LO chưa đóng $100</div></div>
+            </div>
+            <div class="mstone">
+              <div class="rail"><div class="pip wait">3</div></div>
+              <div class="body"><b>③ Đã ký</b><div class="pend">chờ</div></div>
+            </div>
+            <div class="resend-wrap">
+              <div class="resend-hidden">🕓 Có thể gửi lại sau <b style="color:var(--ink-2)">2 ngày</b> nữa (cửa sổ 3 ngày từ mốc ①)</div>
+            </div>
+            <div class="pmnote">Mốc ① lấy từ <code>packs_writeback_outbox.status</code> — hiện ✓ khi email thật đã tới packs, không chỉ vì offer row local.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD B: invited + fee paid -->
+      <div class="stage">
+        <span class="state-tag"><span class="dot auto"></span>Card B — đã mời + đã trả phí (gửi lại ẩn)</span>
+        <div class="drawer-demo">
+          <div class="dh"><div class="av">MT</div><div><b>Minh Trần</b><small>NMLS 1076215 · đang gia nhập</small></div></div>
+          <div class="jcard">
+            <div class="jt">🧭 Tiến trình gia nhập</div>
+            <div class="jsub">3 mốc có nguồn thật · timestamp = lúc hệ thống ghi nhận</div>
+            <div class="mstone done">
+              <div class="rail"><div class="pip done">✓</div><div class="line"></div></div>
+              <div class="body"><b>① Đã mời</b><div class="ts">15/09/2026 · 10:04 <span class="chip grey" style="font-size:10px">±60s</span></div></div>
+            </div>
+            <div class="mstone done">
+              <div class="rail"><div class="pip done">✓</div><div class="line"></div></div>
+              <div class="body"><b>② Đã trả phí</b><div class="ts">16/09/2026 · 09:12 · $100 qua PayPal <span class="chip grey" style="font-size:10px">±60s</span></div></div>
+            </div>
+            <div class="mstone">
+              <div class="rail"><div class="pip wait">3</div></div>
+              <div class="body"><b>③ Đã ký</b><div class="pend">chờ — chưa ký agreement</div></div>
+            </div>
+            <div class="resend-wrap">
+              <div class="resend-hidden">✓ Đã qua mốc ② — <b style="color:var(--ink-2)">không cần gửi lại</b> nữa</div>
+            </div>
+            <div class="pmnote">Nếu miễn phí, mốc ② hiện <b>🎁 Miễn phí ✓</b> + lý do thay cho "đã trả phí" (D-I1: fee là trục độc lập).</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD C: resend due + breach -->
+      <div class="stage">
+        <span class="state-tag"><span class="dot review"></span>Card C — quá cửa sổ → hiện "Gửi lại" · + badge quá hạn duyệt</span>
+        <div class="drawer-demo">
+          <div class="dh"><div class="av" style="background:var(--amber)">LP</div><div><b>Lan Phạm</b><small>NMLS 1099820 · đang gia nhập</small></div></div>
+          <div class="offer-status breach">
+            <div class="osrow"><span class="chip red">⏳ Quá hạn duyệt</span><span>offer kẹt <b>PENDING_APPROVAL</b> 31h — quá SLA 24h. Giữ pending + nhắc, không auto-approve.</span></div>
+          </div>
+          <div class="jcard" style="padding-top:0">
+            <div class="jt">🧭 Tiến trình gia nhập</div>
+            <div class="jsub">3 mốc có nguồn thật · timestamp = lúc hệ thống ghi nhận</div>
+            <div class="mstone done">
+              <div class="rail"><div class="pip done">✓</div><div class="line"></div></div>
+              <div class="body"><b>① Đã mời</b><div class="ts">13/09/2026 · 16:20 <span class="chip grey" style="font-size:10px">±60s</span></div></div>
+            </div>
+            <div class="mstone">
+              <div class="rail"><div class="pip wait">2</div><div class="line"></div></div>
+              <div class="body"><b>② Đã trả phí <span style="font-weight:500;color:var(--ink-3)">(hoặc Miễn)</span></b><div class="pend">chờ — 5 ngày chưa động tĩnh</div></div>
+            </div>
+            <div class="mstone">
+              <div class="rail"><div class="pip wait">3</div></div>
+              <div class="body"><b>③ Đã ký</b><div class="pend">chờ</div></div>
+            </div>
+            <div class="resend-wrap">
+              <button class="btn ghost sm" style="border-color:var(--orange);color:var(--orange-deep)">✉️ Gửi lại lời mời</button>
+              <div class="resend-hidden" style="margin-top:7px">Hiện vì: ① xong · ② chưa · đã 5 ngày &gt; cửa sổ 3 ngày</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <p class="src-note">Nút "Gửi lại" treo theo <code>invite_resend_after_days</code> tính từ mốc ① — không treo vào mốc "đã họp"/"đã điền hồ sơ"
+    (2 mốc đó bị cắt vì <code>git grep</code> trong recruit-be = 0 hit, không có cột/nguồn). Badge "Quá hạn duyệt" đọc từ SLA 24h của
+    <code>PENDING_APPROVAL</code> (§5.3 · §8).</p>
+  </div>
+
+  <!-- ============ JUDGMENT CALLS ============ -->
+  <div class="rev-sec">
+    <div class="rev-h"><div class="no">?</div><h2>Chỗ doc chưa rõ — cần anh Bao chốt</h2></div>
+    <div class="judgment">
+      <h3>5 điểm em tự quyết trong mockup, xin xác nhận</h3>
+      <ol>
+        <li><b>Link email dùng <code>/apply_loan_officer?key=</code></b> đúng như brief. Doc §2/§9 nói LO điền form trên lf-homepage wizard hiện có — cần chốt path thật là <code>/apply_loan_officer</code> hay route wizard đang chạy prod, và <code>?key=</code> có phải token datastore (§9/§14 <code>i12w</code>: key không hết hạn) không.</li>
+        <li><b>Lý do miễn phí = dropdown preset + "Khác".</b> Doc chỉ ghi "lý do BẮT BUỘC", không nói kiểu nhập. Em theo mẫu <code>mArchive</code> của v5 (select). Nếu muốn free-text audit rõ hơn thì đổi sang textarea.</li>
+        <li><b>Mốc ② khi miễn phí hiển thị "🎁 Miễn phí ✓" thay "Đã trả phí".</b> Doc ghi "② Đã trả phí (hoặc Miễn)" nhưng không nói layout — em gộp vào 1 mốc, đổi nhãn + màu amber. Có thể tách 2 dòng nếu anh muốn.</li>
+        <li><b>Badge "Quá hạn duyệt" đặt trên đầu card, recruiter thấy.</b> Doc §8 nói cần surface SLA breach nhưng không nói cho ai. Em cho recruiter thấy (họ là người theo hồ sơ). Nếu chỉ manager cần thấy thì chuyển sang màn Exceptions.</li>
+        <li><b>Trạng thái AUTO: em KHÔNG cảnh báo "hôm nay 0 người đạt".</b> §5.1 đo staging = 100% NULL 2 số. Modal mặc định lạc quan (có số). Có nên thêm dòng nhắc "dữ liệu 2 số thường trống → phần lớn sẽ vào REVIEW" ngay trong modal không?</li>
+      </ol>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

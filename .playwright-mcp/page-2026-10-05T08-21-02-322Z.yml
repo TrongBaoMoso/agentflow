@@ -1,0 +1,174 @@
+- generic [active] [ref=f4e1]:
+  - generic [ref=f4e2]:
+    - banner [ref=f4e3]:
+      - generic [ref=f4e4]:
+        - generic [ref=f4e7]:
+          - link "Loan Factory HR Center" [ref=f4e8] [cursor=pointer]:
+            - /url: /tasks
+            - generic [ref=f4e16]:
+              - img "Loan Factory" [ref=f4e17]
+              - generic [ref=f4e33]: HR Center
+          - generic "Breadcrumb" [ref=f4e84]:
+            - generic [ref=f4e85]: Hiring & exits
+            - generic [ref=f4e89]: Recruiting
+        - generic [ref=f4e90]:
+          - generic [ref=f4e92]:
+            - combobox "Search everything…" [ref=f4e97]
+            - generic "Press ⌘ K to search from anywhere" [ref=f4e99]: ⌘ K
+          - status [ref=f4e100]
+        - generic [ref=f4e34]:
+          - button "View as" [ref=f4e101] [cursor=pointer]
+          - button "Switch to dark mode" [ref=f4e35] [cursor=pointer]
+          - generic [ref=f4e39]:
+            - generic [aria-hidden] [ref=f4e111]: "1"
+            - button "Notifications, 1 unread" [ref=f4e112] [cursor=pointer]
+          - button "Discovery" [ref=f4e45] [cursor=pointer]
+          - button "Account menu" [ref=f4e57] [cursor=pointer]
+    - navigation [ref=f4e60]:
+      - navigation "Main navigation" [ref=f4e61]:
+        - generic [ref=f4e114]:
+          - button "Tasks" [expanded] [ref=f4e115] [cursor=pointer]
+          - list "Tasks" [ref=f4e120]:
+            - listitem [ref=f4e121]:
+              - link "My tasks" [ref=f4e122] [cursor=pointer]:
+                - /url: /tasks
+            - listitem [ref=f4e128]:
+              - link "All to-dos" [ref=f4e129] [cursor=pointer]:
+                - /url: /todos/all
+        - generic [ref=f4e136]:
+          - button "People" [expanded] [ref=f4e137] [cursor=pointer]
+          - list "People" [ref=f4e142]:
+            - listitem [ref=f4e143]:
+              - link "Associates" [ref=f4e144] [cursor=pointer]:
+                - /url: /associates
+            - listitem [ref=f4e152]:
+              - link "Organization" [ref=f4e153] [cursor=pointer]:
+                - /url: /organization
+        - generic [ref=f4e161]:
+          - button "Hiring & exits" [expanded] [ref=f4e162] [cursor=pointer]
+          - list "Hiring & exits" [ref=f4e167]:
+            - listitem [ref=f4e168]:
+              - link "Recruiting" [ref=f4e169] [cursor=pointer]:
+                - /url: /recruiting
+            - listitem [ref=f4e176]:
+              - link "Talent pool" [ref=f4e177] [cursor=pointer]:
+                - /url: /recruiting/talent
+            - listitem [ref=f4e182]:
+              - link "Onboarding" [ref=f4e183] [cursor=pointer]:
+                - /url: /onboarding
+            - listitem [ref=f4e189]:
+              - link "Offboarding" [ref=f4e190] [cursor=pointer]:
+                - /url: /offboarding
+        - generic [ref=f4e197]:
+          - button "Time & leave" [expanded] [ref=f4e198] [cursor=pointer]
+          - list "Time & leave" [ref=f4e203]:
+            - listitem [ref=f4e204]:
+              - link "Leave" [ref=f4e205] [cursor=pointer]:
+                - /url: /leave
+            - listitem [ref=f4e210]:
+              - link "Remote days" [ref=f4e211] [cursor=pointer]:
+                - /url: /remote
+            - listitem [ref=f4e218]:
+              - link "OOO Report" [ref=f4e219] [cursor=pointer]:
+                - /url: /ooo
+            - listitem [ref=f4e224]:
+              - link "Attendance" [ref=f4e225] [cursor=pointer]:
+                - /url: /attendance
+            - listitem [ref=f4e231]:
+              - link "Calendar" [ref=f4e232] [cursor=pointer]:
+                - /url: /leave/calendar
+      - button "AI Assistant" [ref=f4e63] [cursor=pointer]
+      - navigation "Main navigation" [ref=f4e239]:
+        - list [ref=f4e241]:
+          - listitem [ref=f4e242]:
+            - link "Settings" [ref=f4e243] [cursor=pointer]:
+              - /url: /settings
+          - listitem [ref=f4e249]:
+            - link "Help" [ref=f4e250] [cursor=pointer]:
+              - /url: /help
+      - button "Collapse menu" [expanded] [ref=f4e74] [cursor=pointer]
+    - main [ref=f4e77]:
+      - generic [ref=f4e78]:
+        - generic [ref=f4e258]:
+          - generic [ref=f4e262]:
+            - generic [ref=f4e263]:
+              - heading "Recruiting" [level=1] [ref=f4e264]
+              - paragraph [ref=f4e265]: Open roles across the company and who is moving through them.
+            - button "Post a job" [ref=f4e267] [cursor=pointer]
+          - generic [ref=f4e272]:
+            - generic [ref=f4e274]:
+              - textbox "Search" [ref=f4e281]:
+                - /placeholder: Search title, organization, manager…
+              - button "Organization" [ref=f4e284] [cursor=pointer]:
+                - generic [ref=f4e285]:
+                  - generic [ref=f4e286]: "Organization:"
+                  - generic [ref=f4e287]: Any
+              - button "Location" [ref=f4e290] [cursor=pointer]:
+                - generic [ref=f4e291]:
+                  - generic [ref=f4e292]: "Location:"
+                  - generic [ref=f4e293]: Any
+              - button "Status" [ref=f4e296] [cursor=pointer]:
+                - generic [ref=f4e297]:
+                  - generic [ref=f4e298]: "Status:"
+                  - generic [ref=f4e299]: Any
+              - button "Hiring manager" [ref=f4e302] [cursor=pointer]:
+                - generic [ref=f4e303]:
+                  - generic [ref=f4e304]: "Hiring manager:"
+                  - generic [ref=f4e305]: Any
+              - generic [ref=f4e306]: 2 openings
+            - generic [ref=f4e308]:
+              - table [ref=f4e312]:
+                - rowgroup [ref=f4e313]:
+                  - row [ref=f4e314]:
+                    - columnheader [ref=f4e315]:
+                      - button "Sort by Opening" [ref=f4e316] [cursor=pointer]: Opening
+                    - columnheader [ref=f4e320]:
+                      - button "Sort by Organization" [ref=f4e321] [cursor=pointer]: Organization
+                    - columnheader "Location" [ref=f4e325]
+                    - columnheader [ref=f4e326]:
+                      - button "Sort by Candidates" [ref=f4e327] [cursor=pointer]: Candidates
+                    - columnheader [ref=f4e331]:
+                      - button "Sort by Status" [ref=f4e332] [cursor=pointer]: Status
+                    - columnheader [ref=f4e336]:
+                      - button "Sort by Hiring manager" [ref=f4e337] [cursor=pointer]: Hiring manager
+                    - columnheader [aria-hidden] [ref=f4e341]
+                - rowgroup [ref=f4e342]:
+                  - row [ref=f4e343] [cursor=pointer]:
+                    - cell [ref=f4e344]:
+                      - generic [ref=f4e345]:
+                        - paragraph [ref=f4e346]: AI-Driven Full Stack Developer
+                        - paragraph [ref=f4e347]: Mid · Full-time · 1 opening
+                    - cell [ref=f4e348]:
+                      - paragraph [ref=f4e355]: Company-wide
+                    - cell "Vietnam" [ref=f4e356]
+                    - cell [ref=f4e359]:
+                      - paragraph [ref=f4e366]: "1"
+                    - cell "Open" [ref=f4e367]
+                    - cell "Chau Tun Test Change Name Chau" [ref=f4e370]
+                    - cell [ref=f4e375]:
+                      - button "Row actions" [ref=f4e378]
+                  - row [ref=f4e388] [cursor=pointer]:
+                    - cell [ref=f4e389]:
+                      - generic [ref=f4e390]:
+                        - paragraph [ref=f4e391]: Social Media Executive
+                        - paragraph [ref=f4e392]: Mid · Full-time · 1 opening
+                    - cell [ref=f4e393]:
+                      - paragraph [ref=f4e400]: Tera
+                    - cell "Vietnam" [ref=f4e401]
+                    - cell [ref=f4e404]:
+                      - paragraph [ref=f4e411]: "0"
+                    - cell "Draft" [ref=f4e412]
+                    - cell "Khai Haha" [ref=f4e415]
+                    - cell [ref=f4e420]:
+                      - button "Row actions" [ref=f4e423]
+              - generic [ref=f4e433]:
+                - textbox "20 / page" [ref=f4e436] [cursor=pointer]
+                - generic [ref=f4e437]: Page 1 of 1 · 2 total
+        - generic [ref=f4e440]:
+          - button "Attach a file" [ref=f4e441] [cursor=pointer]
+          - generic [ref=f4e444]:
+            - textbox "Message the assistant" [ref=f4e445]
+            - generic [aria-hidden]: Something clunky or broken? Tell me, I'll pass it to the team.
+          - button "Send" [disabled] [ref=f4e446]
+        - button "Hide the ask bar" [ref=f4e450] [cursor=pointer]
+  - alert [ref=f4e81]

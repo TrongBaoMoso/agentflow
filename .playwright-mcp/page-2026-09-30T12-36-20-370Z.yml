@@ -1,0 +1,478 @@
+- generic [active] [ref=f2e1]:
+  - generic [ref=f2e2]:
+    - generic [ref=f2e3]:
+      - generic [ref=f2e4]:
+        - button "Sidebar collapse button" [ref=f2e5] [cursor=pointer]
+        - link [ref=f2e9] [cursor=pointer]:
+          - /url: "#"
+          - text: "SWAT:"
+          - link "Dao Tran is SWAT officer. Please contact him for urgent problem" [ref=f2e10]:
+            - /url: "javascript:"
+          - text: "Parser:"
+          - link "Triet Le is monitoring the parser today. Please contact him for problem with parser" [ref=f2e12]:
+            - /url: "javascript:"
+      - list [ref=f2e14]:
+        - listitem [ref=f2e15]:
+          - link "Search" [ref=f2e16] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=f2e17]: search
+        - listitem [ref=f2e18]:
+          - link "Builds" [ref=f2e19] [cursor=pointer]:
+            - /url: "##builds"
+        - listitem [ref=f2e20]:
+          - link "add" [ref=f2e21] [cursor=pointer]:
+            - /url: "##create_small_task"
+        - listitem [ref=f2e23]:
+          - link "Message" [ref=f2e24] [cursor=pointer]:
+            - /url: javascript:;
+            - generic [ref=f2e25]: notifications
+          - text: 
+        - listitem [ref=f2e26]:
+          - link [ref=f2e27] [cursor=pointer]:
+            - /url: javascript:;
+            - text: Bao Trinh
+            - img "Bao Trinh" [ref=f2e28]
+      - generic [ref=f2e29]:
+        - button "search" [ref=f2e30]
+        - generic [ref=f2e32]:
+          - searchbox "Search input" [ref=f2e33]
+          - searchbox "Search input" [ref=f2e34]
+        - link "close search" [ref=f2e35] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=f2e36]: close
+    - generic [ref=f2e39]:
+      - list [ref=f2e40]:
+        - listitem [ref=f2e41]:
+          - link "Bao Trinh  Bao Trinh Dev" [ref=f2e42] [cursor=pointer]:
+            - /url: javascript:;
+            - img "Bao Trinh" [ref=f2e45]
+            - generic [ref=f2e46]:
+              - generic [ref=f2e47]: 
+              - text: Bao Trinh
+              - generic [ref=f2e48]: Dev
+        - listitem: 
+      - list [ref=f2e49]:
+        - listitem [ref=f2e50]: X Moso
+        - listitem [ref=f2e51]:
+          - tab "group Company directory" [ref=f2e52] [cursor=pointer]:
+            - generic [ref=f2e53]: group
+            - text: Company directory
+        - listitem [ref=f2e54]:
+          - link " assignment_o Activities" [ref=f2e55] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f2e56]: 
+            - generic [ref=f2e57]: assignment_o
+            - text: Activities
+        - listitem [ref=f2e58]:
+          - link " check Reports" [ref=f2e59] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f2e60]: 
+            - generic [ref=f2e61]: check
+            - text: Reports
+        - listitem [ref=f2e62]:
+          - link " settings Builds" [ref=f2e63] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f2e64]: 
+            - generic [ref=f2e65]: settings
+            - text: Builds
+        - listitem [ref=f2e66]:
+          - link " bug_report Errors" [ref=f2e67] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f2e68]: 
+            - generic [ref=f2e69]: bug_report
+            - text: Errors
+        - listitem [ref=f2e70]:
+          - link " System" [ref=f2e71] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f2e72]: 
+            - text: System
+    - generic [ref=f2e76]:
+      - heading [level=1] [ref=f2e527]:
+        - text: Builds
+        - paragraph [ref=f2e78]:
+          - generic [ref=f2e528]:
+            - text: daotran.txd@gmail.com broke build 40 minute(s) ago. Dao Tran (daotx) is locking push
+            - strong [ref=f2e529]: because of test break
+      - generic [ref=f2e84]:
+        - tablist [ref=f2e85]:
+          - tab "builds" [ref=f2e86] [cursor=pointer]: Builds
+          - tab "status" [ref=f2e87] [cursor=pointer]:
+            - generic [ref=f2e88]: rss_feed
+            - text: Status
+          - tab "parsers" [ref=f2e89] [cursor=pointer]:
+            - generic [ref=f2e90]: insert_drive_file
+            - text: Parsers
+          - tab "tests" [ref=f2e91] [cursor=pointer]:
+            - generic [ref=f2e92]: insert_drive_file
+            - text: Tests
+          - tab "builders" [ref=f2e93] [cursor=pointer]:
+            - generic [ref=f2e94]: settings
+            - text: Builders
+          - tab "activities" [ref=f2e95] [cursor=pointer]:
+            - generic [ref=f2e96]: history
+            - text: Activities
+        - generic [ref=f2e99]:
+          - generic [ref=f2e100]:
+            - generic [ref=f2e101]:
+              - button "sync" [ref=f2e102] [cursor=pointer]
+              - link [ref=f2e105] [cursor=pointer]:
+                - /url: "javascript:"
+            - form [ref=f2e106]:
+              - generic "Repo" [ref=f2e107]:
+                - generic [ref=f2e108]:
+                  - text: Repo
+                  - generic [ref=f2e109]: (optional)
+                - combobox [aria-hidden] [ref=f2e110]
+                - combobox "Repo" [ref=f2e113] [cursor=pointer]
+              - generic "Type" [ref=f2e115]:
+                - generic [ref=f2e116]:
+                  - text: Type
+                  - generic [ref=f2e117]: (optional)
+                - combobox [aria-hidden] [ref=f2e118]
+                - combobox "× install" [ref=f2e121] [cursor=pointer]:
+                  - generic "install" [ref=f2e122]:
+                    - generic [ref=f2e123]: ×
+                    - text: install
+              - generic "Status" [ref=f2e124]:
+                - generic [ref=f2e125]:
+                  - text: Status
+                  - generic [ref=f2e126]: (optional)
+                - combobox [aria-hidden] [ref=f2e127]
+                - combobox "Status" [ref=f2e130] [cursor=pointer]
+            - generic [ref=f2e132]:
+              - button "Reset filters" [ref=f2e133] [cursor=pointer]
+              - button "More" [ref=f2e134] [cursor=pointer]
+          - generic [ref=f2e135]:
+            - generic [ref=f2e530]:
+              - generic [ref=f2e531]: Type
+              - generic [ref=f2e532]: Status
+              - generic [ref=f2e533]: Note
+              - generic [ref=f2e534]: Server
+              - generic [ref=f2e535]: Time (m)
+            - generic [ref=f2e143]:
+              - generic [ref=f2e144]:
+                - generic [ref=f2e536]:
+                  - generic [ref=f2e537]:
+                    - group [ref=f2e539]:
+                      - button "install" [ref=f2e540] [cursor=pointer]
+                    - generic [ref=f2e541]: packs/loan
+                  - generic [ref=f2e542]: queued
+                  - generic [ref=f2e546]:
+                    - text: Bao RerunDao (packs)
+                    - 'link "Ticket-37623388011: Exclude Subject Property Net Cash Flow from DTI income when subject rental is counted via Housing Expenses" [ref=f2e547] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/9ebb89a624c43f75a6dc2fbcda5116123decf8f5
+                  - generic [ref=f2e548] [cursor=pointer]: batman
+                - generic [ref=f2e550]:
+                  - generic [ref=f2e551]:
+                    - group [ref=f2e553]:
+                      - button "install" [ref=f2e554] [cursor=pointer]
+                    - generic [ref=f2e555]: moso-pricing
+                  - generic [ref=f2e556]: succeeded
+                  - generic [ref=f2e560]:
+                    - text: Trung (packs)
+                    - 'link "T-0001: Rocket Pro Non-QM 09/29 sheet with Non-Agency rates" [ref=f2e561] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/71fb2954f7d9612139091e30ad1cbdd1ab626920
+                    - text: Trung (packs)
+                    - 'link "T-0002: Rocket Pro DSCR 660-679 FICO row expectations" [ref=f2e562] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/7e78485e9bc983a460731bb947ca85f1f1c5f056
+                    - text: Trung (packs)
+                    - 'link "NexBank: Investment $400k incentive row expectations" [ref=f2e563] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/ba9ba34532315936e80760572a11dea8fa58b142
+                    - text: Trung (packs)
+                    - link "add 6-month prepayment penalty term" [ref=f2e564] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/ce99ecdd2ebd3f99b7ad94c08fd5058858fffcb4
+                    - text: Trung (packs)
+                    - link "accept Champions Non-QM coverage expectations and DSCR scenario test" [ref=f2e565] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/a900663d4ed7d9293e8618b1498622d21090f927
+                    - text: Trung (packs)
+                    - 'link "[Parser failed] Eleven Mortgage: 09/22/2026" [ref=f2e566] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/13ac90d564916d5884ce32ff71b14cf0f4b49440
+                    - text: Trung (packs)
+                    - 'link "Eleven Mortgage: premium cap expectations and getPremiumCap test" [ref=f2e567] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/f202f3e2bc2a6d54ca9d895cdc68106226ae952d
+                  - generic [ref=f2e568] [cursor=pointer]: batman
+                  - generic [ref=f2e569]:
+                    - generic [ref=f2e570]: 23s
+                    - generic [ref=f2e571]: 9/30/2026, 7:09:04 PM
+                - generic [ref=f2e572]:
+                  - generic [ref=f2e573]:
+                    - group [ref=f2e575]:
+                      - button "install" [ref=f2e576] [cursor=pointer]
+                    - generic [ref=f2e577]: packs/quote
+                  - generic [ref=f2e578]: succeeded
+                  - generic [ref=f2e582]:
+                    - text: Trung (packs)
+                    - 'link "T-0001: Rocket Pro Non-QM 09/29 sheet with Non-Agency rates" [ref=f2e583] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/71fb2954f7d9612139091e30ad1cbdd1ab626920
+                    - text: Trung (packs)
+                    - 'link "T-0002: Rocket Pro DSCR 660-679 FICO row expectations" [ref=f2e584] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/7e78485e9bc983a460731bb947ca85f1f1c5f056
+                    - text: Trung (packs)
+                    - 'link "NexBank: Investment $400k incentive row expectations" [ref=f2e585] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/ba9ba34532315936e80760572a11dea8fa58b142
+                    - text: Trung (packs)
+                    - link "add 6-month prepayment penalty term" [ref=f2e586] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/ce99ecdd2ebd3f99b7ad94c08fd5058858fffcb4
+                    - text: Trung (packs)
+                    - link "accept Champions Non-QM coverage expectations and DSCR scenario test" [ref=f2e587] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/a900663d4ed7d9293e8618b1498622d21090f927
+                    - text: Trung (packs)
+                    - 'link "[Parser failed] Eleven Mortgage: 09/22/2026" [ref=f2e588] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/13ac90d564916d5884ce32ff71b14cf0f4b49440
+                    - text: Trung (packs)
+                    - 'link "Eleven Mortgage: premium cap expectations and getPremiumCap test" [ref=f2e589] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/f202f3e2bc2a6d54ca9d895cdc68106226ae952d
+                  - generic [ref=f2e590] [cursor=pointer]: batman
+                  - generic [ref=f2e591]:
+                    - generic [ref=f2e592]: 12s
+                    - generic [ref=f2e593]: 9/30/2026, 7:06:43 PM
+                - generic [ref=f2e594]:
+                  - generic [ref=f2e595]:
+                    - group [ref=f2e597]:
+                      - button "install" [ref=f2e598] [cursor=pointer]
+                    - generic [ref=f2e599]: packs/loan
+                  - generic [ref=f2e600]: succeeded
+                  - generic [ref=f2e604]:
+                    - text: Bao RerunDao (packs)
+                    - 'link "Ticket-37623388011: Exclude Subject Property Net Cash Flow from DTI income when subject rental is counted via Housing Expenses" [ref=f2e605] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/9ebb89a624c43f75a6dc2fbcda5116123decf8f5
+                  - generic [ref=f2e606] [cursor=pointer]: batman
+                  - generic [ref=f2e607]:
+                    - generic [ref=f2e608]: 1m 32s
+                    - generic [ref=f2e609]: 9/30/2026, 6:51:32 PM
+                - generic [ref=f2e610]:
+                  - generic [ref=f2e611]:
+                    - group [ref=f2e613]:
+                      - button "install" [ref=f2e614] [cursor=pointer]
+                    - generic [ref=f2e615]: packs/loan
+                  - generic [ref=f2e616]: succeeded
+                  - generic [ref=f2e620]:
+                    - text: Bao RerunBao (packs)
+                    - link [ref=f2e621] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/fbf42187552cd5732f12ed9034b41fe7efd72ccf
+                      - text: "feat(recruiting): stamp lead origin on LORecruiting at create + fix keyed-resubmit attribution (cn1rh P1a, 2zm7s) (#3590)* feat(recruiting): stamp the entry page (lead origin) on LORecruiting at create; close keyed-resubmit attribution hole [agentflow-cn1rh, agentflow-2zm7s]Co-Authored-By: Claude Opus 5.5 (1M context)"
+                      - generic [ref=f2e622]:
+                        - text: "* fix(recruiting): keep the stamp out of public responses; keyed resubmit fills attribution only when empty; reachable SLUG_INVALID [agentflow-cn1rh, agentflow-2zm7s]Co-Authored-By: Claude Opus 5.5 (1M context)"
+                        - generic [ref=f2e623]:
+                          - text: "* fix(recruiting): keyed late fill only within 24h of row creation [agentflow-cn1rh, agentflow-2zm7s]Co-Authored-By: Claude Opus 5.5 (1M context)"
+                          - generic [ref=f2e624]:
+                            - text: "---------Co-authored-by: TrongBaoMoso"
+                            - generic [ref=f2e625]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f2e626] [cursor=pointer]: batman
+                  - generic [ref=f2e627]:
+                    - generic [ref=f2e628]: 1m 30s
+                    - generic [ref=f2e629]: 9/30/2026, 5:48:26 PM
+                - generic [ref=f2e630]:
+                  - generic [ref=f2e631]:
+                    - group [ref=f2e633]:
+                      - button "install" [ref=f2e634] [cursor=pointer]
+                    - generic [ref=f2e635]: moso-pricing
+                  - generic [ref=f2e636]: succeeded
+                  - generic [ref=f2e640]:
+                    - text: Tho (packs)
+                    - link "[Pylon] Pylon pipeline triage popup for the four ops presets" [ref=f2e641] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/6c35411104179472aae25ebfc577950e3e14131f
+                  - generic [ref=f2e642] [cursor=pointer]: batman
+                  - generic [ref=f2e643]:
+                    - generic [ref=f2e644]: 22s
+                    - generic [ref=f2e645]: 9/30/2026, 4:15:30 PM
+                - generic [ref=f2e646]:
+                  - generic [ref=f2e647]:
+                    - group [ref=f2e649]:
+                      - button "install" [ref=f2e650] [cursor=pointer]
+                    - generic [ref=f2e651]: packs/quote
+                  - generic [ref=f2e652]: succeeded
+                  - generic [ref=f2e656]:
+                    - text: Tho (packs)
+                    - link "[Pylon] Pylon pipeline triage popup for the four ops presets" [ref=f2e657] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/6c35411104179472aae25ebfc577950e3e14131f
+                  - generic [ref=f2e658] [cursor=pointer]: batman
+                  - generic [ref=f2e659]:
+                    - generic [ref=f2e660]: 11s
+                    - generic [ref=f2e661]: 9/30/2026, 4:14:14 PM
+                - generic [ref=f2e662]:
+                  - generic [ref=f2e663]:
+                    - group [ref=f2e665]:
+                      - button "install" [ref=f2e666] [cursor=pointer]
+                    - generic [ref=f2e667]: packs/pylon-apis
+                  - generic [ref=f2e668]: succeeded
+                  - generic [ref=f2e672]:
+                    - text: Tho (packs)
+                    - link "[Pylon] Pylon pipeline triage popup for the four ops presets" [ref=f2e673] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/6c35411104179472aae25ebfc577950e3e14131f
+                  - generic [ref=f2e674] [cursor=pointer]: batman
+                  - generic [ref=f2e675]:
+                    - generic [ref=f2e676]: 11s
+                    - generic [ref=f2e677]: 9/30/2026, 4:13:24 PM
+                - generic [ref=f2e678]:
+                  - generic [ref=f2e679]:
+                    - group [ref=f2e681]:
+                      - button "install" [ref=f2e682] [cursor=pointer]
+                    - generic [ref=f2e683]: packs/loan
+                  - generic [ref=f2e684]: succeeded
+                  - generic [ref=f2e688]:
+                    - text: Bao (packs)
+                    - link [ref=f2e689] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/fbf42187552cd5732f12ed9034b41fe7efd72ccf
+                      - text: "feat(recruiting): stamp lead origin on LORecruiting at create + fix keyed-resubmit attribution (cn1rh P1a, 2zm7s) (#3590) * feat(recruiting): stamp the entry page (lead origin) on LORecruiting at create; close keyed-resubmit attribution hole [agentflow-cn1rh, agentflow-2zm7s] Co-Authored-By: Claude Opus 5.5 (1M context)"
+                      - generic [ref=f2e690]:
+                        - text: "* fix(recruiting): keep the stamp out of public responses; keyed resubmit fills attribution only when empty; reachable SLUG_INVALID [agentflow-cn1rh, agentflow-2zm7s] Co-Authored-By: Claude Opus 5.5 (1M context)"
+                        - generic [ref=f2e691]:
+                          - text: "* fix(recruiting): keyed late fill only within 24h of row creation [agentflow-cn1rh, agentflow-2zm7s] Co-Authored-By: Claude Opus 5.5 (1M context)"
+                          - generic [ref=f2e692]:
+                            - text: "--------- Co-authored-by: TrongBaoMoso"
+                            - generic [ref=f2e693]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f2e694] [cursor=pointer]: batman
+                  - generic [ref=f2e695]:
+                    - generic [ref=f2e696]: 1m 33s
+                    - generic [ref=f2e697]: 9/30/2026, 2:09:54 PM
+                - generic [ref=f2e698]:
+                  - generic [ref=f2e699]:
+                    - group [ref=f2e701]:
+                      - button "install" [ref=f2e702] [cursor=pointer]
+                    - generic [ref=f2e703]: moso-pricing
+                  - generic [ref=f2e704]: succeeded
+                  - generic [ref=f2e708]:
+                    - text: Yen (moso-pricing)
+                    - 'link "[Parser failed] AAA Lending: 09/29/2026" [ref=f2e709] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/moso-pricing/commit/c12b6cedc8f83979c73d4421eb7abeb128906825
+                  - generic [ref=f2e710] [cursor=pointer]: batman
+                  - generic [ref=f2e711]:
+                    - generic [ref=f2e712]: 23s
+                    - generic [ref=f2e713]: 9/30/2026, 5:37:29 AM
+                - generic [ref=f2e714]:
+                  - generic [ref=f2e715]:
+                    - group [ref=f2e717]:
+                      - button "install" [ref=f2e718] [cursor=pointer]
+                    - generic [ref=f2e719]: moso-pricing
+                  - generic [ref=f2e720]: succeeded
+                  - generic [ref=f2e724]:
+                    - text: Yen (moso-pricing)
+                    - 'link "[Parser failed] NexBank, Union Home: 09/29/2026" [ref=f2e725] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/moso-pricing/commit/2fd5b879d19ac60e6d1076bee9f2c5110bef3b9f
+                  - generic [ref=f2e726] [cursor=pointer]: batman
+                  - generic [ref=f2e727]:
+                    - generic [ref=f2e728]: 23s
+                    - generic [ref=f2e729]: 9/29/2026, 11:30:11 PM
+                - generic [ref=f2e730]:
+                  - generic [ref=f2e731]:
+                    - group [ref=f2e733]:
+                      - button "install" [ref=f2e734] [cursor=pointer]
+                    - generic [ref=f2e735]: packs/loan
+                  - generic [ref=f2e736]: succeeded
+                  - generic [ref=f2e740]:
+                    - text: Anh (packs)
+                    - link "Send the file's dates and links, the invite time, and the officer's conditions to MCP (#3586) Adds the file's dates, links and invite time to the MCP transaction sync, and syncs the officer's conditions to MCP." [ref=f2e741] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/d060521d94e42c68c3bda311ad65c1506dc06631
+                  - generic [ref=f2e742] [cursor=pointer]: batman
+                  - generic [ref=f2e743]:
+                    - generic [ref=f2e744]: 1m 30s
+                    - generic [ref=f2e745]: 9/29/2026, 7:56:21 PM
+                - generic [ref=f2e746]:
+                  - generic [ref=f2e747]:
+                    - group [ref=f2e749]:
+                      - button "install" [ref=f2e750] [cursor=pointer]
+                    - generic [ref=f2e751]: packs/loan
+                  - generic [ref=f2e752]: succeeded
+                  - generic [ref=f2e756]:
+                    - text: Trung (packs)
+                    - 'link "MOSO-15805: Update visa eligibility per guideline, keep legacy values" [ref=f2e757] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/f214af0d0858fca516de808b31fedffd0080a24d
+                  - generic [ref=f2e758] [cursor=pointer]: batman
+                  - generic [ref=f2e759]:
+                    - generic [ref=f2e760]: 1m 28s
+                    - generic [ref=f2e761]: 9/29/2026, 6:48:03 PM
+                - generic [ref=f2e762]:
+                  - generic [ref=f2e763]:
+                    - group [ref=f2e765]:
+                      - button "install" [ref=f2e766] [cursor=pointer]
+                    - generic [ref=f2e767]: packs/loan
+                  - generic [ref=f2e768]: succeeded
+                  - generic [ref=f2e772]:
+                    - text: Tho (packs)
+                    - link "Auto-assign unassigned Figure HELOC applications to default LO" [ref=f2e773] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/71f7ed1533c03d94f476c5c47f6d031d531a7c6b
+                  - generic [ref=f2e774] [cursor=pointer]: batman
+                  - generic [ref=f2e775]:
+                    - generic [ref=f2e776]: 1m 32s
+                    - generic [ref=f2e777]: 9/29/2026, 5:00:20 PM
+                - generic [ref=f2e778]:
+                  - generic [ref=f2e779]:
+                    - group [ref=f2e781]:
+                      - button "install" [ref=f2e782] [cursor=pointer]
+                    - generic [ref=f2e783]: packs/loan
+                  - generic [ref=f2e784]: succeeded
+                  - generic [ref=f2e788]:
+                    - text: Dao (packs)
+                    - 'link "MOSO-17270: Fix VA residual income watcher freezing/miscalculating on loans with real estate Co-Authored-By: Claude Sonnet 5" [ref=f2e789] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/c8a7b08fafc7cfe96a3e048996a023eb702e02ee
+                  - generic [ref=f2e790] [cursor=pointer]: batman
+                  - generic [ref=f2e791]:
+                    - generic [ref=f2e792]: 1m 30s
+                    - generic [ref=f2e793]: 9/29/2026, 1:56:19 PM
+              - text: 
+          - generic "Page Navigation" [ref=f2e405]:
+            - list [ref=f2e407]:
+              - listitem [ref=f2e408] [cursor=pointer]:
+                - generic "Previous" [ref=f2e409]: «
+              - listitem [ref=f2e410] [cursor=pointer]:
+                - generic [ref=f2e411]: 1-15 of over 100
+              - listitem [ref=f2e412] [cursor=pointer]:
+                - generic "Next" [ref=f2e413]: »
+            - generic [ref=f2e414]:
+              - text: Showing
+              - combobox "Items per page" [ref=f2e415]:
+                - option "5"
+                - option "10" [selected]
+                - option "25"
+                - option "50"
+                - option "100"
+              - text: items per page
+    - link "Scroll to top" [ref=f2e416] [cursor=pointer]:
+      - /url: javascript:;
+      - generic [ref=f2e417]: keyboard_arrow_up
+  - iframe
+  - generic [ref=f2e418]:
+    - link "System Improvement?" [ref=f2e419] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f2e420]: send
+    - link "Help?" [ref=f2e421] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f2e422]: help
+    - link "Chat" [ref=f2e423] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f2e424]: chat
+  - log [ref=f2e425]
+  - log [ref=f2e426]
+  - log [ref=f2e427]
+  - log [ref=f2e428]
+  - log [ref=f2e429]
+  - log [ref=f2e430]
+  - log [ref=f2e431]
+  - log [ref=f2e432]
+  - log [ref=f2e433]
+  - log [ref=f2e434]
+  - log [ref=f2e435]
+  - log [ref=f2e436]
+  - log [ref=f2e437]
+  - log [ref=f2e438]
+  - log [ref=f2e439]
+  - log [ref=f2e440]
+  - log [ref=f2e441]
+  - log [ref=f2e442]
+  - log [ref=f2e443]
+  - log [ref=f2e794]
+  - log [ref=f2e795]
+  - log [ref=f2e796]
+  - log [ref=f2e797]
+  - log [ref=f2e798]
+  - log [ref=f2e799]
+  - log [ref=f2e800]
+  - log [ref=f2e801]
+  - log [ref=f2e802]
+  - log [ref=f2e803]
+  - log [ref=f2e804]
+  - log [ref=f2e805]
+  - log [ref=f2e806]
+  - log [ref=f2e807]
+  - log [ref=f2e808]

@@ -1,0 +1,28 @@
+- generic [ref=f2e2]:
+  - banner [ref=f2e3]:
+    - link [ref=f2e4] [cursor=pointer]:
+      - /url: /
+      - img "Logo Chính phủ Việt Nam" [ref=f2e5]
+    - link [ref=f2e7] [cursor=pointer]:
+      - /url: https://sso.dancuquocgia.gov.vn/auth?response_type=code&client_id=sso-c12-dvc-web&redirect_uri=https%3A%2F%2Fdichvucong.gov.vn%2Fsso&scope=openid
+      - button "Đăng nhập" [ref=f2e8]
+  - banner [ref=f2e11]:
+    - navigation [ref=f2e14]:
+      - list [ref=f2e15]:
+        - listitem [ref=f2e16]:
+          - link [ref=f2e17] [cursor=pointer]:
+            - /url: /
+        - listitem [ref=f2e20]:
+          - generic [ref=f2e21] [cursor=pointer]: Thông tin và dịch vụ
+        - listitem [ref=f2e24]:
+          - link "Thanh toán trực tuyến" [ref=f2e25] [cursor=pointer]:
+            - /url: /thanh-toan-truc-tuyen
+        - listitem [ref=f2e26]:
+          - generic [ref=f2e27] [cursor=pointer]: Phản ánh kiến nghị
+        - listitem [ref=f2e30]:
+          - generic [ref=f2e31] [cursor=pointer]: Hỗ trợ
+  - main [ref=f2e34]:
+    - img "Loading..." [ref=f2e38]
+  - contentinfo [ref=f2e39]:
+    - generic [ref=f2e40]: "Cơ quan chủ quản: Trung tâm dữ liệu quốc gia - Bộ Công an. Tổng đài hỗ trợ: 18001096"
+  - region "Notifications Alt+T"

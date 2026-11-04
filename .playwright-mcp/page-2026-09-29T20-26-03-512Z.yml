@@ -1,0 +1,305 @@
+- generic [ref=f5e1]:
+  - alert [ref=f5e2]
+  - generic [ref=f5e3]:
+    - banner [ref=f5e4]:
+      - generic [ref=f5e5]:
+        - img "Loan Factory" [ref=f5e6]
+        - generic [ref=f5e7]: Recruit
+      - generic [aria-hidden] [ref=f5e8]:
+        - generic [ref=f5e12]: Search candidates, NMLS, companies…
+        - generic [ref=f5e13]: ⌘ K
+      - generic [ref=f5e14]:
+        - button "Notifications, 3 unread" [ref=f5e192] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f5e193]: "3"
+        - generic [ref=f5e20]:
+          - button "Change language" [ref=f5e21] [cursor=pointer]:
+            - generic [ref=f5e22]: English
+          - button "Switch to dark mode" [active] [ref=f5e567] [cursor=pointer]
+        - button "Discovery" [ref=f5e194] [cursor=pointer]
+        - button "Your account" [ref=f5e36] [cursor=pointer]:
+          - generic [ref=f5e37]:
+            - generic [ref=f5e38]: Manh Admin
+            - generic [ref=f5e39]: RECRUITER · manhadmin@viet18.com
+    - navigation [ref=f5e40]:
+      - navigation [ref=f5e41]:
+        - generic [ref=f5e42]: Frequent
+        - link [ref=f5e43] [cursor=pointer]:
+          - /url: /today
+        - link [ref=f5e48] [cursor=pointer]:
+          - /url: /inbox/hot
+        - link [ref=f5e52] [cursor=pointer]:
+          - /url: /inbox/cold
+        - link [ref=f5e67] [cursor=pointer]:
+          - /url: /pipeline
+        - link [ref=f5e72] [cursor=pointer]:
+          - /url: /exceptions
+        - link [ref=f5e76] [cursor=pointer]:
+          - /url: /reports
+        - link [ref=f5e82] [cursor=pointer]:
+          - /url: /work
+        - link [ref=f5e87] [cursor=pointer]:
+          - /url: /sponsorships
+      - navigation [ref=f5e93]:
+        - generic [ref=f5e94]: Configuration
+        - link [ref=f5e95] [cursor=pointer]:
+          - /url: /templates
+        - link [ref=f5e100] [cursor=pointer]:
+          - /url: /duplicates
+        - link [ref=f5e106] [cursor=pointer]:
+          - /url: /dormant
+        - link [ref=f5e111] [cursor=pointer]:
+          - /url: /conversations
+        - link [ref=f5e120] [cursor=pointer]:
+          - /url: /settings
+    - main [ref=f5e141]:
+      - generic [ref=f5e142]:
+        - generic [ref=f5e144]:
+          - generic [ref=f5e145]: Exceptions · the alarms, not the reports
+          - heading [level=1] [ref=f5e146]:
+            - text: Leads the clock
+            - emphasis [ref=f5e147]: beat us
+            - text: to — act now
+        - generic [ref=f5e148]:
+          - generic [ref=f5e149]:
+            - generic [ref=f5e156]:
+              - generic [ref=f5e157]: OVERDUE · past first-touch SLA
+              - generic [ref=f5e158]: per-source hours — the red alarm
+            - generic [ref=f5e206]: "8"
+          - generic [ref=f5e160]:
+            - generic [ref=f5e165]:
+              - generic [ref=f5e166]: UNCLAIMED · early warning
+              - generic [ref=f5e167]: nobody claimed within 5 minutes
+            - generic [ref=f5e207]: "0"
+          - generic [ref=f5e169]:
+            - generic [ref=f5e175]:
+              - generic [ref=f5e176]: UNOWNED
+              - generic [ref=f5e177]: 5,829 of them waiting over 30 days
+            - generic [ref=f5e208]: 5,850
+          - generic [ref=f5e179]:
+            - generic [ref=f5e185]:
+              - generic [ref=f5e186]: OWNED
+              - generic [ref=f5e187]: active candidates with a recruiter
+            - generic [ref=f5e209]: "148"
+        - generic [ref=f5e210]:
+          - generic [ref=f5e211]:
+            - generic [ref=f5e212]: Past their SLA
+            - generic [ref=f5e213]: first-touch deadline blown — oldest deadline first
+          - table [ref=f5e215]:
+            - rowgroup [ref=f5e216]:
+              - row [ref=f5e217]:
+                - columnheader "Candidate" [ref=f5e218]
+                - columnheader "Source" [ref=f5e219]
+                - columnheader "Waiting" [ref=f5e220]
+                - columnheader "First-touch due" [ref=f5e221]
+                - columnheader [ref=f5e222]
+            - rowgroup [ref=f5e223]:
+              - row [ref=f5e224] [cursor=pointer]:
+                - cell "Secoxe Phone on file Email on file NMLS 121212" [ref=f5e225]:
+                  - generic [ref=f5e226]:
+                    - generic [aria-hidden] [ref=f5e227]: S
+                    - generic [ref=f5e228]:
+                      - generic [ref=f5e229]:
+                        - button "Secoxe" [ref=f5e230]
+                        - generic [ref=f5e232]:
+                          - img "Phone on file" [ref=f5e233]
+                          - img "Email on file" [ref=f5e236]
+                      - generic [ref=f5e240]: NMLS 121212
+                - cell "Event After Party · Pasadena · RSVP'd Sep 22" [ref=f5e241]:
+                  - generic [ref=f5e242]: Event
+                  - generic "After Party · Pasadena · RSVP'd Sep 22" [ref=f5e243]
+                - cell "7d 16h Entered Sep 22 · 10:45 AM" [ref=f5e244]:
+                  - generic [ref=f5e245]:
+                    - text: 7d 16h
+                    - generic [ref=f5e246]: Entered Sep 22 · 10:45 AM
+                - cell "Overdue 7d 1h was due Sep 23 · 2:00 AM" [ref=f5e247]:
+                  - generic [ref=f5e248]:
+                    - text: Overdue 7d 1h
+                    - generic [ref=f5e249]: was due Sep 23 · 2:00 AM
+                - cell [ref=f5e250]:
+                  - generic [ref=f5e251]:
+                    - button "Claim" [ref=f5e252]
+                    - generic "Assigning needs the CANDIDATE_TRANSFER grant (manager tier)" [ref=f5e255]:
+                      - button "Assign" [disabled] [ref=f5e256]
+              - row [ref=f5e265] [cursor=pointer]:
+                - cell "QA DeferFeeMobile Phone on file Email on file NMLS 7654321 TX" [ref=f5e266]:
+                  - generic [ref=f5e267]:
+                    - generic [aria-hidden] [ref=f5e268]: QD
+                    - generic [ref=f5e269]:
+                      - generic [ref=f5e270]:
+                        - button "QA DeferFeeMobile" [ref=f5e271]
+                        - generic [ref=f5e273]:
+                          - img "Phone on file" [ref=f5e274]
+                          - img "Email on file" [ref=f5e277]
+                      - generic [ref=f5e281]: NMLS 7654321
+                      - generic [ref=f5e282]: TX
+                - cell "Web form" [ref=f5e284]
+                - cell "6d 7h Entered Sep 23 · 7:39 PM" [ref=f5e286]:
+                  - generic [ref=f5e287]:
+                    - text: 6d 7h
+                    - generic [ref=f5e288]: Entered Sep 23 · 7:39 PM
+                - cell "Overdue 6d 1h was due Sep 24 · 2:00 AM" [ref=f5e289]:
+                  - generic [ref=f5e290]:
+                    - text: Overdue 6d 1h
+                    - generic [ref=f5e291]: was due Sep 24 · 2:00 AM
+                - cell [ref=f5e292]:
+                  - generic [ref=f5e293]:
+                    - button "Claim" [ref=f5e294]
+                    - generic "Assigning needs the CANDIDATE_TRANSFER grant (manager tier)" [ref=f5e297]:
+                      - button "Assign" [disabled] [ref=f5e298]
+              - row [ref=f5e307] [cursor=pointer]:
+                - cell "Hien 1 Phone on file Email on file NMLS 462346346" [ref=f5e308]:
+                  - generic [ref=f5e309]:
+                    - generic [aria-hidden] [ref=f5e310]: H1
+                    - generic [ref=f5e311]:
+                      - generic [ref=f5e312]:
+                        - button "Hien 1" [ref=f5e313]
+                        - generic [ref=f5e315]:
+                          - img "Phone on file" [ref=f5e316]
+                          - img "Email on file" [ref=f5e319]
+                      - generic [ref=f5e323]: NMLS 462346346
+                - cell "Event After Party · Pasadena · RSVP'd Sep 24" [ref=f5e324]:
+                  - generic [ref=f5e325]: Event
+                  - generic "After Party · Pasadena · RSVP'd Sep 24" [ref=f5e326]
+                - cell "5d 16h Entered Sep 24 · 10:57 AM" [ref=f5e327]:
+                  - generic [ref=f5e328]:
+                    - text: 5d 16h
+                    - generic [ref=f5e329]: Entered Sep 24 · 10:57 AM
+                - cell "Overdue 5d 1h was due Sep 25 · 2:00 AM" [ref=f5e330]:
+                  - generic [ref=f5e331]:
+                    - text: Overdue 5d 1h
+                    - generic [ref=f5e332]: was due Sep 25 · 2:00 AM
+                - cell [ref=f5e333]:
+                  - generic [ref=f5e334]:
+                    - button "Claim" [ref=f5e335]
+                    - generic "Assigning needs the CANDIDATE_TRANSFER grant (manager tier)" [ref=f5e338]:
+                      - button "Assign" [disabled] [ref=f5e339]
+              - row [ref=f5e348] [cursor=pointer]:
+                - cell "Chi Testwaive Phone on file Email on file NMLS 7484447 WI" [ref=f5e349]:
+                  - generic [ref=f5e350]:
+                    - generic [aria-hidden] [ref=f5e351]: CT
+                    - generic [ref=f5e352]:
+                      - generic [ref=f5e353]:
+                        - button "Chi Testwaive" [ref=f5e354]
+                        - generic [ref=f5e356]:
+                          - img "Phone on file" [ref=f5e357]
+                          - img "Email on file" [ref=f5e360]
+                      - generic [ref=f5e364]: NMLS 7484447
+                      - generic [ref=f5e365]: WI
+                - cell "Web form" [ref=f5e367]
+                - cell "1d 4h Entered Sep 28 · 10:46 PM" [ref=f5e369]:
+                  - generic [ref=f5e370]:
+                    - text: 1d 4h
+                    - generic [ref=f5e371]: Entered Sep 28 · 10:46 PM
+                - cell "Overdue 1d 3h was due Sep 28 · 11:46 PM" [ref=f5e372]:
+                  - generic [ref=f5e373]:
+                    - text: Overdue 1d 3h
+                    - generic [ref=f5e374]: was due Sep 28 · 11:46 PM
+                - cell [ref=f5e375]:
+                  - generic [ref=f5e376]:
+                    - button "Claim" [ref=f5e377]
+                    - generic "Assigning needs the CANDIDATE_TRANSFER grant (manager tier)" [ref=f5e380]:
+                      - button "Assign" [disabled] [ref=f5e381]
+              - row [ref=f5e570] [cursor=pointer]:
+                - cell "QA Welcome Neg Phone on file Email on file NMLS 9929002 TX" [ref=f5e391]:
+                  - generic [ref=f5e392]:
+                    - generic [aria-hidden] [ref=f5e393]: QN
+                    - generic [ref=f5e394]:
+                      - generic [ref=f5e395]:
+                        - button "QA Welcome Neg" [ref=f5e396]
+                        - generic [ref=f5e398]:
+                          - img "Phone on file" [ref=f5e399]
+                          - img "Email on file" [ref=f5e402]
+                      - generic [ref=f5e406]: NMLS 9929002
+                      - generic [ref=f5e407]: TX
+                - cell "Web form" [ref=f5e409]
+                - cell "1d 4h Entered Sep 28 · 11:17 PM" [ref=f5e571]:
+                  - generic [ref=f5e412]:
+                    - text: 1d 4h
+                    - generic [ref=f5e413]: Entered Sep 28 · 11:17 PM
+                - cell "Overdue 1d 3h was due yesterday · 12:17 AM" [ref=f5e572]:
+                  - generic [ref=f5e415]:
+                    - text: Overdue 1d 3h
+                    - generic [ref=f5e416]: was due yesterday · 12:17 AM
+                - cell [ref=f5e417]:
+                  - generic [ref=f5e418]:
+                    - button "Claim" [ref=f5e419]
+                    - generic "Assigning needs the CANDIDATE_TRANSFER grant (manager tier)" [ref=f5e422]:
+                      - button "Assign" [disabled] [ref=f5e423]
+              - row [ref=f5e573] [cursor=pointer]:
+                - cell "Janet Chitest No phone Email on file NMLS 4633 AK" [ref=f5e433]:
+                  - generic [ref=f5e434]:
+                    - generic [aria-hidden] [ref=f5e435]: JC
+                    - generic [ref=f5e436]:
+                      - generic [ref=f5e437]:
+                        - button "Janet Chitest" [ref=f5e438]
+                        - generic [ref=f5e440]:
+                          - img "No phone" [ref=f5e441]
+                          - img "Email on file" [ref=f5e445]
+                      - generic [ref=f5e449]: NMLS 4633
+                      - generic [ref=f5e450]: AK
+                - cell "Referral" [ref=f5e452]
+                - cell "1d 18h Entered Sep 28 · 9:19 AM" [ref=f5e574]:
+                  - generic [ref=f5e455]:
+                    - text: 1d 18h
+                    - generic [ref=f5e456]: Entered Sep 28 · 9:19 AM
+                - cell "Overdue 1d 1h was due yesterday · 2:00 AM" [ref=f5e457]:
+                  - generic [ref=f5e458]:
+                    - text: Overdue 1d 1h
+                    - generic [ref=f5e459]: was due yesterday · 2:00 AM
+                - cell [ref=f5e460]:
+                  - generic [ref=f5e461]:
+                    - button "Claim" [ref=f5e462]
+                    - generic "Assigning needs the CANDIDATE_TRANSFER grant (manager tier)" [ref=f5e465]:
+                      - button "Assign" [disabled] [ref=f5e466]
+              - row [ref=f5e475] [cursor=pointer]:
+                - cell "Chowfi Toni No phone Email on file NMLS 34555 CA, IA, ID" [ref=f5e476]:
+                  - generic [ref=f5e477]:
+                    - generic [aria-hidden] [ref=f5e478]: CT
+                    - generic [ref=f5e479]:
+                      - generic [ref=f5e480]:
+                        - button "Chowfi Toni" [ref=f5e481]
+                        - generic [ref=f5e483]:
+                          - img "No phone" [ref=f5e484]
+                          - img "Email on file" [ref=f5e488]
+                      - generic [ref=f5e492]: NMLS 34555
+                      - generic [ref=f5e493]: CA, IA, ID
+                - cell "Web form" [ref=f5e495]
+                - cell "1d 9h Entered Sep 28 · 6:00 PM" [ref=f5e497]:
+                  - generic [ref=f5e498]:
+                    - text: 1d 9h
+                    - generic [ref=f5e499]: Entered Sep 28 · 6:00 PM
+                - cell "Overdue 1d 1h was due yesterday · 2:00 AM" [ref=f5e500]:
+                  - generic [ref=f5e501]:
+                    - text: Overdue 1d 1h
+                    - generic [ref=f5e502]: was due yesterday · 2:00 AM
+                - cell [ref=f5e503]:
+                  - generic [ref=f5e504]:
+                    - button "Claim" [ref=f5e505]
+                    - generic "Assigning needs the CANDIDATE_TRANSFER grant (manager tier)" [ref=f5e508]:
+                      - button "Assign" [disabled] [ref=f5e509]
+              - row [ref=f5e575] [cursor=pointer]:
+                - 'cell "TRINH BAO #1 Phone on file Email on file NMLS 785746 AK, AL" [ref=f5e519]':
+                  - generic [ref=f5e520]:
+                    - generic [aria-hidden] [ref=f5e521]: T#
+                    - generic [ref=f5e522]:
+                      - generic [ref=f5e523]:
+                        - 'button "TRINH BAO #1" [ref=f5e524]'
+                        - generic [ref=f5e526]:
+                          - img "Phone on file" [ref=f5e527]
+                          - img "Email on file" [ref=f5e530]
+                      - generic [ref=f5e534]: NMLS 785746
+                      - generic [ref=f5e535]: AK, AL
+                - cell "Web form" [ref=f5e537]
+                - cell "17h 51m Entered yesterday · 9:34 AM" [ref=f5e576]:
+                  - generic [ref=f5e540]:
+                    - text: 17h 51m
+                    - generic [ref=f5e541]: Entered yesterday · 9:34 AM
+                - cell "Overdue 1h 25m was due today · 2:00 AM" [ref=f5e577]:
+                  - generic [ref=f5e543]:
+                    - text: Overdue 1h 25m
+                    - generic [ref=f5e544]: was due today · 2:00 AM
+                - cell [ref=f5e545]:
+                  - generic [ref=f5e546]:
+                    - button "Claim" [ref=f5e547]
+                    - generic "Assigning needs the CANDIDATE_TRANSFER grant (manager tier)" [ref=f5e550]:
+                      - button "Assign" [disabled] [ref=f5e551]

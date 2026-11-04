@@ -1,0 +1,105 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e7]:
+          - combobox "Search candidates, NMLS, companies…" [ref=e12]
+          - generic:
+            - generic "Press Ctrl K to search from anywhere": Ctrl K
+        - status [ref=e13]
+      - generic [ref=e14]:
+        - textbox "Dev persona" [ref=e26] [cursor=pointer]
+        - button "Switch to dark mode" [ref=e27] [cursor=pointer]
+        - button "Notifications" [ref=e33] [cursor=pointer]
+        - button "Apps" [ref=e38] [cursor=pointer]
+        - button "Account menu" [ref=e50] [cursor=pointer]:
+          - generic [ref=e51]: "?"
+  - navigation [ref=e53]:
+    - generic [ref=e54]:
+      - link "Go to the start of this app" [ref=e55] [cursor=pointer]:
+        - /url: /today
+        - generic [ref=e57]:
+          - img "Loan Factory" [ref=e58]
+          - generic [ref=e59]: Recruit
+      - button "Collapse menu" [expanded] [ref=e62] [cursor=pointer]
+    - navigation "Main navigation" [ref=e67]:
+      - list [ref=e69]:
+        - listitem [ref=e70]:
+          - link "My work today" [ref=e71] [cursor=pointer]:
+            - /url: /today
+      - generic [ref=e77]:
+        - button "Leads" [expanded] [ref=e78] [cursor=pointer]
+        - list "Leads" [ref=e83]:
+          - listitem [ref=e84]:
+            - link "Modex" [ref=e85] [cursor=pointer]:
+              - /url: /modex
+      - generic [ref=e93]:
+        - button "Manage" [expanded] [ref=e94] [cursor=pointer]
+        - list "Manage" [ref=e99]:
+          - listitem [ref=e100]:
+            - link "Audit" [ref=e101] [cursor=pointer]:
+              - /url: /audit
+      - generic [ref=e107]:
+        - button "Setup" [expanded] [ref=e108] [cursor=pointer]
+        - list "Setup" [ref=e113]:
+          - listitem [ref=e114]:
+            - link "Templates" [ref=e115] [cursor=pointer]:
+              - /url: /templates
+          - listitem [ref=e121]:
+            - link "Checklist templates" [ref=e122] [cursor=pointer]:
+              - /url: /checklist-templates
+          - listitem [ref=e129]:
+            - link "Permissions" [ref=e130] [cursor=pointer]:
+              - /url: /permissions
+          - listitem [ref=e136]:
+            - link "Settings" [ref=e137] [cursor=pointer]:
+              - /url: /settings
+    - button "TERA assistant" [ref=e144] [cursor=pointer]
+  - main [ref=e150]:
+    - generic [ref=e155]:
+      - generic [ref=e156]:
+        - heading "Conversations" [level=1] [ref=e159]
+        - generic [ref=e160]:
+          - button "Saved filters" [ref=e161] [cursor=pointer]
+          - group "Switch between table and card view" [ref=e165]:
+            - button "Table view" [pressed] [ref=e166] [cursor=pointer]
+            - button "Card view" [ref=e168] [cursor=pointer]
+          - button "Refresh" [ref=e174] [cursor=pointer]
+      - generic [ref=e180]:
+        - textbox "Search by name, email or phone" [ref=e187]
+        - generic [ref=e189]:
+          - generic: "Channel:"
+          - textbox "Channel" [ref=e190] [cursor=pointer]: All channels
+        - generic [ref=e192]:
+          - generic: "Status:"
+          - button "Status" [ref=e193] [cursor=pointer]:
+            - generic [ref=e194]: Active, Nurture
+        - generic [ref=e196]:
+          - generic: "Stage:"
+          - textbox "Stage" [ref=e197] [cursor=pointer]: All stages
+        - generic [ref=e199]:
+          - generic: "Sort:"
+          - textbox "Sort" [ref=e200] [cursor=pointer]: Most recent
+        - button "Unread only" [ref=e201] [cursor=pointer]
+        - button "Reset filters" [disabled] [ref=e210]
+      - table [ref=e219]:
+        - rowgroup [ref=e220]:
+          - row [ref=e221]:
+            - columnheader "Loan officer" [ref=e222]
+            - columnheader "Latest message" [ref=e223]
+            - columnheader "Stage" [ref=e224]
+            - columnheader "Status" [ref=e225]
+            - columnheader "People on it" [ref=e226]
+        - rowgroup [ref=e227]:
+          - row [ref=e228]:
+            - cell [ref=e229]
+          - row [ref=e231]:
+            - cell [ref=e232]
+          - row [ref=e234]:
+            - cell [ref=e235]
+          - row [ref=e237]:
+            - cell [ref=e238]
+          - row [ref=e240]:
+            - cell [ref=e241]
+          - row [ref=e243]:
+            - cell [ref=e244]

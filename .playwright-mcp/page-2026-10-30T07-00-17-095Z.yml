@@ -1,0 +1,61 @@
+- generic [ref=e1]:
+  - iframe [aria-hidden] [ref=e2]
+  - iframe
+  - generic [ref=e10]:
+    - generic [ref=e12]:
+      - generic [ref=e13]:
+        - link "Skip to content" [ref=e14] [cursor=pointer]:
+          - /url: ""
+        - link "Using Loan Factory Mail with screen readers" [ref=e15] [cursor=pointer]:
+          - /url: ""
+      - heading [level=1] [ref=e17]:
+        - banner [ref=e18]:
+          - generic [ref=e19]:
+            - generic [ref=e20]:
+              - button "Main menu" [expanded] [ref=e21] [cursor=pointer]
+              - link "Gmail" [ref=e26] [cursor=pointer]:
+                - /url: "#inbox"
+            - generic [ref=e28]:
+              - search "Search mail" [ref=e30]:
+                - heading "Search mail" [level=2] [ref=e31]
+                - table [ref=e33]:
+                  - rowgroup [ref=e34]:
+                    - row [ref=e35]:
+                      - cell [ref=e36]:
+                        - textbox "Search chat" [ref=e37]
+                - button "Search chat" [disabled] [ref=e38] [cursor=pointer]
+              - generic [ref=e42]:
+                - 'button "Status: Active" [ref=e43]'
+                - button [ref=e49] [cursor=pointer]
+                - button "Settings" [ref=e52] [cursor=pointer]
+                - generic [ref=e56]:
+                  - generic:
+                    - button "Ask Gemini" [ref=e63] [cursor=pointer]
+                    - tooltip [aria-hidden] [ref=e66]: Ask Gemini
+            - generic [ref=e68]:
+              - button "Google apps" [ref=e72] [cursor=pointer]
+              - 'button "Google Account: Bao Trinh (bao.trinh@loanfactory.com)" [ref=e76] [cursor=pointer]':
+                - 'button "Google Account: Bao Trinh (bao.trinh@loanfactory.com)" [ref=e81]'
+      - alert [ref=e86]:
+        - generic [ref=e87]:
+          - generic [ref=e88]: Enable desktop notifications for Loan Factory Mail.
+          - generic [ref=e89]:
+            - link "OK" [ref=e90] [cursor=pointer]
+            - link "No thanks" [ref=e91] [cursor=pointer]
+          - button "Close" [ref=e92] [cursor=pointer]
+    - generic [ref=e94]:
+      - navigation [ref=e95]:
+        - generic [ref=e96]:
+          - link "Mail, 12 unread messages" [ref=e97] [cursor=pointer]:
+            - generic [aria-hidden] [ref=e99]: "12"
+          - heading "Mail" [level=2] [ref=e100] [cursor=pointer]
+        - generic [ref=e101]:
+          - link "Chat" [ref=e102] [cursor=pointer]
+          - heading "Chat" [level=2] [ref=e103] [cursor=pointer]
+        - generic [ref=e104]:
+          - link "Meet" [ref=e105] [cursor=pointer]
+          - heading "Meet" [level=2] [ref=e106] [cursor=pointer]
+      - iframe [ref=e111]
+      - iframe [ref=e122]
+      - complementary "Side panel" [ref=e126]
+  - generic [ref=e133]: Suggestions updated

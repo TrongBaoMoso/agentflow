@@ -1,0 +1,197 @@
+  ▲ Next.js 14.2.13
+  - Environments: .env
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Skipping linting
+   Checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/15) ...
+   Generating static pages (3/15) 
+   Generating static pages (7/15) 
+   Generating static pages (11/15) 
+ ✓ Generating static pages (15/15)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                             Size     First Load JS
+┌ ○ /_not-found                                         173 B          88.6 kB
+├ ƒ /[locale]                                           82.4 kB         507 kB
+├ ƒ /[locale]/[...rest]                                 173 B          88.6 kB
+├ ƒ /[locale]/2000                                      11.2 kB         383 kB
+├ ƒ /[locale]/21lenderpaidbuydown                       5.33 kB         310 kB
+├ ƒ /[locale]/about-us                                  6.14 kB         364 kB
+├ ƒ /[locale]/acceptable-use                            1.25 kB         135 kB
+├ ƒ /[locale]/acronyms-abbreviations                    2.13 kB         110 kB
+├ ƒ /[locale]/ada                                       1.67 kB         100 kB
+├ ƒ /[locale]/add-more-state-license                    6.81 kB         402 kB
+├ ƒ /[locale]/after-party-event                         173 B          88.6 kB
+├ ƒ /[locale]/after-party-event/[year]/[month]/[state]  20.4 kB         362 kB
+├ ƒ /[locale]/after-party-event/arizona                 173 B          88.6 kB
+├ ƒ /[locale]/after-party-event/california              173 B          88.6 kB
+├ ƒ /[locale]/agent                                     18 kB           375 kB
+├ ƒ /[locale]/ambassador-program                        1.02 kB         369 kB
+├ ƒ /[locale]/apply                                     16.9 kB         270 kB
+├ ƒ /[locale]/apply-heloc                               22.3 kB         424 kB
+├ ƒ /[locale]/becoming-a-loan-officer                   3.23 kB         111 kB
+├ ƒ /[locale]/best-price                                9.22 kB         363 kB
+├ ƒ /[locale]/best-price-guarantee                      20.6 kB         372 kB
+├ ƒ /[locale]/branches                                  11.5 kB         378 kB
+├ ƒ /[locale]/branches/[branch_id]                      21.9 kB         237 kB
+├ ƒ /[locale]/california-dream                          21.4 kB         413 kB
+├ ƒ /[locale]/california-dream/thank-you                1.26 kB         135 kB
+├ ƒ /[locale]/careers                                   13.3 kB         253 kB
+├ ƒ /[locale]/careers/[key]                             27.4 kB         390 kB
+├ ƒ /[locale]/chattel                                   21.6 kB         417 kB
+├ ƒ /[locale]/chattel/thank-you                         1.26 kB         135 kB
+├ ƒ /[locale]/commercial                                4.84 kB         195 kB
+├ ƒ /[locale]/contact-us                                19.9 kB         289 kB
+├ ƒ /[locale]/cookies                                   1.25 kB         135 kB
+├ ƒ /[locale]/copyright                                 1.24 kB         137 kB
+├ ƒ /[locale]/corporate-coach-policies                  2.03 kB         164 kB
+├ ƒ /[locale]/corporate-coaches                         1.43 kB         113 kB
+├ ƒ /[locale]/corporate-discount                        21.5 kB         366 kB
+├ ƒ /[locale]/corporate-discount/thank-you              6.14 kB         134 kB
+├ ƒ /[locale]/demo/client-side/testing-api              763 B          95.5 kB
+├ ƒ /[locale]/demo/fields                               23.6 kB         283 kB
+├ ƒ /[locale]/demo/fonts                                173 B          88.6 kB
+├ ƒ /[locale]/demo/menu                                 1.82 kB         129 kB
+├ ƒ /[locale]/demo/modal                                2.36 kB         186 kB
+├ ƒ /[locale]/demo/server-side/testing-api              4.01 kB        98.7 kB
+├ ƒ /[locale]/demo/survey                               1.68 kB        97.9 kB
+├ ƒ /[locale]/demo/survey/banner                        1.59 kB         213 kB
+├ ƒ /[locale]/demo/survey/border-style                  2.82 kB         148 kB
+├ ƒ /[locale]/demo/survey/border-style/16px             1.99 kB         213 kB
+├ ƒ /[locale]/demo/survey/border-style/32px             2.02 kB         213 kB
+├ ƒ /[locale]/demo/survey/border-style/8px              2.01 kB         213 kB
+├ ƒ /[locale]/demo/survey/typography                    1.23 kB         213 kB
+├ ƒ /[locale]/demo/tailwind                             1.18 kB         103 kB
+├ ƒ /[locale]/demo/toast                                2.81 kB         105 kB
+├ ƒ /[locale]/disclosure                                12.6 kB         166 kB
+├ ƒ /[locale]/dscr-loan                                 24.7 kB         420 kB
+├ ƒ /[locale]/dscr-loan/thank-you                       1.22 kB         135 kB
+├ ƒ /[locale]/dual-licensed-realtor                     11.9 kB         235 kB
+├ ƒ /[locale]/education-compliance-course               16.6 kB         154 kB
+├ ƒ /[locale]/email-communication                       1.25 kB         135 kB
+├ ƒ /[locale]/employees-loan                            5.32 kB         113 kB
+├ ƒ /[locale]/equity-line                               5.63 kB         406 kB
+├ ƒ /[locale]/equity-line/thank-you                     1.24 kB         135 kB
+├ ƒ /[locale]/esign-terms                               1.25 kB         135 kB
+├ ƒ /[locale]/find-loan-officers                        215 B           314 kB
+├ ƒ /[locale]/find-loan-officers/[state]                215 B           314 kB
+├ ƒ /[locale]/find-loan-officers/[state]/[city]         215 B           314 kB
+├ ƒ /[locale]/find-loan-officers/detail/[key]           173 B          88.6 kB
+├ ƒ /[locale]/find-loan-officers/labels/[label]         215 B           314 kB
+├ ƒ /[locale]/find-loan-officers/language/[language]    216 B           314 kB
+├ ƒ /[locale]/find-loan-officers/specialty/[specialty]  216 B           314 kB
+├ ƒ /[locale]/grow-your-business-with-loan-factory      5.17 kB         200 kB
+├ ƒ /[locale]/historical-rates                          1.68 kB        97.9 kB
+├ ƒ /[locale]/historical-rates/[state]                  25.1 kB         238 kB
+├ ƒ /[locale]/home                                      1.68 kB        97.9 kB
+├ ƒ /[locale]/homeready                                 12.9 kB         330 kB
+├ ƒ /[locale]/join/[slug]                               31.5 kB         346 kB
+├ ƒ /[locale]/jumbo                                     25.1 kB         423 kB
+├ ƒ /[locale]/jumbo/thank-you                           1.25 kB         135 kB
+├ ƒ /[locale]/learn-center                              766 B           205 kB
+├ ƒ /[locale]/learn-center/article/[id]                 3.94 kB         419 kB
+├ ƒ /[locale]/learn-center/category/[id]                3.11 kB         180 kB
+├ ƒ /[locale]/lender-dpa-programs                       11 kB           268 kB
+├ ƒ /[locale]/lo-info-check                             1.9 kB         90.3 kB
+├ ƒ /[locale]/lo-recruiter-program                      4.18 kB         374 kB
+├ ƒ /[locale]/loan-coordinator                          12.4 kB         229 kB
+├ ƒ /[locale]/loan-officer                              34 kB           447 kB
+├ ƒ /[locale]/loan-officer-exam-center                  20.1 kB         336 kB
+├ ƒ /[locale]/loan-officer-exam-center/exam             4.14 kB         227 kB
+├ ƒ /[locale]/loan-officer-exam-center/exam/[exam_id]   5.07 kB         270 kB
+├ ƒ /[locale]/loan-officer-exam-center/exam/history     5.76 kB         158 kB
+├ ƒ /[locale]/loan-officer-exam-center/login            7.54 kB         259 kB
+├ ƒ /[locale]/loan-officer-exam-center/register         11.7 kB         339 kB
+├ ƒ /[locale]/loan-officer-old                          52 kB           381 kB
+├ ƒ /[locale]/loan-officer/thank-you                    12.3 kB         153 kB
+├ ƒ /[locale]/loan-process                              6.65 kB         155 kB
+├ ƒ /[locale]/loanofficerssummit2026                    22.2 kB         350 kB
+├ ƒ /[locale]/loanofficerssummit2026-attendee-guide     24.9 kB         143 kB
+├ ƒ /[locale]/manage-event                              14.2 kB         192 kB
+├ ƒ /[locale]/manage-join-page                          8.95 kB         239 kB
+├ ƒ /[locale]/manage-lo-programs/[programSlug]          19.7 kB         200 kB
+├ ƒ /[locale]/manage-loanofficerexamcenter              20.2 kB         274 kB
+├ ƒ /[locale]/mentorship-policies                       4.32 kB         112 kB
+├ ƒ /[locale]/mentorships                               8.47 kB         123 kB
+├ ƒ /[locale]/mentorships/[mentorId]                    1.69 kB         100 kB
+├ ƒ /[locale]/mobile-app                                8.07 kB         203 kB
+├ ƒ /[locale]/mortgage-calculator                       117 kB          450 kB
+├ ƒ /[locale]/mortgage-expert/[slug]                    44.4 kB         380 kB
+├ ƒ /[locale]/mortgage-rate-alert                       29.3 kB         449 kB
+├ ƒ /[locale]/moso-agent-licensing                      6.54 kB         172 kB
+├ ƒ /[locale]/newsletters                               6.23 kB         195 kB
+├ ƒ /[locale]/newsletters/article/[id]                  15.4 kB         422 kB
+├ ƒ /[locale]/newsletters/category/[id]                 5.95 kB         182 kB
+├ ƒ /[locale]/non-license-state                         13.5 kB         185 kB
+├ ƒ /[locale]/oneplus                                   12.1 kB         327 kB
+├ ƒ /[locale]/our-lenders                               24.2 kB         290 kB
+├ ƒ /[locale]/our-lenders/[lender_id]                   15.3 kB         257 kB
+├ ƒ /[locale]/payoff-statement                          23.7 kB         315 kB
+├ ƒ /[locale]/phone-text-communication                  1.25 kB         135 kB
+├ ƒ /[locale]/press-release                             772 B           205 kB
+├ ƒ /[locale]/press-release/article/[id]                1.62 kB         417 kB
+├ ƒ /[locale]/press-release/category/[id]               3.11 kB         180 kB
+├ ƒ /[locale]/privacy                                   1.25 kB         135 kB
+├ ƒ /[locale]/quote                                     1.68 kB        97.9 kB
+├ ƒ /[locale]/quote/non-qm                              22.7 kB         428 kB
+├ ƒ /[locale]/quote/non-qm/qualification                6.55 kB         380 kB
+├ ƒ /[locale]/quote/qm                                  46 kB           483 kB
+├ ƒ /[locale]/quote/qm/alert                            14.3 kB         204 kB
+├ ƒ /[locale]/quote/qm/comparison                       19.2 kB         381 kB
+├ ƒ /[locale]/quote/qm/comparison/compare-template      176 kB          545 kB
+├ ƒ /[locale]/quote/qm/qualification                    6.54 kB         380 kB
+├ ƒ /[locale]/rankings                                  1.68 kB        97.9 kB
+├ ƒ /[locale]/rankings-compact                          1.68 kB        97.9 kB
+├ ƒ /[locale]/rankings-compact/[type]                   198 B           252 kB
+├ ƒ /[locale]/rankings/[type]                           198 B           252 kB
+├ ƒ /[locale]/rates-comparisons                         15.1 kB         246 kB
+├ ƒ /[locale]/recruit/[slug]                            2.48 kB         443 kB
+├ ƒ /[locale]/refer                                     1.68 kB        97.9 kB
+├ ƒ /[locale]/refer/refer-a-borrower                    24.2 kB         361 kB
+├ ƒ /[locale]/refer/refer-a-loan-officer                20.1 kB         349 kB
+├ ƒ /[locale]/register-loan-officer                     313 B           437 kB
+├ ƒ /[locale]/register-loan-officer-v1                  313 B           437 kB
+├ ƒ /[locale]/register-loan-officer-v2                  313 B           437 kB
+├ ƒ /[locale]/register-loan-officer/server-error        7.02 kB         142 kB
+├ ƒ /[locale]/register-loan-officer/thank-you           2.77 kB         112 kB
+├ ƒ /[locale]/reverse                                   4.05 kB         405 kB
+├ ƒ /[locale]/reverse/thank-you                         1.23 kB         135 kB
+├ ƒ /[locale]/sba                                       4.02 kB         194 kB
+├ ƒ /[locale]/state-licenses                            6.11 kB         202 kB
+├ ƒ /[locale]/team-policies                             1.84 kB         163 kB
+├ ƒ /[locale]/teams                                     1.43 kB         113 kB
+├ ƒ /[locale]/teams/[team_id]                           9.27 kB         258 kB
+├ ƒ /[locale]/technology-advisor                        7.68 kB         125 kB
+├ ƒ /[locale]/terms-and-conditions                      1.25 kB         135 kB
+├ ƒ /[locale]/testimonials                              12.4 kB         195 kB
+├ ƒ /[locale]/texas-disclosures                         2.78 kB         101 kB
+├ ƒ /[locale]/today-rates                               17.7 kB         318 kB
+├ ƒ /[locale]/use-of-ai                                 1.25 kB         135 kB
+├ ƒ /[locale]/why-us                                    13.3 kB         385 kB
+├ ○ /apple-icon.png                                     0 B                0 B
+├ ○ /health/backend                                     5.61 kB         151 kB
+├ ○ /robots.txt                                         0 B                0 B
+├ ƒ /sitemap                                            0 B                0 B
+├ ƒ /webplus-api/getImageBlob                           0 B                0 B
+├ ƒ /webplus-api/lfiqAPI/getToken                       0 B                0 B
+├ ƒ /webplus-api/lfiqAPI/report                         0 B                0 B
+├ ƒ /webplus-api/lfiqAPI/search                         0 B                0 B
+├ ƒ /webplus-api/lo-admin/[...path]                     0 B                0 B
+├ ƒ /webplus-api/recaptcha                              0 B                0 B
+├ ƒ /webplus-api/recruiter-profile                      0 B                0 B
+└ ƒ /webplus-api/revalidate-sitemap                     0 B                0 B
++ First Load JS shared by all                           88.4 kB
+  ├ chunks/618379e6-70ff2197111ffe77.js                 53.6 kB
+  ├ chunks/9181-b970ed15669728db.js                     31.8 kB
+  └ other shared chunks (total)                         3.05 kB
+
+
+ƒ Middleware                                            54.3 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

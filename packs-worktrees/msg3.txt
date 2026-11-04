@@ -1,0 +1,18 @@
+fix(recruiting): only server-confirmed program credit reaches the pay reports (forged recruiter, marker)
+
+G1: a public registration could carry recruiter=<any Loan Officer key> and,
+with the widened reports, put that Loan Officer on the pay reports.
+- strip client-sent recruiter and referred_lo on the public web endpoints
+  (registerWebinar, registerLoanOfficer incl. keyed update, submitReferALoanOfficer);
+  staff saves through RegisterInterestedLoanOfficer are untouched.
+- new server-set marker lead_origin_recruiter_credit (part of the origin stamp,
+  so every public path strips it), written only in LORecruiting.beforeCreated
+  when LoRecruiterProgramStanding returns RECRUITER.
+- both reports admit a non-staff Loan Officer only for marker-carrying leads;
+  the monthly cron reads the month's marked recruiter keys once (equality query
+  on the indexed marker) instead of one query per Loan Officer.
+G2: holdsProgramMemberCredit keys on the marker, so a de-flagged ex-staff
+recruiter's legacy lead keeps the round-robin and follow-up as before;
+isStaffRecruiter also accepts role.isAnyRecruiter().
+
+Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>

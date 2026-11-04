@@ -1,0 +1,1636 @@
+- generic [ref=e1]:
+  - iframe [aria-hidden] [ref=e2]
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - button "Main menu" [expanded] [ref=e7] [cursor=pointer]
+        - link "Chat logo" [ref=e12] [cursor=pointer]:
+          - /url: /home
+      - generic [ref=e14]:
+        - search "Search chat" [ref=e16]:
+          - heading "Search chat" [level=2] [ref=e17]
+          - table [ref=e19]:
+            - rowgroup [ref=e20]:
+              - row [ref=e21]:
+                - cell [ref=e22]:
+                  - combobox "Search chat" [ref=e23]
+          - button "Ask Gemini" [ref=e24] [cursor=pointer]:
+            - generic [ref=e27]:
+              - generic [ref=e29]: Ask
+              - generic [ref=e30]: Gemini
+          - button "Search chat" [disabled] [ref=e31] [cursor=pointer]
+        - generic [ref=e35]:
+          - 'button "Status: Active" [ref=e37]'
+          - button "Support" [ref=e45] [cursor=pointer]
+          - generic [ref=e51]:
+            - button "Settings" [ref=e52] [cursor=pointer]
+            - tooltip [aria-hidden] [ref=e57]: Settings
+          - button "Studio" [ref=e60] [cursor=pointer]
+      - generic [ref=e64]:
+        - button "Google apps" [ref=e68] [cursor=pointer]
+        - 'button "Google Account: Bao Trinh (bao.trinh@loanfactory.com)" [ref=e72] [cursor=pointer]':
+          - 'button "Google Account: Bao Trinh (bao.trinh@loanfactory.com)" [ref=e77]'
+  - generic [ref=e81]:
+    - generic [ref=e82]:
+      - generic [ref=e89]:
+        - generic [ref=e92]:
+          - button "New chat" [ref=e93] [cursor=pointer]
+          - tooltip [aria-hidden] [ref=e99]: New chat
+        - generic [ref=e102]:
+          - generic [ref=e104]:
+            - generic [ref=e105]:
+              - button "Shortcuts" [expanded] [ref=e106] [cursor=pointer]
+              - generic [ref=e108]:
+                - button "Shortcuts" [ref=e109]
+                - tooltip [aria-hidden] [ref=e110]
+            - generic [ref=e111]:
+              - generic [ref=e112]:
+                - generic "Home shortcut" [ref=e113] [cursor=pointer]: Home
+                - generic "Mentions shortcut" [ref=e118] [cursor=pointer]: Mentions
+                - generic "Starred shortcut" [ref=e123] [cursor=pointer]:
+                  - generic [ref=e124]: star
+                  - generic [ref=e125]: Starred
+              - listitem "Ask Gemini shortcut" [ref=e130] [cursor=pointer]:
+                - generic [ref=e133]: Ask Gemini
+          - generic [ref=e136]:
+            - generic [ref=e137] [cursor=pointer]:
+              - button "Direct messages" [expanded] [ref=e138]
+              - generic [ref=e140]:
+                - button "Direct messages" [ref=e141]
+                - tooltip [aria-hidden] [ref=e142]: Click to show all
+              - tooltip [aria-hidden] [ref=e143]: Toggle unread filter
+            - generic "Chat" [ref=e145]:
+              - list "List of Direct Messages" [ref=e148]:
+                - generic [ref=e149]:
+                  - list [ref=e150]:
+                    - listitem [ref=e151] [cursor=pointer]:
+                      - link "Away Anh Nguyen Press tab for more options." [ref=e153]:
+                        - generic [ref=e155]:
+                          - generic [ref=e156]: Away
+                          - generic [ref=e161]: Anh Nguyen
+                        - generic:
+                          - generic:
+                            - generic "Press tab for more options.":
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e169]: Open in a pop-up
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - button "Options"
+                                    - tooltip [aria-hidden] [ref=e174]: Options
+                    - listitem [ref=e175] [cursor=pointer]:
+                      - link "TERA+ Meeting Demo - Oct 2 Meeting conversation Press tab for more options." [ref=e177]:
+                        - generic [ref=e178]: TERA+ Meeting Demo - Oct 2 Meeting conversation
+                        - generic [ref=e195]:
+                          - generic "Press tab for more options.":
+                            - generic:
+                              - generic:
+                                - button "Open in a pop-up"
+                                - tooltip [aria-hidden] [ref=e203]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Options"
+                                  - tooltip [aria-hidden] [ref=e208]: Options
+                    - listitem [ref=e209] [cursor=pointer]:
+                      - link "Idle Duyen Nguyen Press tab for more options." [ref=e211]:
+                        - generic [ref=e213]:
+                          - generic [ref=e214]: Idle
+                          - generic [ref=e220]: Duyen Nguyen
+                        - generic:
+                          - generic:
+                            - generic "Press tab for more options.":
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e228]: Open in a pop-up
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - button "Options"
+                                    - tooltip [aria-hidden] [ref=e233]: Options
+                    - listitem [ref=e234] [cursor=pointer]:
+                      - link "TERA+ Meeting Demo - Sep 30 Meeting conversation Press tab for more options." [ref=e236]:
+                        - generic [ref=e237]: TERA+ Meeting Demo - Sep 30 Meeting conversation
+                        - generic [ref=e254]:
+                          - generic "Press tab for more options.":
+                            - generic:
+                              - generic:
+                                - button "Open in a pop-up"
+                                - tooltip [aria-hidden] [ref=e262]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Options"
+                                  - tooltip [aria-hidden] [ref=e267]: Options
+                    - listitem [ref=e268] [cursor=pointer]:
+                      - link "Daily Standup LFIQ 2026 - Sep 29 Meeting conversation Press tab for more options." [ref=e270]:
+                        - generic [ref=e271]: Daily Standup LFIQ 2026 - Sep 29 Meeting conversation
+                        - generic [ref=e286]:
+                          - generic "Press tab for more options.":
+                            - generic:
+                              - generic:
+                                - button "Open in a pop-up"
+                                - tooltip [aria-hidden] [ref=e294]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Options"
+                                  - tooltip [aria-hidden] [ref=e299]: Options
+                    - listitem [ref=e300] [cursor=pointer]:
+                      - link "Active Yen Vu Press tab for more options." [ref=e302]:
+                        - generic [ref=e304]:
+                          - generic [ref=e305]: Active
+                          - generic [ref=e309]: Yen Vu
+                        - generic:
+                          - generic:
+                            - generic "Press tab for more options.":
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e317]: Open in a pop-up
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - button "Options"
+                                    - tooltip [aria-hidden] [ref=e322]: Options
+                    - listitem [ref=e323] [cursor=pointer]:
+                      - link "Y , Yen Conversation Press tab for more options." [ref=e325]:
+                        - generic [ref=e326]: Y , Yen Conversation
+                        - generic:
+                          - generic:
+                            - generic "Press tab for more options.":
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e341]: Open in a pop-up
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - button "Options"
+                                    - tooltip [aria-hidden] [ref=e346]: Options
+                    - listitem [ref=e347] [cursor=pointer]:
+                      - link "Away Leslie Do Press tab for more options." [ref=e349]:
+                        - generic [ref=e351]:
+                          - generic [ref=e352]: Away
+                          - generic [ref=e357]: Leslie Do
+                        - generic:
+                          - generic:
+                            - generic "Press tab for more options.":
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e365]: Open in a pop-up
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - button "Options"
+                                    - tooltip [aria-hidden] [ref=e370]: Options
+                    - listitem [ref=e371] [cursor=pointer]:
+                      - link "TERA+ Meeting Demo - Sep 23 Meeting conversation Press tab for more options." [ref=e373]:
+                        - generic [ref=e374]: TERA+ Meeting Demo - Sep 23 Meeting conversation
+                        - generic [ref=e391]:
+                          - generic "Press tab for more options.":
+                            - generic:
+                              - generic:
+                                - button "Open in a pop-up"
+                                - tooltip [aria-hidden] [ref=e399]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Options"
+                                  - tooltip [aria-hidden] [ref=e404]: Options
+                    - listitem [ref=e405] [cursor=pointer]:
+                      - link "Away Brayan Suarez Press tab for more options." [ref=e407]:
+                        - generic [ref=e409]:
+                          - generic [ref=e410]: Away
+                          - generic [ref=e415]: Brayan Suarez
+                        - generic:
+                          - generic:
+                            - generic "Press tab for more options.":
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e423]: Open in a pop-up
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - button "Options"
+                                    - tooltip [aria-hidden] [ref=e428]: Options
+                  - list [ref=e430]:
+                    - listitem [ref=e431] [cursor=pointer]:
+                      - link "TERA+ Meeting Demo - Sep 22 Meeting conversation Press tab for more options." [ref=e433]:
+                        - generic [ref=e434]: TERA+ Meeting Demo - Sep 22 Meeting conversation
+                        - generic [ref=e451]:
+                          - generic "Press tab for more options.":
+                            - generic:
+                              - generic:
+                                - button "Open in a pop-up"
+                                - tooltip [aria-hidden] [ref=e459]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Options"
+                                  - tooltip [aria-hidden] [ref=e464]: Options
+                    - listitem [ref=e465] [cursor=pointer]:
+                      - link "TERA+ Meeting Demo - Sep 21 Meeting conversation Press tab for more options." [ref=e467]:
+                        - generic [ref=e468]: TERA+ Meeting Demo - Sep 21 Meeting conversation
+                        - generic [ref=e485]:
+                          - generic "Press tab for more options.":
+                            - generic:
+                              - generic:
+                                - button "Open in a pop-up"
+                                - tooltip [aria-hidden] [ref=e493]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Options"
+                                  - tooltip [aria-hidden] [ref=e498]: Options
+                    - listitem [ref=e499] [cursor=pointer]:
+                      - link "TERA+ Meeting Demo - Sep 17 Meeting conversation Press tab for more options." [ref=e501]:
+                        - generic [ref=e502]: TERA+ Meeting Demo - Sep 17 Meeting conversation
+                        - generic [ref=e519]:
+                          - generic "Press tab for more options.":
+                            - generic:
+                              - generic:
+                                - button "Open in a pop-up"
+                                - tooltip [aria-hidden] [ref=e527]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Options"
+                                  - tooltip [aria-hidden] [ref=e532]: Options
+                    - listitem [ref=e533] [cursor=pointer]:
+                      - link "TERA+ Meeting Demo - Sep 16 Meeting conversation Press tab for more options." [ref=e535]:
+                        - generic [ref=e536]: TERA+ Meeting Demo - Sep 16 Meeting conversation
+                        - generic [ref=e553]:
+                          - generic "Press tab for more options.":
+                            - generic:
+                              - generic:
+                                - button "Open in a pop-up"
+                                - tooltip [aria-hidden] [ref=e561]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Options"
+                                  - tooltip [aria-hidden] [ref=e566]: Options
+                    - listitem [ref=e567] [cursor=pointer]:
+                      - link "Daily Standup LFIQ 2026 - Sep 16 Meeting conversation Press tab for more options." [ref=e569]:
+                        - generic [ref=e570]: Daily Standup LFIQ 2026 - Sep 16 Meeting conversation
+                        - generic [ref=e585]:
+                          - generic "Press tab for more options.":
+                            - generic:
+                              - generic:
+                                - button "Open in a pop-up"
+                                - tooltip [aria-hidden] [ref=e593]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Options"
+                                  - tooltip [aria-hidden] [ref=e598]: Options
+                    - listitem [ref=e599] [cursor=pointer]:
+                      - link "TERA+ Meeting Demo - Sep 15 Meeting conversation Press tab for more options." [ref=e601]:
+                        - generic [ref=e602]: TERA+ Meeting Demo - Sep 15 Meeting conversation
+                        - generic [ref=e619]:
+                          - generic "Press tab for more options.":
+                            - generic:
+                              - generic:
+                                - button "Open in a pop-up"
+                                - tooltip [aria-hidden] [ref=e627]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Options"
+                                  - tooltip [aria-hidden] [ref=e632]: Options
+                    - listitem [ref=e633] [cursor=pointer]:
+                      - link "Daily Standup LFIQ 2026 - Sep 15 Meeting conversation Press tab for more options." [ref=e635]:
+                        - generic [ref=e636]: Daily Standup LFIQ 2026 - Sep 15 Meeting conversation
+                        - generic [ref=e651]:
+                          - generic "Press tab for more options.":
+                            - generic:
+                              - generic:
+                                - button "Open in a pop-up"
+                                - tooltip [aria-hidden] [ref=e659]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Options"
+                                  - tooltip [aria-hidden] [ref=e664]: Options
+                    - listitem [ref=e665] [cursor=pointer]:
+                      - link "TERA+ Meeting Demo - Sep 14 Meeting conversation Press tab for more options." [ref=e667]:
+                        - generic [ref=e668]: TERA+ Meeting Demo - Sep 14 Meeting conversation
+                        - generic [ref=e685]:
+                          - generic "Press tab for more options.":
+                            - generic:
+                              - generic:
+                                - button "Open in a pop-up"
+                                - tooltip [aria-hidden] [ref=e693]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Options"
+                                  - tooltip [aria-hidden] [ref=e698]: Options
+                    - listitem [ref=e699] [cursor=pointer]:
+                      - link "TERA+ Meeting Demo - Sep 11 Meeting conversation Press tab for more options." [ref=e701]:
+                        - generic [ref=e702]: TERA+ Meeting Demo - Sep 11 Meeting conversation
+                        - generic [ref=e719]:
+                          - generic "Press tab for more options.":
+                            - generic:
+                              - generic:
+                                - button "Open in a pop-up"
+                                - tooltip [aria-hidden] [ref=e727]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Options"
+                                  - tooltip [aria-hidden] [ref=e732]: Options
+                    - listitem [ref=e733] [cursor=pointer]:
+                      - link "Daily Standup LFIQ 2026 - Sep 11 Meeting conversation Press tab for more options." [ref=e735]:
+                        - generic [ref=e736]: Daily Standup LFIQ 2026 - Sep 11 Meeting conversation
+                        - generic [ref=e751]:
+                          - generic "Press tab for more options.":
+                            - generic:
+                              - generic:
+                                - button "Open in a pop-up"
+                                - tooltip [aria-hidden] [ref=e759]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Options"
+                                  - tooltip [aria-hidden] [ref=e764]: Options
+                    - listitem [ref=e765] [cursor=pointer]:
+                      - link "Tera+ Quick Sync - Sep 10 Meeting conversation Press tab for more options." [ref=e767]:
+                        - generic [ref=e768]: Tera+ Quick Sync - Sep 10 Meeting conversation
+                        - generic [ref=e783]:
+                          - generic "Press tab for more options.":
+                            - generic:
+                              - generic:
+                                - button "Open in a pop-up"
+                                - tooltip [aria-hidden] [ref=e791]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Options"
+                                  - tooltip [aria-hidden] [ref=e796]: Options
+                    - listitem [ref=e797] [cursor=pointer]:
+                      - link "Away Thu Tran Press tab for more options." [ref=e799]:
+                        - generic [ref=e801]:
+                          - generic [ref=e802]: Away
+                          - generic [ref=e807]: Thu Tran
+                        - generic:
+                          - generic:
+                            - generic "Press tab for more options.":
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e815]: Open in a pop-up
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - button "Options"
+                                    - tooltip [aria-hidden] [ref=e820]: Options
+                    - listitem [ref=e821] [cursor=pointer]:
+                      - link "Uncommon Product Pages Conversation Press tab for more options." [ref=e823]:
+                        - generic [ref=e824]: Uncommon Product Pages Conversation
+                        - generic:
+                          - generic:
+                            - generic "Press tab for more options.":
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e845]: Open in a pop-up
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - button "Options"
+                                    - tooltip [aria-hidden] [ref=e850]: Options
+                    - listitem [ref=e851] [cursor=pointer]:
+                      - link "Daily Standup LFIQ 2026 - Sep 7 Meeting conversation Press tab for more options." [ref=e853]:
+                        - generic [ref=e854]: Daily Standup LFIQ 2026 - Sep 7 Meeting conversation
+                        - generic [ref=e869]:
+                          - generic "Press tab for more options.":
+                            - generic:
+                              - generic:
+                                - button "Open in a pop-up"
+                                - tooltip [aria-hidden] [ref=e877]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Options"
+                                  - tooltip [aria-hidden] [ref=e882]: Options
+                    - listitem [ref=e883] [cursor=pointer]:
+                      - link "Away Harry Truong Press tab for more options." [ref=e885]:
+                        - generic [ref=e887]:
+                          - generic [ref=e888]: Away
+                          - generic [ref=e893]: Harry Truong
+                        - generic:
+                          - generic:
+                            - generic "Press tab for more options.":
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e901]: Open in a pop-up
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - button "Options"
+                                    - tooltip [aria-hidden] [ref=e906]: Options
+                    - listitem [ref=e907] [cursor=pointer]:
+                      - link "Away Thao Nguyen Press tab for more options." [ref=e909]:
+                        - generic [ref=e911]:
+                          - generic [ref=e912]: Away
+                          - generic [ref=e917]: Thao Nguyen
+                        - generic:
+                          - generic:
+                            - generic "Press tab for more options.":
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e925]: Open in a pop-up
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - button "Options"
+                                    - tooltip [aria-hidden] [ref=e930]: Options
+                    - listitem [ref=e931] [cursor=pointer]:
+                      - link "Away Y Ngo Press tab for more options." [ref=e933]:
+                        - generic [ref=e935]:
+                          - generic [ref=e936]: Away
+                          - generic [ref=e941]: Y Ngo
+                        - generic:
+                          - generic:
+                            - generic "Press tab for more options.":
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e949]: Open in a pop-up
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - button "Options"
+                                    - tooltip [aria-hidden] [ref=e954]: Options
+                    - listitem [ref=e955] [cursor=pointer]:
+                      - link "TERA+ Meeting Demo - Aug 26 Meeting conversation Press tab for more options." [ref=e957]:
+                        - generic [ref=e958]: TERA+ Meeting Demo - Aug 26 Meeting conversation
+                        - generic [ref=e975]:
+                          - generic "Press tab for more options.":
+                            - generic:
+                              - generic:
+                                - button "Open in a pop-up"
+                                - tooltip [aria-hidden] [ref=e983]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Options"
+                                  - tooltip [aria-hidden] [ref=e988]: Options
+                    - listitem [ref=e989] [cursor=pointer]:
+                      - link "Daily Standup LFIQ 2026 - Aug 26 Meeting conversation Press tab for more options." [ref=e991]:
+                        - generic [ref=e992]: Daily Standup LFIQ 2026 - Aug 26 Meeting conversation
+                        - generic [ref=e1007]:
+                          - generic "Press tab for more options.":
+                            - generic:
+                              - generic:
+                                - button "Open in a pop-up"
+                                - tooltip [aria-hidden] [ref=e1015]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Options"
+                                  - tooltip [aria-hidden] [ref=e1020]: Options
+                    - listitem [ref=e1021] [cursor=pointer]:
+                      - link "Tera+ MVP - Wrap Up - Aug 25 Meeting conversation Press tab for more options." [ref=e1023]:
+                        - generic [ref=e1024]: Tera+ MVP - Wrap Up - Aug 25 Meeting conversation
+                        - generic [ref=e1041]:
+                          - generic "Press tab for more options.":
+                            - generic:
+                              - generic:
+                                - button "Open in a pop-up"
+                                - tooltip [aria-hidden] [ref=e1049]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Options"
+                                  - tooltip [aria-hidden] [ref=e1054]: Options
+                - list [ref=e1056]:
+                  - listitem [ref=e1057] [cursor=pointer]:
+                    - link "Chi Tran Suggested contact, Press tab for more options." [ref=e1059]:
+                      - generic "Suggested contact" [ref=e1060]:
+                        - generic [ref=e1069]:
+                          - generic [ref=e1070]: Chi Tran
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1076]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1082]: Dismiss
+                  - listitem [ref=e1083] [cursor=pointer]:
+                    - link "Khai Nguyen Suggested contact, Press tab for more options." [ref=e1085]:
+                      - generic "Suggested contact" [ref=e1086]:
+                        - generic [ref=e1095]:
+                          - generic [ref=e1096]: Khai Nguyen
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1102]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1108]: Dismiss
+                  - listitem [ref=e1109] [cursor=pointer]:
+                    - link "Krystal Ho Suggested contact, Press tab for more options." [ref=e1111]:
+                      - generic "Suggested contact" [ref=e1112]:
+                        - generic [ref=e1121]:
+                          - generic [ref=e1122]: Krystal Ho
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1128]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1134]: Dismiss
+                  - listitem [ref=e1135] [cursor=pointer]:
+                    - link "IT Team Suggested contact, Press tab for more options." [ref=e1137]:
+                      - generic "Suggested contact" [ref=e1138]:
+                        - generic [ref=e1147]:
+                          - generic [ref=e1148]: IT Team
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1154]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1160]: Dismiss
+                  - listitem [ref=e1161] [cursor=pointer]:
+                    - link "Jesica Endo Suggested contact, Press tab for more options." [ref=e1163]:
+                      - generic "Suggested contact" [ref=e1164]:
+                        - generic [ref=e1173]:
+                          - generic [ref=e1174]: Jesica Endo
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1180]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1186]: Dismiss
+                  - listitem [ref=e1187] [cursor=pointer]:
+                    - link "Benjamin Huynh Suggested contact, Press tab for more options." [ref=e1189]:
+                      - generic "Suggested contact" [ref=e1190]:
+                        - generic [ref=e1199]:
+                          - generic [ref=e1200]: Benjamin Huynh
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1206]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1212]: Dismiss
+                  - listitem [ref=e1213] [cursor=pointer]:
+                    - link "Tai Pham Suggested contact, Press tab for more options." [ref=e1215]:
+                      - generic "Suggested contact" [ref=e1216]:
+                        - generic [ref=e1225]:
+                          - generic [ref=e1226]: Tai Pham
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1232]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1238]: Dismiss
+                  - listitem [ref=e1239] [cursor=pointer]:
+                    - link "Hao Tran Suggested contact, Press tab for more options." [ref=e1241]:
+                      - generic "Suggested contact" [ref=e1242]:
+                        - generic [ref=e1251]:
+                          - generic [ref=e1252]: Hao Tran
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1258]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1264]: Dismiss
+                  - listitem [ref=e1265] [cursor=pointer]:
+                    - link "Thuan Nguyen Suggested contact, Press tab for more options." [ref=e1267]:
+                      - generic "Suggested contact" [ref=e1268]:
+                        - generic [ref=e1277]:
+                          - generic [ref=e1278]: Thuan Nguyen
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1284]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1290]: Dismiss
+                  - listitem [ref=e1291] [cursor=pointer]:
+                    - link "Trung Thach Suggested contact, Press tab for more options." [ref=e1293]:
+                      - generic "Suggested contact" [ref=e1294]:
+                        - generic [ref=e1303]:
+                          - generic [ref=e1304]: Trung Thach
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1310]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1316]: Dismiss
+                  - listitem [ref=e1317] [cursor=pointer]:
+                    - link "Dao Tran Suggested contact, Press tab for more options." [ref=e1319]:
+                      - generic "Suggested contact" [ref=e1320]:
+                        - generic [ref=e1329]:
+                          - generic [ref=e1330]: Dao Tran
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1336]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1342]: Dismiss
+                  - listitem [ref=e1343] [cursor=pointer]:
+                    - link "Dat Pham Suggested contact, Press tab for more options." [ref=e1345]:
+                      - generic "Suggested contact" [ref=e1346]:
+                        - generic [ref=e1355]:
+                          - generic [ref=e1356]: Dat Pham
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1362]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1368]: Dismiss
+                  - listitem [ref=e1369] [cursor=pointer]:
+                    - link "Truong Doan Suggested contact, Press tab for more options." [ref=e1371]:
+                      - generic "Suggested contact" [ref=e1372]:
+                        - generic [ref=e1381]:
+                          - generic [ref=e1382]: Truong Doan
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1388]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1394]: Dismiss
+                  - listitem [ref=e1395] [cursor=pointer]:
+                    - link "Triet Le Suggested contact, Press tab for more options." [ref=e1397]:
+                      - generic "Suggested contact" [ref=e1398]:
+                        - generic [ref=e1407]:
+                          - generic [ref=e1408]: Triet Le
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1414]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1420]: Dismiss
+                  - listitem [ref=e1421] [cursor=pointer]:
+                    - link "Andre King Suggested contact, Press tab for more options." [ref=e1423]:
+                      - generic "Suggested contact" [ref=e1424]:
+                        - generic [ref=e1433]:
+                          - generic [ref=e1434]: Andre King
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1440]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1446]: Dismiss
+                  - listitem [ref=e1447] [cursor=pointer]:
+                    - link "Tara Bartoli Suggested contact, Press tab for more options." [ref=e1449]:
+                      - generic "Suggested contact" [ref=e1450]:
+                        - generic [ref=e1459]:
+                          - generic [ref=e1460]: Tara Bartoli
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1466]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1472]: Dismiss
+                  - listitem [ref=e1473] [cursor=pointer]:
+                    - link "Edward Arvizo Suggested contact, Press tab for more options." [ref=e1475]:
+                      - generic "Suggested contact" [ref=e1476]:
+                        - generic [ref=e1485]:
+                          - generic [ref=e1486]: Edward Arvizo
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1492]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1498]: Dismiss
+                  - listitem [ref=e1499] [cursor=pointer]:
+                    - link "Toan Nguyen Suggested contact, Press tab for more options." [ref=e1501]:
+                      - generic "Suggested contact" [ref=e1502]:
+                        - generic [ref=e1511]:
+                          - generic [ref=e1512]: Toan Nguyen
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1518]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1524]: Dismiss
+                  - listitem [ref=e1525] [cursor=pointer]:
+                    - link "Dave Hoang Suggested contact, Press tab for more options." [ref=e1527]:
+                      - generic "Suggested contact" [ref=e1528]:
+                        - generic [ref=e1537]:
+                          - generic [ref=e1538]: Dave Hoang
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1544]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1550]: Dismiss
+                  - listitem [ref=e1551] [cursor=pointer]:
+                    - link "Jerry Kindig Suggested contact, Press tab for more options." [ref=e1553]:
+                      - generic "Suggested contact" [ref=e1554]:
+                        - generic [ref=e1563]:
+                          - generic [ref=e1564]: Jerry Kindig
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1570]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1576]: Dismiss
+                  - listitem [ref=e1577] [cursor=pointer]:
+                    - link "Lien Pham Suggested contact, Press tab for more options." [ref=e1579]:
+                      - generic "Suggested contact" [ref=e1580]:
+                        - generic [ref=e1589]:
+                          - generic [ref=e1590]: Lien Pham
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1596]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1602]: Dismiss
+                  - listitem [ref=e1603] [cursor=pointer]:
+                    - link "Blair Do Suggested contact, Press tab for more options." [ref=e1605]:
+                      - generic "Suggested contact" [ref=e1606]:
+                        - generic [ref=e1615]:
+                          - generic [ref=e1616]: Blair Do
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1622]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1628]: Dismiss
+                  - listitem [ref=e1629] [cursor=pointer]:
+                    - link "Hien Tran Suggested contact, Press tab for more options." [ref=e1631]:
+                      - generic "Suggested contact" [ref=e1632]:
+                        - generic [ref=e1641]:
+                          - generic [ref=e1642]: Hien Tran
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1648]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1654]: Dismiss
+                  - listitem [ref=e1655] [cursor=pointer]:
+                    - link "Victoria Pham Suggested contact, Press tab for more options." [ref=e1657]:
+                      - generic "Suggested contact" [ref=e1658]:
+                        - generic [ref=e1667]:
+                          - generic [ref=e1668]: Victoria Pham
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1674]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1680]: Dismiss
+                  - listitem [ref=e1681] [cursor=pointer]:
+                    - link "Kevin Bowlin Suggested contact, Press tab for more options." [ref=e1683]:
+                      - generic "Suggested contact" [ref=e1684]:
+                        - generic [ref=e1693]:
+                          - generic [ref=e1694]: Kevin Bowlin
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1700]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1706]: Dismiss
+                  - listitem [ref=e1707] [cursor=pointer]:
+                    - link "DeShawn Curtis Suggested contact, Press tab for more options." [ref=e1709]:
+                      - generic "Suggested contact" [ref=e1710]:
+                        - generic [ref=e1719]:
+                          - generic [ref=e1720]: DeShawn Curtis
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1726]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1732]: Dismiss
+                  - listitem [ref=e1733] [cursor=pointer]:
+                    - link "Isabella Gomez Suggested contact, Press tab for more options." [ref=e1735]:
+                      - generic "Suggested contact" [ref=e1736]:
+                        - generic [ref=e1745]:
+                          - generic [ref=e1746]: Isabella Gomez
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1752]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1758]: Dismiss
+                  - listitem [ref=e1759] [cursor=pointer]:
+                    - link "Andrea Rincon Torres Suggested contact, Press tab for more options." [ref=e1761]:
+                      - generic "Suggested contact" [ref=e1762]:
+                        - generic [ref=e1771]:
+                          - generic [ref=e1772]: Andrea Rincon Torres
+                          - generic: Suggested contact,
+                      - generic "Press tab for more options.":
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1778]: Open in a pop-up
+                            - generic:
+                              - generic:
+                                - button "Dismiss"
+                                - tooltip [aria-hidden] [ref=e1784]: Dismiss
+            - button "Show all for Direct messages" [ref=e1786] [cursor=pointer]:
+              - generic [ref=e1788]: Show all
+            - separator "Use the up and down arrow keys to resize the section." [ref=e1793]
+          - generic [ref=e1796]:
+            - generic [ref=e1797] [cursor=pointer]:
+              - button "Spaces" [expanded] [ref=e1798]
+              - generic [ref=e1800]:
+                - button "Spaces" [ref=e1801]
+                - tooltip [aria-hidden] [ref=e1802]: Click to show all
+              - tooltip [aria-hidden] [ref=e1803]: Toggle unread filter
+            - generic "Spaces" [ref=e1805]:
+              - list "List of spaces." [ref=e1808]:
+                - generic [ref=e1809]:
+                  - list [ref=e1810]:
+                    - listitem [ref=e1811] [cursor=pointer]:
+                      - link "congdoan@loanfactory.com Space Press tab for more options." [ref=e1813]:
+                        - generic [ref=e1814]: congdoan@loanfactory.com Space
+                        - generic:
+                          - generic:
+                            - generic "Press tab for more options.":
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1824]: Open in a pop-up
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - button "Options"
+                                    - tooltip [aria-hidden] [ref=e1829]: Options
+                    - listitem [ref=e1830] [cursor=pointer]:
+                      - link "LFIQ Space Press tab for more options." [ref=e1832]:
+                        - generic [ref=e1833]: LFIQ Space
+                        - generic:
+                          - generic:
+                            - generic "Press tab for more options.":
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1843]: Open in a pop-up
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - button "Options"
+                                    - tooltip [aria-hidden] [ref=e1848]: Options
+                    - listitem [ref=e1849] [cursor=pointer]:
+                      - link "🧑‍💻 New Landing Page Space Press tab for more options." [ref=e1851]:
+                        - generic [ref=e1853]:
+                          - img "🧑‍💻" [ref=e1856]
+                          - generic [ref=e1857]: New Landing Page Space
+                        - generic:
+                          - generic:
+                            - generic "Press tab for more options.":
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1864]: Open in a pop-up
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - button "Options"
+                                    - tooltip [aria-hidden] [ref=e1869]: Options
+                    - listitem [ref=e1870] [cursor=pointer]:
+                      - link "Ambassador & Recruting Space Press tab for more options." [ref=e1872]:
+                        - generic [ref=e1873]: Ambassador & Recruting Space
+                        - generic:
+                          - generic:
+                            - generic "Press tab for more options.":
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1883]: Open in a pop-up
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - button "Options"
+                                    - tooltip [aria-hidden] [ref=e1888]: Options
+                    - listitem [ref=e1889] [cursor=pointer]:
+                      - link "Ambassador & Recruiter Design Space Press tab for more options." [ref=e1891]:
+                        - generic [ref=e1892]: Ambassador & Recruiter Design Space
+                        - generic:
+                          - generic:
+                            - generic "Press tab for more options.":
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1902]: Open in a pop-up
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - button "Options"
+                                    - tooltip [aria-hidden] [ref=e1907]: Options
+                    - listitem [ref=e1908] [cursor=pointer]:
+                      - link "Webplus - Marketing Space Press tab for more options." [ref=e1910]:
+                        - generic [ref=e1911]: Webplus - Marketing Space
+                        - generic:
+                          - generic:
+                            - generic "Press tab for more options.":
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1921]: Open in a pop-up
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - button "Options"
+                                    - tooltip [aria-hidden] [ref=e1926]: Options
+                    - listitem [ref=e1927] [cursor=pointer]:
+                      - link "LO Recruiting Space Press tab for more options." [ref=e1929]:
+                        - generic [ref=e1930]: LO Recruiting Space
+                        - generic:
+                          - generic:
+                            - generic "Press tab for more options.":
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1940]: Open in a pop-up
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - button "Options"
+                                    - tooltip [aria-hidden] [ref=e1945]: Options
+                    - listitem [ref=e1946] [cursor=pointer]:
+                      - link "New LF IQ Space Press tab for more options." [ref=e1948]:
+                        - generic [ref=e1949]: New LF IQ Space
+                        - generic:
+                          - generic:
+                            - generic "Press tab for more options.":
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e1959]: Open in a pop-up
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - button "Options"
+                                    - tooltip [aria-hidden] [ref=e1964]: Options
+                  - generic [ref=e1965]:
+                    - list
+                    - button "Browse spaces" [ref=e1966] [cursor=pointer]
+            - separator "Use the up and down arrow keys to resize the section." [ref=e1971]
+          - generic [ref=e1974]:
+            - generic [ref=e1975] [cursor=pointer]:
+              - button "Apps" [expanded] [ref=e1976]
+              - generic [ref=e1978]:
+                - button "Apps" [ref=e1979]
+                - tooltip [aria-hidden] [ref=e1980]: Click to show all
+              - tooltip [aria-hidden] [ref=e1981]: Toggle unread filter
+            - generic "Apps" [ref=e1983]:
+              - list "List of Apps" [ref=e1986]:
+                - generic [ref=e1987]:
+                  - list [ref=e1988]:
+                    - listitem [ref=e1989] [cursor=pointer]:
+                      - link "Google Drive Press tab for more options." [ref=e1991]:
+                        - generic [ref=e1992]: Google Drive
+                        - generic:
+                          - generic:
+                            - generic "Press tab for more options.":
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e2005]: Open in a pop-up
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - button "Options"
+                                    - tooltip [aria-hidden] [ref=e2010]: Options
+                    - listitem [ref=e2011] [cursor=pointer]:
+                      - link "Figma Press tab for more options." [ref=e2013]:
+                        - generic [ref=e2014]: Figma
+                        - generic:
+                          - generic:
+                            - generic "Press tab for more options.":
+                              - generic:
+                                - generic:
+                                  - button "Open in a pop-up"
+                                  - tooltip [aria-hidden] [ref=e2027]: Open in a pop-up
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - button "Options"
+                                    - tooltip [aria-hidden] [ref=e2032]: Options
+                  - generic:
+                    - list
+            - separator "Use the up and down arrow keys to resize the section." [ref=e2033]
+      - slider "Resize side navigation" [ref=e2036]
+      - generic [ref=e2048]:
+        - generic [ref=e2049]:
+          - generic [ref=e2052]:
+            - generic [ref=e2054]:
+              - button "Go back" [ref=e2055] [cursor=pointer]
+              - tooltip [aria-hidden] [ref=e2062]: Go back
+            - generic [ref=e2064]:
+              - generic [ref=e2068]:
+                - button "🧑‍💻 New Landing Page" [ref=e2070] [cursor=pointer]:
+                  - generic [ref=e2073]:
+                    - img "🧑‍💻" [ref=e2076]
+                    - generic [ref=e2077]: New Landing Page
+                - tooltip [aria-hidden] [ref=e2083]
+              - generic [ref=e2084]:
+                - generic [ref=e2086]:
+                  - button "Search in this chat" [ref=e2087] [cursor=pointer]
+                  - tooltip [aria-hidden] [ref=e2093]: Search in this chat
+                - generic [ref=e2096]:
+                  - button "Open in a pop-up" [ref=e2097] [cursor=pointer]
+                  - tooltip [aria-hidden] [ref=e2102]: Open in a pop-up
+              - generic [ref=e2105]:
+                - generic [ref=e2107]:
+                  - button "Send a Meet link" [ref=e2109] [cursor=pointer]:
+                    - generic [aria-hidden] [ref=e2111]: meet
+                  - tooltip [aria-hidden] [ref=e2113]: Send a Meet link
+                - generic [ref=e2117]:
+                  - button "More options" [ref=e2118] [cursor=pointer]
+                  - tooltip [aria-hidden] [ref=e2128]: More options
+          - main "New Landing Page" [ref=e2136]:
+            - generic [ref=e2139]:
+              - group "Brayan Suarez we should keep having this section for people that are not LOs but interested in becoming one Image, image.png. , Sat 3:49 AM ," [ref=e2143]:
+                - generic [ref=e2145]:
+                  - button "Message Brayan Suarez" [ref=e2148] [cursor=pointer]
+                  - generic [ref=e2149]:
+                    - generic [ref=e2151]:
+                      - button "Brayan Suarez" [ref=e2153] [cursor=pointer]
+                      - generic [aria-hidden] [ref=e2155]:
+                        - generic: ","
+                        - generic [ref=e2156]: Sat 3:49 AM
+                        - text: ","
+                    - generic [ref=e2158]:
+                      - generic [ref=e2161]:
+                        - generic [ref=e2162]: we should keep having this section for people that are not LOs but interested in becoming one
+                        - button "Image, image.png." [ref=e2169] [cursor=pointer]:
+                          - img "image.png" [ref=e2171]
+                      - generic:
+                        - generic: ","
+                        - generic: Sat 3:49 AM
+                        - text: ","
+              - group "Brayan Suarez we should have a compensation section and in the current landing page, comp is really important for LOs to know , you can try to give a modern design that goes with the page you are doing Image, image.png. , Sat 3:54 AM ," [ref=e2175]:
+                - generic [ref=e2177]:
+                  - button "Message Brayan Suarez" [ref=e2180] [cursor=pointer]
+                  - generic [ref=e2181]:
+                    - generic [ref=e2183]:
+                      - button "Brayan Suarez" [ref=e2185] [cursor=pointer]
+                      - generic [aria-hidden] [ref=e2187]:
+                        - generic: ","
+                        - generic [ref=e2188]: Sat 3:54 AM
+                        - text: ","
+                    - generic [ref=e2190]:
+                      - generic [ref=e2193]:
+                        - generic [ref=e2194]: we should have a compensation section and in the current landing page, comp is really important for LOs to know , you can try to give a modern design that goes with the page you are doing
+                        - button "Image, image.png." [ref=e2201] [cursor=pointer]:
+                          - img "image.png" [ref=e2203]
+                      - generic:
+                        - generic: ","
+                        - generic: Sat 3:54 AM
+                        - text: ","
+              - group "Brayan Suarez in this section, we should add the referral program Image, image.png. , Sat 3:55 AM ," [ref=e2207]:
+                - generic [ref=e2213]:
+                  - generic [ref=e2216]:
+                    - generic [ref=e2217]: in this section, we should add the referral program
+                    - button "Image, image.png." [ref=e2224] [cursor=pointer]:
+                      - img "image.png" [ref=e2226]
+                  - generic:
+                    - generic: ","
+                    - generic: Sat 3:55 AM
+                    - text: ","
+              - group "Brayan Suarez We should keep the FAQ section Image, image.png. , Sat 3:56 AM ," [ref=e2230]:
+                - generic [ref=e2236]:
+                  - generic [ref=e2239]:
+                    - generic [ref=e2240]: We should keep the FAQ section
+                    - button "Image, image.png." [ref=e2247] [cursor=pointer]:
+                      - img "image.png" [ref=e2249]
+                  - generic:
+                    - generic: ","
+                    - generic: Sat 3:56 AM
+                    - text: ","
+              - group [ref=e2253]:
+                - generic [ref=e2259]:
+                  - generic [ref=e2262]:
+                    - generic [ref=e2264]:
+                      - text: this comparison I think is good to have, what you think
+                      - button "@ Victoria Pham" [ref=e2266]:
+                        - generic: "@"
+                        - generic [ref=e2269]: Victoria Pham
+                    - button "Image, image.png." [ref=e2275] [cursor=pointer]:
+                      - img "image.png" [ref=e2277]
+                    - 'list "Reactions: 1 👍" [ref=e2279]':
+                      - listitem [ref=e2280]:
+                        - button "👍 reaction. 1 other person reacted. Press Shift + Enter to view people who reacted." [ref=e2281] [cursor=pointer]:
+                          - generic [ref=e2282]:
+                            - img "👍" [ref=e2283]
+                            - generic [ref=e2284]: "1"
+                        - button "Show people who reacted with 👍"
+                      - generic [ref=e2288]:
+                        - button "Add reaction" [ref=e2289] [cursor=pointer]
+                        - tooltip [aria-hidden] [ref=e2296]: Add reaction
+                  - generic:
+                    - generic: ","
+                    - generic: Sat 3:57 AM
+                    - text: ","
+              - group "Brayan Suarez I think it would be a nice detail that when we hover over each one of this items, they grow in size or somehtink like that, to better look the small lettering, imo Image, image.png. , Sat 4:00 AM ," [ref=e2300]:
+                - generic [ref=e2302]:
+                  - button "Message Brayan Suarez" [ref=e2305] [cursor=pointer]
+                  - generic [ref=e2306]:
+                    - generic [ref=e2308]:
+                      - button "Brayan Suarez" [ref=e2310] [cursor=pointer]
+                      - generic [aria-hidden] [ref=e2312]:
+                        - generic: ","
+                        - generic [ref=e2313]: Sat 4:00 AM
+                        - text: ","
+                    - generic [ref=e2315]:
+                      - generic [ref=e2318]:
+                        - generic [ref=e2319]: I think it would be a nice detail that when we hover over each one of this items, they grow in size or somehtink like that, to better look the small lettering, imo
+                        - button "Image, image.png." [ref=e2326] [cursor=pointer]:
+                          - img "image.png" [ref=e2328]
+                      - generic:
+                        - generic: ","
+                        - generic: Sat 4:00 AM
+                        - text: ","
+              - group "Brayan Suarez in this section we should disclose our fees as well, the $595 for admin fee and $500 for in house processing Quoted Sent by Brayan Suarez , Image , Image we should have a compensation section and in the current landing page, comp is really important for LOs to know , you can try to give a modern design that goes with the page you are doing End Quote press L to link back to original quote , Sat 4:05 AM ," [ref=e2332]:
+                - generic [ref=e2334]:
+                  - button "Message Brayan Suarez" [ref=e2337] [cursor=pointer]
+                  - generic [ref=e2338]:
+                    - generic [ref=e2340]:
+                      - button "Brayan Suarez" [ref=e2342] [cursor=pointer]
+                      - generic [aria-hidden] [ref=e2344]:
+                        - generic: ","
+                        - generic [ref=e2345]: Sat 4:05 AM
+                        - text: ","
+                    - generic [ref=e2347]:
+                      - generic [ref=e2352]:
+                        - generic [aria-hidden] [ref=e2353]:
+                          - generic: Quoted
+                          - generic [ref=e2355]:
+                            - generic: Quoted
+                            - generic [ref=e2356]:
+                              - generic [ref=e2359]:
+                                - generic: Sent by
+                                - generic [ref=e2362]: Brayan Suarez
+                              - generic [ref=e2363]: we should have a compensation section and in the current landing page, comp is really important for LOs to know , you can try to give a modern design that goes with the page you are doing
+                            - generic: End Quote
+                            - generic: press L to link back to original quote
+                          - generic: End Quote
+                          - generic: press L to link back to original quote
+                        - text: in this section we should disclose our fees as well, the $595 for admin fee and $500 for in house processing
+                      - generic:
+                        - generic: ","
+                        - generic: Sat 4:05 AM
+                        - text: ","
+              - group "Victoria Pham should we even mention this @ Bao Trinh ? It varies by state, I dont think we should say a specific day, just not mention it. Maybe instead, you can show the steps to join LF like this Image, image.png. Quoted Sent by Brayan Suarez @Victoria Pham I remember recently HR (Kavitha) said that we should tell LOs onboarding expectation is around 2 weeks, but this can be quite a lot, and we have seen LOs onboard in around 1 week or even less. so not sure what to put there for time. What do you think? as for the cost, is a sign up fee of $100 that covers account creation, system maintenance and acts as a commitment fee End Quote press L to link back to original quote , Sat 6:46 AM ," [ref=e2374]:
+                - generic [ref=e2376]:
+                  - button "Message Victoria Pham" [ref=e2379] [cursor=pointer]
+                  - generic [ref=e2380]:
+                    - generic [ref=e2382]:
+                      - button "Victoria Pham" [ref=e2384] [cursor=pointer]
+                      - generic [aria-hidden] [ref=e2386]:
+                        - generic: ","
+                        - generic [ref=e2387]: Sat 6:46 AM
+                        - text: ","
+                    - generic [ref=e2389]:
+                      - generic [ref=e2393]:
+                        - generic [ref=e2394]:
+                          - generic [aria-hidden] [ref=e2395]:
+                            - generic: Quoted
+                            - generic [ref=e2397]:
+                              - generic: Quoted
+                              - generic [ref=e2398]:
+                                - generic [ref=e2401]:
+                                  - generic: Sent by
+                                  - generic [ref=e2404]: Brayan Suarez
+                                - generic [ref=e2405]: "@Victoria Pham I remember recently HR (Kavitha) said that we should tell LOs onboarding expectation is around 2 weeks, but this can be quite a lot, and we have seen LOs onboard in around 1 week or even less. so not sure what to put there for time. What do you think? as for the cost, is a sign up fee of $100 that covers account creation, system maintenance and acts as a commitment fee"
+                              - generic: End Quote
+                              - generic: press L to link back to original quote
+                            - generic: End Quote
+                            - generic: press L to link back to original quote
+                          - text: should we even mention this
+                          - button "@ Bao Trinh" [ref=e2410]:
+                            - generic: "@"
+                            - generic [ref=e2413]: Bao Trinh
+                          - text: "? It varies by state, I dont think we should say a specific day, just not mention it. Maybe instead, you can show the steps to join LF like this"
+                        - button "Image, image.png." [ref=e2419] [cursor=pointer]:
+                          - img "image.png" [ref=e2421]
+                      - generic:
+                        - generic: ","
+                        - generic: Sat 6:46 AM
+                        - text: ","
+              - heading "Monday, Oct 5" [level=2] [ref=e2422]
+              - group [ref=e2428]:
+                - generic [ref=e2431]:
+                  - generic [ref=e2433]:
+                    - generic [ref=e2434]: You
+                    - generic [aria-hidden] [ref=e2435]:
+                      - generic: ","
+                      - generic [ref=e2436]: Mon 4:36 PM
+                      - text: ","
+                  - generic [ref=e2438]:
+                    - generic [ref=e2443]:
+                      - text: Hi
+                      - button "@ Victoria Pham" [ref=e2445]:
+                        - generic: "@"
+                        - generic [ref=e2448]: Victoria Pham
+                      - button "@ Brayan Suarez" [ref=e2450]:
+                        - generic: "@"
+                        - generic [ref=e2453]: Brayan Suarez
+                      - text: ", thanks a lot for the detailed feedback! Most of it is now live on the preview page:"
+                      - link "https://www.loanfactory.com/loan-officer-v1" [ref=e2454] [cursor=pointer]:
+                        - /url: https://www.loanfactory.com/loan-officer-v1
+                      - text: (the current /loan-officer page is not changed yet)Added from your feedback
+                      - list [ref=e2455]:
+                        - listitem [ref=e2456]: Eligibility pop-up when the page opens (same text as the current page), plus a clearer "Who can join" bar at the bottom
+                        - listitem [ref=e2457]: Full webinar agenda (no emojis), 1.5 hours, and an optional NMLS field in the form
+                        - listitem [ref=e2458]: Referral Bonus program card, and the Corporate Coach card no longer says "free"
+                        - listitem [ref=e2459]: "New Compensation section: 1099 100%, W-2 90%, $595 admin + $500 in-house processing per closed loan"
+                        - listitem [ref=e2460]: No software fees comparison ($963/month)
+                        - listitem [ref=e2461]: How to join as 5 steps, like the Fast Track image, with no total setup time, and the $100 sign-up fee
+                        - listitem [ref=e2462]: Becoming a Loan Officer section and the FAQ
+                        - listitem [ref=e2463]: Stat tiles grow a little on hover
+                    - generic:
+                      - generic: ","
+                      - generic: Mon 4:36 PM
+                      - text: ","
+              - group [ref=e2467]:
+                - generic [ref=e2472]:
+                  - generic [ref=e2477]:
+                    - text: What we did differently, and why
+                    - list [ref=e2478]:
+                      - listitem [ref=e2479]: "Extra tools (AI income, DTI, AI underwriting, loan chat, Rate Alert): we didn't list them as separate tools. They are features of LOS (and Rate Alert is part of Loan Factory IQ, which the page already mentions), so they will be explained on each app's own landing page. Listing them here would repeat that page"
+                      - listitem [ref=e2480]: "Feedback tool: not shown, since it's an internal tool rather than a reason for a Loan Officer to join"
+                      - listitem [ref=e2481]: "\"Learn more\" asking to log in (CRM, LOS, LUNA+, Marketplace): each app owner will make a public landing page and send us the URL, and we'll switch the links once they're ready"
+                    - text: Please take another look and let me know if anything else needs to change
+                  - generic:
+                    - generic: ","
+                    - generic: Mon 4:37 PM
+                    - text: ","
+              - group "Brayan Suarez Thank you Bao, will check a bit later and let you know If I have any feedback , Mon 10:06 PM ," [ref=e2485]:
+                - generic [ref=e2487]:
+                  - button "Message Brayan Suarez" [ref=e2490] [cursor=pointer]
+                  - generic [ref=e2491]:
+                    - generic [ref=e2493]:
+                      - button "Brayan Suarez" [ref=e2495] [cursor=pointer]
+                      - generic [aria-hidden] [ref=e2497]:
+                        - generic: ","
+                        - generic [ref=e2498]: Mon 10:06 PM
+                        - text: ","
+                    - generic [ref=e2500]:
+                      - generic [ref=e2501]: Thank you Bao, will check a bit later and let you know If I have any feedback
+                      - generic:
+                        - generic: ","
+                        - generic: Mon 10:06 PM
+                        - text: ","
+              - heading "Yesterday" [level=2] [ref=e2506]
+              - group "Brayan Suarez I think would be good If this section on the total LOs save would be highlighted or somehow that it is more striking Image, image.png. , Yesterday 12:18 AM ," [ref=e2512]:
+                - generic [ref=e2514]:
+                  - button "Message Brayan Suarez" [ref=e2517] [cursor=pointer]
+                  - generic [ref=e2518]:
+                    - generic [ref=e2520]:
+                      - button "Brayan Suarez" [ref=e2522] [cursor=pointer]
+                      - generic [aria-hidden] [ref=e2524]:
+                        - generic: ","
+                        - generic [ref=e2525]: Yesterday 12:18 AM
+                        - text: ","
+                    - generic [ref=e2527]:
+                      - generic [ref=e2530]:
+                        - generic [ref=e2531]: I think would be good If this section on the total LOs save would be highlighted or somehow that it is more striking
+                        - button "Image, image.png." [ref=e2538] [cursor=pointer]:
+                          - img "image.png" [ref=e2540]
+                      - generic:
+                        - generic: ","
+                        - generic: Yesterday 12:18 AM
+                        - text: ","
+              - group "Brayan Suarez apart from that, I think everything else is good, just a personal feedback, I think the sections that have this kind of console font, is very small, people have to really squeeze their eyes to see what it says I think. some examples below Image, image.png. Image, image.png. Image, image.png. , Yesterday 12:21 AM ," [ref=e2544]:
+                - generic [ref=e2546]:
+                  - button "Message Brayan Suarez" [ref=e2549] [cursor=pointer]
+                  - generic [ref=e2550]:
+                    - generic [ref=e2552]:
+                      - button "Brayan Suarez" [ref=e2554] [cursor=pointer]
+                      - generic [aria-hidden] [ref=e2556]:
+                        - generic: ","
+                        - generic [ref=e2557]: Yesterday 12:21 AM
+                        - text: ","
+                    - generic [ref=e2559]:
+                      - generic [ref=e2562]:
+                        - generic [ref=e2563]: apart from that, I think everything else is good, just a personal feedback, I think the sections that have this kind of console font, is very small, people have to really squeeze their eyes to see what it says I think. some examples below
+                        - list [ref=e2567]:
+                          - listitem [ref=e2568]:
+                            - button "Image, image.png." [ref=e2571] [cursor=pointer]:
+                              - img "image.png" [ref=e2573]
+                          - listitem [ref=e2575]:
+                            - button "Image, image.png." [ref=e2578] [cursor=pointer]:
+                              - img "image.png" [ref=e2580]
+                          - listitem [ref=e2582]:
+                            - button "Image, image.png." [ref=e2585] [cursor=pointer]:
+                              - img "image.png" [ref=e2587]
+                      - generic:
+                        - generic: ","
+                        - generic: Yesterday 12:21 AM
+                        - text: ","
+              - group [ref=e2592]:
+                - generic [ref=e2598]:
+                  - generic [ref=e2603]:
+                    - button "@ Bao Trinh" [ref=e2605]:
+                      - generic: "@"
+                      - generic [ref=e2608]: Bao Trinh
+                    - text: let us know once the app owners get back to you with the landing page for the missing apps to check themThank you for your work
+                  - generic:
+                    - generic: ","
+                    - generic: Yesterday 12:22 AM
+                    - text: ","
+              - group [ref=e2612]:
+                - generic [ref=e2614]:
+                  - button "Message Victoria Pham" [ref=e2617] [cursor=pointer]
+                  - generic [ref=e2618]:
+                    - generic [ref=e2620]:
+                      - button "Victoria Pham" [ref=e2622] [cursor=pointer]
+                      - generic [aria-hidden] [ref=e2624]:
+                        - generic: ","
+                        - generic [ref=e2625]: Yesterday 6:34 AM
+                        - text: ","
+                    - generic [ref=e2627]:
+                      - generic [ref=e2632]:
+                        - text: Hi Bao, anh Thuan just called me. He said that each LO now has a referral link, whenever the referree clicks on that link, it automatically puts the referrer as the referrer on that. However, Thuan now wants that, in each LO personal referral link, it leads to a personalized landing page showing benefits of joining Loan Factory, having the referrer name and info, and for the referee to register himself on that page. Do you understand what I mean? If you dont, I can have a quick meeting with you to explain. Anh Thuan basically wants to make the referral so easy and good for our LOs to give out the referral link
+                        - button "@ Bao Trinh" [ref=e2634]:
+                          - generic: "@"
+                          - generic [ref=e2637]: Bao Trinh
+                      - generic:
+                        - generic: ","
+                        - generic: Yesterday 6:34 AM
+                        - text: ","
+              - group "Victoria Pham let me know if you can implement this soon, a Thuan wanna it soon... , Yesterday 6:35 AM ," [ref=e2641]:
+                - generic [ref=e2645]:
+                  - generic [ref=e2647]:
+                    - generic [ref=e2648]: let me know if you can implement this soon, a Thuan wanna it soon...
+                    - generic:
+                      - generic: ","
+                      - generic: Yesterday 6:35 AM
+                      - text: ","
+                  - button "Reply" [ref=e2658]
+            - region [ref=e2663]:
+              - generic [ref=e2665]:
+                - generic [ref=e2667]:
+                  - button "Google Workspace tools" [ref=e2668] [cursor=pointer]
+                  - tooltip [aria-hidden] [ref=e2674]: Google Workspace tools
+                - generic [ref=e2675]:
+                  - generic [ref=e2680]:
+                    - generic [aria-hidden]: Message New Landing Page
+                    - textbox "Message New Landing Page" [active] [ref=e2681]
+                  - generic [ref=e2684]:
+                    - generic [ref=e2688]:
+                      - button "Formatting options" [ref=e2689] [cursor=pointer]
+                      - tooltip [aria-hidden] [ref=e2696]: Formatting options
+                    - generic [ref=e2699]:
+                      - button "Add emoji" [ref=e2700] [cursor=pointer]
+                      - tooltip [aria-hidden] [ref=e2707]: Add emoji
+                    - generic [ref=e2710]:
+                      - button "Add GIF or Sticker" [ref=e2711] [cursor=pointer]
+                      - tooltip [aria-hidden] [ref=e2717]: Add GIF or Sticker
+                    - generic [ref=e2719]:
+                      - button "Upload file" [ref=e2720] [cursor=pointer]
+                      - tooltip [aria-hidden] [ref=e2726]: Upload file
+                    - generic [ref=e2734]:
+                      - button "Open recording menu" [ref=e2735] [cursor=pointer]
+                      - tooltip [aria-hidden] [ref=e2743]: Open recording menu
+                - generic [ref=e2744]:
+                  - generic [ref=e2751]:
+                    - button "Schedule send" [disabled] [ref=e2752]
+                    - tooltip [aria-hidden] [ref=e2762]: Schedule send
+                  - generic [ref=e2767]:
+                    - button "Send message" [disabled] [ref=e2768]
+                    - tooltip [aria-hidden] [ref=e2774]: Send message
+        - generic [ref=e2775]:
+          - generic [ref=e2776]:
+            - generic [ref=e2780]:
+              - button "Shared" [ref=e2781] [cursor=pointer]:
+                - generic [ref=e2783]: folder
+              - tooltip [aria-hidden] [ref=e2785]: Shared
+            - generic [ref=e2791]:
+              - button "Tasks" [ref=e2792] [cursor=pointer]:
+                - generic [ref=e2794]: task_alt
+              - tooltip [aria-hidden] [ref=e2796]: Tasks
+            - generic [ref=e2802]:
+              - button "Thread" [ref=e2803] [cursor=pointer]:
+                - generic [ref=e2805]: spool
+              - tooltip [aria-hidden] [ref=e2807]: Thread
+            - generic [ref=e2812]:
+              - button "Board" [ref=e2813] [cursor=pointer]:
+                - generic [ref=e2815]: keep
+              - tooltip [aria-hidden] [ref=e2817]: Board
+          - tooltip [aria-hidden] [ref=e2819]: Chat side panel options
+    - generic [ref=e2823]:
+      - complementary "Side panel" [ref=e2824]:
+        - tablist [ref=e2826]:
+          - tab "Calendar":
+            - generic [ref=e2827] [cursor=pointer]
+          - tab "Keep":
+            - generic [ref=e2828] [cursor=pointer]
+          - tab "Tasks":
+            - generic [ref=e2829] [cursor=pointer]
+          - tab "Contacts":
+            - generic [ref=e2830] [cursor=pointer]
+          - separator [disabled] [ref=e2831]
+          - tab "Find apps":
+            - generic [ref=e2832] [cursor=pointer]
+      - generic:
+        - button "Hide side panel":
+          - generic [ref=e2833] [cursor=pointer]
+  - dialog [ref=e2842]:
+    - generic [ref=e2843]:
+      - generic [ref=e2845]:
+        - button "Close" [ref=e2846] [cursor=pointer]
+        - tooltip [aria-hidden] [ref=e2852]: Close
+      - generic [ref=e2853]:
+        - generic [ref=e2854]:
+          - heading "You are not receiving notifications on this device" [level=2] [ref=e2855]
+          - generic [ref=e2857]: Google Chat requires your permission to show notifications and confirm your active device
+        - generic [ref=e2859]:
+          - button "Disable" [ref=e2860] [cursor=pointer]:
+            - generic [aria-hidden] [ref=e2861]: Disable
+          - button "Turn on" [ref=e2862] [cursor=pointer]:
+            - generic [aria-hidden] [ref=e2863]: Turn on

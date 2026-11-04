@@ -1,0 +1,336 @@
+- generic [ref=f1e1]:
+  - dialog "Call popup" [ref=f1e601]:
+    - banner [ref=f1e602]:
+      - generic [aria-hidden] [ref=f1e603]: T#
+      - generic [ref=f1e604]:
+        - generic [ref=f1e605]:
+          - 'heading "TRINH BAO #1" [level=2] [ref=f1e606]'
+          - generic [ref=f1e607]: Engaged
+          - group "Web form. Filled the website form · Sep 29" [ref=f1e609]:
+            - generic [ref=f1e610]: Web form
+        - link "NMLS 785746" [ref=f1e612] [cursor=pointer]:
+          - /url: https://new.mmi.run/nmls/785746
+      - button "Close the workspace" [ref=f1e618] [cursor=pointer]
+    - generic [ref=f1e623]:
+      - tablist "Popup sections" [ref=f1e624]:
+        - tab "Log result" [selected] [ref=f1e625] [cursor=pointer]
+        - tab "Conversation" [ref=f1e635] [cursor=pointer]
+        - tab "Profile" [ref=f1e643] [cursor=pointer]
+      - tabpanel "Log result" [ref=f1e653]:
+        - generic [ref=f1e657]:
+          - generic [ref=f1e658]:
+            - region "Note" [ref=f1e659]:
+              - textbox "Note" [ref=f1e665]:
+                - /placeholder: Add a note
+                - text: "QA rchrl retest 31/10 (staging): scheduled SMS, owner has no Zoom"
+            - region "How did it go?" [ref=f1e666]:
+              - radiogroup "How did it go?" [ref=f1e670]:
+                - radio "Interested" [checked] [ref=f1e671] [cursor=pointer]
+                - radio "Neutral" [ref=f1e677] [cursor=pointer]
+                - radio "No answer" [ref=f1e683] [cursor=pointer]
+                - radio "Not interested" [ref=f1e690] [cursor=pointer]
+            - region "Ready to join?" [ref=f1e742]:
+              - generic [ref=f1e743]:
+                - generic [ref=f1e744]: Ready to join?
+                - button "Yes, prepare offer" [ref=f1e750] [cursor=pointer]
+              - separator [ref=f1e757]: or plan the next step
+            - region "Next step" [ref=f1e758]:
+              - generic [ref=f1e762]:
+                - radiogroup "Next step" [ref=f1e763]:
+                  - radio [ref=f1e764] [cursor=pointer]
+                  - radio [checked] [ref=f1e770] [cursor=pointer]
+                  - radio [ref=f1e775] [cursor=pointer]
+                  - radio [ref=f1e780] [cursor=pointer]
+                - generic [ref=f1e788]:
+                  - generic [ref=f1e789]:
+                    - generic [ref=f1e790]:
+                      - generic [ref=f1e793]:
+                        - generic [ref=f1e794]: When to send
+                        - radiogroup "When to send" [ref=f1e795]:
+                          - generic [ref=f1e796]:
+                            - radio "Send now" [ref=f1e797] [cursor=pointer]
+                            - radio "Schedule for later" [checked] [ref=f1e802] [cursor=pointer]
+                      - generic [ref=f1e838]:
+                        - generic [ref=f1e839]:
+                          - generic [ref=f1e840]: Send on
+                          - generic [aria-hidden] [ref=f1e841]: "*"
+                        - button "Send on" [ref=f1e845] [cursor=pointer]: Oct 31, 2026
+                      - generic [ref=f1e846]:
+                        - generic [ref=f1e847]: Time (optional)
+                        - generic [ref=f1e850]:
+                          - textbox "Time (optional)" [active] [ref=f1e855] [cursor=pointer]: 15:00
+                          - button [aria-hidden] [ref=f1e1159] [cursor=pointer]
+                    - paragraph [ref=f1e857]: Goes out by itself, only between 8am and 9pm in their local time. After 9pm it waits for the next morning.
+                  - generic [ref=f1e809]:
+                    - generic [ref=f1e810]:
+                      - generic [ref=f1e811]:
+                        - generic [ref=f1e812]: Send via
+                        - radiogroup "Send via" [ref=f1e813]:
+                          - generic [ref=f1e814]:
+                            - radio "Email" [ref=f1e815] [cursor=pointer]
+                            - radio "SMS" [checked] [ref=f1e820] [cursor=pointer]
+                      - textbox "Template" [disabled] [ref=f1e830]:
+                        - /placeholder: No SMS templates yet
+                    - textbox "Message" [ref=f1e836]
+          - generic [ref=f1e697]:
+            - button "Add another follow-up" [ref=f1e699] [cursor=pointer]
+            - button "Schedule SMS" [disabled] [ref=f1e858]
+  - alert [ref=f1e2]
+  - generic [ref=f1e3]:
+    - banner [ref=f1e4]:
+      - generic [ref=f1e5]:
+        - generic [ref=f1e6]:
+          - generic [ref=f1e8]:
+            - combobox "Search candidates, NMLS, companies…" [ref=f1e13]
+            - generic:
+              - generic "Press ⌘ K to search from anywhere": ⌘ K
+          - status [ref=f1e14]
+        - generic [ref=f1e15]:
+          - button "Change language, currently English" [ref=f1e151] [cursor=pointer]:
+            - generic [ref=f1e152]:
+              - generic [aria-hidden] [ref=f1e154]: 🇺🇸
+              - generic [ref=f1e155]: English
+          - button "Switch to dark mode" [ref=f1e16] [cursor=pointer]
+          - generic [ref=f1e21]:
+            - generic [aria-hidden] [ref=f1e161]: "4"
+            - button "Notifications, 4 unread" [ref=f1e162] [cursor=pointer]
+          - button "Apps" [ref=f1e27] [cursor=pointer]
+          - button "Account menu" [ref=f1e39] [cursor=pointer]
+    - navigation [ref=f1e42]:
+      - generic [ref=f1e43]:
+        - link "Go to the start of this app" [ref=f1e44] [cursor=pointer]:
+          - /url: /today
+          - generic [ref=f1e46]:
+            - img "Loan Factory" [ref=f1e47]
+            - generic [ref=f1e48]: Recruit
+        - button "Collapse menu" [expanded] [ref=f1e51] [cursor=pointer]
+      - navigation "Main navigation" [ref=f1e56]:
+        - list [ref=f1e58]:
+          - listitem [ref=f1e59]:
+            - link "My work today, 7 new" [ref=f1e164] [cursor=pointer]:
+              - /url: /today
+              - generic [ref=f1e65]: My work today
+              - generic [aria-hidden] [ref=f1e167]: "7"
+        - generic [ref=f1e66]:
+          - button "Leads" [expanded] [ref=f1e67] [cursor=pointer]
+          - list "Leads" [ref=f1e72]:
+            - listitem [ref=f1e168]:
+              - link "Hot leads, 50 new" [ref=f1e169] [cursor=pointer]:
+                - /url: /inbox/hot
+                - generic [ref=f1e173]: Hot leads
+                - generic [aria-hidden] [ref=f1e176]: "50"
+            - listitem [ref=f1e177]:
+              - link "Cold list" [ref=f1e178] [cursor=pointer]:
+                - /url: /inbox/cold
+            - listitem [ref=f1e194]:
+              - link "Pipeline" [ref=f1e195] [cursor=pointer]:
+                - /url: /pipeline
+            - listitem [ref=f1e201]:
+              - link "Dormant" [ref=f1e202] [cursor=pointer]:
+                - /url: /dormant
+            - listitem [ref=f1e73]:
+              - link "Modex" [ref=f1e74] [cursor=pointer]:
+                - /url: /modex
+        - generic [ref=f1e82]:
+          - button "Hand-offs" [expanded] [ref=f1e208] [cursor=pointer]
+          - list "Hand-offs" [ref=f1e209]:
+            - listitem [ref=f1e210]:
+              - link "My hand-offs" [ref=f1e211] [cursor=pointer]:
+                - /url: /invites
+            - listitem [ref=f1e217]:
+              - link "Conversations" [ref=f1e218] [cursor=pointer]:
+                - /url: /conversations
+        - generic [ref=f1e96]:
+          - button "Referrals" [expanded] [ref=f1e223] [cursor=pointer]
+          - list "Referrals" [ref=f1e224]:
+            - listitem [ref=f1e225]:
+              - link "My referrals" [ref=f1e226] [cursor=pointer]:
+                - /url: /my-referrals
+            - listitem [ref=f1e232]:
+              - link "Referrals by referrer" [ref=f1e233] [cursor=pointer]:
+                - /url: /referrals
+        - generic [ref=f1e243]:
+          - button "Manage" [expanded] [ref=f1e244] [cursor=pointer]
+          - list "Manage" [ref=f1e249]:
+            - listitem [ref=f1e250]:
+              - link "Needs attention, 93 new" [ref=f1e251] [cursor=pointer]:
+                - /url: /exceptions
+                - generic [ref=f1e255]: Needs attention
+                - generic [aria-hidden] [ref=f1e258]: "93"
+            - listitem [ref=f1e259]:
+              - link "Reports" [ref=f1e260] [cursor=pointer]:
+                - /url: /reports
+            - listitem [ref=f1e267]:
+              - link "Duplicates" [ref=f1e268] [cursor=pointer]:
+                - /url: /duplicates
+            - listitem [ref=f1e275]:
+              - link "Audit" [ref=f1e276] [cursor=pointer]:
+                - /url: /audit
+        - generic [ref=f1e282]:
+          - button "Setup" [expanded] [ref=f1e283] [cursor=pointer]
+          - list "Setup" [ref=f1e288]:
+            - listitem [ref=f1e289]:
+              - link "Templates" [ref=f1e290] [cursor=pointer]:
+                - /url: /templates
+            - listitem [ref=f1e296]:
+              - link "Checklist templates" [ref=f1e297] [cursor=pointer]:
+                - /url: /checklist-templates
+            - listitem [ref=f1e304]:
+              - link "Permissions" [ref=f1e305] [cursor=pointer]:
+                - /url: /permissions
+            - listitem [ref=f1e311]:
+              - link "Connections" [ref=f1e312] [cursor=pointer]:
+                - /url: /settings/connections
+            - listitem [ref=f1e322]:
+              - link "Settings" [ref=f1e323] [cursor=pointer]:
+                - /url: /settings
+      - button "TERA assistant" [ref=f1e133] [cursor=pointer]
+    - main [ref=f1e139]:
+      - region "Urgent notifications" [ref=f1e329] [cursor=pointer]:
+        - button "13 urgent" [ref=f1e331]
+        - generic [ref=f1e332]:
+          - generic [aria-hidden] [ref=f1e333]: ·
+          - button "Recruit 9" [ref=f1e334]
+          - generic [aria-hidden] [ref=f1e335]: ·
+          - button "LOS 4" [ref=f1e336]
+      - generic [ref=f1e140]:
+        - generic [ref=f1e337]:
+          - link "Back" [ref=f1e338] [cursor=pointer]:
+            - /url: /today
+          - generic [ref=f1e342]:
+            - generic [ref=f1e343]:
+              - generic [aria-hidden] [ref=f1e344]: T#
+              - generic [ref=f1e345]:
+                - heading [level=1] [ref=f1e346]:
+                  - text: "TRINH BAO #1"
+                  - generic [ref=f1e347]: Active
+                  - generic [ref=f1e349]: Engaged
+                - generic [ref=f1e351]:
+                  - generic [ref=f1e352]: Loan officer
+                  - group "Web form. Filled the website form · Sep 29" [ref=f1e353]:
+                    - generic [ref=f1e354]: Web form
+                  - button "Label" [ref=f1e357] [cursor=pointer]
+              - generic [ref=f1e362]:
+                - button "Call now" [ref=f1e364] [cursor=pointer]
+                - button "SMS" [ref=f1e370] [cursor=pointer]
+                - button "Email" [ref=f1e374] [cursor=pointer]
+                - separator [ref=f1e379]
+                - button "Open conversation" [ref=f1e381] [cursor=pointer]
+                - button "Log result" [ref=f1e386] [cursor=pointer]
+            - generic [ref=f1e389]:
+              - generic [ref=f1e390]:
+                - generic [ref=f1e394]: NMLS
+                - generic [ref=f1e395]: "785746"
+              - generic [ref=f1e396]: paxora8826@pumpoly.com
+              - generic [ref=f1e401]: (408) 538-1464
+              - generic [ref=f1e405]:
+                - generic [ref=f1e409]: State
+                - generic [ref=f1e410]: CA
+              - generic [ref=f1e411]:
+                - generic [ref=f1e414]: Since
+                - generic [ref=f1e415]: Sep 23, 2026
+            - region "Team on this candidate" [ref=f1e416]:
+              - list [ref=f1e417]:
+                - listitem [ref=f1e418]:
+                  - generic [ref=f1e419]: Owner · Recruiter
+                  - generic [ref=f1e420]:
+                    - generic [aria-hidden] [ref=f1e421]: BT
+                    - generic [ref=f1e422]: Bao Trinh
+                    - button "Reassign" [ref=f1e423] [cursor=pointer]
+              - button "Manage who is on this Loan Officer's team" [ref=f1e427] [cursor=pointer]:
+                - generic [ref=f1e428]: Manage team
+          - generic [ref=f1e434]:
+            - navigation "Profile sections" [ref=f1e435]:
+              - generic [ref=f1e436]: Candidate
+              - button "Overview" [ref=f1e437] [cursor=pointer]
+              - button "Activity 1" [ref=f1e446] [cursor=pointer]:
+                - generic [ref=f1e450]: Activity
+                - generic [ref=f1e451]: "1"
+              - button "Profile" [ref=f1e454] [cursor=pointer]
+              - button "Sync" [ref=f1e462] [cursor=pointer]
+            - region [ref=f1e470]:
+              - generic [ref=f1e472]:
+                - heading "Overview" [level=2] [ref=f1e473]
+                - generic [ref=f1e474]: Next step, department work, team and key facts
+              - generic [ref=f1e475]:
+                - region [ref=f1e476]:
+                  - generic [ref=f1e478]:
+                    - heading "Journey" [level=3] [ref=f1e480]
+                    - generic [ref=f1e481]: Now at Engaged · stage 2 of 6
+                  - list "Pipeline stage" [ref=f1e482]:
+                    - listitem [ref=f1e483]:
+                      - generic [aria-hidden] [ref=f1e484]: ✓
+                      - generic [ref=f1e486]:
+                        - generic [ref=f1e487]:
+                          - text: New lead
+                          - generic [ref=f1e488]: ", completed"
+                        - generic [ref=f1e489]: Oct 5
+                    - listitem [ref=f1e490]:
+                      - generic [aria-hidden] [ref=f1e491]: "2"
+                      - generic [ref=f1e493]:
+                        - generic [ref=f1e494]:
+                          - text: Engaged
+                          - generic [ref=f1e495]: ", current"
+                        - generic [ref=f1e496]: Current
+                        - generic [ref=f1e498]: since Oct 30
+                    - listitem [ref=f1e499]:
+                      - generic [aria-hidden] [ref=f1e500]: "3"
+                      - generic [ref=f1e503]:
+                        - text: Offer
+                        - generic [ref=f1e504]: ", not reached"
+                    - listitem [ref=f1e505]:
+                      - generic [aria-hidden] [ref=f1e506]: "4"
+                      - generic [ref=f1e509]:
+                        - text: Onboarding
+                        - generic [ref=f1e510]: ", not reached"
+                    - listitem [ref=f1e511]:
+                      - generic [aria-hidden] [ref=f1e512]: "5"
+                      - generic [ref=f1e515]:
+                        - text: Joined
+                        - generic [ref=f1e516]: ", not reached"
+                    - listitem [ref=f1e517]:
+                      - generic [aria-hidden] [ref=f1e518]: "6"
+                      - generic [ref=f1e521]:
+                        - text: Onboarded
+                        - generic [ref=f1e522]: ", not reached"
+                - region [ref=f1e523]:
+                  - generic [ref=f1e524]:
+                    - generic [ref=f1e525]:
+                      - heading "Next step" [level=3] [ref=f1e527]
+                      - generic [ref=f1e528]: The next follow-up and when we last reached out
+                    - button "Add follow-up" [ref=f1e530] [cursor=pointer]
+                  - generic [ref=f1e535]:
+                    - generic [ref=f1e536]:
+                      - generic [ref=f1e537]: Meet 1-1
+                      - generic [ref=f1e543]:
+                        - generic [ref=f1e544]: Overdue
+                        - text: Wed, Oct 7 · 9:59am
+                    - generic [ref=f1e545]:
+                      - button "Done" [ref=f1e546] [cursor=pointer]
+                      - button "Manage" [ref=f1e552] [cursor=pointer]
+                  - generic [ref=f1e560]:
+                    - generic [ref=f1e561]: Last touch
+                    - generic [ref=f1e562]: We last reached out Yesterday · 11:21pm
+                    - button "All activity" [ref=f1e563] [cursor=pointer]
+                - region [ref=f1e566]:
+                  - heading "Onboarding checklist" [level=3] [ref=f1e570]
+                  - paragraph [ref=f1e571]: No checklist yet — the onboarding 1-1 appears when the offer is sent, and the remaining tasks when the candidate reaches S6.
+                - generic [ref=f1e572]:
+                  - region [ref=f1e573]:
+                    - generic [ref=f1e574]:
+                      - generic [ref=f1e575]:
+                        - heading "MMI production" [level=3] [ref=f1e577]
+                        - generic [ref=f1e578]: Loans and volume pushed from MMI
+                      - link "Open in MMI" [ref=f1e580] [cursor=pointer]:
+                        - /url: https://new.mmi.run/nmls/785746
+                    - paragraph [ref=f1e585]: No MMI data yet. Open this Loan Officer in MMI and click Push to CRM.
+                  - region [ref=f1e586]:
+                    - generic [ref=f1e587]:
+                      - generic [ref=f1e588]:
+                        - heading "Key facts" [level=3] [ref=f1e590]
+                        - generic [ref=f1e591]: What matters on a call
+                      - button "Full profile" [ref=f1e593] [cursor=pointer]
+                    - generic [ref=f1e597]:
+                      - term [ref=f1e598]: Licensed in
+                      - definition [ref=f1e599]: AK, AL
+        - button "Submit feedback" [ref=f1e144] [cursor=pointer]

@@ -1,0 +1,133 @@
+  ▲ Next.js 14.2.13
+  - Local:        http://localhost:3077
+  - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 1245ms
+ ✓ Compiled /src/middleware in 233ms (176 modules)
+ ○ Compiling /[locale]/chattel ...
+ ✓ Compiled /[locale]/chattel in 5.6s (3032 modules)
+ ✓ Compiled in 295ms (1327 modules)
+
+The `locale` parameter in `getRequestConfig` is deprecated, please switch to `await requestLocale`. See https://next-intl.dev/blog/next-intl-3-22#await-request-locale
+
+
+A `locale` is expected to be returned from `getRequestConfig`, but none was returned. This will be an error in the next major version of next-intl.
+
+See: https://next-intl.dev/blog/next-intl-3-22#await-request-locale
+
+ GET /chattel 200 in 8002ms
+ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getCompanyLoanStatistic 200 in 778ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getInfoCompany 200 in 770ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ │ POST https://www.viet18.com/api/webplus/v1/5716104026521600/execute/GetOp?id=1&kind=MeetingAndAppointmentConfiguration 200 in 747ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ │ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getYoutubeEmbed?keyName=&video_trigger=access_the_main_page 200 in 321ms (cache skip)
+ │ │ │ Cache skipped reason: (revalidate: 0)
+ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getAllLenderLogos 200 in 1537ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ │ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getBranchesLocationInfo 200 in 585ms (cache skip)
+ │ │ │ Cache skipped reason: (revalidate: 0)
+ GET /chattel 200 in 1531ms
+ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getCompanyLoanStatistic 200 in 411ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ │ POST https://www.viet18.com/api/webplus/v1/5716104026521600/execute/GetOp?id=1&kind=MeetingAndAppointmentConfiguration 200 in 407ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getInfoCompany 200 in 451ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ │ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getYoutubeEmbed?keyName=&video_trigger=access_the_main_page 200 in 289ms (cache skip)
+ │ │ │ Cache skipped reason: (revalidate: 0)
+ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getAllLenderLogos 200 in 1066ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ │ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getBranchesLocationInfo 200 in 339ms (cache skip)
+ │ │ │ Cache skipped reason: (revalidate: 0)
+ ✓ Compiled /[locale]/[...rest] in 453ms (2918 modules)
+
+The `locale` parameter in `getRequestConfig` is deprecated, please switch to `await requestLocale`. See https://next-intl.dev/blog/next-intl-3-22#await-request-locale
+
+
+A `locale` is expected to be returned from `getRequestConfig`, but none was returned. This will be an error in the next major version of next-intl.
+
+See: https://next-intl.dev/blog/next-intl-3-22#await-request-locale
+
+ GET /favicon2.ico 404 in 1180ms
+ │ POST https://www.viet18.com/api/webplus/v1/5716104026521600/execute/GetOp?id=1&kind=MeetingAndAppointmentConfiguration 200 in 279ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ GET /favicon.ico 404 in 344ms
+ │ POST https://www.viet18.com/api/webplus/v1/5716104026521600/execute/GetOp?id=1&kind=MeetingAndAppointmentConfiguration 200 in 288ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ GET /chattel?x-moso-user-id=preview 200 in 1262ms
+ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getCompanyLoanStatistic 200 in 434ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ │ POST https://www.viet18.com/api/webplus/v1/5716104026521600/execute/GetOp?id=1&kind=MeetingAndAppointmentConfiguration 200 in 461ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getInfoCompany 200 in 493ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ │ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getYoutubeEmbed?keyName=&video_trigger=access_the_main_page 200 in 301ms (cache skip)
+ │ │ │ Cache skipped reason: (revalidate: 0)
+ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getAllLenderLogos 200 in 1076ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ ○ Compiling /[locale]/jumbo ...
+ ✓ Compiled /[locale]/jumbo in 542ms (3053 modules)
+
+The `locale` parameter in `getRequestConfig` is deprecated, please switch to `await requestLocale`. See https://next-intl.dev/blog/next-intl-3-22#await-request-locale
+
+
+A `locale` is expected to be returned from `getRequestConfig`, but none was returned. This will be an error in the next major version of next-intl.
+
+See: https://next-intl.dev/blog/next-intl-3-22#await-request-locale
+
+ GET /jumbo?x-moso-user-id=preview 200 in 3047ms
+ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getCompanyLoanStatistic 200 in 414ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getInfoCompany 200 in 414ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ │ POST https://www.viet18.com/api/webplus/v1/5716104026521600/execute/GetOp?id=1&kind=MeetingAndAppointmentConfiguration 200 in 421ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ │ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getYoutubeEmbed?keyName=&video_trigger=access_the_main_page 200 in 453ms (cache skip)
+ │ │ │ Cache skipped reason: (revalidate: 0)
+ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getAllLenderLogos 200 in 2014ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ ✓ Compiled /[locale]/dscr-loan in 365ms (3091 modules)
+
+The `locale` parameter in `getRequestConfig` is deprecated, please switch to `await requestLocale`. See https://next-intl.dev/blog/next-intl-3-22#await-request-locale
+
+
+A `locale` is expected to be returned from `getRequestConfig`, but none was returned. This will be an error in the next major version of next-intl.
+
+See: https://next-intl.dev/blog/next-intl-3-22#await-request-locale
+
+ GET /dscr-loan?x-moso-user-id=preview 200 in 2351ms
+ │ POST https://www.viet18.com/api/webplus/v1/5716104026521600/execute/GetOp?id=1&kind=MeetingAndAppointmentConfiguration 200 in 410ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getInfoCompany 200 in 546ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getCompanyLoanStatistic 200 in 611ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ │ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getYoutubeEmbed?keyName=&video_trigger=access_the_main_page 200 in 452ms (cache skip)
+ │ │ │ Cache skipped reason: (revalidate: 0)
+ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getAllLenderLogos 200 in 1558ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ ○ Compiling /[locale]/reverse ...
+ ✓ Compiled /[locale]/reverse in 815ms (3177 modules)
+
+The `locale` parameter in `getRequestConfig` is deprecated, please switch to `await requestLocale`. See https://next-intl.dev/blog/next-intl-3-22#await-request-locale
+
+
+A `locale` is expected to be returned from `getRequestConfig`, but none was returned. This will be an error in the next major version of next-intl.
+
+See: https://next-intl.dev/blog/next-intl-3-22#await-request-locale
+
+ GET /reverse?x-moso-user-id=preview 200 in 2665ms
+ │ POST https://www.viet18.com/api/webplus/v1/5716104026521600/execute/GetOp?id=1&kind=MeetingAndAppointmentConfiguration 200 in 277ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getCompanyLoanStatistic 200 in 324ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getInfoCompany 200 in 323ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+ │ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getYoutubeEmbed?keyName=&video_trigger=access_the_main_page 200 in 351ms (cache skip)
+ │ │ │ Cache skipped reason: (revalidate: 0)
+ │ GET https://www.viet18.com/api/webplus/v1/5716104026521600/getAllLenderLogos 200 in 1534ms (cache skip)
+ │ │ Cache skipped reason: (revalidate: 0)
+[?25h

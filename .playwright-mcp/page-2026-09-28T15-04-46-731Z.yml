@@ -1,0 +1,227 @@
+- generic [active] [ref=f15e1]:
+  - generic [ref=f15e2]:
+    - generic [ref=f15e3]: Design mockup · example data
+    - generic [ref=f15e4]: recruit-fe · Candidate drawer · Send the e-sign agreement from Recruit · FINAL rev 3 · 28/09
+    - group "Language" [ref=f15e5]:
+      - button "EN" [pressed] [ref=f15e6] [cursor=pointer]
+      - button "VI" [ref=f15e7] [cursor=pointer]
+    - button "Toggle light / dark" [ref=f15e8] [cursor=pointer]
+  - main [ref=f15e9]:
+    - region [ref=f15e10]:
+      - generic [ref=f15e11]:
+        - heading "Send the agreement from Recruit, not from MOSO" [level=1] [ref=f15e12]
+        - paragraph [ref=f15e13]: "No new card. The action sits under the \"Signed\" step of the Invite progress card that is already in the drawer, plus one Attention row when something needs doing. Two actions only: \"E-mail signing link again\" when the agreement is still right, and \"Send updated agreement\" when MOSO's envelope no longer matches the profile. Every e-mail links to the loan officer's register page, so a later rebuild never leaves a dead link. Once the loan officer has signed anything, Recruit refuses and says who can help."
+      - list "What happens" [ref=f15e14]:
+        - listitem [ref=f15e15]:
+          - generic [ref=f15e16]: "1"
+          - text: "1-1 marked done: MOSO builds the agreement and sends the onboarding e-mail"
+        - listitem [ref=f15e17]:
+          - generic [ref=f15e18]: "2"
+          - text: Something changes, or the loan officer lost the e-mail
+        - listitem [ref=f15e19]:
+          - generic [ref=f15e20]: "3"
+          - text: The "Signed" step offers one action
+        - listitem [ref=f15e21]:
+          - generic [ref=f15e22]: "4"
+          - text: "One confirm: recipient, what is sent, sent as whom"
+        - listitem [ref=f15e23]:
+          - generic [ref=f15e24]: "5"
+          - text: MOSO sends it, and Recruit shows the result on the same line
+    - region [ref=f15e25]:
+      - generic [ref=f15e26]:
+        - generic [ref=f15e27]: Screen A · Candidate drawer, Overview
+        - heading "The \"Signed\" step carries the status and at most one button" [level=2] [ref=f15e28]
+        - paragraph [ref=f15e29]: Every state is one line. Pick a state; the desktop drawer and the 375px phone update together.
+      - generic [ref=f15e30]:
+        - generic [ref=f15e31]: "State:"
+        - group "State" [ref=f15e32]:
+          - button "Out of date" [pressed] [ref=f15e33] [cursor=pointer]
+          - button "Up to date" [ref=f15e34] [cursor=pointer]
+          - button "Sending" [ref=f15e35] [cursor=pointer]
+          - button "E-mailed" [ref=f15e36] [cursor=pointer]
+          - button "Failed" [ref=f15e37] [cursor=pointer]
+          - button "Signed, profile changed" [ref=f15e38] [cursor=pointer]
+          - button "Corporate (no action in v1)" [ref=f15e39] [cursor=pointer]
+          - button "Not on Inkless" [ref=f15e40] [cursor=pointer]
+      - generic [ref=f15e41]:
+        - complementary "Candidate drawer (excerpt)" [ref=f15e42]:
+          - generic [ref=f15e43]:
+            - generic [ref=f15e44]: Brian Okafor
+            - generic [ref=f15e45]: "S5 · FL · Onboarding specialist: Jordan Lee"
+          - generic [ref=f15e46]:
+            - generic [ref=f15e48]:
+              - generic [ref=f15e53]:
+                - generic [ref=f15e54]: Agreement out of date
+                - generic [ref=f15e55]: Needs the 1099 agreement and the exclusive agent agreement.
+              - button "Review" [ref=f15e56] [cursor=pointer]
+            - region "Invite to join" [ref=f15e57]:
+              - heading "Invite to join" [level=3] [ref=f15e58]
+              - generic [ref=f15e59]:
+                - list [ref=f15e60]:
+                  - listitem [ref=f15e61]:
+                    - generic [aria-hidden] [ref=f15e62]: ✓
+                    - generic [ref=f15e63]: Invited
+                    - generic [ref=f15e64]: Sep 22
+                  - listitem [ref=f15e65]:
+                    - generic [aria-hidden] [ref=f15e66]: ✓
+                    - generic [ref=f15e67]: Paid the fee
+                    - generic [ref=f15e68]: Done
+                  - listitem [ref=f15e69]:
+                    - generic [aria-hidden] [ref=f15e70]: "3"
+                    - generic [ref=f15e71]: Signed
+                    - generic [ref=f15e72]: Not yet
+                - generic [ref=f15e73]:
+                  - paragraph [ref=f15e74]: Built Sep 28, 10:12 AM for W-2 · Onboarding e-mail delivered Sep 28, 10:12 AM
+                  - generic [ref=f15e75]:
+                    - generic [ref=f15e76]: You are the onboarding specialist; it goes out under your name.
+                    - button "Send updated agreement…" [ref=f15e77] [cursor=pointer]
+        - generic "Phone width, 375px" [ref=f15e78]:
+          - complementary "Candidate drawer (excerpt)" [ref=f15e80]:
+            - generic [ref=f15e81]:
+              - generic [ref=f15e82]: Brian Okafor
+              - generic [ref=f15e83]: "S5 · FL · Onboarding specialist: Jordan Lee"
+            - generic [ref=f15e84]:
+              - generic [ref=f15e86]:
+                - generic [ref=f15e91]:
+                  - generic [ref=f15e92]: Agreement out of date
+                  - generic [ref=f15e93]: Needs the 1099 agreement and the exclusive agent agreement.
+                - button "Review" [ref=f15e94] [cursor=pointer]
+              - region "Invite to join" [ref=f15e95]:
+                - heading "Invite to join" [level=3] [ref=f15e96]
+                - generic [ref=f15e97]:
+                  - list [ref=f15e98]:
+                    - listitem [ref=f15e99]:
+                      - generic [aria-hidden] [ref=f15e100]: ✓
+                      - generic [ref=f15e101]: Invited
+                      - generic [ref=f15e102]: Sep 22
+                    - listitem [ref=f15e103]:
+                      - generic [aria-hidden] [ref=f15e104]: ✓
+                      - generic [ref=f15e105]: Paid the fee
+                      - generic [ref=f15e106]: Done
+                    - listitem [ref=f15e107]:
+                      - generic [aria-hidden] [ref=f15e108]: "3"
+                      - generic [ref=f15e109]: Signed
+                      - generic [ref=f15e110]: Not yet
+                  - generic [ref=f15e111]:
+                    - paragraph [ref=f15e112]: Built Sep 28, 10:12 AM for W-2 · Onboarding e-mail delivered Sep 28, 10:12 AM
+                    - generic [ref=f15e113]:
+                      - generic [ref=f15e114]: You are the onboarding specialist; it goes out under your name.
+                      - button "Send updated agreement…" [ref=f15e115] [cursor=pointer]
+      - list [ref=f15e116]:
+        - listitem [ref=f15e117]: Out of date comes from MOSO's dry run, which uses the profile's current W-2/1099 and states "as if" they had already synced. The Attention row is blue (the existing tone), and the button is primary.
+        - listitem [ref=f15e118]: Up to date offers only "E-mail signing link again…" (outline), and only once the configurable wait after the last e-mail has passed. No rebuild, no Inkless call.
+        - listitem [ref=f15e119]: "Failed / refused uses the red Attention row: Recruit's sentence, then MOSO's own text in small print. \"Try again\" only for a build failure or once the cooldown has passed."
+        - listitem [ref=f15e120]: Already signed is a refusal, not a button. In prod, 16 of the 18 loan officers past the 1-1 have signed, so this is the most common prod line.
+        - listitem [ref=f15e121]: People without AGREEMENT_SEND see the lines and no buttons.
+    - region [ref=f15e122]:
+      - generic [ref=f15e123]:
+        - generic [ref=f15e124]: Screen B · The one confirm dialog
+        - heading "Every e-mail to a loan officer is one explicit click on this" [level=2] [ref=f15e125]
+        - paragraph [ref=f15e126]: "The same dialog serves both actions and the after-save prompt. Cancelling an agreement is cut from v1: MOSO would rebuild it at the next trigger until Onboarding decides what Corporate and Mortgage advisor loan officers sign. After a profile save it opens by itself, with \"Later\" instead of \"Cancel\"."
+      - generic [ref=f15e127]:
+        - generic [ref=f15e128]: "Dialog:"
+        - group "Dialog" [ref=f15e129]:
+          - button "Send updated agreement" [pressed] [ref=f15e130] [cursor=pointer]
+          - button "E-mail link again" [ref=f15e131] [cursor=pointer]
+          - button "After profile save" [ref=f15e132] [cursor=pointer]
+      - generic [ref=f15e133]:
+        - dialog [ref=f15e135]:
+          - generic [ref=f15e136]:
+            - heading "Send the updated agreement to Brian Okafor?" [level=3] [ref=f15e137]
+            - button "Close" [ref=f15e138] [cursor=pointer]: ✕
+          - generic [ref=f15e139]:
+            - generic [ref=f15e140]:
+              - generic [ref=f15e141]: To
+              - generic [ref=f15e142]: brian.okafor@example.com
+            - generic [ref=f15e143]:
+              - generic [ref=f15e144]: Will send
+              - generic [ref=f15e145]: The 1099 agreement and the exclusive agent agreement
+            - generic [ref=f15e146]:
+              - generic [ref=f15e147]: Cancels
+              - generic [ref=f15e148]: The W-2 agreement built Sep 28
+            - generic [ref=f15e149]:
+              - generic [ref=f15e150]: Sent as
+              - generic [ref=f15e151]: Jordan Lee (onboarding specialist). Shown because you are not the specialist.
+          - generic [ref=f15e152]: MOSO delivered the onboarding e-mail to Brian on Sep 28 at 10:12 AM. Its button opens the current agreement, so it keeps working after this.
+          - generic [ref=f15e153]:
+            - button "Cancel" [ref=f15e154] [cursor=pointer]
+            - button "Send to Brian" [ref=f15e156] [cursor=pointer]
+        - generic "Phone width, 375px" [ref=f15e157]:
+          - dialog "Phone dialog" [ref=f15e160]:
+            - generic [ref=f15e161]:
+              - heading "Send the updated agreement to Brian Okafor?" [level=3] [ref=f15e162]
+              - button "Close" [ref=f15e163] [cursor=pointer]: ✕
+            - generic [ref=f15e164]:
+              - generic [ref=f15e165]:
+                - generic [ref=f15e166]: To
+                - generic [ref=f15e167]: brian.okafor@example.com
+              - generic [ref=f15e168]:
+                - generic [ref=f15e169]: Will send
+                - generic [ref=f15e170]: The 1099 agreement and the exclusive agent agreement
+              - generic [ref=f15e171]:
+                - generic [ref=f15e172]: Cancels
+                - generic [ref=f15e173]: The W-2 agreement built Sep 28
+              - generic [ref=f15e174]:
+                - generic [ref=f15e175]: Sent as
+                - generic [ref=f15e176]: Jordan Lee (onboarding specialist). Shown because you are not the specialist.
+            - generic [ref=f15e177]: MOSO delivered the onboarding e-mail to Brian on Sep 28 at 10:12 AM. Its button opens the current agreement, so it keeps working after this.
+            - generic [ref=f15e178]:
+              - button "Cancel" [ref=f15e179] [cursor=pointer]
+              - button "Send to Brian" [ref=f15e181] [cursor=pointer]
+    - region [ref=f15e182]:
+      - generic [ref=f15e183]:
+        - generic [ref=f15e184]: Screen C · Profile editor, Licensing tab
+        - 'heading "Before Save: a hint. After Save: the confirm opens by itself" [level=2] [ref=f15e185]'
+        - paragraph [ref=f15e186]: The flag decides which copy shows. With it off, MOSO is still the only way, so the copy says so honestly. MOSO has no cancel button, so the interim copy no longer tells people to use one.
+      - generic [ref=f15e187]:
+        - generic [ref=f15e188]: "Flag:"
+        - group "Flag" [ref=f15e189]:
+          - button "Agreement send ON" [pressed] [ref=f15e190] [cursor=pointer]
+          - button "OFF (interim)" [ref=f15e191] [cursor=pointer]
+      - generic [ref=f15e192]:
+        - generic [ref=f15e193]:
+          - generic [ref=f15e194]: Hire classification
+          - generic [ref=f15e195]:
+            - generic [ref=f15e196]:
+              - generic [ref=f15e197]: Loan officer type
+              - generic [ref=f15e198]:
+                - generic [ref=f15e199]: Corporate
+                - generic [aria-hidden] [ref=f15e200]: ▾
+            - generic [ref=f15e201]:
+              - generic [ref=f15e202]: Employment type
+              - generic [ref=f15e203]:
+                - generic [ref=f15e204]: Full time
+                - generic [aria-hidden] [ref=f15e205]: ▾
+          - generic [ref=f15e206]: MOSO already built the W-2 agreement. After you save, Recruit checks with MOSO and tells you what to do next.
+        - generic "Phone width, 375px" [ref=f15e211]:
+          - generic [ref=f15e213]:
+            - generic [ref=f15e214]: Hire classification
+            - generic [ref=f15e215]:
+              - generic [ref=f15e216]:
+                - generic [ref=f15e217]: Loan officer type
+                - generic [ref=f15e218]:
+                  - generic [ref=f15e219]: Corporate
+                  - generic [aria-hidden] [ref=f15e220]: ▾
+              - generic [ref=f15e221]:
+                - generic [ref=f15e222]: Employment type
+                - generic [ref=f15e223]:
+                  - generic [ref=f15e224]: Full time
+                  - generic [aria-hidden] [ref=f15e225]: ▾
+            - generic [ref=f15e226]: MOSO already built the W-2 agreement. After you save, Recruit checks with MOSO and tells you what to do next.
+    - region [ref=f15e231]:
+      - generic [ref=f15e232]:
+        - generic [ref=f15e233]: Behind the button
+        - heading "What one click does" [level=2] [ref=f15e234]
+      - list [ref=f15e235]:
+        - listitem [ref=f15e236]:
+          - generic [ref=f15e237]: "1"
+          - text: recruit-be checks AGREEMENT_SEND, the flag and the recipient allowlist (on staging, empty means nobody), then writes one outbox row. It waits behind any pending profile, meeting or specialist write for this candidate.
+        - listitem [ref=f15e238]:
+          - generic [ref=f15e239]: "2"
+          - text: "MOSO, under the per-candidate lock: nothing signed yet, Inkless on, profile already synced, decision still what the dialog showed, cooldown, request id seen before."
+        - listitem [ref=f15e240]:
+          - generic [ref=f15e241]: "3"
+          - text: "\"Link again\" e-mails at once. \"Updated agreement\" queues a rebuild with a long lock, and e-mails only if a new link came back."
+        - listitem [ref=f15e242]:
+          - generic [ref=f15e243]: "4"
+          - text: The result shows on the "Signed" line and in the Timeline (who clicked, what was sent, to whom).

@@ -1,0 +1,536 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e5]:
+      - link "LoanFactory" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - img "LoanFactory Logo" [ref=e8]
+        - generic [ref=e9]: WE DARE YOU TO COMPARE
+      - generic [ref=e10]:
+        - list [ref=e11] [cursor=pointer]:
+          - listitem [ref=e12]:
+            - link "Rate Quote" [ref=e13]:
+              - /url: /quote
+        - list [ref=e14] [cursor=pointer]:
+          - menuitem [ref=e15]:
+            - listitem [ref=e17]: Loan Products
+        - list [ref=e21] [cursor=pointer]:
+          - menuitem [ref=e22]:
+            - listitem [ref=e24]: Resources
+        - list [ref=e28] [cursor=pointer]:
+          - listitem [ref=e29]:
+            - paragraph [ref=e33]: Download App
+      - generic [ref=e34]:
+        - link "Sign In" [ref=e35] [cursor=pointer]:
+          - /url: /login
+        - link "Start My Application" [ref=e36] [cursor=pointer]:
+          - /url: /apply
+        - button [ref=e39] [cursor=pointer]
+  - main [ref=e44]:
+    - generic [ref=e46]:
+      - heading "Loan Officer information" [level=2] [ref=e47]
+      - generic [ref=e51]:
+        - paragraph [ref=e52]: "Please fill out your information below. We will call you to talk about the details. Here is the onboarding process:"
+        - list [ref=e53]:
+          - listitem [ref=e54]: Fill out your information
+          - listitem [ref=e55]: Talk with us on a short call
+          - listitem [ref=e56]: Pay the $100 startup fee
+          - listitem [ref=e57]: Sign the LO Agreement
+          - listitem [ref=e58]: Give Loan Factory access to your NMLS record
+          - listitem [ref=e59]:
+            - link "licensing@loanfactory.com" [ref=e60] [cursor=pointer]:
+              - /url: mailto:licensing@loanfactory.com
+            - text: sponsors you
+          - listitem [ref=e61]: HR sets up your account
+          - listitem [ref=e62]:
+            - text: Start working at
+            - link "Loan Factory" [ref=e63] [cursor=pointer]:
+              - /url: "${Server.baseUrl()}"
+    - img "Loading" [ref=e66]
+    - generic [ref=e68] [cursor=pointer]
+    - generic [ref=e71]:
+      - generic [ref=e72] [cursor=pointer]
+      - iframe [ref=e76]:
+        - generic [ref=f1e1]:
+          - generic "YouTube Video Player" [ref=f1e3]
+          - generic [ref=f1e5]:
+            - generic:
+              - generic:
+                - generic [ref=f1e6] [cursor=pointer]
+                - button "Play video" [ref=f1e10] [cursor=pointer]
+                - button "Hide player controls" [ref=f1e14] [cursor=pointer]
+                - generic [ref=f1e16]:
+                  - generic [ref=f1e23]:
+                    - generic [ref=f1e24]:
+                      - link "What is it like to join Loan Factory?" [ref=f1e25] [cursor=pointer]:
+                        - /url: https://www.youtube.com/watch?v=LcvWkSwtcms
+                      - link "Loan Factory - The Best Mortgage Platform" [ref=f1e26] [cursor=pointer]:
+                        - /url: /channel/UCBP5eLaYsYieH-mzqmCo3eg
+                    - generic [ref=f1e28]:
+                      - button [ref=f1e29] [cursor=pointer]:
+                        - img "thumbnail-image" [ref=f1e30]
+                      - generic [ref=f1e32]:
+                        - generic: Loan Factory - The Best Mortgage Platform
+                        - generic: 3.01K subscribers
+                  - generic [ref=f1e33]:
+                    - generic [ref=f1e34]:
+                      - button "Share" [ref=f1e36] [cursor=pointer]
+                      - button "Watch later" [ref=f1e45] [cursor=pointer]
+                    - link "Watch on YouTube" [ref=f1e56] [cursor=pointer]:
+                      - /url: https://www.youtube.com/watch?v=LcvWkSwtcms
+                      - generic [ref=f1e57]: Watch on
+    - generic [ref=e78]:
+      - generic [ref=e79]: We use cookies to ensure the most optimal browsing experience on our website. By visiting our site, you are agreeing to the use of these cookies.
+      - generic [ref=e80]:
+        - link "Cookie Policy" [ref=e81] [cursor=pointer]:
+          - /url: /cookies
+          - text: READ MORE
+        - button "ACCEPT" [ref=e82] [cursor=pointer]
+  - contentinfo [ref=e83]:
+    - generic [ref=e84]:
+      - generic [ref=e86]:
+        - heading "contact us" [level=3] [ref=e87]
+        - list [ref=e88]:
+          - listitem [ref=e89]:
+            - paragraph [ref=e90]: Thuan Nguyen
+          - listitem [ref=e91]:
+            - link "660-333-3333" [ref=e94] [cursor=pointer]:
+              - /url: tel:6603333333
+          - listitem [ref=e95]:
+            - link "customer@loanfactory.com" [ref=e99] [cursor=pointer]:
+              - /url: mailto:customer@loanfactory.com
+          - listitem [ref=e100]:
+            - link "Send us feedback" [ref=e106] [cursor=pointer]:
+              - /url: /contact-us
+          - listitem [ref=e107]:
+            - link "Facebook" [ref=e110] [cursor=pointer]:
+              - /url: https://www.facebook.com/LoanFactoryHQ
+          - listitem [ref=e111]:
+            - link "X (Twitter)" [ref=e115] [cursor=pointer]:
+              - /url: https://x.com/LoanFactoryUS
+          - listitem [ref=e116]:
+            - link "LinkedIn" [ref=e120] [cursor=pointer]:
+              - /url: https://www.linkedin.com/company/loan-factory-inc
+      - generic [ref=e122]:
+        - heading "Locations" [level=3] [ref=e123]
+        - region [ref=e125]:
+          - list [ref=e127]:
+            - listitem [ref=e128]:
+              - paragraph [ref=e129]:
+                - strong [ref=e130]: "ASSD:"
+                - link "(514) 698-6785" [ref=e131] [cursor=pointer]:
+                  - /url: tel:5146986785
+                - text: 425 Sunset Boulevard, San Jose, CA 95132
+            - listitem [ref=e132]:
+              - paragraph [ref=e133]:
+                - strong [ref=e134]: "AZ-Phoenix:"
+                - link "(567) 734-5565" [ref=e135] [cursor=pointer]:
+                  - /url: tel:5677345565
+                - text: Arizona 202, Sun City, AZ 85373
+              - paragraph [ref=e136]: Licensed in AZ
+            - listitem [ref=e137]:
+              - paragraph [ref=e138]:
+                - strong [ref=e139]: "AZ-Yuma:"
+                - link "(444) 556-1702" [ref=e140] [cursor=pointer]:
+                  - /url: tel:4445561702
+                - text: Arizona 202, Phoenix, AZ 85001
+              - paragraph [ref=e141]: Licensed in AZ
+            - listitem [ref=e142]:
+              - paragraph [ref=e143]:
+                - strong [ref=e144]: "Alaska:"
+                - text: 301 North Fern Creek Avenue, Orlando, FL 32803
+            - listitem [ref=e145]:
+              - paragraph [ref=e146]:
+                - strong [ref=e147]: "Branch bdc 2:"
+                - text: 8497 Jackson Street, Benicia, CA 94510
+              - paragraph [ref=e148]: Licensed in CA
+            - listitem [ref=e149]:
+              - paragraph [ref=e150]:
+                - strong [ref=e151]: "Branch picture (optional):"
+                - text: 8944 Sunset Boulevard, Birds Landing, CA 94512
+            - listitem [ref=e152]:
+              - paragraph [ref=e153]:
+                - strong [ref=e154]: "Branch picture 223:"
+                - text: 9915 Oak Lawn Avenue, Calistoga, CA 94515
+            - listitem [ref=e155]:
+              - paragraph [ref=e156]:
+                - strong [ref=e157]: "CA-San Jose:"
+                - text: 2195 Tully Road, South Lake Tahoe, CA 96152
+            - listitem [ref=e158]:
+              - paragraph [ref=e159]:
+                - strong [ref=e160]: "CA-San Jose:"
+                - text: 5545 1st Avenue, San Jose, CA 95132
+            - listitem [ref=e161]:
+              - paragraph [ref=e162]:
+                - strong [ref=e163]: "CA-San Jose:"
+                - text: 3263 1st Avenue, San Jose, CA 95132
+            - listitem [ref=e164]:
+              - paragraph [ref=e165]:
+                - strong [ref=e166]: "CA-San Jose A:"
+                - link "(575) 686-7675" [ref=e167] [cursor=pointer]:
+                  - /url: tel:5756867675
+                - text: 8425 Belvedere Avenue, Sacramento, CA 95826
+              - paragraph [ref=e168]: Licensed in CA, FL
+            - listitem [ref=e169]:
+              - paragraph [ref=e170]:
+                - strong [ref=e171]: "CA-San Jose Test address:"
+                - text: 5618 Time Boulevard, Forbestown, CA 95941
+            - listitem [ref=e172]:
+              - paragraph [ref=e173]:
+                - strong [ref=e174]: "CA-San Jose-hjhjhjhhj:"
+                - text: 5787 Sunset Boulevard, San Jose, CA 95111
+            - listitem [ref=e175]:
+              - paragraph [ref=e176]:
+                - strong [ref=e177]: "CA-San Jose-mamama:"
+                - text: 6805 1st Avenue, Cypress, TX 77410
+            - listitem [ref=e178]:
+              - paragraph [ref=e179]:
+                - strong [ref=e180]: "CA-San Jose1:"
+                - text: 6907 Sunset Boulevard, Mount Hamilton, CA 95140
+            - listitem [ref=e181]:
+              - paragraph [ref=e182]:
+                - strong [ref=e183]: "CA-San Jose11:"
+                - text: 308 Main Street, Alameda, CA 94501
+            - listitem [ref=e184]:
+              - paragraph [ref=e185]:
+                - strong [ref=e186]: "CA-San Jose1111:"
+                - text: 6108 Time Boulevard, San Jose, CA 95132
+            - listitem [ref=e187]:
+              - paragraph [ref=e188]:
+                - strong [ref=e189]: "CA-San Jose434343:"
+                - text: 1181 Sunset Boulevard, Cypress, TX 77410
+            - listitem [ref=e190]:
+              - paragraph [ref=e191]:
+                - strong [ref=e192]: "CA-San Joseasd:"
+                - text: 771 1st Avenue, Maple City, KS 67102
+            - listitem [ref=e193]:
+              - paragraph [ref=e194]:
+                - strong [ref=e195]: "CA-San Joses:"
+                - text: 2829 1st Avenue, Winkelman, AZ 85192
+            - listitem [ref=e196]:
+              - paragraph [ref=e197]:
+                - strong [ref=e198]: "CA-Stanford:"
+                - text: 270 Galvez Street, Stanford, CA 94305
+            - listitem [ref=e199]:
+              - paragraph [ref=e200]:
+                - strong [ref=e201]: "CA-VietNam:"
+                - text: 1825 Sunset Boulevard, Los Gatos, CA 95031
+              - paragraph [ref=e202]: Licensed in CA
+            - listitem [ref=e203]:
+              - paragraph [ref=e204]:
+                - strong [ref=e205]: "CO-Denver:"
+                - link "(325) 262-4653" [ref=e206] [cursor=pointer]:
+                  - /url: tel:3252624653
+                - text: 105 Wood Duck Road, Columbia, SC 29223
+              - paragraph [ref=e207]: Licensed in MS, SC, WY
+            - listitem [ref=e208]:
+              - paragraph [ref=e209]:
+                - strong [ref=e210]: "CO-Erie:"
+                - link "(392) 847-4937" [ref=e211] [cursor=pointer]:
+                  - /url: tel:3928474937
+                - text: 2825 Saratoga Trail, Erie, CO 80516
+              - paragraph [ref=e212]: Licensed in CO
+            - listitem [ref=e213]:
+              - paragraph [ref=e214]:
+                - strong [ref=e215]: "Delaware the state:"
+                - text: 2140 Sunset Boulevard, Frederica, DE 19946
+              - paragraph [ref=e216]: Licensed in CA
+            - listitem [ref=e217]:
+              - paragraph [ref=e218]:
+                - strong [ref=e219]: "FBI Branches:"
+                - link "(111) 111-1111" [ref=e220] [cursor=pointer]:
+                  - /url: tel:1111111111
+                - text: 2195 Tully Road, San Jose, CA 95122
+            - listitem [ref=e221]:
+              - paragraph [ref=e222]:
+                - strong [ref=e223]: "GA-Duluth:"
+                - text: 396 Savannah Road, Suite 137, Toms River, NJ 08757
+              - paragraph [ref=e224]: Licensed in AR, MS
+            - listitem [ref=e225]:
+              - paragraph [ref=e226]:
+                - strong [ref=e227]: "Hai Test:"
+                - link "(222) 222-2222" [ref=e228] [cursor=pointer]:
+                  - /url: tel:2222222222
+                - text: 7505 1st Avenue, Airway Heights, WA 99001
+            - listitem [ref=e229]:
+              - paragraph [ref=e230]:
+                - strong [ref=e231]: "Hao Test Branch:"
+                - text: 578 Time Boulevard, Blairsden-graeagle, CA 96103
+            - listitem [ref=e232]:
+              - paragraph [ref=e233]:
+                - strong [ref=e234]: "Hao le:"
+                - text: 682 Oak Lawn Avenue, Airway Heights, WA 99001
+            - listitem [ref=e235]:
+              - paragraph [ref=e236]:
+                - strong [ref=e237]: "Hien Vietnam:"
+                - text: 9534 Main Street, Umbarger, TX 79091
+            - listitem [ref=e238]:
+              - paragraph [ref=e239]:
+                - strong [ref=e240]: "HoustonBaby111:"
+                - text: 1311 Kapiolani Boulevard, Suite 210, Honolulu, HI 96814
+            - listitem [ref=e241]:
+              - paragraph [ref=e242]:
+                - strong [ref=e243]: "MA-Barre:"
+                - text: 123th ST, Barre, MA 01005
+            - listitem [ref=e244]:
+              - paragraph [ref=e245]:
+                - strong [ref=e246]: "MD-Towson:"
+                - text: 97 Phan Chau Trinh, 97 Phan Chau Trinh, Towson, MD 21286
+            - listitem [ref=e247]:
+              - paragraph [ref=e248]:
+                - strong [ref=e249]: "MOSO TEST:"
+                - link "(245) 634-3643" [ref=e250] [cursor=pointer]:
+                  - /url: tel:2456343643
+                - text: 7305 Time Boulevard, Milwaukee, WI 53205
+            - listitem [ref=e251]:
+              - paragraph [ref=e252]:
+                - strong [ref=e253]: "MS-Natchez:"
+                - link "(235) 234-6534" [ref=e254] [cursor=pointer]:
+                  - /url: tel:2352346534
+                - text: 5871 Sunset Boulevard, Natchez, MS 39120
+              - paragraph [ref=e255]: Licensed in MS
+            - listitem [ref=e256]:
+              - paragraph [ref=e257]:
+                - strong [ref=e258]: "Minh Branch:"
+                - text: 5510 1st Avenue, San Jose, CA 95132
+            - listitem [ref=e259]:
+              - paragraph [ref=e260]:
+                - strong [ref=e261]: "Minnessota:"
+                - text: 5600 Northeast Antioch Road, Kansas City, MO 64119
+            - listitem [ref=e262]:
+              - paragraph [ref=e263]:
+                - strong [ref=e264]: "Moc Thanh:"
+                - link "(453) 453-4521" [ref=e265] [cursor=pointer]:
+                  - /url: tel:4534534521
+                - text: Canal Street, Los Angeles, CA 90001
+              - paragraph [ref=e266]: Licensed in CA
+            - listitem [ref=e267]:
+              - paragraph [ref=e268]:
+                - strong [ref=e269]: "NH-Amherst:"
+                - text: 5566 1st Avenue, Amherst, NH 03031
+            - listitem [ref=e270]:
+              - paragraph [ref=e271]:
+                - strong [ref=e272]: "NH-Wonalancet:"
+                - link "(463) 464-3636" [ref=e273] [cursor=pointer]:
+                  - /url: tel:4634643636
+                - text: 9305 Second Street, Wonalancet, NH 03897
+            - listitem [ref=e274]:
+              - paragraph [ref=e275]:
+                - strong [ref=e276]: "NJ-Sicklerville:"
+                - text: 1741 Sunset Boulevard, Sicklerville, NJ 08081
+            - listitem [ref=e277]:
+              - paragraph [ref=e278]:
+                - strong [ref=e279]: "NV-Las Vegas:"
+                - text: 8470 Main Street, Las Vegas, NV 89108
+              - paragraph [ref=e280]: Licensed in AK, CA, FL
+            - listitem [ref=e281]:
+              - paragraph [ref=e282]:
+                - strong [ref=e283]: "NY-New York:"
+                - text: 7214 Time Boulevard, New York, NY 10001
+            - listitem [ref=e284]:
+              - paragraph [ref=e285]:
+                - strong [ref=e286]: "New York:"
+                - text: 6909 West Ray Road, Suite 21-17A, Secaucus, NJ 07094
+            - listitem [ref=e287]:
+              - paragraph [ref=e288]:
+                - strong [ref=e289]: "Northern Cali:"
+                - text: 5630 Second Street, Burlingame, CA 94010
+            - listitem [ref=e290]:
+              - paragraph [ref=e291]:
+                - strong [ref=e292]: "Phuong-Branch:"
+                - link "(435) 574-7586" [ref=e293] [cursor=pointer]:
+                  - /url: tel:4355747586
+                - text: 6615 Main Street, Stamford, CT 06902
+            - listitem [ref=e294]:
+              - paragraph [ref=e295]:
+                - strong [ref=e296]: "Southern Cali:"
+                - link "(424) 252-6271" [ref=e297] [cursor=pointer]:
+                  - /url: tel:4242526271
+                - text: 2425 Holly Hall Street, Houston, TX 77054
+              - paragraph [ref=e298]: Licensed in AR, CA
+            - listitem [ref=e299]:
+              - paragraph [ref=e300]:
+                - strong [ref=e301]: "TX-Denison:"
+                - link "(658) 574-7573" [ref=e302] [cursor=pointer]:
+                  - /url: tel:6585747573
+                - text: 459 Time Boulevard, Grand Prairie, TX 75051
+            - listitem [ref=e303]:
+              - paragraph [ref=e304]:
+                - strong [ref=e305]: "Test Branch:"
+                - text: 4760 South Pecos Rd., Suite 201, Las Vegas, NV 89121
+            - listitem [ref=e306]:
+              - paragraph [ref=e307]:
+                - strong [ref=e308]: "Test submit branch:"
+                - text: 3112 Time Boulevard, San Jose, CA 95132
+            - listitem [ref=e309]:
+              - paragraph [ref=e310]:
+                - strong [ref=e311]: "ThoLe branch:"
+                - text: 6542 Time Boulevard, Adrian, TX 79001
+            - listitem [ref=e312]:
+              - paragraph [ref=e313]:
+                - strong [ref=e314]: "Thuan_test:"
+                - text: Arizona State Route 303, Phoenix, AZ 85008
+            - listitem [ref=e315]:
+              - paragraph [ref=e316]:
+                - strong [ref=e317]: "VA-Virginia Beach:"
+                - text: 97 PCT, Virginia Beach, VA 23456
+            - listitem [ref=e318]:
+              - paragraph [ref=e319]:
+                - strong [ref=e320]: "VN-lalaa:"
+                - text: 2108 1st Avenue, Owensboro, KY 42301
+            - listitem [ref=e321]:
+              - paragraph [ref=e322]:
+                - strong [ref=e323]: "Viet_Nam_Es:"
+                - link "(435) 364-5645" [ref=e324] [cursor=pointer]:
+                  - /url: tel:4353645645
+                - text: 6410 Sunset Boulevard, San Jose, CA 95132
+            - listitem [ref=e325]:
+              - paragraph [ref=e326]:
+                - strong [ref=e327]: "WI-Milwaukee:"
+                - link "(325) 342-6354" [ref=e328] [cursor=pointer]:
+                  - /url: tel:3253426354
+                - text: 1058 Reed Street, Green Bay, WI 54303
+              - paragraph [ref=e329]: Licensed in WI
+            - listitem [ref=e330]:
+              - paragraph [ref=e331]:
+                - strong [ref=e332]: "Z Branch:"
+                - text: 6515 Sunset Boulevard, New York, NY 10004
+            - listitem [ref=e333]:
+              - paragraph [ref=e334]:
+                - strong [ref=e335]: "da nang:"
+                - text: 6334 Jackson Street, Winkelman, AZ 85192
+            - listitem [ref=e336]:
+              - paragraph [ref=e337]:
+                - strong [ref=e338]: "dddddd:"
+                - text: 123123 William Street, New York, NY 10038
+            - listitem [ref=e339]:
+              - paragraph [ref=e340]:
+                - strong [ref=e341]: "ffffffffff:"
+                - text: 1269 Second Street, San Jose, CA 95132
+            - listitem [ref=e342]:
+              - paragraph [ref=e343]:
+                - strong [ref=e344]: "hao ne 1234:"
+                - text: 5079 Time Boulevard, San Jose, CA 95132
+            - listitem [ref=e345]:
+              - paragraph [ref=e346]:
+                - strong [ref=e347]: "hao ne 234234:"
+                - text: 8396 Oak Lawn Avenue, San Jose, CA 95132
+            - listitem [ref=e348]:
+              - paragraph [ref=e349]:
+                - strong [ref=e350]: "hao test:"
+                - text: 893 Time Boulevard, San Jose, CA 95132
+            - listitem [ref=e351]:
+              - paragraph [ref=e352]:
+                - strong [ref=e353]: "hihi90890890:"
+                - text: 6945 1st Avenue, San Jose, CA 95132
+            - listitem [ref=e354]:
+              - paragraph [ref=e355]:
+                - strong [ref=e356]: "háhoiasd:"
+                - text: 4560 Oak Lawn Avenue, San Jose, CA 95132
+            - listitem [ref=e357]:
+              - paragraph [ref=e358]:
+                - strong [ref=e359]: "mimi:"
+                - text: 8632 1st Avenue, San Jose, CA 95132
+              - paragraph [ref=e360]: Licensed in CA
+            - listitem [ref=e361]:
+              - paragraph [ref=e362]:
+                - strong [ref=e363]: "name2471:"
+                - text: 9523 Bolsa Avenue, Westminster, CA 92683
+            - listitem [ref=e364]:
+              - paragraph [ref=e365]:
+                - strong [ref=e366]: "new 2:"
+                - text: 936 Broad Street, Augusta, GA 30901
+              - paragraph [ref=e367]: Licensed in CA
+            - listitem [ref=e368]:
+              - paragraph [ref=e369]:
+                - strong [ref=e370]: "new testing branch:"
+                - link "(444) 444-4444" [ref=e371] [cursor=pointer]:
+                  - /url: tel:4444444444
+                - text: Ste 100 U.S. 9, 333, Englishtown, NJ 07726
+              - paragraph [ref=e372]: Licensed in CA
+            - listitem [ref=e373]:
+              - paragraph [ref=e374]:
+                - strong [ref=e375]: "update name:"
+                - text: 5600 Northeast Antioch Road, Colonia, NJ 07067
+              - paragraph [ref=e376]: Licensed in CA
+      - generic [ref=e378]:
+        - heading "About Us" [level=3] [ref=e379]
+        - list [ref=e380]:
+          - listitem [ref=e381]:
+            - 'link "Company NMLS#: 320841" [ref=e382] [cursor=pointer]':
+              - /url: http://www.nmlsconsumeraccess.org/EntityDetails.aspx/COMPANY/320841
+              - text: "Company NMLS#: 320841. Go here for the Loan Factory, Inc. NMLS consumer access page"
+          - listitem [ref=e383]:
+            - paragraph [ref=e384]: "For licensing information, go to:"
+            - link "www.nmlsconsumeraccess.org" [ref=e385] [cursor=pointer]:
+              - /url: http://www.nmlsconsumeraccess.org/EntityDetails.aspx/COMPANY/320841
+              - text: https://www.nmlsconsumeraccess.org
+          - listitem [ref=e386]:
+            - 'link "CA DRE #: 01771313" [ref=e389] [cursor=pointer]':
+              - /url: https://www2.dre.ca.gov/PublicASP/pplinfo.asp?License_id=01771313
+          - listitem [ref=e390]:
+            - link "Loan Officer? Join Us" [ref=e394] [cursor=pointer]:
+              - /url: /loan-officer
+          - listitem [ref=e395]:
+            - link "Branches" [ref=e399] [cursor=pointer]:
+              - /url: /branches
+          - listitem [ref=e400]:
+            - link "State Licenses" [ref=e404] [cursor=pointer]:
+              - /url: /state-licenses
+          - listitem [ref=e405]:
+            - link "Terms & Conditions" [ref=e409] [cursor=pointer]:
+              - /url: /terms-and-conditions
+          - listitem [ref=e410]:
+            - link "Privacy Policies" [ref=e414] [cursor=pointer]:
+              - /url: /privacy
+          - listitem [ref=e415]:
+            - link "Email/Text Policy" [ref=e418] [cursor=pointer]:
+              - /url: /email-communication
+          - listitem [ref=e419]:
+            - link "Terms of Service and Privacy Policy — Use of AI" [ref=e424] [cursor=pointer]:
+              - /url: /use-of-ai
+          - listitem [ref=e425]:
+            - link "ADA Accessibility Statement" [ref=e430] [cursor=pointer]:
+              - /url: /ada
+          - listitem [ref=e431]:
+            - link "Careers" [ref=e436] [cursor=pointer]:
+              - /url: /careers
+          - listitem [ref=e437]:
+            - link "Press Release" [ref=e440] [cursor=pointer]:
+              - /url: /press-release
+          - listitem [ref=e441]:
+            - link "Texas Disclosures" [ref=e445] [cursor=pointer]:
+              - /url: /texas-disclosures
+          - listitem [ref=e446]:
+            - link "Google Reviews" [ref=e447] [cursor=pointer]:
+              - /url: /testimonials
+              - paragraph [ref=e448]: 0+
+              - img "google-star" [ref=e449]
+      - generic [ref=e451]:
+        - heading "Mortgage" [level=3] [ref=e452]
+        - list [ref=e453]:
+          - listitem [ref=e454]:
+            - link "Mortgage Disclosures" [ref=e458] [cursor=pointer]:
+              - /url: /disclosure
+          - listitem [ref=e459]:
+            - link "Our Loan Process" [ref=e463] [cursor=pointer]:
+              - /url: /loan-process
+          - listitem [ref=e464]:
+            - link "Why Loan Factory" [ref=e468] [cursor=pointer]:
+              - /url: /why-us
+          - listitem [ref=e469]:
+            - link "Blogs" [ref=e473] [cursor=pointer]:
+              - /url: https://blog.loanfactory.com/
+          - listitem [ref=e474]:
+            - link "Testimonials" [ref=e478] [cursor=pointer]:
+              - /url: /testimonials
+          - listitem [ref=e479]:
+            - link "Acronyms & Abbreviations" [ref=e483] [cursor=pointer]:
+              - /url: /acronyms-abbreviations
+          - listitem [ref=e484]:
+            - img "ehl-w" [ref=e485]
+          - listitem [ref=e486]:
+            - img "ssl-secure-image" [ref=e487]
+    - generic [ref=e488]: Copyright © 2026 Loan Factory. All Rights Reserved.
+    - generic [ref=e489]:
+      - paragraph [ref=e490]: Powered by
+      - img "Tera Logo" [ref=e491]

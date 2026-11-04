@@ -1,0 +1,215 @@
+<title>Call Result Ready Card</title>
+<style>
+/* Layout: before/after of the Call result modal, then the two paths (LO said yes / not yet) as numbered steps, since the order is the information. */
+:root {
+  --page: #efece9; --card: #ffffff; --ink: #1d1a17; --ink-2: #57514b; --ink-3: #8b847c; --line: #e8e3de;
+  --accent: #e8622a; --accent-ink: #ffffff; --accent-soft: #fde9df;
+  --ok: #1e6b3a; --ok-soft: #e6f4ea; --ok-line: #9fd3b0;
+  --warn-soft: #fdf6dc; --bad-soft: #fdecea; --info-soft: #eef3ff;
+  --sel: #e6f4ea; --sel-line: #2f8a54;
+  --old: #c2341f; --new: #1e6b3a; --mark: #fff1b8;
+  --font-ui: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-note: "Be Vietnam Pro", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --page: #151311; --card: #1f1c19; --ink: #f2eee9; --ink-2: #c4bcb3; --ink-3: #8f877e; --line: #34302b;
+  --accent: #f07a45; --accent-ink: #1a0f08; --accent-soft: #3a2418; --ok: #8ee0a8; --ok-soft: #17321f; --ok-line: #2f6b44;
+  --warn-soft: #2f2814; --bad-soft: #3a1f1b; --info-soft: #1a2238; --sel: #17321f; --sel-line: #4fb878;
+  --old: #ff8a7a; --new: #8ee0a8; --mark: #4a3d0c; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --page: #151311; --card: #1f1c19; --ink: #f2eee9; --ink-2: #c4bcb3; --ink-3: #8f877e; --line: #34302b;
+  --accent: #f07a45; --accent-ink: #1a0f08; --accent-soft: #3a2418; --ok: #8ee0a8; --ok-soft: #17321f; --ok-line: #2f6b44;
+  --warn-soft: #2f2814; --bad-soft: #3a1f1b; --info-soft: #1a2238; --sel: #17321f; --sel-line: #4fb878;
+  --old: #ff8a7a; --new: #8ee0a8; --mark: #4a3d0c; color-scheme: dark }
+
+body { background: var(--page); color: var(--ink); font-family: var(--font-ui); }
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: 16px; padding-block: 32px 64px; display: grid; gap: 40px; }
+header.top { display: grid; gap: 10px; max-width: 76ch; }
+h1 { margin: 0; font-size: 1.7rem; text-wrap: balance; }
+.lede, header.top p { margin: 0; color: var(--ink-2); font-family: var(--font-note); line-height: 1.55; }
+.changes { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; color: var(--ink-2); font-family: var(--font-note); line-height: 1.5; }
+.changes b { color: var(--ink); }
+section.pair { display: grid; gap: 12px; }
+section.pair > h2 { margin: 0; font-size: 1.15rem; }
+.cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; align-items: start; }
+@media (max-width: 980px) { .cols { grid-template-columns: minmax(0, 1fr); } }
+.side { display: grid; gap: 8px; min-width: 0; }
+.tag { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; }
+.tag.before { color: var(--old); } .tag.after { color: var(--new); }
+
+/* modal */
+.modal { background: var(--card); border-radius: 18px; box-shadow: 0 10px 40px rgba(0,0,0,.12); overflow: hidden; border: 1px solid var(--line); }
+.m-head { display: flex; gap: 12px; align-items: center; padding: 18px 20px; border-bottom: 1px solid var(--line); }
+.av { width: 44px; height: 44px; border-radius: 12px; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; font-weight: 700; }
+.m-head b { display: block; font-size: 1.05rem; } .m-head small { color: var(--ink-3); font-size: 0.78rem; }
+.m-body { padding: 16px 20px; display: grid; gap: 14px; }
+.sec { display: grid; gap: 10px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.sec:last-child { border-bottom: 0; padding-bottom: 0; }
+.sec-t { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.9rem; }
+.ic { width: 26px; height: 26px; border-radius: 8px; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; font-size: 0.75rem; }
+.req { color: var(--old); }
+.opts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.opts.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.opt { border: 1px solid var(--line); border-radius: 10px; padding: 10px; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 8px; background: var(--card); min-width: 0; }
+.opt .dot { width: 22px; height: 22px; border-radius: 6px; display: grid; place-items: center; font-size: 0.7rem; flex: none; }
+.opt.sel { background: var(--sel); border-color: var(--sel-line); }
+.opt.hl { outline: 2px solid var(--mark); outline-offset: 2px; }
+.d-int { background: var(--ok); color: #fff; } .d-neu { background: var(--info-soft); } .d-na { background: var(--warn-soft); } .d-ni { background: var(--bad-soft); }
+.note { border: 1px solid var(--line); border-radius: 10px; min-height: 56px; padding: 8px 10px; font-size: 0.8rem; color: var(--ink-3); }
+.note.filled { color: var(--ink); }
+.m-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 20px; background: color-mix(in srgb, var(--page) 60%, var(--card)); border-top: 1px solid var(--line); flex-wrap: wrap; }
+.m-foot .add { color: var(--ink-2); font-size: 0.8rem; }
+.save { border: 0; border-radius: 8px; padding: 8px 14px; font: inherit; font-size: 0.8rem; font-weight: 600; background: var(--accent); color: var(--accent-ink); }
+.save.off { opacity: 0.45; }
+.hl-old { background: var(--mark); border-radius: 4px; }
+
+/* the new card */
+.ready { border: 1.5px solid var(--ok-line); background: var(--ok-soft); border-radius: 12px; padding: 12px 14px; display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.ready .txt { display: grid; gap: 2px; min-width: 0; flex: 1 1 220px; }
+.ready .txt b { font-size: 0.9rem; }
+.ready .txt span { font-size: 0.76rem; color: var(--ink-2); line-height: 1.45; }
+.go { border: 0; border-radius: 8px; padding: 9px 14px; font: inherit; font-size: 0.82rem; font-weight: 700; background: var(--ok); color: var(--card); white-space: nowrap; }
+.or { display: flex; align-items: center; gap: 10px; color: var(--ink-3); font-size: 0.72rem; text-transform: uppercase; letter-spacing: .06em; }
+.or::before, .or::after { content: ""; flex: 1; border-top: 1px solid var(--line); }
+
+/* steps */
+.flow { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+@media (max-width: 980px) { .flow { grid-template-columns: minmax(0, 1fr); } }
+.path { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; display: grid; gap: 10px; font-family: var(--font-note); line-height: 1.5; color: var(--ink-2); }
+.path h3 { margin: 0; font-family: var(--font-ui); font-size: 1rem; color: var(--ink); }
+.path ol { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+.path b { color: var(--ink); }
+.label-opts { display: grid; gap: 8px; }
+.lab { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-family: var(--font-note); color: var(--ink-2); font-size: 0.85rem; }
+.notes { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 20px; display: grid; gap: 8px; font-family: var(--font-note); line-height: 1.5; color: var(--ink-2); }
+.notes h2 { margin: 0; font-size: 1.05rem; color: var(--ink); font-family: var(--font-ui); }
+.notes ol, .notes ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+.notes b { color: var(--ink); }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600&display=swap">
+
+<main class="wrap">
+  <header class="top">
+    <h1>Call result: "Ready to join" thành card một nút</h1>
+    <p>Modal ghi kết quả cuộc gọi, khi chọn Interested. Bản trước là staging ngày 06/10.</p>
+    <ul class="changes">
+      <li><b>Bỏ câu hỏi bắt buộc</b> "Ready to join? Ready to join / Not yet".</li>
+      <li><b>Thêm card "Ready to join?"</b> với một nút <b>"Yes, prepare offer"</b>. LO đồng ý trên cuộc gọi thì bấm nút: lưu kết quả + ghi chú, rồi mở modal Offer (phí + số liệu).</li>
+      <li><b>Modal thứ hai đổi tên thành "Offer"</b>; Email preview chỉ hiện khi thật sự có email gửi đi.</li>
+      <li><b>Next step luôn hiện</b> ngay khi chọn Interested. LO chưa sẵn sàng thì chọn bước tiếp và bấm Save như bình thường.</li>
+    </ul>
+  </header>
+
+  <section class="pair" aria-labelledby="h1x">
+    <h2 id="h1x">1. Ngay sau khi chọn Interested</h2>
+    <div class="cols">
+      <div class="side">
+        <span class="tag before">Hiện tại · staging</span>
+        <article class="modal">
+          <div class="m-head"><div class="av">QA</div><div><b>QA AnewL</b><small>Novi, MI · NMLS 9930243</small></div></div>
+          <div class="m-body">
+            <div class="sec"><div class="sec-t"><span class="ic">☏</span>How did it go?</div>
+              <div class="opts"><div class="opt sel"><span class="dot d-int">👍</span>Interested</div><div class="opt"><span class="dot d-neu">◦</span>Neutral</div><div class="opt"><span class="dot d-na">✆</span>No answer</div><div class="opt"><span class="dot d-ni">▤</span>Not interested</div></div></div>
+            <div class="sec"><div class="sec-t"><span class="ic">♥</span><span class="hl-old">Ready to join? <span class="req">*</span></span></div>
+              <div class="opts two"><div class="opt">✓ Ready to join</div><div class="opt">✓ Not yet</div></div></div>
+            <div class="sec"><div class="sec-t"><span class="ic">▤</span>Note</div><div class="note">Add a note</div></div>
+          </div>
+          <div class="m-foot"><span class="add">+ Add another follow-up</span><button class="save off" type="button">Save call result</button></div>
+        </article>
+        <p class="lede">Phải chọn 1 trong 2 mới bấm Save được. "Not yet" mới làm hiện Next step. "Ready to join" đổi nút Save thành "Save &amp; invite to join".</p>
+      </div>
+      <div class="side">
+        <span class="tag after">Đề xuất</span>
+        <article class="modal">
+          <div class="m-head"><div class="av">QA</div><div><b>QA AnewL</b><small>Novi, MI · NMLS 9930243</small></div></div>
+          <div class="m-body">
+            <div class="sec"><div class="sec-t"><span class="ic">☏</span>How did it go?</div>
+              <div class="opts"><div class="opt sel"><span class="dot d-int">👍</span>Interested</div><div class="opt"><span class="dot d-neu">◦</span>Neutral</div><div class="opt"><span class="dot d-na">✆</span>No answer</div><div class="opt"><span class="dot d-ni">▤</span>Not interested</div></div></div>
+            <div class="sec">
+              <div class="ready">
+                <div class="txt"><b>Ready to join?</b></div>
+                <button class="go" type="button">Yes, prepare offer →</button>
+              </div>
+              <div class="or">or plan the next step</div>
+              <div class="sec-t"><span class="ic">→</span>Next step</div>
+              <div class="opts"><div class="opt">Call again</div><div class="opt">Send info</div><div class="opt">Webinar</div><div class="opt">Meet 1-1</div></div>
+            </div>
+            <div class="sec"><div class="sec-t"><span class="ic">▤</span>Note</div><div class="note">Add a note</div></div>
+          </div>
+          <div class="m-foot"><span class="add">+ Add another follow-up</span><button class="save off" type="button">Save call result</button></div>
+        </article>
+        <p class="lede">Không có câu hỏi bắt buộc. Card và Next step hiện cùng lúc. "Save call result" chỉ sáng khi đã chọn một Next step.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="pair" aria-labelledby="h2x">
+    <h2 id="h2x">2. Hai đường đi</h2>
+    <div class="flow">
+      <div class="path">
+        <h3>LO nói "yes" trên cuộc gọi</h3>
+        <ol>
+          <li>Cuộc gọi kết thúc, modal Call result tự mở.</li>
+          <li>Chọn <b>Interested</b>. (Gõ ghi chú nếu muốn.)</li>
+          <li>Bấm <b>Yes, prepare offer</b> trong card. Không cần bấm Save.</li>
+          <li>App lưu kết quả Interested + ghi chú, rồi mở modal <b>Offer</b> (NMLS, hai con số, phí $100).</li>
+          <li>Bấm gửi trong modal Offer: <b>Request approval</b> nếu cần manager duyệt (ví dụ miễn phí); <b>Send to onboarding</b> khi giao cho Onboarding Specialist; <b>Send invite</b> chỉ khi app vẫn gửi email mời (cờ hand-off tắt, hoặc LO chưa có specialist).</li>
+        </ol>
+        <p style="margin:0">Next step đã chọn dở (chưa Save) không có tác dụng gì và bị bỏ qua, không cảnh báo.</p>
+      </div>
+      <div class="path">
+        <h3>LO nói "not yet"</h3>
+        <ol>
+          <li>Cuộc gọi kết thúc, modal tự mở.</li>
+          <li>Chọn <b>Interested</b>.</li>
+          <li>Bỏ qua card. Chọn <b>Next step</b> ngay bên dưới (Call again / Send info / Webinar / Meet 1-1) và ngày giờ như hiện tại.</li>
+          <li>Bấm <b>Save call result</b> (chữ trên nút đổi theo bước: "Schedule call again", "Schedule 1-1"…, như hiện tại).</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="pair" aria-labelledby="h3x">
+    <h2 id="h3x">3. Modal thứ hai: "Invite to join" thành "Offer"</h2>
+    <div class="cols">
+      <div class="side">
+        <span class="tag before">Hiện tại · staging</span>
+        <article class="modal">
+          <div class="m-head"><div class="av">X</div><div><b><span class="hl-old">Invite to join</span> — Xomaxo</b><small>xomaxo3766@hebase.com</small></div></div>
+          <div class="m-body">
+            <div class="sec"><div class="sec-t"><span class="ic">▣</span>NMLS</div><div style="font-size:.82rem">✓ NMLS 2568229 — on file</div></div>
+            <div class="sec"><div class="sec-t"><span class="ic">▥</span>The two numbers</div><div class="opts two"><div class="note">Loans since 2022</div><div class="note">Loans in the last 12 months</div></div></div>
+            <div class="sec"><div class="sec-t"><span class="ic">$</span>Startup fee</div><div class="opts two"><div class="opt sel">Charge $100</div><div class="opt">Waive + reason</div></div></div>
+            <div class="sec"><div class="sec-t"><span class="ic">✉</span><span class="hl-old">Email preview</span></div><div class="note filled">Invitation to join LoanFactory — Hi Xomaxo, following up on our conversation…</div></div>
+          </div>
+          <div class="m-foot"><span class="add">⚠ Will need manager approval</span><button class="save" type="button">Request approval →</button></div>
+        </article>
+        <p class="lede">Email preview hiện vì cờ hand-off đang TẮT trên staging: app vẫn gửi email mời cho LO.</p>
+      </div>
+      <div class="side">
+        <span class="tag after">Đề xuất</span>
+        <article class="modal">
+          <div class="m-head"><div class="av">X</div><div><b>Offer — Xomaxo</b><small>xomaxo3766@hebase.com</small></div></div>
+          <div class="m-body">
+            <div class="sec"><div class="sec-t"><span class="ic">▣</span>NMLS</div><div style="font-size:.82rem">✓ NMLS 2568229 — on file</div></div>
+            <div class="sec"><div class="sec-t"><span class="ic">▥</span>The two numbers</div><div class="opts two"><div class="note">Loans since 2022</div><div class="note">Loans in the last 12 months</div></div></div>
+            <div class="sec"><div class="sec-t"><span class="ic">$</span>Startup fee</div><div class="opts two"><div class="opt sel">Charge $100</div><div class="opt">Waive + reason</div></div></div>
+            <div class="sec"><div class="sec-t"><span class="ic">→</span>Goes to the onboarding specialist</div></div>
+          </div>
+          <div class="m-foot"><span class="add">⚠ Will need manager approval</span><button class="save" type="button">Request approval →</button></div>
+        </article>
+        <p class="lede">Khi cờ hand-off BẬT và LO có specialist: không có email, nên không có Email preview. Nút: "Request approval" khi cần duyệt, "Send to onboarding" khi không cần.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="notes" aria-labelledby="h4x">
+    <h2 id="h4x">Cần quyết định</h2>
+    <ol>
+      <li><b>Bật cờ hand-off</b> (recruit.features.onboarding-v2-handoff, D207) trên staging? Hiện TẮT ở mọi môi trường, nên hôm nay LO vẫn nhận email mời từ recruiter. Chưa bật thì modal Offer vẫn phải hiện Email preview, vì email thật sự được gửi.</li>
+      <li><b>Chữ trên nút card</b>: "Yes, prepare offer" (đề xuất), hay chữ khác.</li>
+    </ol>
+    <p class="fine" style="margin:0;color:var(--ink-3);font-size:.78rem">Card chỉ hiện khi chọn Interested ở "How did it go?".</p>
+  </section>
+</main>

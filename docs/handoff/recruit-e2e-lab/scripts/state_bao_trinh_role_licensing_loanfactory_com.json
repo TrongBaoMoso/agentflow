@@ -1,0 +1,45 @@
+{
+  "cookies": [
+    {
+      "name": "__Host-lf_account_refresh",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkOTE1Y2NiNy1hYjU5LTQyY2YtOWRmNS1jNDhhMGM1N2ExYjkiLCJpc3MiOiJodHRwczovL2FjY291bnQudmlldDE4LmNvbSIsImFjY291bnRfaWQiOiIwMWYwNDgwMC01ZWQ4LTQwMDEtOTdmNS0wMDhmYjYxNmUyMGQiLCJ1c2VyX2lkIjoiZDkxNWNjYjctYWI1OS00MmNmLTlkZjUtYzQ4YTBjNTdhMWI5IiwidGltZV96b25lIjoiWiIsImlhdCI6MTc5MjMwMDk2OSwiZXhwIjoxNzkyNTYwMTY5LCJhY2Nlc3NfdHlwZSI6IlJFRlJFU0hfVE9LRU4iLCJpZGVudGlmaWVycyI6WyJiYW8udHJpbmgrcm9sZS1saWNlbnNpbmcrMUBsb2FuZmFjdG9yeS5jb20iLCJiYW8udHJpbmgrcm9sZS1saWNlbnNpbmdAbG9hbmZhY3RvcnkuY29tIl0sInN0YXR1cyI6IkFDVElWRSIsInZlcmlmeSI6dHJ1ZSwiYXV0aG9yaXRpZXMiOlsiVEVSQSNFTVBMT1lFRSIsIkhSI0VNUExPWUVFIiwiQUNDT1VOVCNVU0VSIiwiQ0FNUyNFTVBMT1lFRSIsIkhSI0xJQ0VOU0lORyJdLCJwcm9kdWN0IjoiVEVSQSIsInNpZCI6IjY0NDAxODRhLTc1ZDMtNDMyMi04NWUyLTNlZWFmOGUwNjM5NCJ9.9gP0na8zKseLciPgTVq_Qzb64RzAo4zPxlDjEgAy238",
+      "domain": "account.viet18.com",
+      "path": "/",
+      "expires": 1792560169.591891,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "lf_session",
+      "value": "1",
+      "domain": ".viet18.com",
+      "path": "/",
+      "expires": 1792560169.592685,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Strict"
+    },
+    {
+      "name": "lf_app",
+      "value": "1",
+      "domain": "recruit.viet18.com",
+      "path": "/",
+      "expires": 1792905771.959393,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://recruit.viet18.com",
+      "localStorage": [
+        {
+          "name": "recruit-fe-auth-storage",
+          "value": "{\"state\":{\"accessToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkOTE1Y2NiNy1hYjU5LTQyY2YtOWRmNS1jNDhhMGM1N2ExYjkiLCJpc3MiOiJodHRwczovL2FjY291bnQudmlldDE4LmNvbSIsImFjY291bnRfaWQiOiIwMWYwNDgwMC01ZWQ4LTQwMDEtOTdmNS0wMDhmYjYxNmUyMGQiLCJ1c2VyX2lkIjoiZDkxNWNjYjctYWI1OS00MmNmLTlkZjUtYzQ4YTBjNTdhMWI5IiwidGltZV96b25lIjoiWiIsImlhdCI6MTc5MjMwMDk3MSwiZXhwIjoxNzkyMzA4MTcxLCJhY2Nlc3NfdHlwZSI6IkFDQ0VTU19UT0tFTiIsImlkZW50aWZpZXJzIjpbImJhby50cmluaCtyb2xlLWxpY2Vuc2luZysxQGxvYW5mYWN0b3J5LmNvbSIsImJhby50cmluaCtyb2xlLWxpY2Vuc2luZ0Bsb2FuZmFjdG9yeS5jb20iXSwic3RhdHVzIjoiQUNUSVZFIiwidmVyaWZ5Ijp0cnVlLCJhdXRob3JpdGllcyI6WyJURVJBI0VNUExPWUVFIiwiSFIjRU1QTE9ZRUUiLCJBQ0NPVU5UI1VTRVIiLCJDQU1TI0VNUExPWUVFIiwiSFIjTElDRU5TSU5HIl0sInNpZCI6IjY0NDAxODRhLTc1ZDMtNDMyMi04NWUyLTNlZWFmOGUwNjM5NCJ9.9bbkSkEbPZ7hdf3R2tPAMsaPapK77UycW6VugwETVWM\",\"refreshToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkOTE1Y2NiNy1hYjU5LTQyY2YtOWRmNS1jNDhhMGM1N2ExYjkiLCJpc3MiOiJodHRwczovL2FjY291bnQudmlldDE4LmNvbSIsImFjY291bnRfaWQiOiIwMWYwNDgwMC01ZWQ4LTQwMDEtOTdmNS0wMDhmYjYxNmUyMGQiLCJ1c2VyX2lkIjoiZDkxNWNjYjctYWI1OS00MmNmLTlkZjUtYzQ4YTBjNTdhMWI5IiwidGltZV96b25lIjoiWiIsImlhdCI6MTc5MjMwMDk3MSwiZXhwIjoxNzkyNTYwMTY4LCJhY2Nlc3NfdHlwZSI6IlJFRlJFU0hfVE9LRU4iLCJpZGVudGlmaWVycyI6WyJiYW8udHJpbmgrcm9sZS1saWNlbnNpbmcrMUBsb2FuZmFjdG9yeS5jb20iLCJiYW8udHJpbmgrcm9sZS1saWNlbnNpbmdAbG9hbmZhY3RvcnkuY29tIl0sInN0YXR1cyI6IkFDVElWRSIsInZlcmlmeSI6dHJ1ZSwiYXV0aG9yaXRpZXMiOlsiVEVSQSNFTVBMT1lFRSIsIkhSI0VNUExPWUVFIiwiQUNDT1VOVCNVU0VSIiwiQ0FNUyNFTVBMT1lFRSIsIkhSI0xJQ0VOU0lORyJdLCJzaWQiOiI2NDQwMTg0YS03NWQzLTQzMjItODVlMi0zZWVhZjhlMDYzOTQifQ.sQGiRzNBEbAasxHUR2mbY7GMXfmSe1FmxIzArxJWclw\",\"user\":{\"id\":\"d915ccb7-ab59-42cf-9df5-c48a0c57a1b9\",\"created_by\":\"super.admin@viet18.com\",\"created_date\":{\"timestamp\":1791624696,\"formatted\":\"2026-10-10T09:31:36.716121\",\"zone\":\"Z\"},\"last_modified_by\":\"super.admin@viet18.com\",\"last_modified_date\":{\"timestamp\":1792141250,\"formatted\":\"2026-10-16T09:00:50.400105\",\"zone\":\"Z\"},\"key\":\"ahNzfmxlbmRlcnJhdGUtbWFzdGVycjMLEgVBZG1pbiIoYmFvLnRyaW5oK3JvbGUtbGljZW5zaW5nQGxvYW5mYWN0b3J5LmNvbQyiARA1NzE2MTA0MDI2NTIxNjAw\",\"ref_keys\":[\"58707df7-e774-47b9-b00f-9435eb127288\",\"ahNzfmxlbmRlcnJhdGUtbWFzdGVycjMLEgVBZG1pbiIoYmFvLnRyaW5oK3JvbGUtbGljZW5zaW5nQGxvYW5mYWN0b3J5LmNvbQyiARA1NzE2MTA0MDI2NTIxNjAw\"],\"first_name\":\"QA\",\"middle_name\":null,\"last_name\":\"Licensing Role\",\"email\":\"bao.trinh+role-licensing@loanfactory.com\",\"phone\":null,\"avatar\":null,\"date_of_birth\":null,\"gender\":\"UNKNOWN\",\"status\":\"ACTIVE\",\"source\":\"HR\",\"mfa_enabled\":false,\"settings\":{\"language\":\"en\",\"time_zone\":null,\"preferred_languages\":null,\"theme\":null,\"email_signature\":null},\"favorite_apps\":null,\"legal_first_name\":null,\"legal_last_name\":null,\"marital_status\":null,\"citizenship\":null,\"company_email\":\"bao.trinh+role-licensing+1@loanfactory.com\",\"company_phone\":null,\"social_links\":null,\"addresses\":null,\"nmls\":null,\"title\":null,\"office_address\":\"2195 Tully Road, San Jose, CA\",\"websites\":null,\"licenses\":null,\"national_type\":null,\"national_number\":null,\"identify_type\":null,\"identify_number\":null,\"ssn\":null,\"authorities\":{\"TERA\":[\"EMPLOYEE\"],\"HR\":[\"EMPLOYEE\",\"LICENSING\"],\"ACCOUNT\":[\"USER\"],\"CAMS\":[\"EMPLOYEE\"]},\"licensed_states\":[],\"full_name\":\"QA Licensing Role\"}},\"version\":0}"
+        }
+      ]
+    }
+  ]
+}

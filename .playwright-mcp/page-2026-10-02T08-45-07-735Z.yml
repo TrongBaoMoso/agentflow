@@ -1,0 +1,451 @@
+- generic [ref=f10e1]:
+  - img "op" [ref=f10e2]
+  - generic [ref=f10e5]:
+    - banner [ref=f10e7]:
+      - generic [ref=f10e8]:
+        - generic [ref=f10e9]:
+          - link "/":
+            - /url: /vi/
+          - button [ref=f10e10] [cursor=pointer]:
+            - generic [ref=f10e11]:
+              - img "Quốc kỳ Việt Nam" [ref=f10e12]
+              - text: VI
+              - img [aria-hidden] [ref=f10e13]: keyboard_arrow_down
+          - generic [ref=f10e16] [cursor=pointer]:
+            - generic [ref=f10e17]: ✓
+            - text: Nguyễn Lý Phương Mai
+        - generic [ref=f10e20]:
+          - link "logo" [ref=f10e21] [cursor=pointer]:
+            - /url: https://dichvucongbnv.moha.gov.vn
+          - generic [ref=f10e24]:
+            - link [ref=f10e25] [cursor=pointer]:
+              - /url: https://dichvucongbnv.moha.gov.vn
+              - text: BỘ NỘI VỤ
+              - paragraph [ref=f10e26]: HỆ THỐNG THÔNG TIN GIẢI QUYẾT THỦ TỤC HÀNH CHÍNH
+            - paragraph [ref=f10e27]: Hành chính phục vụ
+    - generic [ref=f10e30]:
+      - generic [ref=f10e32]:
+        - link "Trang chủ" [ref=f10e33] [cursor=pointer]:
+          - /url: /vi/padsvc/apply-online/6986daa0fd137028de97457f
+        - img [aria-hidden] [ref=f10e34]: navigate_next
+        - link "Dịch vụ công trực tuyến" [ref=f10e35] [cursor=pointer]:
+          - /url: /vi/padsvc/apply-online/6986daa0fd137028de97457f
+      - generic [ref=f10e37]:
+        - heading "Thông báo hằng tháng về việc tìm kiếm việc làm (Cấp tỉnh)" [level=2] [ref=f10e38]
+        - heading [level=3] [ref=f10e39]:
+          - generic [ref=f10e41]:
+            - img [aria-hidden] [ref=f10e42]: account_balance
+            - text: Một cửa TTVL Trung tâm Dịch vụ việc làm Thành phố Hồ Chí Minh (Phường Gia Định)
+        - heading "Toàn trình" [level=3] [ref=f10e43]:
+          - img [aria-hidden] [ref=f10e44]: label_important
+          - text: Toàn trình
+        - 'heading "Quy trình: Quy trình giải quyết Bảo hiểm thất nghiệp - TT Dịch vụ việc làm - 0 Ngày làm việc" [level=3] [ref=f10e45]'
+        - heading [level=3]
+        - tablist [ref=f10e48]:
+          - generic [ref=f10e49]:
+            - tab "Thông tin hồ sơ" [selected]:
+              - generic:
+                - generic:
+                  - img [aria-hidden]: create
+            - tab "2 Thành phần hồ sơ":
+              - generic: "2"
+              - generic: Thành phần hồ sơ
+            - tab "3 Thông tin bổ sung":
+              - generic: "3"
+              - generic: Thông tin bổ sung
+            - tab "4 Nộp hồ sơ":
+              - generic: "4"
+              - generic: Nộp hồ sơ
+          - tabpanel "Thông tin hồ sơ" [ref=f10e51]:
+            - button [ref=f10e52] [cursor=pointer]:
+              - generic [ref=f10e53]:
+                - text: Lấy dữ liệu từ bộ ngành
+                - img [aria-hidden] [ref=f10e54]: save
+            - generic [ref=f10e62]:
+              - button "THÔNG TIN CHỦ HỒ SƠ" [expanded] [ref=f10e63]
+              - generic [ref=f10e65]:
+                - generic [ref=f10e66]:
+                  - generic [ref=f10e67]:
+                    - generic [ref=f10e68]:
+                      - generic [ref=f10e69]: Họ và tên chủ hồ sơ *
+                      - textbox "Họ và tên chủ hồ sơ *" [disabled] [ref=f10e71]:
+                        - /placeholder: Nhập họ và tên chủ hồ sơ
+                        - text: Nguyễn Lý Phương Mai
+                    - generic [ref=f10e72]:
+                      - generic [ref=f10e73]: Số định danh cá nhân *
+                      - textbox "Số định danh cá nhân *" [ref=f10e75]:
+                        - /placeholder: Nhập số định danh cá nhân
+                        - text: "079195036801"
+                    - generic [ref=f10e76]:
+                      - generic [ref=f10e77]: Số điện thoại *
+                      - textbox "Số điện thoại *" [ref=f10e79]:
+                        - /placeholder: Nhập số điện thoại
+                        - text: "0904498317"
+                  - generic [ref=f10e80]:
+                    - generic [ref=f10e81]:
+                      - generic [ref=f10e82]: Ngày sinh *
+                      - generic [ref=f10e84]:
+                        - textbox [disabled] [ref=f10e85]: 17/01/1995
+                        - generic [ref=f10e87]: 
+                    - generic [ref=f10e90]:
+                      - generic [ref=f10e91]: Ngày cấp *
+                      - generic [ref=f10e93]:
+                        - textbox [ref=f10e94]: 22/12/2021
+                        - generic [ref=f10e96]: 
+                    - generic [ref=f10e99]:
+                      - generic [ref=f10e100]: Địa chỉ Email
+                      - textbox "Địa chỉ Email" [ref=f10e102]:
+                        - /placeholder: Nhập email
+                        - text: mai.nlp1701@gmail.com
+                  - generic [ref=f10e103]:
+                    - generic [ref=f10e104]:
+                      - generic [ref=f10e105]: Giới tính *
+                      - combobox [ref=f10e106] [cursor=pointer]:
+                        - generic [ref=f10e342]:
+                          - text: Nữ
+                          - 'button "Remove item: ''[object Object]''" [ref=f10e343]': Remove item
+                      - textbox "autocomplete" [ref=f10e111]
+                    - generic [ref=f10e112]:
+                      - generic [ref=f10e113]: Nơi cấp *
+                      - textbox "Nơi cấp *" [ref=f10e115]:
+                        - /placeholder: Nhập nơi cấp
+                        - text: Cục Trưởng Cục Cảnh Sát Quản Lý Hành Chính Về Trật Tự Xã Hội
+                    - generic [ref=f10e116]:
+                      - generic [ref=f10e117]: Quốc gia *
+                      - combobox [ref=f10e118] [cursor=pointer]:
+                        - generic [ref=f10e348]:
+                          - text: Việt Nam
+                          - 'button "Remove item: ''[object Object]''" [ref=f10e349]': Remove item
+                      - textbox "autocomplete" [ref=f10e123]
+                - paragraph [ref=f10e125]: Nơi thường trú
+                - generic [ref=f10e126]:
+                  - generic [ref=f10e128]:
+                    - generic [ref=f10e129]: Tỉnh/thành phố *
+                    - combobox [ref=f10e130] [cursor=pointer]:
+                      - generic [ref=f10e387]:
+                        - text: Thành phố Hồ Chí Minh
+                        - 'button "Remove item: ''[object Object]''" [ref=f10e388]': Remove item
+                    - textbox "autocomplete" [ref=f10e135]
+                  - generic [ref=f10e137]:
+                    - generic [ref=f10e138]: Phường/xã *
+                    - combobox [ref=f10e139] [cursor=pointer]:
+                      - generic [ref=f10e560]:
+                        - text: Phường Bảy Hiền
+                        - 'button "Remove item: ''[object Object]''" [ref=f10e561]': Remove item
+                    - textbox "autocomplete" [ref=f10e144]
+                  - generic [ref=f10e146]:
+                    - generic [ref=f10e147]: Địa chỉ chi tiết *
+                    - textbox "Địa chỉ chi tiết *" [ref=f10e149]:
+                      - /placeholder: Nhập số nhà, số ngõ/ngách/hẻm (nếu có), đường/phố
+                      - text: 53 Sơn Cang
+                - paragraph [ref=f10e151]: Nơi ở hiện tại
+                - generic [ref=f10e152]:
+                  - generic [ref=f10e154]:
+                    - generic [ref=f10e155]: Tỉnh/thành phố *
+                    - combobox [ref=f10e156] [cursor=pointer]:
+                      - generic [ref=f10e599]:
+                        - text: Thành phố Hồ Chí Minh
+                        - 'button "Remove item: ''[object Object]''" [ref=f10e600]': Remove item
+                    - textbox "autocomplete" [ref=f10e161]
+                  - generic [ref=f10e163]:
+                    - generic [ref=f10e164]: Phường/xã *
+                    - combobox [expanded] [ref=f10e165] [cursor=pointer]:
+                      - generic [ref=f10e168]:
+                        - text: Chọn Phường/xã
+                        - 'button "Remove item: ''Chọn Phường/xã''" [ref=f10e169]': Remove item
+                      - generic [ref=f10e601]:
+                        - textbox "Chọn Phường/xã" [active] [ref=f10e602]:
+                          - /placeholder: Type to search
+                        - listbox [ref=f10e603]:
+                          - option "Phường An Hội Tây" [selected] [ref=f10e604]
+                          - option "Phường An Hội Đông" [ref=f10e605]
+                          - option "Phường An Lạc" [ref=f10e606]
+                          - option "Phường An Nhơn" [ref=f10e607]
+                          - option "Phường Bảy Hiền" [ref=f10e608]
+                          - option "Phường Bình Hưng Hòa" [ref=f10e609]
+                          - option "Phường Bình Trị Đông" [ref=f10e610]
+                          - option "Phường Bình Tân" [ref=f10e611]
+                          - option "Phường Gò Vấp" [ref=f10e612]
+                          - option "Phường Hạnh Thông" [ref=f10e613]
+                          - option "Phường Khánh Hội" [ref=f10e614]
+                          - option "Phường Thông Tây Hội" [ref=f10e615]
+                          - option "Phường Tân Bình" [ref=f10e616]
+                          - option "Phường Tân Hòa" [ref=f10e617]
+                          - option "Phường Tân Sơn" [ref=f10e618]
+                          - option "Phường Tân Sơn Hòa" [ref=f10e619]
+                          - option "Phường Tân Sơn Nhất" [ref=f10e620]
+                          - option "Phường Tân Tạo" [ref=f10e621]
+                          - option "Phường Vĩnh Hội" [ref=f10e622]
+                          - option "Phường Xóm Chiếu" [ref=f10e623]
+                          - option "Xã An Long" [ref=f10e624]
+                          - option "Xã An Nhơn Tây" [ref=f10e625]
+                          - option "Xã An Thới Đông" [ref=f10e626]
+                          - option "Xã Bà Điểm" [ref=f10e627]
+                          - option "Xã Bàu Bàng" [ref=f10e628]
+                          - option "Xã Bàu Lâm" [ref=f10e629]
+                          - option "Xã Bình Chánh" [ref=f10e630]
+                          - option "Xã Bình Châu" [ref=f10e631]
+                          - option "Xã Bình Giã" [ref=f10e632]
+                          - option "Xã Bình Hưng" [ref=f10e633]
+                          - option "Xã Bình Khánh" [ref=f10e634]
+                          - option "Xã Bình Lợi" [ref=f10e635]
+                          - option "Xã Bình Mỹ" [ref=f10e636]
+                          - option "Xã Bắc Tân Uyên" [ref=f10e637]
+                          - option "Xã Châu Pha" [ref=f10e638]
+                          - option "Xã Châu Đức" [ref=f10e639]
+                          - option "Xã Cần Giờ" [ref=f10e640]
+                          - option "Xã Củ Chi" [ref=f10e641]
+                          - option "Xã Dầu Tiếng" [ref=f10e642]
+                          - option "Xã Hiệp Phước" [ref=f10e643]
+                          - option "Xã Hòa Hiệp" [ref=f10e644]
+                          - option "Xã Hòa Hội" [ref=f10e645]
+                          - option "Xã Hóc Môn" [ref=f10e646]
+                          - option "Xã Hưng Long" [ref=f10e647]
+                          - option "Xã Hồ Tràm" [ref=f10e648]
+                          - option "Xã Kim Long" [ref=f10e649]
+                          - option "Xã Long Hòa" [ref=f10e650]
+                          - option "Xã Long Hải" [ref=f10e651]
+                          - option "Xã Long Sơn" [ref=f10e652]
+                          - option "Xã Long Điền" [ref=f10e653]
+                          - option "Xã Minh Thạnh" [ref=f10e654]
+                          - option "Xã Nghĩa Thành" [ref=f10e655]
+                          - option "Xã Ngãi Giao" [ref=f10e656]
+                          - option "Xã Nhuận Đức" [ref=f10e657]
+                          - option "Xã Nhà Bè" [ref=f10e658]
+                          - option "Xã Phú Giáo" [ref=f10e659]
+                          - option "Xã Phú Hòa Đông" [ref=f10e660]
+                          - option "Xã Phước Hòa" [ref=f10e661]
+                          - option "Xã Phước Hải" [ref=f10e662]
+                          - option "Xã Phước Thành" [ref=f10e663]
+                          - option "Xã Thanh An" [ref=f10e664]
+                          - option "Xã Thái Mỹ" [ref=f10e665]
+                          - option "Xã Thường Tân" [ref=f10e666]
+                          - option "Xã Thạnh An" [ref=f10e667]
+                          - option "Xã Trừ Văn Thố" [ref=f10e668]
+                          - option "Xã Tân An Hội" [ref=f10e669]
+                          - option "Xã Tân Nhựt" [ref=f10e670]
+                          - option "Xã Tân Vĩnh Lộc" [ref=f10e671]
+                          - option "Xã Vĩnh Lộc" [ref=f10e672]
+                          - option "Xã Xuyên Mộc" [ref=f10e673]
+                          - option "Xã Xuân Sơn" [ref=f10e674]
+                          - option "Xã Xuân Thới Sơn" [ref=f10e675]
+                          - option "Xã Đông Thạnh" [ref=f10e676]
+                          - option "Xã Đất Đỏ" [ref=f10e677]
+                          - option "Đặc khu Côn Đảo" [ref=f10e678]
+                          - option "Phường An Khánh" [ref=f10e679]
+                          - option "Phường An Phú" [ref=f10e680]
+                          - option "Phường An Phú Đông" [ref=f10e681]
+                          - option "Phường An Đông" [ref=f10e682]
+                          - option "Phường Bà Rịa" [ref=f10e683]
+                          - option "Phường Bàn Cờ" [ref=f10e684]
+                          - option "Phường Bình Cơ" [ref=f10e685]
+                          - option "Phường Bình Dương" [ref=f10e686]
+                          - option "Phường Bình Hòa" [ref=f10e687]
+                          - option "Phường Bình Lợi Trung" [ref=f10e688]
+                          - option "Phường Bình Phú" [ref=f10e689]
+                          - option "Phường Bình Quới" [ref=f10e690]
+                          - option "Phường Bình Thạnh" [ref=f10e691]
+                          - option "Phường Bình Thới" [ref=f10e692]
+                          - option "Phường Bình Tiên" [ref=f10e693]
+                          - option "Phường Bình Trưng" [ref=f10e694]
+                          - option "Phường Bình Tây" [ref=f10e695]
+                          - option "Phường Bình Đông" [ref=f10e696]
+                          - option "Phường Bến Cát" [ref=f10e697]
+                          - option "Phường Bến Thành" [ref=f10e698]
+                          - option "Phường Chánh Hiệp" [ref=f10e699]
+                          - option "Phường Chánh Hưng" [ref=f10e700]
+                          - option "Phường Chánh Phú Hòa" [ref=f10e701]
+                          - option "Phường Chợ Lớn" [ref=f10e702]
+                          - option "Phường Chợ Quán" [ref=f10e703]
+                          - option "Phường Cát Lái" [ref=f10e704]
+                          - option "Phường Cầu Kiệu" [ref=f10e705]
+                          - option "Phường Cầu Ông Lãnh" [ref=f10e706]
+                          - option "Phường Diên Hồng" [ref=f10e707]
+                          - option "Phường Dĩ An" [ref=f10e708]
+                          - option "Phường Gia Định" [ref=f10e709]
+                          - option "Phường Hiệp Bình" [ref=f10e710]
+                          - option "Phường Hòa Bình" [ref=f10e711]
+                          - option "Phường Hòa Hưng" [ref=f10e712]
+                          - option "Phường Hòa Lợi" [ref=f10e713]
+                          - option "Phường Linh Xuân" [ref=f10e714]
+                          - option "Phường Long Bình" [ref=f10e715]
+                          - option "Phường Long Hương" [ref=f10e716]
+                          - option "Phường Long Nguyên" [ref=f10e717]
+                          - option "Phường Long Phước" [ref=f10e718]
+                          - option "Phường Long Trường" [ref=f10e719]
+                          - option "Phường Lái Thiêu" [ref=f10e720]
+                          - option "Phường Minh Phụng" [ref=f10e721]
+                          - option "Phường Nhiêu Lộc" [ref=f10e722]
+                          - option "Phường Phú An" [ref=f10e723]
+                          - option "Phường Phú Lâm" [ref=f10e724]
+                          - option "Phường Phú Lợi" [ref=f10e725]
+                          - option "Phường Phú Mỹ" [ref=f10e726]
+                          - option "Phường Phú Nhuận" [ref=f10e727]
+                          - option "Phường Phú Thuận" [ref=f10e728]
+                          - option "Phường Phú Thạnh" [ref=f10e729]
+                          - option "Phường Phú Thọ" [ref=f10e730]
+                          - option "Phường Phú Thọ Hòa" [ref=f10e731]
+                          - option "Phường Phú Định" [ref=f10e732]
+                          - option "Phường Phước Long" [ref=f10e733]
+                          - option "Phường Phước Thắng" [ref=f10e734]
+                          - option "Phường Rạch Dừa" [ref=f10e735]
+                          - option "Phường Sài Gòn" [ref=f10e736]
+                          - option "Phường Tam Bình" [ref=f10e737]
+                          - option "Phường Tam Long" [ref=f10e738]
+                          - option "Phường Tam Thắng" [ref=f10e739]
+                          - option "Phường Thuận An" [ref=f10e740]
+                          - option "Phường Thuận Giao" [ref=f10e741]
+                          - option "Phường Thạnh Mỹ Tây" [ref=f10e742]
+                          - option "Phường Thới An" [ref=f10e743]
+                          - option "Phường Thới Hòa" [ref=f10e744]
+                          - option "Phường Thủ Dầu Một" [ref=f10e745]
+                          - option "Phường Thủ Đức" [ref=f10e746]
+                          - option "Phường Trung Mỹ Tây" [ref=f10e747]
+                          - option "Phường Tân Hiệp" [ref=f10e748]
+                          - option "Phường Tân Hưng" [ref=f10e749]
+                          - option "Phường Tân Hải" [ref=f10e750]
+                          - option "Phường Tân Khánh" [ref=f10e751]
+                          - option "Phường Tân Mỹ" [ref=f10e752]
+                          - option "Phường Tân Phú" [ref=f10e753]
+                          - option "Phường Tân Phước" [ref=f10e754]
+                          - option "Phường Tân Sơn Nhì" [ref=f10e755]
+                          - option "Phường Tân Thuận" [ref=f10e756]
+                          - option "Phường Tân Thành" [ref=f10e757]
+                          - option "Phường Tân Thới Hiệp" [ref=f10e758]
+                          - option "Phường Tân Uyên" [ref=f10e759]
+                          - option "Phường Tân Đông Hiệp" [ref=f10e760]
+                          - option "Phường Tân Định" [ref=f10e761]
+                          - option "Phường Tây Nam" [ref=f10e762]
+                          - option "Phường Tây Thạnh" [ref=f10e763]
+                          - option "Phường Tăng Nhơn Phú" [ref=f10e764]
+                          - option "Phường Vĩnh Tân" [ref=f10e765]
+                          - option "Phường Vũng Tàu" [ref=f10e766]
+                          - option "Phường Vườn Lài" [ref=f10e767]
+                          - option "Phường Xuân Hòa" [ref=f10e768]
+                          - option "Phường Đông Hòa" [ref=f10e769]
+                          - option "Phường Đông Hưng Thuận" [ref=f10e770]
+                          - option "Phường Đức Nhuận" [ref=f10e771]
+                    - textbox "autocomplete" [ref=f10e170]
+                  - generic [ref=f10e172]:
+                    - generic [ref=f10e173]: Địa chỉ chi tiết *
+                    - textbox "Địa chỉ chi tiết *" [ref=f10e175]:
+                      - /placeholder: Nhập số nhà, số ngõ/ngách/hẻm (nếu có), đường/phố
+                      - text: 53 Sơn Cang
+                - generic [ref=f10e176]:
+                  - generic [ref=f10e177]: Địa chỉ liên hệ *
+                  - textbox "Địa chỉ liên hệ *" [ref=f10e179]:
+                    - /placeholder: Nhập số nhà, số ngõ/ngách/hẻm (nếu có), đường/phố, phường/xã, tên tỉnh/thành phố
+                    - text: 53 Sơn Cang, phường Bảy Hiền, Thành phố Hồ Chí Minh
+            - generic [ref=f10e185]:
+              - generic [ref=f10e187]:
+                - button "THÔNG TIN TÌNH TRẠNG HƯỞNG TRỢ CẤP THẤT NGHIỆP" [expanded] [ref=f10e188]
+                - generic [ref=f10e191]:
+                  - generic [ref=f10e192]:
+                    - generic [ref=f10e193]:
+                      - generic [ref=f10e194]: Số Quyết định hưởng trợ cấp thất nghiệp *
+                      - textbox "Số Quyết định hưởng trợ cấp thất nghiệp *" [ref=f10e196]:
+                        - /placeholder: Nhập số quyết định
+                        - text: 158949/QĐ-SNV-TCTN
+                    - generic [ref=f10e197]:
+                      - generic [ref=f10e198]: Từ ngày *
+                      - generic [ref=f10e200]:
+                        - textbox [ref=f10e201]: 28/09/2026
+                        - generic [ref=f10e203]: 
+                  - generic [ref=f10e206]:
+                    - generic [ref=f10e207]:
+                      - generic [ref=f10e208]: Ngày cấp *
+                      - generic [ref=f10e210]:
+                        - textbox [ref=f10e211]: 28/09/2026
+                        - generic [ref=f10e213]: 
+                    - generic [ref=f10e216]:
+                      - generic [ref=f10e217]: Đến ngày *
+                      - generic [ref=f10e219]:
+                        - textbox [ref=f10e220]: 27/05/2027
+                        - generic [ref=f10e222]: 
+                  - generic [ref=f10e225]:
+                    - generic [ref=f10e226]:
+                      - generic [ref=f10e227]: Số tháng hưởng trợ cấp thất nghiệp *
+                      - textbox "Số tháng hưởng trợ cấp thất nghiệp *" [ref=f10e229]:
+                        - /placeholder: Nhập số tháng
+                        - text: "8"
+                    - generic [ref=f10e230]:
+                      - generic [ref=f10e231]: Tỉnh/thành phố hưởng trợ cấp thất nghiệp *
+                      - combobox [ref=f10e232] [cursor=pointer]:
+                        - generic [ref=f10e235]:
+                          - text: Chọn Tỉnh/TP
+                          - 'button "Remove item: ''Chọn Tỉnh/TP''" [ref=f10e236]': Remove item
+                      - textbox "autocomplete" [ref=f10e237]
+              - generic [ref=f10e238]:
+                - generic [ref=f10e239]: Thông tin tìm việc
+                - table [ref=f10e240]:
+                  - rowgroup [ref=f10e241]:
+                    - row [ref=f10e242]:
+                      - columnheader "STT" [ref=f10e243]
+                      - columnheader "Tên đơn vị" [ref=f10e244]
+                      - columnheader "Địa chỉ" [ref=f10e245]
+                      - columnheader "Người liên hệ trực tiếp" [ref=f10e246]
+                      - columnheader "Vị trí ứng tuyển" [ref=f10e247]
+                      - columnheader "Kết quả" [ref=f10e248]
+                      - columnheader "Add/Remove" [ref=f10e249]
+                  - rowgroup [ref=f10e251]:
+                    - row [ref=f10e252]:
+                      - cell "1" [ref=f10e253]
+                      - cell [ref=f10e256]:
+                        - textbox "Nhập tên đơn vị" [ref=f10e259]
+                      - cell [ref=f10e260]:
+                        - textbox "Nhập địa chỉ" [ref=f10e263]
+                      - cell [ref=f10e264]:
+                        - textbox "Nhập người liên hệ" [ref=f10e267]
+                      - cell [ref=f10e268]:
+                        - textbox "Nhập vị trí ứng tuyển" [ref=f10e271]
+                      - cell [ref=f10e272]:
+                        - textbox "Nhập kết quả tuyển dụng" [ref=f10e275]
+                      - cell [ref=f10e276]:
+                        - button "remove" [ref=f10e277] [cursor=pointer]:
+                          - generic [ref=f10e278]: 
+                  - rowgroup [ref=f10e279]:
+                    - row [ref=f10e280]:
+                      - cell [ref=f10e281]:
+                        - button " Thêm dòng" [ref=f10e282] [cursor=pointer]:
+                          - generic [ref=f10e283]: 
+                          - text: Thêm dòng
+              - generic [ref=f10e285]:
+                - button "THÔNG TIN TÌM VIỆC VÀ TÌNH TRẠNG VIỆC LÀM" [expanded] [ref=f10e286]
+                - generic [ref=f10e288]:
+                  - generic [ref=f10e291]:
+                    - checkbox " Không có việc làm" [checked] [ref=f10e341]
+                    - generic [ref=f10e293]:  Không có việc làm
+                  - generic [ref=f10e296]:
+                    - checkbox "Đang thử việc hoặc đào tạo, nâng cao trình độ kỹ năng nghề để làm việc cho người sử dụng lao động (Hợp đồng thử việc/Hợp đồng đào tạo nghề/Hợp đồng lao động)" [ref=f10e297]
+                    - generic [ref=f10e298]: Đang thử việc hoặc đào tạo, nâng cao trình độ kỹ năng nghề để làm việc cho người sử dụng lao động (Hợp đồng thử việc/Hợp đồng đào tạo nghề/Hợp đồng lao động)
+                  - generic [ref=f10e301]:
+                    - checkbox "Có việc làm nhưng chưa giao kết HĐLĐ/HĐLV (ghi rõ tên đơn vị, địa chỉ, công việc đang làm)" [ref=f10e302]
+                    - generic [ref=f10e303]: Có việc làm nhưng chưa giao kết HĐLĐ/HĐLV (ghi rõ tên đơn vị, địa chỉ, công việc đang làm)
+                  - generic [ref=f10e306]:
+                    - checkbox "Tình trạng khác" [ref=f10e307]
+                    - generic [ref=f10e308]: Tình trạng khác
+            - generic [ref=f10e309]:
+              - button "Quay lại" [ref=f10e310] [cursor=pointer]
+              - button "Tiếp tục" [ref=f10e311] [cursor=pointer]
+    - generic [ref=f10e315]:
+      - generic [ref=f10e317]:
+        - paragraph [ref=f10e318]
+        - paragraph [ref=f10e319]: HỆ THỐNG THÔNG TIN GIẢI QUYẾT THỦ TỤC HÀNH CHÍNH BỘ NỘI VỤ
+        - paragraph [ref=f10e320]: "Cơ quan chủ quản: Bộ Nội vụ"
+        - paragraph [ref=f10e321]: "Địa chỉ: Số 8 Tôn Thất Thuyết - Nam Từ Liêm - Hà Nội"
+        - paragraph [ref=f10e322]
+      - generic [ref=f10e323]:
+        - link [ref=f10e324] [cursor=pointer]:
+          - /url: http://ipv6-test.com/validate.php?url=dichvucong.dienbien.gov.vn
+          - img "ipv6 ready" [ref=f10e325]
+        - link [ref=f10e326] [cursor=pointer]:
+          - /url: https://tinnhiemmang.vn/danh-ba-tin-nhiem/dichvucongdienbiengovvn-1700532066
+          - img "Chung nhan Tin Nhiem Mang" [ref=f10e327]
+  - link "imageEMC Đã kết nối EMC" [ref=f10e331] [cursor=pointer]:
+    - /url: javascript:void(0)
+    - img "imageEMC" [ref=f10e333]
+    - generic [ref=f10e334]: Đã kết nối EMC
+  - link "Hình ảnh":
+    - /url: blob:https://dichvucongbnv.moha.gov.vn/3772a506-d3e9-49eb-9402-d31d9ef580b8
+  - link "blob:https://dichvucongbnv.moha.gov.vn/e63e9a1f-1eec-4e6b-8661-f281672ac8a6":
+    - /url: blob:https://dichvucongbnv.moha.gov.vn/e63e9a1f-1eec-4e6b-8661-f281672ac8a6

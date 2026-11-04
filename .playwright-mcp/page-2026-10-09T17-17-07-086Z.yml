@@ -1,0 +1,58 @@
+- generic [active] [ref=f3e1]:
+  - alert [ref=f3e2]
+  - generic [ref=f3e3]:
+    - banner [ref=f3e4]:
+      - generic [ref=f3e5]:
+        - link "Go to the start of this app" [ref=f3e7] [cursor=pointer]:
+          - /url: /today
+          - img "Loan Factory" [ref=f3e8]
+          - generic [ref=f3e9]:
+            - paragraph [ref=f3e10]: Loan Factory
+            - paragraph [ref=f3e11]: Recruit
+        - generic [ref=f3e12]:
+          - generic [ref=f3e14]:
+            - combobox "Search candidates, NMLS, companies…" [ref=f3e19]
+            - generic:
+              - generic "Press ⌘ K to search from anywhere": ⌘ K
+          - status [ref=f3e20]
+        - generic [ref=f3e21]:
+          - button "Notifications" [ref=f3e22] [cursor=pointer]
+          - button "Switch to dark mode" [ref=f3e27] [cursor=pointer]
+          - button "Notifications" [ref=f3e33] [cursor=pointer]
+          - button "Discovery" [ref=f3e38] [cursor=pointer]
+          - button "Account menu" [ref=f3e50] [cursor=pointer]:
+            - generic [ref=f3e51]: "?"
+    - navigation [ref=f3e53]:
+      - button "Collapse menu" [expanded] [ref=f3e54] [cursor=pointer]
+      - navigation "Main navigation" [ref=f3e57]:
+        - generic [ref=f3e58]:
+          - button "Frequent" [expanded] [ref=f3e59] [cursor=pointer]
+          - list "Frequent" [ref=f3e64]:
+            - listitem [ref=f3e65]:
+              - link "My work today" [ref=f3e66] [cursor=pointer]:
+                - /url: /today
+        - generic [ref=f3e72]:
+          - button "Configuration" [expanded] [ref=f3e73] [cursor=pointer]
+          - list "Configuration" [ref=f3e78]:
+            - listitem [ref=f3e79]:
+              - link "Templates" [ref=f3e80] [cursor=pointer]:
+                - /url: /templates
+            - listitem [ref=f3e86]:
+              - link "Audit" [ref=f3e87] [cursor=pointer]:
+                - /url: /audit
+            - listitem [ref=f3e93]:
+              - link "Settings" [ref=f3e94] [cursor=pointer]:
+                - /url: /settings
+            - listitem [ref=f3e100]:
+              - link "Checklist templates" [ref=f3e101] [cursor=pointer]:
+                - /url: /checklist-templates
+            - listitem [ref=f3e108]:
+              - link "Permissions" [ref=f3e109] [cursor=pointer]:
+                - /url: /permissions
+      - button "AI Assistant" [ref=f3e116] [cursor=pointer]
+    - main [ref=f3e127]:
+      - alert [ref=f3e131]:
+        - generic [ref=f3e132]:
+          - generic [ref=f3e138]: This loan officer isn't available
+          - paragraph [ref=f3e139]: The link may be wrong, or the profile was removed or isn't shared with you.
+          - button "Back" [ref=f3e141] [cursor=pointer]

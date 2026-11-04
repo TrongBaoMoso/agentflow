@@ -1,0 +1,566 @@
+package com.mvu.loan.server.op.recruiting;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import com.google.appengine.api.NS;
+import com.mvu.appengine.AppEngineTest;
+import com.mvu.appengine.db.Bean;
+import com.mvu.appengine.db.Bundle;
+import com.mvu.core.MockHttpServletRequest;
+import com.mvu.core.server.JSON;
+import com.mvu.core.server.QueueService;
+import com.mvu.core.server.Server;
+import com.mvu.core.shared.entity.Configuration;
+import com.mvu.core.shared.entity.HasActive;
+import com.mvu.gapi.server.MockGoogleAdmin;
+import com.mvu.loan.server.op.api.WebPlusAPI;
+import com.mvu.loan.shared.entity.Admin;
+import com.mvu.loan.shared.entity.Company;
+import com.mvu.loan.shared.entity.LORecruiting;
+import com.mvu.loan.shared.typekey.LoanOfficerReferredSource;
+import com.sun.net.httpserver.HttpServer;
+
+/**
+ * Recruiter credit for a Loan Officer who is an approved LO Recruiter Program member but carries no HR
+ * recruiter flag (Bao, 23/10, option a), end to end through the real public endpoint ({@link WebPlusAPI}),
+ * the real {@code LORecruiting.beforeCreated} hook and the local datastore. moso-aid is a real local
+ * HTTP server, so the wire contract with {@code GET /api/join-page?key=} is exercised, not mocked.
+ *
+ * <p>Membership is read from moso-aid ({@link LoRecruiterProgramStanding}); packs never decides it from
+ * anything the visitor sent.</p>
+ */
+public class LoRecruiterProgramCreditPersistenceTest extends AppEngineTest {
+
+  private static final String NS_LF = Company.LOAN_FACTORY;
+  /** The system property that points packs at moso-aid's {@code /api} root. */
+  private static final String MOSO_AID_URL_PROPERTY = "moso_aid_base_url";
+
+  private static final String HR_KEY = "hr-login@test.com";
+  private static final String HR_EMAIL = "hr.recruiter@loanfactory.com";
+  private static final String HR_SLUG = "hr-recruiter";
+
+  // keyName deliberately differs from company_email, as in production.
+  private static final String LO_KEY = "lo-login@test.com";
+  private static final String LO_EMAIL = "pat.member@loanfactory.com";
+  private static final String LO_SLUG = "pat-member";
+
+  private HttpServer mosoAid;
+  private final List<String> mosoAidRequests = new CopyOnWriteArrayList<>();
+  private final AtomicInteger mosoAidStatus = new AtomicInteger(200);
+  private volatile String mosoAidBody = "{}";
+  /** One-shot answers served before the default status/body, in order (status, body). */
+  private final java.util.concurrent.ConcurrentLinkedQueue<Object[]> mosoAidScript = new java.util.concurrent.ConcurrentLinkedQueue<>();
+  private final List<String> redirectTargetRequests = new CopyOnWriteArrayList<>();
+
+  @BeforeAll
+  public static void init() {
+    init("test_config");
+  }
+
+  @BeforeEach
+  public void setUp() throws IOException {
+    MockGoogleAdmin.createInstance().clearGroups();
+    // Promoting an Admin to Loan Officer in the Loan Factory namespace reads that tenant's Company row,
+    // which lives in the default namespace (same seeding as RecruitApiMeetingReminderAuthE2ETest).
+    NS.set("");
+    new Bundle().ensure(Company.TYPE, Long.parseLong(NS_LF)).set(Company.name, "Loan Factory").set(HasActive.active, true).save();
+    NS.set(NS_LF);
+    ensureConfiguration();
+    new Bundle().ensure(Company.TYPE, Company.DEFAULT).save();
+    Server.queueService(new SilentQueueService());
+    // Promoting an Admin to Loan Officer needs a signed-in actor (Admin.beforeSave reads Server.currentUser()).
+    Bundle caller = new Bundle();
+    caller.create(Admin.TYPE, "caller@test.com").set(Admin.email, "caller@test.com").set(HasActive.active, true);
+    caller.commit();
+    MockHttpServletRequest login = new MockHttpServletRequest();
+    login.setUser(Admin.TYPE, "caller@test.com");
+    com.mvu.core.server.ThreadContext.setRequest(login);
+    admin(HR_KEY, HR_EMAIL, true, false);
+    admin(LO_KEY, LO_EMAIL, false, true);
+
+    mosoAidRequests.clear();
+    mosoAidStatus.set(200);
+    mosoAidBody = "{}";
+    mosoAidScript.clear();
+    redirectTargetRequests.clear();
+    LoRecruiterProgramStanding.resetForTests();
+    mosoAid = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
+    mosoAid.createContext("/api/join-page", exchange -> {
+      mosoAidRequests.add(exchange.getRequestURI().toString());
+      Object[] scripted = mosoAidScript.poll();
+      int status = scripted != null ? (Integer) scripted[0] : mosoAidStatus.get();
+      byte[] body = (scripted != null ? (String) scripted[1] : mosoAidBody).getBytes(StandardCharsets.UTF_8);
+      if (status == 302) {
+        exchange.getResponseHeaders().add("Location", "/elsewhere/leak");
+      }
+      exchange.sendResponseHeaders(status, body.length);
+      try (OutputStream os = exchange.getResponseBody()) {
+        os.write(body);
+      }
+    });
+    mosoAid.createContext("/elsewhere", exchange -> {
+      redirectTargetRequests.add(exchange.getRequestURI().toString());
+      exchange.sendResponseHeaders(200, -1);
+      exchange.close();
+    });
+    mosoAid.start();
+    Server.setSystemProperty(MOSO_AID_URL_PROPERTY, "http://127.0.0.1:" + mosoAid.getAddress().getPort() + "/api");
+  }
+
+  @AfterEach
+  public void tearDown() {
+    mosoAid.stop(0);
+    Server.setSystemProperty(MOSO_AID_URL_PROPERTY, "");
+  }
+
+  private static void ensureConfiguration() {
+    Bundle bundle = new Bundle();
+    if (bundle.get(Configuration.TYPE, 1L) == null) {
+      bundle.create(Configuration.TYPE, 1L);
+      bundle.commit();
+    }
+  }
+
+  private static final class SilentQueueService extends QueueService {
+    @Override
+    public QueueService getQueue(String queueName) {
+      return this;
+    }
+
+    @Override
+    protected void queueTask(String taskName, String op, HttpServletRequest request, String payLoad, long delay) {
+      // executes nothing
+    }
+  }
+
+  private Bean admin(String keyName, String companyEmail, boolean hrRecruiter, boolean loanOriginator) {
+    Bundle bundle = new Bundle();
+    Bean created = bundle.create(Admin.TYPE, keyName)
+            .set(Admin.email, keyName)
+            .set(Admin.company_email, companyEmail)
+            .set(Admin.first_name, "Test")
+            .set(Admin.last_name, keyName)
+            .set(Admin.url, keyName.substring(0, keyName.indexOf('@')))
+            .set(HasActive.active, true);
+    if (hrRecruiter) {
+      created.set(Admin.is_recruiter, true);
+    }
+    if (loanOriginator) {
+      created.set(Admin.is_loan_originator, true);
+    }
+    bundle.commit();
+    return created;
+  }
+
+  private static MockHttpServletRequest request() {
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    request.setMethod("POST");
+    return request;
+  }
+
+  /** What an approved member's own-site form posts: recruiter source + the owner's company e-mail + the slug stamp. */
+  private static JSON siteBody(String email, String referredBy, String slug) {
+    JSON body = JSON.empty()
+            .set(LORecruiting.email, email)
+            .set(LORecruiting.first_name, "Cand")
+            .set(LORecruiting.last_name, "Idate")
+            .set(LORecruiting.referred_source, LoanOfficerReferredSource.recruiter)
+            .set(LORecruiting.referred_by, referredBy);
+    if (slug != null) {
+      body.set(LORecruiting.lead_origin, "JOIN_SLUG").set(LORecruiting.lead_origin_slug, slug);
+    }
+    return body;
+  }
+
+  private Bean registerWebinar(JSON body) throws Exception {
+    JSON response = (JSON) new WebPlusAPI().registerWebinar(request(), NS_LF, body);
+    return new Bundle().get(response.key());
+  }
+
+  private void mosoAidSays(int status, String body) {
+    mosoAidStatus.set(status);
+    mosoAidBody = body;
+  }
+
+  private void mosoAidThenSays(int status, String body) {
+    mosoAidScript.add(new Object[] {status, body});
+  }
+
+  private static void assertUnverifiedLabel(Bean row, boolean expected) {
+    List<String> labels = row.get(LORecruiting.lo_labels);
+    assertThat(labels != null && labels.contains(LoRecruiterProgramStanding.UNVERIFIED_LABEL)).isEqualTo(expected);
+  }
+
+  private static String memberBody(String slug) {
+    return "{\"success\":true,\"data\":{\"recruiter_slug\":\"" + slug + "\"}}";
+  }
+
+  private static final String PLAIN_LO_BODY = "{\"success\":true,\"data\":{\"bio\":\"hello\"}}";
+
+  private static void assertRecruiterCredit(Bean row, String ownerKey) {
+    assertThat(row.get(LORecruiting.referred_source)).isEqualTo(LoanOfficerReferredSource.recruiter);
+    assertThat((String) row.get(LORecruiting.recruiter)).isEqualTo(ownerKey);
+    assertThat(row.hasValue(LORecruiting.referred_lo)).isFalse();
+    // HR-flagged recruiters carry no program marker; only a moso-aid-confirmed member does
+    assertThat(row.is(LORecruiting.lead_origin_recruiter_credit)).isEqualTo(!HR_KEY.equals(ownerKey));
+  }
+
+  private static void assertLoanOfficerReferral(Bean row, String ownerKey) {
+    assertThat(row.get(LORecruiting.referred_source)).isEqualTo(LoanOfficerReferredSource.loan_officer);
+    assertThat((String) row.get(LORecruiting.referred_lo)).isEqualTo(ownerKey);
+    assertThat(row.hasValue(LORecruiting.recruiter)).isFalse();
+    assertThat(row.is(LORecruiting.lead_origin_recruiter_credit)).isFalse();
+  }
+
+  // ── the HR-flagged recruiter: unchanged, and no moso-aid call at all ───────
+
+  @Test
+  public void anHrFlaggedRecruiterIsCreditedExactlyAsBeforeWithoutAskingMosoAid() throws Exception {
+    Bean row = registerWebinar(siteBody("hr1@example.com", HR_EMAIL, HR_SLUG));
+
+    assertRecruiterCredit(row, HR_KEY);
+    assertThat(mosoAidRequests).isEmpty();
+  }
+
+  // ── approved member without the HR flag: the new behaviour ─────────────────
+
+  @Test
+  public void anApprovedMemberWithoutTheHrFlagIsCreditedAsRecruiter() throws Exception {
+    mosoAidSays(200, memberBody(LO_SLUG));
+
+    Bean row = registerWebinar(siteBody("member1@example.com", LO_EMAIL, LO_SLUG));
+
+    assertRecruiterCredit(row, LO_KEY);
+    // the stamp is untouched: the same JOIN_SLUG / SLUG_SERVER_RESOLVED row an HR recruiter's lead carries
+    assertThat((String) row.get(LORecruiting.lead_origin)).isEqualTo("JOIN_SLUG");
+    assertThat((String) row.get(LORecruiting.lead_origin_owner_key)).isEqualTo(LO_KEY);
+    assertThat((String) row.get(LORecruiting.lead_origin_owner_match)).isEqualTo("SLUG_SERVER_RESOLVED");
+  }
+
+  @Test
+  public void theMemberLookupAsksMosoAidAboutTheOwnersWebsafeKeyNotTheKeyName() throws Exception {
+    mosoAidSays(200, memberBody(LO_SLUG));
+    Bean owner = new Bundle().get(Admin.TYPE, LO_KEY);
+
+    registerWebinar(siteBody("member2@example.com", LO_EMAIL, LO_SLUG));
+
+    assertThat(mosoAidRequests).hasSize(1);
+    String uri = mosoAidRequests.get(0);
+    assertThat(uri).startsWith("/api/join-page?key=");
+    assertThat(java.net.URLDecoder.decode(uri.substring(uri.indexOf('=') + 1), StandardCharsets.UTF_8))
+            .isEqualTo(owner.key())
+            .isNotEqualTo(LO_KEY);
+  }
+
+  @Test
+  public void aRecruitSlugOriginIsCreditedTheSameWay() throws Exception {
+    mosoAidSays(200, memberBody(LO_SLUG));
+    JSON body = siteBody("member3@example.com", LO_EMAIL, LO_SLUG).set(LORecruiting.lead_origin, "RECRUIT_SLUG");
+
+    Bean row = registerWebinar(body);
+
+    assertRecruiterCredit(row, LO_KEY);
+  }
+
+  // ── a forged claim: downgraded, as today ───────────────────────────────────
+
+  @Test
+  public void aNonMemberWithAForgedStampIsDowngradedToLoanOfficer() throws Exception {
+    mosoAidSays(200, PLAIN_LO_BODY);
+
+    Bean row = registerWebinar(siteBody("forged1@example.com", LO_EMAIL, LO_SLUG));
+
+    assertLoanOfficerReferral(row, LO_KEY);
+    assertUnverifiedLabel(row, false);
+    assertThat(mosoAidRequests).hasSize(1);
+  }
+
+  @Test
+  public void aLoanOfficerMosoAidDoesNotKnowIsDowngraded() throws Exception {
+    mosoAidSays(404, "{\"success\":false,\"error\":\"Join page not found\"}");
+
+    Bean row = registerWebinar(siteBody("forged2@example.com", LO_EMAIL, LO_SLUG));
+
+    assertLoanOfficerReferral(row, LO_KEY);
+    assertUnverifiedLabel(row, false);
+  }
+
+  @Test
+  public void aRecruiterClaimWithNoSlugStampIsDowngradedAndNeverEvenAsksMosoAid() throws Exception {
+    // moso-aid would say "member"; the visitor's say-so without a verified stamp must not be enough.
+    mosoAidSays(200, memberBody(LO_SLUG));
+
+    Bean row = registerWebinar(siteBody("forged3@example.com", LO_EMAIL, null));
+
+    assertLoanOfficerReferral(row, LO_KEY);
+    assertThat(mosoAidRequests).isEmpty();
+  }
+
+  @Test
+  public void aStampWhoseSlugDoesNotBelongToTheOwnerIsDowngradedWithoutAskingMosoAid() throws Exception {
+    mosoAidSays(200, memberBody(LO_SLUG));
+
+    Bean row = registerWebinar(siteBody("forged4@example.com", LO_EMAIL, "someone-else"));
+
+    assertLoanOfficerReferral(row, LO_KEY);
+    assertThat(mosoAidRequests).isEmpty();
+  }
+
+  @Test
+  public void aMemberSlugThatIsNotTheOwnersOwnSlugDoesNotCountAsMembership() throws Exception {
+    // moso-aid answered for this key but with a different slug: not evidence for THIS stamp.
+    mosoAidSays(200, memberBody("some-other-slug"));
+
+    Bean row = registerWebinar(siteBody("forged5@example.com", LO_EMAIL, LO_SLUG));
+
+    assertLoanOfficerReferral(row, LO_KEY);
+  }
+
+  @Test
+  public void aClientCannotForgeTheResolvedOwnerFieldsToSkipTheStampCheck() throws Exception {
+    mosoAidSays(200, memberBody(LO_SLUG));
+    JSON body = siteBody("forged6@example.com", LO_EMAIL, null)
+            .set(LORecruiting.lead_origin, "JOIN_SLUG")
+            .set(LORecruiting.lead_origin_slug, "wrong")
+            .set(LORecruiting.lead_origin_owner_key, LO_KEY)
+            .set(LORecruiting.lead_origin_owner_match, "SLUG_SERVER_RESOLVED");
+
+    Bean row = registerWebinar(body);
+
+    assertLoanOfficerReferral(row, LO_KEY);
+    assertThat((String) row.get(LORecruiting.lead_origin_owner_match)).isEqualTo("UNRESOLVED");
+  }
+
+  @Test
+  public void theReferALoanOfficerPageNeverEarnsRecruiterCredit() throws Exception {
+    mosoAidSays(200, memberBody(LO_SLUG));
+    JSON body = siteBody("refer1@example.com", LO_EMAIL, null);
+    body.remove(LORecruiting.referred_source);
+
+    new WebPlusAPI().submitReferALoanOfficer(request(), NS_LF, body);
+    Bean row = new Bundle().find(LORecruiting.TYPE).whereEquals(LORecruiting.email, "refer1@example.com").first();
+
+    assertThat((String) row.get(LORecruiting.lead_origin)).isEqualTo("REFER_LO_PAGE");
+    assertThat(row.hasValue(LORecruiting.recruiter)).isFalse();
+    assertThat(mosoAidRequests).isEmpty();
+  }
+
+  // ── fail safe: membership cannot be determined ─────────────────────────────
+
+  @Test
+  public void whenMosoAidAnswersWithAServerErrorTheLeadFallsBackToLoanOfficer() throws Exception {
+    mosoAidSays(500, "{\"success\":false}");
+
+    Bean row = registerWebinar(siteBody("down1@example.com", LO_EMAIL, LO_SLUG));
+
+    assertLoanOfficerReferral(row, LO_KEY);
+    assertUnverifiedLabel(row, true);
+  }
+
+  @Test
+  public void whenMosoAidAnswersWithGarbageTheLeadFallsBackToLoanOfficer() throws Exception {
+    mosoAidSays(200, "<html>bad gateway</html>");
+
+    Bean row = registerWebinar(siteBody("down2@example.com", LO_EMAIL, LO_SLUG));
+
+    assertLoanOfficerReferral(row, LO_KEY);
+    assertUnverifiedLabel(row, true);
+  }
+
+  @Test
+  public void whenMosoAidIsUnreachableTheLeadFallsBackAndStillSaves() throws Exception {
+    mosoAid.stop(0);
+
+    Bean row = registerWebinar(siteBody("down3@example.com", LO_EMAIL, LO_SLUG));
+
+    assertLoanOfficerReferral(row, LO_KEY);
+    assertUnverifiedLabel(row, true);
+  }
+
+  @Test
+  public void whenTheMosoAidUrlIsNotConfiguredTheBehaviourIsExactlyToday() throws Exception {
+    Server.setSystemProperty(MOSO_AID_URL_PROPERTY, "");
+    mosoAidSays(200, memberBody(LO_SLUG));
+
+    Bean row = registerWebinar(siteBody("unconfigured1@example.com", LO_EMAIL, LO_SLUG));
+
+    assertLoanOfficerReferral(row, LO_KEY);
+    assertUnverifiedLabel(row, false);
+    assertThat(mosoAidRequests).isEmpty();
+  }
+
+  // ── retry, cache, hardening ────────────────────────────────────────────────
+
+  @Test
+  public void aTransientServerErrorIsRetriedOnceAndThenCredited() throws Exception {
+    mosoAidThenSays(503, "{}");
+    mosoAidSays(200, memberBody(LO_SLUG));
+
+    Bean row = registerWebinar(siteBody("retry1@example.com", LO_EMAIL, LO_SLUG));
+
+    assertRecruiterCredit(row, LO_KEY);
+    assertThat(mosoAidRequests).hasSize(2);
+    assertUnverifiedLabel(row, false);
+  }
+
+  @Test
+  public void aPersistentServerErrorIsTriedTwiceThenFallsBackAndLabelsTheLead() throws Exception {
+    mosoAidSays(500, "{}");
+
+    Bean row = registerWebinar(siteBody("retry2@example.com", LO_EMAIL, LO_SLUG));
+
+    assertLoanOfficerReferral(row, LO_KEY);
+    assertThat(mosoAidRequests).hasSize(2);
+    assertUnverifiedLabel(row, true);
+  }
+
+  @Test
+  public void aClientErrorOtherThan404IsNotRetried() throws Exception {
+    mosoAidSays(403, "{}");
+
+    Bean row = registerWebinar(siteBody("retry3@example.com", LO_EMAIL, LO_SLUG));
+
+    assertLoanOfficerReferral(row, LO_KEY);
+    assertThat(mosoAidRequests).hasSize(1);
+    assertUnverifiedLabel(row, true);
+  }
+
+  @Test
+  public void aDefiniteAnswerIsCachedPerOwnerForAShortWhile() throws Exception {
+    mosoAidSays(200, memberBody(LO_SLUG));
+
+    Bean first = registerWebinar(siteBody("cache1@example.com", LO_EMAIL, LO_SLUG));
+    Bean second = registerWebinar(siteBody("cache2@example.com", LO_EMAIL, LO_SLUG));
+
+    assertRecruiterCredit(first, LO_KEY);
+    assertRecruiterCredit(second, LO_KEY);
+    assertThat(mosoAidRequests).hasSize(1);
+  }
+
+  @Test
+  public void aNonMemberAnswerIsCachedToo() throws Exception {
+    mosoAidSays(200, PLAIN_LO_BODY);
+
+    registerWebinar(siteBody("cache3@example.com", LO_EMAIL, LO_SLUG));
+    registerWebinar(siteBody("cache4@example.com", LO_EMAIL, LO_SLUG));
+
+    assertThat(mosoAidRequests).hasSize(1);
+  }
+
+  @Test
+  public void aCachedAnswerExpiresAfterTheTtl() throws Exception {
+    long[] now = {1_000_000L};
+    LoRecruiterProgramStanding.useClockForTests(() -> now[0]);
+    mosoAidSays(200, PLAIN_LO_BODY);
+    Bean before = registerWebinar(siteBody("ttl1@example.com", LO_EMAIL, LO_SLUG));
+    assertLoanOfficerReferral(before, LO_KEY);
+
+    now[0] += LoRecruiterProgramStanding.CACHE_TTL_MILLIS + 1;
+    mosoAidSays(200, memberBody(LO_SLUG));
+    Bean after = registerWebinar(siteBody("ttl2@example.com", LO_EMAIL, LO_SLUG));
+
+    assertRecruiterCredit(after, LO_KEY);
+    assertThat(mosoAidRequests).hasSize(2);
+  }
+
+  @Test
+  public void aFailureIsNeverCached() throws Exception {
+    mosoAidSays(500, "{}");
+    Bean failed = registerWebinar(siteBody("nocache1@example.com", LO_EMAIL, LO_SLUG));
+    assertUnverifiedLabel(failed, true);
+
+    mosoAidSays(200, memberBody(LO_SLUG));
+    Bean recovered = registerWebinar(siteBody("nocache2@example.com", LO_EMAIL, LO_SLUG));
+
+    assertRecruiterCredit(recovered, LO_KEY);
+  }
+
+  @Test
+  public void aRedirectIsNeverFollowed() throws Exception {
+    mosoAidSays(302, "");
+
+    Bean row = registerWebinar(siteBody("redirect1@example.com", LO_EMAIL, LO_SLUG));
+
+    assertLoanOfficerReferral(row, LO_KEY);
+    assertThat(redirectTargetRequests).isEmpty();
+    assertUnverifiedLabel(row, true);
+  }
+
+  @Test
+  public void anOversizedAnswerIsRefusedAsAFailure() throws Exception {
+    mosoAidSays(200, "{\"success\":true,\"data\":{\"recruiter_slug\":\"" + LO_SLUG + "\",\"bio\":\""
+            + "x".repeat(20 * 1024) + "\"}}");
+
+    Bean row = registerWebinar(siteBody("big1@example.com", LO_EMAIL, LO_SLUG));
+
+    assertLoanOfficerReferral(row, LO_KEY);
+    assertUnverifiedLabel(row, true);
+  }
+
+  @Test
+  public void theBaseUrlMustBeHttpsAndEndInApi() {
+    Server.setSystemProperty(MOSO_AID_URL_PROPERTY, "https://moso-aid.example.run.app/api/");
+    assertThat(LoRecruiterProgramStanding.configuredBaseUrl()).isEqualTo("https://moso-aid.example.run.app/api");
+
+    for (String bad : new String[] {"http://moso-aid.example.run.app/api", "https://moso-aid.example.run.app",
+            "https://moso-aid.example.run.app/api?x=1", "ftp://moso-aid.example.run.app/api", "not a url"}) {
+      Server.setSystemProperty(MOSO_AID_URL_PROPERTY, bad);
+      assertThat(LoRecruiterProgramStanding.configuredBaseUrl()).as(bad).isNull();
+    }
+  }
+
+  @Test
+  public void theLogIdentifiesTheAdminByAHashNeverByTheLoginEmail() {
+    String id = LoRecruiterProgramStanding.adminId(new Bundle().get(Admin.TYPE, LO_KEY));
+
+    assertThat(id).hasSize(12).matches("[0-9a-f]{12}").doesNotContain("@").doesNotContain("login");
+  }
+
+  // ── existing leads are never re-credited ───────────────────────────────────
+
+  @Test
+  public void aLeadThatAlreadyExistsKeepsItsFirstTouchWhenTheOwnerIsApprovedLater() throws Exception {
+    // first touch BEFORE approval: credited as a plain Loan Officer referral
+    mosoAidSays(200, PLAIN_LO_BODY);
+    Bean first = registerWebinar(siteBody("early@example.com", LO_EMAIL, LO_SLUG));
+    assertLoanOfficerReferral(first, LO_KEY);
+    mosoAidRequests.clear();
+
+    // the owner is approved; the same person signs up again through the same site
+    mosoAidSays(200, memberBody(LO_SLUG));
+    Bean again = registerWebinar(siteBody("early@example.com", LO_EMAIL, LO_SLUG));
+
+    assertThat(again.key()).isEqualTo(first.key());
+    assertLoanOfficerReferral(again, LO_KEY);
+    assertThat(mosoAidRequests).isEmpty();
+  }
+
+  @Test
+  public void aMemberCreditedLeadIsNotRewrittenByALaterSignUp() throws Exception {
+    mosoAidSays(200, memberBody(LO_SLUG));
+    Bean first = registerWebinar(siteBody("stays@example.com", LO_EMAIL, LO_SLUG));
+    assertRecruiterCredit(first, LO_KEY);
+
+    // standing lapses; the repeat sign-up must not turn the credit back into a referral
+    mosoAidSays(200, PLAIN_LO_BODY);
+    Bean again = registerWebinar(siteBody("stays@example.com", LO_EMAIL, LO_SLUG));
+
+    assertThat(again.key()).isEqualTo(first.key());
+    assertRecruiterCredit(again, LO_KEY);
+  }
+}

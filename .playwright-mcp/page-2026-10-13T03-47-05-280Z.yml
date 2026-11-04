@@ -1,0 +1,308 @@
+- generic [active] [ref=f3e1]:
+  - banner [ref=f3e2]:
+    - generic [ref=f3e3]:
+      - navigation "Page" [ref=f3e4]:
+        - button "1 Loan Officer page" [pressed] [ref=f3e5] [cursor=pointer]
+        - button "2 Registration" [ref=f3e6] [cursor=pointer]
+      - group "Version" [ref=f3e7]:
+        - button "Now" [ref=f3e8] [cursor=pointer]
+        - button "Proposed" [pressed] [ref=f3e9] [cursor=pointer]
+      - group "Screen size" [ref=f3e10]:
+        - button "Desktop" [pressed] [ref=f3e11] [cursor=pointer]
+        - button "Mobile 375" [ref=f3e12] [cursor=pointer]
+  - generic [ref=f3e14]:
+    - text: "Proposed: a shorter /loan-officer for one goal: get Loan Officers to the webinar or to join. Body text 18px (17px on mobile), one title and one short line per card. Yellow tags = to confirm by Recruiting."
+    - generic [ref=f3e15]:
+      - generic [ref=f3e16]: "Moved: Programs detail → chips row"
+      - generic [ref=f3e17]: "Moved: Becoming a Loan Officer → separate page (\"Not licensed yet?\")"
+      - generic [ref=f3e18]: "Removed: Summit"
+      - generic [ref=f3e19]: "Removed: repeated CTA band"
+      - generic [ref=f3e20]: "Removed: trust quotes (videos stay)"
+      - generic [ref=f3e21]: "Replaced: 13 company FAQs → 6 Loan Officer FAQs"
+      - generic [ref=f3e22]: "Replaced: consumer menu → recruiting header"
+  - main [ref=f3e23]:
+    - generic [ref=f3e24]:
+      - generic "Loan Officer page proposed" [ref=f3e25]:
+        - generic [ref=f3e27]:
+          - link "Loan Factory home" [ref=f3e28] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=f3e29]: LF
+            - text: Loan Factory
+          - button "Open menu" [ref=f3e30]
+        - region [ref=f3e33]:
+          - generic [ref=f3e34]:
+            - heading "Close faster with AI. Join Loan Factory." [level=1] [ref=f3e35]
+            - paragraph [ref=f3e36]: We build the platform. Our Loan Officers use it for free.
+            - generic [ref=f3e37]:
+              - link "Join Loan Factory" [ref=f3e38] [cursor=pointer]:
+                - /url: "#join"
+              - link "Save a webinar seat" [ref=f3e39] [cursor=pointer]:
+                - /url: "#webinar"
+            - paragraph [ref=f3e40]:
+              - link "Not licensed yet? Start here" [ref=f3e41] [cursor=pointer]:
+                - /url: "#"
+            - generic [ref=f3e42]:
+              - generic [ref=f3e43]:
+                - generic [ref=f3e44]: 2,643+
+                - generic [ref=f3e45]: Loan Officers
+              - generic [ref=f3e46]:
+                - generic [ref=f3e47]: 100%
+                - generic [ref=f3e48]: commission, minus a flat fee
+              - generic [ref=f3e49]:
+                - generic [ref=f3e50]: 7 days
+                - generic [ref=f3e51]: a week of live support
+        - region [ref=f3e52]:
+          - generic [ref=f3e53]:
+            - generic [ref=f3e54]:
+              - paragraph [ref=f3e55]: Free live webinar with Thuan Nguyen
+              - heading "Meet our CEO, Thuan Nguyen, live." [level=2] [ref=f3e56]
+              - paragraph [ref=f3e57]: Free and online. About 1–1.5 hours, with live Q&A.
+              - 'figure "Thuan Nguyen #1 Loan Officer in the country" [ref=f3e58]':
+                - img "Thuan Nguyen, CEO of Loan Factory" [ref=f3e59]
+                - generic [ref=f3e60]:
+                  - generic [ref=f3e61]: Thuan Nguyen
+                  - text: "#1 Loan Officer in the country"
+            - form [ref=f3e62]:
+              - heading "Save your seat" [level=3] [ref=f3e63]
+              - generic [ref=f3e64]:
+                - generic [ref=f3e65]: "1"
+                - text: Pick a date
+              - generic [ref=f3e66]:
+                - button "Fri, Oct 16 1:00 PM PT" [pressed] [ref=f3e67] [cursor=pointer]:
+                  - generic [ref=f3e68]: Fri, Oct 16
+                  - generic [ref=f3e69]: 1:00 PM PT
+                - button "Wed, Oct 21 11:00 AM PT" [ref=f3e70] [cursor=pointer]:
+                  - generic [ref=f3e71]: Wed, Oct 21
+                  - generic [ref=f3e72]: 11:00 AM PT
+                - button "Fri, Oct 30 1:00 PM PT" [ref=f3e73] [cursor=pointer]:
+                  - generic [ref=f3e74]: Fri, Oct 30
+                  - generic [ref=f3e75]: 1:00 PM PT
+              - generic [ref=f3e76]:
+                - generic [ref=f3e77]: "2"
+                - text: Your details
+              - generic [ref=f3e78]:
+                - generic [ref=f3e79]:
+                  - generic [ref=f3e80]: First name *
+                  - textbox "First name *" [ref=f3e81]
+                - generic [ref=f3e82]:
+                  - generic [ref=f3e83]: Last name *
+                  - textbox "Last name *" [ref=f3e84]
+                - generic [ref=f3e85]:
+                  - generic [ref=f3e86]: Email *
+                  - textbox "Email *" [ref=f3e87]
+                - generic [ref=f3e88]:
+                  - generic [ref=f3e89]: Phone *
+                  - textbox "Phone *" [ref=f3e90]
+                - generic [ref=f3e91]:
+                  - generic [ref=f3e92]: NMLS (optional)
+                  - textbox "NMLS (optional)" [ref=f3e93]
+                - generic [ref=f3e94]:
+                  - generic [ref=f3e95]: How did you hear about us? *
+                  - combobox "How did you hear about us? *" [ref=f3e96]:
+                    - option "Select" [selected]
+                    - option "Loan officer"
+                    - option "Recruiter"
+                    - option "Webinar"
+                    - option "Social media"
+                    - option "Job posting"
+                    - option "Outside (Loan officer)"
+                    - option "Mortgage trade show"
+                    - option "Postcard"
+                    - option "Email"
+                    - option "Newsletter"
+                    - option "Partner referral"
+                    - option "Google"
+                    - option "Facebook"
+                    - option "Instagram"
+                    - option "Linkedin"
+                    - option "MMI"
+                    - option "Returning Loan Officer"
+                    - option "Other Referral"
+              - generic [ref=f3e97]:
+                - checkbox "I agree to receive calls, text messages, and emails from Loan Factory about this webinar and career opportunities. Read the full terms" [ref=f3e98]
+                - generic [ref=f3e99]:
+                  - text: I agree to receive calls, text messages, and emails from Loan Factory about this webinar and career opportunities.
+                  - link "Read the full terms" [ref=f3e100] [cursor=pointer]:
+                    - /url: "#"
+              - button "Save my seat" [ref=f3e101] [cursor=pointer]
+              - paragraph [ref=f3e102]:
+                - link "Skip the webinar, register now" [ref=f3e103] [cursor=pointer]:
+                  - /url: "#join"
+        - region [ref=f3e104]:
+          - generic [ref=f3e105]:
+            - generic [ref=f3e106]:
+              - paragraph [ref=f3e107]: Why Loan Factory
+              - heading "Keep more. Pay for less." [level=2] [ref=f3e108]
+            - generic [ref=f3e109]:
+              - article [ref=f3e110]:
+                - generic [ref=f3e111]: 100%
+                - heading "Commission, minus a flat fee" [level=3] [ref=f3e112]
+                - generic [ref=f3e113]:
+                  - generic [ref=f3e114]: $400K loan × 2%
+                  - generic [ref=f3e115]: =
+                  - generic [ref=f3e116]: $8,000
+                  - generic [ref=f3e117]: −
+                  - generic [ref=f3e118]: $595 admin fee
+                  - generic [ref=f3e119]: =
+                  - generic [ref=f3e120]: $7,405 to you
+                - generic [ref=f3e121]:
+                  - text: 1099 example. In-house processing is $500 per closed loan if you use it
+                  - generic [ref=f3e122]: optional? to confirm
+              - article [ref=f3e123]:
+                - generic [ref=f3e124]: $963
+                - heading "No software fees" [level=3] [ref=f3e125]
+                - paragraph [ref=f3e126]: That's about $963 a month you no longer pay for outside software.
+              - article [ref=f3e127]:
+                - generic [ref=f3e128]: $0
+                - heading "AI tools, free" [level=3] [ref=f3e129]
+                - paragraph [ref=f3e130]: Our engineers built the platform. It's free for our Loan Officers.
+              - article [ref=f3e131]:
+                - generic [ref=f3e132]: 7 days
+                - heading "Live support" [level=3] [ref=f3e133]
+                - paragraph [ref=f3e134]:
+                  - text: Live help in the Marketplace, 7 days a week.
+                  - generic [ref=f3e135]: to confirm for every Loan Officer
+            - generic "More ways to earn" [ref=f3e136]:
+              - generic [ref=f3e137]: "More ways to earn:"
+              - link "Ambassador Program" [ref=f3e138] [cursor=pointer]:
+                - /url: "#"
+              - link "Recruiter Program" [ref=f3e139] [cursor=pointer]:
+                - /url: "#"
+              - link "Executive & Presidential Partner" [ref=f3e140] [cursor=pointer]:
+                - /url: "#"
+              - link "Referral Bonus" [ref=f3e141] [cursor=pointer]:
+                - /url: "#"
+              - link "Corporate Coach" [ref=f3e142] [cursor=pointer]:
+                - /url: "#"
+              - link "Loan Coordinator" [ref=f3e143] [cursor=pointer]:
+                - /url: "#"
+              - link "Teams" [ref=f3e144] [cursor=pointer]:
+                - /url: "#"
+        - region [ref=f3e145]:
+          - generic [ref=f3e146]:
+            - generic [ref=f3e147]:
+              - paragraph [ref=f3e148]: AI mortgage platform
+              - heading "Everything you need to close loans, in one place." [level=2] [ref=f3e149]
+            - generic [ref=f3e150]:
+              - link [ref=f3e151] [cursor=pointer]:
+                - /url: "#"
+              - link [ref=f3e157] [cursor=pointer]:
+                - /url: "#"
+              - link [ref=f3e164] [cursor=pointer]:
+                - /url: "#"
+              - link [ref=f3e170] [cursor=pointer]:
+                - /url: "#"
+              - link [ref=f3e175] [cursor=pointer]:
+                - /url: "#"
+              - link [ref=f3e181] [cursor=pointer]:
+                - /url: "#"
+              - link [ref=f3e185] [cursor=pointer]:
+                - /url: "#"
+              - link [ref=f3e191] [cursor=pointer]:
+                - /url: "#"
+            - paragraph [ref=f3e197]:
+              - link "See all tools →" [ref=f3e198] [cursor=pointer]:
+                - /url: "#"
+        - region [ref=f3e199]:
+          - generic [ref=f3e200]:
+            - generic [ref=f3e201]:
+              - paragraph [ref=f3e202]: How to join
+              - heading "Join Loan Factory in three steps." [level=2] [ref=f3e203]
+            - list [ref=f3e204]:
+              - listitem [ref=f3e205]:
+                - generic [ref=f3e206]: STEP 1 · ABOUT 1–1.5 HOURS
+                - heading "Attend a webinar" [level=3] [ref=f3e207]
+                - paragraph [ref=f3e208]: "\"Why Loan Factory\", live with our CEO."
+              - listitem [ref=f3e209]:
+                - generic [ref=f3e210]: STEP 2 · ABOUT 20 MINUTES
+                - heading "Talk with us" [level=3] [ref=f3e211]
+                - paragraph [ref=f3e212]: A short call with our onboarding team.
+              - listitem [ref=f3e213]:
+                - generic [ref=f3e214]: STEP 3 · 2 DAYS TO 1 WEEK
+                - heading "We set you up" [level=3] [ref=f3e215]
+                - paragraph [ref=f3e216]: NMLS sponsorship, HR paperwork, your accounts.
+            - paragraph [ref=f3e217]:
+              - generic [ref=f3e221]: "Who can join: [Recruiting to confirm wording]"
+            - generic [ref=f3e222]:
+              - link "Join Loan Factory" [ref=f3e223] [cursor=pointer]:
+                - /url: "#"
+              - link "Save a webinar seat" [ref=f3e224] [cursor=pointer]:
+                - /url: "#webinar"
+              - generic [ref=f3e225]: One-time $100 sign-up fee.
+        - region [ref=f3e226]:
+          - generic [ref=f3e227]:
+            - generic [ref=f3e228]:
+              - paragraph [ref=f3e229]: Real conversations
+              - heading "Hear it from our Loan Officers." [level=2] [ref=f3e230]
+            - generic [ref=f3e231]:
+              - link "AC Why Antonio chose Loan Factory Antonio Cordero · Top Loan Officer 2025" [ref=f3e232] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f3e233]: AC
+                - generic [ref=f3e238]: Why Antonio chose Loan Factory
+                - text: Antonio Cordero · Top Loan Officer 2025
+              - link "SD Sobe on growing as a Loan Officer Sobe Dhital · Top Loan Officer 2025" [ref=f3e239] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f3e240]: SD
+                - generic [ref=f3e245]: Sobe on growing as a Loan Officer
+                - text: Sobe Dhital · Top Loan Officer 2025
+              - link "V Vivian on what it takes to be a top producer Vivian · Top Loan Officer 2025" [ref=f3e246] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f3e247]: V
+                - generic [ref=f3e252]: Vivian on what it takes to be a top producer
+                - text: Vivian · Top Loan Officer 2025
+              - link "SL Sheilla’s story at Loan Factory Sheilla Lavadia · Top Loan Officer 2025" [ref=f3e253] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f3e254]: SL
+                - generic [ref=f3e259]: Sheilla’s story at Loan Factory
+                - text: Sheilla Lavadia · Top Loan Officer 2025
+              - link "AK Andre King on building the business Andre King · VP of Business Development" [ref=f3e260] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f3e261]: AK
+                - generic [ref=f3e266]: Andre King on building the business
+                - text: Andre King · VP of Business Development
+        - region [ref=f3e267]:
+          - generic [ref=f3e268]:
+            - generic [ref=f3e269]:
+              - paragraph [ref=f3e270]: FAQ
+              - heading "Questions Loan Officers ask us." [level=2] [ref=f3e271]
+            - generic [ref=f3e272]:
+              - group [ref=f3e273]:
+                - generic "What happens to my loans in process when I move? +" [ref=f3e274] [cursor=pointer]
+              - group [ref=f3e275]:
+                - generic "How long do NMLS sponsorship and license transfer take? +" [ref=f3e276] [cursor=pointer]
+              - group [ref=f3e277]:
+                - generic "Who owns my leads and my database if I leave? Is there a non-compete? +" [ref=f3e278] [cursor=pointer]
+              - group [ref=f3e279]:
+                - generic "Can I bring my processor or my team? +" [ref=f3e280] [cursor=pointer]
+              - group [ref=f3e281]:
+                - generic "Which states can I originate in? Can I broker to lenders I already use? +" [ref=f3e282] [cursor=pointer]
+              - group [ref=f3e283]:
+                - generic "I am newly licensed. Is a coach required? +" [ref=f3e284] [cursor=pointer]
+        - generic [ref=f3e286]:
+          - generic [ref=f3e287]:
+            - paragraph [ref=f3e288]:
+              - text: Loan Factory, Inc. · Company NMLS# 320841 ·
+              - link "NMLS Consumer Access" [ref=f3e289] [cursor=pointer]:
+                - /url: "#"
+            - paragraph [ref=f3e290]: "CA DRE # 01771313"
+            - paragraph [ref=f3e291]:
+              - text: "Recruiting:"
+              - link "recruiting@loanfactory.com" [ref=f3e292] [cursor=pointer]:
+                - /url: "#"
+            - paragraph [ref=f3e293]: © 2026 Loan Factory. All Rights Reserved.
+          - navigation "Legal" [ref=f3e294]:
+            - link "Company information" [ref=f3e295] [cursor=pointer]:
+              - /url: "#"
+            - link "State Licenses" [ref=f3e296] [cursor=pointer]:
+              - /url: "#"
+            - link "Mortgage Disclosures" [ref=f3e297] [cursor=pointer]:
+              - /url: "#"
+            - link "Texas Disclosures" [ref=f3e298] [cursor=pointer]:
+              - /url: "#"
+            - link "Privacy Policies" [ref=f3e299] [cursor=pointer]:
+              - /url: "#"
+            - link "Terms & Conditions" [ref=f3e300] [cursor=pointer]:
+              - /url: "#"
+            - link "ADA Accessibility Statement" [ref=f3e301] [cursor=pointer]:
+              - /url: "#"
+      - text: → → → → → →

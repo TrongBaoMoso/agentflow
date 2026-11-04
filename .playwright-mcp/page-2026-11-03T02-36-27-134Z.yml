@@ -1,0 +1,105 @@
+- generic [ref=f9e2]:
+  - banner [ref=f9e3]:
+    - generic [ref=f9e4]:
+      - generic [ref=f9e5]:
+        - generic [ref=f9e7]:
+          - combobox "Search candidates, NMLS, companies…" [ref=f9e12]
+          - generic:
+            - generic "Press Ctrl K to search from anywhere": Ctrl K
+        - status [ref=f9e13]
+      - generic [ref=f9e14]:
+        - textbox "Dev persona" [ref=f9e26] [cursor=pointer]
+        - button "Switch to dark mode" [ref=f9e27] [cursor=pointer]
+        - button "Notifications" [ref=f9e33] [cursor=pointer]
+        - button "Apps" [ref=f9e38] [cursor=pointer]
+        - button "Account menu" [ref=f9e50] [cursor=pointer]:
+          - generic [ref=f9e51]: "?"
+  - navigation [ref=f9e53]:
+    - generic [ref=f9e54]:
+      - link "Go to the start of this app" [ref=f9e55] [cursor=pointer]:
+        - /url: /today
+        - generic [ref=f9e57]:
+          - img "Loan Factory" [ref=f9e58]
+          - generic [ref=f9e59]: Recruit
+      - button "Collapse menu" [expanded] [ref=f9e62] [cursor=pointer]
+    - navigation "Main navigation" [ref=f9e67]:
+      - list [ref=f9e69]:
+        - listitem [ref=f9e70]:
+          - link "My work today" [ref=f9e71] [cursor=pointer]:
+            - /url: /today
+      - generic [ref=f9e77]:
+        - button "Leads" [expanded] [ref=f9e78] [cursor=pointer]
+        - list "Leads" [ref=f9e83]:
+          - listitem [ref=f9e84]:
+            - link "Modex" [ref=f9e85] [cursor=pointer]:
+              - /url: /modex
+      - generic [ref=f9e93]:
+        - button "Manage" [expanded] [ref=f9e94] [cursor=pointer]
+        - list "Manage" [ref=f9e99]:
+          - listitem [ref=f9e100]:
+            - link "Audit" [ref=f9e101] [cursor=pointer]:
+              - /url: /audit
+      - generic [ref=f9e107]:
+        - button "Setup" [expanded] [ref=f9e108] [cursor=pointer]
+        - list "Setup" [ref=f9e113]:
+          - listitem [ref=f9e114]:
+            - link "Templates" [ref=f9e115] [cursor=pointer]:
+              - /url: /templates
+          - listitem [ref=f9e121]:
+            - link "Checklist templates" [ref=f9e122] [cursor=pointer]:
+              - /url: /checklist-templates
+          - listitem [ref=f9e129]:
+            - link "Permissions" [ref=f9e130] [cursor=pointer]:
+              - /url: /permissions
+          - listitem [ref=f9e136]:
+            - link "Settings" [ref=f9e137] [cursor=pointer]:
+              - /url: /settings
+    - button "TERA assistant" [ref=f9e144] [cursor=pointer]
+  - main [ref=f9e150]:
+    - generic [ref=f9e155]:
+      - generic [ref=f9e156]:
+        - heading "Conversations" [level=1] [ref=f9e159]
+        - generic [ref=f9e160]:
+          - button "Saved filters" [ref=f9e161] [cursor=pointer]
+          - group "Switch between table and card view" [ref=f9e165]:
+            - button "Table view" [pressed] [ref=f9e166] [cursor=pointer]
+            - button "Card view" [ref=f9e168] [cursor=pointer]
+          - button "Refresh" [ref=f9e174] [cursor=pointer]
+      - generic [ref=f9e180]:
+        - textbox "Search by name, email or phone" [ref=f9e187]
+        - generic [ref=f9e189]:
+          - generic: "Channel:"
+          - textbox "Channel" [ref=f9e190] [cursor=pointer]: All channels
+        - generic [ref=f9e192]:
+          - generic: "Status:"
+          - button "Status" [ref=f9e193] [cursor=pointer]:
+            - generic [ref=f9e194]: Active, Nurture
+        - generic [ref=f9e196]:
+          - generic: "Stage:"
+          - textbox "Stage" [ref=f9e197] [cursor=pointer]: All stages
+        - generic [ref=f9e199]:
+          - generic: "Sort:"
+          - textbox "Sort" [ref=f9e200] [cursor=pointer]: Most recent
+        - button "Unread only" [ref=f9e201] [cursor=pointer]
+        - button "Reset filters" [disabled] [ref=f9e210]
+      - table [ref=f9e219]:
+        - rowgroup [ref=f9e220]:
+          - row [ref=f9e221]:
+            - columnheader "Loan officer" [ref=f9e222]
+            - columnheader "Latest message" [ref=f9e223]
+            - columnheader "Stage" [ref=f9e224]
+            - columnheader "Status" [ref=f9e225]
+            - columnheader "People on it" [ref=f9e226]
+        - rowgroup [ref=f9e227]:
+          - row [ref=f9e228]:
+            - cell [ref=f9e229]
+          - row [ref=f9e231]:
+            - cell [ref=f9e232]
+          - row [ref=f9e234]:
+            - cell [ref=f9e235]
+          - row [ref=f9e237]:
+            - cell [ref=f9e238]
+          - row [ref=f9e240]:
+            - cell [ref=f9e241]
+          - row [ref=f9e243]:
+            - cell [ref=f9e244]

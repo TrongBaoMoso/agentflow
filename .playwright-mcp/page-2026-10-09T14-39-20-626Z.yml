@@ -1,0 +1,82 @@
+- generic [active] [ref=f26e1]:
+  - generic [ref=f26e2]: Loading...
+  - generic [ref=f26e7]:
+    - generic [ref=f26e8]:
+      - generic [ref=f26e9]:
+        - button "Sidebar collapse button" [ref=f26e10] [cursor=pointer]
+        - link "X Moso" [ref=f26e14] [cursor=pointer]:
+          - /url: "#"
+      - list [ref=f26e15]:
+        - listitem [ref=f26e16]:
+          - link "Search" [ref=f26e17] [cursor=pointer]:
+            - /url: "#"
+        - listitem [ref=f26e18]:
+          - link "Builds" [ref=f26e19] [cursor=pointer]:
+            - /url: "##builds"
+        - listitem [ref=f26e20]:
+          - link [ref=f26e21] [cursor=pointer]:
+            - /url: "##create_small_task"
+        - listitem [ref=f26e22]:
+          - link "Message" [ref=f26e23] [cursor=pointer]:
+            - /url: javascript:;
+        - listitem [ref=f26e24]:
+          - link [ref=f26e25] [cursor=pointer]:
+            - /url: javascript:;
+            - text: Bao Trinh
+            - img "Bao Trinh" [ref=f26e26]
+      - generic [ref=f26e27]:
+        - button "search" [ref=f26e28]
+        - textbox "Search input" [ref=f26e29]:
+          - /placeholder: Type any text to search...
+        - link "close search" [ref=f26e30] [cursor=pointer]:
+          - /url: "#"
+    - generic [ref=f26e32]:
+      - list [ref=f26e33]:
+        - listitem [ref=f26e34]:
+          - link "Bao Trinh  Bao Trinh Dev" [ref=f26e35] [cursor=pointer]:
+            - /url: javascript:;
+            - img "Bao Trinh" [ref=f26e38]
+            - generic [ref=f26e39]:
+              - generic [ref=f26e40]: 
+              - text: Bao Trinh
+              - generic [ref=f26e41]: Dev
+        - listitem
+      - list [ref=f26e42]:
+        - listitem [ref=f26e43]: X Moso
+        - listitem [ref=f26e44]:
+          - tab "Company directory" [ref=f26e45] [cursor=pointer]
+        - listitem [ref=f26e46]:
+          - link " Activities" [ref=f26e47] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f26e48]: 
+            - text: Activities
+        - listitem [ref=f26e49]:
+          - link " Reports" [ref=f26e50] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f26e51]: 
+            - text: Reports
+        - listitem [ref=f26e52]:
+          - link " Builds" [ref=f26e53] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f26e54]: 
+            - text: Builds
+        - listitem [ref=f26e55]:
+          - link " Errors" [ref=f26e56] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f26e57]: 
+            - text: Errors
+        - listitem [ref=f26e58]:
+          - link " System" [ref=f26e59] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f26e60]: 
+            - text: System
+    - link "Scroll to top" [ref=f26e64] [cursor=pointer]:
+      - /url: javascript:;
+  - iframe
+  - generic [ref=f26e65]:
+    - link "System Improvement?" [ref=f26e66] [cursor=pointer]:
+      - /url: "javascript:"
+    - link "Help?" [ref=f26e67] [cursor=pointer]:
+      - /url: "javascript:"
+    - link "Chat" [ref=f26e68] [cursor=pointer]:
+      - /url: "javascript:"

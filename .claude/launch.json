@@ -1017,6 +1017,118 @@
         "3077"
       ],
       "port": 3077
+    },
+    {
+      "name": "lfh-amb-story",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-amb-story",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3010"
+      ],
+      "port": 3010
+    },
+    {
+      "name": "lfh-preview",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/lfh-preview",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3077"
+      ],
+      "port": 3077
+    },
+    {
+      "name": "lfh-today-duyen",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lfh-today-rates-duyen",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3112"
+      ],
+      "port": 3112
+    },
+    {
+      "name": "lo-today-duyen",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/agentflow/.worktrees/lo-today-rates-duyen",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3113"
+      ],
+      "port": 3113
+    },
+    {
+      "name": "lfh-rate-alert-name",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/lfh-worktrees/rate-alert-edit-name",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3114"
+      ],
+      "port": 3114
+    },
+    {
+      "name": "lo-rate-alert-name",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/lo-worktrees/rate-alert-name",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3115"
+      ],
+      "port": 3115
+    },
+    {
+      "name": "lfh-lo-cta",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/lfh-lo-cta",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3026"
+      ],
+      "port": 3026
+    },
+    {
+      "name": "lo-rate-alert-auth",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/apple/Projects/lo-worktrees/rate-alert-auth-resilience",
+        "run",
+        "dev",
+        "--",
+        "-p",
+        "3116"
+      ],
+      "port": 3116
     }
   ]
 }

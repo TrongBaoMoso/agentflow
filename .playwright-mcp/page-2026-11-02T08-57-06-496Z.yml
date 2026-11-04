@@ -1,0 +1,64 @@
+- generic [ref=f7e2]:
+  - banner [ref=f7e3]:
+    - generic [ref=f7e4]:
+      - generic [ref=f7e5]:
+        - generic [ref=f7e7]:
+          - combobox "Search candidates, NMLS, companies…" [ref=f7e12]
+          - generic:
+            - generic "Press Ctrl K to search from anywhere": Ctrl K
+        - status [ref=f7e13]
+      - generic [ref=f7e14]:
+        - textbox "Dev persona" [ref=f7e26] [cursor=pointer]
+        - button "Switch to dark mode" [ref=f7e27] [cursor=pointer]
+        - button "Notifications" [ref=f7e33] [cursor=pointer]
+        - button "Apps" [ref=f7e38] [cursor=pointer]
+        - button "Account menu" [ref=f7e50] [cursor=pointer]:
+          - generic [ref=f7e51]: "?"
+  - navigation [ref=f7e53]:
+    - generic [ref=f7e54]:
+      - link "Go to the start of this app" [ref=f7e55] [cursor=pointer]:
+        - /url: /today
+        - generic [ref=f7e57]:
+          - img "Loan Factory" [ref=f7e58]
+          - generic [ref=f7e59]: Recruit
+      - button "Collapse menu" [expanded] [ref=f7e62] [cursor=pointer]
+    - navigation "Main navigation" [ref=f7e67]:
+      - list [ref=f7e69]:
+        - listitem [ref=f7e70]:
+          - link "My work today" [ref=f7e71] [cursor=pointer]:
+            - /url: /today
+      - generic [ref=f7e77]:
+        - button "Leads" [expanded] [ref=f7e78] [cursor=pointer]
+        - list "Leads" [ref=f7e83]:
+          - listitem [ref=f7e84]:
+            - link "Modex" [ref=f7e85] [cursor=pointer]:
+              - /url: /modex
+      - generic [ref=f7e93]:
+        - button "Manage" [expanded] [ref=f7e94] [cursor=pointer]
+        - list "Manage" [ref=f7e99]:
+          - listitem [ref=f7e100]:
+            - link "Audit" [ref=f7e101] [cursor=pointer]:
+              - /url: /audit
+      - generic [ref=f7e107]:
+        - button "Setup" [expanded] [ref=f7e108] [cursor=pointer]
+        - list "Setup" [ref=f7e113]:
+          - listitem [ref=f7e114]:
+            - link "Templates" [ref=f7e115] [cursor=pointer]:
+              - /url: /templates
+          - listitem [ref=f7e121]:
+            - link "Checklist templates" [ref=f7e122] [cursor=pointer]:
+              - /url: /checklist-templates
+          - listitem [ref=f7e129]:
+            - link "Permissions" [ref=f7e130] [cursor=pointer]:
+              - /url: /permissions
+          - listitem [ref=f7e136]:
+            - link "Settings" [ref=f7e137] [cursor=pointer]:
+              - /url: /settings
+    - button "TERA assistant" [ref=f7e144] [cursor=pointer]
+  - main [ref=f7e150]:
+    - generic [ref=f7e156]:
+      - heading "My work today" [level=1] [ref=f7e159]
+      - generic [ref=f7e160]:
+        - button "Refresh" [ref=f7e161] [cursor=pointer]
+        - link "Focus mode" [ref=f7e165] [cursor=pointer]:
+          - /url: /today/focus

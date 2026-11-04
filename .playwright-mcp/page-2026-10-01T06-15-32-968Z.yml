@@ -1,0 +1,53 @@
+- dialog [ref=e3]:
+  - banner [ref=e4]:
+    - heading "Call result Megeh Nguyen TX Â· NMLS 123456" [level=2] [ref=e5]:
+      - generic [ref=e6]:
+        - generic [aria-hidden] [ref=e7]: MN
+        - generic [ref=e8]:
+          - generic [ref=e9]: Call result
+          - generic [ref=e10]: Megeh Nguyen
+          - generic [ref=e11]: TX Â· NMLS 123456
+    - button [ref=e12] [cursor=pointer]
+  - generic [ref=e17]:
+    - region "How did it go?" [ref=e18]:
+      - generic [ref=e19]:
+        - generic [aria-hidden] [ref=e20]: "1"
+        - heading "How did it go?" [level=3] [ref=e21]
+        - generic [ref=e22]: Pick one
+      - radiogroup "How did it go?" [ref=e23]:
+        - radio "Interested Pick a next step" [checked] [ref=e24] [cursor=pointer]:
+          - generic [ref=e28]: Interested
+          - generic [ref=e33]: Pick a next step
+        - radio "Neutral Into Nurture" [ref=e37] [cursor=pointer]:
+          - generic [ref=e38]: Neutral
+          - generic [ref=e43]: Into Nurture
+        - radio "No answer Retry call scheduled" [ref=e47] [cursor=pointer]:
+          - generic [ref=e48]: No answer
+          - generic [ref=e54]: Retry call scheduled
+        - radio "Not interested Archived, never deleted" [ref=e58] [cursor=pointer]:
+          - generic [ref=e59]: Not interested
+          - generic [ref=e65]: Archived, never deleted
+    - region "Next step â€” pick one" [ref=e69]:
+      - generic [ref=e70]:
+        - generic [aria-hidden] [ref=e71]: "2"
+        - heading "Next step â€” pick one" [level=3] [ref=e72]
+        - generic [ref=e73]: One active next step per candidate
+      - radiogroup "Next step â€” pick one" [ref=e75]:
+        - radio [ref=e76] [cursor=pointer]
+        - radio [ref=e82] [cursor=pointer]
+        - radio [ref=e87] [cursor=pointer]
+        - radio [ref=e92] [cursor=pointer]
+    - region "Note for the team" [ref=e99]:
+      - generic [ref=e100]:
+        - heading "Note for the team" [level=3] [ref=e105]
+        - generic [ref=e106]: Internal â€” the candidate never sees it
+      - textbox "Note for the team" [ref=e113]:
+        - /placeholder: e.g. interested in P3+ comp, spouse changing jobs in October â€” call back mid-Augustâ€¦
+    - generic [ref=e114]:
+      - button "Add another follow-up" [ref=e115] [cursor=pointer]
+      - button "Save call result" [disabled] [ref=e120]
+      - generic [ref=e123]: or
+      - button "Save & invite to join Opens the invite form + rule check" [ref=e125] [cursor=pointer]:
+        - generic [ref=e133]:
+          - text: Save & invite to join
+          - generic [ref=e134]: Opens the invite form + rule check

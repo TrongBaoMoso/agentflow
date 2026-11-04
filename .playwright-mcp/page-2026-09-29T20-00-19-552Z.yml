@@ -1,0 +1,273 @@
+- generic [ref=e1]:
+  - dialog "Your account" [ref=e192]:
+    - generic [ref=e193]:
+      - generic [ref=e194]:
+        - generic [ref=e195]:
+          - generic [ref=e196]: bao.trinh+onb-test@loanfactory.com
+          - generic [ref=e197]: Managed by loanfactory.com
+        - button "Close" [active] [ref=e198] [cursor=pointer]
+      - generic [ref=e203]:
+        - generic [aria-hidden] [ref=e205]: OL
+        - generic [ref=e206]: Hi, ONB!
+        - link "Manage account" [ref=e207] [cursor=pointer]:
+          - /url: https://account.viet18.com
+      - generic [ref=e210]:
+        - generic [ref=e211]: Linked apps
+        - generic [ref=e217]: No linked apps yet
+      - button "Sign out" [ref=e219] [cursor=pointer]
+  - alert [ref=e2]
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - img "Loan Factory" [ref=e6]
+        - generic [ref=e7]: Recruit
+      - generic [aria-hidden] [ref=e8]:
+        - generic [ref=e12]: Search candidates, NMLS, companies…
+        - generic [ref=e13]: ⌘ K
+      - generic [ref=e14]:
+        - button "Notifications" [ref=e15] [cursor=pointer]
+        - generic [ref=e20]:
+          - button "Change language" [ref=e21] [cursor=pointer]:
+            - generic [ref=e22]: English
+          - button "Switch to dark mode" [ref=e32] [cursor=pointer]
+        - button "Discovery" [ref=e227] [cursor=pointer]
+        - button "Your account" [expanded] [ref=e36] [cursor=pointer]:
+          - generic [aria-hidden] [ref=e37]: OL
+          - generic [ref=e38]:
+            - generic [ref=e39]: ONB Test Specialist LF
+            - generic [ref=e40]: ONBOARDING · bao.trinh+onb-test@loanfactory.com
+    - navigation [ref=e41]:
+      - navigation [ref=e42]:
+        - generic [ref=e43]: Frequent
+        - link [ref=e44] [cursor=pointer]:
+          - /url: /today
+        - link [ref=e49] [cursor=pointer]:
+          - /url: /inbox/hot
+        - link [ref=e53] [cursor=pointer]:
+          - /url: /inbox/cold
+        - link [ref=e68] [cursor=pointer]:
+          - /url: /pipeline
+        - link [ref=e73] [cursor=pointer]:
+          - /url: /exceptions
+        - link [ref=e77] [cursor=pointer]:
+          - /url: /reports
+        - link [ref=e83] [cursor=pointer]:
+          - /url: /work
+        - link [ref=e88] [cursor=pointer]:
+          - /url: /sponsorships
+      - navigation [ref=e94]:
+        - generic [ref=e95]: Configuration
+        - link [ref=e101] [cursor=pointer]:
+          - /url: /duplicates
+        - link [ref=e107] [cursor=pointer]:
+          - /url: /dormant
+        - link [ref=e112] [cursor=pointer]:
+          - /url: /conversations
+        - link [ref=e126] [cursor=pointer]:
+          - /url: /checklist-templates
+    - main [ref=e142]:
+      - generic [ref=e143]:
+        - generic [ref=e145]:
+          - generic [ref=e146]: Hot leads · hand-raised — first touch
+          - heading [level=1] [ref=e147]:
+            - text: They reached out
+            - emphasis [ref=e148]: first
+            - text: — answer before it cools
+        - generic [ref=e149]:
+          - generic [ref=e150]:
+            - generic [ref=e154]:
+              - generic [ref=e155]: TEAM · waiting for first touch
+              - generic [ref=e156]: unowned, source raised a hand
+            - generic [ref=e239]: "8"
+          - generic [ref=e158]:
+            - generic [ref=e165]:
+              - generic [ref=e166]: OVERDUE · past their SLA
+              - generic [ref=e167]: per-source first-touch hours
+            - generic [ref=e240]: "8"
+        - table [ref=e171]:
+          - rowgroup [ref=e172]:
+            - row [ref=e173]:
+              - columnheader "Candidate" [ref=e174]
+              - columnheader "Source" [ref=e175]
+              - columnheader "Waiting" [ref=e176]
+              - columnheader "First-touch due" [ref=e177]
+              - columnheader [ref=e178]
+          - rowgroup [ref=e179]:
+            - row [ref=e241] [cursor=pointer]:
+              - cell "Secoxe Phone on file Email on file NMLS 121212" [ref=e242]:
+                - generic [ref=e243]:
+                  - generic [aria-hidden] [ref=e244]: S
+                  - generic [ref=e245]:
+                    - generic [ref=e246]:
+                      - button "Secoxe" [ref=e247]
+                      - generic [ref=e249]:
+                        - img "Phone on file" [ref=e250]
+                        - img "Email on file" [ref=e253]
+                    - generic [ref=e257]: NMLS 121212
+              - cell "Event After Party · Pasadena · RSVP'd Sep 22" [ref=e258]:
+                - generic [ref=e259]: Event
+                - generic "After Party · Pasadena · RSVP'd Sep 22" [ref=e260]
+              - cell "7d 16h Entered Sep 22 · 10:45 AM" [ref=e261]:
+                - generic [ref=e262]:
+                  - text: 7d 16h
+                  - generic [ref=e263]: Entered Sep 22 · 10:45 AM
+              - cell "Overdue 7d 1h was due Sep 23 · 2:00 AM" [ref=e264]:
+                - generic [ref=e265]:
+                  - text: Overdue 7d 1h
+                  - generic [ref=e266]: was due Sep 23 · 2:00 AM
+              - cell [ref=e267]
+            - row [ref=e268] [cursor=pointer]:
+              - cell "QA DeferFeeMobile Phone on file Email on file NMLS 7654321 TX" [ref=e269]:
+                - generic [ref=e270]:
+                  - generic [aria-hidden] [ref=e271]: QD
+                  - generic [ref=e272]:
+                    - generic [ref=e273]:
+                      - button "QA DeferFeeMobile" [ref=e274]
+                      - generic [ref=e276]:
+                        - img "Phone on file" [ref=e277]
+                        - img "Email on file" [ref=e280]
+                    - generic [ref=e284]: NMLS 7654321
+                    - generic [ref=e285]: TX
+              - cell "Web form" [ref=e287]
+              - cell "6d 7h Entered Sep 23 · 7:39 PM" [ref=e289]:
+                - generic [ref=e290]:
+                  - text: 6d 7h
+                  - generic [ref=e291]: Entered Sep 23 · 7:39 PM
+              - cell "Overdue 6d 1h was due Sep 24 · 2:00 AM" [ref=e292]:
+                - generic [ref=e293]:
+                  - text: Overdue 6d 1h
+                  - generic [ref=e294]: was due Sep 24 · 2:00 AM
+              - cell [ref=e295]
+            - row [ref=e296] [cursor=pointer]:
+              - cell "Hien 1 Phone on file Email on file NMLS 462346346" [ref=e297]:
+                - generic [ref=e298]:
+                  - generic [aria-hidden] [ref=e299]: H1
+                  - generic [ref=e300]:
+                    - generic [ref=e301]:
+                      - button "Hien 1" [ref=e302]
+                      - generic [ref=e304]:
+                        - img "Phone on file" [ref=e305]
+                        - img "Email on file" [ref=e308]
+                    - generic [ref=e312]: NMLS 462346346
+              - cell "Event After Party · Pasadena · RSVP'd Sep 24" [ref=e313]:
+                - generic [ref=e314]: Event
+                - generic "After Party · Pasadena · RSVP'd Sep 24" [ref=e315]
+              - cell "5d 16h Entered Sep 24 · 10:57 AM" [ref=e316]:
+                - generic [ref=e317]:
+                  - text: 5d 16h
+                  - generic [ref=e318]: Entered Sep 24 · 10:57 AM
+              - cell "Overdue 5d 1h was due Sep 25 · 2:00 AM" [ref=e319]:
+                - generic [ref=e320]:
+                  - text: Overdue 5d 1h
+                  - generic [ref=e321]: was due Sep 25 · 2:00 AM
+              - cell [ref=e322]
+            - row [ref=e323] [cursor=pointer]:
+              - cell "Chi Testwaive Phone on file Email on file NMLS 7484447 WI" [ref=e324]:
+                - generic [ref=e325]:
+                  - generic [aria-hidden] [ref=e326]: CT
+                  - generic [ref=e327]:
+                    - generic [ref=e328]:
+                      - button "Chi Testwaive" [ref=e329]
+                      - generic [ref=e331]:
+                        - img "Phone on file" [ref=e332]
+                        - img "Email on file" [ref=e335]
+                    - generic [ref=e339]: NMLS 7484447
+                    - generic [ref=e340]: WI
+              - cell "Web form" [ref=e342]
+              - cell "1d 4h Entered Sep 28 · 10:46 PM" [ref=e344]:
+                - generic [ref=e345]:
+                  - text: 1d 4h
+                  - generic [ref=e346]: Entered Sep 28 · 10:46 PM
+              - cell "Overdue 1d 3h was due Sep 28 · 11:46 PM" [ref=e347]:
+                - generic [ref=e348]:
+                  - text: Overdue 1d 3h
+                  - generic [ref=e349]: was due Sep 28 · 11:46 PM
+              - cell [ref=e350]
+            - row [ref=e351] [cursor=pointer]:
+              - cell "QA Welcome Neg Phone on file Email on file NMLS 9929002 TX" [ref=e352]:
+                - generic [ref=e353]:
+                  - generic [aria-hidden] [ref=e354]: QN
+                  - generic [ref=e355]:
+                    - generic [ref=e356]:
+                      - button "QA Welcome Neg" [ref=e357]
+                      - generic [ref=e359]:
+                        - img "Phone on file" [ref=e360]
+                        - img "Email on file" [ref=e363]
+                    - generic [ref=e367]: NMLS 9929002
+                    - generic [ref=e368]: TX
+              - cell "Web form" [ref=e370]
+              - cell "1d 3h Entered Sep 28 · 11:17 PM" [ref=e372]:
+                - generic [ref=e373]:
+                  - text: 1d 3h
+                  - generic [ref=e374]: Entered Sep 28 · 11:17 PM
+              - cell "Overdue 1d 2h was due yesterday · 12:17 AM" [ref=e375]:
+                - generic [ref=e376]:
+                  - text: Overdue 1d 2h
+                  - generic [ref=e377]: was due yesterday · 12:17 AM
+              - cell [ref=e378]
+            - row [ref=e379] [cursor=pointer]:
+              - cell "Janet Chitest No phone Email on file NMLS 4633 AK" [ref=e380]:
+                - generic [ref=e381]:
+                  - generic [aria-hidden] [ref=e382]: JC
+                  - generic [ref=e383]:
+                    - generic [ref=e384]:
+                      - button "Janet Chitest" [ref=e385]
+                      - generic [ref=e387]:
+                        - img "No phone" [ref=e388]
+                        - img "Email on file" [ref=e392]
+                    - generic [ref=e396]: NMLS 4633
+                    - generic [ref=e397]: AK
+              - cell "Referral" [ref=e399]
+              - cell "1d 17h Entered Sep 28 · 9:19 AM" [ref=e401]:
+                - generic [ref=e402]:
+                  - text: 1d 17h
+                  - generic [ref=e403]: Entered Sep 28 · 9:19 AM
+              - cell "Overdue 1d 1h was due yesterday · 2:00 AM" [ref=e404]:
+                - generic [ref=e405]:
+                  - text: Overdue 1d 1h
+                  - generic [ref=e406]: was due yesterday · 2:00 AM
+              - cell [ref=e407]
+            - row [ref=e408] [cursor=pointer]:
+              - cell "Chowfi Toni No phone Email on file NMLS 34555 CA, IA, ID" [ref=e409]:
+                - generic [ref=e410]:
+                  - generic [aria-hidden] [ref=e411]: CT
+                  - generic [ref=e412]:
+                    - generic [ref=e413]:
+                      - button "Chowfi Toni" [ref=e414]
+                      - generic [ref=e416]:
+                        - img "No phone" [ref=e417]
+                        - img "Email on file" [ref=e421]
+                    - generic [ref=e425]: NMLS 34555
+                    - generic [ref=e426]: CA, IA, ID
+              - cell "Web form" [ref=e428]
+              - cell "1d 9h Entered Sep 28 · 6:00 PM" [ref=e430]:
+                - generic [ref=e431]:
+                  - text: 1d 9h
+                  - generic [ref=e432]: Entered Sep 28 · 6:00 PM
+              - cell "Overdue 1d 1h was due yesterday · 2:00 AM" [ref=e433]:
+                - generic [ref=e434]:
+                  - text: Overdue 1d 1h
+                  - generic [ref=e435]: was due yesterday · 2:00 AM
+              - cell [ref=e436]
+            - row [ref=e437] [cursor=pointer]:
+              - 'cell "TRINH BAO #1 Phone on file Email on file NMLS 785746 AK, AL" [ref=e438]':
+                - generic [ref=e439]:
+                  - generic [aria-hidden] [ref=e440]: T#
+                  - generic [ref=e441]:
+                    - generic [ref=e442]:
+                      - 'button "TRINH BAO #1" [ref=e443]'
+                      - generic [ref=e445]:
+                        - img "Phone on file" [ref=e446]
+                        - img "Email on file" [ref=e449]
+                    - generic [ref=e453]: NMLS 785746
+                    - generic [ref=e454]: AK, AL
+              - cell "Web form" [ref=e456]
+              - cell "17h 25m Entered yesterday · 9:34 AM" [ref=e458]:
+                - generic [ref=e459]:
+                  - text: 17h 25m
+                  - generic [ref=e460]: Entered yesterday · 9:34 AM
+              - cell "Overdue 1h was due today · 2:00 AM" [ref=e461]:
+                - generic [ref=e462]:
+                  - text: Overdue 1h
+                  - generic [ref=e463]: was due today · 2:00 AM
+              - cell [ref=e464]

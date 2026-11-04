@@ -1,0 +1,92 @@
+- generic [active] [ref=f2e1]:
+  - alert [ref=f2e2]
+  - generic [ref=f2e3]:
+    - banner [ref=f2e4]:
+      - generic [ref=f2e5]:
+        - img "Loan Factory" [ref=f2e6]
+        - generic [ref=f2e7]: Recruit
+      - generic [aria-hidden] [ref=f2e8]:
+        - generic [ref=f2e12]: Search candidates, NMLS, companies…
+        - generic [ref=f2e13]: ⌘ K
+      - generic [ref=f2e14]:
+        - button "Notifications" [ref=f2e15] [cursor=pointer]
+        - generic [ref=f2e20]:
+          - button "Change language" [ref=f2e21] [cursor=pointer]:
+            - generic [ref=f2e22]: English
+          - button "Switch to dark mode" [ref=f2e32] [cursor=pointer]
+        - button "Your account" [ref=f2e36] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f2e37]: OL
+          - generic [ref=f2e38]:
+            - generic [ref=f2e39]: ONB Test Specialist LF
+            - generic [ref=f2e40]: bao.trinh+onb-test@loanfactory.com
+    - navigation [ref=f2e41]:
+      - navigation [ref=f2e42]:
+        - generic [ref=f2e43]: Frequent
+        - link [ref=f2e44] [cursor=pointer]:
+          - /url: /today
+        - link [ref=f2e49] [cursor=pointer]:
+          - /url: /inbox/hot
+        - link [ref=f2e53] [cursor=pointer]:
+          - /url: /inbox/cold
+        - link [ref=f2e68] [cursor=pointer]:
+          - /url: /pipeline
+        - link [ref=f2e73] [cursor=pointer]:
+          - /url: /exceptions
+        - link [ref=f2e77] [cursor=pointer]:
+          - /url: /reports
+        - link [ref=f2e83] [cursor=pointer]:
+          - /url: /work
+        - link [ref=f2e88] [cursor=pointer]:
+          - /url: /sponsorships
+      - navigation [ref=f2e94]:
+        - generic [ref=f2e95]: Configuration
+        - link [ref=f2e96] [cursor=pointer]:
+          - /url: /templates
+        - link [ref=f2e101] [cursor=pointer]:
+          - /url: /duplicates
+        - link [ref=f2e107] [cursor=pointer]:
+          - /url: /dormant
+        - link [ref=f2e112] [cursor=pointer]:
+          - /url: /conversations
+        - link [ref=f2e116] [cursor=pointer]:
+          - /url: /audit
+        - link [ref=f2e121] [cursor=pointer]:
+          - /url: /settings
+        - link [ref=f2e126] [cursor=pointer]:
+          - /url: /checklist-templates
+        - link [ref=f2e132] [cursor=pointer]:
+          - /url: /licensing-rules
+        - link [ref=f2e137] [cursor=pointer]:
+          - /url: /permissions
+    - main [ref=f2e142]:
+      - generic [ref=f2e143]:
+        - generic [ref=f2e145]:
+          - generic [ref=f2e146]: Hot leads · hand-raised — first touch
+          - heading [level=1] [ref=f2e147]:
+            - text: They reached out
+            - emphasis [ref=f2e148]: first
+            - text: — answer before it cools
+        - generic [ref=f2e149]:
+          - generic [ref=f2e154]:
+            - generic [ref=f2e155]: TEAM · waiting for first touch
+            - generic [ref=f2e156]: unowned, source raised a hand
+          - generic [ref=f2e165]:
+            - generic [ref=f2e166]: OVERDUE · past their SLA
+            - generic [ref=f2e167]: per-source first-touch hours
+        - table [ref=f2e171]:
+          - rowgroup [ref=f2e172]:
+            - row [ref=f2e173]:
+              - columnheader "Candidate" [ref=f2e174]
+              - columnheader "Source" [ref=f2e175]
+              - columnheader "Waiting" [ref=f2e176]
+              - columnheader "First-touch due" [ref=f2e177]
+              - columnheader [ref=f2e178]
+          - rowgroup [ref=f2e179]:
+            - row [ref=f2e180]:
+              - cell [ref=f2e181]
+            - row [ref=f2e183]:
+              - cell [ref=f2e184]
+            - row [ref=f2e186]:
+              - cell [ref=f2e187]
+            - row [ref=f2e189]:
+              - cell [ref=f2e190]

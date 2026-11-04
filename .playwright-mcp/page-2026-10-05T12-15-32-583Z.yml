@@ -1,0 +1,61 @@
+- generic [active] [ref=e1]:
+  - alert [ref=e2]
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - link "Go to the start of this app" [ref=e7] [cursor=pointer]:
+          - /url: /today
+          - img "Loan Factory" [ref=e8]
+          - generic [ref=e9]:
+            - paragraph [ref=e10]: Loan Factory
+            - paragraph [ref=e11]: Recruit
+        - generic [ref=e12]:
+          - generic [ref=e14]:
+            - combobox "Search everything…" [ref=e19]
+            - generic:
+              - generic "Press ⌘ K to search from anywhere": ⌘ K
+          - status [ref=e20]
+        - generic [ref=e21]:
+          - button "Notifications" [ref=e22] [cursor=pointer]
+          - button "Switch to dark mode" [ref=e27] [cursor=pointer]
+          - button "Notifications" [ref=e33] [cursor=pointer]
+          - button "Discovery" [ref=e38] [cursor=pointer]
+          - button "Account menu" [ref=e50] [cursor=pointer]:
+            - generic [ref=e51]: "?"
+    - navigation [ref=e53]:
+      - button "Collapse menu" [expanded] [ref=e54] [cursor=pointer]
+      - navigation "Main navigation" [ref=e57]:
+        - generic [ref=e58]:
+          - button "Frequent" [expanded] [ref=e59] [cursor=pointer]
+          - list "Frequent" [ref=e64]:
+            - listitem [ref=e65]:
+              - link "Today" [ref=e66] [cursor=pointer]:
+                - /url: /today
+        - generic [ref=e72]:
+          - button "Configuration" [expanded] [ref=e73] [cursor=pointer]
+          - list "Configuration" [ref=e78]:
+            - listitem [ref=e79]:
+              - link "Templates" [ref=e80] [cursor=pointer]:
+                - /url: /templates
+            - listitem [ref=e86]:
+              - link "Audit" [ref=e87] [cursor=pointer]:
+                - /url: /audit
+            - listitem [ref=e93]:
+              - link "Settings" [ref=e94] [cursor=pointer]:
+                - /url: /settings
+            - listitem [ref=e100]:
+              - link "Checklist templates" [ref=e101] [cursor=pointer]:
+                - /url: /checklist-templates
+            - listitem [ref=e108]:
+              - link "Permissions" [ref=e109] [cursor=pointer]:
+                - /url: /permissions
+      - button "AI Assistant" [ref=e116] [cursor=pointer]
+    - main [ref=e127]:
+      - generic [ref=e130]:
+        - generic [ref=e132]:
+          - heading "Today" [level=1] [ref=e139]
+          - link "Focus mode" [ref=e141] [cursor=pointer]:
+            - /url: /today/focus
+        - generic [ref=e151]:
+          - button "To do today" [pressed] [ref=e152] [cursor=pointer]
+          - button "Not contacted yet" [ref=e160] [cursor=pointer]

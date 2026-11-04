@@ -1,0 +1,14 @@
+fix(recruiting): batch-safe server-write marks and a judged-referrer stamp for the recheck
+
+- BaseCronOp commits in batches, so the per-item clearAllServerWrites() wiped the
+  marks of earlier items before their beforeSave guard ran and the guard rolled their
+  server writes back. Removed; afterSave clears each bean's mark and afterProcess
+  clears the rest after the last commit. Regression tests run the real cron over
+  several flagged leads and a single-commit batch.
+- every NOT_MEMBER decision at create or attach stamps lo_recruiter_program_member
+  (the referrer key that was judged) with credit_at (not when the feature is off).
+  The nightly recheck requires the referrer resolved from referred_by to equal that
+  key and never credits a lead with no stamp, so a staff re-point of referred_by
+  within 48 h cannot turn into credit.
+
+Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>

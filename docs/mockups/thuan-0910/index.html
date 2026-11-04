@@ -1,0 +1,1373 @@
+<title>Thuan Feedback Options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<!--
+  Mockup for CEO feedback (Thuan, 09/10/2026). Three surfaces:
+    1. /register-loan-officer-v1 hero + top of the form
+    2. /loan-officer "Free Friday webinar"
+    3. /loan-officer "AI mortgage platform"
+  Copy comes from lf-homepage origin/master (src/messages/en.json: LoanOfficerV1Page, RegisterLoanOfficerForms.V1Hero,
+  RegisterLoanOfficerForms.BasicInfoForm) and from the live pages fetched on 09/10/2026.
+  Visual tokens mirror register-loan-officer V1 (BasicInfoFormV1/ui/v1.css) and the /loan-officer hero (navy #0f1626).
+-->
+<style>
+:root {
+  color-scheme: light;
+  --orange: #f36f20;
+  --orange-dark: #c2591a;
+  --orange-tint: #fff1e8;
+  --orange-ring: rgba(243, 111, 32, 0.28);
+  --ink: #272727;
+  --ink-2: #495057;
+  --muted: #868e96;
+  --line: #ced4da;
+  --line-soft: #e9ecef;
+  --page: #faf9f8;
+  --navy: #0f1626;
+  --navy-2: #1c2638;
+  --green: #2f9e44;
+  --shadow-card: 0 1px 2px rgba(39, 39, 39, 0.04), 0 8px 28px rgba(39, 39, 39, 0.06);
+  --shadow-lift: 0 2px 4px rgba(15, 22, 38, 0.06), 0 24px 60px rgba(15, 22, 38, 0.16);
+  --radius: 16px;
+  --font: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { font-family: var(--font); color: var(--ink); background: #eceae7; -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4, p { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+button { font: inherit; color: inherit; }
+form { margin: 0; } /* the page renders in quirks mode (no doctype), which adds 1em under forms */
+svg.i { width: 1em; height: 1em; flex: none; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ================= Toolbar ================= */
+.tb { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: #fff; border-bottom: 1px solid var(--line-soft); box-shadow: 0 2px 12px rgba(15,22,38,.05); }
+.tb-in { max-width: 1360px; margin: 0 auto; padding: 10px 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
+.tb-brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.tb-logo { width: 30px; height: 30px; border-radius: 8px; background: var(--orange); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 13px; flex: none; }
+.tb-title { font-size: 13px; font-weight: 700; line-height: 1.25; }
+.tb-title small { display: block; font-weight: 500; color: var(--muted); font-size: 11.5px; }
+.tb-tabs { display: flex; flex-wrap: wrap; gap: 4px; }
+.tb-tab { border: 0; background: transparent; padding: 8px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; color: var(--ink-2); cursor: pointer; }
+.tb-tab:hover { background: var(--page); }
+.tb-tab[aria-selected='true'] { background: var(--navy); color: #fff; }
+.tb-tab b { font-weight: 800; color: var(--orange); margin-right: 4px; }
+.tb-tab[aria-selected='true'] b { color: #ffb37f; }
+.tb-ctrls { display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto; }
+.seg { display: inline-flex; background: #f1f3f5; border-radius: 10px; padding: 3px; gap: 2px; }
+.seg button { border: 0; background: transparent; padding: 6px 11px; border-radius: 8px; font-size: 12.5px; font-weight: 600; color: var(--ink-2); cursor: pointer; white-space: nowrap; }
+.seg button[aria-pressed='true'] { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.seg button[aria-pressed='true'] .o-k { color: var(--orange); }
+.tb-tab:focus-visible, .seg button:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+
+.why { max-width: 1360px; margin: 14px auto 0; padding: 0 16px; }
+.why-in { background: #fff; border-radius: 12px; border-left: 4px solid var(--orange); padding: 12px 16px; display: flex; gap: 14px; align-items: flex-start; box-shadow: var(--shadow-card); }
+.why-tag { flex: none; font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; background: var(--orange-tint); color: var(--orange-dark); padding: 4px 9px; border-radius: 999px; }
+.why h2 { font-size: 14px; font-weight: 700; }
+.why p { font-size: 13px; color: var(--ink-2); line-height: 1.5; margin-top: 2px; }
+
+/* ================= Stage / device ================= */
+.stage { max-width: 1360px; margin: 14px auto 40px; padding: 0 16px; display: flex; justify-content: center; }
+.vp { container-type: inline-size; container-name: vp; width: 100%; background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.05), 0 12px 40px rgba(0,0,0,.08); }
+.stage[data-device='mobile'] .vp { width: min(375px, 100%); border-radius: 30px; border: 10px solid #1d1d1f; box-shadow: 0 30px 60px rgba(0,0,0,.18); }
+.vp-bar { display: flex; align-items: center; gap: 6px; padding: 9px 14px; background: #f6f6f6; border-bottom: 1px solid var(--line-soft); font-size: 11.5px; color: var(--muted); }
+.vp-bar i { width: 10px; height: 10px; border-radius: 50%; background: #ddd; display: inline-block; }
+.vp-bar span { margin-left: 8px; background: #fff; border-radius: 6px; padding: 3px 10px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.stage[data-device='mobile'] .vp-bar i { display: none; }
+.stage[data-device='mobile'] .vp-bar span { margin-left: 0; text-align: center; }
+
+.panel[hidden], .opt[hidden] { display: none !important; }
+
+/* shared page bits */
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 28px; }
+@container vp (max-width: 720px) { .wrap { padding: 0 16px; } }
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--orange-dark); }
+.kicker { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--orange-dark); }
+.kicker::before { content: ''; width: 18px; height: 2px; background: var(--orange); border-radius: 2px; }
+.req { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--orange-dark); background: var(--orange-tint); border-radius: 999px; padding: 1px 7px; margin-left: 6px; vertical-align: 1px; }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.field label, .field .lbl { font-size: 13px; font-weight: 600; }
+.input { height: 44px; border: 1px solid var(--line); border-radius: 10px; background: #fff; padding: 0 12px; display: flex; align-items: center; font-size: 14.5px; color: #adb5bd; min-width: 0; }
+.input.sel { justify-content: space-between; }
+.input.sel::after { content: ''; width: 8px; height: 8px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: rotate(45deg) translateY(-3px); }
+.input.focus { border-color: var(--orange); box-shadow: 0 0 0 3px var(--orange-ring); color: var(--ink); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 12px; background: var(--orange); color: #fff; font-weight: 700; font-size: 15px; padding: 0 22px; height: 48px; cursor: pointer; transition: transform .15s, box-shadow .15s, background .15s; box-shadow: 0 6px 16px rgba(243,111,32,.28); }
+.btn:hover { background: var(--orange-dark); transform: translateY(-1px); }
+.btn:focus-visible { outline: 3px solid var(--orange-ring); outline-offset: 2px; }
+.link { color: var(--orange-dark); font-weight: 700; font-size: 13.5px; text-decoration: none; }
+.link:hover { text-decoration: underline; }
+
+/* ================= Section 1: Register hero ================= */
+.rh { background: var(--page); padding: 34px 0 26px; border-bottom: 1px solid var(--line-soft); }
+.rh-title { font-size: clamp(28px, 4.2cqi, 46px); font-weight: 800; line-height: 1.08; letter-spacing: -.02em; margin-top: 8px; }
+.rh-title span { color: var(--orange); }
+.rh-lede { font-size: 16px; color: var(--ink-2); line-height: 1.55; margin-top: 10px; max-width: 560px; }
+.pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.pill { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--line-soft); background: #fff; border-radius: 999px; padding: 7px 13px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.pill svg { color: var(--orange); font-size: 15px; }
+@container vp (max-width: 720px) { .rh { padding: 22px 0 18px; } .rh-lede { font-size: 14.5px; } }
+
+/* --- Now --- */
+.now-top { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, .65fr); gap: 32px; align-items: end; }
+.now-split { background: #fff; border: 1px solid var(--line-soft); border-radius: 16px; padding: 16px 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; box-shadow: var(--shadow-card); }
+.now-split b { font-size: 34px; font-weight: 800; color: var(--orange); display: block; line-height: 1; }
+.now-split div:nth-child(2) b { color: var(--navy); }
+.now-split span { font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.now-split small { grid-column: 1 / -1; font-size: 12px; color: var(--muted); line-height: 1.45; }
+.now-track-wrap { overflow-x: auto; margin-top: 26px; }
+.now-heads { display: grid; grid-template-columns: 5fr 3fr; gap: 10px; min-width: 980px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); padding-bottom: 6px; }
+.now-heads span:first-child { color: var(--orange-dark); }
+.now-track { display: grid; grid-template-columns: repeat(8, 1fr); gap: 10px; min-width: 980px; }
+.now-track li { position: relative; background: #fff; border: 1px solid var(--line-soft); border-radius: 12px; padding: 22px 12px 12px; font-size: 12.5px; font-weight: 600; line-height: 1.35; }
+.now-track li[data-ours] { background: #f4f5f7; }
+.now-track .n { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700; border: 2px solid var(--line); color: var(--muted); margin-bottom: 8px; background: #fff; }
+.now-track li[data-now] { border-color: var(--orange); box-shadow: 0 0 0 3px var(--orange-ring); }
+.now-track li[data-now] .n { border-color: var(--orange); color: var(--orange); }
+.now-track .here { position: absolute; top: -9px; left: 10px; background: var(--orange); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+.now-track small { display: block; margin-top: 6px; font-size: 11px; color: var(--muted); font-weight: 500; }
+.now-track a { color: var(--orange-dark); }
+@container vp (max-width: 720px) { .now-top { grid-template-columns: 1fr; gap: 16px; } }
+
+/* --- Option A: grouped chip timeline --- */
+.ja { margin-top: 26px; background: #fff; border: 1px solid var(--line-soft); border-radius: 16px; padding: 16px 18px 18px; box-shadow: var(--shadow-card); }
+.ja-h { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.ja-h h2 { font-size: 15px; font-weight: 800; }
+.ja-h p { font-size: 12.5px; color: var(--muted); }
+.ja-groups { display: grid; grid-template-columns: 5fr 3fr; gap: 14px; margin-top: 14px; }
+.ja-g-lbl { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 800; letter-spacing: .03em; padding-bottom: 8px; margin-bottom: 10px; position: relative; }
+.ja-g-lbl::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 8px; border: 2px solid currentColor; border-top: 0; border-radius: 0 0 6px 6px; opacity: .45; }
+.ja-g[data-who='you'] .ja-g-lbl { color: var(--orange-dark); }
+.ja-g[data-who='lf'] .ja-g-lbl { color: var(--navy); }
+.ja-g-lbl em { font-style: normal; font-weight: 600; color: var(--muted); }
+.ja-chips { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 0; position: relative; }
+.ja-chips li { position: relative; display: flex; align-items: center; padding-right: 14px; }
+.ja-chips li::after { content: ''; position: absolute; right: 2px; top: 50%; width: 10px; height: 2px; background: var(--line); }
+.ja-g[data-who='lf'] .ja-chips li:last-child::after { display: none; }
+.chip { flex: 1; min-height: 52px; display: flex; align-items: center; border-radius: 10px; padding: 8px 10px; font-size: 12.5px; font-weight: 600; line-height: 1.3; background: #fff; border: 1px solid var(--line-soft); color: var(--ink-2); }
+.ja-g[data-who='you'] .chip { background: #fffaf6; border-color: #f6dcc6; }
+.ja-g[data-who='lf'] .chip { background: #f3f5f8; border-color: #e1e6ee; color: #3b4658; }
+.chip[data-now] { background: var(--orange) !important; border-color: var(--orange) !important; color: #fff !important; box-shadow: 0 6px 16px rgba(243,111,32,.3); position: relative; }
+.chip[data-now]::before { content: 'You are here'; position: absolute; top: -9px; left: 8px; font-size: 9.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; background: var(--navy); color: #fff; padding: 2px 7px; border-radius: 999px; }
+@container vp (max-width: 720px) {
+  .ja { padding: 14px; }
+  .ja-groups { grid-template-columns: 1fr; gap: 16px; }
+  .ja-chips { grid-auto-flow: row; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .ja-chips li { padding-right: 0; }
+  .ja-chips li::after { display: none; }
+  .chip { min-height: 46px; font-size: 12px; }
+}
+
+/* --- Option B: summary + expandable --- */
+.jb { margin-top: 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+.jb-sum { display: inline-flex; align-items: center; gap: 10px; background: #fff; border: 1px solid var(--line-soft); border-radius: 12px; padding: 10px 14px; font-size: 14px; font-weight: 600; box-shadow: var(--shadow-card); }
+.jb-sum b { color: var(--orange-dark); }
+.jb-sum .dots { display: inline-flex; gap: 3px; }
+.jb-sum .dots i { width: 14px; height: 6px; border-radius: 3px; background: var(--orange); opacity: .85; }
+.jb-sum .dots i.lf { background: var(--navy); opacity: .35; }
+.jb details { width: 100%; }
+.jb summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 700; color: var(--orange-dark); }
+.jb summary::-webkit-details-marker { display: none; }
+.jb summary svg { transition: transform .2s; }
+.jb details[open] summary svg { transform: rotate(180deg); }
+.jb-list { margin-top: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.jb-col { background: #fff; border: 1px solid var(--line-soft); border-radius: 12px; padding: 14px 16px; }
+.jb-col h3 { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+.jb-col[data-who='you'] h3 { color: var(--orange-dark); }
+.jb-col ol { counter-reset: s var(--start, 0); }
+.jb-col li { counter-increment: s; font-size: 13.5px; padding: 5px 0 5px 28px; position: relative; color: var(--ink-2); }
+.jb-col li::before { content: counter(s); position: absolute; left: 0; top: 5px; font-size: 12px; font-weight: 700; color: var(--muted); width: 18px; text-align: right; }
+@container vp (max-width: 720px) { .jb-list { grid-template-columns: 1fr; } .jb-sum { font-size: 13px; } }
+
+/* --- Option C: hero timeline = progress --- */
+.jc { margin-top: 24px; display: grid; grid-template-columns: 5fr auto 3fr; gap: 0 18px; align-items: end; }
+.jc-k { font-size: 12px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 10px; display: flex; justify-content: space-between; gap: 8px; }
+.jc-you .jc-k { color: var(--orange-dark); }
+.jc-lf .jc-k { color: var(--muted); }
+.jc-segs { display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 8px; }
+.jc-seg .bar { height: 10px; border-radius: 6px; background: #eadfd6; position: relative; overflow: hidden; }
+.jc-seg[data-now] .bar::after { content: ''; position: absolute; inset: 0 70% 0 0; background: var(--orange); border-radius: 6px; }
+.jc-seg p { font-size: 13px; font-weight: 600; line-height: 1.3; margin-top: 9px; color: var(--ink-2); }
+.jc-seg[data-now] p { color: var(--ink); font-weight: 800; }
+.jc-seg[data-now] p::before { content: 'You are here \00B7 '; color: var(--orange-dark); }
+.jc-lf .jc-seg .bar { height: 6px; background: #e4e7ec; }
+.jc-lf .jc-seg p { font-size: 12px; color: var(--muted); font-weight: 500; }
+.jc-div { align-self: stretch; display: flex; align-items: center; color: var(--muted); font-size: 12px; font-weight: 600; white-space: nowrap; padding-bottom: 20px; }
+.jc-div span { display: inline-flex; align-items: center; gap: 6px; border: 1px dashed var(--line); border-radius: 999px; padding: 4px 10px; background: #fff; }
+.jc-mob { display: none; }
+@container vp (max-width: 720px) {
+  .jc { grid-template-columns: 1fr; gap: 10px; }
+  .jc-you .jc-seg p { display: none; }
+  .jc-you .jc-seg[data-now] p { display: none; }
+  .jc-mob { display: block; font-size: 14px; font-weight: 700; margin-top: 10px; }
+  .jc-mob b { color: var(--orange-dark); }
+  .jc-div { padding: 0; }
+  .jc-lf .jc-segs { grid-template-columns: 1fr; gap: 4px; }
+  .jc-lf .jc-seg { display: flex; align-items: center; gap: 10px; }
+  .jc-lf .jc-seg .bar { width: 22px; flex: none; }
+  .jc-lf .jc-seg p { margin: 0; }
+}
+
+/* --- Form area (shared) --- */
+.rf { padding: 26px 0 34px; background: #fff; }
+.rf-grid { display: grid; grid-template-columns: 270px minmax(0, 1fr); gap: 32px; align-items: start; }
+.rf-rail { position: relative; border: 1px solid var(--line-soft); border-radius: 14px; padding: 16px 16px 6px; background: #fff; }
+.rf-rail-k { font-size: 11px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+.rf-steps > li { position: relative; padding: 0 0 16px 34px; }
+.rf-steps > li::before { content: ''; position: absolute; left: 11px; top: 26px; bottom: 2px; width: 2px; background: var(--line-soft); }
+.rf-steps > li:last-child::before { display: none; }
+.dot { position: absolute; left: 0; top: 0; width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--line); background: #fff; display: grid; place-items: center; font-size: 11px; font-weight: 700; color: var(--muted); }
+.rf-steps li[data-state='done'] > .dot { background: var(--orange); border-color: var(--orange); color: #fff; }
+.rf-steps li[data-state='active'] > .dot { border-color: var(--orange); color: var(--orange); box-shadow: 0 0 0 4px var(--orange-ring); }
+.rf-steps li[data-state='pending'] > .dot { border-style: dashed; }
+.sname { font-size: 14px; font-weight: 600; line-height: 24px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.rf-steps li[data-state='pending'] .sname { color: var(--ink-2); font-weight: 500; }
+.badge { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; background: var(--orange-tint); color: var(--orange-dark); border-radius: 999px; padding: 1px 8px; }
+.parts { margin-top: 6px; }
+.parts li { display: flex; align-items: center; gap: 8px; font-size: 13px; padding: 6px 8px; margin-left: -8px; border-radius: 7px; color: var(--ink-2); }
+.parts li .pn { width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; font-size: 10px; font-weight: 700; border: 1.5px solid var(--line); flex: none; }
+.parts li[aria-current] { background: var(--orange-tint); color: var(--ink); font-weight: 700; }
+.parts li[aria-current] .pn { border-color: var(--orange); color: var(--orange); }
+.rf-rail.parts-only .parts { margin: 0 0 10px; }
+.rf-rail.parts-only .parts li { margin-left: 0; padding: 9px 10px; font-size: 13.5px; }
+.rf-mprog { display: none; }
+.rf-partk { font-size: 12px; font-weight: 700; color: var(--orange-dark); letter-spacing: .04em; text-transform: uppercase; }
+.rf-h { font-size: 24px; font-weight: 800; letter-spacing: -.01em; margin: 4px 0 14px; }
+.card { background: #fff; border: 1px solid var(--line-soft); border-radius: 16px; padding: 20px 22px 22px; box-shadow: var(--shadow-card); }
+.card h3 { font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+.fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; }
+.fade-out { position: relative; }
+.rf-sub { font-size: 13px; color: var(--muted); margin: -10px 0 14px; }
+.card .rf-sub { margin: -10px 0 16px; }
+.ast { color: #fa5252; margin-left: 3px; }
+/* Now = live layout: 1320px max, 40px side gutter, 300px rail */
+.rf-now .rf-wrap { max-width: 1320px; padding: 0 40px; }
+.rf-now .rf-grid { grid-template-columns: 300px minmax(0, 1fr); }
+/* Redesign: less side gutter, wider content, form text +1-2px */
+.rf-new .rf-wrap { max-width: 1440px; padding: 0 16px; }
+.rf-new .rf-grid { grid-template-columns: 260px minmax(0, 1fr); gap: 24px; }
+.rf-new .sname { font-size: 15px; }
+.rf-new .parts li { font-size: 14.5px; }
+.rf-new .rf-partk { font-size: 13px; }
+.rf-new .rf-h { font-size: 26px; }
+.rf-new .card h3 { font-size: 17.5px; }
+.rf-new .field label { font-size: 14.5px; }
+.rf-new .input { font-size: 16px; height: 48px; }
+.rf-new .req { font-size: 10.5px; }
+/* Hero width: live = 1320px + 24px gutter; redesign = same wider content as the form */
+.panel[data-sec='register'] .opt[data-opt='now'] .rh .wrap { max-width: 1320px; padding: 0 24px; }
+.panel[data-sec='register'] .opt:not([data-opt='now']) .rh .wrap { max-width: 1440px; padding: 0 16px; }
+.fade-out::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 60px; background: linear-gradient(to bottom, rgba(255,255,255,0), #fff); pointer-events: none; }
+@container vp (max-width: 720px) {
+  .rf-now .rf-wrap, .rf-new .rf-wrap { padding: 0 16px; }
+  .rf-new .rf-wrap { padding: 0 12px; }
+  .rf { padding: 0 0 26px; }
+  .rf-grid, .rf-now .rf-grid, .rf-new .rf-grid { grid-template-columns: 1fr; gap: 0; }
+  .rf-rail { display: none; }
+  .rf-mprog { display: block; margin: 0 -16px 18px; padding: 12px 16px 12px; border-bottom: 1px solid var(--line-soft); background: #fff; }
+  .rf-mprog small { font-size: 12px; color: var(--muted); font-weight: 600; }
+  .rf-mprog p { font-size: 15px; font-weight: 800; margin-top: 2px; }
+  .bars { display: grid; gap: 4px; margin-top: 9px; }
+  .bars i { height: 4px; border-radius: 4px; background: var(--line-soft); }
+  .bars i.on { background: var(--orange); }
+  .rf-mprog .more { display: inline-block; margin-top: 8px; font-size: 12.5px; font-weight: 700; color: var(--orange-dark); }
+  .rf-h { font-size: 20px; }
+  .card { padding: 16px; border-radius: 12px; }
+  .fgrid { grid-template-columns: 1fr; gap: 12px; }
+}
+
+/* ================= Section 2: Webinar ================= */
+.wb { background: var(--page); padding: 54px 0 60px; }
+.wb-title { font-size: clamp(26px, 3.4cqi, 40px); font-weight: 800; line-height: 1.12; letter-spacing: -.02em; margin-top: 10px; }
+.wb-title .nw { white-space: nowrap; }
+.wb-title em { font-style: normal; color: var(--orange); }
+
+/* Now */
+.wn-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+.wn-lead { font-size: 16px; color: var(--ink-2); line-height: 1.6; margin-top: 14px; }
+.wn-agenda { margin-top: 16px; display: grid; gap: 10px; }
+.wn-agenda li { display: flex; gap: 10px; font-size: 14.5px; line-height: 1.5; color: var(--ink-2); }
+.wn-agenda svg { color: var(--orange); margin-top: 4px; font-size: 16px; }
+.wn-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.wn-card { background: #fff; border: 1px solid var(--line-soft); border-radius: 16px; padding: 20px; box-shadow: var(--shadow-card); }
+.wn-pick { font-size: 11px; font-weight: 800; letter-spacing: .08em; color: var(--muted); margin-bottom: 10px; }
+.wn-dates { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+.wn-date { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; font-size: 12px; color: var(--ink-2); line-height: 1.35; }
+.wn-date b { display: block; font-size: 14px; color: var(--ink); }
+.wn-date[data-on] { border-color: var(--orange); background: var(--orange-tint); }
+.wn-consent { display: flex; gap: 10px; margin-top: 14px; font-size: 11.5px; line-height: 1.5; color: var(--ink-2); }
+.wn-consent p + p { margin-top: 4px; color: var(--muted); }
+.cbox { width: 18px; height: 18px; border: 2px solid var(--line); border-radius: 5px; flex: none; margin-top: 1px; background: #fff; }
+.cbox.on { background: var(--orange); border-color: var(--orange); display: grid; place-items: center; color: #fff; font-size: 12px; }
+.wn-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 16px; }
+@container vp (max-width: 720px) {
+  .wb { padding: 34px 0 40px; }
+  .wn-grid { grid-template-columns: 1fr; gap: 24px; }
+  .wn-dates { grid-template-columns: 1fr 1fr; }
+}
+
+/* Redesign shared */
+.date-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.dchip { border: 1.5px solid var(--line); background: #fff; border-radius: 12px; padding: 9px 14px; text-align: left; cursor: pointer; transition: border-color .15s, background .15s, transform .15s; min-width: 0; }
+.dchip b { display: block; font-size: 15px; font-weight: 800; color: var(--ink); }
+.dchip span { font-size: 12px; color: var(--muted); font-weight: 600; }
+.dchip:hover { border-color: var(--orange); transform: translateY(-1px); }
+.dchip[aria-pressed='true'] { border-color: var(--orange); background: var(--orange-tint); box-shadow: 0 0 0 3px var(--orange-ring); }
+.dchip[aria-pressed='true'] span { color: var(--orange-dark); }
+.dchip:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+.stepk { font-size: 12px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-2); margin: 0 0 10px; display: flex; align-items: center; gap: 8px; }
+.stepk i { font-style: normal; width: 20px; height: 20px; border-radius: 50%; background: var(--navy); color: #fff; display: grid; place-items: center; font-size: 11px; }
+.terms { margin-top: 14px; display: flex; gap: 10px; font-size: 12.5px; line-height: 1.5; color: var(--ink-2); }
+.terms details { margin-top: 4px; }
+.terms summary { cursor: pointer; font-weight: 700; color: var(--orange-dark); font-size: 12px; }
+.terms details p { margin-top: 6px; font-size: 11.5px; color: var(--muted); }
+.bul { display: grid; gap: 10px; margin-top: 18px; }
+.bul li { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; }
+.bul li svg { width: 22px; height: 22px; padding: 4px; border-radius: 50%; background: var(--orange-tint); color: var(--orange-dark); stroke-width: 3; }
+
+/* Option A */
+.wa-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px; align-items: center; }
+.wa-line { font-size: 16px; color: var(--ink-2); margin-top: 12px; line-height: 1.55; }
+.wa-host { display: flex; align-items: center; gap: 12px; margin-top: 26px; padding-top: 20px; border-top: 1px solid var(--line-soft); }
+.avatar { width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg, var(--navy), #34425c); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 15px; flex: none; box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--orange); }
+.wa-host b { font-size: 14px; display: block; }
+.wa-host span { font-size: 12.5px; color: var(--muted); }
+.wa-card { position: relative; background: #fff; border-radius: 22px; padding: 28px 30px 26px; box-shadow: var(--shadow-lift); border: 1px solid rgba(15,22,38,.06); }
+.wa-card::before { content: ''; position: absolute; left: 24px; right: 24px; top: -1px; height: 4px; border-radius: 0 0 4px 4px; background: var(--orange); }
+.wa-card h3 { font-size: 22px; font-weight: 800; letter-spacing: -.01em; }
+.wa-card > p { font-size: 13.5px; color: var(--muted); margin: 4px 0 20px; }
+.wa-card .fgrid { margin-top: 0; }
+.wa-sep { height: 1px; background: var(--line-soft); margin: 20px 0; }
+.wa-cta { margin-top: 18px; display: grid; gap: 12px; justify-items: center; }
+.wa-cta .btn { width: 100%; height: 56px; font-size: 17px; border-radius: 14px; }
+.wa-cta small { font-size: 12.5px; color: var(--muted); }
+@container vp (max-width: 860px) { .wa-grid { grid-template-columns: 1fr; gap: 26px; } }
+@container vp (max-width: 720px) {
+  .wa-card { padding: 22px 16px 20px; border-radius: 18px; }
+  .wa-card h3 { font-size: 20px; }
+  .date-chips { display: grid; grid-template-columns: 1fr 1fr; }
+  .bul li { font-size: 14px; }
+}
+
+/* Option B */
+.wbb { background: var(--navy); color: #fff; padding: 52px 0 150px; position: relative; overflow: hidden; }
+.wbb::before { content: ''; position: absolute; right: -120px; top: -160px; width: 460px; height: 460px; border-radius: 50%; background: radial-gradient(closest-side, rgba(243,111,32,.35), rgba(243,111,32,0)); }
+.wbb::after { content: ''; position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px); background-size: 18px 18px; pointer-events: none; }
+.wbb .wrap { position: relative; z-index: 1; }
+.wbb .kicker { color: #ffb37f; }
+.wbb .kicker::before { background: #ffb37f; }
+.wbb .wb-title { color: #fff; max-width: 760px; }
+.wbb-line { color: #c3cad6; font-size: 16px; margin-top: 12px; }
+.wbb-bul { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.wbb-bul li { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); padding: 8px 14px; border-radius: 999px; }
+.wbb-bul svg { color: #ffb37f; stroke-width: 3; }
+.wbf { position: relative; z-index: 2; margin-top: -110px; padding-bottom: 54px; background: linear-gradient(to bottom, transparent 110px, var(--page) 110px); }
+.wbf-card { background: #fff; border-radius: 24px; box-shadow: var(--shadow-lift); padding: 28px 32px 28px; display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr); gap: 32px; }
+.wbf-left { border-right: 1px solid var(--line-soft); padding-right: 28px; }
+.wbf-left h3 { font-size: 22px; font-weight: 800; }
+.wbf-left > p { font-size: 13px; color: var(--muted); margin: 4px 0 18px; }
+.wbf-left .date-chips { display: grid; gap: 8px; }
+.wbf-left .dchip { display: flex; justify-content: space-between; align-items: center; }
+.wbf-left .dchip b { display: inline; }
+.wbf-right .fgrid { grid-template-columns: 1fr 1fr; }
+.wbf-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 18px; }
+.wbf-foot .btn { height: 56px; padding: 0 34px; font-size: 17px; }
+@container vp (max-width: 860px) {
+  .wbf-card { grid-template-columns: 1fr; gap: 20px; }
+  .wbf-left { border-right: 0; padding-right: 0; border-bottom: 1px solid var(--line-soft); padding-bottom: 20px; }
+  .wbf-left .date-chips { grid-template-columns: 1fr 1fr; }
+  .wbf-left .dchip { display: block; }
+  .wbf-left .dchip b { display: block; }
+}
+@container vp (max-width: 720px) {
+  .wbb { padding: 34px 0 120px; }
+  .wbb-bul li { font-size: 13px; }
+  .wbf-card { padding: 20px 16px; border-radius: 18px; }
+  .wbf-right .fgrid { grid-template-columns: 1fr; }
+  .wbf-foot .btn { width: 100%; }
+  .wbf-foot { justify-content: center; flex-direction: column-reverse; }
+}
+
+/* ================= Section 3: AI platform ================= */
+.ai { background: #fff; padding: 56px 0 64px; }
+.ai-h { max-width: 760px; }
+.ai-title { font-size: clamp(26px, 3.4cqi, 40px); font-weight: 800; letter-spacing: -.02em; line-height: 1.12; margin-top: 10px; }
+.ai-lede { font-size: 16px; color: var(--ink-2); line-height: 1.6; margin-top: 12px; }
+.ic { width: 40px; height: 40px; border-radius: 11px; background: var(--orange-tint); color: var(--orange-dark); display: grid; place-items: center; font-size: 20px; flex: none; }
+.app-name { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+.more { font-size: 13px; font-weight: 700; color: var(--orange-dark); text-decoration: none; margin-top: auto; padding-top: 10px; display: inline-block; }
+.more.none { color: var(--muted); font-weight: 600; }
+
+/* Now: hub */
+.hub { display: grid; grid-template-columns: minmax(0, 1fr) 280px minmax(0, 1fr); gap: 20px; margin-top: 36px; align-items: center; }
+.hub-col { display: grid; gap: 14px; }
+.hub-mid { display: grid; place-items: center; text-align: center; }
+.hub-orb { width: 240px; height: 240px; border-radius: 50%; background: radial-gradient(circle at 50% 40%, #fff 0, #fff4ec 55%, #ffe3cf 100%); display: grid; place-items: center; position: relative; box-shadow: inset 0 0 0 1px #f6d4bb; }
+.hub-orb::before { content: ''; position: absolute; inset: -18px; border: 2px dashed #f3c9a5; border-radius: 50%; }
+.hub-orb svg.art { width: 120px; height: 120px; }
+.hub-mid b { display: block; font-size: 15px; font-weight: 800; margin-top: 16px; }
+.hub-mid span { font-size: 13px; color: var(--muted); }
+.ncard { background: #fff; border: 1px solid var(--line-soft); border-radius: 14px; padding: 14px 16px; display: flex; gap: 12px; box-shadow: var(--shadow-card); }
+.ncard h3 { font-size: 14.5px; font-weight: 700; }
+.ncard p { font-size: 13px; color: var(--ink-2); line-height: 1.5; margin-top: 4px; }
+.ncard .more { padding-top: 4px; }
+@container vp (max-width: 980px) {
+  .hub { grid-template-columns: 1fr 1fr; }
+  .hub-mid { grid-column: 1 / -1; order: -1; }
+  .hub-orb { width: 170px; height: 170px; }
+  .hub-orb svg.art { width: 86px; height: 86px; }
+}
+@container vp (max-width: 720px) {
+  .ai { padding: 36px 0 44px; }
+  .hub { grid-template-columns: 1fr; margin-top: 24px; gap: 12px; }
+  .hub-col { gap: 12px; }
+}
+
+/* Option A: hub + feature cards */
+.fhub { display: grid; grid-template-columns: minmax(0, 1fr) 200px minmax(0, 1fr); gap: 18px; margin-top: 36px; align-items: stretch; }
+.fhub .hub-mid { align-self: center; }
+.fhub .hub-orb { width: 170px; height: 170px; }
+.fhub .hub-orb svg.art { width: 86px; height: 86px; }
+.fcol { display: grid; gap: 14px; }
+.fcard { background: #fff; border: 1px solid var(--line-soft); border-radius: 16px; padding: 16px 18px; box-shadow: var(--shadow-card); display: flex; flex-direction: column; transition: transform .18s, box-shadow .18s, border-color .18s; }
+.fcard:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); border-color: #f3c9a5; }
+.fcard-top { display: flex; gap: 12px; align-items: center; }
+.fcard-top h3 { font-size: 15px; font-weight: 800; line-height: 1.25; }
+.fcard .purpose { font-size: 13px; color: var(--ink-2); margin-top: 10px; font-weight: 500; }
+.feats { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; margin-top: 10px; }
+.feats li { display: flex; align-items: flex-start; gap: 6px; font-size: 12.5px; font-weight: 600; line-height: 1.35; color: var(--ink); }
+.feats li svg { color: var(--green); margin-top: 2px; stroke-width: 3; font-size: 13px; }
+.tbc { font-size: 11px; color: #b06d00; background: #fff6e0; border: 1px dashed #f2cf7f; border-radius: 6px; padding: 2px 7px; font-weight: 600; margin-top: 8px; align-self: flex-start; }
+.fcard-foot { display: flex; justify-content: space-between; align-items: flex-end; margin-top: auto; gap: 8px; }
+@container vp (max-width: 980px) {
+  .fhub { grid-template-columns: 1fr 1fr; }
+  .fhub .hub-mid { grid-column: 1 / -1; order: -1; }
+}
+@container vp (max-width: 720px) {
+  .fhub { grid-template-columns: 1fr; margin-top: 24px; }
+  .fhub .hub-orb { width: 130px; height: 130px; }
+  .fhub .hub-orb svg.art { width: 66px; height: 66px; }
+}
+
+/* Option B: journey bento */
+.jrn { margin-top: 36px; display: grid; gap: 22px; }
+.jrn-row { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 20px; align-items: start; }
+.jrn-lbl { position: sticky; top: 0; padding-top: 6px; }
+.jrn-lbl .stg { font-size: 11px; font-weight: 800; letter-spacing: .08em; color: var(--muted); text-transform: uppercase; }
+.jrn-lbl h3 { font-size: 20px; font-weight: 800; margin-top: 4px; letter-spacing: -.01em; }
+.jrn-lbl p { font-size: 12.5px; color: var(--muted); margin-top: 4px; line-height: 1.45; }
+.jrn-cards { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 14px; }
+.bcard { border: 1px solid var(--line-soft); border-radius: 16px; padding: 16px; background: #fff; display: flex; flex-direction: column; transition: transform .18s, box-shadow .18s; }
+.bcard:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); }
+.jrn-row:nth-child(1) .bcard { background: linear-gradient(180deg, #fff8f2, #fff 60%); }
+.jrn-row:nth-child(2) .bcard { background: linear-gradient(180deg, #f4f6fa, #fff 60%); }
+.jrn-row:nth-child(2) .ic { background: #e8ecf4; color: var(--navy); }
+.jrn-row:nth-child(3) .bcard { background: linear-gradient(180deg, #f2f9f3, #fff 60%); }
+.jrn-row:nth-child(3) .ic { background: #e3f3e6; color: #237a35; }
+.bcard-top { display: flex; align-items: center; gap: 10px; }
+.bcard-top .ic { width: 34px; height: 34px; font-size: 17px; border-radius: 9px; }
+.bcard h4 { font-size: 15px; font-weight: 800; line-height: 1.2; }
+.bcard .purpose { font-size: 12.5px; color: var(--ink-2); margin-top: 8px; line-height: 1.45; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.tags li { font-size: 11.5px; font-weight: 700; padding: 4px 9px; border-radius: 999px; background: #fff; border: 1px solid var(--line-soft); color: var(--ink-2); }
+.jrn-arrow { display: flex; justify-content: center; color: var(--line); margin: -12px 0; }
+@container vp (max-width: 980px) {
+  .jrn-row { grid-template-columns: 1fr; gap: 10px; }
+  .jrn-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@container vp (max-width: 720px) {
+  .jrn-cards { grid-template-columns: 1fr; gap: 10px; }
+  .jrn-lbl h3 { font-size: 18px; }
+}
+
+/* ---------- Webinar C / D (round 2: Thuan, Phuong, Chi 09/10) ---------- */
+/* High-contrast form card: crisp white, strong shadow, dark labels, 16px inputs */
+.wx-card { position: relative; background: #fff; border-radius: 22px; padding: 28px 28px 24px; box-shadow: 0 2px 6px rgba(15,22,38,.12), 0 30px 70px rgba(15,22,38,.32); z-index: 3; }
+.wx-card::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 6px; border-radius: 22px 22px 0 0; background: var(--orange); }
+.wx-card h3 { font-size: 24px; font-weight: 800; letter-spacing: -.01em; color: var(--ink); }
+.wx-card > p { font-size: 14px; color: var(--ink-2); margin: 4px 0 18px; font-weight: 500; }
+.wx-card .stepk { color: var(--ink); }
+.wx-card .fgrid { gap: 12px 14px; }
+.wx-card .field label { font-size: 14px; font-weight: 700; color: var(--ink); }
+.wx-card .input { height: 48px; font-size: 16px; border: 1.5px solid #adb5bd; color: #6c757d; }
+.wx-card .input.sel::after { border-color: var(--ink-2); }
+.wx-card .dchip { border-color: #adb5bd; }
+.wx-card .dchip span { color: var(--ink-2); }
+.wx-card .dchip[aria-pressed='true'] { border-color: var(--orange); }
+.wx-card .dchip[aria-pressed='true'] span { color: var(--orange-dark); }
+.wx-card .terms { color: var(--ink); font-size: 13px; }
+.wx-card .wa-cta .btn { width: 100%; height: 58px; font-size: 18px; border-radius: 14px; box-shadow: 0 10px 24px rgba(243,111,32,.4); }
+.wx-card .wa-cta .link { font-size: 14px; }
+
+/* Placement mini map */
+.place { background: #fff; border-top: 1px solid var(--line-soft); padding: 26px 0 30px; }
+.place-in { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 24px 32px; align-items: start; }
+.place h4 { font-size: 15px; font-weight: 800; }
+.place-in > div > p { font-size: 13px; color: var(--ink-2); margin-top: 4px; line-height: 1.5; max-width: 420px; }
+.pmap h5 { font-size: 11px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+.pmap ol { display: grid; gap: 3px; width: 200px; }
+.pmap li { display: flex; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 600; color: var(--ink-2); background: #f1f3f5; border-radius: 5px; padding: 3px 8px; }
+.pmap li i { font-style: normal; font-size: 10px; color: var(--muted); width: 14px; text-align: right; }
+.pmap li[data-hit] { background: var(--orange); color: #fff; font-weight: 800; }
+.pmap li[data-hit] i { color: #fff; }
+.pmap li[data-was] { background: transparent; border: 1.5px dashed #f3c9a5; color: #c9a183; }
+@container vp (max-width: 720px) {
+  .place-in { grid-template-columns: 1fr 1fr; gap: 16px 12px; }
+  .place-in > div:first-child { grid-column: 1 / -1; }
+  .pmap ol { width: auto; }
+  .pmap li { font-size: 11px; padding: 3px 6px; }
+}
+
+/* Option C: navy band, cut-out photo, form in front */
+.wc { position: relative; background: var(--navy); }
+.wc-band { position: relative; background: var(--navy); color: #fff; padding: 56px 0 64px; }
+.wc-decor { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.wc-decor::before { content: ''; position: absolute; right: 22%; top: -140px; width: 520px; height: 520px; border-radius: 50%; background: radial-gradient(closest-side, rgba(243,111,32,.38), rgba(243,111,32,0)); }
+.wc-decor::after { content: ''; position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px); background-size: 18px 18px; }
+.wc-grid { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 300px minmax(0, 470px); gap: 0 28px; align-items: end; }
+.wc-text { align-self: start; padding-bottom: 48px; }
+.wc .kicker { color: #ffb37f; }
+.wc .kicker::before { background: #ffb37f; }
+.wc .wb-title { color: #fff; }
+.wc .wb-title em { color: var(--orange); font-style: normal; }
+.wc-line { color: #d5dbe5; font-size: 17px; margin-top: 14px; line-height: 1.5; }
+.wc .bul li { color: #fff; font-size: 16px; }
+.wc .bul li svg { background: rgba(243,111,32,.2); color: #ffb37f; }
+.wc-host { margin-top: 22px; font-size: 13px; color: #aeb7c6; }
+.wc-host b { color: #fff; }
+.wc-photo { position: relative; align-self: end; z-index: 2; display: flex; justify-content: center; }
+.wc-photo::before { content: ''; position: absolute; bottom: 30px; left: 50%; width: 280px; height: 280px; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(closest-side, rgba(243,111,32,.55), rgba(243,111,32,0)); }
+.wc-photo img { position: relative; -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent 100%); mask-image: linear-gradient(to bottom, #000 78%, transparent 100%); width: 300px; height: auto; display: block; filter: drop-shadow(0 18px 30px rgba(0,0,0,.35)); }
+.wc-tag { position: absolute; left: -6px; bottom: 90px; z-index: 3; background: #fff; color: var(--ink); border-radius: 12px; padding: 8px 12px; font-size: 12px; font-weight: 600; box-shadow: 0 10px 24px rgba(0,0,0,.25); line-height: 1.35; }
+.wc-tag b { display: block; font-size: 13.5px; font-weight: 800; }
+.wc-form { align-self: center; }
+@container vp (max-width: 1080px) {
+  .wc-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 440px); }
+  .wc-photo { grid-column: 1; grid-row: 2; justify-content: flex-start; margin-bottom: 0; }
+  .wc-photo img { width: 230px; }
+  .wc-text { padding-bottom: 8px; }
+  .wc-form { grid-column: 2; grid-row: 1 / span 2; }
+}
+@container vp (max-width: 720px) {
+  .wc-band { padding: 32px 0 36px; }
+  .wc-grid { grid-template-columns: 1fr; }
+  .wc-text { padding-bottom: 0; }
+  .wc .bul li { font-size: 14.5px; }
+  .wc-photo { grid-column: 1; grid-row: auto; justify-content: center; margin: 8px 0 0; }
+  .wc-photo img { width: 200px; }
+  .wc-photo::before { width: 200px; height: 200px; }
+  .wc-tag { left: 0; bottom: 70px; }
+  .wc-form { grid-column: 1; grid-row: auto; margin-top: -36px; }
+  .wx-card { padding: 24px 16px 20px; border-radius: 18px; }
+  .wx-card::before { border-radius: 18px 18px 0 0; }
+  .wx-card h3 { font-size: 21px; }
+}
+
+/* Option D: split hero, big portrait left, form right */
+.wd { background: var(--navy); color: #fff; padding: 52px 0 60px; position: relative; overflow: hidden; }
+.wd::before { content: ''; position: absolute; left: -160px; bottom: -200px; width: 560px; height: 560px; border-radius: 50%; background: radial-gradient(closest-side, rgba(243,111,32,.3), rgba(243,111,32,0)); }
+.wd-grid { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: stretch; }
+.wd-photo { position: relative; border-radius: 26px; overflow: hidden; min-height: 560px; background-color: #a9b6c6; background-size: cover; background-position: 50% 18%; box-shadow: 0 30px 70px rgba(0,0,0,.35); }
+.wd-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(15,22,38,0) 45%, rgba(15,22,38,.88) 100%); }
+.wd-live { position: absolute; top: 18px; left: 18px; z-index: 2; display: inline-flex; align-items: center; gap: 8px; background: var(--orange); color: #fff; border-radius: 999px; padding: 8px 14px; font-size: 13px; font-weight: 800; box-shadow: 0 8px 20px rgba(243,111,32,.45); }
+.wd-live i { width: 8px; height: 8px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px rgba(255,255,255,.35); }
+.wd-cap { position: absolute; left: 24px; right: 24px; bottom: 24px; z-index: 2; }
+.wd-cap .kicker { color: #ffb37f; }
+.wd-cap .kicker::before { background: #ffb37f; }
+.wd-cap .wb-title { color: #fff; font-size: clamp(26px, 3cqi, 38px); }
+.wd-badge { display: inline-flex; align-items: center; gap: 10px; margin-top: 14px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22); backdrop-filter: blur(6px); border-radius: 12px; padding: 8px 12px; font-size: 12.5px; color: #d5dbe5; line-height: 1.35; }
+.wd-badge b { display: block; color: #fff; font-size: 14px; }
+.wd-right { display: flex; flex-direction: column; }
+.wd-right > div { flex: 1; display: flex; }
+.wd-right .wx-card { flex: 1; display: flex; flex-direction: column; }
+.wd-right .wa-cta { margin-top: auto; padding-top: 18px; }
+@container vp (max-width: 900px) {
+  .wd-grid { grid-template-columns: 1fr; gap: 0; }
+  .wd-photo { min-height: 380px; }
+  .wd-right { margin-top: -40px; }
+}
+@container vp (max-width: 720px) {
+  .wd { padding: 20px 0 36px; }
+  .wd-photo { min-height: 560px; border-radius: 20px; background-color: var(--navy-2); background-size: 100% auto; background-position: 50% 0; background-repeat: no-repeat; }
+  .wd-photo::after { background: linear-gradient(to bottom, rgba(15,22,38,0) 38%, rgba(15,22,38,.92) 66%, var(--navy-2) 100%); }
+  .wd-cap { left: 16px; right: 16px; bottom: 56px; }
+  .wd-badge { font-size: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+@media (max-width: 720px) {
+  .tb-in { padding: 8px 12px; gap: 8px; }
+  .tb-ctrls { margin-left: 0; }
+  .seg { flex-wrap: wrap; }
+  .o-word { display: none; }
+  .seg button { padding: 6px 12px; }
+  .tb-tab { padding: 7px 10px; font-size: 12.5px; }
+  .why, .stage { padding: 0 8px; }
+  .why-in { flex-direction: column; gap: 6px; }
+}
+</style>
+
+<!-- Icon sprite (Tabler-style strokes) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16M16 9h2a2 2 0 0 1 2 2v10M8 7h4M8 11h4M8 15h4M3 21h18"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+  <symbol id="i-speaker" viewBox="0 0 24 24"><path d="M3 10v4h4l5 4V6L7 10H3zM16 9a4 4 0 0 1 0 6M19 6a8 8 0 0 1 0 12"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></symbol>
+  <symbol id="i-store" viewBox="0 0 24 24"><path d="M3 9l1.5-5h15L21 9M3 9h18v2a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0zM5 13v8h14v-8"/></symbol>
+  <symbol id="i-cash" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M7 9v.01M17 15v.01"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18.5h2"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20h16M7 16v-5M12 16V8M17 16v-3"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7M5 10v10h14V10M10 20v-5h4v5"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></symbol>
+</svg>
+
+<header class="tb">
+  <div class="tb-in">
+    <div class="tb-brand">
+      <span class="tb-logo" aria-hidden="true">LF</span>
+      <p class="tb-title">Redesign options for Thuan's feedback<small>Loan Factory &#xB7; 09/10/2026 &#xB7; mockup, not live</small></p>
+    </div>
+    <nav class="tb-tabs" role="tablist" aria-label="Sections">
+      <button class="tb-tab" role="tab" data-sec="register" aria-selected="true"><b>1</b>Register hero</button>
+      <button class="tb-tab" role="tab" data-sec="webinar" aria-selected="false"><b>2</b>Free Friday webinar</button>
+      <button class="tb-tab" role="tab" data-sec="platform" aria-selected="false"><b>3</b>AI mortgage platform</button>
+    </nav>
+    <div class="tb-ctrls">
+      <div class="seg" id="optSeg" role="group" aria-label="Option"></div>
+      <div class="seg" role="group" aria-label="Screen width">
+        <button data-dev="desktop" aria-pressed="true">Desktop</button>
+        <button data-dev="mobile" aria-pressed="false">Mobile 375</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="why" aria-live="polite">
+  <div class="why-in">
+    <span class="why-tag" id="whyTag">Option A</span>
+    <div><h2 id="whyTitle"></h2><p id="whyText"></p></div>
+  </div>
+</section>
+
+<main class="stage" id="stage" data-device="desktop">
+  <div class="vp">
+    <div class="vp-bar"><i></i><i></i><i></i><span id="url">loanfactory.com/register-loan-officer-v1</span></div>
+
+    <!-- =====================================================================
+         SECTION 1: REGISTER HERO (/register-loan-officer-v1)
+         ===================================================================== -->
+    <div class="panel" data-sec="register">
+
+      <!-- NOW: approximation of the live hero (09/10). Captions per step are approximate. -->
+      <div class="opt" data-opt="now"
+           data-label="Now"
+           data-title="What is live today"
+           data-why="Two step lists of different shapes (8 numbered cards in the hero, 5 numbered steps on the left) say different things in the first 30 seconds. The '5 steps for you / 3 steps for us' box sits apart from the cards it counts, and emails and captions add noise.">
+        <section class="rh">
+          <div class="wrap">
+            <div class="now-top">
+              <div>
+                <p class="eyebrow">Register as a Loan Officer</p>
+                <h1 class="rh-title">Join Loan Factory. <span>We'll handle the rest.</span></h1>
+                <p class="rh-lede">Fill out your information below. We will call you to talk about the details.</p>
+                <div class="pills">
+                  <span class="pill"><svg class="i"><use href="#i-clock"/></svg>About 10 minutes</span>
+                  <span class="pill"><svg class="i"><use href="#i-lock"/></svg>$100 fee only after your call</span>
+                  <span class="pill"><svg class="i"><use href="#i-mail"/></svg>recruiting@loanfactory.com</span>
+                </div>
+              </div>
+              <div class="now-split" role="group" aria-label="Who does what">
+                <div><b>5</b><span>steps for you</span></div>
+                <div><b>3</b><span>steps for us</span></div>
+                <small>This is the whole onboarding process. Where you are now is shown in orange.</small>
+              </div>
+            </div>
+            <div class="now-track-wrap">
+              <div class="now-heads"><span>Your part</span><span>Our part</span></div>
+              <ol class="now-track">
+                <li data-now><span class="here">You are here</span><span class="n">1</span>Fill out your information</li>
+                <li><span class="n">2</span>Talk with us on a short call<small>Waiting for your call</small></li>
+                <li><span class="n">3</span>Pay the $100 startup fee<small>After your call</small></li>
+                <li><span class="n">4</span>Sign the Loan Officer Agreement<small>After you pay</small></li>
+                <li><span class="n">5</span>Give Loan Factory access to your NMLS record<small>Not done yet</small></li>
+                <li data-ours><span class="n">6</span><span><a href="#">licensing@loanfactory.com</a> sponsors you</span></li>
+                <li data-ours><span class="n">7</span>HR sets up your account</li>
+                <li data-ours><span class="n">8</span>Start working at Loan Factory</li>
+              </ol>
+            </div>
+          </div>
+        </section>
+        <div data-form="full" data-rail-label="Register Loan Officer"></div>
+      </div>
+
+      <!-- OPTION A -->
+      <div class="opt" data-opt="a" hidden
+           data-label="A"
+           data-title="Option A: one 'How joining works' strip, grouped by who does it"
+           data-why="Form changes in A, B and C: no status captions, no emails, no helper text, a 'Required' chip instead of the tiny *, wider content (16px side gutter instead of 40px) and form text 1&#x2013;2px larger. Hero: the 8 steps become small text chips under two labelled brackets, 'You' and 'Loan Factory', so it is obvious which are the 5 and which are the 3. No numbered circles, so it no longer looks like the form steps; the left list is renamed 'Pages in this form'.">
+        <section class="rh">
+          <div class="wrap">
+            <p class="eyebrow">Register as a Loan Officer</p>
+            <h1 class="rh-title">Join Loan Factory.</h1>
+            <p class="rh-lede">Fill out your information below. We will call you to talk about the details.</p>
+            <div class="pills">
+              <span class="pill"><svg class="i"><use href="#i-clock"/></svg>About 10 minutes</span>
+              <span class="pill"><svg class="i"><use href="#i-lock"/></svg>$100 fee only after your call</span>
+            </div>
+            <div class="ja" role="group" aria-label="How joining works">
+              <div class="ja-h"><h2>How joining works</h2><p>8 steps from today to your first day</p></div>
+              <div class="ja-groups">
+                <div class="ja-g" data-who="you">
+                  <p class="ja-g-lbl"><svg class="i"><use href="#i-user"/></svg>You <em>&#xB7; steps 1&#x2013;5</em></p>
+                  <ol class="ja-chips">
+                    <li><span class="chip" data-now>Fill out your information</span></li>
+                    <li><span class="chip">Talk with us on a short call</span></li>
+                    <li><span class="chip">Pay the $100 startup fee</span></li>
+                    <li><span class="chip">Sign the Loan Officer Agreement</span></li>
+                    <li><span class="chip">Give us access to your NMLS record</span></li>
+                  </ol>
+                </div>
+                <div class="ja-g" data-who="lf">
+                  <p class="ja-g-lbl"><svg class="i"><use href="#i-building"/></svg>Loan Factory <em>&#xB7; steps 6&#x2013;8</em></p>
+                  <ol class="ja-chips">
+                    <li><span class="chip">We sponsor your license</span></li>
+                    <li><span class="chip">HR sets up your account</span></li>
+                    <li><span class="chip">You start working</span></li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div data-form="full" data-rail-label="Pages in this form"></div>
+      </div>
+
+      <!-- OPTION B -->
+      <div class="opt" data-opt="b" hidden
+           data-label="B"
+           data-title="Option B: one short line in the hero, the left list is the only step list"
+           data-why="Same form changes as A (no captions, emails or helper text, 'Required' chips, wider, larger text). Hero: says it in one line ('8 steps: 5 for you, 3 for us') and hides the full list behind 'See all 8 steps'. Only one step list is visible at first glance, so there is nothing to compare. Fastest to scan, but the 'what happens after' story is one click away.">
+        <section class="rh">
+          <div class="wrap">
+            <p class="eyebrow">Register as a Loan Officer</p>
+            <h1 class="rh-title">Join Loan Factory.</h1>
+            <p class="rh-lede">Fill out your information below. We will call you to talk about the details.</p>
+            <div class="pills">
+              <span class="pill"><svg class="i"><use href="#i-clock"/></svg>About 10 minutes</span>
+              <span class="pill"><svg class="i"><use href="#i-lock"/></svg>$100 fee only after your call</span>
+            </div>
+            <div class="jb">
+              <span class="jb-sum">
+                <span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i class="lf"></i><i class="lf"></i><i class="lf"></i></span>
+                <span>8 steps: <b>5 for you</b>, 3 for us</span>
+              </span>
+              <details>
+                <summary>See all 8 steps <svg class="i"><use href="#i-down"/></svg></summary>
+                <div class="jb-list">
+                  <div class="jb-col" data-who="you">
+                    <h3>You</h3>
+                    <ol>
+                      <li><b>Fill out your information</b> (you are here)</li>
+                      <li>Talk with us on a short call</li>
+                      <li>Pay the $100 startup fee</li>
+                      <li>Sign the Loan Officer Agreement</li>
+                      <li>Give Loan Factory access to your NMLS record</li>
+                    </ol>
+                  </div>
+                  <div class="jb-col" data-who="lf">
+                    <h3>Loan Factory</h3>
+                    <ol style="--start: 5">
+                      <li>Our licensing team sponsors you</li>
+                      <li>HR sets up your account</li>
+                      <li>You start working at Loan Factory</li>
+                    </ol>
+                  </div>
+                </div>
+              </details>
+            </div>
+          </div>
+        </section>
+        <div data-form="full" data-rail-label="Your application"></div>
+      </div>
+
+      <!-- OPTION C -->
+      <div class="opt" data-opt="c" hidden
+           data-label="C"
+           data-title="Option C: the hero timeline IS the progress bar"
+           data-why="Same form changes as A (no captions, emails or helper text, 'Required' chips, wider, larger text). Hero: your 5 steps are big progress segments (step 1 partly filled), our 3 follow greyed out after 'Then we take over'. The left list stops repeating steps and only lists the 4 parts of Basic information, so each list has one job: the journey on top, where you are in this page on the left.">
+        <section class="rh">
+          <div class="wrap">
+            <p class="eyebrow">Register as a Loan Officer</p>
+            <h1 class="rh-title">Join Loan Factory.</h1>
+            <p class="rh-lede">Fill out your information below. We will call you to talk about the details.</p>
+            <div class="pills">
+              <span class="pill"><svg class="i"><use href="#i-clock"/></svg>About 10 minutes</span>
+              <span class="pill"><svg class="i"><use href="#i-lock"/></svg>$100 fee only after your call</span>
+            </div>
+            <div class="jc" role="group" aria-label="Your progress">
+              <div class="jc-you">
+                <p class="jc-k"><span>Your 5 steps</span></p>
+                <ol class="jc-segs" style="--n: 5">
+                  <li class="jc-seg" data-now aria-current="step"><div class="bar"></div><p>Fill out your information</p></li>
+                  <li class="jc-seg"><div class="bar"></div><p>Short call with us</p></li>
+                  <li class="jc-seg"><div class="bar"></div><p>Pay the $100 fee</p></li>
+                  <li class="jc-seg"><div class="bar"></div><p>Sign the agreement</p></li>
+                  <li class="jc-seg"><div class="bar"></div><p>Give NMLS access</p></li>
+                </ol>
+                <p class="jc-mob">Step 1 of 5: <b>Fill out your information</b></p>
+              </div>
+              <div class="jc-div"><span><svg class="i"><use href="#i-arrow"/></svg>Then we take over</span></div>
+              <div class="jc-lf">
+                <p class="jc-k"><span>Loan Factory</span></p>
+                <ol class="jc-segs" style="--n: 3">
+                  <li class="jc-seg"><div class="bar"></div><p>Sponsor your license</p></li>
+                  <li class="jc-seg"><div class="bar"></div><p>Set up your account</p></li>
+                  <li class="jc-seg"><div class="bar"></div><p>You start working</p></li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div data-form="parts" data-rail-label="Basic information"></div>
+      </div>
+    </div>
+
+    <!-- =====================================================================
+         SECTION 2: FREE FRIDAY WEBINAR (/loan-officer)
+         Real fields: first name, last name, email, phone, NMLS (optional), webinar date, "How did you hear about us?".
+         Dates and the 242+ / 2,644 numbers mirror the live page on 09/10/2026 (lenders and Loan Officer count come from the API).
+         ===================================================================== -->
+    <div class="panel" data-sec="webinar" hidden>
+
+      <div class="opt" data-opt="now"
+           data-label="Now"
+           data-title="What is live today"
+           data-why="About 90 words of copy, 5 long bullets and 4 meta pills sit beside a form card that is the same size and weight as the text. The legal consent paragraph is the biggest block inside the form.">
+        <section class="wb">
+          <div class="wrap wn-grid">
+            <div>
+              <p class="kicker">Free Friday webinar</p>
+              <h2 class="wb-title">Meet our CEO, <span class="nw">Thuan Nguyen</span>, live.</h2>
+              <p class="wn-lead">Learn from Thuan Nguyen, CEO of Loan Factory and the #1 Loan Officer in the country.</p>
+              <ul class="wn-agenda">
+                <li><svg class="i"><use href="#i-check"/></svg>How he became #1 and how you can grow your business</li>
+                <li><svg class="i"><use href="#i-check"/></svg>The benefits of joining Loan Factory</li>
+                <li><svg class="i"><use href="#i-check"/></svg>Tech that simplifies your workflow, keeps every client happy and earns you 5-star reviews</li>
+                <li><svg class="i"><use href="#i-check"/></svg>Access to 242+ lenders to close any type of loan: commercial, land, chattel (mobile home) and more</li>
+                <li><svg class="i"><use href="#i-check"/></svg>How Loan Factory grew from 10 to 2,644 Loan Officers in just over 3 years</li>
+              </ul>
+              <div class="wn-meta">
+                <span class="pill">Free</span><span class="pill">Online</span><span class="pill">About 1&#x2013;1.5 hours</span><span class="pill">Live Q&amp;A</span>
+              </div>
+            </div>
+            <div class="wn-card">
+              <p class="wn-pick">PICK A FRIDAY</p>
+              <div class="wn-dates">
+                <div class="wn-date" data-on><b>Oct 9</b>Friday<br/>1:00 PM PT</div>
+                <div class="wn-date"><b>Oct 16</b>Friday<br/>1:00 PM PT</div>
+                <div class="wn-date"><b>Oct 21</b>Wednesday<br/>11:00 AM PT</div>
+              </div>
+              <div class="fgrid">
+                <div class="field"><label>First name *</label><div class="input">First name</div></div>
+                <div class="field"><label>Last name *</label><div class="input">Last name</div></div>
+                <div class="field"><label>Email *</label><div class="input">Email</div></div>
+                <div class="field"><label>Phone *</label><div class="input">Phone</div></div>
+                <div class="field"><label>NMLS (optional)</label><div class="input">NMLS (optional)</div></div>
+                <div class="field"><label>How did you hear about us? *</label><div class="input sel">Select</div></div>
+              </div>
+              <div class="wn-consent">
+                <span class="cbox"></span>
+                <div>
+                  <p>I agree to receive calls, text messages, and emails from Loan Factory about this webinar and career opportunities.</p>
+                  <p>This includes webinar reminders, information about joining Loan Factory as a Loan Officer, and related updates, which may include marketing messages. Calls and texts may be sent using automated technology to the number you provided. Message frequency varies, and message and data rates may apply. Reply STOP to opt out of texts, reply HELP for help, or use the unsubscribe link in any email. Your consent is not a condition of attending the webinar or joining Loan Factory. See our privacy policy and Terms of Service.</p>
+                </div>
+              </div>
+              <div class="wn-actions">
+                <button class="btn">Save my seat</button>
+                <a class="link" href="#">Skip the webinar, register now</a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="opt" data-opt="a" hidden
+           data-label="A"
+           data-title="Option A: short pitch on the left, a big lifted form on the right"
+           data-why="Copy cut to a title, one line and 3 short bullets (about 30 words). The form takes 60% of the width, is lifted with a deep shadow and an orange edge, dates are tappable chips at the top, and 'Save my seat' is a full-width button. The full consent text stays one tap away under 'Read the full terms' (compliance to confirm).">
+        <section class="wb">
+          <div class="wrap wa-grid">
+            <div>
+              <p class="kicker">Free Friday webinar</p>
+              <h2 class="wb-title">Meet our CEO, <span class="nw">Thuan Nguyen</span>, <em>live.</em></h2>
+              <p class="wa-line">Free and online. About 1&#x2013;1.5 hours, with live Q&amp;A.</p>
+              <ul class="bul">
+                <li><svg class="i"><use href="#i-check"/></svg>How he became the #1 Loan Officer</li>
+                <li><svg class="i"><use href="#i-check"/></svg>Why Loan Officers join Loan Factory</li>
+                <li><svg class="i"><use href="#i-check"/></svg>242+ lenders and free tech</li>
+              </ul>
+              <div class="wa-host">
+                <span class="avatar" aria-hidden="true">TN</span>
+                <div><b>Thuan Nguyen</b><span>CEO of Loan Factory &#xB7; #1 Loan Officer in the country</span></div>
+              </div>
+            </div>
+            <form class="wa-card" onsubmit="return false">
+              <h3>Save your seat</h3>
+              <p>Takes 30 seconds. We email you the link.</p>
+              <p class="stepk"><i>1</i>Pick a date</p>
+              <div class="date-chips" data-chips>
+                <button type="button" class="dchip" aria-pressed="true"><b>Fri, Oct 9</b><span>1:00 PM PT</span></button>
+                <button type="button" class="dchip" aria-pressed="false"><b>Fri, Oct 16</b><span>1:00 PM PT</span></button>
+                <button type="button" class="dchip" aria-pressed="false"><b>Wed, Oct 21</b><span>11:00 AM PT</span></button>
+              </div>
+              <div class="wa-sep"></div>
+              <p class="stepk"><i>2</i>Your details</p>
+              <div class="fgrid">
+                <div class="field"><label>First name<span class="req">Required</span></label><div class="input">First name</div></div>
+                <div class="field"><label>Last name<span class="req">Required</span></label><div class="input">Last name</div></div>
+                <div class="field"><label>Email<span class="req">Required</span></label><div class="input">name@example.com</div></div>
+                <div class="field"><label>Phone<span class="req">Required</span></label><div class="input">(555) 555-5555</div></div>
+                <div class="field"><label>NMLS (optional)</label><div class="input">NMLS ID</div></div>
+                <div class="field"><label>How did you hear about us?<span class="req">Required</span></label><div class="input sel">Select</div></div>
+              </div>
+              <div class="terms">
+                <span class="cbox on"><svg class="i"><use href="#i-check"/></svg></span>
+                <div>
+                  I agree to receive calls, text messages, and emails from Loan Factory about this webinar and career opportunities.
+                  <details><summary>Read the full terms</summary><p>This includes webinar reminders, information about joining Loan Factory as a Loan Officer, and related updates, which may include marketing messages. Calls and texts may be sent using automated technology to the number you provided. Message frequency varies, and message and data rates may apply. Reply STOP to opt out of texts, reply HELP for help, or use the unsubscribe link in any email. Your consent is not a condition of attending the webinar or joining Loan Factory. See our privacy policy and Terms of Service.</p></details>
+                </div>
+              </div>
+              <div class="wa-cta">
+                <button class="btn" type="submit">Save my seat <svg class="i"><use href="#i-arrow"/></svg></button>
+                <a class="link" href="#">Skip the webinar, register now</a>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+
+      <div class="opt" data-opt="b" hidden
+           data-label="B"
+           data-title="Option B: dark band with the pitch, the form card overlaps it at full width"
+           data-why="The section reads as one big sign-up card. A navy band (same as the /loan-officer hero) carries the title, one line and 3 bullet pills; the form card sits on top of the band at full width, with dates on the left and fields on the right, and a large 'Save my seat' button. Most prominent of the three, but takes more height.">
+        <section>
+          <div class="wbb">
+            <div class="wrap">
+              <p class="kicker">Free Friday webinar</p>
+              <h2 class="wb-title">Meet our CEO, <span class="nw">Thuan Nguyen</span>, live.</h2>
+              <p class="wbb-line">Free and online. About 1&#x2013;1.5 hours, with live Q&amp;A.</p>
+              <ul class="wbb-bul">
+                <li><svg class="i"><use href="#i-check"/></svg>How he became #1</li>
+                <li><svg class="i"><use href="#i-check"/></svg>Why Loan Officers join us</li>
+                <li><svg class="i"><use href="#i-check"/></svg>242+ lenders, free tech</li>
+              </ul>
+            </div>
+          </div>
+          <div class="wbf">
+            <div class="wrap">
+              <form class="wbf-card" onsubmit="return false">
+                <div class="wbf-left">
+                  <h3>Save your seat</h3>
+                  <p>Pick a date that works for you.</p>
+                  <div class="date-chips" data-chips>
+                    <button type="button" class="dchip" aria-pressed="false"><b>Fri, Oct 9</b><span>1:00 PM PT</span></button>
+                    <button type="button" class="dchip" aria-pressed="true"><b>Fri, Oct 16</b><span>1:00 PM PT</span></button>
+                    <button type="button" class="dchip" aria-pressed="false"><b>Wed, Oct 21</b><span>11:00 AM PT</span></button>
+                  </div>
+                </div>
+                <div class="wbf-right">
+                  <div class="fgrid">
+                    <div class="field"><label>First name<span class="req">Required</span></label><div class="input">First name</div></div>
+                    <div class="field"><label>Last name<span class="req">Required</span></label><div class="input">Last name</div></div>
+                    <div class="field"><label>Email<span class="req">Required</span></label><div class="input">name@example.com</div></div>
+                    <div class="field"><label>Phone<span class="req">Required</span></label><div class="input">(555) 555-5555</div></div>
+                    <div class="field"><label>NMLS (optional)</label><div class="input">NMLS ID</div></div>
+                    <div class="field"><label>How did you hear about us?<span class="req">Required</span></label><div class="input sel">Select</div></div>
+                  </div>
+                  <div class="terms">
+                    <span class="cbox on"><svg class="i"><use href="#i-check"/></svg></span>
+                    <div>
+                      I agree to receive calls, text messages, and emails from Loan Factory about this webinar and career opportunities.
+                      <details><summary>Read the full terms</summary><p>This includes webinar reminders, information about joining Loan Factory as a Loan Officer, and related updates, which may include marketing messages. Calls and texts may be sent using automated technology to the number you provided. Message frequency varies, and message and data rates may apply. Reply STOP to opt out of texts, reply HELP for help, or use the unsubscribe link in any email. Your consent is not a condition of attending the webinar or joining Loan Factory. See our privacy policy and Terms of Service.</p></details>
+                    </div>
+                  </div>
+                  <div class="wbf-foot">
+                    <a class="link" href="#">Skip the webinar, register now</a>
+                    <button class="btn" type="submit">Save my seat <svg class="i"><use href="#i-arrow"/></svg></button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- OPTION C (round 2): Chi's pick, B's dark band + Thuan's cut-out photo + A's vertical form, high contrast.
+           Photo: lf-homepage public/images/loan-officer/thuannguyen.webp (cut-out, transparent background). -->
+      <div class="opt" data-opt="c" hidden
+           data-label="C"
+           data-title="Option C: dark band with Thuan's photo, the form card in front"
+           data-why="One navy surface (the band from B runs behind both the photo and the form) with Thuan's cut-out photo fading into the navy at the bottom. Option A's vertical form sits in front: crisp white card, strong shadow, dark labels, 16px fields and a big orange 'Save my seat', nothing greyed out. Moved up to right after the AI platform section (5th of 15 instead of 12th), so it works as the page's second hero.">
+        <section class="wc">
+          <div class="wc-band">
+            <div class="wc-decor"></div>
+            <div class="wrap wc-grid">
+              <div class="wc-text">
+                <p class="kicker">Free Friday webinar</p>
+                <h2 class="wb-title">Meet our CEO, <span class="nw">Thuan Nguyen</span>, <em>live.</em></h2>
+                <p class="wc-line">Free and online. About 1&#x2013;1.5 hours, with live Q&amp;A.</p>
+                <ul class="bul">
+                  <li><svg class="i"><use href="#i-check"/></svg>How he became the #1 Loan Officer</li>
+                  <li><svg class="i"><use href="#i-check"/></svg>Why Loan Officers join Loan Factory</li>
+                  <li><svg class="i"><use href="#i-check"/></svg>242+ lenders and free tech</li>
+                </ul>
+              </div>
+              <div class="wc-photo">
+                <img data-photo="cutout" alt="Thuan Nguyen, CEO of Loan Factory" width="215" height="300" />
+                <span class="wc-tag"><b>Thuan Nguyen</b>CEO &#xB7; #1 Loan Officer<br />in the country</span>
+              </div>
+              <div class="wc-form" data-wform="c"></div>
+            </div>
+          </div>
+        </section>
+        <div data-placement></div>
+      </div>
+
+      <!-- OPTION D (round 2): split hero. Photo: lf-homepage public/images/getInTouch/thuan-nguyen.webp (424x600 portrait). -->
+      <div class="opt" data-opt="d" hidden
+           data-label="D"
+           data-title="Option D: split hero, Thuan's portrait on the left, the form on the right"
+           data-why="Reads like a second page hero: half the width is a large portrait of Thuan with a 'Live every Friday' chip and his name badge, the other half is option A's form, bold and high contrast on navy. Both cards share the same top and bottom; the 'Free and online' line sits inside the form. Fewest words of all options; the face and the form are the only two things to look at.">
+        <section class="wd">
+          <div class="wrap wd-grid">
+            <div class="wd-photo" data-photo-bg="portrait" role="img" aria-label="Thuan Nguyen, CEO of Loan Factory">
+              <span class="wd-live"><i></i>Live every Friday &#xB7; 1:00 PM PT</span>
+              <div class="wd-cap">
+                <p class="kicker">Free Friday webinar</p>
+                <h2 class="wb-title">Meet our CEO, <span class="nw">Thuan Nguyen</span>, live.</h2>
+                <span class="wd-badge"><span><b>Thuan Nguyen</b>CEO of Loan Factory &#xB7; #1 Loan Officer in the country</span></span>
+              </div>
+            </div>
+            <div class="wd-right">
+              <div data-wform="d" data-sub="Free and online. About 1&#x2013;1.5 hours, with live Q&amp;A. We email you the link."></div>
+            </div>
+          </div>
+        </section>
+        <div data-placement></div>
+      </div>
+    </div>
+
+    <!-- =====================================================================
+         SECTION 3: AI MORTGAGE PLATFORM (/loan-officer)
+         Feature sources (fetched 09/10/2026):
+           Ally        = https://ally.loanfactory.com/ (feature list "AI Posts / Auto Post / Digital Business Card / Video Email / Facebook Ads", "8 platforms")
+           CRM         = https://crm.loanfactory.com/ hero: "birthday and holiday greetings, status-triggered drip emails, branded newsletters and an AI assistant"
+           IQ          = https://loanfactoryiq.com/ ("Property Insights Report", "Agent Network Insights", "Referrer Leads", "Zapier & 3,000+ apps") + repo copy "Rate Alerts"
+           MOSO        = https://moso.com/ ("Buy a Home / Sell Your Home", "Integrated Mortgage", nav "Licensing & Onboarding Guide") + repo copy "CA DRE license"
+           Mobile      = https://www.loanfactory.com/mobile-app ("Apply in Minutes" AI-powered, "Track Loan Status", "Get Better Rate" compare quotes). Chat left out: the page marks it COMING SOON.
+           LOS/Pricing, Marketplace, LUNA+ = no public page; bullets are only the words of the existing card line in lf-homepage en.json
+             (LoanOfficerV1Page.software.apps.processing / lenders / funding), marked "features to confirm". No other features added.
+           Wording follows the source: Ally "Facebook Ads", MOSO "Integrated Mortgage".
+         ===================================================================== -->
+    <div class="panel" data-sec="platform" hidden>
+      <div class="opt" data-opt="now"
+           data-label="Now"
+           data-title="What is live today"
+           data-why="Each card is a single sentence. It says what the app is for, but not what it does: a Loan Officer cannot tell that Ally also makes Facebook ads, or that the CRM sends drip emails, without leaving the page.">
+        <section class="ai">
+          <div class="wrap">
+            <div class="ai-h">
+              <p class="kicker">AI mortgage platform</p>
+              <h2 class="ai-title">Everything you need to close loans, in one place.</h2>
+              <p class="ai-lede">From first lead to closing day, Loan Factory's AI mortgage platform handles the busywork. Free for every Loan Officer who joins.</p>
+            </div>
+            <div class="hub" data-render="now"></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="opt" data-opt="a" hidden
+           data-label="A"
+           data-title="Option A: same hub, each card gets a one-line purpose and 4 short features"
+           data-why="Keeps today's layout (the Loan Officer in the middle, 8 tools around). Each card: one short purpose line, then 3&#x2013;4 features of 2&#x2013;4 words with green checks. Details still live on each app's landing page via 'Learn more'. Apps without a public page show a 'features to confirm' tag until owners sign off.">
+        <section class="ai">
+          <div class="wrap">
+            <div class="ai-h">
+              <p class="kicker">AI mortgage platform</p>
+              <h2 class="ai-title">Everything you need to close loans, in one place.</h2>
+              <p class="ai-lede">Free for every Loan Officer who joins.</p>
+            </div>
+            <div class="fhub" data-render="a"></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="opt" data-opt="b" hidden
+           data-label="B"
+           data-title="Option B: the same 8 apps, ordered by the loan journey"
+           data-why="Drops the hub and groups apps by when a Loan Officer uses them: win clients, close loans, grow after closing. Features show as short tags, easy to scan. Answers 'what does each app do' and 'where does it fit' at once; loses the 'all around you' picture.">
+        <section class="ai">
+          <div class="wrap">
+            <div class="ai-h">
+              <p class="kicker">AI mortgage platform</p>
+              <h2 class="ai-title">Everything you need to close loans, in one place.</h2>
+              <p class="ai-lede">8 apps, from first lead to past clients. Free for every Loan Officer who joins.</p>
+            </div>
+            <div class="jrn" data-render="b"></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+(() => {
+  const ic = (id) => `<svg class="i"><use href="#i-${id}"/></svg>`
+
+  /* ---------- Webinar C / D: shared high-contrast form, photos, placement map ---------- */
+  const THUAN_CUTOUT = 'data:image/webp;base64,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'
+  const THUAN_PORTRAIT = 'data:image/webp;base64,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'
+  document.querySelectorAll('[data-photo="cutout"]').forEach((img) => { img.src = THUAN_CUTOUT })
+  document.querySelectorAll('[data-photo-bg="portrait"]').forEach((el) => { el.style.backgroundImage = `url(${THUAN_PORTRAIT})` })
+
+  const W_DATES = [['Fri, Oct 9', '1:00 PM PT'], ['Fri, Oct 16', '1:00 PM PT'], ['Wed, Oct 21', '11:00 AM PT']]
+  const wReq = '<span class="req">Required</span>'
+  const wField = (label, isRequired, ph, isSelect) =>
+    `<div class="field"><label>${label}${isRequired ? wReq : ''}</label><div class="input${isSelect ? ' sel' : ''}">${ph}</div></div>`
+  const webinarForm = (sub = 'Takes 30 seconds. We email you the link.') => `
+    <form class="wx-card" onsubmit="return false">
+      <h3>Save your seat</h3>
+      <p>${sub}</p>
+      <p class="stepk"><i>1</i>Pick a date</p>
+      <div class="date-chips" data-chips>${W_DATES.map(([d, t], i) =>
+        `<button type="button" class="dchip" aria-pressed="${i === 0}"><b>${d}</b><span>${t}</span></button>`).join('')}</div>
+      <div class="wa-sep"></div>
+      <p class="stepk"><i>2</i>Your details</p>
+      <div class="fgrid">
+        ${wField('First name', true, 'First name')}${wField('Last name', true, 'Last name')}
+        ${wField('Email', true, 'name@example.com')}${wField('Phone', true, '(555) 555-5555')}
+        ${wField('NMLS (optional)', false, 'NMLS ID')}${wField('How did you hear about us?', true, 'Select', true)}
+      </div>
+      <div class="terms">
+        <span class="cbox on"><svg class="i"><use href="#i-check"/></svg></span>
+        <div>I agree to receive calls, text messages, and emails from Loan Factory about this webinar and career opportunities.
+          <details><summary>Read the full terms</summary><p>This includes webinar reminders, information about joining Loan Factory as a Loan Officer, and related updates, which may include marketing messages. Calls and texts may be sent using automated technology to the number you provided. Message frequency varies, and message and data rates may apply. Reply STOP to opt out of texts, reply HELP for help, or use the unsubscribe link in any email. Your consent is not a condition of attending the webinar or joining Loan Factory. See our privacy policy and Terms of Service.</p></details>
+        </div>
+      </div>
+      <div class="wa-cta">
+        <button class="btn" type="submit">Save my seat ${ic('arrow')}</button>
+        <a class="link" href="#">Skip the webinar, register now</a>
+      </div>
+    </form>`
+  document.querySelectorAll('[data-wform]').forEach((el) => { el.innerHTML = webinarForm(el.dataset.sub) })
+
+  // Section order of the live /loan-officer page (loan-officer/(landing)/page.tsx on origin/master, 09/10) vs the proposal.
+  const PAGE_TODAY = ['Hero', 'Numbers strip', 'AI mortgage platform', 'No software fees', 'Programs', 'Compensation', 'Join band', 'Trust', 'Reviews', 'Summit', 'How to join', 'Free Friday webinar', 'Becoming a Loan Officer', 'FAQ', 'Who can join']
+  const PAGE_NEW = ['Hero', 'Numbers strip', 'AI mortgage platform', 'No software fees', 'Free Friday webinar', 'Programs', 'Compensation', 'Join band', 'Trust', 'Reviews', 'Summit', 'How to join', 'Becoming a Loan Officer', 'FAQ', 'Who can join']
+  const pmap = (title, list, isNew) => `<div class="pmap"><h5>${title}</h5><ol>${list.map((s, i) => {
+    const isWebinar = s === 'Free Friday webinar'
+    const attr = isWebinar ? (isNew ? ' data-hit' : ' data-was') : ''
+    return `<li${attr}><i>${i + 1}</i>${s}</li>`
+  }).join('')}</ol></div>`
+  const placement = () => `<section class="place"><div class="wrap place-in">
+      <div><h4>Placement on /loan-officer</h4>
+        <p>Today the webinar is section 12 of 15, near the bottom after Summit and How to join. Proposed: section 5, right after the AI platform (and its 'No software fees' table), so visitors reach the sign-up without scrolling through most of the page.</p></div>
+      ${pmap('Today', PAGE_TODAY, false)}${pmap('Proposed', PAGE_NEW, true)}
+    </div></section>`
+  document.querySelectorAll('[data-placement]').forEach((el) => { el.outerHTML = placement() })
+
+  /* ---------- Section 1: form area ---------- */
+  const FORM_STEPS = ['Before You Begin', 'Fill Out Basic Information', 'Paying one-time fee', 'Review and Sign agreement', 'Grant Access on NMLS']
+  const PARTS = ['Personal information', 'License and states', 'Compensation and online presence', 'Referral and confirm']
+  const partsList = (cls = '') =>
+    `<ol class="parts ${cls}">${PARTS.map((p, i) => `<li${i === 0 ? ' aria-current="step"' : ''}><span class="pn">${i + 1}</span>${p}</li>`).join('')}</ol>`
+
+  const railFull = (label) => `
+    <aside class="rf-rail" aria-label="${label}">
+      <p class="rf-rail-k">${ic('file')}${label}</p>
+      <ol class="rf-steps">
+        ${FORM_STEPS.map((s, i) => {
+          const state = i === 0 ? 'done' : i === 1 ? 'active' : 'pending'
+          const dot = state === 'done' ? ic('check') : i + 1
+          const extra = i === 1 ? `<span class="badge">4 parts</span>` : ''
+          return `<li data-state="${state}"><span class="dot">${dot}</span><span class="sname">${s}${extra}</span>${i === 1 ? partsList() : ''}</li>`
+        }).join('')}
+      </ol>
+    </aside>`
+
+  const railParts = (label) => `
+    <aside class="rf-rail parts-only" aria-label="${label}">
+      <p class="rf-rail-k">${ic('file')}${label} &#xB7; 4 parts</p>
+      ${partsList()}
+    </aside>`
+
+  const mobileProgress = (variant) => {
+    const isParts = variant === 'parts'
+    const n = isParts ? 4 : 5
+    const on = isParts ? 1 : 2
+    const small = isParts ? 'Basic information &#xB7; Part 1 of 4' : 'Step 2 of 5 &#xB7; Basic information, part 1 of 4'
+    return `<div class="rf-mprog"><small>${small}</small><p>Personal information</p>
+      <div class="bars" style="grid-template-columns:repeat(${n},1fr)">${Array.from({ length: n }, (_, i) => `<i class="${i < on ? 'on' : ''}"></i>`).join('')}</div>
+      ${isParts ? '' : '<span class="more">All steps &#x25BE;</span>'}</div>`
+  }
+
+  // Now: tiny red asterisk + helper text (live). Redesign: "Required" chip, no helper text.
+  const formArea = (variant, label, isNow) => {
+    const req = isNow ? '<span class="ast">*</span>' : '<span class="req">Required</span>'
+    const field = (lbl, isRequired, ph) => `<div class="field"><label>${lbl}${isRequired ? req : ''}</label><div class="input">${ph ?? lbl}</div></div>`
+    return `
+    <section class="rf ${isNow ? 'rf-now' : 'rf-new'}"><div class="wrap rf-wrap rf-grid">
+      ${variant === 'parts' ? railParts(label) : railFull(label)}
+      <div>
+        ${mobileProgress(variant)}
+        <p class="rf-partk">Part 1 of 4</p>
+        <h2 class="rf-h">Personal information</h2>
+        ${isNow ? '<p class="rf-sub">Who you are and where we send your tax forms.</p>' : ''}
+        <div class="card fade-out">
+          <h3>Name and contact</h3>
+          ${isNow ? '<p class="rf-sub">Use your legal name exactly as it appears on your NMLS record.</p>' : ''}
+          <div class="fgrid">
+            ${field('First name', true)}${field('Last name', false)}
+            ${field('Legal first name', false)}${field('Legal last name', false)}
+            ${field('Email', true, 'name@example.com')}${field('Phone', false, '(555) 555-5555')}
+            <div class="field"><label>Citizenship${req}</label><div class="input sel">Select</div></div>
+          </div>
+        </div>
+      </div>
+    </div></section>`
+  }
+
+  document.querySelectorAll('[data-form]').forEach((el) => {
+    el.outerHTML = formArea(el.dataset.form, el.dataset.railLabel, el.closest('.opt').dataset.opt === 'now')
+  })
+
+  /* ---------- Section 3: apps ---------- */
+  // tbc = true when the app has no public landing page: bullets are from lf-homepage copy and need owner confirmation.
+  const APPS = [
+    { id: 'marketing', icon: 'speaker', title: 'Marketing', app: 'Ally', link: true,
+      now: 'Ally, our AI marketing assistant, writes your social posts and runs your Facebook ads.',
+      purpose: 'AI writes and posts your social media.',
+      feats: ['AI-written posts', 'Posts to 8 platforms', 'Auto posts on closings', 'Facebook ads'] },
+    { id: 'leads', icon: 'users', title: 'Leads and clients', app: 'CRM', link: true,
+      now: 'Our CRM keeps every lead and Realtor in one place, and AI reminds you to follow up.',
+      purpose: 'Every lead and Realtor in one place.',
+      feats: ['Drip emails by loan status', 'Birthday and holiday greetings', 'Branded newsletters', 'AI assistant'] },
+    { id: 'processing', icon: 'file', title: 'Loan processing and pricing', app: 'LOS & Pricing', link: false, tbc: true,
+      now: 'Our LOS (loan origination system) lets you process loans and get pricing in one place.',
+      purpose: 'Process loans and price them in one place.',
+      feats: ['Loan processing', 'Pricing'] },
+    { id: 'lenders', icon: 'store', title: 'Explore our services', app: 'Marketplace', link: false, tbc: true,
+      now: 'Never get stuck on a file. Explore Loan Factory services in Marketplace, with an AI lender finder, lender experts and specialty courses in one place.',
+      purpose: 'Help for any file, in one place.',
+      feats: ['AI lender finder', 'Lender experts', 'Specialty courses'] },
+    { id: 'funding', icon: 'cash', title: 'Funding and closing', app: 'LUNA+', link: false, tbc: true,
+      now: 'LUNA+ walks you through funding, wires and post-closing, step by step.',
+      purpose: 'Funding to post-closing, step by step.',
+      feats: ['Funding steps', 'Wires', 'Post-closing tasks'] },
+    { id: 'mobile', icon: 'phone', title: 'Work from your phone', app: 'Loan Factory Mobile', link: true,
+      now: 'The Loan Factory Mobile app puts your loans, pricing and messages on your phone.',
+      purpose: 'Your loans, pricing and messages on your phone.',
+      feats: ['AI-guided applications', 'Real-time loan status', 'Compare lender quotes'] },
+    { id: 'past_clients', icon: 'chart', title: 'Past clients', app: 'Loan Factory IQ', link: true,
+      now: 'Loan Factory IQ keeps you in touch after closing, and Rate Alerts show refinance chances.',
+      purpose: 'Stay in touch after closing.',
+      feats: ['Monthly home value reports', 'Rate Alerts for refinances', 'Local agent insights', 'Connects to 3,000+ apps'] },
+    { id: 'real_estate', icon: 'home', title: 'Real estate deals', app: 'MOSO Real Estate', link: true,
+      now: 'With a CA DRE license, MOSO Real Estate lets you handle real estate deals too.',
+      purpose: 'Handle real estate deals too (CA DRE license).',
+      feats: ['Buyer and seller deals', 'Integrated mortgage', 'Agent onboarding guide'] }
+  ]
+  const byId = Object.fromEntries(APPS.map((a) => [a.id, a]))
+  const more = (a) => a.link ? `<a class="more" href="#">Learn more &#x2192;</a>` : ''
+  const ORB = `<div class="hub-mid"><div class="hub-orb">
+      <svg class="art" viewBox="0 0 120 120" aria-hidden="true">
+        <circle cx="60" cy="38" r="16" fill="#0f1626"/><path d="M28 92c4-20 18-30 32-30s28 10 32 30z" fill="#0f1626"/>
+        <rect x="34" y="76" width="52" height="30" rx="4" fill="#f36f20"/><rect x="40" y="82" width="40" height="18" rx="2" fill="#fff" opacity=".9"/>
+        <path d="M86 30l10-8 10 8v12H86z" fill="#f36f20" opacity=".85"/>
+      </svg></div><b>You, the Loan Officer</b><span>All tools work together, around you.</span></div>`
+
+  const nowCard = (a) => `<article class="ncard"><span class="ic">${ic(a.icon)}</span><div style="display:flex;flex-direction:column">
+      <span class="app-name">${a.app}</span><h3>${a.title}</h3><p>${a.now}</p>${more(a)}</div></article>`
+  const featCard = (a) => `<article class="fcard">
+      <div class="fcard-top"><span class="ic">${ic(a.icon)}</span><div><span class="app-name">${a.app}</span><h3>${a.title}</h3></div></div>
+      <p class="purpose">${a.purpose}</p>
+      <ul class="feats">${a.feats.map((f) => `<li>${ic('check')}${f}</li>`).join('')}</ul>
+      <div class="fcard-foot">${a.tbc ? '<span class="tbc">Features to confirm</span>' : '<span></span>'}${more(a)}</div></article>`
+  const bentoCard = (a) => `<article class="bcard">
+      <div class="bcard-top"><span class="ic">${ic(a.icon)}</span><div><span class="app-name">${a.app}</span><h4>${a.title}</h4></div></div>
+      <p class="purpose">${a.purpose}</p>
+      <ul class="tags">${a.feats.map((f) => `<li>${f}</li>`).join('')}</ul>
+      ${a.tbc ? '<span class="tbc">Features to confirm</span>' : ''}${more(a)}</article>`
+
+  const left = APPS.slice(0, 4), right = APPS.slice(4)
+  document.querySelector('[data-render="now"]').innerHTML =
+    `<div class="hub-col">${left.map(nowCard).join('')}</div>${ORB}<div class="hub-col">${right.map(nowCard).join('')}</div>`
+  document.querySelector('[data-render="a"]').innerHTML =
+    `<div class="fcol">${left.map(featCard).join('')}</div>${ORB}<div class="fcol">${right.map(featCard).join('')}</div>`
+
+  const STAGES = [
+    { stg: 'Step 1', h: 'Win clients', p: 'Get seen and keep every lead.', ids: ['marketing', 'leads'] },
+    { stg: 'Step 2', h: 'Close loans', p: 'Price, process, fund, from your desk or phone.', ids: ['processing', 'lenders', 'funding', 'mobile'] },
+    { stg: 'Step 3', h: 'Grow after closing', p: 'Turn past clients into new deals.', ids: ['past_clients', 'real_estate'] }
+  ]
+  document.querySelector('[data-render="b"]').innerHTML = STAGES.map((s) => `
+    <div class="jrn-row">
+      <div class="jrn-lbl"><p class="stg">${s.stg}</p><h3>${s.h}</h3><p>${s.p}</p></div>
+      <div class="jrn-cards" style="--n:${s.ids.length}">${s.ids.map((id) => bentoCard(byId[id])).join('')}</div>
+    </div>`).join('')
+
+  /* ---------- Date chips ---------- */
+  document.querySelectorAll('[data-chips]').forEach((group) => {
+    group.addEventListener('click', (e) => {
+      const chip = e.target.closest('.dchip')
+      if (!chip) return
+      group.querySelectorAll('.dchip').forEach((c) => c.setAttribute('aria-pressed', String(c === chip)))
+    })
+  })
+
+  /* ---------- Toolbar state ---------- */
+  const URLS = { register: 'loanfactory.com/register-loan-officer-v1', webinar: 'loanfactory.com/loan-officer#webinar', platform: 'loanfactory.com/loan-officer#software' }
+  const state = { sec: 'register', opt: { register: 'a', webinar: 'a', platform: 'a' } }
+  const optSeg = document.getElementById('optSeg')
+
+  const render = () => {
+    document.querySelectorAll('.tb-tab').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.sec === state.sec)))
+    document.querySelectorAll('.panel').forEach((p) => { p.hidden = p.dataset.sec !== state.sec })
+    const panel = document.querySelector(`.panel[data-sec="${state.sec}"]`)
+    const opts = [...panel.querySelectorAll(':scope > .opt')]
+    const current = state.opt[state.sec]
+    opts.forEach((o) => { o.hidden = o.dataset.opt !== current })
+    optSeg.innerHTML = opts.map((o) => {
+      const isNow = o.dataset.opt === 'now'
+      return `<button data-opt="${o.dataset.opt}" aria-pressed="${o.dataset.opt === current}">${isNow ? 'Now' : `<span class="o-word">Option </span><span class="o-k">${o.dataset.label}</span>`}</button>`
+    }).join('')
+    const active = opts.find((o) => o.dataset.opt === current)
+    document.getElementById('whyTag').textContent = current === 'now' ? 'Now' : `Option ${active.dataset.label}`
+    document.getElementById('whyTitle').textContent = active.dataset.title
+    document.getElementById('whyText').textContent = active.dataset.why
+    document.getElementById('url').textContent = URLS[state.sec]
+  }
+
+  document.querySelectorAll('.tb-tab').forEach((t) => t.addEventListener('click', () => { state.sec = t.dataset.sec; render() }))
+  optSeg.addEventListener('click', (e) => {
+    const b = e.target.closest('button')
+    if (!b) return
+    state.opt[state.sec] = b.dataset.opt
+    render()
+  })
+  document.querySelectorAll('[data-dev]').forEach((b) => b.addEventListener('click', () => {
+    document.getElementById('stage').dataset.device = b.dataset.dev
+    document.querySelectorAll('[data-dev]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)))
+  }))
+
+  render()
+})()
+</script>

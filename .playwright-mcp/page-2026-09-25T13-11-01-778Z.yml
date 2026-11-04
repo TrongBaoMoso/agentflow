@@ -1,0 +1,55 @@
+- generic [active] [ref=f3e1]:
+  - generic [ref=f3e2]:
+    - banner [ref=f3e3]:
+      - generic [ref=f3e4]:
+        - img "Loan Factory" [ref=f3e5]
+        - generic [ref=f3e6]: Recruit
+      - generic [aria-hidden] [ref=f3e7]:
+        - generic [ref=f3e11]: Search candidates, NMLS, companies…
+        - generic [ref=f3e12]: ⌘ K
+      - generic [ref=f3e13]:
+        - generic [ref=f3e18]:
+          - textbox "Dev persona" [ref=f3e30] [cursor=pointer]
+          - button "Change language" [ref=f3e31] [cursor=pointer]:
+            - generic [ref=f3e32]: English
+          - button "Switch to dark mode" [ref=f3e42] [cursor=pointer]
+        - generic [aria-hidden] [ref=f3e47]: "?"
+    - navigation [ref=f3e48]:
+      - navigation [ref=f3e49]:
+        - generic [ref=f3e50]: Frequent
+        - link [ref=f3e51] [cursor=pointer]:
+          - /url: /today
+        - link [ref=f3e56] [cursor=pointer]:
+          - /url: /inbox/hot
+        - link [ref=f3e60] [cursor=pointer]:
+          - /url: /inbox/cold
+        - link [ref=f3e75] [cursor=pointer]:
+          - /url: /pipeline
+        - link [ref=f3e80] [cursor=pointer]:
+          - /url: /exceptions
+        - link [ref=f3e84] [cursor=pointer]:
+          - /url: /reports
+        - link [ref=f3e90] [cursor=pointer]:
+          - /url: /work
+        - link [ref=f3e95] [cursor=pointer]:
+          - /url: /sponsorships
+      - navigation [ref=f3e101]:
+        - generic [ref=f3e102]: Configuration
+        - link [ref=f3e103] [cursor=pointer]:
+          - /url: /templates
+        - link [ref=f3e108] [cursor=pointer]:
+          - /url: /duplicates
+        - link [ref=f3e114] [cursor=pointer]:
+          - /url: /dormant
+        - link [ref=f3e119] [cursor=pointer]:
+          - /url: /conversations
+        - link [ref=f3e123] [cursor=pointer]:
+          - /url: /audit
+        - link [ref=f3e128] [cursor=pointer]:
+          - /url: /settings
+        - link [ref=f3e133] [cursor=pointer]:
+          - /url: /licensing-rules
+        - link [ref=f3e138] [cursor=pointer]:
+          - /url: /permissions
+    - main [ref=f3e143]
+  - alert [ref=f3e149]

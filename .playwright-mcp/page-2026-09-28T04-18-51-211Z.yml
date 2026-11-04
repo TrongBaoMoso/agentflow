@@ -1,0 +1,445 @@
+- generic [active] [ref=f34e1]:
+  - generic [ref=f34e2]:
+    - generic [ref=f34e3]: Design mockup · example data
+    - generic [ref=f34e4]: recruit-fe · Work (Onboarding) · "Done…" on the 1-1 also records W-2 or 1099 · FINAL (rev 3) 28/09
+    - button "Toggle light / dark" [ref=f34e5] [cursor=pointer]
+  - main [ref=f34e6]:
+    - region [ref=f34e7]:
+      - generic [ref=f34e8]:
+        - heading "After the 1-1, the only real decision is W-2 or 1099" [level=1] [ref=f34e9]
+        - paragraph [ref=f34e10]: "The meeting date is already known from \"Schedule 1-1\", so it comes pre-filled. What's left to decide is whether the loan officer joins as W-2 or 1099. MOSO picks the agreement from that answer: W-2 gives the W-2 agreement and 1099 gives the 1099 agreement. Recruit sends the answer together with the meeting in one call, so MOSO builds the right agreement the first time. When the MOSO write-back is off, nothing changes: Done is still one click."
+      - list "What happens" [ref=f34e11]:
+        - listitem [ref=f34e12]:
+          - generic [ref=f34e13]: "1"
+          - text: Schedule 1-1. This sets the date
+        - listitem [ref=f34e14]:
+          - generic [ref=f34e15]: "2"
+          - text: Meet the loan officer
+        - listitem [ref=f34e16]:
+          - generic [ref=f34e17]: "3"
+          - text: "Done…: check the date, pick W-2 or 1099"
+        - listitem [ref=f34e18]:
+          - generic [ref=f34e19]: "4"
+          - text: MOSO records the meeting and W-2/1099 together
+    - region [ref=f34e20]:
+      - generic [ref=f34e21]:
+        - generic [ref=f34e22]: Screen A · Work page, Onboarding tab
+        - heading "The row before the meeting, and once its time has passed" [level=2] [ref=f34e23]
+        - paragraph [ref=f34e24]: While the meeting is planned, neither button is the main one. Once the planned time has passed, Done… becomes the main action. If the 1-1 isn't scheduled yet, Schedule 1-1 is the main action.
+      - table [ref=f34e27]:
+        - rowgroup [ref=f34e28]:
+          - row [ref=f34e29]:
+            - columnheader "Candidate" [ref=f34e30]
+            - columnheader "Task" [ref=f34e31]
+            - columnheader "Due" [ref=f34e32]
+            - columnheader "Status" [ref=f34e33]
+            - columnheader [ref=f34e34]
+        - rowgroup [ref=f34e35]:
+          - row [ref=f34e36]:
+            - cell "Brian Okafor S5 · FL" [ref=f34e37]:
+              - generic [ref=f34e38]:
+                - generic [ref=f34e39]: Brian Okafor
+                - generic [ref=f34e40]: S5 · FL
+            - 'cell "Pre-onboarding meeting JL Specialist: Jordan Lee Planned Thu Oct 2 · 10:00–10:30 AM PT (set up in Google by Jordan · not tracked)" [ref=f34e41]':
+              - generic [ref=f34e42]: Pre-onboarding meeting
+              - generic [ref=f34e44]:
+                - generic [ref=f34e45]: JL
+                - text: "Specialist: Jordan Lee"
+              - generic [ref=f34e46]:
+                - generic [ref=f34e47]: Planned Thu Oct 2 · 10:00–10:30 AM PT
+                - generic [ref=f34e52]: (set up in Google by Jordan · not tracked)
+            - cell "Thu 02/10" [ref=f34e53]
+            - cell "Planned" [ref=f34e54]
+            - cell [ref=f34e56]:
+              - generic [ref=f34e57]:
+                - button "Reschedule" [ref=f34e58] [cursor=pointer]
+                - button "Done…" [ref=f34e59] [cursor=pointer]
+          - row [ref=f34e60]:
+            - cell "Brian Okafor S5 · FL" [ref=f34e61]:
+              - generic [ref=f34e62]:
+                - generic [ref=f34e63]: Brian Okafor
+                - generic [ref=f34e64]: S5 · FL
+            - 'cell "Pre-onboarding meeting AFTER 10:30 AM PT JL Specialist: Jordan Lee Was planned Thu Oct 2 · 10:00 AM PT Meeting time has passed. Did it happen?" [ref=f34e65]':
+              - generic [ref=f34e66]:
+                - generic [ref=f34e67]: Pre-onboarding meeting
+                - generic [ref=f34e68]: AFTER 10:30 AM PT
+              - generic [ref=f34e69]:
+                - generic [ref=f34e70]: JL
+                - text: "Specialist: Jordan Lee"
+              - generic [ref=f34e71]: Was planned Thu Oct 2 · 10:00 AM PT
+              - generic [ref=f34e77]: Meeting time has passed. Did it happen?
+            - cell "Today" [ref=f34e78]
+            - cell "Time passed" [ref=f34e79]
+            - cell [ref=f34e81]:
+              - generic [ref=f34e82]:
+                - button "✓ Done…" [ref=f34e83] [cursor=pointer]
+                - button "Reschedule" [ref=f34e84] [cursor=pointer]
+          - row [ref=f34e85]:
+            - cell "Chen Wei S5 · CA" [ref=f34e86]:
+              - generic [ref=f34e87]:
+                - generic [ref=f34e88]: Chen Wei
+                - generic [ref=f34e89]: S5 · CA
+            - 'cell "Pre-onboarding meeting JL Specialist: Jordan Lee Not scheduled in Recruit" [ref=f34e90]':
+              - generic [ref=f34e91]: Pre-onboarding meeting
+              - generic [ref=f34e93]:
+                - generic [ref=f34e94]: JL
+                - text: "Specialist: Jordan Lee"
+              - generic [ref=f34e95]: Not scheduled in Recruit
+            - cell "1 day overdue" [ref=f34e96]
+            - cell "Open" [ref=f34e97]
+            - cell [ref=f34e99]:
+              - generic [ref=f34e100]:
+                - button "Schedule 1-1" [ref=f34e101] [cursor=pointer]
+                - button "Done…" [ref=f34e102] [cursor=pointer]
+    - region [ref=f34e103]:
+      - generic [ref=f34e104]:
+        - generic [ref=f34e105]: Screen B · after clicking "Done…" (write-back on)
+        - heading "Check the date, pick one of four" [level=2] [ref=f34e106]
+        - paragraph [ref=f34e107]: There is one date picker. It is seeded from the schedule as a Los Angeles day and never later than today. Only the candidate's profile pre-selects W-2/1099. What the loan officer chose on the registration form shows as a hint and is not pre-selected, because that form forces or defaults the value in some states.
+      - generic [ref=f34e108]:
+        - generic [ref=f34e109]:
+          - paragraph [ref=f34e110]: B1 · Scheduled, W-2/1099 on the profile (default)
+          - dialog [ref=f34e112]:
+            - generic [ref=f34e113]:
+              - heading "Mark the 1-1 meeting done" [level=3] [ref=f34e114]
+              - button "Close" [ref=f34e115] [cursor=pointer]: ✕
+            - generic [ref=f34e116]:
+              - generic [ref=f34e117]: Brian Okafor
+              - generic [ref=f34e118]: "Pre-onboarding meeting · Specialist: Jordan Lee"
+            - generic [ref=f34e119]:
+              - generic [ref=f34e120]: Meeting date *
+              - textbox "Meeting date *" [ref=f34e125]: Thu, Oct 2, 2026
+              - generic [ref=f34e126]: Thu Oct 2, as scheduled. Change it if the 1-1 was on another day.
+            - group "W-2 or 1099? *" [ref=f34e127]:
+              - generic [ref=f34e129]:
+                - generic [ref=f34e130] [cursor=pointer]:
+                  - radio "W-2 · Outside loan officer OUTSIDE" [checked]
+                  - generic [ref=f34e132]: W-2 · Outside loan officer
+                  - generic [ref=f34e134]: OUTSIDE
+                - generic [ref=f34e135] [cursor=pointer]:
+                  - radio "1099 · Independent loan officer INDEPENDENT"
+                  - generic [ref=f34e137]: 1099 · Independent loan officer
+                  - generic [ref=f34e139]: INDEPENDENT
+                - generic [ref=f34e140] [cursor=pointer]:
+                  - radio "Corporate CORPORATE"
+                  - generic [ref=f34e142]: Corporate
+                  - generic [ref=f34e144]: CORPORATE
+                - generic [ref=f34e145] [cursor=pointer]:
+                  - radio "Mortgage advisor MORTGAGE_ADVISOR"
+                  - generic [ref=f34e147]: Mortgage advisor
+                  - generic [ref=f34e149]: MORTGAGE_ADVISOR
+            - note [ref=f34e150]:
+              - paragraph [ref=f34e154]: MOSO builds the agreement from this choice when it records the meeting. Changing it later won't update that agreement by itself.
+            - generic [ref=f34e155]:
+              - button "Cancel" [ref=f34e156] [cursor=pointer]
+              - button "Mark done" [ref=f34e157] [cursor=pointer]
+        - generic [ref=f34e158]:
+          - paragraph [ref=f34e159]: B2 · Not scheduled, profile empty (registration hint, Mark done disabled)
+          - dialog [ref=f34e161]:
+            - generic [ref=f34e162]:
+              - heading "Mark the 1-1 meeting done" [level=3] [ref=f34e163]
+              - button "Close" [ref=f34e164] [cursor=pointer]: ✕
+            - generic [ref=f34e165]:
+              - generic [ref=f34e166]: Chen Wei
+              - generic [ref=f34e167]: "Pre-onboarding meeting · Specialist: Jordan Lee"
+            - generic [ref=f34e168]:
+              - generic [ref=f34e169]: Meeting date *
+              - textbox "Meeting date *" [ref=f34e174]: Sun, Sep 28, 2026
+              - generic [ref=f34e175]: The day you met the loan officer. Today by default.
+            - group "W-2 or 1099? *" [ref=f34e176]:
+              - generic [ref=f34e178]:
+                - generic [ref=f34e179] [cursor=pointer]:
+                  - radio "W-2 · Outside loan officer OUTSIDE"
+                  - generic [ref=f34e181]: W-2 · Outside loan officer
+                  - generic [ref=f34e183]: OUTSIDE
+                - generic [ref=f34e184] [cursor=pointer]:
+                  - radio "1099 · Independent loan officer INDEPENDENT"
+                  - generic [ref=f34e186]: 1099 · Independent loan officer
+                  - generic [ref=f34e188]: INDEPENDENT
+                - generic [ref=f34e189] [cursor=pointer]:
+                  - radio "Corporate CORPORATE"
+                  - generic [ref=f34e191]: Corporate
+                  - generic [ref=f34e193]: CORPORATE
+                - generic [ref=f34e194] [cursor=pointer]:
+                  - radio "Mortgage advisor MORTGAGE_ADVISOR"
+                  - generic [ref=f34e196]: Mortgage advisor
+                  - generic [ref=f34e198]: MORTGAGE_ADVISOR
+              - generic [ref=f34e199]: MOSO has 1099 from the registration form. Confirm it with the loan officer.
+            - generic [ref=f34e203]:
+              - button "Cancel" [ref=f34e204] [cursor=pointer]
+              - button "Mark done" [disabled] [ref=f34e205]
+            - generic [ref=f34e206]: Pick W-2, 1099, Corporate or Mortgage advisor first.
+        - generic [ref=f34e207]:
+          - paragraph [ref=f34e208]: B3 · Scheduled for a later day (clamped to today)
+          - dialog [ref=f34e210]:
+            - generic [ref=f34e211]:
+              - heading "Mark the 1-1 meeting done" [level=3] [ref=f34e212]
+              - button "Close" [ref=f34e213] [cursor=pointer]: ✕
+            - generic [ref=f34e214]:
+              - generic [ref=f34e215]: Alicia Martinez
+              - generic [ref=f34e216]: "Pre-onboarding meeting · Specialist: Jordan Lee"
+            - generic [ref=f34e217]:
+              - generic [ref=f34e218]: Meeting date *
+              - textbox "Meeting date *" [ref=f34e223]: Sun, Sep 28, 2026
+              - generic [ref=f34e224]: Scheduled for Thu Oct 2, which hasn't come yet, so today is filled in. Change it if the 1-1 was on another day.
+            - group "W-2 or 1099? *" [ref=f34e225]:
+              - generic [ref=f34e227]:
+                - generic [ref=f34e228] [cursor=pointer]:
+                  - radio "W-2 · Outside loan officer OUTSIDE"
+                  - generic [ref=f34e230]: W-2 · Outside loan officer
+                  - generic [ref=f34e232]: OUTSIDE
+                - generic [ref=f34e233] [cursor=pointer]:
+                  - radio "1099 · Independent loan officer INDEPENDENT" [checked]
+                  - generic [ref=f34e235]: 1099 · Independent loan officer
+                  - generic [ref=f34e237]: INDEPENDENT
+                - generic [ref=f34e238] [cursor=pointer]:
+                  - radio "Corporate CORPORATE"
+                  - generic [ref=f34e240]: Corporate
+                  - generic [ref=f34e242]: CORPORATE
+                - generic [ref=f34e243] [cursor=pointer]:
+                  - radio "Mortgage advisor MORTGAGE_ADVISOR"
+                  - generic [ref=f34e245]: Mortgage advisor
+                  - generic [ref=f34e247]: MORTGAGE_ADVISOR
+            - generic [ref=f34e248]:
+              - button "Cancel" [ref=f34e249] [cursor=pointer]
+              - button "Mark done" [ref=f34e250] [cursor=pointer]
+        - generic [ref=f34e251]:
+          - paragraph [ref=f34e252]: B4 · Corporate (Recruit sends no W-2/1099)
+          - dialog [ref=f34e254]:
+            - generic [ref=f34e255]:
+              - heading "Mark the 1-1 meeting done" [level=3] [ref=f34e256]
+              - button "Close" [ref=f34e257] [cursor=pointer]: ✕
+            - generic [ref=f34e258]:
+              - generic [ref=f34e259]: Evan Brooks
+              - generic [ref=f34e260]: "Pre-onboarding meeting · Specialist: Jordan Lee"
+            - generic [ref=f34e261]:
+              - generic [ref=f34e262]: Meeting date *
+              - textbox "Meeting date *" [ref=f34e267]: Mon, Sep 29, 2026
+              - generic [ref=f34e268]: Mon Sep 29, as scheduled. Change it if the 1-1 was on another day.
+            - group "W-2 or 1099? *" [ref=f34e269]:
+              - generic [ref=f34e271]:
+                - generic [ref=f34e272] [cursor=pointer]:
+                  - radio "W-2 · Outside loan officer OUTSIDE"
+                  - generic [ref=f34e274]: W-2 · Outside loan officer
+                  - generic [ref=f34e276]: OUTSIDE
+                - generic [ref=f34e277] [cursor=pointer]:
+                  - radio "1099 · Independent loan officer INDEPENDENT"
+                  - generic [ref=f34e279]: 1099 · Independent loan officer
+                  - generic [ref=f34e281]: INDEPENDENT
+                - generic [ref=f34e282] [cursor=pointer]:
+                  - radio "Corporate CORPORATE" [checked]
+                  - generic [ref=f34e284]: Corporate
+                  - generic [ref=f34e286]: CORPORATE
+                - generic [ref=f34e287] [cursor=pointer]:
+                  - radio "Mortgage advisor MORTGAGE_ADVISOR"
+                  - generic [ref=f34e289]: Mortgage advisor
+                  - generic [ref=f34e291]: MORTGAGE_ADVISOR
+            - note [ref=f34e292]:
+              - paragraph [ref=f34e296]: Corporate and Mortgage advisor staff don't sign the outside or independent loan officer agreement, so Recruit sends no W-2/1099 for Corporate. This loan officer's agreement is handled outside this flow. If MOSO has no W-2/1099 on file, it may not record the meeting yet. This row will say so.
+            - generic [ref=f34e297]:
+              - button "Cancel" [ref=f34e298] [cursor=pointer]
+              - button "Mark done" [ref=f34e299] [cursor=pointer]
+    - region [ref=f34e300]:
+      - generic [ref=f34e301]:
+        - generic [ref=f34e302]: Screen C · Work page, after Mark done
+        - heading "When MOSO still needs W-2/1099, the row says which case it is" [level=2] [ref=f34e303]
+        - paragraph [ref=f34e304]: "Each case has its own reason code. Only the first one can be fixed from Recruit. The second is waiting on Onboarding's answer. The last two need the MOSO team. When the meeting was not recorded, Send again is offered as a secondary button. When it was recorded, there is no Send again: the fix is made in MOSO."
+      - table [ref=f34e307]:
+        - rowgroup [ref=f34e308]:
+          - row [ref=f34e309]:
+            - columnheader "Candidate" [ref=f34e310]
+            - columnheader "Task" [ref=f34e311]
+            - columnheader "Status" [ref=f34e312]
+            - columnheader [ref=f34e313]
+        - rowgroup [ref=f34e314]:
+          - row [ref=f34e315]:
+            - cell "Brian Okafor S5 · FL" [ref=f34e316]:
+              - generic [ref=f34e317]:
+                - generic [ref=f34e318]: Brian Okafor
+                - generic [ref=f34e319]: S5 · FL
+            - cell "Pre-onboarding meeting W-2 Met Thu Oct 2 Sending to MOSO — 1 min ago · waiting for the onboarding specialist to reach MOSO first" [ref=f34e320]:
+              - generic [ref=f34e321]: Pre-onboarding meeting
+              - generic [ref=f34e323]:
+                - generic [ref=f34e324]: W-2
+                - text: Met Thu Oct 2
+              - generic [ref=f34e325]: Sending to MOSO — 1 min ago · waiting for the onboarding specialist to reach MOSO first
+            - cell "Done" [ref=f34e329]
+            - cell [ref=f34e331]
+          - row [ref=f34e332]:
+            - cell "Alicia Martinez S5 · TX" [ref=f34e333]:
+              - generic [ref=f34e334]:
+                - generic [ref=f34e335]: Alicia Martinez
+                - generic [ref=f34e336]: S5 · TX
+            - cell "Pre-onboarding meeting HIRE_CLASSIFICATION_MISSING W-2/1099 not set Met Fri Sep 26 MOSO still needs W-2/1099. Pick it on the candidate's profile, then send again." [ref=f34e337]:
+              - generic [ref=f34e338]:
+                - generic [ref=f34e339]: Pre-onboarding meeting
+                - generic [ref=f34e340]: HIRE_CLASSIFICATION_MISSING
+              - generic [ref=f34e341]:
+                - generic [ref=f34e342]: W-2/1099 not set
+                - text: Met Fri Sep 26
+              - generic [ref=f34e343]: MOSO still needs W-2/1099. Pick it on the candidate's profile, then send again.
+            - cell "Not in MOSO" [ref=f34e348]
+            - cell [ref=f34e350]:
+              - generic [ref=f34e351]:
+                - button "Open profile" [ref=f34e352] [cursor=pointer]
+                - button "Send again" [ref=f34e353] [cursor=pointer]
+          - row [ref=f34e354]:
+            - cell "Evan Brooks S5 · NV" [ref=f34e355]:
+              - generic [ref=f34e356]:
+                - generic [ref=f34e357]: Evan Brooks
+                - generic [ref=f34e358]: S5 · NV
+            - cell "Pre-onboarding meeting HIRE_CLASSIFICATION_MOSO_OWNED Corporate Met Mon Sep 29 MOSO still needs W-2/1099. MOSO won't record the meeting without W-2 or 1099, and Recruit doesn't send one for Corporate or Mortgage advisor. Onboarding is still deciding how these are handled." [ref=f34e359]:
+              - generic [ref=f34e360]:
+                - generic [ref=f34e361]: Pre-onboarding meeting
+                - generic [ref=f34e362]: HIRE_CLASSIFICATION_MOSO_OWNED
+              - generic [ref=f34e363]:
+                - generic [ref=f34e364]: Corporate
+                - text: Met Mon Sep 29
+              - generic [ref=f34e365]: MOSO still needs W-2/1099. MOSO won't record the meeting without W-2 or 1099, and Recruit doesn't send one for Corporate or Mortgage advisor. Onboarding is still deciding how these are handled.
+            - cell "Pending Onboarding" [ref=f34e370]
+            - cell [ref=f34e372]
+          - row [ref=f34e373]:
+            - cell "Dana Whitfield S5 · AZ" [ref=f34e374]:
+              - generic [ref=f34e375]:
+                - generic [ref=f34e376]: Dana Whitfield
+                - generic [ref=f34e377]: S5 · AZ
+            - cell "Pre-onboarding meeting MOSO_HIRE_CLASSIFICATION_UNSUPPORTED 1099 Met Wed Sep 24 MOSO still needs W-2/1099. MOSO's version can't take W-2/1099 yet. Ask the MOSO team, then send again." [ref=f34e378]:
+              - generic [ref=f34e379]:
+                - generic [ref=f34e380]: Pre-onboarding meeting
+                - generic [ref=f34e381]: MOSO_HIRE_CLASSIFICATION_UNSUPPORTED
+              - generic [ref=f34e382]:
+                - generic [ref=f34e383]: "1099"
+                - text: Met Wed Sep 24
+              - generic [ref=f34e384]: MOSO still needs W-2/1099. MOSO's version can't take W-2/1099 yet. Ask the MOSO team, then send again.
+            - cell "Not in MOSO" [ref=f34e389]
+            - cell [ref=f34e391]:
+              - button "Send again" [ref=f34e393] [cursor=pointer]
+          - row [ref=f34e394]:
+            - cell "Farah Nguyen S5 · WA" [ref=f34e395]:
+              - generic [ref=f34e396]:
+                - generic [ref=f34e397]: Farah Nguyen
+                - generic [ref=f34e398]: S5 · WA
+            - cell "Pre-onboarding meeting MOSO_HIRE_CLASSIFICATION_IGNORED W-2 Met Tue Sep 23 MOSO recorded the meeting but ignored the W-2/1099 choice, so the agreement may be the wrong one. In MOSO, set Loan officer type to W-2, then use \"Re-generate e-sign documents and send email\"." [ref=f34e399]:
+              - generic [ref=f34e400]:
+                - generic [ref=f34e401]: Pre-onboarding meeting
+                - generic [ref=f34e402]: MOSO_HIRE_CLASSIFICATION_IGNORED
+              - generic [ref=f34e403]:
+                - generic [ref=f34e404]: W-2
+                - text: Met Tue Sep 23
+              - generic [ref=f34e405]: MOSO recorded the meeting but ignored the W-2/1099 choice, so the agreement may be the wrong one. In MOSO, set Loan officer type to W-2, then use "Re-generate e-sign documents and send email".
+            - cell "Check in MOSO" [ref=f34e410]
+            - cell [ref=f34e412]
+          - row [ref=f34e413]:
+            - cell "Chen Wei S5 · CA" [ref=f34e414]:
+              - generic [ref=f34e415]:
+                - generic [ref=f34e416]: Chen Wei
+                - generic [ref=f34e417]: S5 · CA
+            - cell "Pre-onboarding meeting 1099 Met Tue Sep 23 Sent to MOSO" [ref=f34e418]:
+              - generic [ref=f34e419]: Pre-onboarding meeting
+              - generic [ref=f34e421]:
+                - generic [ref=f34e422]: "1099"
+                - text: Met Tue Sep 23
+              - generic [ref=f34e423]: Sent to MOSO
+            - cell "Done" [ref=f34e426]
+            - cell [ref=f34e428]
+    - region [ref=f34e429]:
+      - generic [ref=f34e430]:
+        - generic [ref=f34e431]: Screen D · write-back off (production today)
+        - 'heading "Unchanged: Done is one click, no modal, nothing sent" [level=2] [ref=f34e432]'
+        - paragraph [ref=f34e433]: "The same gate as the meeting date: both MOSO write-back switches. With either one off, the button reads \"Done\" (no ellipsis) and no modal opens. Editing W-2/1099 on the profile sends nothing to MOSO. Scheduling still works, because it doesn't depend on these switches. There is also a third switch, for the W-2/1099 part. While both write-back switches are on but that one is off (staging until the MOSO change is deployed and checked), Done… opens the date-only modal from #248."
+      - table [ref=f34e436]:
+        - rowgroup [ref=f34e437]:
+          - row [ref=f34e438]:
+            - columnheader "Candidate" [ref=f34e439]
+            - columnheader "Task" [ref=f34e440]
+            - columnheader "Status" [ref=f34e441]
+            - columnheader [ref=f34e442]
+        - rowgroup [ref=f34e443]:
+          - row [ref=f34e444]:
+            - cell "Brian Okafor S5 · FL" [ref=f34e445]:
+              - generic [ref=f34e446]:
+                - generic [ref=f34e447]: Brian Okafor
+                - generic [ref=f34e448]: S5 · FL
+            - 'cell "Pre-onboarding meeting JL Specialist: Jordan Lee" [ref=f34e449]':
+              - generic [ref=f34e450]: Pre-onboarding meeting
+              - generic [ref=f34e452]:
+                - generic [ref=f34e453]: JL
+                - text: "Specialist: Jordan Lee"
+            - cell "Open" [ref=f34e454]
+            - cell [ref=f34e456]:
+              - generic [ref=f34e457]:
+                - button "Done" [ref=f34e458] [cursor=pointer]
+                - button "N/A" [ref=f34e459] [cursor=pointer]
+      - status [ref=f34e460]: ✓ Moved "Pre-onboarding meeting" to Done
+    - region [ref=f34e461]:
+      - generic [ref=f34e462]:
+        - generic [ref=f34e463]: Screen E · candidate profile, once MOSO has the meeting (sent from Recruit or clicked in MOSO)
+        - heading "Changing W-2/1099 later is allowed, with a warning" [level=2] [ref=f34e464]
+        - paragraph [ref=f34e465]: The warning appears only when MOSO already has the meeting, whether Recruit sent it or someone clicked it in MOSO, and the old and new type need a different agreement (W-2, 1099, or none for Corporate and Mortgage advisor). Corporate to Mortgage advisor shows nothing. HR has to be able to correct the classification, so the change is not blocked. The same sentence is logged on the candidate's timeline.
+      - generic [ref=f34e466]:
+        - generic [ref=f34e467]:
+          - paragraph [ref=f34e468]: W-2 → 1099
+          - generic [ref=f34e469]:
+            - generic [ref=f34e470]: Loan officer type
+            - generic [ref=f34e471]:
+              - generic [ref=f34e472]: Independent — 1099
+              - generic [aria-hidden] [ref=f34e473]: ▾
+            - generic [ref=f34e474]: "Was: Outside — W-2"
+          - note [ref=f34e475]:
+            - paragraph [ref=f34e479]: MOSO already built the W-2 agreement. In MOSO, set Loan officer type to 1099 first, then use "Re-generate e-sign documents and send email".
+          - generic [ref=f34e480]:
+            - button "Cancel" [ref=f34e481] [cursor=pointer]
+            - button "Save" [ref=f34e482] [cursor=pointer]
+        - generic [ref=f34e483]:
+          - paragraph [ref=f34e484]: 1099 → Corporate
+          - generic [ref=f34e485]:
+            - generic [ref=f34e486]: Loan officer type
+            - generic [ref=f34e487]:
+              - generic [ref=f34e488]: Corporate — W-2
+              - generic [aria-hidden] [ref=f34e489]: ▾
+            - generic [ref=f34e490]: "Was: Independent — 1099"
+          - note [ref=f34e491]:
+            - paragraph [ref=f34e495]: MOSO already built the 1099 agreement. Cancel that envelope in MOSO. Don't re-generate it.
+          - generic [ref=f34e496]:
+            - button "Cancel" [ref=f34e497] [cursor=pointer]
+            - button "Save" [ref=f34e498] [cursor=pointer]
+    - region [ref=f34e499]:
+      - generic [ref=f34e500]:
+        - generic [ref=f34e501]: Screen F · phone, 375 px
+        - heading "The same modal as a bottom sheet" [level=2] [ref=f34e502]
+        - paragraph [ref=f34e503]: The four choices stay full width with large tap targets. The field codes are hidden. The buttons stack with the main action on top.
+      - dialog [ref=f34e506]:
+        - generic [ref=f34e507]:
+          - heading "Mark the 1-1 meeting done" [level=3] [ref=f34e508]
+          - button "Close" [ref=f34e509] [cursor=pointer]: ✕
+        - generic [ref=f34e510]:
+          - generic [ref=f34e511]: Brian Okafor
+          - generic [ref=f34e512]: "Pre-onboarding meeting · Specialist: Jordan Lee"
+        - generic [ref=f34e513]:
+          - generic [ref=f34e514]: Meeting date *
+          - textbox "Meeting date *" [ref=f34e516]: Thu, Oct 2, 2026
+          - generic [ref=f34e517]: Thu Oct 2, as scheduled. Change it if the 1-1 was on another day.
+        - group "W-2 or 1099? *" [ref=f34e518]:
+          - generic [ref=f34e520]:
+            - generic [ref=f34e521] [cursor=pointer]:
+              - radio "W-2 · Outside loan officer" [checked]
+              - generic [ref=f34e523]: W-2 · Outside loan officer
+            - generic [ref=f34e525] [cursor=pointer]:
+              - radio "1099 · Independent loan officer"
+              - generic [ref=f34e527]: 1099 · Independent loan officer
+            - generic [ref=f34e529] [cursor=pointer]:
+              - radio "Corporate"
+              - generic [ref=f34e531]: Corporate
+            - generic [ref=f34e533] [cursor=pointer]:
+              - radio "Mortgage advisor"
+              - generic [ref=f34e535]: Mortgage advisor
+        - note [ref=f34e537]:
+          - paragraph [ref=f34e541]: MOSO builds the agreement from this choice when it records the meeting. Changing it later won't update that agreement by itself.
+        - generic [ref=f34e542]:
+          - button "Cancel" [ref=f34e543] [cursor=pointer]
+          - button "Mark done" [ref=f34e544] [cursor=pointer]
+    - region [ref=f34e545]:
+      - heading "Still open (doesn't block the build)" [level=3] [ref=f34e546]
+      - list [ref=f34e547]:
+        - listitem [ref=f34e548]: "Corporate and Mortgage advisor: what's the end state? MOSO won't record the meeting without W-2 or 1099, and Recruit sends neither for these two. This needs Onboarding's answer. Until then the row shows \"Onboarding is still deciding how these are handled\"."
+        - listitem [ref=f34e549]: Warn when 1099 is picked in a state the register form forces to W-2? Later, and as a warning only. Not in v1.

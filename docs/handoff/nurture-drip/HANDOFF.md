@@ -50,3 +50,5 @@ Morning report: https://claude.ai/artifact/6tf19GVCfeWNDgGWV51qgw
 ## 18/10 — webinar signals (D277)
 - recruit-be #668 merged (d7af2482): MOSO registration plans the WEBINAR follow-ups, attendance closes the reminder and patches the feedback call. Staging + production deployed; `webinar-signals` ON staging, absent (off) on production. Bead 236t9.8 closed.
 - Next: FE "Attended / Registered" chip (local preview first), then a real packs registration + staff CSV check on staging.
+
+- 30/10 (routed from session 460363a7): omni-service #608 MERGED 26/10 and live on omni STAGING (COMM_REPLY_ADDRESS_ENABLED=true). recruit staging RECRUIT_FEATURES_OMNI_REPLY_ADDRESS=true, INCLUDE_RECRUITER still OFF. Next: confirm the staging client gets 200, turn INCLUDE_RECRUITER on staging, run the real Reply-all test to bao.trinh+. Prod: Khai sets COMM_REPLY_ADDRESS_ENABLED on omni-prod, then Bao's go. Details in bead agentflow-236t9 notes.

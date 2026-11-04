@@ -1,0 +1,274 @@
+- generic [active] [ref=f14e1]:
+  - generic [ref=f14e7]:
+    - generic [ref=f14e8]:
+      - generic [ref=f14e9]:
+        - button "Sidebar collapse button" [ref=f14e10] [cursor=pointer]
+        - link [ref=f14e69] [cursor=pointer]:
+          - /url: "#"
+          - text: "SWAT:"
+          - link "Vinh Nguyen is SWAT officer. Please contact him for urgent problem" [ref=f14e70]:
+            - /url: "javascript:"
+          - text: "Parser:"
+          - link "Quyen Anh Vo is monitoring the parser today. Please contact him for problem with parser" [ref=f14e72]:
+            - /url: "javascript:"
+      - list [ref=f14e15]:
+        - listitem [ref=f14e16]:
+          - link "Search" [ref=f14e17] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=f14e74]: search
+        - listitem [ref=f14e18]:
+          - link "Builds" [ref=f14e19] [cursor=pointer]:
+            - /url: "##builds"
+        - listitem [ref=f14e20]:
+          - link "add" [ref=f14e75] [cursor=pointer]:
+            - /url: "##create_small_task"
+        - listitem [ref=f14e22]:
+          - link "Message" [ref=f14e23] [cursor=pointer]:
+            - /url: javascript:;
+            - generic [ref=f14e77]: notifications
+          - text: 
+        - listitem [ref=f14e24]:
+          - link [ref=f14e25] [cursor=pointer]:
+            - /url: javascript:;
+            - text: Bao Trinh
+            - img "Bao Trinh" [ref=f14e26]
+      - generic [ref=f14e27]:
+        - button "search" [ref=f14e28]
+        - generic [ref=f14e79]:
+          - searchbox "Search input" [ref=f14e80]
+          - searchbox "Search input" [ref=f14e81]
+        - link "close search" [ref=f14e30] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=f14e82]: close
+    - generic [ref=f14e32]:
+      - list [ref=f14e33]:
+        - listitem [ref=f14e34]:
+          - link "Bao Trinh  Bao Trinh Dev" [ref=f14e35] [cursor=pointer]:
+            - /url: javascript:;
+            - img "Bao Trinh" [ref=f14e38]
+            - generic [ref=f14e39]:
+              - generic [ref=f14e40]: 
+              - text: Bao Trinh
+              - generic [ref=f14e41]: Dev
+        - listitem: 
+      - list [ref=f14e42]:
+        - listitem [ref=f14e43]: X Moso
+        - listitem [ref=f14e44]:
+          - tab "group Company directory" [ref=f14e84] [cursor=pointer]:
+            - generic [ref=f14e85]: group
+            - text: Company directory
+        - listitem [ref=f14e46]:
+          - link " assignment_o Activities" [ref=f14e86] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f14e48]: 
+            - generic [ref=f14e87]: assignment_o
+            - text: Activities
+        - listitem [ref=f14e49]:
+          - link " check Reports" [ref=f14e88] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f14e51]: 
+            - generic [ref=f14e89]: check
+            - text: Reports
+        - listitem [ref=f14e52]:
+          - link " settings Builds" [ref=f14e90] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f14e54]: 
+            - generic [ref=f14e91]: settings
+            - text: Builds
+        - listitem [ref=f14e55]:
+          - link " bug_report Errors" [ref=f14e92] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f14e57]: 
+            - generic [ref=f14e93]: bug_report
+            - text: Errors
+        - listitem [ref=f14e58]:
+          - link " System" [ref=f14e59] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f14e60]: 
+            - text: System
+    - generic [ref=f14e94]:
+      - heading "Builds bao.trinh@moso.com broke build 10 hour(s) ago." [level=1] [ref=f14e95]:
+        - text: Builds
+        - paragraph [ref=f14e96]:
+          - generic [ref=f14e97]: bao.trinh@moso.com broke build 10 hour(s) ago.
+      - generic [ref=f14e100]:
+        - tablist [ref=f14e101]:
+          - tab "builds" [ref=f14e102] [cursor=pointer]: Builds
+          - tab "status" [ref=f14e103] [cursor=pointer]:
+            - generic [ref=f14e104]: rss_feed
+            - text: Status
+          - tab "parsers" [ref=f14e105] [cursor=pointer]:
+            - generic [ref=f14e106]: insert_drive_file
+            - text: Parsers
+          - tab "tests" [ref=f14e107] [cursor=pointer]:
+            - generic [ref=f14e108]: insert_drive_file
+            - text: Tests
+          - tab "builders" [ref=f14e109] [cursor=pointer]:
+            - generic [ref=f14e110]: settings
+            - text: Builders
+          - tab "activities" [ref=f14e111] [cursor=pointer]:
+            - generic [ref=f14e112]: history
+            - text: Activities
+        - generic [ref=f14e115]:
+          - generic [ref=f14e116]:
+            - generic [ref=f14e117]:
+              - button "sync" [ref=f14e118] [cursor=pointer]
+              - link [ref=f14e121] [cursor=pointer]:
+                - /url: "javascript:"
+            - form [ref=f14e122]:
+              - generic "Repo" [ref=f14e123]:
+                - generic [ref=f14e124]:
+                  - text: Repo
+                  - generic [ref=f14e125]: (optional)
+                - combobox [aria-hidden] [ref=f14e126]
+                - combobox "Repo" [ref=f14e129] [cursor=pointer]
+              - generic "Type" [ref=f14e131]:
+                - generic [ref=f14e132]:
+                  - text: Type
+                  - generic [ref=f14e133]: (optional)
+                - combobox [aria-hidden] [ref=f14e134]
+                - combobox "Type" [ref=f14e137] [cursor=pointer]
+              - generic "Status" [ref=f14e139]:
+                - generic [ref=f14e140]:
+                  - text: Status
+                  - generic [ref=f14e141]: (optional)
+                - combobox [aria-hidden] [ref=f14e142]
+                - combobox "× running" [ref=f14e145] [cursor=pointer]:
+                  - generic "running" [ref=f14e146]:
+                    - generic [ref=f14e147]: ×
+                    - text: running
+            - generic [ref=f14e148]:
+              - button "Reset filters" [ref=f14e149] [cursor=pointer]
+              - button "More" [ref=f14e150] [cursor=pointer]
+          - generic [ref=f14e151]:
+            - generic [ref=f14e153]:
+              - generic [ref=f14e154]: Type
+              - generic [ref=f14e155]: Status
+              - generic [ref=f14e156]: Note
+              - generic [ref=f14e157]: Server
+              - generic [ref=f14e158]: Time (m)
+            - generic [ref=f14e159]:
+              - generic [ref=f14e160]:
+                - generic [ref=f14e161]:
+                  - generic [ref=f14e162]:
+                    - group [ref=f14e164]:
+                      - button "parse" [ref=f14e165] [cursor=pointer]
+                    - generic [ref=f14e166]: lender-rate
+                  - generic [ref=f14e167]:
+                    - generic [ref=f14e168] [cursor=pointer]: running
+                    - generic [ref=f14e170] [cursor=pointer]: Provident
+                  - generic [ref=f14e171]: Run newProvidentParserKS
+                  - generic [ref=f14e172] [cursor=pointer]: b5
+                  - generic [ref=f14e173]: 10/9/2026, 9:36:23 PM
+                - generic [ref=f14e175]:
+                  - generic [ref=f14e176]:
+                    - group [ref=f14e178]:
+                      - button "parse" [ref=f14e179] [cursor=pointer]
+                    - generic [ref=f14e180]: lender-rate
+                  - generic [ref=f14e181]:
+                    - generic [ref=f14e182] [cursor=pointer]: running
+                    - generic [ref=f14e184] [cursor=pointer]: Provident
+                  - generic [ref=f14e185]: Run newProvidentParserIA
+                  - generic [ref=f14e186] [cursor=pointer]: bmac
+                  - generic [ref=f14e187]: 10/9/2026, 9:35:59 PM
+                - generic [ref=f14e189]:
+                  - generic [ref=f14e190]:
+                    - group [ref=f14e192]:
+                      - button "parse" [ref=f14e193] [cursor=pointer]
+                    - generic [ref=f14e194]: lender-rate
+                  - generic [ref=f14e195]:
+                    - generic [ref=f14e196] [cursor=pointer]: running
+                    - generic [ref=f14e198] [cursor=pointer]: Provident
+                  - generic [ref=f14e199]: Run newProvidentParserMO
+                  - generic [ref=f14e200] [cursor=pointer]: b3
+                  - generic [ref=f14e201]: 10/9/2026, 9:35:54 PM
+                - generic [ref=f14e203]:
+                  - generic [ref=f14e204]:
+                    - group [ref=f14e206]:
+                      - button "parse" [ref=f14e207] [cursor=pointer]
+                    - generic [ref=f14e208]: lender-rate
+                  - generic [ref=f14e209]:
+                    - generic [ref=f14e210] [cursor=pointer]: running
+                    - generic [ref=f14e212] [cursor=pointer]: Provident
+                  - generic [ref=f14e213]: Run newProvidentParserGA
+                  - generic [ref=f14e214] [cursor=pointer]: b4
+                  - generic [ref=f14e215]: 10/9/2026, 9:35:52 PM
+                - generic [ref=f14e217]:
+                  - generic [ref=f14e218]:
+                    - group [ref=f14e220]:
+                      - button "parse" [ref=f14e221] [cursor=pointer]
+                    - generic [ref=f14e222]: lender-rate
+                  - generic [ref=f14e223]:
+                    - generic [ref=f14e224] [cursor=pointer]: running
+                    - generic [ref=f14e226] [cursor=pointer]: Provident
+                  - generic [ref=f14e227]: Run newProvidentParserAZ
+                  - generic [ref=f14e228] [cursor=pointer]: b6
+                  - generic [ref=f14e229]: 10/9/2026, 9:35:43 PM
+                - generic [ref=f14e231]:
+                  - generic [ref=f14e232]:
+                    - group [ref=f14e234]:
+                      - button "parse" [ref=f14e235] [cursor=pointer]
+                    - generic [ref=f14e236]: lender-rate
+                  - generic [ref=f14e237]:
+                    - generic [ref=f14e238] [cursor=pointer]: running
+                    - generic [ref=f14e240] [cursor=pointer]: Provident
+                  - generic [ref=f14e241]: Run newProvidentParserUT
+                  - generic [ref=f14e242] [cursor=pointer]: b2
+                  - generic [ref=f14e243]: 10/9/2026, 9:35:27 PM
+                - generic [ref=f14e245]:
+                  - generic [ref=f14e246]:
+                    - group [ref=f14e248]:
+                      - button "test" [ref=f14e249] [cursor=pointer]
+                    - generic [ref=f14e250]: packs/loan
+                  - generic [ref=f14e251]:
+                    - generic [ref=f14e252] [cursor=pointer]: running
+                    - generic [ref=f14e254] [cursor=pointer]: "37"
+                  - generic "mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999" [ref=f14e256]:
+                    - text: Khai (packs)
+                    - link [ref=f14e257] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/754ee62c15367d0fedd77be1e875a8e49439c2b5
+                  - generic [ref=f14e258] [cursor=pointer]: b1
+                  - generic [ref=f14e259]: 10/9/2026, 6:50:45 PM
+              - text: 
+          - generic "Page Navigation" [ref=f14e261]:
+            - list [ref=f14e263]:
+              - listitem [ref=f14e264] [cursor=pointer]:
+                - generic "Previous" [ref=f14e265]: «
+              - listitem [ref=f14e266] [cursor=pointer]:
+                - generic [ref=f14e267]: 1-7 of 7
+            - generic [ref=f14e268]:
+              - text: Showing
+              - combobox "Items per page" [ref=f14e269]:
+                - option "5"
+                - option "10" [selected]
+                - option "25"
+                - option "50"
+                - option "100"
+              - text: items per page
+    - link "Scroll to top" [ref=f14e64] [cursor=pointer]:
+      - /url: javascript:;
+      - generic [ref=f14e270]: keyboard_arrow_up
+  - iframe
+  - generic [ref=f14e65]:
+    - link "System Improvement?" [ref=f14e66] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f14e271]: send
+    - link "Help?" [ref=f14e67] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f14e272]: help
+    - link "Chat" [ref=f14e68] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f14e273]: chat
+  - log [ref=f14e274]
+  - log [ref=f14e275]
+  - log [ref=f14e276]
+  - log [ref=f14e277]
+  - log [ref=f14e278]
+  - log [ref=f14e279]
+  - log [ref=f14e280]
+  - log [ref=f14e281]
+  - log [ref=f14e282]
+  - log [ref=f14e283]
+  - log [ref=f14e284]
+  - log [ref=f14e285]
+  - log [ref=f14e286]

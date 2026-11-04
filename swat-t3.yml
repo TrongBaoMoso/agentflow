@@ -1,0 +1,491 @@
+- generic [active] [ref=f4e1]:
+  - generic [ref=f4e7]:
+    - generic [ref=f4e8]:
+      - generic [ref=f4e9]:
+        - button "Sidebar collapse button" [ref=f4e10] [cursor=pointer]
+        - link [ref=f4e68] [cursor=pointer]:
+          - /url: "#"
+          - text: "SWAT:"
+          - link "Khai Nguyen is SWAT officer. Please contact him for urgent problem" [ref=f4e69]:
+            - /url: "javascript:"
+          - text: "Parser:"
+          - link "Triet Le is monitoring the parser today. Please contact him for problem with parser" [ref=f4e71]:
+            - /url: "javascript:"
+      - list [ref=f4e15]:
+        - listitem [ref=f4e16]:
+          - link "Search" [ref=f4e17] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=f4e73]: search
+        - listitem [ref=f4e18]:
+          - link "Builds" [ref=f4e19] [cursor=pointer]:
+            - /url: "##builds"
+        - listitem [ref=f4e20]:
+          - link "add" [ref=f4e74] [cursor=pointer]:
+            - /url: "##create_small_task"
+        - listitem [ref=f4e22]:
+          - link "Message" [ref=f4e23] [cursor=pointer]:
+            - /url: javascript:;
+            - generic [ref=f4e76]: notifications
+          - text: 
+        - listitem [ref=f4e24]:
+          - link [ref=f4e25] [cursor=pointer]:
+            - /url: javascript:;
+            - text: Bao Trinh
+            - img "Bao Trinh" [ref=f4e26]
+      - generic [ref=f4e27]:
+        - button "search" [ref=f4e28]
+        - generic [ref=f4e78]:
+          - searchbox "Search input" [ref=f4e79]
+          - searchbox "Search input" [ref=f4e80]
+        - link "close search" [ref=f4e30] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=f4e81]: close
+    - generic [ref=f4e32]:
+      - list [ref=f4e33]:
+        - listitem [ref=f4e34]:
+          - link "Bao Trinh  Bao Trinh Dev" [ref=f4e35] [cursor=pointer]:
+            - /url: javascript:;
+            - img "Bao Trinh" [ref=f4e38]
+            - generic [ref=f4e39]:
+              - generic [ref=f4e40]: 
+              - text: Bao Trinh
+              - generic [ref=f4e41]: Dev
+        - listitem: 
+      - list [ref=f4e42]:
+        - listitem [ref=f4e43]: X Moso
+        - listitem [ref=f4e44]:
+          - tab "group Company directory" [ref=f4e83] [cursor=pointer]:
+            - generic [ref=f4e84]: group
+            - text: Company directory
+        - listitem [ref=f4e46]:
+          - link " assignment_o Activities" [ref=f4e85] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f4e48]: 
+            - generic [ref=f4e86]: assignment_o
+            - text: Activities
+        - listitem [ref=f4e49]:
+          - link " check Reports" [ref=f4e87] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f4e51]: 
+            - generic [ref=f4e88]: check
+            - text: Reports
+        - listitem [ref=f4e52]:
+          - link " settings Builds" [ref=f4e89] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f4e54]: 
+            - generic [ref=f4e90]: settings
+            - text: Builds
+        - listitem [ref=f4e55]:
+          - link " bug_report Errors" [ref=f4e91] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f4e57]: 
+            - generic [ref=f4e92]: bug_report
+            - text: Errors
+        - listitem [ref=f4e58]:
+          - link " System" [ref=f4e59] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f4e60]: 
+            - text: System
+    - generic [ref=f4e93]:
+      - heading [level=1] [ref=f4e94]:
+        - text: Builds
+        - paragraph [ref=f4e95]:
+          - generic [ref=f4e97]:
+            - text: bao.trinh@moso.com broke build 17 hour(s) ago. Bao Trinh (TrongBaoMoso) is locking push
+            - strong [ref=f4e98]: because of test break
+      - generic [ref=f4e101]:
+        - tablist [ref=f4e102]:
+          - tab "builds" [ref=f4e103] [cursor=pointer]: Builds
+          - tab "status" [ref=f4e104] [cursor=pointer]:
+            - generic [ref=f4e105]: rss_feed
+            - text: Status
+          - tab "parsers" [ref=f4e106] [cursor=pointer]:
+            - generic [ref=f4e107]: insert_drive_file
+            - text: Parsers
+          - tab "tests" [ref=f4e108] [cursor=pointer]:
+            - generic [ref=f4e109]: insert_drive_file
+            - text: Tests
+          - tab "builders" [ref=f4e110] [cursor=pointer]:
+            - generic [ref=f4e111]: settings
+            - text: Builders
+          - tab "activities" [ref=f4e112] [cursor=pointer]:
+            - generic [ref=f4e113]: history
+            - text: Activities
+        - generic [ref=f4e116]:
+          - generic [ref=f4e117]:
+            - generic [ref=f4e118]:
+              - button "sync" [ref=f4e119] [cursor=pointer]
+              - link [ref=f4e122] [cursor=pointer]:
+                - /url: "javascript:"
+            - form [ref=f4e123]:
+              - generic "Repo" [ref=f4e124]:
+                - generic [ref=f4e125]:
+                  - text: Repo
+                  - generic [ref=f4e126]: (optional)
+                - combobox [aria-hidden] [ref=f4e127]
+                - combobox "Repo" [ref=f4e130] [cursor=pointer]
+              - generic "Type" [ref=f4e132]:
+                - generic [ref=f4e133]:
+                  - text: Type
+                  - generic [ref=f4e134]: (optional)
+                - combobox [aria-hidden] [ref=f4e135]
+                - combobox "× test" [ref=f4e138] [cursor=pointer]:
+                  - generic "test" [ref=f4e139]:
+                    - generic [ref=f4e140]: ×
+                    - text: test
+              - generic "Status" [ref=f4e141]:
+                - generic [ref=f4e142]:
+                  - text: Status
+                  - generic [ref=f4e143]: (optional)
+                - combobox [aria-hidden] [ref=f4e144]
+                - combobox "Status" [ref=f4e147] [cursor=pointer]
+            - generic [ref=f4e149]:
+              - button "Reset filters" [ref=f4e150] [cursor=pointer]
+              - button "More" [ref=f4e151] [cursor=pointer]
+          - generic [ref=f4e152]:
+            - generic [ref=f4e154]:
+              - generic [ref=f4e155]: Type
+              - generic [ref=f4e156]: Status
+              - generic [ref=f4e157]: Note
+              - generic [ref=f4e158]: Server
+              - generic [ref=f4e159]: Time (m)
+            - generic [ref=f4e160]:
+              - generic [ref=f4e161]:
+                - generic [ref=f4e162]:
+                  - generic [ref=f4e163]:
+                    - group [ref=f4e165]:
+                      - button "test" [ref=f4e166] [cursor=pointer]
+                    - generic [ref=f4e167]: packs/loan
+                  - generic [ref=f4e168]:
+                    - generic [ref=f4e169] [cursor=pointer]: running
+                    - generic [ref=f4e171] [cursor=pointer]: "37"
+                  - generic "mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999" [ref=f4e173]:
+                    - text: Bao (packs)
+                    - 'link "feat: LO registration mortgage website disclosure fields [agentflow-tdqcv] Co-Authored-By: Claude Opus 5.5 (1M context)" [ref=f4e174] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/89830c879e08d20f212b9ca7528692323c6e453a
+                    - text: Bao (packs)
+                    - 'link "fix: expose mortgage website disclosure fields to the public registration read [agentflow-tdqcv] Co-Authored-By: Claude Opus 5.5 (1M context)" [ref=f4e175] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/5a0cdaeaf13826ca8ff37a4600e4e0b43a250771
+                    - text: Bao (packs)
+                    - 'link "fix: tamper-proof ack timestamp, URL validation/caps, drop URLs unless Yes [agentflow-tdqcv] Co-Authored-By: Claude Opus 5.5 (1M context)" [ref=f4e176] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/d33439b9ab01f23e95cebd2e57ae455170e1f99b
+                    - text: Bao (packs)
+                    - 'link "fix: block clearing a stored disclosure answer, validate merged state, strip fields from webinar/refer bodies [agentflow-tdqcv] Co-Authored-By: Claude Opus 5.5 (1M context)" [ref=f4e177] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/0fdbcf0f9a30886eff9180671e4b265126ed3683
+                    - text: Bao (packs)
+                    - 'link "fix: empty stored URLs on No, 500-char cap, reject URL user-info, strict boolean answer [agentflow-tdqcv] Co-Authored-By: Claude Opus 5.5 (1M context)" [ref=f4e178] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/eb2f8c146ca06d9d7fe4b97605479bf8e2e6e12d
+                    - text: Bao (packs)
+                    - 'link "fix: stale bean must not wipe a fresh ack timestamp; hook keeps a stored answer from going null [agentflow-tdqcv] Co-Authored-By: Claude Opus 5.5 (1M context)" [ref=f4e179] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/4cc256770b4a1173ee599f5cefdc5ed13ebf3b93
+                    - text: Bao (packs)
+                    - 'link "fix: accept only exact lowercase true/false strings for the disclosure answer [agentflow-tdqcv] Co-Authored-By: Claude Opus 5.5 (1M context)" [ref=f4e180] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/4155e2b158eb790ca0d6fe675fc537254a4a36cd
+                    - text: Bao (packs)
+                    - 'link "Merge pull request #3628 from LoanFactory-Inc/agent/agentflow-tdqcv-website-disclosure feat: LO registration mortgage website disclosure fields [agentflow-tdqcv]" [ref=f4e181] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/076f5e9ddf0d61ec9912fcf3af86445f7163bf17
+                  - generic [ref=f4e182] [cursor=pointer]: b1
+                  - generic [ref=f4e183]: 10/6/2026, 9:39:41 AM
+                - generic [ref=f4e185]:
+                  - generic [ref=f4e186]:
+                    - group [ref=f4e188]:
+                      - button "test" [ref=f4e189] [cursor=pointer]
+                    - generic [ref=f4e190]: packs/loan
+                  - generic [ref=f4e191]:
+                    - generic [ref=f4e192] [cursor=pointer]: succeeded
+                    - generic [ref=f4e194] [cursor=pointer]: "0"
+                  - generic [ref=f4e196]:
+                    - text: Bao (packs)
+                    - 'link "feat: LO registration mortgage website disclosure fields [agentflow-tdqcv] Co-Authored-By: Claude Opus 5.5 (1M context)" [ref=f4e197] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/89830c879e08d20f212b9ca7528692323c6e453a
+                    - text: Bao (packs)
+                    - 'link "fix: expose mortgage website disclosure fields to the public registration read [agentflow-tdqcv] Co-Authored-By: Claude Opus 5.5 (1M context)" [ref=f4e198] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/5a0cdaeaf13826ca8ff37a4600e4e0b43a250771
+                    - text: Bao (packs)
+                    - 'link "fix: tamper-proof ack timestamp, URL validation/caps, drop URLs unless Yes [agentflow-tdqcv] Co-Authored-By: Claude Opus 5.5 (1M context)" [ref=f4e199] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/d33439b9ab01f23e95cebd2e57ae455170e1f99b
+                    - text: Bao (packs)
+                    - 'link "fix: block clearing a stored disclosure answer, validate merged state, strip fields from webinar/refer bodies [agentflow-tdqcv] Co-Authored-By: Claude Opus 5.5 (1M context)" [ref=f4e200] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/0fdbcf0f9a30886eff9180671e4b265126ed3683
+                    - text: Bao (packs)
+                    - 'link "fix: empty stored URLs on No, 500-char cap, reject URL user-info, strict boolean answer [agentflow-tdqcv] Co-Authored-By: Claude Opus 5.5 (1M context)" [ref=f4e201] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/eb2f8c146ca06d9d7fe4b97605479bf8e2e6e12d
+                    - text: Bao (packs)
+                    - 'link "fix: stale bean must not wipe a fresh ack timestamp; hook keeps a stored answer from going null [agentflow-tdqcv] Co-Authored-By: Claude Opus 5.5 (1M context)" [ref=f4e202] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/4cc256770b4a1173ee599f5cefdc5ed13ebf3b93
+                    - text: Bao (packs)
+                    - 'link "fix: accept only exact lowercase true/false strings for the disclosure answer [agentflow-tdqcv] Co-Authored-By: Claude Opus 5.5 (1M context)" [ref=f4e203] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/4155e2b158eb790ca0d6fe675fc537254a4a36cd
+                    - text: Bao (packs)
+                    - 'link "Merge pull request #3628 from LoanFactory-Inc/agent/agentflow-tdqcv-website-disclosure feat: LO registration mortgage website disclosure fields [agentflow-tdqcv]" [ref=f4e204] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/076f5e9ddf0d61ec9912fcf3af86445f7163bf17
+                  - generic [ref=f4e205] [cursor=pointer]: b3
+                  - generic [ref=f4e206]:
+                    - generic [ref=f4e207]: 7m 46s
+                    - generic [ref=f4e208]: 10/6/2026, 9:39:41 AM
+                - generic [ref=f4e209]:
+                  - generic [ref=f4e210]:
+                    - group [ref=f4e212]:
+                      - button "test" [ref=f4e213] [cursor=pointer]
+                    - generic [ref=f4e214]: packs/loan
+                  - generic [ref=f4e215]:
+                    - generic [ref=f4e216] [cursor=pointer]: failed
+                    - generic [ref=f4e218] [cursor=pointer]: "37"
+                  - 'generic "failed: mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999 -Dlog=/home/ato/logs/6110647182426112_summary.txt >> /home/ato/logs/6110647182426112.txt 2>&1;: Error: Command failed: mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999 -Dlog=/home/ato/logs/6110647182426112_summary.txt >> /home/ato/logs/6110647182426112.txt 2>&1;" [ref=f4e220]':
+                    - text: Bao (packs)
+                    - link [ref=f4e221] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/5f3f338399c75141ea65401a93d2e2eb63d00f9b
+                      - text: "fix(recruit): bound billable Inkless regenerations per row, strip internal flags from the public body, V2 profile completion builds the agreement (agentflow-90vkj, agentflow-gglqk) (#3627) * fix(recruit): strip internal flags from the public e-sign body and add a per-row regenerate cooldown (agentflow-90vkj) registerSigningAgreement is unauthenticated, yet it passed the raw body to EnsureSigningSessionsRegisterInterestedLoanOfficer, which honours force_regenerate (cancel + a new billable Inkless envelope) and template (an e-mail). Anyone with a row key could loop it. - WebPlusAPI.registerSigningAgreement strips force_regenerate, template, task_try and trailing_regenerate before calling the op. - Per-row cooldown on FORCED regenerates (IloRegenerateCooldown), anchored on AgreementState.last_forced_regenerate_at (datastore, not memcache). System property ilo_esign_regenerate_cooldown_minutes, default 10, invalid/<1 falls back to 10, capped at 1440. Logs carry the row key and reason only. - queued (afterSave) callers: held back, ONE trailing rebuild queued. - in-request callers (GWT \"Re-generate e-sign documents\"): refused with an error, envelope and e-mail untouched. - bypass: RebuildIloAgreementTask (Recruit explicit send, own cooldown), and EnsureSigningSessionsRequestNewLOAgreement (never reads the flag). - a dead envelope (rejected/expired/missing doc) is still rebuilt. - Tests use a stub for every Inkless seam; Inkless is never called. Co-Authored-By: Claude Opus 5.5 (1M context)"
+                      - generic [ref=f4e222]:
+                        - text: "* fix(recruit): V2 profile completion builds the agreement; compare rebuild inputs by value (agentflow-gglqk) - RECRUIT_V2 row: completed_detail_form flipping to true with no envelope queues the same unforced build registerSigningAgreement does, deferred 60 s. The keyless email-dedupe submit never calls registerSigningAgreement, so the sign step was dead. Idempotent with the keyed path: whichever runs second finds the envelope and reuses it. - V2 rebuild inputs: states/sponsor_states compared as sets, \"\" equals null (street2, legal names), so an identical step-0 resubmit queues no billable regenerate. - Legacy rows: unchanged (same triggers, same ordered compare). Co-Authored-By: Claude Opus 5.5 (1M context)"
+                        - generic [ref=f4e223]:
+                          - text: "* fix(recruit): cool down every new Inkless envelope on public and automatic paths, not only forced ones (agentflow-90vkj) Security review of #3627 (HIGH): the public keyed registerLoanOfficer can toggle CA in sponsor_states, which changes the required documents, and registerSigningAgreement then rebuilds WITHOUT force, past a cooldown that only gated forced calls. One billable envelope per toggle. - One gate after resolveDecision: every Inkless FRESH_SEND/REGENERATE, forced or not, dead envelope included, is held inside the window for QUEUED (afterSave, V2 completion, trailing) and PUBLIC callers (any API route incl. execute/{op} and registerSigningAgreement, or no login). Held: nothing is touched, the caller gets the current link, ONE trailing rebuild is queued. A public force is not trusted (trailing unforced). - Exempt (legacy desk unchanged): STAFF, i.e. a logged-in GWT RemoteCall (no API platform + a session user), and Recruit's explicit send. The admin \"Request new LO agreement\" op keeps its own path. All of them open the window (recordEnvelopeSent), so a public call right after waits. - Repo Owner review: the window opens only after a SUCCESSFUL send; the trailing task gives up when an envelope was sent after its latest hold (no identical double send after an explicit send restarts the window), and takes its force from the held state. - Tests: public CA toggle burst = 1 envelope + 1 trailing (red without the fix: 4 envelopes), staff exempt + starts the window, API route with a login is still public, trailing gives up after a later send, failed send opens no window. Co-Authored-By: Claude Opus 5.5 (1M context)"
+                          - generic [ref=f4e224]:
+                            - text: "* fix(recruit): cool down public \"Request new LO agreement\" calls; expire lost trailing reservations (agentflow-90vkj) Security re-review of #3627: the anonymous WebPlus execute/{op} route runs EnsureSigningSessionsRequestNewLOAgreement with no login, and that op was fully exempt from the cooldown while taking its required documents from the request body. A caller could make the envelope look stale and get a new billable envelope (plus an admin e-mail) per call. - Public caller (not isStaffRequest): documents come from the stored row, never the body, and a rebuild inside the window is held exactly like a public call to the Register op (one unforced trailing rebuild, nothing touched, no admin e-mail). Staff: unchanged. - Repo Owner review: a trailing reservation past its due time plus a 2-min grace is stale, so a lost trailing task (gave up after lock contention, or a purged queue) no longer blocks every later hold for that row. - No auth added; execute/{op} is untouched. Co-Authored-By: Claude Opus 5.5 (1M context)"
+                            - generic [ref=f4e225]:
+                              - text: "* fix(recruit): public RequestNewLOAgreement holds without a trailing rebuild; trailing rebuilds only for loan officer rows (agentflow-90vkj) Repo Owner review of 1acb476: a held public RequestNewLOAgreement queued a trailing rebuild of the REGISTER op for the same key. That op also serves Admin rows (HR agreements, MOSO BrokerMembersView), and the Register op files INTERESTED_LO_AGREEMENT sessions, so two anonymous calls on an Admin key would have sent the employee an unrequested, billable LO envelope. - The public RequestNewLOAgreement path holds WITHOUT queuing a trailing rebuild (an anonymous caller never needs one). - queueTrailingRebuild skips any key that is not a LORecruiting row. - Tests: two public calls on an Admin key send once and queue no Register task; a held Register-op call on an Admin key queues nothing. Co-Authored-By: Claude Opus 5.5 (1M context)"
+                              - generic [ref=f4e226]:
+                                - text: "--------- Co-authored-by: TrongBaoMoso"
+                                - generic [ref=f4e227]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f4e228] [cursor=pointer]: b4
+                  - generic [ref=f4e229]:
+                    - generic [ref=f4e230]: 41m 56s
+                    - generic [ref=f4e231]: 10/6/2026, 2:20:35 AM
+                - generic [ref=f4e232]:
+                  - generic [ref=f4e233]:
+                    - group [ref=f4e235]:
+                      - button "test" [ref=f4e236] [cursor=pointer]
+                    - generic [ref=f4e237]: packs/loan
+                  - generic [ref=f4e238]:
+                    - generic [ref=f4e239] [cursor=pointer]: succeeded
+                    - generic [ref=f4e241] [cursor=pointer]: "0"
+                  - generic [ref=f4e243]:
+                    - text: Bao (packs)
+                    - link [ref=f4e244] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/5f3f338399c75141ea65401a93d2e2eb63d00f9b
+                      - text: "fix(recruit): bound billable Inkless regenerations per row, strip internal flags from the public body, V2 profile completion builds the agreement (agentflow-90vkj, agentflow-gglqk) (#3627) * fix(recruit): strip internal flags from the public e-sign body and add a per-row regenerate cooldown (agentflow-90vkj) registerSigningAgreement is unauthenticated, yet it passed the raw body to EnsureSigningSessionsRegisterInterestedLoanOfficer, which honours force_regenerate (cancel + a new billable Inkless envelope) and template (an e-mail). Anyone with a row key could loop it. - WebPlusAPI.registerSigningAgreement strips force_regenerate, template, task_try and trailing_regenerate before calling the op. - Per-row cooldown on FORCED regenerates (IloRegenerateCooldown), anchored on AgreementState.last_forced_regenerate_at (datastore, not memcache). System property ilo_esign_regenerate_cooldown_minutes, default 10, invalid/<1 falls back to 10, capped at 1440. Logs carry the row key and reason only. - queued (afterSave) callers: held back, ONE trailing rebuild queued. - in-request callers (GWT \"Re-generate e-sign documents\"): refused with an error, envelope and e-mail untouched. - bypass: RebuildIloAgreementTask (Recruit explicit send, own cooldown), and EnsureSigningSessionsRequestNewLOAgreement (never reads the flag). - a dead envelope (rejected/expired/missing doc) is still rebuilt. - Tests use a stub for every Inkless seam; Inkless is never called. Co-Authored-By: Claude Opus 5.5 (1M context)"
+                      - generic [ref=f4e245]:
+                        - text: "* fix(recruit): V2 profile completion builds the agreement; compare rebuild inputs by value (agentflow-gglqk) - RECRUIT_V2 row: completed_detail_form flipping to true with no envelope queues the same unforced build registerSigningAgreement does, deferred 60 s. The keyless email-dedupe submit never calls registerSigningAgreement, so the sign step was dead. Idempotent with the keyed path: whichever runs second finds the envelope and reuses it. - V2 rebuild inputs: states/sponsor_states compared as sets, \"\" equals null (street2, legal names), so an identical step-0 resubmit queues no billable regenerate. - Legacy rows: unchanged (same triggers, same ordered compare). Co-Authored-By: Claude Opus 5.5 (1M context)"
+                        - generic [ref=f4e246]:
+                          - text: "* fix(recruit): cool down every new Inkless envelope on public and automatic paths, not only forced ones (agentflow-90vkj) Security review of #3627 (HIGH): the public keyed registerLoanOfficer can toggle CA in sponsor_states, which changes the required documents, and registerSigningAgreement then rebuilds WITHOUT force, past a cooldown that only gated forced calls. One billable envelope per toggle. - One gate after resolveDecision: every Inkless FRESH_SEND/REGENERATE, forced or not, dead envelope included, is held inside the window for QUEUED (afterSave, V2 completion, trailing) and PUBLIC callers (any API route incl. execute/{op} and registerSigningAgreement, or no login). Held: nothing is touched, the caller gets the current link, ONE trailing rebuild is queued. A public force is not trusted (trailing unforced). - Exempt (legacy desk unchanged): STAFF, i.e. a logged-in GWT RemoteCall (no API platform + a session user), and Recruit's explicit send. The admin \"Request new LO agreement\" op keeps its own path. All of them open the window (recordEnvelopeSent), so a public call right after waits. - Repo Owner review: the window opens only after a SUCCESSFUL send; the trailing task gives up when an envelope was sent after its latest hold (no identical double send after an explicit send restarts the window), and takes its force from the held state. - Tests: public CA toggle burst = 1 envelope + 1 trailing (red without the fix: 4 envelopes), staff exempt + starts the window, API route with a login is still public, trailing gives up after a later send, failed send opens no window. Co-Authored-By: Claude Opus 5.5 (1M context)"
+                          - generic [ref=f4e247]:
+                            - text: "* fix(recruit): cool down public \"Request new LO agreement\" calls; expire lost trailing reservations (agentflow-90vkj) Security re-review of #3627: the anonymous WebPlus execute/{op} route runs EnsureSigningSessionsRequestNewLOAgreement with no login, and that op was fully exempt from the cooldown while taking its required documents from the request body. A caller could make the envelope look stale and get a new billable envelope (plus an admin e-mail) per call. - Public caller (not isStaffRequest): documents come from the stored row, never the body, and a rebuild inside the window is held exactly like a public call to the Register op (one unforced trailing rebuild, nothing touched, no admin e-mail). Staff: unchanged. - Repo Owner review: a trailing reservation past its due time plus a 2-min grace is stale, so a lost trailing task (gave up after lock contention, or a purged queue) no longer blocks every later hold for that row. - No auth added; execute/{op} is untouched. Co-Authored-By: Claude Opus 5.5 (1M context)"
+                            - generic [ref=f4e248]:
+                              - text: "* fix(recruit): public RequestNewLOAgreement holds without a trailing rebuild; trailing rebuilds only for loan officer rows (agentflow-90vkj) Repo Owner review of 1acb476: a held public RequestNewLOAgreement queued a trailing rebuild of the REGISTER op for the same key. That op also serves Admin rows (HR agreements, MOSO BrokerMembersView), and the Register op files INTERESTED_LO_AGREEMENT sessions, so two anonymous calls on an Admin key would have sent the employee an unrequested, billable LO envelope. - The public RequestNewLOAgreement path holds WITHOUT queuing a trailing rebuild (an anonymous caller never needs one). - queueTrailingRebuild skips any key that is not a LORecruiting row. - Tests: two public calls on an Admin key send once and queue no Register task; a held Register-op call on an Admin key queues nothing. Co-Authored-By: Claude Opus 5.5 (1M context)"
+                              - generic [ref=f4e249]:
+                                - text: "--------- Co-authored-by: TrongBaoMoso"
+                                - generic [ref=f4e250]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f4e251] [cursor=pointer]: b2
+                  - generic [ref=f4e252]:
+                    - generic [ref=f4e253]: 9m 43s
+                    - generic [ref=f4e254]: 10/6/2026, 2:20:34 AM
+                - generic [ref=f4e255]:
+                  - generic [ref=f4e256]:
+                    - group [ref=f4e258]:
+                      - button "test" [ref=f4e259] [cursor=pointer]
+                    - generic [ref=f4e260]: packs/loan
+                  - generic [ref=f4e261]:
+                    - generic [ref=f4e262] [cursor=pointer]: failed
+                    - generic [ref=f4e264] [cursor=pointer]: "37"
+                  - 'generic "failed: mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999 -Dlog=/home/ato/logs/5259584313229312_summary.txt >> /home/ato/logs/5259584313229312.txt 2>&1;: Error: Command failed: mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999 -Dlog=/home/ato/logs/5259584313229312_summary.txt >> /home/ato/logs/5259584313229312.txt 2>&1;" [ref=f4e266]':
+                    - text: Khai (packs)
+                    - 'link "Add an opt-in borrower text programme, separate from review requests (#3624) A separate, opt-in way to text borrowers about their own application, alongside the live review-request flow, which is not touched. A TESTER emails a borrower a personal link from Transactions; the borrower ticks an unticked box on a new page and the wording shown is stored against the loan. A TESTER can then send one of four fixed templates: welcome, items needed, need help, post-closing survey. No free text. Sends use the existing registered number. Enforced on the server: TESTER only; leads and prospects refused; an earlier STOP wins and signing up never clears an opt-out; STOP after sign-up ends it even if START follows; survey only on funded loans and once per sign-up; a failed welcome text undoes the sign-up; one live invite per loan; every text labelled with the loan id." [ref=f4e267] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/db6b0d39264fd82ed9f80b3fed97b076036512ed
+                  - generic [ref=f4e268] [cursor=pointer]: b2
+                  - generic [ref=f4e269]:
+                    - generic [ref=f4e270]: 63m 24s
+                    - generic [ref=f4e271]: 10/5/2026, 6:50:15 PM
+                - generic [ref=f4e272]:
+                  - generic [ref=f4e273]:
+                    - group [ref=f4e275]:
+                      - button "test" [ref=f4e276] [cursor=pointer]
+                    - generic [ref=f4e277]: packs/loan
+                  - generic [ref=f4e278]:
+                    - generic [ref=f4e279] [cursor=pointer]: failed
+                    - generic [ref=f4e281] [cursor=pointer]: "37"
+                  - 'generic "failed: mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999 -Dlog=/home/ato/logs/5529065937698816_summary.txt >> /home/ato/logs/5529065937698816.txt 2>&1;: Error: Command failed: mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999 -Dlog=/home/ato/logs/5529065937698816_summary.txt >> /home/ato/logs/5529065937698816.txt 2>&1;" [ref=f4e283]':
+                    - text: Vinh (packs)
+                    - link "sync lender doc" [ref=f4e284] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/f96cd81fa6932bd27bcd9d68e471652acc920499
+                  - generic [ref=f4e285] [cursor=pointer]: b1
+                  - generic [ref=f4e286]:
+                    - generic [ref=f4e287]: 55m 7s
+                    - generic [ref=f4e288]: 10/5/2026, 6:55:39 PM
+                - generic [ref=f4e289]:
+                  - generic [ref=f4e290]:
+                    - group [ref=f4e292]:
+                      - button "test" [ref=f4e293] [cursor=pointer]
+                    - generic [ref=f4e294]: moso
+                  - generic [ref=f4e295]:
+                    - generic [ref=f4e296] [cursor=pointer]: killed
+                    - generic [ref=f4e298] [cursor=pointer]: "0"
+                  - 'generic "Expired: created more than 2 hours ago" [ref=f4e300]':
+                    - text: Vinh (moso)
+                    - link "Revert \"Run the lender-documents export nightly and give it its bucket (MKT-158) (#1755)\" This reverts commit 55cbde69fb8eedb055f9e9b3a7ce017be3387020." [ref=f4e301] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/moso/commit/10602847c3f6fe378edd392c523e96b6dfe2fd68
+                - generic [ref=f4e304]:
+                  - generic [ref=f4e305]:
+                    - group [ref=f4e307]:
+                      - button "test" [ref=f4e308] [cursor=pointer]
+                    - generic [ref=f4e309]: moso
+                  - generic [ref=f4e310]:
+                    - generic [ref=f4e311] [cursor=pointer]: killed
+                    - generic [ref=f4e313] [cursor=pointer]: "8"
+                  - 'generic "Expired: created more than 2 hours ago" [ref=f4e315]':
+                    - text: Vinh (moso)
+                    - link "Revert \"Run the lender-documents export nightly and give it its bucket (MKT-158) (#1755)\" This reverts commit 55cbde69fb8eedb055f9e9b3a7ce017be3387020." [ref=f4e316] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/moso/commit/10602847c3f6fe378edd392c523e96b6dfe2fd68
+                - generic [ref=f4e319]:
+                  - generic [ref=f4e320]:
+                    - group [ref=f4e322]:
+                      - button "test" [ref=f4e323] [cursor=pointer]
+                    - generic [ref=f4e324]: moso
+                  - generic [ref=f4e325]:
+                    - generic [ref=f4e326] [cursor=pointer]: killed
+                    - generic [ref=f4e328] [cursor=pointer]: "0"
+                  - 'generic "Expired: created more than 2 hours ago" [ref=f4e330]':
+                    - text: Vinh (moso)
+                    - link "Run the lender-documents export nightly and give it its bucket (MKT-158) (#1755) cron.ExportLenderDocsToGcsOp every day 02:00 America/Los_Angeles on cloud-tasks (Loan Factory namespace); lender_docs_archive_bucket = tera-prod-lender-docs-archive, staging overlay tera-sandbox-lender-docs-archive." [ref=f4e331] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/moso/commit/55cbde69fb8eedb055f9e9b3a7ce017be3387020
+                - generic [ref=f4e334]:
+                  - generic [ref=f4e335]:
+                    - group [ref=f4e337]:
+                      - button "test" [ref=f4e338] [cursor=pointer]
+                    - generic [ref=f4e339]: moso
+                  - generic [ref=f4e340]:
+                    - generic [ref=f4e341] [cursor=pointer]: killed
+                    - generic [ref=f4e343] [cursor=pointer]: "8"
+                  - 'generic "Expired: created more than 2 hours ago" [ref=f4e345]':
+                    - text: Vinh (moso)
+                    - link "Run the lender-documents export nightly and give it its bucket (MKT-158) (#1755) cron.ExportLenderDocsToGcsOp every day 02:00 America/Los_Angeles on cloud-tasks (Loan Factory namespace); lender_docs_archive_bucket = tera-prod-lender-docs-archive, staging overlay tera-sandbox-lender-docs-archive." [ref=f4e346] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/moso/commit/55cbde69fb8eedb055f9e9b3a7ce017be3387020
+                - generic [ref=f4e349]:
+                  - generic [ref=f4e350]:
+                    - group [ref=f4e352]:
+                      - button "test" [ref=f4e353] [cursor=pointer]
+                    - generic [ref=f4e354]: packs/loan
+                  - generic [ref=f4e355]:
+                    - generic [ref=f4e356] [cursor=pointer]: failed
+                    - generic [ref=f4e358] [cursor=pointer]: "37"
+                  - 'generic "failed: mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999 -Dlog=/Users/ato/logs/6604339848675328_summary.txt >> /Users/ato/logs/6604339848675328.txt 2>&1;: Error: Command failed: mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999 -Dlog=/Users/ato/logs/6604339848675328_summary.txt >> /Users/ato/logs/6604339848675328.txt 2>&1;" [ref=f4e360]':
+                    - text: Khai (packs)
+                    - link [ref=f4e361] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/04fe93a3548dfe81efe9a55df67f49177a58b2c2
+                  - generic [ref=f4e362] [cursor=pointer]: bmac
+                  - generic [ref=f4e363]:
+                    - generic [ref=f4e364]: 34m 7s
+                    - generic [ref=f4e365]: 10/5/2026, 6:26:23 PM
+                - generic [ref=f4e366]:
+                  - generic [ref=f4e367]:
+                    - group [ref=f4e369]:
+                      - button "test" [ref=f4e370] [cursor=pointer]
+                    - generic [ref=f4e371]: packs/loan
+                  - generic [ref=f4e372]:
+                    - generic [ref=f4e373] [cursor=pointer]: succeeded
+                    - generic [ref=f4e375] [cursor=pointer]: "0"
+                  - generic [ref=f4e377]:
+                    - text: Vinh (packs)
+                    - link "sync lender doc" [ref=f4e378] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/f96cd81fa6932bd27bcd9d68e471652acc920499
+                  - generic [ref=f4e379] [cursor=pointer]: u3
+                  - generic [ref=f4e380]:
+                    - generic [ref=f4e381]: 3m 29s
+                    - generic [ref=f4e382]: 10/5/2026, 6:55:38 PM
+                - generic [ref=f4e383]:
+                  - generic [ref=f4e384]:
+                    - group [ref=f4e386]:
+                      - button "test" [ref=f4e387] [cursor=pointer]
+                    - generic [ref=f4e388]: packs/loan
+                  - generic [ref=f4e389]:
+                    - generic [ref=f4e390] [cursor=pointer]: succeeded
+                    - generic [ref=f4e392] [cursor=pointer]: "0"
+                  - generic [ref=f4e394]:
+                    - text: Khai (packs)
+                    - 'link "Add an opt-in borrower text programme, separate from review requests (#3624) A separate, opt-in way to text borrowers about their own application, alongside the live review-request flow, which is not touched. A TESTER emails a borrower a personal link from Transactions; the borrower ticks an unticked box on a new page and the wording shown is stored against the loan. A TESTER can then send one of four fixed templates: welcome, items needed, need help, post-closing survey. No free text. Sends use the existing registered number. Enforced on the server: TESTER only; leads and prospects refused; an earlier STOP wins and signing up never clears an opt-out; STOP after sign-up ends it even if START follows; survey only on funded loans and once per sign-up; a failed welcome text undoes the sign-up; one live invite per loan; every text labelled with the loan id." [ref=f4e395] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/db6b0d39264fd82ed9f80b3fed97b076036512ed
+                  - generic [ref=f4e396] [cursor=pointer]: b3
+                  - generic [ref=f4e397]:
+                    - generic [ref=f4e398]: 7m 48s
+                    - generic [ref=f4e399]: 10/5/2026, 6:50:16 PM
+                - generic [ref=f4e400]:
+                  - generic [ref=f4e401]:
+                    - group [ref=f4e403]:
+                      - button "test" [ref=f4e404] [cursor=pointer]
+                    - generic [ref=f4e405]: packs/loan
+                  - generic [ref=f4e406]:
+                    - generic [ref=f4e407] [cursor=pointer]: succeeded
+                    - generic [ref=f4e409] [cursor=pointer]: "0"
+                  - generic [ref=f4e411]:
+                    - text: Khai (packs)
+                    - link [ref=f4e412] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/04fe93a3548dfe81efe9a55df67f49177a58b2c2
+                  - generic [ref=f4e413] [cursor=pointer]: b2
+                  - generic [ref=f4e414]:
+                    - generic [ref=f4e415]: 8m 41s
+                    - generic [ref=f4e416]: 10/5/2026, 6:26:23 PM
+                - generic [ref=f4e417]:
+                  - generic [ref=f4e418]:
+                    - group [ref=f4e420]:
+                      - button "test" [ref=f4e421] [cursor=pointer]
+                    - generic [ref=f4e422]: packs/loan
+                  - generic [ref=f4e423]:
+                    - generic [ref=f4e424] [cursor=pointer]: failed
+                    - generic [ref=f4e426] [cursor=pointer]: "37"
+                  - 'generic "failed: mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999 -Dlog=/home/ato/logs/6564675355934720_summary.txt >> /home/ato/logs/6564675355934720.txt 2>&1;: Error: Command failed: mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999 -Dlog=/home/ato/logs/6564675355934720_summary.txt >> /home/ato/logs/6564675355934720.txt 2>&1;" [ref=f4e428]':
+                    - text: Vinh (packs)
+                    - link "Serve vendor contract terms in getVendors for the marketplace vendor profile (MKT-173) (#3619)" [ref=f4e429] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/87901770dbe6834202105e4d992865b975b50956
+                  - generic [ref=f4e430] [cursor=pointer]: b5
+                  - generic [ref=f4e431]:
+                    - generic [ref=f4e432]: 73m 26s
+                    - generic [ref=f4e433]: 10/5/2026, 4:54:18 PM
+              - text: 
+          - generic "Page Navigation" [ref=f4e434]:
+            - list [ref=f4e436]:
+              - listitem [ref=f4e437] [cursor=pointer]:
+                - generic "Previous" [ref=f4e438]: «
+              - listitem [ref=f4e439] [cursor=pointer]:
+                - generic [ref=f4e440]: 1-15 of over 100
+              - listitem [ref=f4e441] [cursor=pointer]:
+                - generic "Next" [ref=f4e442]: »
+            - generic [ref=f4e443]:
+              - text: Showing
+              - combobox "Items per page" [ref=f4e444]:
+                - option "5"
+                - option "10" [selected]
+                - option "25"
+                - option "50"
+                - option "100"
+              - text: items per page
+    - link "Scroll to top" [ref=f4e64] [cursor=pointer]:
+      - /url: javascript:;
+      - generic [ref=f4e445]: keyboard_arrow_up
+  - iframe
+  - generic [ref=f4e65]:
+    - link "System Improvement?" [ref=f4e66] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f4e446]: send
+    - link "Help?" [ref=f4e67] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f4e447]: help
+    - link "Chat" [ref=f4e448] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f4e449]: chat
+  - log [ref=f4e450]
+  - log [ref=f4e451]
+  - log [ref=f4e452]
+  - log [ref=f4e453]
+  - log [ref=f4e454]
+  - log [ref=f4e455]
+  - log [ref=f4e456]
+  - log [ref=f4e457]
+  - log [ref=f4e458]
+  - log [ref=f4e459]
+  - log [ref=f4e460]
+  - log [ref=f4e461]
+  - log [ref=f4e462]
+  - log [ref=f4e463]
+  - log [ref=f4e464]
+  - log [ref=f4e465]
+  - log [ref=f4e466]
+  - log [ref=f4e467]

@@ -1,0 +1,161 @@
+[   11618ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3320/conversations:0
+[   11780ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ webpack-internal:///(pages-dir-browser)/./node_modules/react-dom/cjs/react-dom.development.js:29889
+[   11835ms] Error: Module not found: Package path ./chat.css is not exported from package /Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@loanfactory-inc/platform-chat (see exports field in /Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@loanfactory-inc/platform-chat/package.json)
+  18 | import '@loanfactory-inc/platform-react/theme.css'
+  19 | import '@loanfactory-inc/platform-react/assistant/styles.css'
+> 20 | import '@loanfactory-inc/platform-chat/chat.css'
+     | ^
+  21 | // The HR app's dropdown kit (ai-hr-fe, copied 16/10): after the platform sheets, before recruit's own.
+  22 | import '@styles/hrKit.css'
+  23 | import '@styles/global.css'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./src/shared/providers/AppProvider/index.tsx
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at getNotFoundError (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/parseNotFoundError.js:140:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async getModuleBuildError (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/webpackModuleError.js:103:27)
+    at async (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/index.js:29:49)
+    at async (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/index.js:27:21)
+[   11927ms] [LOG] [HMR] connected @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js:45
+[   11943ms] [ERROR] ./src/shared/providers/ThemeProvider/index.tsx:20:1
+Module not found: Package path ./chat.css is not exported from package /Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@loanfactory-inc/platform-chat (see exports field in /Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@loanfactory-inc/platform-chat/package.json)
+  18 | import '@loanfactory-inc/platform-react/theme.css'
+  19 | import '@loanfactory-inc/platform-react/assistant/styles.css'
+> 20 | import '@loanfactory-inc/platform-chat/chat.css'
+     | ^
+  21 | // The HR app's dropdown kit (ai-hr-fe, copied 16/10): after the platform sheets, before recruit's own.
+  22 | import '@styles/hrKit.css'
+  23 | import '@styles/global.css'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./src/shared/providers/AppProvider/index.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   11943ms] [ERROR] ./src/app/[locale]/(private)/layout.tsx:11:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   9 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+  10 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 11 |   require('@styles/design-2026-caps.css')
+     |   ^
+  12 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  13 |   require('@styles/design-2026.css')
+  14 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   11943ms] [ERROR] ./src/app/[locale]/[...rest]/not-found.tsx:10:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   8 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+   9 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 10 |   require('@styles/design-2026-caps.css')
+     |   ^
+  11 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  12 |   require('@styles/design-2026.css')
+  13 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   11949ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[   11965ms] [ERROR] ./src/shared/providers/ThemeProvider/index.tsx:20:1
+Module not found: Package path ./chat.css is not exported from package /Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@loanfactory-inc/platform-chat (see exports field in /Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@loanfactory-inc/platform-chat/package.json)
+  18 | import '@loanfactory-inc/platform-react/theme.css'
+  19 | import '@loanfactory-inc/platform-react/assistant/styles.css'
+> 20 | import '@loanfactory-inc/platform-chat/chat.css'
+     | ^
+  21 | // The HR app's dropdown kit (ai-hr-fe, copied 16/10): after the platform sheets, before recruit's own.
+  22 | import '@styles/hrKit.css'
+  23 | import '@styles/global.css'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./src/shared/providers/AppProvider/index.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   12277ms] [ERROR] ./src/shared/providers/ThemeProvider/index.tsx:20:1
+Module not found: Package path ./chat.css is not exported from package /Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@loanfactory-inc/platform-chat (see exports field in /Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@loanfactory-inc/platform-chat/package.json)
+  18 | import '@loanfactory-inc/platform-react/theme.css'
+  19 | import '@loanfactory-inc/platform-react/assistant/styles.css'
+> 20 | import '@loanfactory-inc/platform-chat/chat.css'
+     | ^
+  21 | // The HR app's dropdown kit (ai-hr-fe, copied 16/10): after the platform sheets, before recruit's own.
+  22 | import '@styles/hrKit.css'
+  23 | import '@styles/global.css'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./src/shared/providers/AppProvider/index.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   12277ms] [ERROR] ./src/app/[locale]/(private)/layout.tsx:11:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   9 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+  10 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 11 |   require('@styles/design-2026-caps.css')
+     |   ^
+  12 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  13 |   require('@styles/design-2026.css')
+  14 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   12277ms] [ERROR] ./src/app/[locale]/[...rest]/not-found.tsx:10:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   8 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+   9 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 10 |   require('@styles/design-2026-caps.css')
+     |   ^
+  11 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  12 |   require('@styles/design-2026.css')
+  13 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   12290ms] [ERROR] ./src/shared/providers/ThemeProvider/index.tsx:20:1
+Module not found: Package path ./chat.css is not exported from package /Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@loanfactory-inc/platform-chat (see exports field in /Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@loanfactory-inc/platform-chat/package.json)
+  18 | import '@loanfactory-inc/platform-react/theme.css'
+  19 | import '@loanfactory-inc/platform-react/assistant/styles.css'
+> 20 | import '@loanfactory-inc/platform-chat/chat.css'
+     | ^
+  21 | // The HR app's dropdown kit (ai-hr-fe, copied 16/10): after the platform sheets, before recruit's own.
+  22 | import '@styles/hrKit.css'
+  23 | import '@styles/global.css'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./src/shared/providers/AppProvider/index.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   12338ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js:206
+[   12508ms] [ERROR] ./src/shared/providers/ThemeProvider/index.tsx:20:1
+Module not found: Package path ./chat.css is not exported from package /Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@loanfactory-inc/platform-chat (see exports field in /Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@loanfactory-inc/platform-chat/package.json)
+  18 | import '@loanfactory-inc/platform-react/theme.css'
+  19 | import '@loanfactory-inc/platform-react/assistant/styles.css'
+> 20 | import '@loanfactory-inc/platform-chat/chat.css'
+     | ^
+  21 | // The HR app's dropdown kit (ai-hr-fe, copied 16/10): after the platform sheets, before recruit's own.
+  22 | import '@styles/hrKit.css'
+  23 | import '@styles/global.css'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./src/shared/providers/AppProvider/index.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   12508ms] [ERROR] ./src/app/[locale]/(private)/layout.tsx:11:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   9 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+  10 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 11 |   require('@styles/design-2026-caps.css')
+     |   ^
+  12 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  13 |   require('@styles/design-2026.css')
+  14 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   12508ms] [ERROR] ./src/app/[locale]/[...rest]/not-found.tsx:10:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   8 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+   9 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 10 |   require('@styles/design-2026-caps.css')
+     |   ^
+  11 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  12 |   require('@styles/design-2026.css')
+  13 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   12687ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3320/favicon.ico:0

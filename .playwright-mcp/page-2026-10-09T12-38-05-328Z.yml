@@ -1,0 +1,41 @@
+- generic [active] [ref=f2e1]:
+  - generic [ref=f2e2]: Loading...
+  - generic [ref=f2e7]:
+    - generic [ref=f2e8]:
+      - generic [ref=f2e9]:
+        - button "Sidebar collapse button" [ref=f2e10] [cursor=pointer]
+        - link "X Moso" [ref=f2e14] [cursor=pointer]:
+          - /url: "#"
+      - list [ref=f2e15]:
+        - listitem [ref=f2e16]:
+          - link "Search" [ref=f2e17] [cursor=pointer]:
+            - /url: "#"
+        - listitem [ref=f2e18]:
+          - link "Message" [ref=f2e19] [cursor=pointer]:
+            - /url: javascript:;
+        - listitem [ref=f2e20]:
+          - link [ref=f2e21] [cursor=pointer]:
+            - /url: javascript:;
+            - text: Bao Trinh
+            - img "Bao Trinh" [ref=f2e22]
+      - generic [ref=f2e23]:
+        - button "search" [ref=f2e24]
+        - textbox "Search input" [ref=f2e25]:
+          - /placeholder: Type any text to search...
+        - link "close search" [ref=f2e26] [cursor=pointer]:
+          - /url: "#"
+    - generic [ref=f2e28]:
+      - list [ref=f2e29]:
+        - listitem [ref=f2e30]:
+          - link "Bao Trinh  Bao Trinh Dev" [ref=f2e31] [cursor=pointer]:
+            - /url: javascript:;
+            - img "Bao Trinh" [ref=f2e34]
+            - generic [ref=f2e35]:
+              - generic [ref=f2e36]: 
+              - text: Bao Trinh
+              - generic [ref=f2e37]: Dev
+        - listitem
+      - list [ref=f2e38]:
+        - listitem [ref=f2e39]: X Moso
+    - link "Scroll to top" [ref=f2e43] [cursor=pointer]:
+      - /url: javascript:;

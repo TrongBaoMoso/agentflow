@@ -1,0 +1,55 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - img "Loan Factory" [ref=e5]
+        - generic [ref=e6]: Recruit
+      - generic [aria-hidden] [ref=e7]:
+        - generic [ref=e11]: Search candidates, NMLS, companies…
+        - generic [ref=e12]: ⌘ K
+      - generic [ref=e13]:
+        - generic [ref=e18]:
+          - textbox "Dev persona" [ref=e30] [cursor=pointer]
+          - button "Change language" [ref=e31] [cursor=pointer]:
+            - generic [ref=e32]: English
+          - button "Switch to dark mode" [ref=e42] [cursor=pointer]
+        - generic [aria-hidden] [ref=e47]: "?"
+    - navigation [ref=e48]:
+      - navigation [ref=e49]:
+        - generic [ref=e50]: Frequent
+        - link [ref=e51] [cursor=pointer]:
+          - /url: /today
+        - link [ref=e56] [cursor=pointer]:
+          - /url: /inbox/hot
+        - link [ref=e60] [cursor=pointer]:
+          - /url: /inbox/cold
+        - link [ref=e75] [cursor=pointer]:
+          - /url: /pipeline
+        - link [ref=e80] [cursor=pointer]:
+          - /url: /exceptions
+        - link [ref=e84] [cursor=pointer]:
+          - /url: /reports
+        - link [ref=e90] [cursor=pointer]:
+          - /url: /work
+        - link [ref=e95] [cursor=pointer]:
+          - /url: /sponsorships
+      - navigation [ref=e101]:
+        - generic [ref=e102]: Configuration
+        - link [ref=e103] [cursor=pointer]:
+          - /url: /templates
+        - link [ref=e108] [cursor=pointer]:
+          - /url: /duplicates
+        - link [ref=e114] [cursor=pointer]:
+          - /url: /dormant
+        - link [ref=e119] [cursor=pointer]:
+          - /url: /conversations
+        - link [ref=e123] [cursor=pointer]:
+          - /url: /audit
+        - link [ref=e128] [cursor=pointer]:
+          - /url: /settings
+        - link [ref=e133] [cursor=pointer]:
+          - /url: /licensing-rules
+        - link [ref=e138] [cursor=pointer]:
+          - /url: /permissions
+    - main [ref=e143]
+  - alert [ref=e149]

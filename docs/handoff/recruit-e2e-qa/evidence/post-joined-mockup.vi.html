@@ -1,0 +1,793 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tiến độ sau Joined</title>
+<meta name="description" content="Mockup agentflow-lpshc: tiến độ onboarding sau khi LO Joined, 5 tình huống, để product owner duyệt.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Tokens copied from the platform SDK theme.css (light) that recruit-fe uses. */
+:root {
+  --lf-accent: #e4642a; --lf-accent-deep: #ad4a1b; --lf-accent-tint: #fbeae0; --lf-accent-tint-2: #fef4ee;
+  --lf-blue: #2e5a88; --lf-blue-deep: #25517e; --lf-blue-tint: #f1f5fa; --lf-blue-tint-2: #e1eaf3;
+  --lf-green: #2e7d5b; --lf-green-deep: #256b4f; --lf-green-tint: #e6f2ec;
+  --lf-gold: #b7791f; --lf-gold-tint: #fef3c7; --lf-gold-ink: #92400e;
+  --lf-red: #b3261e; --lf-red-deep: #b91c1c; --lf-red-tint: #fbeaea;
+  --lf-on-fill: #ffffff; --lf-app-bg: #faf9f7; --lf-surface: #ffffff;
+  --lf-text: #201e1b; --lf-text-muted: #6e6a63; --lf-text-faint: #787269;
+  --lf-border: #eceae6; --lf-border-3: #f0eee9; --lf-border-4: #e4e1dc; --lf-hover: #f2f0ec; --lf-input-bg: #fbfaf8;
+  --lf-shadow-card: 0 1px 2px rgba(32,30,27,.04), 0 8px 24px -16px rgba(32,30,27,.14);
+  --lf-shadow-raised: 0 2px 4px rgba(32,30,27,.05), 0 18px 40px -20px rgba(32,30,27,.2);
+  --lf-radius-card: 16px;
+  --sheet-bg: #efece6;
+  --f-body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--sheet-bg); color: var(--lf-text); font: 14px/1.5 var(--f-body); }
+button { font: inherit; cursor: pointer; }
+.sheet { max-width: 1340px; margin: 0 auto; padding: 28px 16px 80px; display: flex; flex-direction: column; gap: 44px; }
+
+/* ---------- sheet header ---------- */
+.intro { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 28px; align-items: end; }
+.kicker { font: 500 12px var(--f-mono); color: var(--lf-accent-deep); letter-spacing: .02em; }
+.intro h1 { margin: 6px 0 10px; font-size: 34px; line-height: 1.1; letter-spacing: -.02em; font-weight: 800; }
+.intro p { margin: 0; max-width: 62ch; color: var(--lf-text-muted); }
+.intro .vi { margin-top: 8px; font-style: italic; }
+.legend { background: var(--lf-surface); border: 1px solid var(--lf-border-4); border-radius: 14px; padding: 14px 16px; display: grid; gap: 10px; box-shadow: var(--lf-shadow-card); }
+.legend h2 { margin: 0; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--lf-text-muted); }
+.legend-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 12.5px; color: var(--lf-text-muted); }
+.controls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--sheet-bg) 92%, transparent); backdrop-filter: blur(6px); padding: 10px 0; margin: -24px 0 -20px; border-bottom: 1px solid var(--lf-border-4); }
+.seg { display: inline-flex; background: var(--lf-surface); border: 1px solid var(--lf-border-4); border-radius: 999px; padding: 3px; }
+.seg button { border: 0; background: transparent; padding: 6px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; color: var(--lf-text-muted); }
+.seg button[aria-pressed="true"] { background: var(--lf-text); color: #fff; }
+.seg button:focus-visible, .btn:focus-visible, .lnk:focus-visible { outline: 2px solid var(--lf-accent); outline-offset: 2px; }
+.jump { display: flex; gap: 6px; flex-wrap: wrap; }
+.jump a { text-decoration: none; color: var(--lf-text); font-weight: 700; font-size: 13px; width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; background: var(--lf-surface); border: 1px solid var(--lf-border-4); }
+.jump a:hover { border-color: var(--lf-accent); color: var(--lf-accent-deep); }
+
+/* ---------- scenario ---------- */
+.scn { display: flex; flex-direction: column; gap: 16px; scroll-margin-top: 64px; }
+.scn-hd { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 14px; align-items: start; }
+.scn-letter { width: 56px; height: 56px; border-radius: 16px; background: var(--lf-text); color: #fff; display: grid; place-items: center; font-size: 26px; font-weight: 800; }
+.scn-hd h2 { margin: 2px 0 2px; font-size: 22px; letter-spacing: -.01em; }
+.scn-hd p { margin: 0; color: var(--lf-text-muted); max-width: 90ch; }
+.scn-hd .vi { font-style: italic; font-size: 13px; margin-top: 4px; color: var(--lf-blue-deep); }
+.scn-lower { display: grid; grid-template-columns: 375px minmax(0, 1fr); gap: 20px; align-items: start; }
+.cap { font: 500 11px var(--f-mono); color: var(--lf-text-faint); text-transform: uppercase; letter-spacing: .06em; margin: 0 0 6px; }
+
+/* ---------- desktop frame ---------- */
+.desk-scroll { overflow-x: auto; border-radius: 14px; box-shadow: var(--lf-shadow-raised); }
+.desk { width: 1280px; background: var(--lf-app-bg); border: 1px solid var(--lf-border-4); border-radius: 14px; overflow: hidden; }
+.chrome { height: 34px; background: #e9e6e0; display: flex; align-items: center; gap: 7px; padding: 0 14px; }
+.chrome i { width: 10px; height: 10px; border-radius: 50%; background: #cfcac2; }
+.chrome span { margin-left: 14px; font: 500 11.5px var(--f-mono); color: var(--lf-text-muted); background: #f6f4f0; padding: 3px 12px; border-radius: 6px; }
+.apphd { height: 60px; background: var(--lf-surface); border-bottom: 1px solid var(--lf-border); display: flex; align-items: center; gap: 12px; padding: 0 22px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 16px; }
+.brand-mark { width: 28px; height: 28px; border-radius: 8px; background: var(--lf-accent); color: #fff; display: grid; place-items: center; font-size: 13px; }
+.brand small { font-weight: 500; color: var(--lf-text-muted); font-size: 14px; border-left: 1px solid var(--lf-border-4); padding-left: 10px; }
+.apphd .sp { flex: 1; }
+.bell { position: relative; width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; color: var(--lf-text-muted); border: 1px solid var(--lf-border); }
+.bell b { position: absolute; top: -5px; right: -5px; min-width: 18px; height: 18px; border-radius: 9px; background: var(--lf-accent); color: #fff; font-size: 10.5px; display: grid; place-items: center; padding: 0 4px; border: 2px solid var(--lf-surface); }
+.me { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--lf-text-muted); }
+.av { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 12px; background: var(--lf-blue-tint-2); color: var(--lf-blue-deep); flex: none; }
+.app { display: grid; grid-template-columns: 220px minmax(0, 1fr); min-height: 760px; }
+.nav { background: var(--lf-surface); border-right: 1px solid var(--lf-border); padding: 16px 12px; display: flex; flex-direction: column; gap: 2px; }
+.nav span { padding: 8px 12px; border-radius: 10px; color: var(--lf-text-muted); font-size: 13.5px; font-weight: 500; display: flex; justify-content: space-between; }
+.nav span.on { background: var(--lf-accent-tint); color: var(--lf-accent-deep); font-weight: 700; }
+.nav em { font-style: normal; font-size: 11px; font-weight: 700; background: var(--lf-hover); border-radius: 999px; padding: 0 7px; }
+.nav .grp { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--lf-text-faint); padding: 14px 12px 4px; }
+.main { padding: 22px 30px 34px; display: flex; flex-direction: column; gap: 18px; }
+.crumb { font-size: 12.5px; color: var(--lf-text-faint); }
+.prof { background: var(--lf-surface); border: 1px solid var(--lf-border-4); border-radius: var(--lf-radius-card); box-shadow: var(--lf-shadow-card); padding: 20px 22px; display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(0, 520px); gap: 18px; align-items: center; }
+.prof .av { width: 56px; height: 56px; font-size: 18px; background: var(--lf-accent-tint); color: var(--lf-accent-deep); }
+.prof h1 { margin: 0; font-size: 24px; letter-spacing: -.01em; }
+.prof .meta { color: var(--lf-text-muted); font-size: 13px; margin-top: 2px; }
+.cols { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 18px; align-items: start; }
+.panel { background: var(--lf-surface); border: 1px solid var(--lf-border-4); border-radius: var(--lf-radius-card); box-shadow: var(--lf-shadow-card); padding: 16px 18px; }
+.panel h3, .opc-t { margin: 0 0 10px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--lf-text-muted); }
+.kv { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 8px 10px; font-size: 13px; }
+.kv dt { color: var(--lf-text-faint); }
+.kv dd { margin: 0; }
+.kv dd.miss { color: var(--lf-red-deep); font-weight: 600; }
+
+/* ---------- stage stepper (recruit .rec-stp, condensed) ---------- */
+.stp { display: flex; list-style: none; margin: 0; padding: 0; }
+.stp li { flex: 1 1 0; position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11.5px; color: var(--lf-text-faint); text-align: center; }
+.stp li + li::before { content: ""; position: absolute; top: 11px; right: 50%; width: 100%; height: 2px; background: var(--lf-border-4); }
+.stp li[data-s="done"]::before, .stp li[data-s="cur"]::before { background: var(--lf-green); }
+.stp i { position: relative; z-index: 1; width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--lf-text-faint); background: var(--lf-surface); display: grid; place-items: center; font-style: normal; font-weight: 700; font-size: 11px; }
+.stp li[data-s="done"] i { background: var(--lf-green); border-color: var(--lf-green); color: #fff; }
+.stp li[data-s="cur"] i { background: var(--lf-accent-deep); border-color: var(--lf-accent-deep); color: #fff; box-shadow: 0 0 0 4px var(--lf-accent-tint); }
+.stp li[data-s="cur"] { color: var(--lf-text); font-weight: 700; }
+
+/* ---------- onboarding progress card ---------- */
+.opc { container: opc / inline-size; background: var(--lf-surface); border: 1px solid var(--lf-border-4); border-radius: var(--lf-radius-card); box-shadow: var(--lf-shadow-card); overflow: hidden; }
+.opc-hd { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; padding: 16px 18px 12px; }
+.opc-hd .opc-t { margin: 0 0 4px; }
+.opc-sum { margin: 0; font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
+.opc-sub { margin: 3px 0 0; font-size: 13px; color: var(--lf-text-muted); display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.opc-ring { flex: none; width: 50px; height: 50px; }
+.opc-pre { margin: 0 18px; padding: 10px 12px; border-radius: 12px; background: var(--lf-input-bg); border: 1px solid var(--lf-border); display: grid; grid-template-columns: auto repeat(3, minmax(0, 1fr)); gap: 6px 14px; align-items: center; }
+.opc-pre .lbl { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--lf-text-faint); }
+.pre { display: flex; gap: 8px; align-items: center; min-width: 0; }
+.pre .d { width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; background: var(--lf-green); color: #fff; flex: none; }
+.pre .d[data-todo] { background: var(--lf-surface); border: 2px solid var(--lf-text-faint); }
+.pre b { display: block; font-size: 12.5px; font-weight: 600; }
+.pre small { display: block; font-size: 11.5px; color: var(--lf-text-faint); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.opc-ban { margin: 12px 18px 0; border-radius: 12px; border: 1px solid #f1c7c4; background: var(--lf-red-tint); padding: 12px 14px; display: grid; gap: 8px; }
+.opc-ban h4 { margin: 0; font-size: 14px; color: var(--lf-red-deep); display: flex; gap: 8px; align-items: center; }
+.opc-ban p { margin: 0; font-size: 12.5px; color: var(--lf-text); }
+.opc-ban .acts { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.opc-ban .fine { font-size: 12px; color: var(--lf-text-muted); }
+.steps { list-style: none; margin: 8px 0 0; padding: 4px 18px 6px; }
+.st { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 12px; position: relative; padding: 9px 0; }
+.st + .st { border-top: 1px dashed var(--lf-border); }
+.st::after { content: ""; position: absolute; left: 12px; top: 37px; bottom: -10px; width: 2px; background: var(--lf-border-4); }
+.st:last-child::after { display: none; }
+.st[data-s="done"]::after { background: var(--lf-green); }
+.dot { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; border: 2px solid var(--lf-border-4); background: var(--lf-surface); color: var(--lf-text-faint); font-size: 11px; font-weight: 800; position: relative; z-index: 1; margin-top: 1px; }
+.st[data-s="done"] .dot { background: var(--lf-green); border-color: var(--lf-green); color: #fff; }
+.st[data-s="wait"] .dot, .st[data-s="due"] .dot { background: var(--lf-accent); border-color: var(--lf-accent); color: #fff; }
+.st[data-s="block"] .dot { background: var(--lf-red); border-color: var(--lf-red); color: #fff; }
+.st[data-s="lock"] .dot { border-style: dashed; }
+.st-top { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+.st-name { font-weight: 600; font-size: 14px; }
+.st[data-s="todo"] .st-name, .st[data-s="lock"] .st-name { color: var(--lf-text-muted); font-weight: 500; }
+.st-date { font: 500 11.5px var(--f-mono); color: var(--lf-text-faint); white-space: nowrap; }
+.st-meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 4px; }
+.st-note { margin-top: 5px; font-size: 12px; color: var(--lf-text-muted); display: flex; gap: 6px; align-items: center; }
+.st-note::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--lf-blue); flex: none; }
+.st-hint { font-size: 12px; color: var(--lf-text-faint); }
+.st-act { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 7px; }
+.opc-foot { margin: 4px 18px 16px; padding: 10px 12px; background: var(--lf-blue-tint); border-radius: 10px; font-size: 12px; color: var(--lf-blue-deep); display: flex; gap: 8px; align-items: flex-start; }
+.opc-foot svg { flex: none; margin-top: 2px; }
+
+@container opc (max-width: 520px) {
+  .opc-pre { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .opc-pre .lbl { grid-column: 1 / -1; }
+  .pre { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .opc-sum { font-size: 16px; }
+  .st-act .btn { flex: 1 1 auto; justify-content: center; }
+}
+
+/* chips + buttons */
+.chip { display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px; border-radius: 999px; font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+.chip svg { flex: none; }
+.c-auto { background: var(--lf-blue-tint-2); color: var(--lf-blue-deep); }
+.c-man { background: var(--lf-gold-tint); color: var(--lf-gold-ink); }
+.c-wait { background: var(--lf-hover); color: var(--lf-text); }
+.c-slow { background: var(--lf-red-tint); color: var(--lf-red-deep); }
+.c-later { background: transparent; border: 1px dashed var(--lf-border-4); color: var(--lf-text-faint); font-weight: 500; }
+.btn { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--lf-border-4); background: var(--lf-surface); color: var(--lf-text); font-size: 12.5px; font-weight: 600; transition: background-color .15s, border-color .15s, transform .1s; }
+.btn:hover { border-color: var(--lf-text-faint); background: var(--lf-input-bg); }
+.btn:active { transform: translateY(1px); }
+.btn.pri { background: var(--lf-accent); border-color: var(--lf-accent); color: #fff; }
+.btn.pri:hover { background: #c9531d; border-color: #c9531d; }
+.btn.tick { border-style: dashed; }
+.btn.tick:hover { border-style: solid; border-color: var(--lf-green); color: var(--lf-green-deep); background: var(--lf-green-tint); }
+.lnk { border: 0; background: none; padding: 0; color: var(--lf-accent-deep); font-size: 12px; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+
+/* viewer toggle */
+body[data-viewer="rec"] .ob-only { display: none !important; }
+body[data-viewer="ob"] .rec-only { display: none !important; }
+
+/* ---------- phone ---------- */
+.phone { width: 375px; border-radius: 36px; background: #1d1b19; padding: 10px; box-shadow: var(--lf-shadow-raised); }
+.phone-in { background: var(--lf-app-bg); border-radius: 28px; overflow: hidden; }
+.phone-bar { height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; background: var(--lf-surface); border-bottom: 1px solid var(--lf-border); font-size: 13px; font-weight: 700; }
+.phone-body { padding: 12px 8px 18px; display: flex; flex-direction: column; gap: 10px; }
+.phone-body .stp li span { display: none; }
+.phone-name { padding: 2px 8px; }
+.phone-name b { font-size: 17px; display: block; }
+.phone-name small { color: var(--lf-text-muted); }
+
+/* ---------- other surfaces ---------- */
+.surf { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.surf .wide { grid-column: 1 / -1; }
+.sbox { background: var(--lf-surface); border: 1px solid var(--lf-border-4); border-radius: 14px; box-shadow: var(--lf-shadow-card); overflow: hidden; }
+.sbox-hd { padding: 12px 16px; border-bottom: 1px solid var(--lf-border); display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.sbox-hd b { font-size: 14px; }
+.sbox-hd small { color: var(--lf-text-faint); font-size: 12px; }
+.who-chip { font: 500 11px var(--f-mono); color: var(--lf-text-muted); background: var(--lf-hover); padding: 2px 8px; border-radius: 999px; }
+.empty { padding: 14px 16px; color: var(--lf-text-faint); font-size: 12.5px; }
+.trow { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 12px 16px; border-left: 3px solid var(--lf-accent); }
+.trow + .trow { border-top: 1px solid var(--lf-border); }
+.trow.red { border-left-color: var(--lf-red); }
+.trow b { display: block; font-size: 13.5px; }
+.trow small { color: var(--lf-text-muted); font-size: 12px; }
+.trow .acts { display: flex; gap: 6px; }
+.bells { list-style: none; margin: 0; padding: 0; }
+.bells li { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 10px; padding: 10px 16px; align-items: start; font-size: 13px; }
+.bells li + li { border-top: 1px solid var(--lf-border); }
+.bells li.new { background: var(--lf-accent-tint-2); }
+.bells .ic { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; background: var(--lf-green-tint); color: var(--lf-green-deep); }
+.bells .ic.go { background: var(--lf-accent-tint); color: var(--lf-accent-deep); }
+.bells .ic.money { background: var(--lf-gold-tint); color: var(--lf-gold-ink); }
+.bells time { font: 500 11px var(--f-mono); color: var(--lf-text-faint); white-space: nowrap; }
+.bells small { display: block; color: var(--lf-text-faint); font-size: 11.5px; }
+.alt { padding: 10px 16px; border-top: 1px dashed var(--lf-border-4); font-size: 12px; color: var(--lf-text-muted); background: var(--lf-input-bg); }
+.hrow { display: grid; grid-template-columns: minmax(150px, 1.1fr) minmax(0, 2fr) minmax(110px, .8fr) minmax(130px, .8fr); gap: 14px; align-items: center; padding: 11px 16px; font-size: 13px; }
+.hrow + .hrow { border-top: 1px solid var(--lf-border); }
+.hrow .nm { display: flex; gap: 10px; align-items: center; min-width: 0; }
+.hrow .nm b { display: block; }
+.hrow .nm small { color: var(--lf-text-faint); font-size: 11.5px; }
+.hrow .st-txt { font-weight: 600; }
+.hrow .st-txt small { display: block; font-weight: 400; color: var(--lf-text-muted); font-size: 12px; }
+.bar { display: grid; grid-template-columns: repeat(3, 1fr) 10px repeat(4, 1fr) 10px 1fr 10px repeat(2, 1fr); gap: 3px; align-items: center; min-width: 0; }
+.bar i { position: relative; height: 6px; border-radius: 3px; background: var(--lf-border-4); }
+.bar i::before { content: ""; position: absolute; inset: -9px 0; }
+.bar i.gap { background: none; }
+.bar i.gap::before { display: none; }
+.bar i:focus-visible { outline: 2px solid var(--lf-accent); outline-offset: 2px; }
+.hhead { padding-top: 9px; padding-bottom: 9px; border-bottom: 1px solid var(--lf-border); background: var(--lf-input-bg); }
+.hhead .bar { align-items: end; }
+.hhead .bar b { font-size: 10px; font-weight: 700; color: var(--lf-text-faint); text-align: center; white-space: nowrap; line-height: 1; }
+.hhead .bar b.g1 { grid-column: 1 / 4; } .hhead .bar b.g2 { grid-column: 5 / 9; } .hhead .bar b.g3 { grid-column: 10 / 11; } .hhead .bar b.g4 { grid-column: 12 / 14; }
+.hleg { display: flex; flex-wrap: wrap; gap: 6px 16px; padding: 10px 16px; font-size: 12px; font-weight: 600; color: var(--lf-text-muted); border-bottom: 1px solid var(--lf-border); }
+.hleg span { display: inline-flex; align-items: center; gap: 6px; }
+.hleg i { width: 9px; height: 9px; border-radius: 50%; background: var(--lf-border-4); }
+.hleg i.d { background: var(--lf-green); } .hleg i.c { background: var(--lf-accent); } .hleg i.x { background: var(--lf-red); }
+.tip { position: fixed; z-index: 60; left: 0; top: 0; max-width: 240px; padding: 5px 9px; border-radius: 7px; background: var(--lf-text); color: #fff; font-size: 12px; font-weight: 600; line-height: 1.3; pointer-events: none; opacity: 0; transition: opacity .12s; }
+.tip.on { opacity: 1; }
+.st-grp { list-style: none; margin: 8px 0 0; padding: 6px 0 0 38px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--lf-text-faint); }
+.bar i.d { background: var(--lf-green); }
+.bar i.c { background: var(--lf-accent); }
+.bar i.x { background: var(--lf-red); }
+.hrow .since { text-align: right; font-weight: 600; font-size: 12.5px; }
+.hrow .since small { display: block; font-weight: 400; color: var(--lf-text-muted); font-size: 12px; }
+.hhead .hh-since { text-align: right; font-size: 10px; font-weight: 700; color: var(--lf-text-faint); line-height: 1; }
+.hrow .late { color: var(--lf-red-deep); font-weight: 600; }
+.hhead .hh-st { font-size: 10px; font-weight: 700; color: var(--lf-text-faint); line-height: 1; }
+
+.decisions { background: var(--lf-surface); border: 1px solid var(--lf-border-4); border-radius: 16px; padding: 18px 20px; box-shadow: var(--lf-shadow-card); }
+.decisions h2 { margin: 0 0 10px; font-size: 18px; }
+.decisions ol { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+.decisions li span { color: var(--lf-text-muted); }
+
+@media (max-width: 960px) {
+  .intro, .scn-lower, .surf { grid-template-columns: minmax(0, 1fr); }
+  .phone { margin: 0 auto; max-width: 100%; }
+  .hrow { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .hrow .since { text-align: left; }
+  .hhead > span:not(.bar) { display: none; }
+}
+@media (max-width: 420px) {
+  .controls { position: static; }
+  .phone { width: 100%; padding: 6px; border-radius: 26px; }
+  .intro h1 { font-size: 27px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } html { scroll-behavior: auto; } }
+html { scroll-behavior: smooth; }
+.lang { display: inline-flex; background: var(--lf-surface); border: 1px solid var(--lf-border-4); border-radius: 999px; padding: 3px; }
+.lang a { padding: 6px 12px; border-radius: 999px; font-size: 13px; font-weight: 700; color: var(--lf-text-muted); text-decoration: none; }
+.lang a[aria-current="page"] { background: var(--lf-accent); color: #fff; }
+.lang a:focus-visible { outline: 2px solid var(--lf-accent); outline-offset: 2px; }
+</style>
+</head>
+<body data-viewer="ob">
+<main class="sheet">
+  <header class="intro">
+    <div>
+      <div class="kicker">agentflow-lpshc · mockup chờ duyệt · 07/10/2026</div>
+      <h1>Sau Joined: mỗi phụ thuộc một trạng thái, cho tới Onboarded</h1>
+      <p>Mỗi phụ thuộc bên ngoài (HR account, HR to-do, HR docs, Licensing) chỉ là một trạng thái xong / chưa xong. Mỗi dấu tick cho biết nó đến từ đâu (sự kiện tự động, hoặc recruiter owner / onboarding specialist tick tay), và mỗi bước còn mở cho biết đang chờ ai, chờ bao lâu. Các chi tiết trung gian như "BGC pending" chỉ là ghi chú, không phải bước. Trường hồ sơ bị thiếu có hai loại: <b>bắt buộc</b> (HR không tạo được hồ sơ nếu thiếu, ví dụ NMLS, email, loại W-2/1099) và <b>không bắt buộc</b> (số điện thoại, địa chỉ nhà).</p>
+      <p class="vi">Xem 5 tình huống A–E bên dưới. Bấm "Mark done" / "Undo" để thử; đổi góc nhìn Linh (onboarding specialist) ↔ Mai (recruiter owner) ở thanh trên — cả hai đều tick tay được. Chữ trong màn hình app giữ tiếng Anh như app thật; phần giải thích bằng tiếng Việt.</p>
+    </div>
+    <aside class="legend" aria-label="Chú thích">
+      <h2>Chú thích</h2>
+      <div class="legend-row"><span class="chip c-auto" data-ico="bolt">Auto</span> đến từ một sự kiện (HR app, thanh toán, ký điện tử)</div>
+      <div class="legend-row"><span class="chip c-man" data-ico="hand">Ticked by Mai</span><span class="chip c-man" data-ico="hand">Ticked by Linh</span> recruiter owner hoặc onboarding specialist tick tay; còn Undo được cho tới khi HR app gửi sự kiện thật, lúc đó khoá lại thành Auto</div>
+      <div class="legend-row"><span class="chip c-wait" data-ico="clock">HR docs · 3 days</span> bước chờ lâu nhất và đã chờ bao lâu</div>
+    </aside>
+  </header>
+
+  <div class="controls">
+    <div class="seg" role="group" aria-label="Xem dưới vai">
+      <button type="button" data-viewer="ob" aria-pressed="true">Xem dưới vai Linh · onboarding specialist</button>
+      <button type="button" data-viewer="rec" aria-pressed="false">Xem dưới vai Mai · recruiter owner</button>
+    </div>
+    <div class="lang" role="group" aria-label="Language"><a href="index.html" hreflang="en">EN</a><a aria-current="page" href="vi.html" hreflang="vi">VI</a></div>
+    <nav class="jump" aria-label="Tình huống">
+      <a href="#scn-A">A</a><a href="#scn-B">B</a><a href="#scn-C">C</a><a href="#scn-D">D</a><a href="#scn-E">E</a><a href="#handoffs" title="My hand-offs">≡</a>
+    </nav>
+  </div>
+
+  <div id="scenarios"></div>
+
+  <section id="handoffs" class="scn" aria-labelledby="ho-h">
+    <div class="scn-hd">
+      <div class="scn-letter" aria-hidden="true">≡</div>
+      <div>
+        <h2 id="ho-h">My hand-offs (recruiter Mai)</h2>
+        <p>Mỗi LO Mai đã bàn giao là một dòng. Thanh tiến độ có 10 đoạn chia 4 nhóm: Before joining (1-1, Fee, Signed), HR (Sent to HR, HR account, HR to-do, HR docs), Licensing và Onboarding (Setup call, Onboarded). Chỉ có 4 màu: xanh lá là đã xong (miễn phí vẫn tính là xong), cam là đang chờ, đỏ là có vấn đề (thiếu cho HR, hoặc chờ quá 5 ngày), xám là chưa bắt đầu. Cột Waiting on cho biết đang chờ ai, dòng dưới là việc còn phải làm; cột Since cho biết ngày giờ bắt đầu chờ (giờ Pacific) kèm thời gian đã chờ, chuyển đỏ khi quá 5 ngày. Rê chuột hoặc focus vào một đoạn để xem tên bước và ngày.</p>
+        <p class="vi">Dòng 1–2 là trước khi Joined; dòng 3–6 là sau Joined. Mai tick tay ngay trên hồ sơ LO, không phải ở bảng này. Thẻ tiến độ onboarding cũng gom các bước sau Joined theo nhóm HR, Licensing, Onboarding.</p>
+      </div>
+    </div>
+    <div class="sbox" id="handoff-table"></div>
+  </section>
+
+  <section class="decisions" aria-labelledby="dec-h">
+    <h2 id="dec-h">Đã chốt (Bao, 07/10)</h2>
+    <ol>
+      <li><b>Ai tick tay:</b> recruiter owner hoặc onboarding specialist (HR to-do, HR docs, Licensing). Chip ghi rõ ai tick: "Ticked by Mai" hoặc "Ticked by Linh".</li>
+      <li><b>Thời hạn Undo:</b> còn Undo được cho tới khi HR app gửi sự kiện thật; lúc đó bước khoá lại thành Auto và nút Undo biến mất.</li>
+      <li><b>Không có gửi ngoại lệ:</b> HR không tạo được nhân viên nếu thiếu các trường bắt buộc, nên bỏ hẳn nút "Send now". Thiếu trường bắt buộc (ví dụ NMLS, email, loại W-2/1099) thì chưa bàn giao: banner "Missing for HR", chuông và mục Today gửi tới cả onboarding specialist lẫn recruiter owner, và Anna được tự gửi sang HR ngay khi trường đó được điền. Thiếu trường không bắt buộc (số điện thoại, địa chỉ nhà) thì không chặn: vẫn gửi Anna sang HR, và bước Sent to HR ghi chú "HR may ask for: …".</li>
+      <li><b>Đỏ sau 5 ngày:</b> chip "Waiting on … · N days" chuyển đỏ sau 5 ngày ở bất kỳ bước nào còn chờ (Missing for HR, HR account, HR to-do, HR docs, Licensing, setup call).</li>
+      <li><b>Quy tắc Licensing:</b> tự tick khi HR đã bảo lãnh (sponsor) xong mọi bang Anna đăng ký (theo cập nhật licence từ HR); nếu cập nhật không tới thì một trong hai người tick tay.</li>
+      <li><b>Các giai đoạn:</b> New lead, Engaged, Offer, Onboarding, Joined, Onboarded.</li>
+      <li><b>Không hint trong UI app:</b> không có ghi chú hay giải thích trong màn app, chỉ nhãn, trạng thái và nút (Bao 07/10). Giải thích chỉ nằm ở phần chú thích này.</li>
+    </ol>
+  </section>
+</main>
+
+<script>
+(() => {
+  'use strict';
+
+  /* ---------- icons ---------- */
+  const ICON = {
+    check: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+    bolt: '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>',
+    hand: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 13V5.5a1.5 1.5 0 013 0V11m0-5.5a1.5 1.5 0 013 0V11m0-4a1.5 1.5 0 013 0v6c0 4-2.5 7-6.5 7S5 17.5 4 15l-1.2-2.4A1.5 1.5 0 015.4 11L8 14"/></svg>',
+    clock: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+    lock: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>',
+    alert: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 8v5M12 17h.01"/><circle cx="12" cy="12" r="9.5"/></svg>',
+    bell: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 0112 0v5l1.5 2h-15zM10 20.5a2 2 0 004 0"/></svg>',
+    cal: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>',
+    dollar: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 3v18M16.5 7.5c-.8-1.2-2.4-2-4.5-2-2.5 0-4 1.3-4 3s1.5 2.5 4 3 4.5 1.3 4.5 3.2-2 3.3-4.5 3.3c-2.2 0-3.9-.9-4.7-2.3"/></svg>',
+    pen: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16zM14 6l4 4"/></svg>',
+    info: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6M12 7.5h.01"/></svg>'
+  };
+  const chip = (cls, ico, text) => `<span class="chip ${cls}">${ico ? ICON[ico] : ''}${text}</span>`;
+
+  /* ---------- dates: day numbers in October 2026 (0 and below = September) ---------- */
+  const fmt = (n) => (n <= 0 ? `Sep ${30 + n}` : `Oct ${n}`);
+  const TIMES = ['10:30 AM', '9:05 AM', '11:40 AM', '2:15 PM', '4:50 PM', '3:20 PM'];
+  const stamp = (n) => `${fmt(n)}, ${TIMES[((n % TIMES.length) + TIMES.length) % TIMES.length]} PT`;
+  const ago = (from, today) => {
+    const n = today - from;
+    if (n <= 0) return '5 hours';
+    return n === 1 ? '1 day' : `${n} days`;
+  };
+  const SLOW_DAYS = 5;
+  const OB = 'Linh';
+  const REC = 'Mai';
+  const viewerName = () => (document.body.dataset.viewer === 'rec' ? REC : OB);
+  const HR_KEYS = ['acct', 'todo', 'docs'];
+  const MANUAL_KEYS = ['todo', 'docs', 'lic'];
+
+  /* ---------- scenarios (base data; interaction keeps per-scenario overrides) ---------- */
+  const PRE = { oneOnOne: { d: -1, type: 'W-2' }, signed: 3 };
+  const BASE = {
+    A: {
+      title: 'Vừa Joined, tự động gửi sang HR',
+      sub: 'Anna ký và trả phí ngày 03/10. Đủ mọi trường HR bắt buộc nên hồ sơ được gửi sang HR ngay trong phút đó. Thiếu số điện thoại nhưng đó là trường không bắt buộc: bước Sent to HR ghi chú HR có thể hỏi Anna. Xem vào ngày 06/10.',
+      vi: '',
+      today: 6, fee: { kind: 'paid', d: 2 }, sent: { d: 3 }, optional: ['phone'],
+      hr: { acct: null, todo: null, docs: null, lic: null },
+      notes: { docs: 'HR note: background check (BGC) pending' },
+      setup: null
+    },
+    B: {
+      title: 'Thiếu trường bắt buộc: chưa gửi sang HR',
+      sub: 'Anna Joined ngày 03/10 (Mai miễn phí) nhưng hồ sơ chưa có số NMLS. HR không tạo được hồ sơ nếu thiếu NMLS nên chưa gửi gì sang HR. Cả Linh và Mai đều thấy banner, nhận chuông và có mục trên Today. Không có nút gửi ngoại lệ; điền NMLS xong là tự gửi. Xem vào ngày 04/10.',
+      vi: '',
+      today: 4, fee: { kind: 'waived', d: 2, by: 'Mai' }, sent: null, missing: ['NMLS'],
+      hr: { acct: null, todo: null, docs: null, lic: null }, notes: {}, setup: null
+    },
+    C: {
+      title: 'HR xong, Licensing còn chờ',
+      sub: 'HR account tự tick từ sự kiện HR; Linh tick tay HR to-do, Mai tick tay HR docs (cả hai còn Undo được). Licensing đã chờ 7 ngày nên chip chuyển đỏ. Chuông "HR is done for Anna". Xem vào ngày 10/10.',
+      vi: '',
+      today: 10, fee: { kind: 'paid', d: 2 }, sent: { d: 3 },
+      hr: { acct: { d: 5, by: 'auto' }, todo: { d: 7, by: OB }, docs: { d: 9, by: REC }, lic: null },
+      notes: { lic: 'Licensing note: NMLS sponsorship requested Oct 8' },
+      setup: null
+    },
+    D: {
+      title: 'HR và Licensing xong: đến lúc setup call',
+      sub: 'Licensing tự tick ngày 13/10 khi HR đã sponsor xong mọi bang Anna đăng ký. Bước Setup call mở ra, hiện trên Today của Linh, chỉ một chuông gộp duy nhất. Xem vào ngày 13/10.',
+      vi: '',
+      today: 13, fee: { kind: 'paid', d: 2 }, sent: { d: 3 },
+      hr: { acct: { d: 5, by: 'auto' }, todo: { d: 7, by: OB }, docs: { d: 9, by: REC }, lic: { d: 13, by: 'auto' } },
+      notes: {}, setup: null
+    },
+    E: {
+      title: 'Đã Onboarded',
+      sub: 'Linh họp setup call ngày 15/10 và đánh dấu xong; LO tự chuyển sang S6 Onboarded. Thẻ tiến độ ở lại như hồ sơ lịch sử. Xem vào ngày 15/10.',
+      vi: '',
+      today: 15, fee: { kind: 'paid', d: 2 }, sent: { d: 3 },
+      hr: { acct: { d: 5, by: 'auto' }, todo: { d: 7, by: OB }, docs: { d: 9, by: REC }, lic: { d: 13, by: 'auto' } },
+      notes: {}, setup: { booked: 15, done: 15 }
+    }
+  };
+  let state = { ...BASE };
+
+  /* ---------- derived model ---------- */
+  const derive = (s) => {
+    const hrDone = HR_KEYS.every((k) => s.hr[k]);
+    const hrDate = hrDone ? Math.max(...HR_KEYS.map((k) => s.hr[k].d)) : null;
+    const licDate = s.hr.lic ? s.hr.lic.d : null;
+    const bothDate = hrDone && licDate ? Math.max(hrDate, licDate) : null;
+    const doneCount = [...HR_KEYS, 'lic'].filter((k) => s.hr[k]).length;
+    const onboarded = Boolean(s.setup && s.setup.done);
+    const joined = 3;
+    return { hrDone, hrDate, licDate, bothDate, doneCount, onboarded, joined, setupDue: Boolean(bothDate) && !onboarded };
+  };
+
+  const WAIT_ON = { acct: 'HR', todo: 'Anna', docs: 'HR', lic: 'Licensing' };
+  const ACTION = { acct: 'Create account', todo: 'HR to-do', docs: 'HR docs', lic: 'Sponsor' };
+  const late = (from, today, text) => (today - from > SLOW_DAYS ? `<span class="late">${text}</span>` : text);
+  const NAMES = { acct: 'HR account', todo: 'HR to-do', docs: 'HR docs', lic: 'Licensing' };
+  const waitChip = (from, today) => chip(today - from > SLOW_DAYS ? 'c-slow' : 'c-wait', 'clock', `Since ${stamp(from)} · ${ago(from, today)}`);
+  /* Since column cell: date+time, age (red over SLOW_DAYS) */
+  const sinceCell = (from, today) => `${stamp(from)}<small>${late(from, today, ago(from, today))}</small>`;
+
+  const srcChip = (tick) =>
+    tick.by === 'auto' ? chip('c-auto', 'bolt', 'Auto') : chip('c-man', 'hand', `Ticked by ${tick.by}`);
+
+  const stepHr = (sid, s, k) => {
+    const tick = s.hr[k];
+    const isManual = MANUAL_KEYS.includes(k);
+    const note = s.notes[k] ? `<div class="st-note">${s.notes[k]}</div>` : '';
+    if (!s.sent) {
+      return { s: 'todo', name: NAMES[k], date: '', body: `` };
+    }
+    if (tick) {
+      const undo = tick.by !== 'auto'
+        ? `<button type="button" class="lnk" data-act="undo" data-sid="${sid}" data-k="${k}">Undo</button>`
+        : '';
+      return { s: 'done', name: NAMES[k], date: fmt(tick.d), body: `<div class="st-meta">${srcChip(tick)}${undo}</div>${note}` };
+    }
+    const act = isManual
+      ? `<div class="st-act"><button type="button" class="btn tick" data-act="tick" data-sid="${sid}" data-k="${k}">${ICON.check} Mark done</button></div>`
+      : '';
+    return {
+      s: s.today - s.sent.d > SLOW_DAYS ? 'block' : 'wait', name: NAMES[k], date: '',
+      body: `<div class="st-meta">${waitChip(s.sent.d, s.today)}</div>${note}${act}`
+    };
+  };
+
+  const steps = (sid, s, m) => {
+    const list = [];
+    list.push({ s: 'done', name: 'Joined', date: fmt(m.joined), body: `<div class="st-meta">${chip('c-auto', 'bolt', 'Auto')}</div>` });
+    if (s.sent) {
+      const opt = s.optional && s.optional.length ? `<div class="st-note">HR may ask for: ${s.optional.join(', ')}</div>` : '';
+      list.push({ s: 'done', grp: 'HR', name: 'Sent to HR', date: fmt(s.sent.d), body: `<div class="st-meta">${chip('c-auto', 'bolt', 'Auto')}</div>${opt}` });
+    } else {
+      list.push({ s: 'block', grp: 'HR', name: 'Sent to HR', date: '', body: `<div class="st-meta">${waitChip(m.joined, s.today)}</div>` });
+    }
+    ['acct', 'todo', 'docs', 'lic'].forEach((k) => list.push({ ...stepHr(sid, s, k), grp: k === 'lic' ? 'Licensing' : 'HR' }));
+
+    if (m.onboarded) {
+      list.push({ s: 'done', grp: 'Onboarding', name: 'Setup call', date: fmt(s.setup.done), body: `<div class="st-meta">${chip('c-man', 'hand', `Marked done by ${OB}`)}</div>` });
+      list.push({ s: 'done', grp: 'Onboarding', name: 'Onboarded', date: fmt(s.setup.done), body: `<div class="st-meta">${chip('c-auto', 'bolt', 'Auto')}</div>` });
+    } else if (m.setupDue) {
+      const booked = s.setup && s.setup.booked;
+      list.push({
+        s: s.today - m.bothDate > SLOW_DAYS ? 'block' : 'due', grp: 'Onboarding', name: 'Setup call', date: booked ? `${fmt(booked)} · 10:00 AM` : '',
+        body: `<div class="st-meta">${waitChip(m.bothDate, s.today)}</div>
+          <div class="st-act ob-only">${booked
+            ? `<button type="button" class="btn pri" data-act="setupdone" data-sid="${sid}">${ICON.check} Mark done</button><button type="button" class="btn">Reschedule</button>`
+            : `<button type="button" class="btn pri" data-act="book" data-sid="${sid}">${ICON.cal} Book the setup call</button>`}</div>`
+      });
+      list.push({ s: 'todo', grp: 'Onboarding', name: 'Onboarded', date: '', body: `` });
+    } else {
+      list.push({ s: 'lock', grp: 'Onboarding', name: 'Setup call', date: '', body: `<div class="st-meta"></div>` });
+      list.push({ s: 'todo', grp: 'Onboarding', name: 'Onboarded', date: '', body: `` });
+    }
+    return list;
+  };
+
+  /* who the LO is waiting on + oldest pending step; shared by card headline and hand-off row */
+  const pending = (s) => {
+    const open = ['acct', 'todo', 'docs', 'lic'].filter((k) => !s.hr[k]);
+    return { who: [...new Set(open.map((k) => WAIT_ON[k]))].join(', '), step: ACTION[open[0]], from: s.sent.d };
+  };
+  const headline = (s, m) => {
+    if (!s.sent) return { sum: 'Missing for HR', sub: chip('c-wait', 'clock', s.missing.join(', ')), detail: s.missing.join(', '), since: sinceCell(m.joined, s.today) };
+    if (m.onboarded) return { sum: 'Done', sub: chip('c-auto', 'bolt', `Onboarded ${fmt(s.setup.done)}`), detail: 'Onboarded', since: fmt(s.setup.done) };
+    if (m.setupDue) return { sum: 'Book setup call', sub: chip('c-wait', 'clock', 'Book call'), detail: 'Book call', since: sinceCell(m.bothDate, s.today) };
+    const p = pending(s);
+    return { sum: p.who, sub: chip('c-wait', 'clock', p.step), detail: p.step, since: sinceCell(p.from, s.today) };
+  };
+
+  const ring = (done, total) => {
+    const r = 20, c = 2 * Math.PI * r, f = c * (done / total);
+    return `<svg class="opc-ring" viewBox="0 0 50 50" role="img" aria-label="${done} of ${total} steps done"><circle cx="25" cy="25" r="${r}" fill="none" stroke="var(--lf-border-4)" stroke-width="5"/><circle cx="25" cy="25" r="${r}" fill="none" stroke="var(--lf-green)" stroke-width="5" stroke-linecap="round" stroke-dasharray="${f} ${c}" transform="rotate(-90 25 25)"/><text x="25" y="29" text-anchor="middle" font-size="12" font-weight="800" fill="var(--lf-text)">${done}/${total}</text></svg>`;
+  };
+
+  const preBlock = (s) => `
+    <div class="opc-pre" aria-label="Before joining">
+      <span class="lbl">Before joining</span>
+      <div class="pre"><span class="d">${ICON.check}</span><span><b>1-1 done</b><small>${PRE.oneOnOne.type} · ${fmt(PRE.oneOnOne.d)}</small></span></div>
+      <div class="pre"><span class="d" ${s.fee.kind === 'waived' ? 'data-waived' : ''}>${ICON.check}</span><span><b>${s.fee.kind === 'waived' ? 'Fee waived' : 'Fee paid'}</b><small>${fmt(s.fee.d)} · ${s.fee.by ? `by ${s.fee.by}` : 'Auto'}</small></span></div>
+      <div class="pre"><span class="d">${ICON.check}</span><span><b>Signed</b><small>${fmt(PRE.signed)} · Auto</small></span></div>
+    </div>`;
+
+  const banner = (sid, s) => s.sent ? '' : `
+    <div class="opc-ban" role="status">
+      <h4>${ICON.alert} Missing for HR: ${s.missing.join(', ')}</h4>
+      <div class="acts">
+        <button type="button" class="btn">${ICON.pen} Fill in profile</button>
+      </div>
+    </div>`;
+
+  const card = (sid, s) => {
+    const m = derive(s);
+    const h = headline(s, m);
+    const list = steps(sid, s, m);
+    const done = list.filter((x) => x.s === 'done').length;
+    return `
+    <section class="opc" aria-label="Onboarding progress">
+      <header class="opc-hd">
+        <div>
+          <h3 class="opc-t">Onboarding progress</h3>
+          <p class="opc-sum">${h.sum}</p>
+          <div class="opc-sub">${h.sub}</div>
+        </div>
+        ${ring(done, list.length)}
+      </header>
+      ${preBlock(s)}
+      ${banner(sid, s)}
+      <ol class="steps">
+        ${list.map((x, i) => `${i > 0 && x.grp && x.grp !== list[i - 1].grp ? `<li class="st-grp">${x.grp}</li>` : ''}
+          <li class="st" data-s="${x.s}">
+            <span class="dot" aria-hidden="true">${x.s === 'done' ? ICON.check : x.s === 'block' ? '!' : x.s === 'lock' ? ICON.lock : i + 1}</span>
+            <div>
+              <div class="st-top"><span class="st-name">${x.name}</span><span class="st-date">${x.date}</span></div>
+              ${x.body}
+            </div>
+          </li>`).join('')}
+      </ol>
+    </section>`;
+  };
+
+  /* ---------- stage stepper, profile, desktop frame ---------- */
+  const STAGES = ['New lead', 'Engaged', 'Offer', 'Onboarding', 'Joined', 'Onboarded'];
+  const S_JOINED = STAGES.indexOf('Joined') + 1;
+  const S_ONBOARDED = STAGES.length;
+  const stepper = (cur) => `<ol class="stp" aria-label="Stage">${STAGES.map((n, i) => {
+    const st = i + 1 < cur ? 'done' : i + 1 === cur ? 'cur' : 'todo';
+    const done = st === 'done' || (cur === S_ONBOARDED && i === S_ONBOARDED - 1);
+    return `<li data-s="${done ? 'done' : st}"><i>${done ? ICON.check : i + 1}</i><span>${n}</span></li>`;
+  }).join('')}</ol>`;
+
+  const bellsFor = (s, m) => {
+    const list = [
+      { d: s.fee.d, cls: 'money', ico: 'dollar', text: s.fee.kind === 'waived' ? 'Mai waived the fee for Anna' : 'Anna paid the fee', to: 'Mai, Linh' },
+      { d: PRE.signed, cls: '', ico: 'pen', text: 'Anna signed the agreement', to: 'Mai, Linh' }
+    ];
+    if (!s.sent) list.push({ d: m.joined, cls: 'go', ico: 'alert', text: `Missing for HR: ${s.missing.join(', ')}`, to: 'Mai, Linh' });
+    if (m.hrDone && m.licDate && m.hrDate !== m.licDate) {
+      const first = m.hrDate < m.licDate ? 'HR is done for Anna' : 'Licensing is done for Anna';
+      list.push({ d: Math.min(m.hrDate, m.licDate), cls: '', ico: 'check', text: first, to: 'Linh' });
+    } else if (m.hrDone && !m.licDate) {
+      list.push({ d: m.hrDate, cls: '', ico: 'check', text: 'HR is done for Anna', to: 'Linh' });
+    } else if (!m.hrDone && m.licDate) {
+      list.push({ d: m.licDate, cls: '', ico: 'check', text: 'Licensing is done for Anna', to: 'Linh' });
+    }
+    if (m.bothDate) list.push({ d: m.bothDate, cls: 'go', ico: 'cal', text: 'HR and Licensing are done — book the setup call for Anna', to: 'Linh' });
+    return list.sort((a, b) => b.d - a.d);
+  };
+
+  const bellBox = (s, m) => {
+    const list = bellsFor(s, m);
+    return `<div class="sbox"><div class="sbox-hd"><b>${ICON.bell} Bells</b><span class="who-chip">mới nhất trước</span></div>
+      <ul class="bells">${list.map((b, i) => `<li class="${i === 0 && b.d === s.today ? 'new' : ''}"><span class="ic ${b.cls}">${ICON[b.ico]}</span><span>${b.text}</span><time>${fmt(b.d)}</time></li>`).join('')}</ul></div>`;
+  };
+
+  const bellAlt = (s, m) => (m.hrDone && !m.licDate ? '<div class="alt">Nếu Licensing xong trước, Linh sẽ nhận <b>"Licensing is done for Anna"</b> thay vào đó. Khi bên thứ hai xong chỉ có đúng một chuông: <b>"HR and Licensing are done — book the setup call for Anna"</b>.</div>' : '');
+
+  const todayBox = (sid, s, m) => {
+    const rows = [];
+    if (!s.sent) rows.push(`<div class="trow red"><span class="av">AN</span><span><b>Missing for HR: ${s.missing.join(', ')}</b><small>Joined ${fmt(m.joined)}</small></span><span class="acts"><button type="button" class="btn">Email Anna</button><button type="button" class="btn">Open</button></span></div>`);
+    if (m.setupDue) rows.push(`<div class="trow"><span class="av">AN</span><span><b>HR and Licensing are done — book the setup call</b><small>Anna Nguyen · ready since ${fmt(m.bothDate)}</small></span><span class="acts"><button type="button" class="btn pri" data-act="book" data-sid="${sid}">Book the setup call</button></span></div>`);
+    const empty = 'Nothing today';
+    return `<div class="sbox"><div class="sbox-hd"><b>Today · Your onboarding</b><span class="who-chip">${s.sent ? 'chỉ Linh' : 'Linh và Mai'}</span></div>${rows.join('') || `<p class="empty">${empty}</p>`}</div>`;
+  };
+
+  /* hand-off row: bar = 10 segments in 4 groups; 4 colours: d green, c orange, x red, '' grey */
+  const SEG_NAMES = ['1-1', 'Fee', 'Signed', 'Sent to HR', 'HR account', 'HR to-do', 'HR docs', 'Licensing', 'Setup call', 'Onboarded'];
+  const SEG_GROUPS = [['Before joining', 3, 'g1'], ['HR', 4, 'g2'], ['Licensing', 1, 'g3'], ['Onboarding', 2, 'g4']];
+  /* cls: d done, w waived (shown green), c waiting, x problem, '' not started; nums: date (done) or waiting-since (c/x) */
+  const segs = (cls, nums, today) => cls.map((c, i) => {
+    const n = nums[i];
+    const t = c === 'd' ? fmt(n) : c === 'w' ? 'Waived' : c === 'c' ? `Waiting · ${ago(n, today)}` : c === 'x' ? `Missing · ${ago(n, today)}` : 'Not started';
+    return { c: c === 'w' ? 'd' : c === 'c' && today - n > SLOW_DAYS ? 'x' : c, text: `${SEG_NAMES[i]} · ${t}` };
+  });
+  const segHtml = (g) => `<i class="${g.c}" tabindex="0" aria-label="${g.text}" data-tip="${g.text}"></i>`;
+  const barHtml = (bar) => {
+    let at = 0;
+    return SEG_GROUPS.map(([, n]) => { const part = bar.slice(at, at + n).map(segHtml).join(''); at += n; return part; }).join('<i class="gap"></i>');
+  };
+  const handoffHead = () => `
+    <div class="hrow hhead" aria-hidden="true"><span></span><span class="bar">${SEG_GROUPS.map(([name, , cls]) => `<b class="${cls}">${name}</b>`).join('')}</span><span class="hh-st">Waiting on</span><span class="hh-since">Since</span></div>`;
+  const handoffRow = (p) => `
+    <div class="hrow">
+      <span class="nm"><span class="av">${p.ini}</span><span><b>${p.name}</b><small>${p.meta}</small></span></span>
+      <span class="bar" role="group" aria-label="${p.label}">${barHtml(p.bar)}</span>
+      <span class="st-txt">${p.status}<small>${p.detail}</small></span>
+      <span class="since">${p.since}</span>
+    </div>`;
+
+  const handoffFor = (s, m) => {
+    const pre = ['d', s.fee.kind === 'waived' ? 'w' : 'd', 'd'];
+    const hrCls = ['acct', 'todo', 'docs', 'lic'].map((k) => (s.hr[k] ? 'd' : s.sent ? 'c' : ''));
+    const cls = [...pre, s.sent ? 'd' : 'x', ...hrCls, m.onboarded ? 'd' : m.setupDue ? 'c' : '', m.onboarded ? 'd' : ''];
+    const hrNum = (k) => (s.hr[k] ? s.hr[k].d : s.sent ? s.sent.d : 0);
+    const setupNum = m.onboarded ? s.setup.done : m.bothDate || 0;
+    const nums = [PRE.oneOnOne.d, s.fee.d, PRE.signed, s.sent ? s.sent.d : m.joined,
+      hrNum('acct'), hrNum('todo'), hrNum('docs'), hrNum('lic'), setupNum, setupNum];
+    const bar = segs(cls, nums, s.today);
+    const h = headline(s, m);
+    const status = h.sum;
+    const detail = h.detail;
+    return { ini: 'AN', name: 'Anna Nguyen', meta: 'W-2 · to Linh', bar, status, detail, since: h.since, label: `Waiting on ${status}` };
+  };
+
+  const field = (s, key, value) => {
+    if ((s.missing || []).includes(key)) return '<dd class="miss">Missing</dd>';
+    if ((s.optional || []).includes(key)) return '<dd class="miss">Missing · optional</dd>';
+    return `<dd>${value}</dd>`;
+  };
+
+  const desktop = (sid, s, m) => {
+    const bells = bellsFor(s, m).filter((b) => b.d === s.today).length;
+    return `
+    <div class="desk-scroll" tabindex="0" aria-label="Máy tính, rộng 1280">
+      <div class="desk">
+        <div class="chrome"><i></i><i></i><i></i><span>recruit.loanfactory.com/candidates/anna-nguyen</span></div>
+        <div class="apphd">
+          <span class="brand"><span class="brand-mark">LF</span>Loan Factory <small>Recruit</small></span>
+          <span class="sp"></span>
+          <span class="bell">${ICON.bell}${bells ? `<b>${bells}</b>` : ''}</span>
+          <span class="me"><span class="av ob-only">LP</span><span class="av rec-only">MT</span><span class="ob-only">Linh Pham</span><span class="rec-only">Mai Tran</span></span>
+        </div>
+        <div class="app">
+          <nav class="nav" aria-label="Main">
+            <span>Today ${m.setupDue || !s.sent ? '<em>1</em>' : ''}</span><span>Pipeline</span><span class="on">Candidates</span><span>Conversations</span>
+            <span class="grp">Frequent</span><span>My invites</span><span>My hand-offs</span><span>My referrals</span><span>Reports</span>
+          </nav>
+          <div class="main">
+            <div class="crumb">Candidates / Anna Nguyen</div>
+            <div class="prof">
+              <span class="av">AN</span>
+              <div><h1>Anna Nguyen</h1><div class="meta">Loan officer · W-2 · Houston, TX · Recruiter Mai Tran · Onboarding Linh Pham</div></div>
+              ${stepper(m.onboarded ? S_ONBOARDED : S_JOINED)}
+            </div>
+            <div class="cols">
+              ${card(sid, s)}
+              <aside style="display:flex;flex-direction:column;gap:18px">
+                <div class="panel"><h3>Contact</h3>
+                  <dl class="kv">
+                    <dt>Email</dt><dd>anna.nguyen@gmail.com</dd>
+                    <dt>Phone</dt>${field(s, 'phone', '(713) 555-0142')}
+                    <dt>Home address</dt>${field(s, 'home address', '2214 Elm St, Houston, TX 77007')}
+                    <dt>NMLS</dt>${field(s, 'NMLS', '2184471')}
+                  </dl>
+                </div>
+                <div class="panel"><h3>People</h3>
+                  <dl class="kv"><dt>Recruiter</dt><dd>Mai Tran</dd><dt>Onboarding</dt><dd>Linh Pham</dd><dt>HR contact</dt><dd>HR team (HR app)</dd></dl>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  };
+
+  const phone = (sid, s, m) => `
+    <div>
+      <p class="cap">Điện thoại · rộng 375 · cùng thẻ</p>
+      <div class="phone"><div class="phone-in">
+        <div class="phone-bar"><span>‹ Candidates</span><span>${ICON.bell}</span></div>
+        <div class="phone-body">
+          <div class="phone-name"><b>Anna Nguyen</b><small>W-2 · ${m.onboarded ? `S${S_ONBOARDED} Onboarded` : `S${S_JOINED} Joined`}</small></div>
+          ${card(sid, s)}
+        </div>
+      </div></div>
+    </div>`;
+
+  const renderScenario = (sid) => {
+    const s = state[sid];
+    const m = derive(s);
+    return `
+      <div class="scn-hd">
+        <div class="scn-letter" aria-hidden="true">${sid}</div>
+        <div><h2>${sid}. ${s.title}</h2><p>${s.sub}</p>${s.vi ? `<p class="vi">${s.vi}</p>` : ''}</div>
+      </div>
+      <div><p class="cap">Máy tính · rộng 1280 · hồ sơ LO</p>${desktop(sid, s, m)}</div>
+      <div class="scn-lower">
+        ${phone(sid, s, m)}
+        <div>
+          <p class="cap">Cùng thời điểm, ở các màn khác</p>
+          <div class="surf">
+            ${todayBox(sid, s, m)}
+            ${bellBox(s, m)}
+            <div class="sbox wide"><div class="sbox-hd"><b>My hand-offs · row for Anna</b><span class="who-chip">chỉ Mai</span></div>${handoffHead()}${handoffRow(handoffFor(s, m))}</div>
+          </div>
+          ${bellAlt(s, m)}
+        </div>
+      </div>`;
+  };
+
+  const root = document.getElementById('scenarios');
+  root.style.display = 'flex';
+  root.style.flexDirection = 'column';
+  root.style.gap = '56px';
+  const renderAll = () => {
+    root.innerHTML = Object.keys(state).map((sid) => `<section class="scn" id="scn-${sid}" aria-label="Tình huống ${sid}">${renderScenario(sid)}</section>`).join('');
+  };
+  const rerender = (sid) => {
+    const el = document.getElementById(`scn-${sid}`);
+    if (el) el.innerHTML = renderScenario(sid);
+  };
+
+  /* ---------- interaction: immutable updates per scenario ---------- */
+  const update = (sid, fn) => { state = { ...state, [sid]: fn(state[sid]) }; rerender(sid); };
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-act]');
+    if (b) {
+      const { act, sid, k } = b.dataset;
+      if (act === 'tick') update(sid, (s) => ({ ...s, hr: { ...s.hr, [k]: { d: s.today, by: viewerName() } } }));
+      if (act === 'undo') update(sid, (s) => ({ ...s, hr: { ...s.hr, [k]: null }, setup: null }));
+      if (act === 'book') update(sid, (s) => ({ ...s, setup: { booked: s.today + 2 } }));
+      if (act === 'setupdone') update(sid, (s) => ({ ...s, setup: { ...s.setup, done: s.setup.booked }, today: s.setup.booked }));
+      return;
+    }
+    const v = e.target.closest('.seg [data-viewer]');
+    if (v) {
+      document.body.dataset.viewer = v.dataset.viewer;
+      document.querySelectorAll('.seg [data-viewer]').forEach((x) => x.setAttribute('aria-pressed', String(x === v)));
+    }
+  });
+
+  /* legend chips get their icons */
+  document.querySelectorAll('.legend [data-ico]').forEach((el) => { el.insertAdjacentHTML('afterbegin', ICON[el.dataset.ico]); });
+
+  /* ---------- consolidated My hand-offs ---------- */
+  const others = [
+    { ini: 'TL', name: 'Tom Le', meta: '1099 · to Linh', bar: segs(['d', '', 'c', '', '', '', '', '', '', ''], [3, 0, 5], 7), status: 'Tom', detail: 'Sign', since: sinceCell(5, 7), label: 'Waiting on Tom' },
+    { ini: 'RB', name: 'Rosa Barrios', meta: 'W-2 · to Linh', bar: segs(['d', 'c', 'd', '', '', '', '', '', '', ''], [1, 5, 4], 7), status: 'Rosa', detail: 'Pay fee', since: sinceCell(5, 7), label: 'Waiting on Rosa' },
+    { ...handoffFor(BASE.C, derive(BASE.C)), ini: 'AN', name: 'Anna Nguyen' },
+    { ini: 'KD', name: 'Kevin Doan', meta: 'W-2 · to Linh', bar: segs(['d', 'd', 'd', 'd', 'd', 'd', 'c', 'c', '', ''], [-2, 0, 1, 3, 4, 5, 5, 5], 7), status: 'HR, Licensing', detail: 'HR docs', since: sinceCell(5, 7), label: 'Waiting on HR, Licensing' },
+    { ...handoffFor(BASE.B, derive(BASE.B)), ini: 'JP', name: 'James Pham', meta: '1099 · to Linh' },
+    { ...handoffFor(BASE.E, derive(BASE.E)), ini: 'SH', name: 'Sara Hoang' }
+  ];
+  document.getElementById('handoff-table').innerHTML = '<div class="hleg"><span><i class="d"></i>Done</span><span><i class="c"></i>Waiting</span><span><i class="x"></i>Problem</span><span><i></i>Not started</span></div>' + handoffHead() + others.map(handoffRow).join('');
+
+  /* custom tooltip for hand-off bar segments (hover + keyboard focus) */
+  const tip = document.createElement('div');
+  tip.className = 'tip';
+  tip.setAttribute('role', 'tooltip');
+  document.body.appendChild(tip);
+  const showTip = (el) => {
+    tip.textContent = el.dataset.tip;
+    const r = el.getBoundingClientRect();
+    const w = tip.offsetWidth;
+    const x = Math.min(Math.max(8, r.left + r.width / 2 - w / 2), document.documentElement.clientWidth - w - 8);
+    tip.style.left = `${x}px`;
+    tip.style.top = `${Math.max(4, r.top - tip.offsetHeight - 8)}px`;
+    tip.classList.add('on');
+  };
+  const hideTip = () => tip.classList.remove('on');
+  const segOf = (e) => e.target.closest && e.target.closest('.bar i[data-tip]');
+  document.addEventListener('mouseover', (e) => { const el = segOf(e); if (el) showTip(el); });
+  document.addEventListener('mouseout', (e) => { if (segOf(e)) hideTip(); });
+  document.addEventListener('focusin', (e) => { const el = segOf(e); if (el) showTip(el); });
+  document.addEventListener('focusout', (e) => { if (segOf(e)) hideTip(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hideTip(); });
+  window.addEventListener('scroll', hideTip, { passive: true });
+
+  renderAll();
+})();
+</script>
+</body>
+</html>

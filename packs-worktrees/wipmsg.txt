@@ -1,0 +1,8 @@
+wip: harden recruiter-standing lookup (retry, cache, https, 3-way outcome, unverified label)
+
+Review items 2-6: one retry on timeout/5xx, distinct lookup-failed WARN with
+hashed admin id, UNVERIFIED label on the lead, https+/api URL validation,
+~3s total timeouts, 60s per-owner cache (never failures), no redirects, 16KB
+body cap, lazy client, once-only config warning. 28 tests green.
+
+Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>

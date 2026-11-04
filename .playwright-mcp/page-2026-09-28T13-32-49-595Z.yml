@@ -1,0 +1,202 @@
+- generic [active] [ref=f8e1]:
+  - generic [ref=f8e2]:
+    - generic [ref=f8e3]: Design mockup · example data
+    - generic [ref=f8e4]: recruit-fe · Candidate drawer · "Re-send agreement…" (replaces MOSO's "Re-generate e-sign documents and send email") · DRAFT 28/09
+    - group "Language" [ref=f8e5]:
+      - button "EN" [pressed] [ref=f8e6] [cursor=pointer]
+      - button "VI" [ref=f8e7] [cursor=pointer]
+    - button "Toggle light / dark" [ref=f8e8] [cursor=pointer]
+  - main [ref=f8e9]:
+    - region [ref=f8e10]:
+      - generic [ref=f8e11]:
+        - heading "Re-send the agreement without leaving Recruit" [level=1] [ref=f8e12]
+        - paragraph [ref=f8e13]: Today, when W-2/1099 changes after the 1-1, or the loan officer loses the signing e-mail, the specialist has to open MOSO and click "Re-generate e-sign documents and send email". This moves that action into Recruit. MOSO decides what is out of date, the specialist confirms exactly what will be sent and to whom, and nothing is ever e-mailed without that click.
+      - list "What happens" [ref=f8e14]:
+        - listitem [ref=f8e15]:
+          - generic [ref=f8e16]: "1"
+          - text: 1-1 marked done. MOSO builds the agreement, no e-mail
+        - listitem [ref=f8e17]:
+          - generic [ref=f8e18]: "2"
+          - text: "Something changes: W-2/1099, states, or the link expired"
+        - listitem [ref=f8e19]:
+          - generic [ref=f8e20]: "3"
+          - text: Recruit shows "Out of date" and offers "Re-send agreement…"
+        - listitem [ref=f8e21]:
+          - generic [ref=f8e22]: "4"
+          - text: "Confirm: recipient, what is sent, what stays signed"
+        - listitem [ref=f8e23]:
+          - generic [ref=f8e24]: "5"
+          - text: MOSO cancels the old envelope, builds the new one, e-mails the loan officer
+    - region [ref=f8e25]:
+      - generic [ref=f8e26]:
+        - generic [ref=f8e27]: Screen A · Candidate drawer, Overview tab
+        - heading "The Agreement card, under the Invite progress card" [level=2] [ref=f8e28]
+        - paragraph [ref=f8e29]: The card reads MOSO's own envelope through a dry run, so "Out of date" is MOSO's truth, not a guess from Recruit's profile. Pick a state to see the card.
+      - generic [ref=f8e30]:
+        - generic [ref=f8e31]: "State:"
+        - group "Card state" [ref=f8e32]:
+          - button "Out of date" [pressed] [ref=f8e33] [cursor=pointer]
+          - button "Up to date" [ref=f8e34] [cursor=pointer]
+          - button "Sending" [ref=f8e35] [cursor=pointer]
+          - button "Sent" [ref=f8e36] [cursor=pointer]
+          - button "Not confirmed" [ref=f8e37] [cursor=pointer]
+          - button "Refused" [ref=f8e38] [cursor=pointer]
+          - button "All signed" [ref=f8e39] [cursor=pointer]
+          - button "Before 1-1" [ref=f8e40] [cursor=pointer]
+      - generic [ref=f8e41]:
+        - complementary "Candidate drawer (excerpt)" [ref=f8e42]:
+          - generic [ref=f8e43]:
+            - generic [ref=f8e44]: Brian Okafor
+            - generic [ref=f8e45]: "S5 · FL · Specialist: Jordan Lee"
+          - generic [ref=f8e46]:
+            - generic [ref=f8e47]: Overview
+            - generic [ref=f8e48]: Profile
+            - generic [ref=f8e49]: Activity
+          - generic [ref=f8e50]:
+            - generic [ref=f8e51]:
+              - generic [ref=f8e55]: Agreement is out of date. MOSO's envelope has the W-2 agreement, the profile now needs the 1099 agreement.
+              - button "Review & re-send" [ref=f8e56] [cursor=pointer]
+            - generic [ref=f8e57]:
+              - generic [ref=f8e58]:
+                - generic [ref=f8e59]: Invite to join
+                - generic [ref=f8e60]: Open
+              - generic [ref=f8e61]:
+                - generic [ref=f8e62]: ✓ Invited
+                - generic [ref=f8e63]: ✓ Paid the fee
+                - generic [ref=f8e64]: Signed
+            - generic [ref=f8e65]:
+              - generic [ref=f8e66]:
+                - generic [ref=f8e67]: E-sign agreement
+                - generic [ref=f8e68]: Out of date
+              - list [ref=f8e69]:
+                - listitem [ref=f8e70]:
+                  - generic [ref=f8e71]: W-2 agreement
+                  - generic [ref=f8e72]: In envelope · not needed
+                - listitem [ref=f8e73]:
+                  - generic [ref=f8e74]: 1099 agreement
+                  - generic [ref=f8e75]: Needed · not sent
+                - listitem [ref=f8e76]:
+                  - generic [ref=f8e77]: Exclusive agent agreement
+                  - generic [ref=f8e78]: Needed · not sent
+              - paragraph [ref=f8e79]: Envelope sent Sep 28, 10:12 AM PT (W-2, when the 1-1 was marked done). W-2/1099 was changed to 1099 on Sep 29 by Jordan Lee.
+              - generic [ref=f8e80]:
+                - generic [ref=f8e81]: "Specialist: Jordan Lee"
+                - button "Re-send agreement…" [ref=f8e83] [cursor=pointer]
+        - generic [ref=f8e84]:
+          - heading "What each state means (the rows of design §5.1)" [level=3] [ref=f8e85]
+          - list [ref=f8e86]:
+            - listitem [ref=f8e87]: "Out of date: MOSO's dry run says REGENERATE. Here the envelope has the W-2, and the profile's 1099 needs the 1099 and Exclusive agent agreements. The Attention line repeats it at the top of the drawer."
+            - listitem [ref=f8e88]: "Up to date: the envelope covers everything. Re-send is still possible for a lost e-mail, but it is not the primary button."
+            - listitem [ref=f8e89]: "Sending: an outbox row is PENDING. The button is disabled, and a second click is a 409 anyway."
+            - listitem [ref=f8e90]: "Sent: echoes MOSO's answer: the docs sent, the recipient, the cancelled envelope, and who clicked."
+            - listitem [ref=f8e91]: "Not confirmed: the call timed out. MOSO may have e-mailed. Recruit never re-asks for the e-mail by itself."
+            - listitem [ref=f8e92]: "Not sent: a refusal with a reason sentence. \"Try again\" appears only for retryable reasons."
+            - listitem [ref=f8e93]: "All signed: MOSO refuses a re-send. Nothing is e-mailed (MOSO's own admin action would still send \"please e-sign\")."
+            - listitem [ref=f8e94]: People without the Onboarding grant see the card with no buttons.
+    - region [ref=f8e95]:
+      - generic [ref=f8e96]:
+        - generic [ref=f8e97]: Screen B · Confirm dialog
+        - heading "Every e-mail to a loan officer is one explicit click on this" [level=2] [ref=f8e98]
+        - paragraph [ref=f8e99]: "The dialog is filled from MOSO's dry run: who receives it, what will be sent, what stays signed, and which envelope gets cancelled. The confirm button names the loan officer. It never says a bare \"OK\"."
+      - generic [ref=f8e100]:
+        - generic [ref=f8e101]: "Variant:"
+        - group "Dialog variant" [ref=f8e102]:
+          - button "Type changed (regenerate)" [pressed] [ref=f8e103] [cursor=pointer]
+          - button "Already finished signing" [ref=f8e104] [cursor=pointer]
+      - generic [ref=f8e105]:
+        - dialog [ref=f8e107]:
+          - generic [ref=f8e108]:
+            - heading "Re-send the agreement to Brian Okafor?" [level=3] [ref=f8e109]
+            - button "Close" [ref=f8e110] [cursor=pointer]: ✕
+          - paragraph [ref=f8e111]:
+            - generic [ref=f8e112]: MOSO will e-mail a new signing link to brian.okafor@example.com.
+          - generic [ref=f8e113]:
+            - generic [ref=f8e114]:
+              - generic [ref=f8e115]: Will send
+              - generic [ref=f8e116]: 1099 agreement, Exclusive agent agreement
+            - generic [ref=f8e117]:
+              - generic [ref=f8e118]: Cancels
+              - generic [ref=f8e119]: W-2 agreement, envelope sent Sep 28, 10:12 AM PT. Its link stops working.
+            - generic [ref=f8e120]:
+              - generic [ref=f8e121]: Why
+              - generic [ref=f8e122]: W-2/1099 is now 1099 (changed Sep 29 by Jordan Lee)
+            - generic [ref=f8e123]:
+              - generic [ref=f8e124]: From
+              - generic [ref=f8e125]: Jordan Lee (onboarding specialist)
+          - generic [ref=f8e126]:
+            - generic [ref=f8e127]: What the loan officer gets
+            - generic [ref=f8e128]: One e-mail from Jordan Lee with a "View loan officer information" button that opens the new envelope. The old e-mail's link will no longer work.
+          - generic [ref=f8e129]:
+            - button "Cancel" [ref=f8e130] [cursor=pointer]
+            - button "Send to Brian" [ref=f8e131] [cursor=pointer]
+        - generic "Phone width (375px)" [ref=f8e132]:
+          - dialog [ref=f8e134]:
+            - generic [ref=f8e135]:
+              - heading "Re-send the agreement to Brian Okafor?" [level=3] [ref=f8e136]
+              - button "Close" [ref=f8e137] [cursor=pointer]: ✕
+            - paragraph [ref=f8e138]:
+              - generic [ref=f8e139]: MOSO will e-mail a new signing link to brian.okafor@example.com.
+            - generic [ref=f8e140]:
+              - generic [ref=f8e141]:
+                - generic [ref=f8e142]: Will send
+                - generic [ref=f8e143]: 1099 agreement, Exclusive agent agreement
+              - generic [ref=f8e144]:
+                - generic [ref=f8e145]: Cancels
+                - generic [ref=f8e146]: W-2 agreement, Sep 28
+            - generic [ref=f8e147]:
+              - button "Cancel" [ref=f8e148] [cursor=pointer]
+              - button "Send to Brian" [ref=f8e149] [cursor=pointer]
+    - region [ref=f8e150]:
+      - generic [ref=f8e151]:
+        - generic [ref=f8e152]: Screen C · Profile editor, Licensing tab
+        - heading "The \"go to MOSO\" warning becomes a hint, and Save asks once" [level=2] [ref=f8e153]
+        - paragraph [ref=f8e154]: "Before Save, Recruit can only guess (PR #251 guesses from MOSO's stored value). After Save, the drawer asks MOSO. If MOSO says the envelope is now out of date, one dialog offers to re-send. \"Later\" leaves the Attention line in the drawer."
+      - generic [ref=f8e155]:
+        - generic [ref=f8e156]:
+          - paragraph [ref=f8e157]: Before Save (flag on)
+          - generic [ref=f8e158]:
+            - generic [ref=f8e159]: Hire classification
+            - generic [ref=f8e160]:
+              - generic [ref=f8e161]: Loan officer type
+              - generic [ref=f8e162]:
+                - generic [ref=f8e163]: Independent — 1099
+                - generic [aria-hidden] [ref=f8e164]: ▾
+            - generic [ref=f8e165]:
+              - generic [ref=f8e166]: Employment type
+              - generic [ref=f8e167]:
+                - generic [ref=f8e168]: Contract
+                - generic [aria-hidden] [ref=f8e169]: ▾
+            - generic [ref=f8e174]:
+              - paragraph [ref=f8e175]: MOSO already built the W-2 agreement. After you save, Recruit will check with MOSO and offer to re-send the right one.
+              - paragraph [ref=f8e176]: "Today: \"In MOSO, set Loan officer type to 1099 first, then use Re-generate e-sign documents and send email.\""
+        - dialog [ref=f8e178]:
+          - generic [ref=f8e179]:
+            - heading "The agreement no longer matches" [level=3] [ref=f8e180]
+            - button "Close" [ref=f8e181] [cursor=pointer]: ✕
+          - paragraph [ref=f8e182]:
+            - generic [ref=f8e183]: You changed W-2/1099 to 1099. MOSO's envelope still has the W-2 agreement. Re-send it now so the loan officer signs the 1099 agreement?
+          - generic [ref=f8e184]:
+            - button "Later" [ref=f8e185] [cursor=pointer]
+            - button "Re-send now" [ref=f8e186] [cursor=pointer]
+      - generic [ref=f8e187]:
+        - heading "Corporate or Mortgage advisor (the \"cancel\" case)" [level=3] [ref=f8e188]
+        - list [ref=f8e189]:
+          - listitem [ref=f8e190]: MOSO has no cancel button for a loan officer's envelope, so today's "Cancel that envelope in MOSO" can't be followed. Until Onboarding answers Q-2, the text becomes "Ask the MOSO team to cancel it; Recruit can't yet."
+          - listitem [ref=f8e191]: After Q-2, the same card gets a "Cancel agreement…" action (packs agreement/cancel, no e-mail). Not in v1.
+    - region [ref=f8e192]:
+      - generic [ref=f8e193]:
+        - generic [ref=f8e194]: Behind the button
+        - heading "What one click does" [level=2] [ref=f8e195]
+      - list [ref=f8e196]:
+        - listitem [ref=f8e197]:
+          - generic [ref=f8e198]: "1"
+          - text: recruit-be checks permission, flag, the staging allowlist, that W-2/1099 still matches what the dialog showed, and that no re-send is already pending. Then it writes one outbox row (AGREEMENT_RESEND).
+        - listitem [ref=f8e199]:
+          - generic [ref=f8e200]: "2"
+          - text: The relay waits behind any pending meeting, specialist or profile write for this candidate.
+        - listitem [ref=f8e201]:
+          - generic [ref=f8e202]: "3"
+          - text: "packs, under the per-candidate lock: ownership, meeting reached, dedupe, 5-min cooldown. It writes W-2/1099, rebuilds from the fresh MOSO row, cancels the old envelope, and e-mails only if a new link came back."
+        - listitem [ref=f8e203]:
+          - generic [ref=f8e204]: "4"
+          - text: The answer, echo-checked, goes to the Timeline (who, what, to whom, envelope id) and to this card.

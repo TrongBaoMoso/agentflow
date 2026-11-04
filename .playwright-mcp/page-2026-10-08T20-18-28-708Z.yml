@@ -1,0 +1,33 @@
+- generic [active] [ref=e1]:
+  - 'heading "Before (master): picked tag is plain text in the box" [level=3] [ref=e2]'
+  - generic [ref=e3]:
+    - textbox [ref=e5]: Hi @Manh can you check the license?
+    - generic [ref=e6]:
+      - text: "Tagging:"
+      - generic [ref=e7]: Manh Admin
+  - 'heading "After (this PR): picked tag is marked in the box; hand-typed @Bob is not" [level=3] [ref=e8]'
+  - generic [ref=e9]:
+    - generic [ref=e10]:
+      - generic [aria-hidden]:
+        - generic:
+          - text: Hi
+          - mark: "@Manh"
+          - text: can you check the license? cc @Bob
+      - textbox [ref=e11]: Hi @Manh can you check the license? cc @Bob
+    - generic [ref=e12]:
+      - text: "Tagging:"
+      - generic [ref=e13]: Manh Admin
+  - 'heading "Alternative: bg-commInternal/15 ground + same underline" [level=3] [ref=e14]'
+  - generic [ref=e15]:
+    - generic [ref=e16]:
+      - generic [aria-hidden]:
+        - generic:
+          - text: Hi
+          - mark: "@Manh"
+          - text: can you check the license? cc @Bob
+      - textbox [ref=e17]: Hi @Manh can you check the license? cc @Bob
+    - generic [ref=e18]:
+      - text: "Tagging:"
+      - generic [ref=e19]: Manh Admin
+  - heading "Sent bubble tag (MentionedBody identified) for reference" [level=3] [ref=e20]
+  - generic [ref=e21]: Hi @Manh can you check the license?

@@ -1,0 +1,140 @@
+- generic [active] [ref=f38e1]:
+  - generic [ref=f38e2]: Loading...
+  - generic [ref=f38e7]:
+    - generic [ref=f38e8]:
+      - link [ref=f38e10] [cursor=pointer]:
+        - /url: "#"
+      - list:
+        - listitem
+      - list [ref=f38e12]:
+        - listitem [ref=f38e13]:
+          - link "Search" [ref=f38e14] [cursor=pointer]:
+            - /url: "#"
+        - listitem [ref=f38e15]:
+          - link "Dashboard" [ref=f38e16] [cursor=pointer]:
+            - /url: "##company_dashboard"
+        - listitem [ref=f38e17]:
+          - link "Pricing Engine" [ref=f38e18] [cursor=pointer]:
+            - /url: "##pricing"
+        - listitem [ref=f38e19]:
+          - link "Leads" [ref=f38e20] [cursor=pointer]:
+            - /url: "##leads"
+        - listitem [ref=f38e21]:
+          - link "Applications" [ref=f38e22] [cursor=pointer]:
+            - /url: "##prospects"
+        - listitem [ref=f38e23]:
+          - link "Loans" [ref=f38e24] [cursor=pointer]:
+            - /url: "##loans"
+        - listitem [ref=f38e25]:
+          - link "Loan Factory" [ref=f38e26] [cursor=pointer]:
+            - /url: "##loan_factory_page"
+        - listitem [ref=f38e27]:
+          - link "Marketplace" [ref=f38e28] [cursor=pointer]:
+            - /url: "##marketplace"
+        - listitem [ref=f38e30]:
+          - link "Resources" [ref=f38e31] [cursor=pointer]:
+            - /url: javascript:;
+        - listitem [ref=f38e32]:
+          - link "Loan Factory apps" [ref=f38e33] [cursor=pointer]:
+            - /url: javascript:;
+        - listitem [ref=f38e34]:
+          - link "Message" [ref=f38e35] [cursor=pointer]:
+            - /url: javascript:;
+        - listitem [ref=f38e36]:
+          - link [ref=f38e37] [cursor=pointer]:
+            - /url: javascript:;
+            - text: IT Team
+            - img "IT Team" [ref=f38e38]
+      - generic [ref=f38e39]:
+        - button "search" [ref=f38e40]
+        - searchbox "Search input" [ref=f38e41]
+        - link "close search" [ref=f38e42] [cursor=pointer]:
+          - /url: "#"
+    - generic [ref=f38e43]:
+      - list [ref=f38e45]:
+        - listitem [ref=f38e46]:
+          - text: Menu
+          - button "Sidebar collapse button" [ref=f38e47] [cursor=pointer]
+        - listitem [ref=f38e48]: User settings
+        - listitem [ref=f38e49]:
+          - tab "System preference settings" [ref=f38e50] [cursor=pointer]
+        - listitem [ref=f38e51]:
+          - tab "Credentials settings" [ref=f38e52] [cursor=pointer]
+        - listitem [ref=f38e53]: Admin
+        - listitem [ref=f38e54]:
+          - link " Transactions" [ref=f38e55] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f38e56]: 
+            - text: Transactions
+        - listitem "alerts" [ref=f38e57]:
+          - tab "Rate alerts" [ref=f38e58] [cursor=pointer]
+        - listitem [ref=f38e59]:
+          - link " Users" [ref=f38e60] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f38e61]: 
+            - text: Users
+        - listitem [ref=f38e62]:
+          - link " Associate's To-dos" [ref=f38e63] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f38e64]: 
+            - text: Associate's To-dos
+        - listitem [ref=f38e65]:
+          - link " Admin" [ref=f38e66] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f38e67]: 
+            - text: Admin
+        - listitem [ref=f38e68]:
+          - link " Service desks" [ref=f38e69] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f38e70]: 
+            - text: Service desks
+        - listitem [ref=f38e71]:
+          - link " Customer relationship" [ref=f38e72] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f38e73]: 
+            - text: Customer relationship
+        - listitem [ref=f38e74]:
+          - link " Leave management" [ref=f38e75] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f38e76]: 
+            - text: Leave management
+        - listitem [ref=f38e77]:
+          - link " RECRUITING" [ref=f38e78] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f38e79]: 
+            - text: RECRUITING
+        - listitem "Job opportunities" [ref=f38e80]:
+          - tab "Job opportunities" [ref=f38e81] [cursor=pointer]
+        - listitem [ref=f38e82]:
+          - link " LO recruiting" [ref=f38e83] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f38e84]: 
+            - text: LO recruiting
+        - listitem [ref=f38e85]:
+          - link " Compensation" [ref=f38e86] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f38e87]: 
+            - text: Compensation
+        - listitem [ref=f38e88]:
+          - link " Marketing" [ref=f38e89] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f38e90]: 
+            - text: Marketing
+        - listitem "training" [ref=f38e91]:
+          - tab "My Training Academy" [ref=f38e92] [cursor=pointer]
+        - listitem [ref=f38e93]:
+          - link " Real Estate Division" [ref=f38e94] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f38e95]: 
+            - text: Real Estate Division
+      - link "2.2.1" [ref=f38e97] [cursor=pointer]:
+        - /url: "##release_notes?_e=ag1zfmxlbmRlci1yYXRlchkLEg5SZWxlYXNlSGlzdG9yeSIFMi4yLjEM"
+    - link "Scroll to top" [ref=f38e100] [cursor=pointer]:
+      - /url: javascript:;
+  - iframe
+  - generic [ref=f38e101]:
+    - link "Youtube videos" [ref=f38e102] [cursor=pointer]:
+      - /url: "javascript:"
+    - link "Help" [ref=f38e103] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f38e104]: "?"

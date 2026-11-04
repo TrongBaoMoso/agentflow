@@ -1,0 +1,295 @@
+- generic [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - banner [ref=f1e3]:
+      - generic [ref=f1e4]:
+        - img "Loan Factory" [ref=f1e5]
+        - generic [ref=f1e6]: Recruit
+      - generic [aria-hidden] [ref=f1e7]:
+        - generic [ref=f1e11]: Search candidates, NMLS, companies…
+        - generic [ref=f1e12]: ⌘ K
+      - generic [ref=f1e13]:
+        - generic [ref=f1e18]:
+          - textbox "Dev persona" [ref=f1e30] [cursor=pointer]
+          - button "Change language" [ref=f1e31] [cursor=pointer]:
+            - generic [ref=f1e32]: English
+          - button "Switch to dark mode" [ref=f1e42] [cursor=pointer]
+        - generic [aria-hidden] [ref=f1e47]: "?"
+    - navigation [ref=f1e48]:
+      - navigation [ref=f1e49]:
+        - generic [ref=f1e50]: Frequent
+        - link [ref=f1e51] [cursor=pointer]:
+          - /url: /today
+        - link [ref=f1e56] [cursor=pointer]:
+          - /url: /inbox/hot
+        - link [ref=f1e60] [cursor=pointer]:
+          - /url: /inbox/cold
+        - link [ref=f1e75] [cursor=pointer]:
+          - /url: /pipeline
+        - link [ref=f1e80] [cursor=pointer]:
+          - /url: /exceptions
+        - link [ref=f1e84] [cursor=pointer]:
+          - /url: /reports
+        - link [ref=f1e90] [cursor=pointer]:
+          - /url: /work
+        - link [ref=f1e95] [cursor=pointer]:
+          - /url: /sponsorships
+      - navigation [ref=f1e101]:
+        - generic [ref=f1e102]: Configuration
+        - link [ref=f1e108] [cursor=pointer]:
+          - /url: /duplicates
+        - link [ref=f1e114] [cursor=pointer]:
+          - /url: /dormant
+        - link [ref=f1e119] [cursor=pointer]:
+          - /url: /conversations
+        - link [ref=f1e133] [cursor=pointer]:
+          - /url: /licensing-rules
+    - main [ref=f1e143]:
+      - generic [ref=f1e150]:
+        - generic [ref=f1e151]:
+          - generic [ref=f1e152]:
+            - generic [ref=f1e153]: Licensing · Sponsorships
+            - heading [level=1] [ref=f1e154]:
+              - text: Every state, every Loan Officer —
+              - emphasis [ref=f1e155]: where sponsorship stands
+          - textbox "Search sponsorships" [ref=f1e162]:
+            - /placeholder: "Name, NMLS # or state"
+        - generic [ref=f1e163]:
+          - button "Ready for you state not requested yet 2" [ref=f1e164] [cursor=pointer]:
+            - generic [ref=f1e169]:
+              - generic [ref=f1e170]: Ready for you
+              - generic [ref=f1e171]: state not requested yet
+            - generic [ref=f1e172]: "2"
+          - button "Waiting on the Loan Officer no NMLS access yet 1" [ref=f1e173] [cursor=pointer]:
+            - generic [ref=f1e178]:
+              - generic [ref=f1e179]: Waiting on the Loan Officer
+              - generic [ref=f1e180]: no NMLS access yet
+            - generic [ref=f1e181]: "1"
+          - button "Waiting on the state requested or items pending 3" [ref=f1e182] [cursor=pointer]:
+            - generic [ref=f1e187]:
+              - generic [ref=f1e188]: Waiting on the state
+              - generic [ref=f1e189]: requested or items pending
+            - generic [ref=f1e190]: "3"
+          - button "From MOSO — check on NMLS one status per person, not per state 2" [ref=f1e191] [cursor=pointer]:
+            - generic [ref=f1e195]:
+              - generic [ref=f1e196]: From MOSO — check on NMLS
+              - generic [ref=f1e197]: one status per person, not per state
+            - generic [ref=f1e198]: "2"
+          - button "Done sponsored or removed 0" [ref=f1e199] [cursor=pointer]:
+            - generic [ref=f1e203]:
+              - generic [ref=f1e204]: Done
+              - generic [ref=f1e205]: sponsored or removed
+            - generic [ref=f1e206]: "0"
+        - generic [ref=f1e207]:
+          - generic [ref=f1e208]:
+            - text: All
+            - generic [ref=f1e209]: 7 Loan Officers
+          - table [ref=f1e212]:
+            - rowgroup [ref=f1e213]:
+              - row [ref=f1e214]:
+                - columnheader "Loan Officer" [ref=f1e215]
+                - columnheader "Stage" [ref=f1e216]
+                - columnheader "NMLS access" [ref=f1e217]
+                - columnheader "States" [ref=f1e218]
+                - columnheader "Waiting longest" [ref=f1e219]
+                - columnheader "Recruiter" [ref=f1e220]
+                - columnheader [ref=f1e221]
+            - rowgroup [ref=f1e222]:
+              - row "Open sponsorships for Emory Stroud (sample)" [ref=f1e223] [cursor=pointer]:
+                - cell "Emory Stroud (sample) NMLS 1000005" [ref=f1e224]:
+                  - generic [ref=f1e225]:
+                    - generic [ref=f1e226]: Emory Stroud (sample)
+                    - generic [ref=f1e227]: NMLS 1000005
+                - cell "S6 Onboarding" [ref=f1e228]
+                - cell "Not recorded" [ref=f1e230]
+                - cell "Texas · Requested · from MOSO, not checked Arizona · Requested · from MOSO, not checked" [ref=f1e231]:
+                  - generic [ref=f1e232]:
+                    - generic "Texas · Requested · from MOSO, not checked" [ref=f1e233]:
+                      - generic [aria-hidden] [ref=f1e235]: TX?
+                    - generic "Arizona · Requested · from MOSO, not checked" [ref=f1e236]:
+                      - generic [aria-hidden] [ref=f1e238]: AZ?
+                - cell "—" [ref=f1e239]
+                - cell "Unowned" [ref=f1e240]
+                - cell [ref=f1e241]:
+                  - button "Check on NMLS" [ref=f1e242]
+              - row "Open sponsorships for Avery Quill (sample)" [ref=f1e245] [cursor=pointer]:
+                - cell "Avery Quill (sample) NMLS 1000001" [ref=f1e246]:
+                  - generic [ref=f1e247]:
+                    - generic [ref=f1e248]: Avery Quill (sample)
+                    - generic [ref=f1e249]: NMLS 1000001
+                - cell "S6 Onboarding" [ref=f1e250]
+                - cell "Granted Sep 8" [ref=f1e252]
+                - cell "Texas · Sponsored New Jersey · Requested California · Not requested" [ref=f1e253]:
+                  - generic [ref=f1e254]:
+                    - generic "Texas · Sponsored" [ref=f1e255]:
+                      - generic [aria-hidden] [ref=f1e257]: TX✓
+                    - generic "New Jersey · Requested" [ref=f1e258]:
+                      - generic [aria-hidden] [ref=f1e260]: NJ12d
+                    - generic "California · Not requested" [ref=f1e261]:
+                      - generic [aria-hidden] [ref=f1e263]: CA—
+                - cell "NJ · 12 days usually 5–7 days" [ref=f1e264]:
+                  - generic [ref=f1e265]:
+                    - generic [ref=f1e266]: NJ · 12 days
+                    - generic [ref=f1e267]: usually 5–7 days
+                - cell "Demo Rec" [ref=f1e268]
+                - cell [ref=f1e269]:
+                  - button "Record NMLS request" [ref=f1e270]
+              - row "Open sponsorships for Corin Maddox (sample)" [ref=f1e273] [cursor=pointer]:
+                - cell "Corin Maddox (sample) NMLS 1000003" [ref=f1e274]:
+                  - generic [ref=f1e275]:
+                    - generic [ref=f1e276]: Corin Maddox (sample)
+                    - generic [ref=f1e277]: NMLS 1000003
+                - cell "S6 Onboarding" [ref=f1e278]
+                - cell "Granted Sep 2" [ref=f1e280]
+                - cell "South Carolina · State needs items Nevada · Sponsored" [ref=f1e281]:
+                  - generic [ref=f1e282]:
+                    - generic "South Carolina · State needs items" [ref=f1e283]:
+                      - generic [aria-hidden] [ref=f1e285]: SCitems
+                    - generic "Nevada · Sponsored" [ref=f1e286]:
+                      - generic [aria-hidden] [ref=f1e288]: NV✓
+                - cell "SC · 9 days usually 5–7 days" [ref=f1e289]:
+                  - generic [ref=f1e290]:
+                    - generic [ref=f1e291]: SC · 9 days
+                    - generic [ref=f1e292]: usually 5–7 days
+                - cell "Unowned" [ref=f1e293]
+                - cell [ref=f1e294]:
+                  - button "Record the state's answer" [ref=f1e295]
+              - row "Open sponsorships for Gideon Hale (sample)" [ref=f1e298] [cursor=pointer]:
+                - cell "Gideon Hale (sample) NMLS 1000007" [ref=f1e299]:
+                  - generic [ref=f1e300]:
+                    - generic [ref=f1e301]: Gideon Hale (sample)
+                    - generic [ref=f1e302]: NMLS 1000007
+                - cell "S6 Onboarding" [ref=f1e303]
+                - cell "Granted Sep 10" [ref=f1e305]
+                - cell "Georgia · Blocked" [ref=f1e306]:
+                  - generic "Georgia · Blocked" [ref=f1e308]:
+                    - generic [aria-hidden] [ref=f1e310]: GA✕
+                - cell "—" [ref=f1e311]
+                - cell "Demo Rec" [ref=f1e312]
+                - cell [ref=f1e313]:
+                  - button "Record NMLS request" [ref=f1e314]
+              - row "Open sponsorships for Harlow Prentice (sample)" [ref=f1e317] [cursor=pointer]:
+                - cell "Harlow Prentice (sample) NMLS 1000008" [ref=f1e318]:
+                  - generic [ref=f1e319]:
+                    - generic [ref=f1e320]: Harlow Prentice (sample)
+                    - generic [ref=f1e321]: NMLS 1000008
+                - cell "S6 Onboarding" [ref=f1e322]
+                - cell "Granted Sep 15" [ref=f1e324]
+                - cell "California · Requested Colorado · Requested" [ref=f1e325]:
+                  - generic [ref=f1e326]:
+                    - generic "California · Requested" [ref=f1e327]:
+                      - generic [aria-hidden] [ref=f1e329]: CA4d
+                    - generic "Colorado · Requested" [ref=f1e330]:
+                      - generic [aria-hidden] [ref=f1e332]: CO4d
+                - cell "CA · 4 days usually 5–7 days" [ref=f1e333]:
+                  - generic [ref=f1e334]:
+                    - generic [ref=f1e335]: CA · 4 days
+                    - generic [ref=f1e336]: usually 5–7 days
+                - cell "Unowned" [ref=f1e337]
+                - cell [ref=f1e338]:
+                  - button "Record the state's answer" [ref=f1e339]
+              - row "Open sponsorships for Delphine Arbor (sample)" [ref=f1e342] [cursor=pointer]:
+                - cell "Delphine Arbor (sample) NMLS 1000004" [ref=f1e343]:
+                  - generic [ref=f1e344]:
+                    - generic [ref=f1e345]: Delphine Arbor (sample)
+                    - generic [ref=f1e346]: NMLS 1000004
+                - cell "S7 Active" [ref=f1e347]
+                - cell "Not recorded" [ref=f1e349]
+                - cell "Washington · Sponsored · from MOSO, not checked Oregon · Sponsored · from MOSO, not checked" [ref=f1e350]:
+                  - generic [ref=f1e351]:
+                    - generic "Washington · Sponsored · from MOSO, not checked" [ref=f1e352]:
+                      - generic [aria-hidden] [ref=f1e354]: WA?
+                    - generic "Oregon · Sponsored · from MOSO, not checked" [ref=f1e355]:
+                      - generic [aria-hidden] [ref=f1e357]: OR?
+                - cell "—" [ref=f1e358]
+                - cell "Demo Rec" [ref=f1e359]
+                - cell [ref=f1e360]:
+                  - button "Check on NMLS" [ref=f1e361]
+              - row "Open sponsorships for Blake Fenwick (sample)" [ref=f1e364] [cursor=pointer]:
+                - cell "Blake Fenwick (sample) NMLS 1000002" [ref=f1e365]:
+                  - generic [ref=f1e366]:
+                    - generic [ref=f1e367]: Blake Fenwick (sample)
+                    - generic [ref=f1e368]: NMLS 1000002
+                - cell "S6 Onboarding" [ref=f1e369]
+                - cell "Not recorded" [ref=f1e371]
+                - cell "Florida · Not requested Georgia · Not requested" [ref=f1e372]:
+                  - generic [ref=f1e373]:
+                    - generic "Florida · Not requested" [ref=f1e374]:
+                      - generic [aria-hidden] [ref=f1e376]: FL—
+                    - generic "Georgia · Not requested" [ref=f1e377]:
+                      - generic [aria-hidden] [ref=f1e379]: GA—
+                - cell "—" [ref=f1e380]
+                - cell "Demo Rec" [ref=f1e381]
+                - cell [ref=f1e382]:
+                  - button "Record NMLS request" [ref=f1e383]
+        - paragraph [ref=f1e386]: Sponsorship doesn't block S6 → S7 today — the sponsorship gate is off. Onboarding reads these statuses on each candidate.
+  - dialog [ref=f1e388]:
+    - banner [ref=f1e389]:
+      - heading "Avery Quill (sample) NMLS 1000001 · recruiter Demo Rec S6 Onboarding" [level=2] [ref=f1e390]:
+        - generic [ref=f1e391]:
+          - generic [aria-hidden] [ref=f1e392]: A(
+          - generic [ref=f1e393]:
+            - generic [ref=f1e394]: Avery Quill (sample)
+            - generic [ref=f1e395]:
+              - text: NMLS 1000001 · recruiter Demo Rec
+              - generic [ref=f1e396]: S6 Onboarding
+      - button "Close" [active] [ref=f1e397] [cursor=pointer]
+    - generic [ref=f1e401]:
+      - generic [ref=f1e402]:
+        - generic [ref=f1e403]:
+          - term [ref=f1e404]: NMLS access
+          - definition [ref=f1e405]: Granted Sep 8
+          - definition
+          - term [ref=f1e406]: States to sponsor
+          - definition [ref=f1e407]: TX, NJ, CA
+          - definition
+        - button "Record NMLS request (CA)" [ref=f1e408] [cursor=pointer]
+      - generic [ref=f1e411]:
+        - generic [ref=f1e412]: LIC_NMLS_SPONSOR
+        - generic [ref=f1e413]: Create relationship + request sponsorship on NMLS
+        - generic [ref=f1e414]: Open · Licensing item
+      - region "Texas sponsorship" [ref=f1e415]:
+        - generic [ref=f1e416]:
+          - generic [ref=f1e417]: Texas
+          - generic "Texas · Sponsored" [ref=f1e418]: TX · Sponsored
+          - generic [ref=f1e419]: Sponsored Sep 16
+        - generic [ref=f1e420]:
+          - list "Progress" [ref=f1e421]:
+            - listitem [ref=f1e422]: Requested
+            - listitem [ref=f1e423]: State reviewing
+            - listitem [ref=f1e424]: Sponsored
+          - button "Removed for this state" [ref=f1e426] [cursor=pointer]
+      - region "New Jersey sponsorship" [ref=f1e429]:
+        - generic [ref=f1e430]:
+          - generic [ref=f1e431]: New Jersey
+          - generic "New Jersey · Requested" [ref=f1e432]: NJ · Requested
+          - generic [ref=f1e433]: Requested 12 days ago
+        - generic [ref=f1e434]:
+          - list "Progress" [ref=f1e435]:
+            - listitem [ref=f1e436]: Requested
+            - listitem [ref=f1e437]: State reviewing
+            - listitem [ref=f1e438]: Sponsored
+          - paragraph [ref=f1e439]: Day 12. New sponsorships usually take 5–7 days; it depends on the state.
+          - generic [ref=f1e440]:
+            - generic [ref=f1e441]: DISTANCE_LIMIT
+            - generic [ref=f1e442]: Confirm distance-limit licensing requirement
+            - generic [ref=f1e443]: Open · Licensing item
+          - generic [ref=f1e444]:
+            - button "State approved" [ref=f1e445] [cursor=pointer]
+            - button "State asked for more" [ref=f1e448] [cursor=pointer]
+            - button "Rejected / blocked" [ref=f1e451] [cursor=pointer]
+      - region "California sponsorship" [ref=f1e454]:
+        - generic [ref=f1e455]:
+          - generic [ref=f1e456]: California
+          - generic "California · Not requested" [ref=f1e457]: CA · Not requested
+        - generic [ref=f1e458]:
+          - generic [ref=f1e459]:
+            - generic [ref=f1e460]: AUTO_ATTRIBUTE
+            - generic [ref=f1e461]: Confirm LO type endorsement (CA/IN)
+            - generic [ref=f1e462]: Open · Licensing item
+          - generic [ref=f1e463]:
+            - generic [ref=f1e464]: Use "Record NMLS request" above for all states at once.
+            - button "Requested and already approved" [ref=f1e465] [cursor=pointer]
+      - button "Loan Officer removed access…" [ref=f1e468] [cursor=pointer]
+      - group [ref=f1e471]:
+        - generic "Copy for the NMLS form" [ref=f1e472] [cursor=pointer]
+  - alert [ref=f1e149]

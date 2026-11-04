@@ -1,0 +1,16 @@
+mvn_exit=1
+released
+LoRecruiterProgramCreditTest 60 fail 12 err 0
+  RED aStaffRecruiterWhoIsAlsoAMemberKeepsStaffHandlingAndGetsNoMarker
+  RED anUnverifiedLeadHoldsTheLoReferralBonusUntilReconcileSettlesIt
+  RED reconcileRechecksRecentNotAMemberLeadsAtTheirCreationTime
+  RED anUpdateCannotClearOrRedirectARealCredit
+  RED aCopyOlderThanAnHourIsNoEvidenceAndTheLeadIsFlaggedUnverified
+  RED aNotAMemberAnswerFromACopyOlderThanAMinuteForcesOneRefresh
+  RED anUpdateCannotSetTheCreditFieldsOnAnyPath
+  RED aSignedInLoanOfficerAddingHerOwnLeadIsFlaggedUnverifiedWhenTheListIsUnavailable
+  RED aSaveOpUpdateCannotSetOrChangeTheMarker
+  RED aSlowRefreshNeverBlocksOtherCallersWhoServeTheOldCopy
+  RED oneMalformedSpellIsSkippedNotTheWholeList
+  RED aPublicBodyCannotSetTheStaffHandler
+DONE

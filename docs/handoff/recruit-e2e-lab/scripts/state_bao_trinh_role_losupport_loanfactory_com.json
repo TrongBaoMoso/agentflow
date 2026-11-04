@@ -1,0 +1,73 @@
+{
+  "cookies": [
+    {
+      "name": "NEXT_LOCALE",
+      "value": "en",
+      "domain": "recruit.viet18.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "NEXT_LOCALE",
+      "value": "en",
+      "domain": "account.viet18.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "__Host-lf_account_refresh",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlODZhNzkxNy1kN2RjLTQ5ZTMtYjJlOS02Mjc5YjUyOWU2NWIiLCJpc3MiOiJodHRwczovL2FjY291bnQudmlldDE4LmNvbSIsImFjY291bnRfaWQiOiIzNjM2ZjRiYS01ZGJkLTQ3ZDItYjE0ZS1hOTI5OTg1ZWEwOWIiLCJ1c2VyX2lkIjoiZTg2YTc5MTctZDdkYy00OWUzLWIyZTktNjI3OWI1MjllNjViIiwidGltZV96b25lIjoiWiIsImlhdCI6MTc5MzcwODA5MCwiZXhwIjoxNzkzOTY3MjkwLCJhY2Nlc3NfdHlwZSI6IlJFRlJFU0hfVE9LRU4iLCJpZGVudGlmaWVycyI6WyJiYW8udHJpbmgrcm9sZS1sb3N1cHBvcnRAbG9hbmZhY3RvcnkuY29tIiwiYmFvLnRyaW5oK3JvbGUtbG9zdXBwb3J0KzFAbG9hbmZhY3RvcnkuY29tIl0sInN0YXR1cyI6IkFDVElWRSIsInZlcmlmeSI6dHJ1ZSwiYXV0aG9yaXRpZXMiOlsiSFIjU1VQUE9SVF9TUEVDSUFMSVNUIiwiTUFSS0VUUExBQ0UjRU1QTE9ZRUUiLCJMT1MjRU1QTE9ZRUUiLCJIUiNFTVBMT1lFRSIsIlJFQ1JVSVQjTE9fU1VQUE9SVCIsIkFDQ09VTlQjVVNFUiJdLCJwcm9kdWN0IjoiTE9TIiwic2lkIjoiYmY5MWM5YmUtNWYyMC00NDcwLWE1YjMtMTRhYWFmMjAyYWFhIn0.jp_OQLASl-Rxq4gHbfMgCgESq0LcSXGQsnP5XAVc7LA",
+      "domain": "account.viet18.com",
+      "path": "/",
+      "expires": 1793967290.99716,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "lf_session",
+      "value": "1",
+      "domain": ".viet18.com",
+      "path": "/",
+      "expires": 1793967290.998397,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Strict"
+    },
+    {
+      "name": "lf_app",
+      "value": "1",
+      "domain": "recruit.viet18.com",
+      "path": "/",
+      "expires": 1794312892.83086,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://recruit.viet18.com",
+      "localStorage": [
+        {
+          "name": "recruit-fe-auth-storage",
+          "value": "{\"state\":{\"accessToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlODZhNzkxNy1kN2RjLTQ5ZTMtYjJlOS02Mjc5YjUyOWU2NWIiLCJpc3MiOiJodHRwczovL2FjY291bnQudmlldDE4LmNvbSIsImFjY291bnRfaWQiOiIzNjM2ZjRiYS01ZGJkLTQ3ZDItYjE0ZS1hOTI5OTg1ZWEwOWIiLCJ1c2VyX2lkIjoiZTg2YTc5MTctZDdkYy00OWUzLWIyZTktNjI3OWI1MjllNjViIiwidGltZV96b25lIjoiWiIsImlhdCI6MTc5MzcwODA5MiwiZXhwIjoxNzkzNzE1MjkyLCJhY2Nlc3NfdHlwZSI6IkFDQ0VTU19UT0tFTiIsImlkZW50aWZpZXJzIjpbImJhby50cmluaCtyb2xlLWxvc3VwcG9ydEBsb2FuZmFjdG9yeS5jb20iLCJiYW8udHJpbmgrcm9sZS1sb3N1cHBvcnQrMUBsb2FuZmFjdG9yeS5jb20iXSwic3RhdHVzIjoiQUNUSVZFIiwidmVyaWZ5Ijp0cnVlLCJhdXRob3JpdGllcyI6WyJIUiNTVVBQT1JUX1NQRUNJQUxJU1QiLCJNQVJLRVRQTEFDRSNFTVBMT1lFRSIsIkxPUyNFTVBMT1lFRSIsIkhSI0VNUExPWUVFIiwiUkVDUlVJVCNMT19TVVBQT1JUIiwiQUNDT1VOVCNVU0VSIl0sInByb2R1Y3QiOiJSRUNSVUlUIiwic2lkIjoiYmY5MWM5YmUtNWYyMC00NDcwLWE1YjMtMTRhYWFmMjAyYWFhIn0.lXeIFdGcYvJqay0A5pCdLKo11jYhf8AYSb-NP1twwlw\",\"refreshToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlODZhNzkxNy1kN2RjLTQ5ZTMtYjJlOS02Mjc5YjUyOWU2NWIiLCJpc3MiOiJodHRwczovL2FjY291bnQudmlldDE4LmNvbSIsImFjY291bnRfaWQiOiIzNjM2ZjRiYS01ZGJkLTQ3ZDItYjE0ZS1hOTI5OTg1ZWEwOWIiLCJ1c2VyX2lkIjoiZTg2YTc5MTctZDdkYy00OWUzLWIyZTktNjI3OWI1MjllNjViIiwidGltZV96b25lIjoiWiIsImlhdCI6MTc5MzcwODA5MiwiZXhwIjoxNzkzOTY3Mjg5LCJhY2Nlc3NfdHlwZSI6IlJFRlJFU0hfVE9LRU4iLCJpZGVudGlmaWVycyI6WyJiYW8udHJpbmgrcm9sZS1sb3N1cHBvcnRAbG9hbmZhY3RvcnkuY29tIiwiYmFvLnRyaW5oK3JvbGUtbG9zdXBwb3J0KzFAbG9hbmZhY3RvcnkuY29tIl0sInN0YXR1cyI6IkFDVElWRSIsInZlcmlmeSI6dHJ1ZSwiYXV0aG9yaXRpZXMiOlsiSFIjU1VQUE9SVF9TUEVDSUFMSVNUIiwiTUFSS0VUUExBQ0UjRU1QTE9ZRUUiLCJMT1MjRU1QTE9ZRUUiLCJIUiNFTVBMT1lFRSIsIlJFQ1JVSVQjTE9fU1VQUE9SVCIsIkFDQ09VTlQjVVNFUiJdLCJwcm9kdWN0IjoiUkVDUlVJVCIsInNpZCI6ImJmOTFjOWJlLTVmMjAtNDQ3MC1hNWIzLTE0YWFhZjIwMmFhYSJ9.x9UPQKPtunrsKCJujYvQGm3A7RXlB8_PcY-KZIcQbcU\",\"user\":{\"id\":\"e86a7917-d7dc-49e3-b2e9-6279b529e65b\",\"created_by\":\"super.admin@viet18.com\",\"created_date\":{\"timestamp\":1791624632,\"formatted\":\"2026-10-10T09:30:32.717412\",\"zone\":\"Z\"},\"last_modified_by\":\"super.admin@viet18.com\",\"last_modified_date\":{\"timestamp\":1792141251,\"formatted\":\"2026-10-16T09:00:51.97822\",\"zone\":\"Z\"},\"key\":\"ahNzfmxlbmRlcnJhdGUtbWFzdGVycjMLEgVBZG1pbiIoYmFvLnRyaW5oK3JvbGUtbG9zdXBwb3J0QGxvYW5mYWN0b3J5LmNvbQyiARA1NzE2MTA0MDI2NTIxNjAw\",\"ref_keys\":[\"49dcce14-796a-4b81-89a2-ef0dcf2d03ac\",\"ahNzfmxlbmRlcnJhdGUtbWFzdGVycjMLEgVBZG1pbiIoYmFvLnRyaW5oK3JvbGUtbG9zdXBwb3J0QGxvYW5mYWN0b3J5LmNvbQyiARA1NzE2MTA0MDI2NTIxNjAw\"],\"first_name\":\"QA\",\"middle_name\":null,\"last_name\":\"LO Support Role\",\"email\":\"bao.trinh+role-losupport@loanfactory.com\",\"phone\":null,\"avatar\":null,\"date_of_birth\":null,\"gender\":\"UNKNOWN\",\"status\":\"ACTIVE\",\"source\":\"HR\",\"mfa_enabled\":false,\"settings\":{\"language\":\"en\",\"time_zone\":null,\"preferred_languages\":null,\"theme\":null,\"email_signature\":null},\"favorite_apps\":null,\"legal_first_name\":null,\"legal_last_name\":null,\"marital_status\":null,\"citizenship\":null,\"company_email\":\"bao.trinh+role-losupport+1@loanfactory.com\",\"company_phone\":null,\"social_links\":null,\"addresses\":null,\"nmls\":null,\"title\":null,\"office_address\":\"2195 Tully Road, San Jose, CA\",\"self_declared_states\":null,\"signature_logo\":null,\"websites\":null,\"licenses\":null,\"national_type\":null,\"national_number\":null,\"identify_type\":null,\"identify_number\":null,\"ssn\":null,\"authorities\":{\"HR\":[\"SUPPORT_SPECIALIST\",\"EMPLOYEE\"],\"MARKETPLACE\":[\"EMPLOYEE\"],\"LOS\":[\"EMPLOYEE\"],\"RECRUIT\":[\"LO_SUPPORT\"],\"ACCOUNT\":[\"USER\"]},\"licensed_states\":[],\"full_name\":\"QA LO Support Role\"}},\"version\":0}"
+        },
+        {
+          "name": "tera-assistant.arrival-day:RECRUIT:e86a7917-d7dc-49e3-b2e9-6279b529e65b",
+          "value": "{\"id\":\"day-2026-11-03\",\"at\":1793708096241}"
+        },
+        {
+          "name": "lf_recruit_nav_seen",
+          "value": "[\"leads\",\"manage\",\"setup\",\"handoffs\"]"
+        }
+      ]
+    }
+  ]
+}

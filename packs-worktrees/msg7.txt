@@ -1,0 +1,15 @@
+fix(recruiting): tighten the nightly re-check, clear server-write marks, label held/double bonus, cold-start single fetch
+
+- the 48 h re-check credits only when the referrer resolved from referred_by is the
+  lead's current referred_lo (a staff re-point never becomes credit); it judges at
+  the stamped attach time (first referrer on an edit) else created; it also selects
+  recent leads with referred_by but no referred_lo (self-added or edit-attached).
+- server-write marks are cleared in afterSave and at the start of each cron item,
+  the size cap is gone, and reconcile marks only where it writes.
+- reconcile labels the lead (lo_labels) and logs when a held LO-referral bonus is
+  settled as not credited after conversion, and when credit is confirmed after the
+  bonus already started (recruiter-program-reconcile-double-pay-risk); nothing is
+  reversed automatically.
+- refresh() returns after taking the lock when another cold-start waiter already loaded.
+
+Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>

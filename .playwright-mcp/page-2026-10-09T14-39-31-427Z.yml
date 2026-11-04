@@ -1,0 +1,185 @@
+- generic [active] [ref=f26e1]:
+  - generic [ref=f26e7]:
+    - generic [ref=f26e8]:
+      - generic [ref=f26e9]:
+        - button "Sidebar collapse button" [ref=f26e10] [cursor=pointer]
+        - link [ref=f26e69] [cursor=pointer]:
+          - /url: "#"
+          - text: "SWAT:"
+          - link "Vinh Nguyen is SWAT officer. Please contact him for urgent problem" [ref=f26e70]:
+            - /url: "javascript:"
+          - text: "Parser:"
+          - link "Quyen Anh Vo is monitoring the parser today. Please contact him for problem with parser" [ref=f26e72]:
+            - /url: "javascript:"
+      - list [ref=f26e15]:
+        - listitem [ref=f26e16]:
+          - link "Search" [ref=f26e17] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=f26e74]: search
+        - listitem [ref=f26e18]:
+          - link "Builds" [ref=f26e19] [cursor=pointer]:
+            - /url: "##builds"
+        - listitem [ref=f26e20]:
+          - link "add" [ref=f26e75] [cursor=pointer]:
+            - /url: "##create_small_task"
+        - listitem [ref=f26e22]:
+          - link "Message" [ref=f26e23] [cursor=pointer]:
+            - /url: javascript:;
+            - generic [ref=f26e77]: notifications
+          - text: 
+        - listitem [ref=f26e24]:
+          - link [ref=f26e25] [cursor=pointer]:
+            - /url: javascript:;
+            - text: Bao Trinh
+            - img "Bao Trinh" [ref=f26e26]
+      - generic [ref=f26e27]:
+        - button "search" [ref=f26e28]
+        - generic [ref=f26e79]:
+          - searchbox "Search input" [ref=f26e80]
+          - searchbox "Search input" [ref=f26e81]
+        - link "close search" [ref=f26e30] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=f26e82]: close
+    - generic [ref=f26e32]:
+      - list [ref=f26e33]:
+        - listitem [ref=f26e34]:
+          - link "Bao Trinh  Bao Trinh Dev" [ref=f26e35] [cursor=pointer]:
+            - /url: javascript:;
+            - img "Bao Trinh" [ref=f26e38]
+            - generic [ref=f26e39]:
+              - generic [ref=f26e40]: 
+              - text: Bao Trinh
+              - generic [ref=f26e41]: Dev
+        - listitem: 
+      - list [ref=f26e42]:
+        - listitem [ref=f26e43]: X Moso
+        - listitem [ref=f26e44]:
+          - tab "group Company directory" [ref=f26e84] [cursor=pointer]:
+            - generic [ref=f26e85]: group
+            - text: Company directory
+        - listitem [ref=f26e46]:
+          - link " assignment_o Activities" [ref=f26e86] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f26e48]: 
+            - generic [ref=f26e87]: assignment_o
+            - text: Activities
+        - listitem [ref=f26e49]:
+          - link " check Reports" [ref=f26e88] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f26e51]: 
+            - generic [ref=f26e89]: check
+            - text: Reports
+        - listitem [ref=f26e52]:
+          - link " settings Builds" [ref=f26e90] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f26e54]: 
+            - generic [ref=f26e91]: settings
+            - text: Builds
+        - listitem [ref=f26e55]:
+          - link " bug_report Errors" [ref=f26e92] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f26e57]: 
+            - generic [ref=f26e93]: bug_report
+            - text: Errors
+        - listitem [ref=f26e58]:
+          - link " System" [ref=f26e59] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f26e60]: 
+            - text: System
+    - generic [ref=f26e368]:
+      - heading "Builds" [level=1] [ref=f26e369]:
+        - text: Builds
+        - paragraph
+      - generic [ref=f26e372]:
+        - tablist [ref=f26e373]:
+          - tab "builds" [ref=f26e374] [cursor=pointer]: Builds
+          - tab "status" [ref=f26e375] [cursor=pointer]:
+            - generic [ref=f26e376]: rss_feed
+            - text: Status
+          - tab "parsers" [ref=f26e377] [cursor=pointer]:
+            - generic [ref=f26e378]: insert_drive_file
+            - text: Parsers
+          - tab "tests" [ref=f26e379] [cursor=pointer]:
+            - generic [ref=f26e380]: insert_drive_file
+            - text: Tests
+          - tab "builders" [ref=f26e381] [cursor=pointer]:
+            - generic [ref=f26e382]: settings
+            - text: Builders
+          - tab "activities" [ref=f26e383] [cursor=pointer]:
+            - generic [ref=f26e384]: history
+            - text: Activities
+        - generic [ref=f26e387]:
+          - generic [ref=f26e388]:
+            - generic [ref=f26e389]:
+              - button "sync" [ref=f26e390] [cursor=pointer]
+              - link [ref=f26e393] [cursor=pointer]:
+                - /url: "javascript:"
+            - form [ref=f26e394]:
+              - generic "Repo" [ref=f26e395]:
+                - generic [ref=f26e396]:
+                  - text: Repo
+                  - generic [ref=f26e397]: (optional)
+                - combobox [disabled] [aria-hidden] [ref=f26e398]
+                - combobox "Repo" [ref=f26e401]
+              - generic "Type" [ref=f26e403]:
+                - generic [ref=f26e404]:
+                  - text: Type
+                  - generic [ref=f26e405]: (optional)
+                - combobox [aria-hidden] [ref=f26e406]
+                - combobox "Type" [ref=f26e409] [cursor=pointer]
+              - generic "Status" [ref=f26e411]:
+                - generic [ref=f26e412]:
+                  - text: Status
+                  - generic [ref=f26e413]: (optional)
+                - combobox [aria-hidden] [ref=f26e414]
+                - combobox "Status" [ref=f26e417] [cursor=pointer]
+            - generic [ref=f26e419]:
+              - button "Reset filters" [ref=f26e420] [cursor=pointer]
+              - button "More" [ref=f26e421] [cursor=pointer]
+          - generic [ref=f26e422]: 
+          - generic "Page Navigation" [ref=f26e428]:
+            - list [ref=f26e430]:
+              - listitem [ref=f26e431] [cursor=pointer]:
+                - generic "Previous" [ref=f26e432]: «
+              - listitem [ref=f26e433] [cursor=pointer]:
+                - generic [ref=f26e434]: 1-1 of over 0
+            - generic [ref=f26e435]:
+              - text: Showing
+              - combobox "Items per page" [ref=f26e436]:
+                - option "5"
+                - option "10" [selected]
+                - option "25"
+                - option "50"
+                - option "100"
+              - text: items per page
+    - link "Scroll to top" [ref=f26e64] [cursor=pointer]:
+      - /url: javascript:;
+      - generic [ref=f26e348]: keyboard_arrow_up
+  - iframe
+  - generic [ref=f26e65]:
+    - link "System Improvement?" [ref=f26e66] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f26e349]: send
+    - link "Help?" [ref=f26e67] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f26e350]: help
+    - link "Chat" [ref=f26e68] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f26e351]: chat
+  - log [ref=f26e352]
+  - log [ref=f26e353]
+  - log [ref=f26e354]
+  - log [ref=f26e355]
+  - log [ref=f26e356]
+  - log [ref=f26e357]
+  - log [ref=f26e358]
+  - log [ref=f26e359]
+  - log [ref=f26e360]
+  - log [ref=f26e361]
+  - log [ref=f26e362]
+  - log [ref=f26e363]
+  - log [ref=f26e364]
+  - log [ref=f26e365]
+  - log [ref=f26e366]
+  - log [ref=f26e367]
+  - log [ref=f26e437]

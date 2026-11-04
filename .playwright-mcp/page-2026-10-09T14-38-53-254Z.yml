@@ -1,0 +1,451 @@
+- generic [active] [ref=f22e1]:
+  - generic [ref=f22e7]:
+    - generic [ref=f22e8]:
+      - generic [ref=f22e9]:
+        - button "Sidebar collapse button" [ref=f22e10] [cursor=pointer]
+        - link [ref=f22e69] [cursor=pointer]:
+          - /url: "#"
+          - text: "SWAT:"
+          - link "Vinh Nguyen is SWAT officer. Please contact him for urgent problem" [ref=f22e70]:
+            - /url: "javascript:"
+          - text: "Parser:"
+          - link "Quyen Anh Vo is monitoring the parser today. Please contact him for problem with parser" [ref=f22e72]:
+            - /url: "javascript:"
+      - list [ref=f22e15]:
+        - listitem [ref=f22e16]:
+          - link "Search" [ref=f22e17] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=f22e74]: search
+        - listitem [ref=f22e18]:
+          - link "Builds" [ref=f22e19] [cursor=pointer]:
+            - /url: "##builds"
+        - listitem [ref=f22e20]:
+          - link "add" [ref=f22e75] [cursor=pointer]:
+            - /url: "##create_small_task"
+        - listitem [ref=f22e22]:
+          - link "Message" [ref=f22e23] [cursor=pointer]:
+            - /url: javascript:;
+            - generic [ref=f22e77]: notifications
+          - text: 
+        - listitem [ref=f22e24]:
+          - link [ref=f22e25] [cursor=pointer]:
+            - /url: javascript:;
+            - text: Bao Trinh
+            - img "Bao Trinh" [ref=f22e26]
+      - generic [ref=f22e27]:
+        - button "search" [ref=f22e28]
+        - generic [ref=f22e79]:
+          - searchbox "Search input" [ref=f22e80]
+          - searchbox "Search input" [ref=f22e29]
+        - link "close search" [ref=f22e30] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=f22e81]: close
+    - generic [ref=f22e32]:
+      - list [ref=f22e33]:
+        - listitem [ref=f22e34]:
+          - link "Bao Trinh  Bao Trinh Dev" [ref=f22e35] [cursor=pointer]:
+            - /url: javascript:;
+            - img "Bao Trinh" [ref=f22e38]
+            - generic [ref=f22e39]:
+              - generic [ref=f22e40]: 
+              - text: Bao Trinh
+              - generic [ref=f22e41]: Dev
+        - listitem: 
+      - list [ref=f22e42]:
+        - listitem [ref=f22e43]: X Moso
+        - listitem [ref=f22e44]:
+          - tab "group Company directory" [ref=f22e83] [cursor=pointer]:
+            - generic [ref=f22e84]: group
+            - text: Company directory
+        - listitem [ref=f22e46]:
+          - link " assignment_o Activities" [ref=f22e85] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f22e48]: 
+            - generic [ref=f22e86]: assignment_o
+            - text: Activities
+        - listitem [ref=f22e49]:
+          - link " check Reports" [ref=f22e87] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f22e51]: 
+            - generic [ref=f22e88]: check
+            - text: Reports
+        - listitem [ref=f22e52]:
+          - link " settings Builds" [ref=f22e89] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f22e54]: 
+            - generic [ref=f22e90]: settings
+            - text: Builds
+        - listitem [ref=f22e55]:
+          - link " bug_report Errors" [ref=f22e91] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f22e57]: 
+            - generic [ref=f22e92]: bug_report
+            - text: Errors
+        - listitem [ref=f22e58]:
+          - link " System" [ref=f22e59] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f22e60]: 
+            - text: System
+    - generic [ref=f22e93]:
+      - heading "Builds bao.trinh@moso.com broke build 10 hour(s) ago." [level=1] [ref=f22e94]:
+        - text: Builds
+        - paragraph [ref=f22e95]:
+          - generic [ref=f22e96]: bao.trinh@moso.com broke build 10 hour(s) ago.
+      - generic [ref=f22e99]:
+        - tablist [ref=f22e100]:
+          - tab "builds" [ref=f22e101] [cursor=pointer]: Builds
+          - tab "status" [ref=f22e102] [cursor=pointer]:
+            - generic [ref=f22e103]: rss_feed
+            - text: Status
+          - tab "parsers" [ref=f22e104] [cursor=pointer]:
+            - generic [ref=f22e105]: insert_drive_file
+            - text: Parsers
+          - tab "tests" [ref=f22e106] [cursor=pointer]:
+            - generic [ref=f22e107]: insert_drive_file
+            - text: Tests
+          - tab "builders" [ref=f22e108] [cursor=pointer]:
+            - generic [ref=f22e109]: settings
+            - text: Builders
+          - tab "activities" [ref=f22e110] [cursor=pointer]:
+            - generic [ref=f22e111]: history
+            - text: Activities
+        - generic [ref=f22e114]:
+          - generic [ref=f22e115]:
+            - generic [ref=f22e116]:
+              - button "sync" [ref=f22e117] [cursor=pointer]
+              - link [ref=f22e120] [cursor=pointer]:
+                - /url: "javascript:"
+            - form [ref=f22e121]:
+              - generic "Repo" [ref=f22e122]:
+                - generic [ref=f22e123]:
+                  - text: Repo
+                  - generic [ref=f22e124]: (optional)
+                - combobox [aria-hidden] [ref=f22e125]
+                - combobox "× packs/loan" [ref=f22e128] [cursor=pointer]:
+                  - generic "packs/loan" [ref=f22e129]:
+                    - generic [ref=f22e130]: ×
+                    - text: packs/loan
+              - generic "Type" [ref=f22e131]:
+                - generic [ref=f22e132]:
+                  - text: Type
+                  - generic [ref=f22e133]: (optional)
+                - combobox [aria-hidden] [ref=f22e134]
+                - combobox "Type" [ref=f22e137] [cursor=pointer]
+              - generic "Status" [ref=f22e139]:
+                - generic [ref=f22e140]:
+                  - text: Status
+                  - generic [ref=f22e141]: (optional)
+                - combobox [aria-hidden] [ref=f22e142]
+                - combobox "Status" [ref=f22e145] [cursor=pointer]
+            - generic [ref=f22e147]:
+              - button "Reset filters" [ref=f22e148] [cursor=pointer]
+              - button "More" [ref=f22e149] [cursor=pointer]
+          - generic [ref=f22e150]:
+            - generic [ref=f22e152]:
+              - generic [ref=f22e153]: Type
+              - generic [ref=f22e154]: Status
+              - generic [ref=f22e155]: Note
+              - generic [ref=f22e156]: Server
+              - generic [ref=f22e157]: Time (m)
+            - generic [ref=f22e158]:
+              - generic [ref=f22e159]:
+                - generic [ref=f22e160]:
+                  - generic [ref=f22e161]:
+                    - group [ref=f22e163]:
+                      - button "test" [ref=f22e164] [cursor=pointer]
+                    - generic [ref=f22e165]: packs/loan
+                  - generic [ref=f22e166]:
+                    - generic [ref=f22e167] [cursor=pointer]: running
+                    - generic [ref=f22e169] [cursor=pointer]: "37"
+                  - generic "mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999" [ref=f22e171]:
+                    - text: Khai (packs)
+                    - link [ref=f22e172] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/754ee62c15367d0fedd77be1e875a8e49439c2b5
+                  - generic [ref=f22e173] [cursor=pointer]: b1
+                  - generic [ref=f22e174]: 10/9/2026, 6:50:45 PM
+                - generic [ref=f22e176]:
+                  - generic [ref=f22e177]:
+                    - group [ref=f22e179]:
+                      - button "test" [ref=f22e180] [cursor=pointer]
+                    - generic [ref=f22e181]: packs/loan
+                  - generic [ref=f22e182]:
+                    - generic [ref=f22e183] [cursor=pointer]: queued
+                    - generic [ref=f22e185] [cursor=pointer]: "37"
+                  - generic "Waiting for base/core (queued)" [ref=f22e187]:
+                    - text: Khai (packs)
+                    - link [ref=f22e188] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/8114fb674c4f61623068ac320e9f367647ff76f2
+                - generic [ref=f22e191]:
+                  - generic [ref=f22e192]:
+                    - group [ref=f22e194]:
+                      - button "test" [ref=f22e195] [cursor=pointer]
+                    - generic [ref=f22e196]: packs/loan
+                  - generic [ref=f22e197]:
+                    - generic [ref=f22e198] [cursor=pointer]: queued
+                    - generic [ref=f22e200] [cursor=pointer]: "0"
+                  - generic "Waiting for base/core (queued)" [ref=f22e202]:
+                    - text: Khai (packs)
+                    - link [ref=f22e203] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/8114fb674c4f61623068ac320e9f367647ff76f2
+                - generic [ref=f22e206]:
+                  - generic [ref=f22e207]:
+                    - group [ref=f22e209]:
+                      - button "test" [ref=f22e210] [cursor=pointer]
+                    - generic [ref=f22e211]: packs/loan
+                  - generic [ref=f22e212]:
+                    - generic [ref=f22e213] [cursor=pointer]: succeeded
+                    - generic [ref=f22e215] [cursor=pointer]: "0"
+                  - generic [ref=f22e217]:
+                    - text: Khai (packs)
+                    - link [ref=f22e218] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/754ee62c15367d0fedd77be1e875a8e49439c2b5
+                  - generic [ref=f22e219] [cursor=pointer]: b4
+                  - generic [ref=f22e220]:
+                    - generic [ref=f22e221]: 13m 54s
+                    - generic [ref=f22e222]: 10/9/2026, 6:50:45 PM
+                - generic [ref=f22e223]:
+                  - generic [ref=f22e224]:
+                    - group [ref=f22e226]:
+                      - button "test" [ref=f22e227] [cursor=pointer]
+                    - generic [ref=f22e228]: packs/loan
+                  - generic [ref=f22e229]:
+                    - generic [ref=f22e230] [cursor=pointer]: failed
+                    - generic [ref=f22e232] [cursor=pointer]: "37"
+                  - 'generic "failed: mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999 -Dlog=/home/ato/logs/4648093914497024_summary.txt >> /home/ato/logs/4648093914497024.txt 2>&1;: Error: Command failed: mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999 -Dlog=/home/ato/logs/4648093914497024_summary.txt >> /home/ato/logs/4648093914497024.txt 2>&1;" [ref=f22e234]':
+                    - text: Khai (packs)
+                    - link [ref=f22e235] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/747ccebe8be60a03fac213ba66058ea5a4ce1576
+                  - generic [ref=f22e236] [cursor=pointer]: b4
+                  - generic [ref=f22e237]: 20m 10s
+                - generic [ref=f22e239]:
+                  - generic [ref=f22e240]:
+                    - group [ref=f22e242]:
+                      - button "test" [ref=f22e243] [cursor=pointer]
+                    - generic [ref=f22e244]: packs/loan
+                  - generic [ref=f22e245]:
+                    - generic [ref=f22e246] [cursor=pointer]: succeeded
+                    - generic [ref=f22e248] [cursor=pointer]: "0"
+                  - generic [ref=f22e250]:
+                    - text: Khai (packs)
+                    - link [ref=f22e251] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/747ccebe8be60a03fac213ba66058ea5a4ce1576
+                  - generic [ref=f22e252] [cursor=pointer]: b2
+                  - generic [ref=f22e253]:
+                    - generic [ref=f22e254]: 8m 12s
+                    - generic [ref=f22e255]: 10/9/2026, 5:48:03 PM
+                - generic [ref=f22e256]:
+                  - generic [ref=f22e257]:
+                    - group [ref=f22e259]:
+                      - button "test" [ref=f22e260] [cursor=pointer]
+                    - generic [ref=f22e261]: packs/loan
+                  - generic [ref=f22e262]:
+                    - generic [ref=f22e263] [cursor=pointer]: failed
+                    - generic [ref=f22e265] [cursor=pointer]: "37"
+                  - 'generic "failed: mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999 -Dlog=/home/ato/logs/5514128033054720_summary.txt >> /home/ato/logs/5514128033054720.txt 2>&1;: Error: Command failed: mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999 -Dlog=/home/ato/logs/5514128033054720_summary.txt >> /home/ato/logs/5514128033054720.txt 2>&1;" [ref=f22e267]':
+                    - text: Bao (packs)
+                    - link [ref=f22e268] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/51d6b5a0c23f7d2081ce7ae025a7bec70b2b2640
+                      - text: "Log the Drive config key, not the entity, when the owner change fails (#3644) GoogleDrive.afterAccountChanged logged \"Could not change owner: \" + config, which prints every property of GoogleDriveConfig(1), including the OAuth access_token and refresh_token of the integrated Super Admin account. Those fields are not SECURED, so the base entity redaction does not cover them. Log the key only. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f22e269]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                    - text: Bao (base)
+                    - link [ref=f22e270] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f22e271]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f22e272] [cursor=pointer]: b4
+                  - generic [ref=f22e273]:
+                    - generic [ref=f22e274]: 18m 47s
+                    - generic [ref=f22e275]: 10/9/2026, 5:16:17 PM
+                - generic [ref=f22e276]:
+                  - generic [ref=f22e277]:
+                    - group [ref=f22e279]:
+                      - button "test" [ref=f22e280] [cursor=pointer]
+                    - generic [ref=f22e281]: packs/loan
+                  - generic [ref=f22e282]:
+                    - generic [ref=f22e283] [cursor=pointer]: succeeded
+                    - generic [ref=f22e285] [cursor=pointer]: "0"
+                  - generic [ref=f22e287]:
+                    - text: Bao (packs)
+                    - link [ref=f22e288] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/51d6b5a0c23f7d2081ce7ae025a7bec70b2b2640
+                      - text: "Log the Drive config key, not the entity, when the owner change fails (#3644) GoogleDrive.afterAccountChanged logged \"Could not change owner: \" + config, which prints every property of GoogleDriveConfig(1), including the OAuth access_token and refresh_token of the integrated Super Admin account. Those fields are not SECURED, so the base entity redaction does not cover them. Log the key only. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f22e289]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                    - text: Bao (base)
+                    - link [ref=f22e290] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f22e291]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f22e292] [cursor=pointer]: b1
+                  - generic [ref=f22e293]:
+                    - generic [ref=f22e294]: 9m 32s
+                    - generic [ref=f22e295]: 10/9/2026, 5:16:17 PM
+                - generic [ref=f22e296]:
+                  - generic [ref=f22e297]:
+                    - group [ref=f22e299]:
+                      - button "test" [ref=f22e300] [cursor=pointer]
+                    - generic [ref=f22e301]: packs/loan
+                  - generic [ref=f22e302]:
+                    - generic [ref=f22e303] [cursor=pointer]: killed
+                    - generic [ref=f22e305] [cursor=pointer]: "0"
+                  - generic "Killed when creating moso-pricing" [ref=f22e307]:
+                    - text: Bao (base)
+                    - link [ref=f22e308] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f22e309]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f22e310] [cursor=pointer]: b3
+                  - generic [ref=f22e311]: 10/9/2026, 5:14:02 PM
+                - generic [ref=f22e313]:
+                  - generic [ref=f22e314]:
+                    - group [ref=f22e316]:
+                      - button "test" [ref=f22e317] [cursor=pointer]
+                    - generic [ref=f22e318]: packs/loan
+                  - generic [ref=f22e319]:
+                    - generic [ref=f22e320] [cursor=pointer]: killed
+                    - generic [ref=f22e322] [cursor=pointer]: "37"
+                  - generic "Killed when creating moso-pricing" [ref=f22e324]:
+                    - text: Bao (base)
+                    - link [ref=f22e325] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f22e326]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f22e327] [cursor=pointer]: b4
+                  - generic [ref=f22e328]: 10/9/2026, 5:14:02 PM
+                - generic [ref=f22e330]:
+                  - generic [ref=f22e331]:
+                    - group [ref=f22e333]:
+                      - button "test" [ref=f22e334] [cursor=pointer]
+                    - generic [ref=f22e335]: packs/loan
+                  - generic [ref=f22e336]:
+                    - generic [ref=f22e337] [cursor=pointer]: failed
+                    - generic [ref=f22e339] [cursor=pointer]: "37"
+                  - 'generic "failed: mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999 -Dlog=/home/ato/logs/5812637823139840_summary.txt >> /home/ato/logs/5812637823139840.txt 2>&1;: Error: Command failed: mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999 -Dlog=/home/ato/logs/5812637823139840_summary.txt >> /home/ato/logs/5812637823139840.txt 2>&1;" [ref=f22e341]':
+                    - text: Khai (packs)
+                    - link [ref=f22e342] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/f19a8e1cdbd061dc97ecda2bab4462aa6e3c77b4
+                  - generic [ref=f22e343] [cursor=pointer]: b5
+                  - generic [ref=f22e344]:
+                    - generic [ref=f22e345]: 3m 39s
+                    - generic [ref=f22e346]: 10/9/2026, 5:04:22 PM
+                - generic [ref=f22e347]:
+                  - generic [ref=f22e348]:
+                    - group [ref=f22e350]:
+                      - button "test" [ref=f22e351] [cursor=pointer]
+                    - generic [ref=f22e352]: packs/loan
+                  - generic [ref=f22e353]:
+                    - generic [ref=f22e354] [cursor=pointer]: killed
+                    - generic [ref=f22e356] [cursor=pointer]: "0"
+                  - generic "Killed when creating base/core" [ref=f22e358]:
+                    - text: Bao (packs)
+                    - link [ref=f22e359] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/911ea17db83edef12a7477f606fa1bf00e101b9e
+                      - text: "fix(recruit-api): accept the recruiters MOSO already lets invite (not only RECRUITING) [agentflow-cg03s] (#3645) The invite family (webinars, candidate/sync, candidate/registerWebinar, candidate/invite) now admits an active Admin holding any of RECRUITING, INTERESTED_LOAN_OFFICERS, RECRUITED_LOAN_OFFICERS, or flagged is_recruiter / is_out_sourcing_recruiter, via one helper (isAuthorizedActor / mayActOnLoRecruiting). The onboarding family and the referral self-scope are deliberately unchanged. Both refusal texts keep the phrase \"lacks recruiting permission\" that recruit-be matches on. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f22e360]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                - generic [ref=f22e363]:
+                  - generic [ref=f22e364]:
+                    - group [ref=f22e366]:
+                      - button "test" [ref=f22e367] [cursor=pointer]
+                    - generic [ref=f22e368]: packs/loan
+                  - generic [ref=f22e369]:
+                    - generic [ref=f22e370] [cursor=pointer]: failed
+                    - generic [ref=f22e372] [cursor=pointer]: "37"
+                  - 'generic "failed: mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999 -Dlog=/home/ato/logs/4893308663365632_summary.txt >> /home/ato/logs/4893308663365632.txt 2>&1;: Error: Command failed: mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999 -Dlog=/home/ato/logs/4893308663365632_summary.txt >> /home/ato/logs/4893308663365632.txt 2>&1;" [ref=f22e374]':
+                    - text: Bao (packs)
+                    - link [ref=f22e375] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/911ea17db83edef12a7477f606fa1bf00e101b9e
+                      - text: "fix(recruit-api): accept the recruiters MOSO already lets invite (not only RECRUITING) [agentflow-cg03s] (#3645) The invite family (webinars, candidate/sync, candidate/registerWebinar, candidate/invite) now admits an active Admin holding any of RECRUITING, INTERESTED_LOAN_OFFICERS, RECRUITED_LOAN_OFFICERS, or flagged is_recruiter / is_out_sourcing_recruiter, via one helper (isAuthorizedActor / mayActOnLoRecruiting). The onboarding family and the referral self-scope are deliberately unchanged. Both refusal texts keep the phrase \"lacks recruiting permission\" that recruit-be matches on. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f22e376]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f22e377] [cursor=pointer]: b1
+                  - generic [ref=f22e378]:
+                    - generic [ref=f22e379]: 4m 4s
+                    - generic [ref=f22e380]: 10/9/2026, 5:03:57 PM
+                - generic [ref=f22e381]:
+                  - generic [ref=f22e382]:
+                    - group [ref=f22e384]:
+                      - button "test" [ref=f22e385] [cursor=pointer]
+                    - generic [ref=f22e386]: packs/loan
+                  - generic [ref=f22e387]:
+                    - generic [ref=f22e388] [cursor=pointer]: killed
+                    - generic [ref=f22e390] [cursor=pointer]: "0"
+                  - generic "Killed when creating base/core" [ref=f22e392]:
+                    - text: Khai (packs)
+                    - link [ref=f22e393] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/f19a8e1cdbd061dc97ecda2bab4462aa6e3c77b4
+                  - generic [ref=f22e394] [cursor=pointer]: b4
+                  - generic [ref=f22e395]: 10/9/2026, 5:04:22 PM
+                - generic [ref=f22e397]:
+                  - generic [ref=f22e398]:
+                    - group [ref=f22e400]:
+                      - button "test" [ref=f22e401] [cursor=pointer]
+                    - generic [ref=f22e402]: packs/loan
+                  - generic [ref=f22e403]:
+                    - generic [ref=f22e404] [cursor=pointer]: failed
+                    - generic [ref=f22e406] [cursor=pointer]: "37"
+                  - 'generic "failed: mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999 -Dlog=/home/ato/logs/5658273980612608_summary.txt >> /home/ato/logs/5658273980612608.txt 2>&1;: Error: Command failed: mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999 -Dlog=/home/ato/logs/5658273980612608_summary.txt >> /home/ato/logs/5658273980612608.txt 2>&1;" [ref=f22e408]':
+                    - text: Trung (packs)
+                    - 'link "PennyMac: assert full Conv ladder and 15-day NY prices" [ref=f22e409] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/96bda2d96f9d36dac17f9bec63f707a768506e48
+                    - text: Trung (packs)
+                    - 'link "HomeXpress: parse the 10/06 sheet in the adjustment test" [ref=f22e410] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/8a3e182636d4ed868965455c2d1f2c5c2bef4891
+                    - text: Trung (packs)
+                    - 'link "Freedom: Manufactured Home LLPA is 0.5, not the 2-4 Unit row" [ref=f22e411] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/26a9f35058f7299082bdbab7d7f08e4925721189
+                    - text: Trung (packs)
+                    - 'link "T-0018: rename Employment history to Employment, show it below Document type" [ref=f22e412] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/c26b144a2aba3b9ded4551bb57acdf2baee6313c
+                  - generic [ref=f22e413] [cursor=pointer]: b3
+                  - generic [ref=f22e414]:
+                    - generic [ref=f22e415]: 16m 35s
+                    - generic [ref=f22e416]: 10/9/2026, 4:50:09 PM
+              - text: 
+          - generic "Page Navigation" [ref=f22e417]:
+            - list [ref=f22e419]:
+              - listitem [ref=f22e420] [cursor=pointer]:
+                - generic "Previous" [ref=f22e421]: «
+              - listitem [ref=f22e422] [cursor=pointer]:
+                - generic [ref=f22e423]: 1-15 of over 100
+              - listitem [ref=f22e424] [cursor=pointer]:
+                - generic "Next" [ref=f22e425]: »
+            - generic [ref=f22e426]:
+              - text: Showing
+              - combobox "Items per page" [ref=f22e427]:
+                - option "5"
+                - option "10" [selected]
+                - option "25"
+                - option "50"
+                - option "100"
+              - text: items per page
+    - link "Scroll to top" [ref=f22e64] [cursor=pointer]:
+      - /url: javascript:;
+      - generic [ref=f22e428]: keyboard_arrow_up
+  - iframe
+  - generic [ref=f22e65]:
+    - link "System Improvement?" [ref=f22e66] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f22e429]: send
+    - link "Help?" [ref=f22e67] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f22e430]: help
+    - link "Chat" [ref=f22e68] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f22e431]: chat
+  - log [ref=f22e432]
+  - log [ref=f22e433]
+  - log [ref=f22e434]
+  - log [ref=f22e435]
+  - log [ref=f22e436]
+  - log [ref=f22e437]
+  - log [ref=f22e438]
+  - log [ref=f22e439]
+  - log [ref=f22e440]
+  - log [ref=f22e441]
+  - log [ref=f22e442]
+  - log [ref=f22e443]
+  - log [ref=f22e444]
+  - log [ref=f22e445]
+  - log [ref=f22e446]
+  - log [ref=f22e447]
+  - log [ref=f22e448]
+  - log [ref=f22e449]
+  - log [ref=f22e450]

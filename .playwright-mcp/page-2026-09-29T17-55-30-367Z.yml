@@ -1,0 +1,571 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - generic [ref=f1e3]: recruit-fe · My referrals
+    - generic [ref=f1e4]: Mockup để duyệt · agentflow-cn1rh · 30/09/2026 · dữ liệu mẫu, ngày "hôm nay" = 30 Sep 2026
+  - main [ref=f1e5]:
+    - generic [ref=f1e6]:
+      - heading "Người giới thiệu tự xem \"người tôi giới thiệu đang đến đâu, khi nào tôi nhận bonus\"" [level=1] [ref=f1e7]
+      - paragraph [ref=f1e8]: "Hai khung: (1) màn của người giới thiệu (mọi nhân viên, ví dụ Linh Tran, thành viên LO Recruiter Program); (2) màn Admin xem cùng dữ liệu cho tất cả, gom theo người giới thiệu. Người giới thiệu KHÔNG thấy ghi chú cuộc gọi, lý do từ chối, số production."
+    - generic "Chú thích" [ref=f1e9]:
+      - generic [ref=f1e10]: Dữ liệu chưa có nguồn, cần build
+      - generic [ref=f1e12]: Mốc đã xong
+      - generic [ref=f1e14]: Đang ở bước này
+      - generic [ref=f1e16]: Bị kẹt / đang chờ
+    - generic [ref=f1e18]:
+      - 'heading "Khung 1 Người giới thiệu tự xem: Linh Tran" [level=2] [ref=f1e19]':
+        - generic [ref=f1e20]: Khung 1
+        - text: "Người giới thiệu tự xem: Linh Tran"
+      - generic [ref=f1e21]: "Ghi chú (VI): Mỗi người được giới thiệu là một thẻ. Trên cùng là 5 số tổng. Chip lọc theo trang họ đăng ký: Program (/join, /recruit) và Referral (/refer-a-loan-officer). Trong thẻ: chấm S0→S7, mốc có ngày, và khối bonus bên phải."
+      - generic [ref=f1e22]: "Viền đỏ đứt = chưa có dữ liệu: (a) dấu \"trang đăng ký\" (entry page) chưa được ghi lại, (b) trạng thái MOSO Check + số tiền + ngày trả chưa đọc được từ MOSO/Accounting."
+      - generic [ref=f1e23]:
+        - generic [ref=f1e24]: Recruit · Hồ sơ của tôi
+        - generic [ref=f1e25]:
+          - text: My
+          - emphasis [ref=f1e26]: referrals
+        - paragraph [ref=f1e27]: Everyone you referred to LoanFactory, and where each one stands. Bonus amounts and dates come from MOSO/Accounting, not from Recruiting.
+        - generic [ref=f1e28]:
+          - generic [ref=f1e29]:
+            - generic [ref=f1e30]: Referred this year
+            - generic [ref=f1e31]: "6"
+            - generic [ref=f1e32]: since Jan 1
+          - generic [ref=f1e33]:
+            - generic [ref=f1e34]: In progress
+            - generic [ref=f1e35]: "2"
+            - generic [ref=f1e36]: 1 stalled
+          - generic [ref=f1e37]:
+            - generic [ref=f1e38]: Onboarded
+            - generic [ref=f1e39]: "3"
+            - generic [ref=f1e40]: reached S7
+          - generic [ref=f1e41]:
+            - generic [ref=f1e42]: Bonus pending
+            - generic [ref=f1e43]: "2"
+            - generic [ref=f1e44]: 1 waiting day 60 · 1 check requested
+          - generic [ref=f1e45]:
+            - generic [ref=f1e46]: Bonus paid
+            - generic [ref=f1e47]: "1"
+            - generic [ref=f1e48]: by Accounting
+        - group "Filter by entry page" [ref=f1e49]:
+          - button "All (6)" [pressed] [ref=f1e50] [cursor=pointer]
+          - generic [ref=f1e52]:
+            - button "Program · /join /recruit" [ref=f1e53] [cursor=pointer]
+            - button "Referral · /refer-a-loan-officer" [ref=f1e54] [cursor=pointer]
+        - generic [ref=f1e55]:
+          - article "Minh Nguyen" [ref=f1e56]:
+            - generic [ref=f1e57]:
+              - generic [aria-hidden] [ref=f1e58]: MN
+              - generic [ref=f1e59]:
+                - generic [ref=f1e60]: Minh Nguyen
+                - text: NMLS 1234567
+              - generic [ref=f1e61]:
+                - generic "/join" [ref=f1e63]: Program
+                - generic [ref=f1e64]: Onboarding 3 days
+                - generic [ref=f1e65]: In progress
+            - img "Stage S4 of S7" [ref=f1e66]:
+              - generic [ref=f1e67]: S0
+              - generic [ref=f1e69]: S1
+              - generic [ref=f1e71]: S2
+              - generic [ref=f1e73]: S3
+              - generic [ref=f1e75]: S4
+              - generic [ref=f1e77]: S5
+              - generic [ref=f1e79]: S6
+              - generic [ref=f1e81]: S7
+            - generic [ref=f1e83]:
+              - heading "Milestones" [level=4] [ref=f1e84]
+              - list [ref=f1e85]:
+                - listitem [ref=f1e86]:
+                  - generic [ref=f1e87]: Entered stock
+                  - generic [ref=f1e88]: Sep 18
+                - listitem [ref=f1e89]:
+                  - generic [ref=f1e90]: First recruiter touch · Trang Le
+                  - generic [ref=f1e91]: Sep 19
+                - listitem [ref=f1e92]:
+                  - generic [ref=f1e93]: Offer sent
+                  - generic [ref=f1e94]: Sep 24
+                - listitem [ref=f1e95]:
+                  - generic [ref=f1e96]: Signed + paid
+                  - generic [ref=f1e97]: Sep 27
+                - listitem [ref=f1e98]:
+                  - generic [ref=f1e99]: HR account created
+                  - generic [ref=f1e100]: Sep 28
+                - listitem [ref=f1e101]:
+                  - generic [ref=f1e102]: HR completed
+                  - generic [ref=f1e103]: Not yet
+                - listitem [ref=f1e104]:
+                  - generic [ref=f1e105]: Licensing sponsorship done
+                  - generic [ref=f1e106]: Not yet
+                - listitem [ref=f1e107]:
+                  - generic [ref=f1e108]: Setup call
+                  - generic [ref=f1e109]: Not yet
+                - listitem [ref=f1e110]:
+                  - generic [ref=f1e111]: Onboarded
+                  - generic [ref=f1e112]: Not yet
+            - generic [ref=f1e113]:
+              - heading "Bonus" [level=4] [ref=f1e114]
+              - paragraph [ref=f1e115]: The 60-day count starts when Minh is onboarded.
+              - paragraph [ref=f1e116]: Amounts and dates come from MOSO/Accounting.
+          - article "Hoa Pham" [ref=f1e117]:
+            - generic [ref=f1e118]:
+              - generic [aria-hidden] [ref=f1e119]: HP
+              - generic [ref=f1e120]:
+                - generic [ref=f1e121]: Hoa Pham
+                - text: NMLS 2345678
+              - generic [ref=f1e122]:
+                - generic "/refer-a-loan-officer" [ref=f1e124]: Referral
+                - generic [ref=f1e125]: Stalled · no touch for 7 days
+            - img "Stage S1 of S7" [ref=f1e126]:
+              - generic [ref=f1e127]: S0
+              - generic [ref=f1e129]: S1
+              - generic [ref=f1e131]: S2
+              - generic [ref=f1e133]: S3
+              - generic [ref=f1e135]: S4
+              - generic [ref=f1e137]: S5
+              - generic [ref=f1e139]: S6
+              - generic [ref=f1e141]: S7
+            - generic [ref=f1e143]:
+              - heading "Milestones" [level=4] [ref=f1e144]
+              - list [ref=f1e145]:
+                - listitem [ref=f1e146]:
+                  - generic [ref=f1e147]: Entered stock
+                  - generic [ref=f1e148]: Sep 10
+                - listitem [ref=f1e149]:
+                  - generic [ref=f1e150]: First recruiter touch · Trang Le
+                  - generic [ref=f1e151]: Sep 12
+                - listitem [ref=f1e152]:
+                  - generic [ref=f1e153]: Offer sent
+                  - generic [ref=f1e154]: Not yet
+                - listitem [ref=f1e155]:
+                  - generic [ref=f1e156]: Signed + paid
+                  - generic [ref=f1e157]: Not yet
+                - listitem [ref=f1e158]:
+                  - generic [ref=f1e159]: HR account created
+                  - generic [ref=f1e160]: Not yet
+                - listitem [ref=f1e161]:
+                  - generic [ref=f1e162]: HR completed
+                  - generic [ref=f1e163]: Not yet
+                - listitem [ref=f1e164]:
+                  - generic [ref=f1e165]: Licensing sponsorship done
+                  - generic [ref=f1e166]: Not yet
+                - listitem [ref=f1e167]:
+                  - generic [ref=f1e168]: Setup call
+                  - generic [ref=f1e169]: Not yet
+                - listitem [ref=f1e170]:
+                  - generic [ref=f1e171]: Onboarded
+                  - generic [ref=f1e172]: Not yet
+            - generic [ref=f1e173]:
+              - heading "Bonus" [level=4] [ref=f1e174]
+              - paragraph [ref=f1e175]: Not started yet.
+              - paragraph [ref=f1e176]: Amounts and dates come from MOSO/Accounting.
+          - article "Duc Le" [ref=f1e177]:
+            - generic [ref=f1e178]:
+              - generic [aria-hidden] [ref=f1e179]: DL
+              - generic [ref=f1e180]:
+                - generic [ref=f1e181]: Duc Le
+                - text: NMLS 3456789
+              - generic [ref=f1e182]:
+                - generic "/join" [ref=f1e184]: Program
+                - generic [ref=f1e185]: Onboarding 18 days
+                - generic [ref=f1e186]: "Bonus: waiting for day 60"
+            - img "Stage S7 of S7" [ref=f1e187]:
+              - generic [ref=f1e188]: S0
+              - generic [ref=f1e190]: S1
+              - generic [ref=f1e192]: S2
+              - generic [ref=f1e194]: S3
+              - generic [ref=f1e196]: S4
+              - generic [ref=f1e198]: S5
+              - generic [ref=f1e200]: S6
+              - generic [ref=f1e202]: S7
+            - generic [ref=f1e204]:
+              - heading "Milestones" [level=4] [ref=f1e205]
+              - list [ref=f1e206]:
+                - listitem [ref=f1e207]:
+                  - generic [ref=f1e208]: Entered stock
+                  - generic [ref=f1e209]: Jun 30
+                - listitem [ref=f1e210]:
+                  - generic [ref=f1e211]: First recruiter touch · Khai Ho
+                  - generic [ref=f1e212]: Jul 1
+                - listitem [ref=f1e213]:
+                  - generic [ref=f1e214]: Offer sent
+                  - generic [ref=f1e215]: Jul 8
+                - listitem [ref=f1e216]:
+                  - generic [ref=f1e217]: Signed + paid
+                  - generic [ref=f1e218]: Jul 12
+                - listitem [ref=f1e219]:
+                  - generic [ref=f1e220]: HR account created
+                  - generic [ref=f1e221]: Jul 13
+                - listitem [ref=f1e222]:
+                  - generic [ref=f1e223]: HR completed
+                  - generic [ref=f1e224]: Aug 5
+                - listitem [ref=f1e225]:
+                  - generic [ref=f1e226]: Licensing sponsorship done (TX)
+                  - generic [ref=f1e227]: Aug 20
+                - listitem [ref=f1e228]:
+                  - generic [ref=f1e229]: Setup call
+                  - generic [ref=f1e230]: Sep 10
+                - listitem [ref=f1e231]:
+                  - generic [ref=f1e232]: Onboarded
+                  - generic [ref=f1e233]: Sep 12
+            - generic [ref=f1e234]:
+              - heading "Bonus" [level=4] [ref=f1e235]
+              - generic [ref=f1e236]:
+                - generic [ref=f1e237]: "42"
+                - generic [ref=f1e238]: days left
+                - generic [ref=f1e239]: Eligible Nov 11 · counted from Sep 12
+              - paragraph [ref=f1e242]: After day 60 Accounting is asked for the check.
+              - paragraph [ref=f1e243]: Amounts and dates come from MOSO/Accounting.
+          - article "Sara Kim" [ref=f1e244]:
+            - generic [ref=f1e245]:
+              - generic [aria-hidden] [ref=f1e246]: SK
+              - generic [ref=f1e247]:
+                - generic [ref=f1e248]: Sara Kim
+                - text: NMLS 4567890
+              - generic [ref=f1e249]:
+                - generic "/refer-a-loan-officer" [ref=f1e251]: Referral
+                - generic [ref=f1e252]: Onboarding 72 days
+                - generic [ref=f1e253]: "Bonus: check requested"
+            - img "Stage S7 of S7" [ref=f1e254]:
+              - generic [ref=f1e255]: S0
+              - generic [ref=f1e257]: S1
+              - generic [ref=f1e259]: S2
+              - generic [ref=f1e261]: S3
+              - generic [ref=f1e263]: S4
+              - generic [ref=f1e265]: S5
+              - generic [ref=f1e267]: S6
+              - generic [ref=f1e269]: S7
+            - generic [ref=f1e271]:
+              - heading "Milestones" [level=4] [ref=f1e272]
+              - list [ref=f1e273]:
+                - listitem [ref=f1e274]:
+                  - generic [ref=f1e275]: Entered stock
+                  - generic [ref=f1e276]: Apr 2
+                - listitem [ref=f1e277]:
+                  - generic [ref=f1e278]: First recruiter touch · Khai Ho
+                  - generic [ref=f1e279]: Apr 3
+                - listitem [ref=f1e280]:
+                  - generic [ref=f1e281]: Offer sent
+                  - generic [ref=f1e282]: Apr 10
+                - listitem [ref=f1e283]:
+                  - generic [ref=f1e284]: Signed + paid
+                  - generic [ref=f1e285]: Apr 14
+                - listitem [ref=f1e286]:
+                  - generic [ref=f1e287]: HR account created
+                  - generic [ref=f1e288]: Apr 15
+                - listitem [ref=f1e289]:
+                  - generic [ref=f1e290]: HR completed
+                  - generic [ref=f1e291]: May 2
+                - listitem [ref=f1e292]:
+                  - generic [ref=f1e293]: Licensing sponsorship done (CA)
+                  - generic [ref=f1e294]: May 20
+                - listitem [ref=f1e295]:
+                  - generic [ref=f1e296]: Setup call
+                  - generic [ref=f1e297]: Jul 20
+                - listitem [ref=f1e298]:
+                  - generic [ref=f1e299]: Onboarded
+                  - generic [ref=f1e300]: Jul 20
+            - generic [ref=f1e301]:
+              - heading "Bonus" [level=4] [ref=f1e302]
+              - generic [ref=f1e303]:
+                - generic [ref=f1e304]: Day 60 reached
+                - generic [ref=f1e305]: Eligible since Sep 18 · counted from Jul 20
+              - generic "MOSO Check status" [ref=f1e306]:
+                - generic [ref=f1e307]:
+                  - text: Requested
+                  - generic [ref=f1e308]: Sep 21
+                - generic [ref=f1e309]:
+                  - text: Commission approved
+                  - generic [ref=f1e310]: Waiting
+                - generic [ref=f1e311]:
+                  - text: Paid
+                  - generic [ref=f1e312]: —
+              - paragraph [ref=f1e313]: Amounts and dates come from MOSO/Accounting.
+          - article "Tuan Vo" [ref=f1e314]:
+            - generic [ref=f1e315]:
+              - generic [aria-hidden] [ref=f1e316]: TV
+              - generic [ref=f1e317]:
+                - generic [ref=f1e318]: Tuan Vo
+                - text: NMLS 5678901
+              - generic [ref=f1e319]:
+                - generic "/join" [ref=f1e321]: Program
+                - generic [ref=f1e322]: Onboarding 92 days
+                - generic [ref=f1e323]: Bonus paid
+            - img "Stage S7 of S7" [ref=f1e324]:
+              - generic [ref=f1e325]: S0
+              - generic [ref=f1e327]: S1
+              - generic [ref=f1e329]: S2
+              - generic [ref=f1e331]: S3
+              - generic [ref=f1e333]: S4
+              - generic [ref=f1e335]: S5
+              - generic [ref=f1e337]: S6
+              - generic [ref=f1e339]: S7
+            - generic [ref=f1e341]:
+              - heading "Milestones" [level=4] [ref=f1e342]
+              - list [ref=f1e343]:
+                - listitem [ref=f1e344]:
+                  - generic [ref=f1e345]: Entered stock
+                  - generic [ref=f1e346]: Mar 1
+                - listitem [ref=f1e347]:
+                  - generic [ref=f1e348]: First recruiter touch · Trang Le
+                  - generic [ref=f1e349]: Mar 2
+                - listitem [ref=f1e350]:
+                  - generic [ref=f1e351]: Offer sent
+                  - generic [ref=f1e352]: Mar 8
+                - listitem [ref=f1e353]:
+                  - generic [ref=f1e354]: Signed + paid
+                  - generic [ref=f1e355]: Mar 11
+                - listitem [ref=f1e356]:
+                  - generic [ref=f1e357]: HR account created
+                  - generic [ref=f1e358]: Mar 12
+                - listitem [ref=f1e359]:
+                  - generic [ref=f1e360]: HR completed
+                  - generic [ref=f1e361]: Apr 1
+                - listitem [ref=f1e362]:
+                  - generic [ref=f1e363]: Licensing sponsorship done (FL)
+                  - generic [ref=f1e364]: Apr 18
+                - listitem [ref=f1e365]:
+                  - generic [ref=f1e366]: Setup call
+                  - generic [ref=f1e367]: Jun 28
+                - listitem [ref=f1e368]:
+                  - generic [ref=f1e369]: Onboarded
+                  - generic [ref=f1e370]: Jun 30
+            - generic [ref=f1e371]:
+              - heading "Bonus" [level=4] [ref=f1e372]
+              - generic [ref=f1e373]:
+                - generic [ref=f1e374]: Day 60 reached
+                - generic [ref=f1e375]: Eligible since Aug 29 · counted from Jun 30
+              - generic "MOSO Check status" [ref=f1e376]:
+                - generic [ref=f1e377]:
+                  - text: Requested
+                  - generic [ref=f1e378]: Sep 1
+                - generic [ref=f1e379]:
+                  - text: Commission approved
+                  - generic [ref=f1e380]: Sep 8
+                - generic [ref=f1e381]:
+                  - text: Paid
+                  - generic [ref=f1e382]: Sep 12 · $X
+              - paragraph [ref=f1e383]: Amounts and dates come from MOSO/Accounting.
+          - article "Kevin Do" [ref=f1e384]:
+            - generic [ref=f1e385]:
+              - generic [aria-hidden] [ref=f1e386]: KD
+              - generic [ref=f1e387]:
+                - generic [ref=f1e388]: Kevin Do
+                - text: NMLS 6789012
+              - generic [ref=f1e389]:
+                - generic "/refer-a-loan-officer" [ref=f1e391]: Referral
+                - generic [ref=f1e392]: Not continuing
+            - generic [ref=f1e393]:
+              - heading "Milestones" [level=4] [ref=f1e394]
+              - list [ref=f1e395]:
+                - listitem [ref=f1e396]:
+                  - generic [ref=f1e397]: Entered stock
+                  - generic [ref=f1e398]: Aug 4
+            - generic [ref=f1e399]:
+              - heading "Bonus" [level=4] [ref=f1e400]
+              - paragraph [ref=f1e401]: Not continuing.
+        - paragraph [ref=f1e402]: Amounts and dates come from MOSO/Accounting. You only see progress milestones, never call notes, reasons or production numbers.
+    - generic [ref=f1e403]:
+      - 'heading "Khung 2 Admin: cùng dữ liệu cho tất cả, gom theo người giới thiệu" [level=2] [ref=f1e404]':
+        - generic [ref=f1e405]: Khung 2
+        - text: "Admin: cùng dữ liệu cho tất cả, gom theo người giới thiệu"
+      - generic [ref=f1e406]: "Ghi chú (VI): Mỗi người giới thiệu là một dòng tổng (số người, đã onboard, bonus chờ, bonus đã trả), bên dưới là từng người được giới thiệu. Lọc theo người giới thiệu, trang đăng ký, trạng thái bonus. Admin thấy cùng các cột như người giới thiệu, không thêm ghi chú cuộc gọi."
+      - generic [ref=f1e407]:
+        - generic [ref=f1e408]: Recruit · Cấu hình
+        - generic [ref=f1e409]:
+          - text: Referrals
+          - emphasis [ref=f1e410]: by referrer
+        - generic [ref=f1e411]:
+          - generic [ref=f1e412]:
+            - text: Referrer
+            - combobox "Referrer" [ref=f1e413]:
+              - option "All referrers (3)" [selected]
+              - option "Linh Tran"
+              - option "Bao Trinh"
+              - option "Phuong Vu"
+          - generic [ref=f1e414]:
+            - text: Bonus
+            - combobox "Bonus" [ref=f1e415]:
+              - option "Any status" [selected]
+              - option "Not yet eligible"
+              - option "Waiting for day 60"
+              - option "Check requested"
+              - option "Paid"
+          - generic [ref=f1e417]:
+            - text: Entry page
+            - combobox "Entry page" [ref=f1e418]:
+              - option "Any" [selected]
+              - option "Program"
+              - option "Referral"
+          - button "Export CSV" [ref=f1e419] [cursor=pointer]
+        - table [ref=f1e420]:
+          - rowgroup [ref=f1e421]:
+            - row [ref=f1e422]:
+              - columnheader "Referred person" [ref=f1e423]
+              - columnheader "Entry page" [ref=f1e424]
+              - columnheader "Stage" [ref=f1e425]
+              - columnheader "Recruiter" [ref=f1e426]
+              - columnheader "Joined / onboarded" [ref=f1e427]
+              - columnheader "Eligible from" [ref=f1e428]
+              - columnheader "MOSO check" [ref=f1e429]
+              - columnheader "Amount" [ref=f1e430]
+          - rowgroup [ref=f1e431]:
+            - row [ref=f1e432]:
+              - cell "Linh Tran · 6 referred" [ref=f1e433]
+              - cell "3 onboarded 2 bonus pending 1 paid · $X" [ref=f1e434]:
+                - generic [ref=f1e435]:
+                  - generic [ref=f1e436]: 3 onboarded
+                  - generic [ref=f1e437]: 2 bonus pending
+                  - generic [ref=f1e438]: 1 paid · $X
+            - row [ref=f1e439]:
+              - cell "Minh Nguyen NMLS 1234567" [ref=f1e440]:
+                - text: Minh Nguyen
+                - generic [ref=f1e441]: NMLS 1234567
+              - cell "Program" [ref=f1e442]:
+                - generic "/join" [ref=f1e444]: Program
+              - cell "S4 In progress" [ref=f1e445]:
+                - text: S4
+                - generic [ref=f1e446]: In progress
+              - cell "Trang Le" [ref=f1e447]
+              - cell "Sep 28" [ref=f1e448]
+              - cell "—" [ref=f1e449]
+              - cell "—" [ref=f1e450]
+              - cell "—" [ref=f1e452]
+            - row [ref=f1e453]:
+              - cell "Hoa Pham NMLS 2345678" [ref=f1e454]:
+                - text: Hoa Pham
+                - generic [ref=f1e455]: NMLS 2345678
+              - cell "Referral" [ref=f1e456]:
+                - generic "/refer-a-loan-officer" [ref=f1e458]: Referral
+              - cell "S1 Stalled · no touch for 7 days" [ref=f1e459]:
+                - text: S1
+                - generic [ref=f1e460]: Stalled · no touch for 7 days
+              - cell "Trang Le" [ref=f1e461]
+              - cell "—" [ref=f1e462]
+              - cell "—" [ref=f1e463]
+              - cell "—" [ref=f1e464]
+              - cell "—" [ref=f1e466]
+            - row [ref=f1e467]:
+              - cell "Duc Le NMLS 3456789" [ref=f1e468]:
+                - text: Duc Le
+                - generic [ref=f1e469]: NMLS 3456789
+              - cell "Program" [ref=f1e470]:
+                - generic "/join" [ref=f1e472]: Program
+              - 'cell "S7 Bonus: waiting for day 60" [ref=f1e473]':
+                - text: S7
+                - generic [ref=f1e474]: "Bonus: waiting for day 60"
+              - cell "Khai Ho" [ref=f1e475]
+              - cell "Sep 12" [ref=f1e476]
+              - cell "Nov 11 42 days left" [ref=f1e477]:
+                - text: Nov 11
+                - generic [ref=f1e478]: 42 days left
+              - cell "Not yet eligible" [ref=f1e479]
+              - cell "—" [ref=f1e481]
+            - row [ref=f1e482]:
+              - cell "Sara Kim NMLS 4567890" [ref=f1e483]:
+                - text: Sara Kim
+                - generic [ref=f1e484]: NMLS 4567890
+              - cell "Referral" [ref=f1e485]:
+                - generic "/refer-a-loan-officer" [ref=f1e487]: Referral
+              - 'cell "S7 Bonus: check requested" [ref=f1e488]':
+                - text: S7
+                - generic [ref=f1e489]: "Bonus: check requested"
+              - cell "Khai Ho" [ref=f1e490]
+              - cell "Jul 20" [ref=f1e491]
+              - cell "Sep 18" [ref=f1e492]
+              - cell "Requested" [ref=f1e493]
+              - cell "$X" [ref=f1e495]
+            - row [ref=f1e496]:
+              - cell "Tuan Vo NMLS 5678901" [ref=f1e497]:
+                - text: Tuan Vo
+                - generic [ref=f1e498]: NMLS 5678901
+              - cell "Program" [ref=f1e499]:
+                - generic "/join" [ref=f1e501]: Program
+              - cell "S7 Bonus paid" [ref=f1e502]:
+                - text: S7
+                - generic [ref=f1e503]: Bonus paid
+              - cell "Trang Le" [ref=f1e504]
+              - cell "Jun 30" [ref=f1e505]
+              - cell "Aug 29" [ref=f1e506]
+              - cell "Paid" [ref=f1e507]
+              - cell "$X" [ref=f1e509]
+            - row [ref=f1e510]:
+              - cell "Kevin Do NMLS 6789012" [ref=f1e511]:
+                - text: Kevin Do
+                - generic [ref=f1e512]: NMLS 6789012
+              - cell "Referral" [ref=f1e513]:
+                - generic "/refer-a-loan-officer" [ref=f1e515]: Referral
+              - cell "Not continuing" [ref=f1e516]
+              - cell "—" [ref=f1e518]
+              - cell "—" [ref=f1e519]
+              - cell "—" [ref=f1e520]
+              - cell "—" [ref=f1e521]
+              - cell "—" [ref=f1e523]
+            - row [ref=f1e524]:
+              - cell "Bao Trinh · 2 referred" [ref=f1e525]
+              - cell "1 onboarded 1 bonus pending 0 paid · $X" [ref=f1e526]:
+                - generic [ref=f1e527]:
+                  - generic [ref=f1e528]: 1 onboarded
+                  - generic [ref=f1e529]: 1 bonus pending
+                  - generic [ref=f1e530]: 0 paid · $X
+            - row [ref=f1e531]:
+              - cell "An Truong NMLS 7890123" [ref=f1e532]:
+                - text: An Truong
+                - generic [ref=f1e533]: NMLS 7890123
+              - cell "Referral" [ref=f1e534]:
+                - generic "/refer-a-loan-officer" [ref=f1e536]: Referral
+              - 'cell "S7 Bonus: waiting for day 60" [ref=f1e537]':
+                - text: S7
+                - generic [ref=f1e538]: "Bonus: waiting for day 60"
+              - cell "Khai Ho" [ref=f1e539]
+              - cell "Sep 3" [ref=f1e540]
+              - cell "Nov 2 33 days left" [ref=f1e541]:
+                - text: Nov 2
+                - generic [ref=f1e542]: 33 days left
+              - cell "Not yet eligible" [ref=f1e543]
+              - cell "—" [ref=f1e545]
+            - row [ref=f1e546]:
+              - cell "Lam Ngo NMLS 8901234" [ref=f1e547]:
+                - text: Lam Ngo
+                - generic [ref=f1e548]: NMLS 8901234
+              - cell "Program" [ref=f1e549]:
+                - generic "/join" [ref=f1e551]: Program
+              - cell "S3 In progress" [ref=f1e552]:
+                - text: S3
+                - generic [ref=f1e553]: In progress
+              - cell "Trang Le" [ref=f1e554]
+              - cell "—" [ref=f1e555]
+              - cell "—" [ref=f1e556]
+              - cell "—" [ref=f1e557]
+              - cell "—" [ref=f1e559]
+            - row [ref=f1e560]:
+              - cell "Phuong Vu · 2 referred" [ref=f1e561]
+              - cell "2 onboarded 1 bonus pending 1 paid · $X" [ref=f1e562]:
+                - generic [ref=f1e563]:
+                  - generic [ref=f1e564]: 2 onboarded
+                  - generic [ref=f1e565]: 1 bonus pending
+                  - generic [ref=f1e566]: 1 paid · $X
+            - row [ref=f1e567]:
+              - cell "Yen Bui NMLS 9012345" [ref=f1e568]:
+                - text: Yen Bui
+                - generic [ref=f1e569]: NMLS 9012345
+              - cell "Program" [ref=f1e570]:
+                - generic "/join" [ref=f1e572]: Program
+              - cell "S7 Bonus paid" [ref=f1e573]:
+                - text: S7
+                - generic [ref=f1e574]: Bonus paid
+              - cell "Khai Ho" [ref=f1e575]
+              - cell "May 6" [ref=f1e576]
+              - cell "Jul 5" [ref=f1e577]
+              - cell "Paid" [ref=f1e578]
+              - cell "$X" [ref=f1e580]
+            - row [ref=f1e581]:
+              - cell "Thu Ha NMLS 0123456" [ref=f1e582]:
+                - text: Thu Ha
+                - generic [ref=f1e583]: NMLS 0123456
+              - cell "Referral" [ref=f1e584]:
+                - generic "/refer-a-loan-officer" [ref=f1e586]: Referral
+              - 'cell "S7 Bonus: check requested" [ref=f1e587]':
+                - text: S7
+                - generic [ref=f1e588]: "Bonus: check requested"
+              - cell "Trang Le" [ref=f1e589]
+              - cell "Jul 2" [ref=f1e590]
+              - cell "Aug 31" [ref=f1e591]
+              - cell "Requested" [ref=f1e592]
+              - cell "$X" [ref=f1e594]

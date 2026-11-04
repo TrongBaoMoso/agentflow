@@ -1,0 +1,61 @@
+- generic [active] [ref=f4e1]:
+  - alert [ref=f4e2]
+  - generic [ref=f4e3]:
+    - banner [ref=f4e4]:
+      - generic [ref=f4e5]:
+        - img "Loan Factory" [ref=f4e6]
+        - generic [ref=f4e7]: Recruit
+      - generic [aria-hidden] [ref=f4e8]:
+        - generic [ref=f4e12]: Search candidates, NMLS, companies…
+        - generic [ref=f4e13]: ⌘ K
+      - generic [ref=f4e14]:
+        - button "Notifications" [ref=f4e15] [cursor=pointer]
+        - generic [ref=f4e20]:
+          - button "Change language" [ref=f4e21] [cursor=pointer]:
+            - generic [ref=f4e22]: English
+          - button "Switch to dark mode" [ref=f4e32] [cursor=pointer]
+        - button "Your account" [ref=f4e36] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f4e37]: OS
+          - generic [ref=f4e38]:
+            - generic [ref=f4e39]: ONB Test Specialist
+            - generic [ref=f4e40]: bao.trinh+onb-test@viet18.com
+    - navigation [ref=f4e41]:
+      - navigation [ref=f4e42]:
+        - generic [ref=f4e43]: Frequent
+        - link [ref=f4e44] [cursor=pointer]:
+          - /url: /today
+        - link [ref=f4e49] [cursor=pointer]:
+          - /url: /inbox/hot
+        - link [ref=f4e53] [cursor=pointer]:
+          - /url: /inbox/cold
+        - link [ref=f4e68] [cursor=pointer]:
+          - /url: /pipeline
+        - link [ref=f4e73] [cursor=pointer]:
+          - /url: /exceptions
+        - link [ref=f4e77] [cursor=pointer]:
+          - /url: /reports
+        - link [ref=f4e83] [cursor=pointer]:
+          - /url: /work
+        - link [ref=f4e88] [cursor=pointer]:
+          - /url: /sponsorships
+      - navigation [ref=f4e94]:
+        - generic [ref=f4e95]: Configuration
+        - link [ref=f4e96] [cursor=pointer]:
+          - /url: /templates
+        - link [ref=f4e101] [cursor=pointer]:
+          - /url: /duplicates
+        - link [ref=f4e107] [cursor=pointer]:
+          - /url: /dormant
+        - link [ref=f4e112] [cursor=pointer]:
+          - /url: /conversations
+        - link [ref=f4e116] [cursor=pointer]:
+          - /url: /audit
+        - link [ref=f4e121] [cursor=pointer]:
+          - /url: /settings
+        - link [ref=f4e126] [cursor=pointer]:
+          - /url: /checklist-templates
+        - link [ref=f4e132] [cursor=pointer]:
+          - /url: /licensing-rules
+        - link [ref=f4e137] [cursor=pointer]:
+          - /url: /permissions
+    - main [ref=f4e142]

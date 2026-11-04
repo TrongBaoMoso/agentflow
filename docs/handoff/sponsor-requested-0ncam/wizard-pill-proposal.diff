@@ -1,0 +1,114 @@
+diff --git a/app/(app)/associates/[id]/roles/LicenceDetails.tsx b/app/(app)/associates/[id]/roles/LicenceDetails.tsx
+index 6b71b69e..a6163553 100644
+--- a/app/(app)/associates/[id]/roles/LicenceDetails.tsx
++++ b/app/(app)/associates/[id]/roles/LicenceDetails.tsx
+@@ -6,6 +6,7 @@ import { GroupLabel } from "@loanfactory-inc/platform-react";
+ import { IconChevronDown } from "@tabler/icons-react";
+ import { useTranslations } from "next-intl";
+ import { DatePicker } from "@/components/calendar/DatePicker";
++import { SponsorRequestedPill } from "@/components/LicenceStatus";
+ import { Tag } from "@/components/tera";
+ import type { LicenseDraft, LicenseType } from "@/lib/jobRoles";
+ import { LICENCE_STATUSES, type LicenceStatus } from "@/lib/licenceStatus";
+@@ -58,21 +59,29 @@ export default function LicenceDetails({
+   const { t, types } = useTermWords();
+   const ts = useTranslations("shared.licences");
+   const [open, setOpen] = useState(false);
+-  const stated = licence.status !== "not_sponsored" || licence.licenseType !== "";
++  const stated =
++    licence.status !== "not_sponsored" || licence.licenseType !== "";
+ 
+   return (
+     <div className="col-span-2 @min-[760px]:col-span-5">
+-      <UnstyledButton
+-        onClick={() => setOpen((v) => !v)}
+-        aria-expanded={open}
+-        className="flex items-center gap-1.5 px-0.5 py-1 transition-colors hover:text-[var(--lf-text-muted)]"
+-        fz="xs"
+-        c="var(--lf-text-faint)"
+-      >
+-        <IconChevronDown size={14} stroke={1.75} className={`transition-transform ${open ? "rotate-180" : ""}`} />
+-        {t("details")}
+-        {!open && stated && <Tag>{t("set")}</Tag>}
+-      </UnstyledButton>
++      <div className="flex items-center gap-2">
++        <UnstyledButton
++          onClick={() => setOpen((v) => !v)}
++          aria-expanded={open}
++          className="flex items-center gap-1.5 px-0.5 py-1 transition-colors hover:text-[var(--lf-text-muted)]"
++          fz="xs"
++          c="var(--lf-text-faint)"
++        >
++          <IconChevronDown
++            size={14}
++            stroke={1.75}
++            className={`transition-transform ${open ? "rotate-180" : ""}`}
++          />
++          {t("details")}
++          {!open && stated && <Tag>{t("set")}</Tag>}
++        </UnstyledButton>
++        {licence.sponsorshipRequested && <SponsorRequestedPill />}
++      </div>
+ 
+       {open && (
+         <Stack
+@@ -80,7 +89,11 @@ export default function LicenceDetails({
+           mt="xs"
+           px="sm"
+           py="xs"
+-          style={{ border: "1px solid var(--lf-border-2)", background: "var(--lf-hover)", borderRadius: "var(--mantine-radius-md)" }}
++          style={{
++            border: "1px solid var(--lf-border-2)",
++            background: "var(--lf-hover)",
++            borderRadius: "var(--mantine-radius-md)",
++          }}
+         >
+           <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 @min-[760px]:grid-cols-4">
+             <Field label={t("typeLabel")}>
+@@ -99,8 +112,17 @@ export default function LicenceDetails({
+             <Field label={t("sponsored")}>
+               <TermSelect
+                 value={licence.status}
+-                onChange={(v) => onChange(v === "sponsored" ? { status: v } : { status: v as LicenceStatus, sponsoredDate: "" })}
+-                options={LICENCE_STATUSES.map((s) => ({ value: s, label: ts(`status.${s}`) }))}
++                onChange={(v) =>
++                  onChange(
++                    v === "sponsored"
++                      ? { status: v }
++                      : { status: v as LicenceStatus, sponsoredDate: "" },
++                  )
++                }
++                options={LICENCE_STATUSES.map((s) => ({
++                  value: s,
++                  label: ts(`status.${s}`),
++                }))}
+                 ariaLabel={t("aria.sponsored", { n: index + 1 })}
+                 disabled={disabled}
+               />
+@@ -141,7 +163,10 @@ function TermSelect({
+     <Select
+       value={value === "" ? UNSET : value}
+       onChange={(v) => onChange(v === null || v === UNSET ? "" : v)}
+-      data={options.map((o) => ({ value: o.value === "" ? UNSET : o.value, label: o.label }))}
++      data={options.map((o) => ({
++        value: o.value === "" ? UNSET : o.value,
++        label: o.label,
++      }))}
+       aria-label={ariaLabel}
+       disabled={disabled}
+       allowDeselect={false}
+@@ -150,7 +175,13 @@ function TermSelect({
+   );
+ }
+ 
+-function Field({ label, children }: { label: string; children: React.ReactNode }) {
++function Field({
++  label,
++  children,
++}: {
++  label: string;
++  children: React.ReactNode;
++}) {
+   return (
+     <label className="flex flex-col gap-1">
+       <GroupLabel span>{label}</GroupLabel>

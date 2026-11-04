@@ -1,0 +1,35 @@
+- generic [active] [ref=f4e1]:
+  - generic [ref=f4e6]:
+    - img "logo vneid" [ref=f4e12] [cursor=pointer]
+    - generic [ref=f4e16]:
+      - generic [ref=f4e17]:
+        - paragraph [ref=f4e18]: Đăng nhập VNeID
+        - generic [ref=f4e19]:
+          - textbox "Số định danh cá nhân" [ref=f4e35]
+          - textbox "Mật khẩu" [ref=f4e52]
+          - button "Đăng nhập" [ref=f4e66] [cursor=pointer]
+          - generic [ref=f4e68]: Trường hợp không đăng nhập được, vui lòng xem hướng dẫn
+      - generic [ref=f4e69]:
+        - img "qr_images" [ref=f4e76]
+        - paragraph [ref=f4e77]: Hoặc quét mã QR bằng ứng dụng VNeID để đăng nhập.
+    - generic [ref=f4e78]:
+      - generic [ref=f4e79]:
+        - img "picture app" [ref=f4e84]
+        - generic [ref=f4e85]:
+          - generic [ref=f4e86]:
+            - paragraph [ref=f4e87]: Đơn giản hóa mọi thủ tục hành chính
+            - paragraph [ref=f4e88]: Sử dụng định danh điện tử thay thế các loại giấy tờ truyền thống, không phải kê khai biểu mẫu giấy, chủ động chia sẻ thông tin để giải quyết thủ tục hành chính. Quét QR hoặc tải về trên hai hệ điều hành dưới đây
+          - generic [ref=f4e90]:
+            - link [ref=f4e91] [cursor=pointer]:
+              - /url: https://apps.apple.com/vn/app/vneid/id1582750372?l=vi
+              - img "logo app store" [ref=f4e95]
+            - link [ref=f4e96] [cursor=pointer]:
+              - /url: https://play.google.com/store/apps/details?id=com.vnid
+              - img "logo google play" [ref=f4e100]
+      - generic [ref=f4e103]:
+        - generic [ref=f4e104]: Hướng dẫn đăng ký và kích hoạt tài khoản
+        - generic [ref=f4e106]: © Bản quyền thuộc về Trung tâm dữ liệu Quốc gia về dân cư
+    - link [ref=f4e107] [cursor=pointer]:
+      - /url: https://vneid.gov.vn/huong-dan-dang-ky-tai-khoan-vneid.html
+      - img "guide" [ref=f4e111]
+  - alert [ref=f4e112]

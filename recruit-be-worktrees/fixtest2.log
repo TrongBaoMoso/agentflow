@@ -1,0 +1,37 @@
+> Task :extractIncludeProto UP-TO-DATE
+> Task :extractProto UP-TO-DATE
+> Task :generateProto UP-TO-DATE
+
+> Task :compileJava UP-TO-DATE
+Found tools jar: /Users/apple/.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjtools/1.9.24/96d8512b8e9d92bddfd6333c3588107749de4ac1/aspectjtools-1.9.24.jar
+
+> Task :processResources UP-TO-DATE
+> Task :classes UP-TO-DATE
+> Task :extractIncludeTestProto UP-TO-DATE
+> Task :extractTestProto UP-TO-DATE
+> Task :generateTestProto NO-SOURCE
+
+> Task :compileTestJava UP-TO-DATE
+Found tools jar: /Users/apple/.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjtools/1.9.24/96d8512b8e9d92bddfd6333c3588107749de4ac1/aspectjtools-1.9.24.jar
+
+> Task :processTestResources UP-TO-DATE
+> Task :testClasses UP-TO-DATE
+
+> Task :test FAILED
+
+OnboardingV2HandoffFlagDefaultTest > the chart default stays dark; staging and production turn it on explicitly (Bao 06/10 #561, 29/10 #703) FAILED
+    java.lang.AssertionError at OnboardingV2HandoffFlagDefaultTest.java:46
+
+2 tests completed, 1 failed
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':test'.
+> There were failing tests. See the report at: file:///Users/apple/Projects/agentflow/recruit-be-worktrees/fix-handoff-test/build/reports/tests/test/index.html
+
+* Try:
+> Run with --scan to get full insights.
+
+BUILD FAILED in 20s
+10 actionable tasks: 1 executed, 9 up-to-date

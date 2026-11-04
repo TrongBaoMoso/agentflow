@@ -1,0 +1,68 @@
+- dialog [ref=f1e3]:
+  - banner [ref=f1e4]:
+    - heading "Megeh Nguyen Call result TX Â· NMLS 123456" [level=2] [ref=f1e5]:
+      - generic [ref=f1e6]:
+        - generic [aria-hidden] [ref=f1e7]: MN
+        - generic [ref=f1e8]:
+          - generic [ref=f1e9]:
+            - generic [ref=f1e10]: Megeh Nguyen
+            - generic [ref=f1e11]: Call result
+          - generic [ref=f1e12]: TX Â· NMLS 123456
+    - button [ref=f1e13] [cursor=pointer]
+  - generic [ref=f1e18]:
+    - region "How did it go?" [ref=f1e19]:
+      - generic [ref=f1e26]:
+        - generic [ref=f1e27]: How did it go?
+        - generic [ref=f1e28]: Pick one
+      - radiogroup "How did it go?" [ref=f1e29]:
+        - radio "Interested Pick a next step" [checked] [ref=f1e30] [cursor=pointer]:
+          - generic [ref=f1e34]: Interested
+          - generic [ref=f1e39]: Pick a next step
+        - radio "Neutral Into Nurture" [ref=f1e43] [cursor=pointer]:
+          - generic [ref=f1e44]: Neutral
+          - generic [ref=f1e49]: Into Nurture
+        - radio "No answer Retry call scheduled" [ref=f1e53] [cursor=pointer]:
+          - generic [ref=f1e54]: No answer
+          - generic [ref=f1e60]: Retry call scheduled
+        - radio "Not interested Archived, never deleted" [ref=f1e64] [cursor=pointer]:
+          - generic [ref=f1e65]: Not interested
+          - generic [ref=f1e71]: Archived, never deleted
+    - region "Next step â€” pick one" [ref=f1e75]:
+      - generic [ref=f1e81]:
+        - generic [ref=f1e82]: Next step â€” pick one
+        - generic [ref=f1e83]: One active next step per candidate
+      - generic [ref=f1e84]:
+        - radiogroup "Next step â€” pick one" [ref=f1e85]:
+          - radio [checked] [ref=f1e86] [cursor=pointer]
+          - radio [ref=f1e92] [cursor=pointer]
+          - radio [ref=f1e97] [cursor=pointer]
+          - radio [ref=f1e102] [cursor=pointer]
+        - generic [ref=f1e109]:
+          - generic [ref=f1e110]:
+            - generic [ref=f1e111]: When
+            - generic [ref=f1e113]:
+              - paragraph [ref=f1e114]:
+                - generic [ref=f1e115]: Leave empty = tomorrow
+              - textbox "When" [ref=f1e124]
+            - generic [ref=f1e125]:
+              - button "Tomorrow" [ref=f1e126] [cursor=pointer]
+              - button "In 3 days" [ref=f1e127] [cursor=pointer]
+              - button "Next week" [ref=f1e128] [cursor=pointer]
+          - generic [ref=f1e129]:
+            - generic [ref=f1e130]:
+              - generic [ref=f1e131]: Time
+              - generic [ref=f1e132]: optional
+            - textbox "Time" [ref=f1e139]
+            - generic [ref=f1e140]: Shows as a badge on the Today card
+    - region "Note for the team" [ref=f1e144]:
+      - generic [ref=f1e145]:
+        - generic [ref=f1e150]: Note for the team
+        - generic [ref=f1e152]: Internal â€” the candidate never sees it
+      - textbox "Note for the team" [ref=f1e159]:
+        - /placeholder: e.g. interested in P3+ comp, spouse changing jobs in October â€” call back mid-Augustâ€¦
+    - generic [ref=f1e160]:
+      - paragraph [ref=f1e162]: Your picked next step won't be saved â€” the invite replaces it
+      - button "Add another follow-up" [ref=f1e166] [cursor=pointer]
+      - generic [ref=f1e171]:
+        - button "Schedule call again" [ref=f1e172] [cursor=pointer]
+        - button "Save & invite to join" [ref=f1e175] [cursor=pointer]

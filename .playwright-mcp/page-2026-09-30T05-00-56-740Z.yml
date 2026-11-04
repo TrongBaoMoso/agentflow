@@ -1,0 +1,62 @@
+- generic [active] [ref=e1]:
+  - alert [ref=e2]
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - img "Loan Factory" [ref=e6]
+        - generic [ref=e7]: Recruit
+      - generic [aria-hidden] [ref=e8]:
+        - generic [ref=e12]: Search candidates, NMLS, companies…
+        - generic [ref=e13]: ⌘ K
+      - generic [ref=e14]:
+        - button "Notifications" [ref=e15] [cursor=pointer]
+        - generic [ref=e20]:
+          - button "Change language" [ref=e21] [cursor=pointer]:
+            - generic [ref=e22]: English
+          - button "Switch to dark mode" [ref=e32] [cursor=pointer]
+        - button "Your account" [ref=e36] [cursor=pointer]:
+          - generic [ref=e37]:
+            - generic [ref=e38]: Manh Admin
+            - generic [ref=e39]: manhadmin@viet18.com
+    - navigation [ref=e40]:
+      - navigation [ref=e41]:
+        - generic [ref=e42]: Frequent
+        - link [ref=e43] [cursor=pointer]:
+          - /url: /today
+        - link [ref=e48] [cursor=pointer]:
+          - /url: /inbox/hot
+        - link [ref=e52] [cursor=pointer]:
+          - /url: /inbox/cold
+        - link [ref=e67] [cursor=pointer]:
+          - /url: /pipeline
+        - link [ref=e72] [cursor=pointer]:
+          - /url: /invites
+        - link [ref=e77] [cursor=pointer]:
+          - /url: /exceptions
+        - link [ref=e81] [cursor=pointer]:
+          - /url: /reports
+        - link [ref=e87] [cursor=pointer]:
+          - /url: /work
+        - link [ref=e92] [cursor=pointer]:
+          - /url: /sponsorships
+      - navigation [ref=e98]:
+        - generic [ref=e99]: Configuration
+        - link [ref=e100] [cursor=pointer]:
+          - /url: /templates
+        - link [ref=e105] [cursor=pointer]:
+          - /url: /duplicates
+        - link [ref=e111] [cursor=pointer]:
+          - /url: /dormant
+        - link [ref=e116] [cursor=pointer]:
+          - /url: /conversations
+        - link [ref=e120] [cursor=pointer]:
+          - /url: /audit
+        - link [ref=e125] [cursor=pointer]:
+          - /url: /settings
+        - link [ref=e130] [cursor=pointer]:
+          - /url: /checklist-templates
+        - link [ref=e136] [cursor=pointer]:
+          - /url: /licensing-rules
+        - link [ref=e141] [cursor=pointer]:
+          - /url: /permissions
+    - main [ref=e146]

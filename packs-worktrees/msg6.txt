@@ -1,0 +1,19 @@
+fix(recruiting): server-only credit fields, stale-cache handling, dual role, bonus hold (review round)
+
+M1 the credit fields are server-only: beforeSave rolls back any update that
+changes them (a server write is marked by LoRecruiterProgramStanding.confirm /
+reconcile). M2 public bodies lose recruiter again.
+- cache: a not-a-member answer from a copy older than 60 s forces one refresh; a
+  copy older than 1 h is UNVERIFIED; single-flight stale-while-revalidate (only the
+  first load blocks); lenient list parsing (skip and count malformed spells);
+  repeated refresh failures log a distinct WARN; 4 MB body cap.
+- a signed-in Loan Officer's own lead is flagged unverified when no list exists.
+- reconcile also re-checks the last 48 h of referral leads whose referrer has any
+  membership spell, at the lead's creation time.
+- a staff recruiter who is also a member never gets the program marker.
+- the LO-referral bonus is also held while a lead is unverified; reconcile logs a
+  clear note when it settles as not credited after the lead was converted.
+- monthly cron recomputes the credited leads once per run; the CSV import logs row
+  numbers instead of row contents.
+
+Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>

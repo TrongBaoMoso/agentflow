@@ -1,0 +1,130 @@
+- generic [ref=f10e1]:
+  - img "op" [ref=f10e2]
+  - generic [ref=f10e5]:
+    - banner [ref=f10e7]:
+      - generic [ref=f10e8]:
+        - generic [ref=f10e9]:
+          - link "/":
+            - /url: /vi/
+          - button [ref=f10e10] [cursor=pointer]:
+            - generic [ref=f10e11]:
+              - img "Quốc kỳ Việt Nam" [ref=f10e12]
+              - text: VI
+              - img [aria-hidden] [ref=f10e13]: keyboard_arrow_down
+          - generic [ref=f10e16] [cursor=pointer]:
+            - generic [ref=f10e17]: ✓
+            - text: Nguyễn Lý Phương Mai
+        - generic [ref=f10e20]:
+          - link "logo" [ref=f10e21] [cursor=pointer]:
+            - /url: https://dichvucongbnv.moha.gov.vn
+          - generic [ref=f10e24]:
+            - link [ref=f10e25] [cursor=pointer]:
+              - /url: https://dichvucongbnv.moha.gov.vn
+              - text: BỘ NỘI VỤ
+              - paragraph [ref=f10e26]: HỆ THỐNG THÔNG TIN GIẢI QUYẾT THỦ TỤC HÀNH CHÍNH
+            - paragraph [ref=f10e27]: Hành chính phục vụ
+    - generic [ref=f10e30]:
+      - generic [ref=f10e32]:
+        - link "Trang chủ" [ref=f10e33] [cursor=pointer]:
+          - /url: /vi/padsvc/apply-online/6986daa0fd137028de97457f
+        - img [aria-hidden] [ref=f10e34]: navigate_next
+        - link "Dịch vụ công trực tuyến" [ref=f10e35] [cursor=pointer]:
+          - /url: /vi/padsvc/apply-online/6986daa0fd137028de97457f
+      - generic [ref=f10e37]:
+        - heading "Thông báo hằng tháng về việc tìm kiếm việc làm (Cấp tỉnh)" [level=2] [ref=f10e38]
+        - heading [level=3] [ref=f10e39]:
+          - generic [ref=f10e41]:
+            - img [aria-hidden] [ref=f10e42]: account_balance
+            - text: Một cửa TTVL Trung tâm Dịch vụ việc làm Thành phố Hồ Chí Minh (Phường Gia Định)
+        - heading "Toàn trình" [level=3] [ref=f10e43]:
+          - img [aria-hidden] [ref=f10e44]: label_important
+          - text: Toàn trình
+        - 'heading "Quy trình: Quy trình giải quyết Bảo hiểm thất nghiệp - TT Dịch vụ việc làm - 0 Ngày làm việc" [level=3] [ref=f10e45]'
+        - heading [level=3]
+        - tablist [ref=f10e48]:
+          - generic [ref=f10e49]:
+            - tab "Thông tin hồ sơ":
+              - generic:
+                - generic:
+                  - img [aria-hidden]: done
+            - tab "Thành phần hồ sơ" [active] [selected]:
+              - generic:
+                - generic:
+                  - img [aria-hidden]: create
+            - tab "3 Thông tin bổ sung":
+              - generic: "3"
+              - generic: Thông tin bổ sung
+            - tab "4 Nộp hồ sơ":
+              - generic: "4"
+              - generic: Nộp hồ sơ
+          - tabpanel "Thành phần hồ sơ" [ref=f10e813]:
+            - generic [ref=f10e818]:
+              - table [ref=f10e819]:
+                - row [ref=f10e820]:
+                  - columnheader "STT" [ref=f10e821]
+                  - columnheader "Tên giấy tờ" [ref=f10e822]
+                  - columnheader "Loại bản" [ref=f10e823]
+                  - columnheader "Mẫu giấy tờ" [ref=f10e824]
+                  - columnheader "Đính kèm giấy tờ" [ref=f10e825]
+                - row [ref=f10e826]:
+                  - cell "1" [ref=f10e827]
+                  - cell "Thông báo về việc tìm kiếm việc làm theo Mẫu số 24 tại Phụ lục ban hành kèm theo Nghị định số 374/2025/NĐ-CP. (Click chuột vào đây để mở Biểu mẫu giấy tờ)" [ref=f10e829]:
+                    - generic [ref=f10e830]:
+                      - generic [ref=f10e831]:
+                        - checkbox [ref=f10e835]
+                        - text: Thông báo về việc tìm kiếm việc làm theo Mẫu số 24 tại Phụ lục ban hành kèm theo Nghị định số 374/2025/NĐ-CP.
+                        - img [aria-hidden] [ref=f10e837]: info
+                      - generic [ref=f10e838]: (Click chuột vào đây để mở Biểu mẫu giấy tờ)
+                  - cell [ref=f10e840]:
+                    - radiogroup [ref=f10e842]:
+                      - generic [ref=f10e843]: 1 Bản chính
+                  - cell [ref=f10e846]:
+                    - radiogroup [ref=f10e847]:
+                      - link "Mus24tiPhlcbanhnhkmtheo_VL.docx" [ref=f10e850] [cursor=pointer]:
+                        - /url: https://csdl.dichvucong.gov.vn/web/jsp/download_file.jsp?ma=3fee654881da73eb
+                  - cell [ref=f10e851]:
+                    - radiogroup [ref=f10e852]:
+                      - generic [ref=f10e855]:
+                        - button [ref=f10e857] [cursor=pointer]:
+                          - generic [ref=f10e858]:
+                            - img [aria-hidden] [ref=f10e859]: scanner
+                            - text: Scan tệp tin
+                        - generic [ref=f10e860]:
+                          - button [ref=f10e861] [cursor=pointer]:
+                            - generic [ref=f10e862]:
+                              - img [aria-hidden] [ref=f10e863]: attachment
+                              - text: Chọn tệp tin
+                          - button "Choose File" [ref=f10e864] [cursor=pointer]
+                          - generic [ref=f10e865]: Kích thước tối đa của tệp tin 100 MB
+              - generic [ref=f10e867] [cursor=pointer]:
+                - img [aria-hidden] [ref=f10e868]: add
+                - text: Thêm giấy tờ
+            - generic [ref=f10e869]:
+              - button [ref=f10e873] [cursor=pointer]:
+                - generic [ref=f10e874]:
+                  - img [aria-hidden] [ref=f10e875]: input
+                  - text: Lấy giấy tờ từ kho
+              - button "Quay lại" [ref=f10e876] [cursor=pointer]
+              - button "Tiếp tục" [ref=f10e877] [cursor=pointer]
+    - generic [ref=f10e315]:
+      - generic [ref=f10e317]:
+        - paragraph [ref=f10e318]
+        - paragraph [ref=f10e319]: HỆ THỐNG THÔNG TIN GIẢI QUYẾT THỦ TỤC HÀNH CHÍNH BỘ NỘI VỤ
+        - paragraph [ref=f10e320]: "Cơ quan chủ quản: Bộ Nội vụ"
+        - paragraph [ref=f10e321]: "Địa chỉ: Số 8 Tôn Thất Thuyết - Nam Từ Liêm - Hà Nội"
+        - paragraph [ref=f10e322]
+      - generic [ref=f10e323]:
+        - link [ref=f10e324] [cursor=pointer]:
+          - /url: http://ipv6-test.com/validate.php?url=dichvucong.dienbien.gov.vn
+          - img "ipv6 ready" [ref=f10e325]
+        - link [ref=f10e326] [cursor=pointer]:
+          - /url: https://tinnhiemmang.vn/danh-ba-tin-nhiem/dichvucongdienbiengovvn-1700532066
+          - img "Chung nhan Tin Nhiem Mang" [ref=f10e327]
+  - link "imageEMC Đã kết nối EMC" [ref=f10e331] [cursor=pointer]:
+    - /url: javascript:void(0)
+    - img "imageEMC" [ref=f10e333]
+    - generic [ref=f10e334]: Đã kết nối EMC
+  - link "Hình ảnh":
+    - /url: blob:https://dichvucongbnv.moha.gov.vn/3772a506-d3e9-49eb-9402-d31d9ef580b8
+  - link "blob:https://dichvucongbnv.moha.gov.vn/e63e9a1f-1eec-4e6b-8661-f281672ac8a6":
+    - /url: blob:https://dichvucongbnv.moha.gov.vn/e63e9a1f-1eec-4e6b-8661-f281672ac8a6

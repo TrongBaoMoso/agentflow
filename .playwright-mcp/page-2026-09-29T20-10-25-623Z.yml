@@ -1,0 +1,80 @@
+- generic [active] [ref=f5e1]:
+  - alert [ref=f5e2]
+  - generic [ref=f5e3]:
+    - banner [ref=f5e4]:
+      - generic [ref=f5e5]:
+        - img "Loan Factory" [ref=f5e6]
+        - generic [ref=f5e7]: Recruit
+      - generic [aria-hidden] [ref=f5e8]:
+        - generic [ref=f5e12]: Search candidates, NMLS, companies…
+        - generic [ref=f5e13]: ⌘ K
+      - generic [ref=f5e14]:
+        - button "Notifications" [ref=f5e15] [cursor=pointer]
+        - generic [ref=f5e20]:
+          - button "Change language" [ref=f5e21] [cursor=pointer]:
+            - generic [ref=f5e22]: English
+          - button "Switch to dark mode" [ref=f5e32] [cursor=pointer]
+        - button "Your account" [ref=f5e36] [cursor=pointer]:
+          - generic [ref=f5e37]:
+            - generic [ref=f5e38]: Manh Admin
+            - generic [ref=f5e39]: manhadmin@viet18.com
+    - navigation [ref=f5e40]:
+      - navigation [ref=f5e41]:
+        - generic [ref=f5e42]: Frequent
+        - link [ref=f5e43] [cursor=pointer]:
+          - /url: /today
+        - link [ref=f5e48] [cursor=pointer]:
+          - /url: /inbox/hot
+        - link [ref=f5e52] [cursor=pointer]:
+          - /url: /inbox/cold
+        - link [ref=f5e67] [cursor=pointer]:
+          - /url: /pipeline
+        - link [ref=f5e72] [cursor=pointer]:
+          - /url: /exceptions
+        - link [ref=f5e76] [cursor=pointer]:
+          - /url: /reports
+        - link [ref=f5e82] [cursor=pointer]:
+          - /url: /work
+        - link [ref=f5e87] [cursor=pointer]:
+          - /url: /sponsorships
+      - navigation [ref=f5e93]:
+        - generic [ref=f5e94]: Configuration
+        - link [ref=f5e95] [cursor=pointer]:
+          - /url: /templates
+        - link [ref=f5e100] [cursor=pointer]:
+          - /url: /duplicates
+        - link [ref=f5e106] [cursor=pointer]:
+          - /url: /dormant
+        - link [ref=f5e111] [cursor=pointer]:
+          - /url: /conversations
+        - link [ref=f5e115] [cursor=pointer]:
+          - /url: /audit
+        - link [ref=f5e120] [cursor=pointer]:
+          - /url: /settings
+        - link [ref=f5e125] [cursor=pointer]:
+          - /url: /checklist-templates
+        - link [ref=f5e131] [cursor=pointer]:
+          - /url: /licensing-rules
+        - link [ref=f5e136] [cursor=pointer]:
+          - /url: /permissions
+    - main [ref=f5e141]:
+      - generic [ref=f5e142]:
+        - generic [ref=f5e144]:
+          - generic [ref=f5e145]: Exceptions · the alarms, not the reports
+          - heading [level=1] [ref=f5e146]:
+            - text: Leads the clock
+            - emphasis [ref=f5e147]: beat us
+            - text: to — act now
+        - generic [ref=f5e148]:
+          - generic [ref=f5e156]:
+            - generic [ref=f5e157]: OVERDUE · past first-touch SLA
+            - generic [ref=f5e158]: per-source hours — the red alarm
+          - generic [ref=f5e165]:
+            - generic [ref=f5e166]: UNCLAIMED · early warning
+            - generic [ref=f5e167]: nobody claimed within 0 minutes
+          - generic [ref=f5e175]:
+            - generic [ref=f5e176]: UNOWNED
+            - generic [ref=f5e177]: active candidates with no recruiter
+          - generic [ref=f5e185]:
+            - generic [ref=f5e186]: OWNED
+            - generic [ref=f5e187]: active candidates with a recruiter

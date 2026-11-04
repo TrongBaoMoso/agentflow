@@ -1,0 +1,23 @@
+- generic [active] [ref=f4e1]:
+  - generic [ref=f4e2]:
+    - heading "All Logs (Streaming)" [level=1] [ref=f4e3]
+    - generic [ref=f4e4]:
+      - generic [ref=f4e5]: "Server:"
+      - generic [ref=f4e6]: b6
+      - generic [ref=f4e7]: "Build ID:"
+      - generic [ref=f4e8]: "4932702942265344"
+      - generic [ref=f4e9]: "Created:"
+      - generic [ref=f4e10]: Oct 9, 2026, 5:12 PM
+      - generic [ref=f4e11]: "Status:"
+      - generic [ref=f4e12]: failed
+  - generic [ref=f4e13]:
+    - link "Summary" [ref=f4e14] [cursor=pointer]:
+      - /url: /logs/b6/4932702942265344/summary
+    - link "All Logs" [ref=f4e15] [cursor=pointer]:
+      - /url: /logs/b6/4932702942265344/all
+    - link "Last 1000 Lines" [ref=f4e16] [cursor=pointer]:
+      - /url: /logs/b6/4932702942265344/tail
+    - link "Back to Builds" [ref=f4e17] [cursor=pointer]:
+      - /url: /builds
+    - generic [ref=f4e18] [cursor=pointer]: Scroll to End
+  - generic [ref=f4e19]: "exec: git checkout -f master,git gc --auto,git pull origin master,mvn clean test -N -B -U -e -q -DCI=true2026-10-09T10:12:55.239Z: Starting... git checkout -f master post response: \"running\" Already on 'master' Your branch is up to date with 'origin/master'. 2026-10-09T10:12:56.724Z: Done: git checkout -f master >> /home/ato/logs/4932702942265344.txt 2>&1; 2026-10-09T10:12:56.725Z: Starting... git gc --auto 2026-10-09T10:12:56.752Z: Done: git gc --auto >> /home/ato/logs/4932702942265344.txt 2>&1; 2026-10-09T10:12:56.752Z: Starting... git pull origin master post response: \"running\" post response: \"running\" From https://github.com/mosoteam/packs * branch master -> FETCH_HEAD 911ea17db8..51d6b5a0c2 master -> origin/master Updating 911ea17db8..51d6b5a0c2 Fast-forward .../com/mvu/gapi/server/drive/GoogleDrive.java | 3 +- .../com/mvu/loan/server/amrock/AmrockQuote.java | 66 +++++++++++++++++++++- .../loan/server/op/amrock/DebugAmrockTitle.java | 6 +- .../mvu/loan/shared/entity/LoanClosingCosts.java | 19 +++++++ 4 files changed, 91 insertions(+), 3 deletions(-) 2026-10-09T10:13:01.931Z: Done: git pull origin master >> /home/ato/logs/4932702942265344.txt 2>&1; 2026-10-09T10:13:01.931Z: Starting... mvn clean test -N -B -U -e -q -DCI=true post response: \"running\" Error: Error: Command failed: mvn clean test -N -B -U -e -q -DCI=true >> /home/ato/logs/4932702942265344.txt 2>&1; post response: \"failed\""

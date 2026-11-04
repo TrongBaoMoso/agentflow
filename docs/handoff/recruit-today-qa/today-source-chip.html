@@ -1,0 +1,333 @@
+<title>Today Source Chip</title>
+<style>
+/* Layout: paired panels, "Hiện tại" left and "Đề xuất" right, one pair per surface (hero, queue, variants, phone). Recreates the recruit Today look. */
+:root {
+  --page: #f6f4f2;
+  --card: #ffffff;
+  --ink: #1d1a17;
+  --ink-2: #57514b;
+  --ink-3: #8b847c;
+  --line: #e8e3de;
+  --accent: #e8622a;
+  --accent-ink: #ffffff;
+  --hero-a: #fdf1ea;
+  --hero-b: #fffaf7;
+  --hero-line: #f1b48f;
+  --hot: #c2341f;
+  --hot-tint: #fdecea;
+  --gn-bg: #e6f4ea; --gn-ink: #1e6b3a;
+  --am-bg: #fef3c7; --am-ink: #92400e;
+  --bl-bg: #e5efff; --bl-ink: #1d4ed8;
+  --gy-bg: #eeeceb; --gy-ink: #57514b;
+  --mark: #fff1b8;
+  --badge: #e5484d;
+  --old: #c2341f;
+  --new: #1e6b3a;
+  --font-ui: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-note: "Be Vietnam Pro", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --page: #151311; --card: #1f1c19; --ink: #f2eee9; --ink-2: #c4bcb3; --ink-3: #8f877e; --line: #34302b;
+  --accent: #f07a45; --accent-ink: #1a0f08; --hero-a: #2a1d15; --hero-b: #221a14; --hero-line: #7a4a2e;
+  --hot: #ff8a7a; --hot-tint: #3a1f1b;
+  --gn-bg: #17321f; --gn-ink: #8ee0a8; --am-bg: #3b2f10; --am-ink: #fbbf24; --bl-bg: #172440; --bl-ink: #93b8ff; --gy-bg: #2c2925; --gy-ink: #c4bcb3;
+  --mark: #4a3d0c; --badge: #ff6b70; --old: #ff8a7a; --new: #8ee0a8; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --page: #151311; --card: #1f1c19; --ink: #f2eee9; --ink-2: #c4bcb3; --ink-3: #8f877e; --line: #34302b;
+  --accent: #f07a45; --accent-ink: #1a0f08; --hero-a: #2a1d15; --hero-b: #221a14; --hero-line: #7a4a2e;
+  --hot: #ff8a7a; --hot-tint: #3a1f1b;
+  --gn-bg: #17321f; --gn-ink: #8ee0a8; --am-bg: #3b2f10; --am-ink: #fbbf24; --bl-bg: #172440; --bl-ink: #93b8ff; --gy-bg: #2c2925; --gy-ink: #c4bcb3;
+  --mark: #4a3d0c; --badge: #ff6b70; --old: #ff8a7a; --new: #8ee0a8; color-scheme: dark }
+
+body { background: var(--page); color: var(--ink); font-family: var(--font-ui); }
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: 16px; padding-block: 32px 64px; display: grid; gap: 44px; }
+header.top { display: grid; gap: 10px; max-width: 72ch; }
+header.top h1 { font-size: 1.75rem; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+header.top p { margin: 0; color: var(--ink-2); line-height: 1.55; font-family: var(--font-note); }
+.changes { margin: 4px 0 0; padding-left: 1.2em; display: grid; gap: 6px; color: var(--ink-2); font-family: var(--font-note); line-height: 1.5; }
+.changes b { color: var(--ink); }
+
+section.pair { display: grid; gap: 14px; }
+section.pair > h2 { margin: 0; font-size: 1.15rem; }
+section.pair > .lede { margin: -6px 0 0; color: var(--ink-2); font-family: var(--font-note); line-height: 1.5; max-width: 80ch; }
+.cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+@media (max-width: 900px) { .cols { grid-template-columns: minmax(0, 1fr); } }
+.side { display: grid; gap: 8px; align-content: start; min-width: 0; }
+.tag { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; }
+.tag.before { color: var(--old); }
+.tag.after { color: var(--new); }
+
+/* ---- recreated app pieces ---- */
+.hero { background: linear-gradient(110deg, var(--hero-a), var(--hero-b)); border: 1.5px solid var(--hero-line); border-radius: 12px; padding: 18px 18px 14px; display: grid; gap: 14px; }
+.hero-top { display: flex; gap: 14px; align-items: flex-start; flex-wrap: wrap; }
+.avatar { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--card); border: 1.5px solid var(--hero-line); color: var(--accent); font-weight: 700; font-size: 0.9rem; }
+.avatar.sm { width: 28px; height: 28px; font-size: 0.66rem; border-width: 1px; }
+.who { display: grid; gap: 3px; min-width: 0; flex: 1 1 200px; }
+.name-line { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-width: 0; }
+.name { font-weight: 700; font-size: 1.05rem; }
+.row .name { font-size: 0.86rem; }
+.sub { color: var(--ink-2); font-size: 0.78rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.meta { color: var(--ink-3); font-size: 0.74rem; }
+.hero-actions { display: flex; gap: 6px; align-items: center; }
+.btn { border: 0; background: var(--accent); color: var(--accent-ink); font: inherit; font-size: 0.78rem; font-weight: 600; padding: 7px 12px; border-radius: 7px; }
+.icon-btn { width: 28px; height: 28px; border-radius: 7px; border: 1px solid var(--line); background: var(--card); }
+.say { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 0.82rem; }
+.say b { color: var(--hot); }
+.due { color: var(--hot); background: var(--hot-tint); border-radius: 999px; padding: 2px 8px; font-size: 0.72rem; font-weight: 600; white-space: nowrap; }
+.ghost { color: var(--ink-3); border: 1px solid var(--line); border-radius: 6px; padding: 2px 8px; font-size: 0.72rem; background: var(--card); }
+
+.queue { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.queue-head { padding: 10px 14px; font-weight: 600; font-size: 0.85rem; border-bottom: 1px solid var(--line); display: flex; gap: 8px; align-items: center; }
+.count { background: var(--gy-bg); color: var(--gy-ink); border-radius: 999px; padding: 0 7px; font-size: 0.7rem; }
+.row { display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(0, 11rem); gap: 10px; align-items: start; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+.row:last-child { border-bottom: 0; }
+.row .what { font-size: 0.74rem; color: var(--hot); display: grid; gap: 2px; }
+.row .what .add { color: var(--accent); }
+.unread { background: var(--badge); color: #fff; font-size: 0.66rem; font-weight: 700; border-radius: 999px; padding: 1px 6px; }
+
+.src-old { background: var(--mark); border-radius: 3px; padding: 0 2px; color: var(--ink); }
+
+/* The proposed chip — StatusChip tones already used on Hot leads */
+.chip { display: inline-flex; align-items: center; gap: 5px; max-width: 14rem; border-radius: 999px; padding: 1px 8px; font-size: 0.7rem; font-weight: 600; white-space: nowrap; overflow: hidden; line-height: 1.5; cursor: help; border: 1px solid transparent; background: var(--t-bg); color: var(--t-ink); }
+.chip.gn { --t-bg: var(--gn-bg); --t-ink: var(--gn-ink); }
+.chip.am { --t-bg: var(--am-bg); --t-ink: var(--am-ink); }
+.chip.bl { --t-bg: var(--bl-bg); --t-ink: var(--bl-ink); }
+.chip.gy { --t-bg: var(--gy-bg); --t-ink: var(--gy-ink); }
+.chip .d { font-weight: 500; opacity: 0.85; }
+.chip::before { content: ""; display: none; flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--t-ink); }
+/* Lighter styles, switched with the picker. Same tone, background mixed toward the card. */
+[data-chip="soft"] .chip { background: color-mix(in srgb, var(--t-bg) 55%, var(--card)); font-weight: 500; }
+[data-chip="softer"] .chip { background: color-mix(in srgb, var(--t-bg) 32%, var(--card)); font-weight: 500; }
+
+.picker { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--page) 92%, transparent); backdrop-filter: blur(6px); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+.picker legend, .picker .lbl { font-weight: 600; font-size: 0.82rem; }
+.picker fieldset { border: 0; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.picker label { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--card); border-radius: 8px; padding: 5px 10px; font-size: 0.78rem; cursor: pointer; }
+.picker input { accent-color: var(--accent); margin: 0; }
+.picker label:has(input:checked) { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
+.picker label:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+.picker .rec { color: var(--new); font-size: 0.7rem; font-weight: 600; }
+.rules { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; display: grid; gap: 8px; font-family: var(--font-note); line-height: 1.5; color: var(--ink-2); }
+.rules ol { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+.rules b { color: var(--ink); }
+.surfaces { display: flex; flex-wrap: wrap; gap: 6px; }
+.surfaces span { border: 1px solid var(--line); background: var(--card); border-radius: 6px; padding: 3px 8px; font-size: 0.76rem; }
+.done { color: var(--new); font-weight: 600; }
+.chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* tooltip demo */
+.tip { position: relative; display: inline-flex; }
+.tip-box { margin-top: 6px; background: var(--ink); color: var(--page); font-size: 0.72rem; border-radius: 6px; padding: 6px 9px; line-height: 1.45; max-width: 22rem; }
+
+/* variants table */
+.table-scroll { overflow-x: auto; background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+table { border-collapse: collapse; width: 100%; min-width: 760px; font-size: 0.8rem; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+tr:last-child td { border-bottom: 0; }
+td.old { color: var(--ink-2); }
+td code { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-2); word-break: break-word; }
+td.note { color: var(--ink-2); font-family: var(--font-note); }
+
+/* phone frame */
+.phones { display: flex; gap: 24px; flex-wrap: wrap; }
+.phone { width: min(100%, 375px); border: 1px solid var(--line); border-radius: 22px; padding: 14px 10px; background: var(--page); display: grid; gap: 8px; }
+.phone .row { grid-template-columns: auto minmax(0, 1fr); }
+.phone .row .what { grid-column: 2; }
+
+.questions { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; display: grid; gap: 10px; font-family: var(--font-note); line-height: 1.5; }
+.questions h2 { margin: 0; font-size: 1.05rem; font-family: var(--font-ui); }
+.questions ol { margin: 0; padding-left: 1.2em; display: grid; gap: 8px; color: var(--ink-2); }
+.questions b { color: var(--ink); }
+.fine { color: var(--ink-3); font-size: 0.78rem; font-family: var(--font-note); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600&display=swap">
+
+<main class="wrap" id="page" data-chip="soft">
+  <header class="top">
+    <h1>Today: dòng nguồn → chip cạnh tên</h1>
+    <p>So sánh màn Today của Recruiter trên staging (hiện tại) với đề xuất. Dữ liệu là các lead thật trên staging ngày 05/10, label sự kiện lấy đúng từ MOSO.</p>
+    <ul class="changes">
+      <li><b>Nguồn thành chip cạnh tên</b>, dùng lại chữ ngắn và màu chip đang có ở Hot leads (Web form, Webinar, Referral…).</li>
+      <li><b>Sự kiện hiện ngày diễn ra</b> (lấy từ label, ví dụ "(Aug 6, 2026)"), bỏ ngày đăng ký "RSVP'd Sep 12". Ngày đăng ký chuyển vào tooltip.</li>
+      <li><b>Dòng phụ dưới tên gọn lại</b>: Công ty · Stage · Bang.</li>
+    </ul>
+  </header>
+
+  <form class="picker" id="picker" aria-label="Kiểu chip">
+    <span class="lbl">Kiểu chip (đổi cả trang):</span>
+    <fieldset>
+      
+      <label><input type="radio" name="chip" id="chip-soft" value="soft" checked> Nền nhạt <span class="rec">đề xuất</span></label>
+      <label><input type="radio" name="chip" id="chip-softer" value="softer"> Nền rất nhạt</label>
+      <label><input type="radio" name="chip" id="chip-solid" value="solid"> Nền đậm (bản 1)</label>
+    </fieldset>
+  </form>
+
+  <!-- HERO -->
+  <section class="pair" aria-labelledby="h-hero">
+    <h2 id="h-hero">1. Thẻ Next up</h2>
+    <p class="lede">Phần tô vàng bên trái là dòng nguồn hiện tại. Bên phải nó thành chip đứng ngay sau tên.</p>
+    <div class="cols">
+      <div class="side">
+        <span class="tag before">Hiện tại · staging</span>
+        <article class="hero">
+          <div class="hero-top">
+            <div class="avatar">R</div>
+            <div class="who">
+              <div class="name-line"><span class="name">Revav</span></div>
+              <div class="sub"><span class="src-old">After Party · San Diego · RSVP'd Sep 12</span></div>
+              <div class="meta">NMLS 121212</div>
+              <div class="meta">✉ revav44463@liondapt.com</div>
+            </div>
+            <div class="hero-actions"><button class="btn" type="button">☏ Call now</button><span class="icon-btn"></span><span class="icon-btn"></span></div>
+          </div>
+          <div class="say"><b>Call again · no answer Sep 22</b><span class="due">◷ Sep 25 · 7:00am</span><span class="ghost">Change date</span></div>
+        </article>
+      </div>
+      <div class="side">
+        <span class="tag after">Đề xuất</span>
+        <article class="hero">
+          <div class="hero-top">
+            <div class="avatar">R</div>
+            <div class="who">
+              <div class="name-line">
+                <span class="name">Revav</span>
+                <span class="chip am" tabindex="0" title="VIP After Party in San Diego, CA (Aug 6, 2026) · signed up Sep 12">After Party · San Diego <span class="d">· Aug 6</span></span>
+              </div>
+              <div class="meta">NMLS 121212</div>
+              <div class="meta">✉ revav44463@liondapt.com</div>
+            </div>
+            <div class="hero-actions"><button class="btn" type="button">☏ Call now</button><span class="icon-btn"></span><span class="icon-btn"></span></div>
+          </div>
+          <div class="say"><b>Call again · no answer Sep 22</b><span class="due">◷ Sep 25 · 7:00am</span><span class="ghost">Change date</span></div>
+        </article>
+        <div>
+          <span class="fine">Rê chuột / focus vào chip:</span>
+          <div class="tip-box">VIP After Party in San Diego, CA (Aug 6, 2026)<br>Signed up Sep 12</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUEUE -->
+  <section class="pair" aria-labelledby="h-queue">
+    <h2 id="h-queue">2. Danh sách bên dưới</h2>
+    <p class="lede">Bảy dòng thật từ màn hình của bạn, đủ các loại: web form, nguồn lạnh, 3 After Party, referral, sự kiện không có label, và tên dài kèm badge tin chưa đọc.</p>
+    <div class="cols">
+      <div class="side">
+        <span class="tag before">Hiện tại · staging</span>
+        <div class="queue">
+          <div class="queue-head">No follow-up set <span class="count">7</span></div>
+          <div class="row"><div class="avatar sm">QD</div><div class="who"><span class="name">QA DeferFeeMobile</span><span class="sub">Offer · <span class="src-old">Filled the website form · Sep 23</span></span></div><div class="what"><span class="add">+ Add follow-up</span>Not contacted yet · make the first call</div></div>
+          <div class="row"><div class="avatar sm">GH</div><div class="who"><span class="name">Grant Horwitz</span><span class="sub">E Mortgage Capital</span></div><div class="what"><span class="add">+ Add follow-up</span>Not contacted yet · send the first email</div></div>
+          <div class="row"><div class="avatar sm">S</div><div class="who"><span class="name">Secoxe</span><span class="sub"><span class="src-old">After Party · Pasadena · RSVP'd Sep 22</span></span></div><div class="what"><span class="add">+ Add follow-up</span>Not contacted yet · make the first call</div></div>
+          <div class="row"><div class="avatar sm">ES</div><div class="who"><span class="name">E2E Stamp</span><span class="sub">Offer · <span class="src-old">Referred by another loan officer · Sep 30</span></span></div><div class="what"><span class="add">+ Add follow-up</span>Not contacted yet · make the first call</div></div>
+          <div class="row"><div class="avatar sm">N</div><div class="who"><span class="name">Nesebis</span><span class="sub">Nesebis,inc · <span class="src-old">After Party · San Diego · RSVP'd Sep 12</span></span></div><div class="what"><span class="add">+ Add follow-up</span>No reply for 3 days · send a follow-up text</div></div>
+          <div class="row"><div class="avatar sm">BN</div><div class="who"><span class="name">Batoreh Nguyen</span><span class="sub">E2E Writeback Test LLC · <span class="src-old">RSVP'd for an event · Sep 14</span></span></div><div class="what"><span class="add">+ Add follow-up</span>No reply for 14 days · call again</div></div>
+          <div class="row"><div class="avatar sm">TB</div><div class="who"><div class="name-line"><span class="name">TRINH VU TRONG BAO</span><span class="unread">14</span></div><span class="sub"><span class="src-old">After Party · Houston · RSVP'd Sep 18</span></span></div><div class="what"><span class="add">+ Add follow-up</span>They replied 1 day ago · reminders paused</div></div>
+        </div>
+      </div>
+      <div class="side">
+        <span class="tag after">Đề xuất</span>
+        <div class="queue">
+          <div class="queue-head">No follow-up set <span class="count">7</span></div>
+          <div class="row"><div class="avatar sm">QD</div><div class="who"><div class="name-line"><span class="name">QA DeferFeeMobile</span><span class="chip gn" tabindex="0" title="Filled the website form · Sep 23">Web form</span></div><span class="sub">Offer</span></div><div class="what"><span class="add">+ Add follow-up</span>Not contacted yet · make the first call</div></div>
+          <div class="row"><div class="avatar sm">GH</div><div class="who"><span class="name">Grant Horwitz</span><span class="sub">E Mortgage Capital</span></div><div class="what"><span class="add">+ Add follow-up</span>Not contacted yet · send the first email</div></div>
+          <div class="row"><div class="avatar sm">S</div><div class="who"><div class="name-line"><span class="name">Secoxe</span><span class="chip am" tabindex="0" title="VIP After Party in Pasadena, CA (Nov 17, 2026) · signed up Sep 22">After Party · Pasadena <span class="d">· Nov 17</span></span></div></div><div class="what"><span class="add">+ Add follow-up</span>Not contacted yet · make the first call</div></div>
+          <div class="row"><div class="avatar sm">ES</div><div class="who"><div class="name-line"><span class="name">E2E Stamp</span><span class="chip bl" tabindex="0" title="Referred by another loan officer · Sep 30">Referral</span></div><span class="sub">Offer</span></div><div class="what"><span class="add">+ Add follow-up</span>Not contacted yet · make the first call</div></div>
+          <div class="row"><div class="avatar sm">N</div><div class="who"><div class="name-line"><span class="name">Nesebis</span><span class="chip am" tabindex="0" title="VIP After Party in San Diego, CA (Aug 6, 2026) · signed up Sep 12">After Party · San Diego <span class="d">· Aug 6</span></span></div><span class="sub">Nesebis,inc</span></div><div class="what"><span class="add">+ Add follow-up</span>No reply for 3 days · send a follow-up text</div></div>
+          <div class="row"><div class="avatar sm">BN</div><div class="who"><div class="name-line"><span class="name">Batoreh Nguyen</span><span class="chip am" tabindex="0" title="Signed up for an event · Sep 14 (no event name from MOSO)">Event</span></div><span class="sub">E2E Writeback Test LLC</span></div><div class="what"><span class="add">+ Add follow-up</span>No reply for 14 days · call again</div></div>
+          <div class="row"><div class="avatar sm">TB</div><div class="who"><div class="name-line"><span class="name">TRINH VU TRONG BAO</span><span class="unread">14</span><span class="chip am" tabindex="0" title="VIP After Party in Houston, TX (Nov 3, 2026) · signed up Sep 18">After Party · Houston <span class="d">· Nov 3</span></span></div></div><div class="what"><span class="add">+ Add follow-up</span>They replied 1 day ago · reminders paused</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VARIANTS -->
+  <section class="pair" aria-labelledby="h-var">
+    <h2 id="h-var">3. Mọi biến thể của chip</h2>
+    <p class="lede">Mỗi nguồn và mỗi kiểu label MOSO, chữ hiện tại so với chip đề xuất. Màu chip giữ đúng màu đang dùng ở Hot leads.</p>
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>Nguồn / dữ liệu</th><th>Hiện tại</th><th>Chip đề xuất</th><th>Tooltip</th></tr></thead>
+        <tbody>
+          <tr><td>Event, label có "City, ST (Mon D, YYYY)"<br><code>VIP After Party in San Diego, CA (Aug 6, 2026)</code></td><td class="old">After Party · San Diego · RSVP'd Sep 12</td><td><span class="chip am">After Party · San Diego <span class="d">· Aug 6</span></span></td><td class="note">Label gốc + "Signed up Sep 12"</td></tr>
+          <tr><td>Event, label dài kiểu "— City AfterParty", không có ngày<br><code>California Mortgage Expo 2026 — San Diego AfterParty</code></td><td class="old">California Mortgage Expo 2026 — San Diego Af… · RSVP'd Sep 18</td><td><span class="chip am">After Party · San Diego</span></td><td class="note">Label gốc + "Signed up Sep 18". Không có ngày thì chip không ghi ngày</td></tr>
+          <tr><td>Event, LoanFactory Summit<br><code>LoanFactory Summit 2026 — Las Vegas, NV (Mar 12, 2027)</code></td><td class="old">LoanFactory Summit 2026 — Las Vegas, NV (Ma… · RSVP'd …</td><td><span class="chip am">Summit · Las Vegas <span class="d">· Mar 12, 2027</span></span></td><td class="note">Label gốc + ngày đăng ký (ví dụ minh hoạ, không có trên staging)</td></tr>
+          <tr><td>Event, label lạ không đọc được loại hay thành phố<br><code>Spring Networking Night with Loan Factory partners</code></td><td class="old">Spring Networking Night with Loan Factory p… · RSVP'd …</td><td><span class="chip am">Event</span></td><td class="note">Label gốc nằm trọn trong tooltip</td></tr>
+          <tr><td>Event, không có label nào khớp</td><td class="old">RSVP'd for an event · Sep 14</td><td><span class="chip am">Event</span></td><td class="note">"Signed up for an event · Sep 14"</td></tr>
+          <tr><td>Event, năm sự kiện khác năm nay</td><td class="old">After Party · Houston · RSVP'd …</td><td><span class="chip am">After Party · Houston <span class="d">· Nov 3, 2027</span></span></td><td class="note">Chỉ thêm năm khi khác năm hiện tại</td></tr>
+          <tr><td>Webinar</td><td class="old">Signed up for a webinar · Sep 12</td><td><span class="chip am">Webinar</span></td><td class="note">"Signed up Sep 12". Nếu có ngày session (Pipeline đã có "Webinar session: {date}") thì chip ghi <span class="chip am">Webinar <span class="d">· Nov 18</span></span></td></tr>
+          <tr><td>Web form</td><td class="old">Filled the website form · Oct 1</td><td><span class="chip gn">Web form</span></td><td class="note">"Filled the website form · Oct 1"</td></tr>
+          <tr><td>Facebook</td><td class="old">Came from a Facebook ad · Sep 12</td><td><span class="chip gn">Facebook ads</span></td><td class="note">"Came from a Facebook ad · Sep 12"</td></tr>
+          <tr><td>Referral</td><td class="old">Referred by another loan officer · Sep 30</td><td><span class="chip bl">Referral</span></td><td class="note">"Referred by another loan officer · Sep 30". Sau này có thể là "Referred by {name}" như Pipeline</td></tr>
+          <tr><td>Nguồn lạnh: Import, Manual, Modex, Other</td><td class="old">(không có, hiện bang)</td><td class="note">Không có chip</td><td class="note">Dòng phụ vẫn hiện bang như hiện tại</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="pair" aria-labelledby="h-rule">
+    <h2 id="h-rule">4. Quy tắc rút gọn label sự kiện</h2>
+    <div class="rules">
+      <p style="margin:0">Chip <b>không bao giờ hiện nguyên label MOSO</b>. App đọc label để lấy 3 mảnh, mảnh nào thiếu thì bỏ mảnh đó:</p>
+      <ol>
+        <li><b>Loại sự kiện</b>: có chữ "After Party" (viết liền hay cách) thì ghi <b>After Party</b>; "LoanFactory Summit" thì ghi <b>Summit</b>. Không nhận ra loại thì cả chip chỉ ghi <b>Event</b>.</li>
+        <li><b>Thành phố</b>: lấy cụm "San Diego, CA" (bỏ bang), hoặc cụm ngay trước "AfterParty" như "— San Diego AfterParty".</li>
+        <li><b>Ngày diễn ra</b>: lấy "(Aug 6, 2026)" thành <b>Aug 6</b>. Chỉ thêm năm khi khác năm hiện tại.</li>
+      </ol>
+      <p style="margin:0">Chip dài nhất là kiểu "After Party · San Francisco · Nov 17, 2027", khoảng 40 ký tự. Chiều rộng chip giới hạn 14rem làm lưới an toàn, nhưng với quy tắc trên gần như không bao giờ phải cắt "…".</p>
+    </div>
+  </section>
+
+  <!-- PHONE -->
+  <section class="pair" aria-labelledby="h-phone">
+    <h2 id="h-phone">5. Màn hình hẹp (375px)</h2>
+    <p class="lede">Khi tên dài, chip tự xuống dòng dưới tên thay vì bị cắt mất.</p>
+    <div class="phones">
+      <div class="side">
+        <span class="tag before">Hiện tại</span>
+        <div class="phone"><div class="queue">
+          <div class="row"><div class="avatar sm">TB</div><div class="who"><div class="name-line"><span class="name">TRINH VU TRONG BAO</span><span class="unread">14</span></div><span class="sub"><span class="src-old">After Party · Houston · RSVP'd Sep 18</span></span></div><div class="what">They replied 1 day ago · reminders paused</div></div>
+          <div class="row"><div class="avatar sm">ES</div><div class="who"><span class="name">E2E Stamp</span><span class="sub">Offer · <span class="src-old">Referred by another loan officer · Sep 30</span></span></div><div class="what">Not contacted yet · make the first call</div></div>
+        </div></div>
+      </div>
+      <div class="side">
+        <span class="tag after">Đề xuất</span>
+        <div class="phone"><div class="queue">
+          <div class="row"><div class="avatar sm">TB</div><div class="who"><div class="name-line"><span class="name">TRINH VU TRONG BAO</span><span class="unread">14</span><span class="chip am">After Party · Houston <span class="d">· Nov 3</span></span></div></div><div class="what">They replied 1 day ago · reminders paused</div></div>
+          <div class="row"><div class="avatar sm">ES</div><div class="who"><div class="name-line"><span class="name">E2E Stamp</span><span class="chip bl">Referral</span></div><span class="sub">Offer</span></div><div class="what">Not contacted yet · make the first call</div></div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="questions" aria-labelledby="h-q">
+    <h2 id="h-q">Đã chốt và còn lại</h2>
+    <ol>
+      <li><span class="done">Đã chốt:</span> sự kiện đã qua vẫn hiện ngày như mọi chip, không thêm gì.</li>
+      <li><span class="done">Đã chốt:</span> label chuẩn luôn có ngày; label lạ đi theo quy tắc rút gọn ở mục 4, không bao giờ hiện nguyên label.</li>
+      <li><span class="done">Đã chốt:</span> áp dụng mọi nơi đang hiện nguồn của lead:
+        <div class="surfaces" style="margin-top:6px"><span>Today: Next up</span><span>Today: danh sách</span><span>Focus mode</span><span>Drawer 360</span><span>Hot leads / Cold list</span><span>Pipeline: bảng</span><span>Pipeline: board</span><span>Pipeline: thẻ (mobile)</span><span>Reports: pivot</span></div>
+      </li>
+      <li><b>Còn lại: chọn độ nhạt</b> bằng thanh chọn phía trên. Cả hai đều giữ nền màu theo nguồn, chỉ pha nhạt về màu nền thẻ và bỏ chữ đậm. Đề xuất "Nền nhạt". Chỉ chip NGUỒN đổi, chip stage (Offer, Joined…) giữ nguyên.</li>
+    </ol>
+    <p class="fine">Màu và khoảng cách dựng lại gần đúng app, không phải ảnh chụp. Dữ liệu: candidates staging, đọc chỉ-đọc ngày 05/10/2026.</p>
+  </section>
+</main>
+<script>
+(function () {
+  var page = document.getElementById('page');
+  var KEY = 'chip-style-v2';
+  function apply(v) { page.setAttribute('data-chip', v); }
+  try { var saved = localStorage.getItem(KEY); if (saved) { var el = document.querySelector('input[name="chip"][value="' + saved + '"]'); if (el) { el.checked = true; apply(saved); } } } catch (e) {}
+  document.getElementById('picker').addEventListener('change', function (e) {
+    if (e.target.name !== 'chip') return;
+    apply(e.target.value);
+    try { localStorage.setItem(KEY, e.target.value); } catch (err) {}
+  });
+})();
+</script>

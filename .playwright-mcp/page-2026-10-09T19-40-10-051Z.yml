@@ -1,0 +1,84 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e3]:
+      - link [ref=e5] [cursor=pointer]:
+        - /url: "##"
+      - generic [ref=e6]:
+        - list [ref=e7]:
+          - listitem [ref=e8]:
+            - link "Home" [ref=e9] [cursor=pointer]:
+              - /url: "##home"
+          - listitem [ref=e10]:
+            - link "Contact" [ref=e11] [cursor=pointer]:
+              - /url: "#"
+        - list [ref=e13]:
+          - listitem [ref=e14]:
+            - link "supervisor_account Sign in" [ref=e50] [cursor=pointer]:
+              - /url: javascript:gotoPlace('login?popup=1')
+              - generic [ref=e51]: supervisor_account
+              - text: Sign in
+  - main [ref=e17]:
+    - generic [ref=e52]:
+      - generic [ref=e53]:
+        - heading "Login" [level=3] [ref=e54]
+        - paragraph
+      - form [ref=e56]:
+        - generic [ref=e58]:
+          - generic "Email" [ref=e59]:
+            - generic [ref=e61]:
+              - generic [ref=e62]: 
+              - textbox "Email" [ref=e64]
+          - generic "Password" [ref=e65]:
+            - generic [ref=e67]:
+              - generic [ref=e68]: 
+              - textbox "Password" [ref=e70]
+          - paragraph [ref=e71]:
+            - link "Forgot password?" [ref=e72] [cursor=pointer]:
+              - /url: "##reset_password"
+        - button " Login" [ref=e74] [cursor=pointer]:
+          - generic [ref=e75]: 
+          - text: Login
+  - contentinfo [ref=e18]:
+    - generic [ref=e22]:
+      - generic [ref=e23]:
+        - heading "Contact us" [level=3] [ref=e24]
+        - list [ref=e26]:
+          - listitem [ref=e27]:
+            - generic [ref=e76]: 
+            - text: (048) 900-9131
+          - listitem [ref=e28]:
+            - link " Send a message" [ref=e77] [cursor=pointer]:
+              - /url: "##contact_us"
+              - generic [ref=e78]: 
+              - text: Send a message
+          - listitem [ref=e30]:
+            - generic [ref=e79]: 
+            - text: 63d Vo Van Tan, 3, Hồ Chí Minh, VN
+      - generic [ref=e31]:
+        - heading "Menu" [level=3] [ref=e32]
+        - list [ref=e34]:
+          - listitem [ref=e35]:
+            - link " Privacy policies" [ref=e80] [cursor=pointer]:
+              - /url: "##privacy"
+              - generic [ref=e81]: 
+              - text: Privacy policies
+          - listitem [ref=e37]:
+            - link " Terms and conditions" [ref=e82] [cursor=pointer]:
+              - /url: "##terms_and_conditions"
+              - generic [ref=e83]: 
+              - text: Terms and conditions
+          - listitem [ref=e39]:
+            - link " ADA Accessibility Statement" [ref=e84] [cursor=pointer]:
+              - /url: "##ada"
+              - generic [ref=e85]: 
+              - text: ADA Accessibility Statement
+          - listitem [ref=e41]:
+            - link " Our team" [ref=e86] [cursor=pointer]:
+              - /url: "##our_team"
+              - generic [ref=e87]: 
+              - text: Our team
+      - generic [ref=e43]:
+        - heading "Social" [level=3] [ref=e44]
+        - list
+    - generic [ref=e46]: © Copyright 2026 X Moso, All rights reserved.
+  - iframe

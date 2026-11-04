@@ -1,0 +1,261 @@
+- generic [ref=f12e1]:
+  - iframe [ref=f12e2]
+  - region
+  - generic [ref=f12e4]:
+    - navigation [ref=f12e5]:
+      - button "Skip to main content" [ref=f12e7] [cursor=pointer]
+      - button "Keyboard shortcuts" [ref=f12e11] [cursor=pointer]
+      - button "Accessibility feedback" [ref=f12e15] [cursor=pointer]
+    - banner [ref=f12e19]:
+      - generic [ref=f12e20]:
+        - link "Drive" [ref=f12e24] [cursor=pointer]:
+          - /url: https://drive.google.com/?tab=oo&authuser=1
+        - generic [ref=f12e27]:
+          - search [ref=f12e29]:
+            - table [ref=f12e31]:
+              - rowgroup [ref=f12e32]:
+                - row [ref=f12e33]:
+                  - cell [ref=f12e34]:
+                    - textbox "Get answers from Drive" [ref=f12e35]
+            - generic [ref=f12e596]:
+              - button "AI Overview search" [ref=f12e597] [cursor=pointer]
+              - tooltip [aria-hidden] [ref=f12e603]: AI Overview search
+            - button "Advanced search" [ref=f12e36] [cursor=pointer]
+            - button "Search Google Drive" [ref=f12e39] [cursor=pointer]
+          - generic [ref=f12e42]:
+            - button "Support" [ref=f12e45] [cursor=pointer]
+            - button "Settings" [ref=f12e50] [cursor=pointer]
+            - generic [ref=f12e55]:
+              - button "Studio" [ref=f12e605] [cursor=pointer]
+              - generic [ref=f12e57]:
+                - generic:
+                  - button "Ask Gemini" [ref=f12e64] [cursor=pointer]
+                  - tooltip [aria-hidden] [ref=f12e67]: Ask Gemini
+        - generic [ref=f12e69]:
+          - button "Google apps" [ref=f12e73] [cursor=pointer]
+          - 'button "Google Account: Bao Trinh (bao.trinh@loanfactory.com)" [ref=f12e77] [cursor=pointer]':
+            - 'button "Google Account: Bao Trinh (bao.trinh@loanfactory.com)" [ref=f12e82]'
+    - button "New" [ref=f12e87] [cursor=pointer]
+    - navigation [ref=f12e98]:
+      - heading "Folders and views" [level=2] [ref=f12e99]
+      - tree "Folders and views" [ref=f12e100]:
+        - treeitem [ref=f12e101]:
+          - link "Home" [ref=f12e102] [cursor=pointer]:
+            - generic "Home" [ref=f12e120]
+          - group
+        - treeitem [ref=f12e121]:
+          - link "Activity" [ref=f12e122] [cursor=pointer]:
+            - generic "Activity" [ref=f12e138]
+          - group
+        - treeitem [ref=f12e139]:
+          - link "Projects" [ref=f12e140] [cursor=pointer]:
+            - generic "Projects" [ref=f12e152]
+          - group
+        - treeitem [ref=f12e153]:
+          - link "Workspaces" [ref=f12e154] [cursor=pointer]:
+            - generic "Workspaces" [ref=f12e170]
+          - group
+        - treeitem [ref=f12e171]:
+          - link "My Drive Collapsed" [ref=f12e172] [cursor=pointer]:
+            - generic "My Drive" [ref=f12e189]
+            - text: Collapsed
+        - treeitem [ref=f12e190]:
+          - link "Shared drives Collapsed" [ref=f12e191] [cursor=pointer]:
+            - generic "Shared drives" [ref=f12e213]
+            - text: Collapsed
+        - treeitem [ref=f12e214]:
+          - link "Items shared with me" [ref=f12e215] [cursor=pointer]:
+            - generic "Items shared with me" [ref=f12e234]: Shared with me
+          - group
+        - treeitem [ref=f12e235]:
+          - link "Recent items" [ref=f12e236] [cursor=pointer]:
+            - generic "Recent items" [ref=f12e255]: Recent
+          - group
+        - treeitem [ref=f12e256]:
+          - link "Starred items" [ref=f12e257] [cursor=pointer]:
+            - generic "Starred items" [ref=f12e271]: Starred
+          - group
+        - treeitem [ref=f12e272]:
+          - link "Spam" [ref=f12e273] [cursor=pointer]:
+            - generic "Spam" [ref=f12e290]
+          - group
+        - treeitem [ref=f12e291]:
+          - link "Trashed items" [ref=f12e292] [cursor=pointer]:
+            - generic "Trashed items" [ref=f12e310]: Trash
+          - group
+        - treeitem [ref=f12e311]:
+          - link "Storage" [ref=f12e312] [cursor=pointer]:
+            - generic "Storage" [ref=f12e328]
+          - group
+      - progressbar "3.81 GB used" [ref=f12e331]
+    - generic [ref=f12e335]:
+      - generic [ref=f12e341]:
+        - generic [ref=f12e344]:
+          - generic [ref=f12e346]:
+            - navigation [ref=f12e615]:
+              - heading "Folder Path" [ref=f12e347]
+              - list "Folder Path" [ref=f12e616]:
+                - listitem [ref=f12e617]:
+                  - link "Shared with me" [ref=f12e618] [cursor=pointer]
+                - listitem [ref=f12e621]:
+                  - link "LO Registration Form Redesign" [ref=f12e622] [cursor=pointer]
+                - listitem [ref=f12e625]:
+                  - button "Wireframes - PNG" [ref=f12e626] [cursor=pointer]
+            - button "Shared" [ref=f12e632] [cursor=pointer]
+          - toolbar [ref=f12e348]:
+            - generic [ref=f12e349]:
+              - radiogroup "List or Grid layout (⌥V then L)" [ref=f12e353]:
+                - generic [ref=f12e354]:
+                  - radio "List" [ref=f12e355] [cursor=pointer]
+                  - radio "Grid" [checked] [ref=f12e364] [cursor=pointer]
+              - button "View details (⌥V then D)" [ref=f12e373] [cursor=pointer]
+        - generic [ref=f12e637]:
+          - toolbar [ref=f12e639]:
+            - generic [ref=f12e643]:
+              - button "Ask Gemini" [ref=f12e644] [cursor=pointer]
+              - tooltip [aria-hidden] [ref=f12e646]: Ask Gemini
+          - generic [ref=f12e648]: No filters applied
+          - toolbar "Filters" [ref=f12e650]:
+            - generic [ref=f12e652]:
+              - button "Type" [ref=f12e653] [cursor=pointer]:
+                - generic [ref=f12e655]: Type
+              - button "People" [ref=f12e659] [cursor=pointer]:
+                - generic [ref=f12e661]: People
+              - button "Modified" [ref=f12e665] [cursor=pointer]:
+                - generic [ref=f12e667]: Modified
+              - button "Source" [ref=f12e671] [cursor=pointer]:
+                - generic [ref=f12e673]: Source
+      - main [ref=f12e381]:
+        - region [active] [ref=f12e387]:
+          - generic [ref=f12e388]:
+            - grid [ref=f12e390]:
+              - generic [ref=f12e681]:
+                - 'button "Sort by: A to Z" [ref=f12e683] [cursor=pointer]':
+                  - generic [aria-hidden] [ref=f12e685]: Name
+                - tooltip [aria-hidden] [ref=f12e691]: "Sort by: A to Z"
+              - row [ref=f12e407]:
+                - gridcell "1 - Flow and decision tree.png Image More info (Option + →)" [ref=f12e408]:
+                  - generic [ref=f12e432]:
+                    - generic [ref=f12e700]: 1 - Flow and decision tree.png
+                    - generic [ref=f12e704]:
+                      - button [ref=f12e705] [cursor=pointer]
+                      - tooltip [aria-hidden] [ref=f12e711]: More actions
+                - gridcell "2 - Screen 1 About You.png Image More info (Option + →)" [ref=f12e443]:
+                  - generic [ref=f12e467]:
+                    - generic [ref=f12e724]: 2 - Screen 1 About You.png
+                    - generic [ref=f12e728]:
+                      - button [ref=f12e729] [cursor=pointer]
+                      - tooltip [aria-hidden] [ref=f12e735]: More actions
+                - gridcell "3 - Screen 2 License Details.png Image More info (Option + →)" [ref=f12e478]:
+                  - generic [ref=f12e502]:
+                    - generic [ref=f12e748]: 3 - Screen 2 License Details.png
+                    - generic [ref=f12e752]:
+                      - button [ref=f12e753] [cursor=pointer]
+                      - tooltip [aria-hidden] [ref=f12e759]: More actions
+                - gridcell "4 - Screen 3 Book the Call.png Image More info (Option + →)" [ref=f12e513]:
+                  - generic [ref=f12e537]:
+                    - generic [ref=f12e772]: 4 - Screen 3 Book the Call.png
+                    - generic [ref=f12e776]:
+                      - button [ref=f12e777] [cursor=pointer]
+                      - tooltip [aria-hidden] [ref=f12e783]: More actions
+                - gridcell "5 - Screen 4 Confirmation.png Image More info (Option + →)" [ref=f12e548]:
+                  - generic [ref=f12e572]:
+                    - generic [ref=f12e796]: 5 - Screen 4 Confirmation.png
+                    - generic [ref=f12e800]:
+                      - button [ref=f12e801] [cursor=pointer]
+                      - tooltip [aria-hidden] [ref=f12e807]: More actions
+            - progressbar [ref=f12e585]
+      - generic:
+        - navigation
+    - complementary "Side panel" [ref=f12e812]:
+      - tablist [ref=f12e814]:
+        - tab "Calendar" [selected]:
+          - generic [ref=f12e815] [cursor=pointer]
+        - tab "Keep":
+          - generic [ref=f12e816] [cursor=pointer]
+        - tab "Tasks":
+          - generic [ref=f12e817] [cursor=pointer]
+        - tab "Contacts":
+          - generic [ref=f12e818] [cursor=pointer]
+        - separator [disabled] [ref=f12e819]
+        - tab "Get Add-ons":
+          - generic [ref=f12e820] [cursor=pointer]
+      - generic:
+        - button "About":
+          - generic [ref=f12e821] [cursor=pointer]
+    - tabpanel "Calendar" [ref=f12e831]:
+      - iframe [ref=f12e834]:
+        - main [ref=f19e2]:
+          - generic [ref=f19e3]:
+            - generic [ref=f19e4]:
+              - heading "Calendar Wednesday, October 28, 2026" [level=2] [ref=f19e5]:
+                - generic [ref=f19e6]: Calendar
+                - button "Wednesday, October 28, 2026" [ref=f19e10] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=f19e12]: Wed, Oct 28
+                  - generic [aria-hidden] [ref=f19e14]: arrow_drop_down
+              - generic [ref=f19e15]:
+                - generic [ref=f19e17]:
+                  - generic [ref=f19e18] [cursor=pointer]:
+                    - generic [aria-hidden] [ref=f19e20]: open_in_new
+                    - link "Open in new tab" [ref=f19e21]:
+                      - /url: https://calendar.google.com/calendar/u/1/r
+                  - tooltip [aria-hidden] [ref=f19e22]: Open in new tab
+                - generic [ref=f19e24]:
+                  - button "Close" [ref=f19e25] [cursor=pointer]:
+                    - generic [aria-hidden] [ref=f19e27]: close
+                  - tooltip [aria-hidden] [ref=f19e29]: Close
+            - generic [ref=f19e31]:
+              - generic [ref=f19e32]:
+                - button "Today, Wednesday, October 28" [ref=f19e33] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=f19e34]: Today
+                - tooltip [aria-hidden] [ref=f19e35]: Wednesday, October 28
+              - generic [ref=f19e36]:
+                - button "Previous day" [ref=f19e37] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=f19e39]: navigate_before
+                - tooltip [aria-hidden] [ref=f19e41]: Previous day
+              - generic [ref=f19e42]:
+                - button "Next day" [ref=f19e43] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=f19e45]: navigate_next
+                - tooltip [aria-hidden] [ref=f19e47]: Next day
+              - generic [ref=f19e50]:
+                - button "Options" [ref=f19e51] [cursor=pointer]:
+                  - generic [aria-hidden] [ref=f19e53]: more_vert
+                - tooltip [aria-hidden] [ref=f19e55]: Options
+            - grid [ref=f19e57]:
+              - generic [ref=f19e58]:
+                - row [ref=f19e61]:
+                  - gridcell [ref=f19e64]:
+                    - button "Add a working location, Bao Trinh, October 28, 2026." [disabled] [ref=f19e65]:
+                      - generic [ref=f19e66]: Add location
+                - heading [level=2] [ref=f19e71]: No all day events, Wednesday, October 28, today
+              - generic [ref=f19e72]:
+                - generic [ref=f19e73]:
+                  - generic [ref=f19e75]:
+                    - generic [ref=f19e77]: 1 AM
+                    - generic [ref=f19e79]: 2 AM
+                    - generic [ref=f19e81]: 3 AM
+                    - generic [ref=f19e83]: 4 AM
+                    - generic [ref=f19e85]: 5 AM
+                    - generic [ref=f19e87]: 6 AM
+                    - generic [ref=f19e89]: 7 AM
+                    - generic [ref=f19e91]: 8 AM
+                    - generic [ref=f19e93]: 9 AM
+                    - generic [ref=f19e95]: 10 AM
+                    - generic [ref=f19e97]: 11 AM
+                    - generic [ref=f19e99]: 12 PM
+                    - generic [ref=f19e101]: 1 PM
+                    - generic [ref=f19e103]: 2 PM
+                    - generic [ref=f19e105]: 3 PM
+                    - generic [ref=f19e107]: 4 PM
+                    - generic [ref=f19e109]: 5 PM
+                    - generic [ref=f19e111]: 6 PM
+                    - generic [ref=f19e113]: 7 PM
+                    - generic [ref=f19e115]: 8 PM
+                    - generic [ref=f19e117]: 9 PM
+                    - generic [ref=f19e119]: 10 PM
+                    - generic [ref=f19e121]: 11 PM
+                  - row [ref=f19e124]:
+                    - gridcell [ref=f19e125]:
+                      - heading "No events, Wednesday, October 28" [level=2] [ref=f19e126]
+                - generic [ref=f19e130]: GMT+07
+  - region

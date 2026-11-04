@@ -1,0 +1,65 @@
+- generic [active] [ref=e1]:
+  - alert [ref=e2]
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e8]:
+            - combobox "Search candidates, NMLS, companies…" [ref=e13]
+            - generic:
+              - generic "Press ⌘ K to search from anywhere": ⌘ K
+          - status [ref=e14]
+        - generic [ref=e15]:
+          - button "Switch to dark mode" [ref=e16] [cursor=pointer]
+          - button "Notifications" [ref=e22] [cursor=pointer]
+          - button "Apps" [ref=e27] [cursor=pointer]
+          - button "Account menu" [ref=e39] [cursor=pointer]:
+            - generic [ref=e40]: "?"
+    - navigation [ref=e42]:
+      - generic [ref=e43]:
+        - link "Go to the start of this app" [ref=e44] [cursor=pointer]:
+          - /url: /today
+          - generic [ref=e46]:
+            - img "Loan Factory"
+            - generic [ref=e47]: Recruit
+        - button "Collapse menu" [expanded] [ref=e50] [cursor=pointer]
+      - navigation "Main navigation" [ref=e55]:
+        - list [ref=e57]:
+          - listitem [ref=e58]:
+            - link "My work today" [ref=e59] [cursor=pointer]:
+              - /url: /today
+        - generic [ref=e65]:
+          - button "Leads" [expanded] [ref=e66] [cursor=pointer]
+          - list "Leads" [ref=e71]:
+            - listitem [ref=e72]:
+              - link "Modex" [ref=e73] [cursor=pointer]:
+                - /url: /modex
+        - generic [ref=e81]:
+          - button "Manage" [expanded] [ref=e82] [cursor=pointer]
+          - list "Manage" [ref=e87]:
+            - listitem [ref=e88]:
+              - link "Audit" [ref=e89] [cursor=pointer]:
+                - /url: /audit
+        - generic [ref=e95]:
+          - button "Setup" [expanded] [ref=e96] [cursor=pointer]
+          - list "Setup" [ref=e101]:
+            - listitem [ref=e102]:
+              - link "Templates" [ref=e103] [cursor=pointer]:
+                - /url: /templates
+            - listitem [ref=e109]:
+              - link "Checklist templates" [ref=e110] [cursor=pointer]:
+                - /url: /checklist-templates
+            - listitem [ref=e117]:
+              - link "Permissions" [ref=e118] [cursor=pointer]:
+                - /url: /permissions
+            - listitem [ref=e124]:
+              - link "Settings" [ref=e125] [cursor=pointer]:
+                - /url: /settings
+      - button "TERA assistant" [ref=e132] [cursor=pointer]
+    - main [ref=e138]:
+      - generic [ref=e139]:
+        - generic [ref=e143]:
+          - link "Back" [ref=e144] [cursor=pointer]:
+            - /url: /today
+          - status "Loading…" [ref=e148]
+        - button "Submit feedback" [ref=e150] [cursor=pointer]

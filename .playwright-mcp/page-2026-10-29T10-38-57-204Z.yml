@@ -1,0 +1,36 @@
+- generic [ref=f10e1]:
+  - img "op" [ref=f10e2]
+  - generic [ref=f10e5]:
+    - banner [ref=f10e7]:
+      - generic [ref=f10e8]:
+        - generic [ref=f10e9]:
+          - link "/":
+            - /url: /vi/
+          - generic [ref=f10e12] [cursor=pointer]:
+            - generic [ref=f10e13]: ✓
+            - text: Trịnh Vũ Trọng Bảo
+        - generic [ref=f10e16]:
+          - link "logo" [ref=f10e17] [cursor=pointer]:
+            - /url: https://dvc.moc.gov.vn
+          - generic [ref=f10e20]:
+            - link [ref=f10e21] [cursor=pointer]:
+              - /url: https://dvc.moc.gov.vn
+              - text: HỆ THỐNG THÔNG TIN GIẢI QUYẾT THỦ TỤC HÀNH CHÍNH
+              - paragraph [ref=f10e22]: BỘ XÂY DỰNG
+            - paragraph [ref=f10e23]: Hành chính phục vụ
+    - generic [ref=f10e29]:
+      - heading "Chọn trường hợp giải quyết" [level=3] [ref=f10e31]
+      - generic [ref=f10e34]:
+        - generic [ref=f10e38] [cursor=pointer]:
+          - listbox "Đơn vị thực hiện" [active] [ref=f10e270]:
+            - generic [ref=f10e41]: Chi nhánh Văn phòng Đăng ký đất đai Cầu Giấy
+          - generic: Đơn vị thực hiện *
+        - generic [ref=f10e48] [cursor=pointer]:
+          - listbox "Trường hợp giải quyết" [ref=f10e84]:
+            - generic [ref=f10e51]: "Trường hợp 2: Xác nhận điều kiện về nhà ở để được mua, thuê mua nhà ở xã hội/nhà ở cho lực lượng vũ trang nhân dân (trường hợp có nhà ở nhưng diện tích nhà ở bình quân đầu người thấp hơn 15m2 sàn/người)."
+          - generic: Trường hợp giải quyết *
+      - button "Đồng ý" [ref=f10e66] [cursor=pointer]
+  - link "EMC Đã kết nối EMC" [ref=f10e76] [cursor=pointer]:
+    - /url: javascript:void(0)
+    - img "EMC" [ref=f10e78]
+    - generic [ref=f10e79]: Đã kết nối EMC

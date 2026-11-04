@@ -1,0 +1,25 @@
+feat(recruiting): LO Recruiter Program credit by member-at-time, every channel (rework)
+
+Bao 24-25/10. Credit no longer depends on the channel and no longer lives in recruiter.
+- One decision point (LoRecruiterProgramStanding): when a referrer is attached to a lead
+  (LORecruiting.beforeCreated for every create path incl. CSV, beforeSave for a first
+  referrer on an existing lead) an active Loan Officer who was an approved lo_recruiter
+  member AT THAT MOMENT gives program credit: referred_lo = member + server-set marker
+  lo_recruiter_program_credit (+ member key, credited-at). A plain Loan Officer is a
+  Referral as before. The JOIN/RECRUIT slug stamp is no longer required (analytics only).
+- Membership comes from a cached member list (moso-aid GET /lo-programs/standing/members,
+  key moso_aid_packs_service_key), refreshed ~5 min, last good copy kept; never loaded =
+  lo_recruiter_program_unverified, settled by the nightly
+  ReconcileLoRecruiterProgramCreditCronOp using the member list at the referral time.
+- recruiter stays the staff handler: the guards in ILOAutomaticAssignOwnerOp and LoanOps
+  are reverted.
+- Marker is never client-settable (part of the origin stamp, stripped from every public
+  body, public referred_lo stripped) and valid only while referred_lo still equals the
+  credited member.
+- Pay reports count members from marked leads via referred_lo; staff recruiters unchanged.
+- A credited lead does not also start the LO-referral bonus (Admin conversion).
+- CSV import: optional "Referred by (email)" column; unknown e-mail imports with no
+  referrer and is listed in the result.
+- Recruit read (referrals byOwner) exposes lo_recruiter_program_credit and shows PROGRAM from it.
+
+Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>

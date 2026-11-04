@@ -1,0 +1,387 @@
+- generic [active] [ref=f8e1]:
+  - generic [ref=f8e7]:
+    - generic [ref=f8e8]:
+      - generic [ref=f8e9]:
+        - button "Sidebar collapse button" [ref=f8e10] [cursor=pointer]
+        - link [ref=f8e69] [cursor=pointer]:
+          - /url: "#"
+          - text: "SWAT:"
+          - link "Khai Nguyen is SWAT officer. Please contact him for urgent problem" [ref=f8e70]:
+            - /url: "javascript:"
+          - text: "Parser:"
+          - link "Triet Le is monitoring the parser today. Please contact him for problem with parser" [ref=f8e72]:
+            - /url: "javascript:"
+      - list [ref=f8e15]:
+        - listitem [ref=f8e16]:
+          - link "Search" [ref=f8e17] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=f8e74]: search
+        - listitem [ref=f8e18]:
+          - link "Builds" [ref=f8e19] [cursor=pointer]:
+            - /url: "##builds"
+        - listitem [ref=f8e20]:
+          - link "add" [ref=f8e75] [cursor=pointer]:
+            - /url: "##create_small_task"
+        - listitem [ref=f8e22]:
+          - link "Message" [ref=f8e23] [cursor=pointer]:
+            - /url: javascript:;
+            - generic [ref=f8e77]: notifications
+          - text: 
+        - listitem [ref=f8e24]:
+          - link [ref=f8e25] [cursor=pointer]:
+            - /url: javascript:;
+            - text: Bao Trinh
+            - img "Bao Trinh" [ref=f8e26]
+      - generic [ref=f8e27]:
+        - button "search" [ref=f8e28]
+        - generic [ref=f8e79]:
+          - searchbox "Search input" [ref=f8e80]
+          - searchbox "Search input" [ref=f8e29]
+        - link "close search" [ref=f8e30] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=f8e81]: close
+    - generic [ref=f8e32]:
+      - list [ref=f8e33]:
+        - listitem [ref=f8e34]:
+          - link "Bao Trinh  Bao Trinh Dev" [ref=f8e35] [cursor=pointer]:
+            - /url: javascript:;
+            - img "Bao Trinh" [ref=f8e38]
+            - generic [ref=f8e39]:
+              - generic [ref=f8e40]: 
+              - text: Bao Trinh
+              - generic [ref=f8e41]: Dev
+        - listitem: 
+      - list [ref=f8e42]:
+        - listitem [ref=f8e43]: X Moso
+        - listitem [ref=f8e44]:
+          - tab "group Company directory" [ref=f8e83] [cursor=pointer]:
+            - generic [ref=f8e84]: group
+            - text: Company directory
+        - listitem [ref=f8e46]:
+          - link " assignment_o Activities" [ref=f8e85] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f8e48]: 
+            - generic [ref=f8e86]: assignment_o
+            - text: Activities
+        - listitem [ref=f8e49]:
+          - link " check Reports" [ref=f8e87] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f8e51]: 
+            - generic [ref=f8e88]: check
+            - text: Reports
+        - listitem [ref=f8e52]:
+          - link " settings Builds" [ref=f8e89] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f8e54]: 
+            - generic [ref=f8e90]: settings
+            - text: Builds
+        - listitem [ref=f8e55]:
+          - link " bug_report Errors" [ref=f8e91] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f8e57]: 
+            - generic [ref=f8e92]: bug_report
+            - text: Errors
+        - listitem [ref=f8e58]:
+          - link " System" [ref=f8e59] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f8e60]: 
+            - text: System
+    - generic [ref=f8e93]:
+      - heading [level=1] [ref=f8e94]:
+        - text: Builds
+        - paragraph [ref=f8e95]:
+          - generic [ref=f8e97]:
+            - text: bao.trinh@moso.com broke build 14 hour(s) ago. Bao Trinh (TrongBaoMoso) is locking push
+            - strong [ref=f8e98]: because of test break
+      - generic [ref=f8e101]:
+        - tablist [ref=f8e102]:
+          - tab "builds" [ref=f8e103] [cursor=pointer]: Builds
+          - tab "status" [ref=f8e104] [cursor=pointer]:
+            - generic [ref=f8e105]: rss_feed
+            - text: Status
+          - tab "parsers" [ref=f8e106] [cursor=pointer]:
+            - generic [ref=f8e107]: insert_drive_file
+            - text: Parsers
+          - tab "tests" [ref=f8e108] [cursor=pointer]:
+            - generic [ref=f8e109]: insert_drive_file
+            - text: Tests
+          - tab "builders" [ref=f8e110] [cursor=pointer]:
+            - generic [ref=f8e111]: settings
+            - text: Builders
+          - tab "activities" [ref=f8e112] [cursor=pointer]:
+            - generic [ref=f8e113]: history
+            - text: Activities
+        - generic [ref=f8e116]:
+          - generic [ref=f8e117]:
+            - generic [ref=f8e118]:
+              - button "sync" [ref=f8e119] [cursor=pointer]
+              - link [ref=f8e122] [cursor=pointer]:
+                - /url: "javascript:"
+            - form [ref=f8e123]:
+              - generic "Repo" [ref=f8e124]:
+                - generic [ref=f8e125]:
+                  - text: Repo
+                  - generic [ref=f8e126]: (optional)
+                - combobox [aria-hidden] [ref=f8e127]
+                - combobox "Repo" [ref=f8e130] [cursor=pointer]
+              - generic "Type" [ref=f8e132]:
+                - generic [ref=f8e133]:
+                  - text: Type
+                  - generic [ref=f8e134]: (optional)
+                - combobox [aria-hidden] [ref=f8e135]
+                - combobox "× install" [ref=f8e138] [cursor=pointer]:
+                  - generic "install" [ref=f8e139]:
+                    - generic [ref=f8e140]: ×
+                    - text: install
+              - generic "Status" [ref=f8e141]:
+                - generic [ref=f8e142]:
+                  - text: Status
+                  - generic [ref=f8e143]: (optional)
+                - combobox [aria-hidden] [ref=f8e144]
+                - combobox "Status" [ref=f8e147] [cursor=pointer]
+            - generic [ref=f8e149]:
+              - button "Reset filters" [ref=f8e150] [cursor=pointer]
+              - button "More" [ref=f8e151] [cursor=pointer]
+          - generic [ref=f8e152]:
+            - generic [ref=f8e154]:
+              - generic [ref=f8e155]: Type
+              - generic [ref=f8e156]: Status
+              - generic [ref=f8e157]: Note
+              - generic [ref=f8e158]: Server
+              - generic [ref=f8e159]: Time (m)
+            - generic [ref=f8e160]:
+              - generic [ref=f8e161]:
+                - generic [ref=f8e162]:
+                  - generic [ref=f8e163]:
+                    - group [ref=f8e165]:
+                      - button "install" [ref=f8e166] [cursor=pointer]
+                    - generic [ref=f8e167]: packs/loan
+                  - generic [ref=f8e168]: succeeded
+                  - generic [ref=f8e172]:
+                    - text: Nghia (packs)
+                    - 'link "chore(logic): gate Mortgage Education register, off by default (#3616)" [ref=f8e173] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/bbe35991155051945497c89cde4bef2b16d3112a
+                  - generic [ref=f8e174] [cursor=pointer]: batman
+                  - generic [ref=f8e175]:
+                    - generic [ref=f8e176]: 1m 59s
+                    - generic [ref=f8e177]: 10/5/2026, 4:28:29 PM
+                - generic [ref=f8e178]:
+                  - generic [ref=f8e179]:
+                    - group [ref=f8e181]:
+                      - button "install" [ref=f8e182] [cursor=pointer]
+                    - generic [ref=f8e183]: packs/loan
+                  - generic [ref=f8e184]: succeeded
+                  - generic [ref=f8e188]:
+                    - text: Trung (moso-pricing)
+                    - 'link "STG Mortgage: shift payup rate windows for 10/02 ratesheet" [ref=f8e189] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/moso-pricing/commit/54a1e0ba2c268d423b8ef45f3f12a7c4abe2fe18
+                  - generic [ref=f8e190] [cursor=pointer]: batman
+                  - generic [ref=f8e191]:
+                    - generic [ref=f8e192]: 1m 29s
+                    - generic [ref=f8e193]: 10/5/2026, 2:57:19 PM
+                - generic [ref=f8e194]:
+                  - generic [ref=f8e195]:
+                    - group [ref=f8e197]:
+                      - button "install" [ref=f8e198] [cursor=pointer]
+                    - generic [ref=f8e199]: moso-pricing
+                  - generic [ref=f8e200]: succeeded
+                  - generic [ref=f8e204]:
+                    - text: Trung (moso-pricing)
+                    - 'link "STG Mortgage: shift payup rate windows for 10/02 ratesheet" [ref=f8e205] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/moso-pricing/commit/54a1e0ba2c268d423b8ef45f3f12a7c4abe2fe18
+                  - generic [ref=f8e206] [cursor=pointer]: batman
+                  - generic [ref=f8e207]:
+                    - generic [ref=f8e208]: 22s
+                    - generic [ref=f8e209]: 10/5/2026, 2:34:40 PM
+                - generic [ref=f8e210]:
+                  - generic [ref=f8e211]:
+                    - group [ref=f8e213]:
+                      - button "install" [ref=f8e214] [cursor=pointer]
+                    - generic [ref=f8e215]: moso-pricing
+                  - generic [ref=f8e216]: succeeded
+                  - generic [ref=f8e219]: Khai 3.65.0
+                  - generic [ref=f8e221] [cursor=pointer]: batman
+                  - generic [ref=f8e222]:
+                    - generic [ref=f8e223]: 22s
+                    - generic [ref=f8e224]: 10/5/2026, 1:46:26 PM
+                - generic [ref=f8e225]:
+                  - generic [ref=f8e226]:
+                    - group [ref=f8e228]:
+                      - button "install" [ref=f8e229] [cursor=pointer]
+                    - generic [ref=f8e230]: packs/quote
+                  - generic [ref=f8e231]: succeeded
+                  - generic [ref=f8e234]: Khai 3.65.0
+                  - generic [ref=f8e236] [cursor=pointer]: batman
+                  - generic [ref=f8e237]:
+                    - generic [ref=f8e238]: 11s
+                    - generic [ref=f8e239]: 10/5/2026, 1:45:45 PM
+                - generic [ref=f8e240]:
+                  - generic [ref=f8e241]:
+                    - group [ref=f8e243]:
+                      - button "install" [ref=f8e244] [cursor=pointer]
+                    - generic [ref=f8e245]: packs/hr
+                  - generic [ref=f8e246]: succeeded
+                  - generic [ref=f8e249]: Khai 3.65.0
+                  - generic [ref=f8e251] [cursor=pointer]: batman
+                  - generic [ref=f8e252]:
+                    - generic [ref=f8e253]: 8s
+                    - generic [ref=f8e254]: 10/5/2026, 1:45:34 PM
+                - generic [ref=f8e255]:
+                  - generic [ref=f8e256]:
+                    - group [ref=f8e258]:
+                      - button "install" [ref=f8e259] [cursor=pointer]
+                    - generic [ref=f8e260]: packs/google-apis
+                  - generic [ref=f8e261]: succeeded
+                  - generic [ref=f8e264]: Khai 3.65.0
+                  - generic [ref=f8e266] [cursor=pointer]: batman
+                  - generic [ref=f8e267]:
+                    - generic [ref=f8e268]: 12s
+                    - generic [ref=f8e269]: 10/5/2026, 1:44:54 PM
+                - generic [ref=f8e270]:
+                  - generic [ref=f8e271]:
+                    - group [ref=f8e273]:
+                      - button "install" [ref=f8e274] [cursor=pointer]
+                    - generic [ref=f8e275]: packs/billing
+                  - generic [ref=f8e276]: succeeded
+                  - generic [ref=f8e279]: Khai 3.65.0
+                  - generic [ref=f8e281] [cursor=pointer]: batman
+                  - generic [ref=f8e282]:
+                    - generic [ref=f8e283]: 9s
+                    - generic [ref=f8e284]: 10/5/2026, 1:44:43 PM
+                - generic [ref=f8e285]:
+                  - generic [ref=f8e286]:
+                    - group [ref=f8e288]:
+                      - button "install" [ref=f8e289] [cursor=pointer]
+                    - generic [ref=f8e290]: packs/pylon-apis
+                  - generic [ref=f8e291]: succeeded
+                  - generic [ref=f8e294]: Khai 3.65.0
+                  - generic [ref=f8e296] [cursor=pointer]: batman
+                  - generic [ref=f8e297]:
+                    - generic [ref=f8e298]: 9s
+                    - generic [ref=f8e299]: 10/5/2026, 1:44:30 PM
+                - generic [ref=f8e300]:
+                  - generic [ref=f8e301]:
+                    - group [ref=f8e303]:
+                      - button "install" [ref=f8e304] [cursor=pointer]
+                    - generic [ref=f8e305]: packs/ringcentral-apis
+                  - generic [ref=f8e306]: succeeded
+                  - generic [ref=f8e309]: Khai 3.65.0
+                  - generic [ref=f8e311] [cursor=pointer]: batman
+                  - generic [ref=f8e312]:
+                    - generic [ref=f8e313]: 13s
+                    - generic [ref=f8e314]: 10/5/2026, 1:44:15 PM
+                - generic [ref=f8e315]:
+                  - generic [ref=f8e316]:
+                    - group [ref=f8e318]:
+                      - button "install" [ref=f8e319] [cursor=pointer]
+                    - generic [ref=f8e320]: base/appengine
+                  - generic [ref=f8e321]: succeeded
+                  - generic [ref=f8e324]: Khai 3.65.0
+                  - generic [ref=f8e326] [cursor=pointer]: batman
+                  - generic [ref=f8e327]:
+                    - generic [ref=f8e328]: 19s
+                    - generic [ref=f8e329]: 10/5/2026, 1:43:31 PM
+                - generic [ref=f8e330]:
+                  - generic [ref=f8e331]:
+                    - group [ref=f8e333]:
+                      - button "install" [ref=f8e334] [cursor=pointer]
+                    - generic [ref=f8e335]: base/core
+                  - generic [ref=f8e336]: succeeded
+                  - generic [ref=f8e339]: Khai 3.65.0
+                  - generic [ref=f8e341] [cursor=pointer]: batman
+                  - generic [ref=f8e342]:
+                    - generic [ref=f8e343]: 22s
+                    - generic [ref=f8e344]: 10/5/2026, 1:41:33 PM
+                - generic [ref=f8e345]:
+                  - generic [ref=f8e346]:
+                    - group [ref=f8e348]:
+                      - button "install" [ref=f8e349] [cursor=pointer]
+                    - generic [ref=f8e350]: packs/loan
+                  - generic [ref=f8e351]: succeeded
+                  - generic [ref=f8e355]:
+                    - text: Khai RerunKhai (base)
+                    - link [ref=f8e356] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/8ddfa9abc2d5bcd88449989f13be3c4d3ed831e2
+                  - generic [ref=f8e357] [cursor=pointer]: batman
+                  - generic [ref=f8e358]:
+                    - generic [ref=f8e359]: 1m 31s
+                    - generic [ref=f8e360]: 10/5/2026, 10:33:06 AM
+                - generic [ref=f8e361]:
+                  - generic [ref=f8e362]:
+                    - group [ref=f8e364]:
+                      - button "install" [ref=f8e365] [cursor=pointer]
+                    - generic [ref=f8e366]: moso-pricing
+                  - generic [ref=f8e367]: succeeded
+                  - generic [ref=f8e371]:
+                    - text: Khai RerunKhai (base)
+                    - link [ref=f8e372] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/8ddfa9abc2d5bcd88449989f13be3c4d3ed831e2
+                  - generic [ref=f8e373] [cursor=pointer]: batman
+                  - generic [ref=f8e374]:
+                    - generic [ref=f8e375]: 21s
+                    - generic [ref=f8e376]: 10/5/2026, 10:10:40 AM
+                - generic [ref=f8e377]:
+                  - generic [ref=f8e378]:
+                    - group [ref=f8e380]:
+                      - button "install" [ref=f8e381] [cursor=pointer]
+                    - generic [ref=f8e382]: moso-pricing
+                  - generic [ref=f8e383]: succeeded
+                  - generic [ref=f8e387]:
+                    - text: Khai RerunKhai (base)
+                    - link [ref=f8e388] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/8ddfa9abc2d5bcd88449989f13be3c4d3ed831e2
+                  - generic [ref=f8e389] [cursor=pointer]: batman
+                  - generic [ref=f8e390]:
+                    - generic [ref=f8e391]: 22s
+                    - generic [ref=f8e392]: 10/5/2026, 10:08:56 AM
+              - text: 
+          - generic "Page Navigation" [ref=f8e393]:
+            - list [ref=f8e395]:
+              - listitem [ref=f8e396] [cursor=pointer]:
+                - generic "Previous" [ref=f8e397]: «
+              - listitem [ref=f8e398] [cursor=pointer]:
+                - generic [ref=f8e399]: 1-15 of over 100
+              - listitem [ref=f8e400] [cursor=pointer]:
+                - generic "Next" [ref=f8e401]: »
+            - generic [ref=f8e402]:
+              - text: Showing
+              - combobox "Items per page" [ref=f8e403]:
+                - option "5"
+                - option "10" [selected]
+                - option "25"
+                - option "50"
+                - option "100"
+              - text: items per page
+    - link "Scroll to top" [ref=f8e64] [cursor=pointer]:
+      - /url: javascript:;
+      - generic [ref=f8e404]: keyboard_arrow_up
+  - iframe
+  - generic [ref=f8e65]:
+    - link "System Improvement?" [ref=f8e66] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f8e405]: send
+    - link "Help?" [ref=f8e67] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f8e406]: help
+    - link "Chat" [ref=f8e68] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f8e407]: chat
+  - log [ref=f8e408]
+  - log [ref=f8e409]
+  - log [ref=f8e410]
+  - log [ref=f8e411]
+  - log [ref=f8e412]
+  - log [ref=f8e413]
+  - log [ref=f8e414]
+  - log [ref=f8e415]
+  - log [ref=f8e416]
+  - log [ref=f8e417]
+  - log [ref=f8e418]
+  - log [ref=f8e419]
+  - log [ref=f8e420]
+  - log [ref=f8e421]
+  - log [ref=f8e422]
+  - log [ref=f8e423]
+  - log [ref=f8e424]
+  - log [ref=f8e425]
+  - log [ref=f8e426]

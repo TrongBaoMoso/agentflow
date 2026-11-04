@@ -1,0 +1,783 @@
+- generic [active] [ref=f38e1]:
+  - generic [ref=f38e7]:
+    - generic [ref=f38e8]:
+      - link [ref=f38e10] [cursor=pointer]:
+        - /url: "#"
+      - list:
+        - listitem
+      - list [ref=f38e12]:
+        - listitem [ref=f38e13]:
+          - link "Search" [ref=f38e14] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=f38e106]: search
+        - listitem [ref=f38e15]:
+          - link "Dashboard" [ref=f38e16] [cursor=pointer]:
+            - /url: "##company_dashboard"
+        - listitem [ref=f38e17]:
+          - link "Pricing Engine" [ref=f38e18] [cursor=pointer]:
+            - /url: "##pricing"
+        - listitem [ref=f38e19]:
+          - link "Leads" [ref=f38e20] [cursor=pointer]:
+            - /url: "##leads"
+        - listitem [ref=f38e21]:
+          - link "Applications" [ref=f38e22] [cursor=pointer]:
+            - /url: "##prospects"
+        - listitem [ref=f38e23]:
+          - link "Loans" [ref=f38e24] [cursor=pointer]:
+            - /url: "##loans"
+        - listitem [ref=f38e25]:
+          - link "Loan Factory" [ref=f38e26] [cursor=pointer]:
+            - /url: "##loan_factory_page"
+        - listitem [ref=f38e27]:
+          - link "Marketplace" [ref=f38e28] [cursor=pointer]:
+            - /url: "##marketplace"
+        - listitem [ref=f38e30]:
+          - link "Resources" [ref=f38e31] [cursor=pointer]:
+            - /url: javascript:;
+            - text: Resources keyboard_arrow_down
+        - listitem [ref=f38e32]:
+          - link "Loan Factory apps" [ref=f38e33] [cursor=pointer]:
+            - /url: javascript:;
+            - generic [ref=f38e107]: apps
+        - listitem [ref=f38e34]:
+          - link "Message" [ref=f38e35] [cursor=pointer]:
+            - /url: javascript:;
+            - generic [ref=f38e108]: notifications
+            - generic [ref=f38e278]: "5"
+          - text: 
+        - listitem [ref=f38e36]:
+          - link [ref=f38e37] [cursor=pointer]:
+            - /url: javascript:;
+            - text: IT Team
+            - img "IT Team" [ref=f38e38]
+      - generic [ref=f38e39]:
+        - button "search" [ref=f38e40]
+        - generic [ref=f38e110]:
+          - searchbox "Search input" [ref=f38e111]
+          - searchbox "Search input" [ref=f38e41]
+        - link "close search" [ref=f38e42] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=f38e112]: close
+    - generic [ref=f38e43]:
+      - list [ref=f38e45]:
+        - listitem [ref=f38e46]:
+          - text: Menu
+          - button "Sidebar collapse button" [ref=f38e47] [cursor=pointer]:
+            - generic [ref=f38e114]: 
+        - listitem [ref=f38e48]: User settings
+        - listitem [ref=f38e49]:
+          - tab "System preference settings" [ref=f38e50] [cursor=pointer]
+        - listitem [ref=f38e51]:
+          - tab "Credentials settings" [ref=f38e52] [cursor=pointer]
+        - listitem [ref=f38e53]: Admin
+        - listitem [ref=f38e54]:
+          - link " Transactions" [ref=f38e55] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f38e56]: 
+            - text: Transactions
+        - listitem "alerts" [ref=f38e57]:
+          - tab "Rate alerts" [ref=f38e58] [cursor=pointer]
+        - listitem [ref=f38e59]:
+          - link " Users" [ref=f38e60] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f38e61]: 
+            - text: Users
+        - listitem [ref=f38e62]:
+          - link " Associate's To-dos" [ref=f38e63] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f38e64]: 
+            - text: Associate's To-dos
+        - listitem [ref=f38e65]:
+          - link " Admin" [ref=f38e66] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f38e67]: 
+            - text: Admin
+        - listitem [ref=f38e68]:
+          - link " Service desks" [ref=f38e69] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f38e70]: 
+            - text: Service desks
+        - listitem [ref=f38e71]:
+          - link " Customer relationship" [ref=f38e72] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f38e73]: 
+            - text: Customer relationship
+        - listitem [ref=f38e74]:
+          - link " Leave management" [ref=f38e75] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f38e76]: 
+            - text: Leave management
+        - listitem [ref=f38e77]:
+          - link " RECRUITING" [ref=f38e78] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f38e79]: 
+            - text: RECRUITING
+        - listitem "Job opportunities" [ref=f38e80]:
+          - tab "Job opportunities" [ref=f38e81] [cursor=pointer]
+        - listitem [ref=f38e82]:
+          - link " LO recruiting" [ref=f38e83] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f38e84]: 
+            - text: LO recruiting
+        - listitem [ref=f38e85]:
+          - link " Compensation" [ref=f38e86] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f38e87]: 
+            - text: Compensation
+        - listitem [ref=f38e88]:
+          - link " Marketing" [ref=f38e89] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f38e90]: 
+            - text: Marketing
+        - listitem "training" [ref=f38e91]:
+          - tab "My Training Academy" [ref=f38e92] [cursor=pointer]
+        - listitem [ref=f38e93]:
+          - link " Real Estate Division" [ref=f38e94] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f38e95]: 
+            - text: Real Estate Division
+      - link "2.2.1" [ref=f38e97] [cursor=pointer]:
+        - /url: "##release_notes?_e=ag1zfmxlbmRlci1yYXRlchkLEg5SZWxlYXNlSGlzdG9yeSIFMi4yLjEM"
+    - iframe [ref=f38e270]:
+      - generic [ref=f40e1]:
+        - main [ref=f40e2]:
+          - generic [ref=f40e3]:
+            - generic [ref=f40e4]:
+              - generic [ref=f40e5]:
+                - heading "Loan Officer Ambassador Program" [level=1] [ref=f40e6]
+                - paragraph [ref=f40e7]: Applications for this program, newest first.
+              - link "Export CSV" [ref=f40e9] [cursor=pointer]:
+                - /url: /webplus-api/lo-admin/lo-programs/applications/export?program_id=ambassador&x-moso-user-id=ag1zfmxlbmRlci1yYXRlchsLEgVBZG1pbiIQNTc0Mzk2MzA0MjQ4MDEyOAyiARA1NzE2MTA0MDI2NTIxNjAw
+            - region "Headline numbers" [ref=f40e11]:
+              - generic [ref=f40e12]:
+                - paragraph [ref=f40e13]: Awaiting review
+                - paragraph [ref=f40e14]: "9"
+                - paragraph [ref=f40e15]: Nothing needed from the applicant
+              - generic [ref=f40e16]:
+                - paragraph [ref=f40e17]: Approved
+                - paragraph [ref=f40e18]: "16"
+                - paragraph [ref=f40e19]: On the public roster
+              - generic [ref=f40e20]:
+                - paragraph [ref=f40e21]: Declined
+                - paragraph [ref=f40e22]: "0"
+                - paragraph [ref=f40e23]: Can apply again
+              - generic [ref=f40e24]:
+                - paragraph [ref=f40e25]: Total applications
+                - paragraph [ref=f40e26]: "30"
+                - paragraph [ref=f40e27]: Since launch
+              - generic [ref=f40e28]:
+                - paragraph [ref=f40e29]: Budget committed
+                - paragraph [ref=f40e30]: $1,000
+                - paragraph [ref=f40e31]: Per month, approved only
+            - region "Charts" [ref=f40e32]:
+              - generic [ref=f40e33]:
+                - generic [ref=f40e34]:
+                  - heading "Applications by week" [level=2] [ref=f40e35]
+                  - generic [ref=f40e36]: Last 12 weeks
+                - img "Applications by week" [ref=f40e37]:
+                  - generic "12 weeks ago — 0 applications" [ref=f40e38]: "-11W"
+                  - generic "11 weeks ago — 0 applications"
+                  - generic "10 weeks ago — 0 applications"
+                  - generic "9 weeks ago — 9 applications" [ref=f40e40]: "-8W"
+                  - generic "8 weeks ago — 9 applications" [ref=f40e43]
+                  - generic "7 weeks ago — 3 applications" [ref=f40e45]
+                  - generic "6 weeks ago — 2 applications" [ref=f40e47]: "-5W"
+                  - generic "5 weeks ago — 5 applications" [ref=f40e50]
+                  - generic "4 weeks ago — 0 applications"
+                  - generic "3 weeks ago — 1 applications" [ref=f40e52]: "-2W"
+                  - generic "2 weeks ago — 0 applications"
+                  - generic "1 weeks ago — 1 applications" [ref=f40e55]: NOW
+              - generic [ref=f40e58]:
+                - generic [ref=f40e59]:
+                  - heading "Level distribution" [level=2] [ref=f40e60]
+                  - generic [ref=f40e61]: Approved only
+                - generic [ref=f40e62]:
+                  - generic [ref=f40e64]:
+                    - generic [ref=f40e65]: General Participation
+                    - generic [ref=f40e66]: 15 94%
+                  - generic [ref=f40e70]:
+                    - generic [ref=f40e71]: Loan Officer Ambassador · $500/mo
+                    - generic [ref=f40e72]: 0 0%
+                  - generic [ref=f40e75]:
+                    - generic [ref=f40e76]: Senior Loan Officer Ambassador · $1,000/mo
+                    - generic [ref=f40e77]: 1 6%
+            - generic [ref=f40e80]:
+              - generic [ref=f40e81]:
+                - generic [ref=f40e82]: Search by name, NMLS or email
+                - searchbox "Search by name, NMLS or email" [ref=f40e83]
+              - combobox "Filter by status" [ref=f40e84]:
+                - option "All statuses" [selected]
+                - option "Pending"
+                - option "Approved"
+                - option "Declined"
+                - option "Revoked"
+                - option "Left"
+              - combobox "Filter by level" [ref=f40e85]:
+                - option "All levels" [selected]
+                - option "Level 1"
+                - option "Level 2"
+                - option "Level 3"
+              - combobox "Filter by date submitted" [ref=f40e86]:
+                - option "Any time" [selected]
+                - option "Last 7 days"
+                - option "Last 30 days"
+                - option "Last 90 days"
+              - button "Reset" [disabled] [ref=f40e87] [cursor=pointer]
+              - generic [ref=f40e88]: 30 matching
+            - generic [ref=f40e89]:
+              - table [ref=f40e91]:
+                - rowgroup [ref=f40e92]:
+                  - row [ref=f40e93]:
+                    - columnheader [ref=f40e94]:
+                      - checkbox "Select every application on this page" [ref=f40e96] [cursor=pointer]
+                    - columnheader "Applicant" [ref=f40e98]
+                    - columnheader "Level" [ref=f40e99]
+                    - columnheader "Top platform" [ref=f40e100]
+                    - columnheader "Submitted" [ref=f40e101]
+                    - columnheader "Status" [ref=f40e102]
+                    - columnheader "Posting" [ref=f40e103]
+                    - columnheader "Action" [ref=f40e104]
+                - rowgroup [ref=f40e105]:
+                  - row [ref=f40e106] [cursor=pointer]:
+                    - cell [ref=f40e107]:
+                      - checkbox "Select Tim Hill" [ref=f40e109]
+                    - cell "Tim Hill NMLS 226798 · tim.hill@loanfactory.com" [ref=f40e111]:
+                      - generic [ref=f40e113]:
+                        - generic [ref=f40e114]: Tim Hill
+                        - generic [ref=f40e115]: NMLS 226798 · tim.hill@loanfactory.com
+                    - cell "Already at the entry level Level 1 Raise to Loan Officer Ambassador" [ref=f40e116]:
+                      - generic [ref=f40e117]:
+                        - button "Already at the entry level" [disabled]: −
+                        - generic "General Participation" [ref=f40e118]: Level 1
+                        - button "Raise to Loan Officer Ambassador" [ref=f40e119]: +
+                    - cell "no form at this level" [ref=f40e120]
+                    - cell "Oct 30, 2026 4 days ago" [ref=f40e122]:
+                      - generic [ref=f40e123]: Oct 30, 2026
+                      - generic [ref=f40e124]: 4 days ago
+                    - cell "Approved Oct 30, 2026" [ref=f40e125]:
+                      - generic [ref=f40e126]: Approved
+                      - generic [ref=f40e127]: Oct 30, 2026
+                    - cell "Auto-post off" [ref=f40e128]:
+                      - generic "Recruiting is switched off in ALLY, so nothing is being posted for them." [ref=f40e129]: Auto-post off
+                    - cell [ref=f40e130]:
+                      - generic [ref=f40e131]:
+                        - button "Revoke" [ref=f40e132]
+                        - button "Remove" [ref=f40e133]
+                  - row [ref=f40e134] [cursor=pointer]:
+                    - cell [ref=f40e135]:
+                      - checkbox "Select Ashley Blanton" [ref=f40e137]
+                    - cell "Ashley Blanton NMLS 2050320 · ashley.blanton@loanfactory.com" [ref=f40e139]:
+                      - generic [ref=f40e141]:
+                        - generic [ref=f40e142]: Ashley Blanton
+                        - generic [ref=f40e143]: NMLS 2050320 · ashley.blanton@loanfactory.com
+                    - cell "Already at the entry level Level 1 Raise to Loan Officer Ambassador" [ref=f40e144]:
+                      - generic [ref=f40e145]:
+                        - button "Already at the entry level" [disabled]: −
+                        - generic "General Participation" [ref=f40e146]: Level 1
+                        - button "Raise to Loan Officer Ambassador" [ref=f40e147]: +
+                    - cell "no form at this level" [ref=f40e148]
+                    - cell "Oct 17, 2026 17 days ago" [ref=f40e150]:
+                      - generic [ref=f40e151]: Oct 17, 2026
+                      - generic [ref=f40e152]: 17 days ago
+                    - cell "Approved Oct 17, 2026" [ref=f40e153]:
+                      - generic [ref=f40e154]: Approved
+                      - generic [ref=f40e155]: Oct 17, 2026
+                    - cell "On" [ref=f40e156]:
+                      - generic "Recruiting is on in ALLY and a channel is connected — approved content is going out for them." [ref=f40e157]: "On"
+                    - cell [ref=f40e158]:
+                      - generic [ref=f40e159]:
+                        - button "Revoke" [ref=f40e160]
+                        - button "Remove" [ref=f40e161]
+                  - row [ref=f40e162] [cursor=pointer]:
+                    - cell [ref=f40e163]:
+                      - checkbox "Select Norma Vazquez Klawitter" [ref=f40e165]
+                    - cell "Norma Vazquez Klawitter NMLS 1980538 · norma.klawitter@loanfactory.com" [ref=f40e167]:
+                      - generic [ref=f40e169]:
+                        - generic [ref=f40e170]: Norma Vazquez Klawitter
+                        - generic [ref=f40e171]: NMLS 1980538 · norma.klawitter@loanfactory.com
+                    - cell "Already at the entry level Level 1 Raise to Loan Officer Ambassador" [ref=f40e172]:
+                      - generic [ref=f40e173]:
+                        - button "Already at the entry level" [disabled]: −
+                        - generic "General Participation" [ref=f40e174]: Level 1
+                        - button "Raise to Loan Officer Ambassador" [ref=f40e175]: +
+                    - cell "no form at this level" [ref=f40e176]
+                    - cell "Oct 5, 2026 29 days ago" [ref=f40e178]:
+                      - generic [ref=f40e179]: Oct 5, 2026
+                      - generic [ref=f40e180]: 29 days ago
+                    - cell "Approved Oct 5, 2026" [ref=f40e181]:
+                      - generic [ref=f40e182]: Approved
+                      - generic [ref=f40e183]: Oct 5, 2026
+                    - cell "No channel" [ref=f40e184]:
+                      - generic "Recruiting is on but no channel is connected, so posts reach nobody." [ref=f40e185]: No channel
+                    - cell [ref=f40e186]:
+                      - generic [ref=f40e187]:
+                        - button "Revoke" [ref=f40e188]
+                        - button "Remove" [ref=f40e189]
+                  - row [ref=f40e190] [cursor=pointer]:
+                    - cell [ref=f40e191]:
+                      - checkbox "Select LO Demo Account" [ref=f40e193]
+                    - cell "LO Demo Account NMLS 320841 · demo.account@lf.com" [ref=f40e195]:
+                      - generic [ref=f40e197]:
+                        - generic [ref=f40e198]: LO Demo Account
+                        - generic [ref=f40e199]: NMLS 320841 · demo.account@lf.com
+                    - cell "Lower to General Participation Level 2 Raise to Senior Loan Officer Ambassador" [ref=f40e200]:
+                      - generic [ref=f40e201]:
+                        - button "Lower to General Participation" [disabled]: −
+                        - generic "Loan Officer Ambassador" [ref=f40e202]: Level 2
+                        - button "Raise to Senior Loan Officer Ambassador" [disabled]: +
+                    - cell "7 social profiles Under 500 derived from ALLY" [ref=f40e203]:
+                      - button "7 social profiles" [ref=f40e204]:
+                        - img "Facebook Fanpage" [ref=f40e205]
+                        - generic [ref=f40e206]: "1"
+                        - generic [ref=f40e207]: ALLY
+                      - generic [ref=f40e208]: Under 500
+                      - generic [ref=f40e209]: derived from ALLY
+                    - cell "Oct 1, 2026 33 days ago" [ref=f40e210]:
+                      - generic [ref=f40e211]: Oct 1, 2026
+                      - generic [ref=f40e212]: 33 days ago
+                    - cell "Revoked Oct 1, 2026" [ref=f40e213]:
+                      - generic [ref=f40e214]: Revoked
+                      - generic [ref=f40e215]: Oct 1, 2026
+                    - cell "—" [ref=f40e216]
+                    - cell "—" [ref=f40e218]
+                  - row [ref=f40e221] [cursor=pointer]:
+                    - cell [ref=f40e222]:
+                      - checkbox "Select LO Demo Account" [ref=f40e224]
+                    - cell "LO Demo Account NMLS 320841 · demo.account@lf.com" [ref=f40e226]:
+                      - generic [ref=f40e228]:
+                        - generic [ref=f40e229]: LO Demo Account
+                        - generic [ref=f40e230]: NMLS 320841 · demo.account@lf.com
+                    - cell "Already at the entry level Level 1 Raise to Loan Officer Ambassador" [ref=f40e231]:
+                      - generic [ref=f40e232]:
+                        - button "Already at the entry level" [disabled]: −
+                        - generic "General Participation" [ref=f40e233]: Level 1
+                        - button "Raise to Loan Officer Ambassador" [ref=f40e234]: +
+                    - cell "no form at this level" [ref=f40e235]
+                    - cell "Oct 1, 2026 34 days ago" [ref=f40e237]:
+                      - generic [ref=f40e238]: Oct 1, 2026
+                      - generic [ref=f40e239]: 34 days ago
+                    - cell "Approved Oct 1, 2026" [ref=f40e240]:
+                      - generic [ref=f40e241]: Approved
+                      - generic [ref=f40e242]: Oct 1, 2026
+                    - cell "Auto-post off" [ref=f40e243]:
+                      - generic "Recruiting is switched off in ALLY, so nothing is being posted for them." [ref=f40e244]: Auto-post off
+                    - cell [ref=f40e245]:
+                      - generic [ref=f40e246]:
+                        - button "Revoke" [ref=f40e247]
+                        - button "Remove" [ref=f40e248]
+                  - row [ref=f40e249] [cursor=pointer]:
+                    - cell [ref=f40e250]:
+                      - checkbox "Select LO Demo Account" [ref=f40e252]
+                    - cell "LO Demo Account NMLS 320841 · demo.account@lf.com" [ref=f40e254]:
+                      - generic [ref=f40e256]:
+                        - generic [ref=f40e257]: LO Demo Account
+                        - generic [ref=f40e258]: NMLS 320841 · demo.account@lf.com
+                    - cell "Lower to General Participation Level 2 Raise to Senior Loan Officer Ambassador" [ref=f40e259]:
+                      - generic [ref=f40e260]:
+                        - button "Lower to General Participation" [disabled]: −
+                        - generic "Loan Officer Ambassador" [ref=f40e261]: Level 2
+                        - button "Raise to Senior Loan Officer Ambassador" [disabled]: +
+                    - cell "7 social profiles Under 500 derived from ALLY" [ref=f40e262]:
+                      - button "7 social profiles" [ref=f40e263]:
+                        - img "Facebook Fanpage" [ref=f40e264]
+                        - generic [ref=f40e265]: "1"
+                        - generic [ref=f40e266]: ALLY
+                      - generic [ref=f40e267]: Under 500
+                      - generic [ref=f40e268]: derived from ALLY
+                    - cell "Oct 1, 2026 34 days ago" [ref=f40e269]:
+                      - generic [ref=f40e270]: Oct 1, 2026
+                      - generic [ref=f40e271]: 34 days ago
+                    - cell "Revoked Oct 1, 2026" [ref=f40e272]:
+                      - generic [ref=f40e273]: Revoked
+                      - generic [ref=f40e274]: Oct 1, 2026
+                    - cell "—" [ref=f40e275]
+                    - cell "—" [ref=f40e277]
+                  - row [ref=f40e280] [cursor=pointer]:
+                    - cell [ref=f40e281]:
+                      - checkbox "Select LO Demo Account" [ref=f40e283]
+                    - cell "LO Demo Account NMLS 320841 · demo.account@lf.com" [ref=f40e285]:
+                      - generic [ref=f40e287]:
+                        - generic [ref=f40e288]: LO Demo Account
+                        - generic [ref=f40e289]: NMLS 320841 · demo.account@lf.com
+                    - cell "Lower to General Participation Level 2 Raise to Senior Loan Officer Ambassador" [ref=f40e290]:
+                      - generic [ref=f40e291]:
+                        - button "Lower to General Participation" [disabled]: −
+                        - generic "Loan Officer Ambassador" [ref=f40e292]: Level 2
+                        - button "Raise to Senior Loan Officer Ambassador" [disabled]: +
+                    - cell "7 social profiles Under 500 derived from ALLY" [ref=f40e293]:
+                      - button "7 social profiles" [ref=f40e294]:
+                        - img "Facebook Fanpage" [ref=f40e295]
+                        - generic [ref=f40e296]: "1"
+                        - generic [ref=f40e297]: ALLY
+                      - generic [ref=f40e298]: Under 500
+                      - generic [ref=f40e299]: derived from ALLY
+                    - cell "Sep 30, 2026 34 days ago" [ref=f40e300]:
+                      - generic [ref=f40e301]: Sep 30, 2026
+                      - generic [ref=f40e302]: 34 days ago
+                    - cell "Left" [ref=f40e303]
+                    - cell "—" [ref=f40e305]
+                    - cell "—" [ref=f40e307]
+                  - row [ref=f40e310] [cursor=pointer]:
+                    - cell [ref=f40e311]:
+                      - checkbox "Select Matthew Fallon" [ref=f40e313]
+                    - cell "Matthew Fallon NMLS 176771 · matthew.fallon@loanfactory.com" [ref=f40e315]:
+                      - generic [ref=f40e317]:
+                        - generic [ref=f40e318]: Matthew Fallon
+                        - generic [ref=f40e319]: NMLS 176771 · matthew.fallon@loanfactory.com
+                    - cell "Already at the entry level Level 1 Raise to Loan Officer Ambassador" [ref=f40e320]:
+                      - generic [ref=f40e321]:
+                        - button "Already at the entry level" [disabled]: −
+                        - generic "General Participation" [ref=f40e322]: Level 1
+                        - button "Raise to Loan Officer Ambassador" [ref=f40e323]: +
+                    - cell "no form at this level" [ref=f40e324]
+                    - cell "Sep 24, 2026 41 days ago" [ref=f40e326]:
+                      - generic [ref=f40e327]: Sep 24, 2026
+                      - generic [ref=f40e328]: 41 days ago
+                    - cell "Approved Sep 24, 2026" [ref=f40e329]:
+                      - generic [ref=f40e330]: Approved
+                      - generic [ref=f40e331]: Sep 24, 2026
+                    - cell "On" [ref=f40e332]:
+                      - generic "Recruiting is on in ALLY and a channel is connected — approved content is going out for them." [ref=f40e333]: "On"
+                    - cell [ref=f40e334]:
+                      - generic [ref=f40e335]:
+                        - button "Revoke" [ref=f40e336]
+                        - button "Remove" [ref=f40e337]
+                  - row [ref=f40e338] [cursor=pointer]:
+                    - cell [ref=f40e339]:
+                      - checkbox "Select Matthew Fallon" [ref=f40e341]
+                    - cell "Matthew Fallon NMLS 176771 · matthew.fallon@loanfactory.com" [ref=f40e343]:
+                      - generic [ref=f40e345]:
+                        - generic [ref=f40e346]: Matthew Fallon
+                        - generic [ref=f40e347]: NMLS 176771 · matthew.fallon@loanfactory.com
+                    - cell "Lower to General Participation Level 2 Raise to Senior Loan Officer Ambassador" [ref=f40e348]:
+                      - generic [ref=f40e349]:
+                        - button "Lower to General Participation" [disabled]: −
+                        - generic "Loan Officer Ambassador" [ref=f40e350]: Level 2
+                        - button "Raise to Senior Loan Officer Ambassador" [disabled]: +
+                    - 'cell "10 social profiles ALLY: 732 on Instagram" [ref=f40e351]':
+                      - button "10 social profiles" [ref=f40e352]:
+                        - img "LinkedIn" [ref=f40e353]
+                        - generic [ref=f40e354]: 5,453
+                        - generic [ref=f40e355]: self-reported
+                        - img "Screenshot attached" [ref=f40e356]
+                      - generic [ref=f40e359]: "ALLY: 732 on Instagram"
+                    - cell "Sep 24, 2026 41 days ago" [ref=f40e360]:
+                      - generic [ref=f40e361]: Sep 24, 2026
+                      - generic [ref=f40e362]: 41 days ago
+                    - cell "Pending" [ref=f40e363]
+                    - cell "—" [ref=f40e365]
+                    - cell [ref=f40e367]:
+                      - generic [ref=f40e368]:
+                        - button "Approve" [ref=f40e369]
+                        - button "Decline" [ref=f40e370]
+                        - button "Remove" [ref=f40e371]
+                  - row [ref=f40e372] [cursor=pointer]:
+                    - cell [ref=f40e373]:
+                      - checkbox "Select LO Demo Account" [ref=f40e375]
+                    - cell "LO Demo Account NMLS 320841 · demo.account@lf.com" [ref=f40e377]:
+                      - generic [ref=f40e379]:
+                        - generic [ref=f40e380]: LO Demo Account
+                        - generic [ref=f40e381]: NMLS 320841 · demo.account@lf.com
+                    - cell "Already at the entry level Level 1 Raise to Loan Officer Ambassador" [ref=f40e382]:
+                      - generic [ref=f40e383]:
+                        - button "Already at the entry level" [disabled]: −
+                        - generic "General Participation" [ref=f40e384]: Level 1
+                        - button "Raise to Loan Officer Ambassador" [disabled]: +
+                    - cell "no form at this level" [ref=f40e385]
+                    - cell "Sep 21, 2026 43 days ago" [ref=f40e387]:
+                      - generic [ref=f40e388]: Sep 21, 2026
+                      - generic [ref=f40e389]: 43 days ago
+                    - cell "Left" [ref=f40e390]
+                    - cell "—" [ref=f40e392]
+                    - cell "—" [ref=f40e394]
+                  - row [ref=f40e397] [cursor=pointer]:
+                    - cell [ref=f40e398]:
+                      - checkbox "Select LO Demo Account" [ref=f40e400]
+                    - cell "LO Demo Account NMLS 320841 · demo.account@lf.com" [ref=f40e402]:
+                      - generic [ref=f40e404]:
+                        - generic [ref=f40e405]: LO Demo Account
+                        - generic [ref=f40e406]: NMLS 320841 · demo.account@lf.com
+                    - cell "Lower to General Participation Level 2 Raise to Senior Loan Officer Ambassador" [ref=f40e407]:
+                      - generic [ref=f40e408]:
+                        - button "Lower to General Participation" [disabled]: −
+                        - generic "Loan Officer Ambassador" [ref=f40e409]: Level 2
+                        - button "Raise to Senior Loan Officer Ambassador" [disabled]: +
+                    - cell "7 social profiles Under 500 derived from ALLY" [ref=f40e410]:
+                      - button "7 social profiles" [ref=f40e411]:
+                        - img "Facebook Fanpage" [ref=f40e412]
+                        - generic [ref=f40e413]: "1"
+                        - generic [ref=f40e414]: ALLY
+                      - generic [ref=f40e415]: Under 500
+                      - generic [ref=f40e416]: derived from ALLY
+                    - cell "Sep 21, 2026 43 days ago" [ref=f40e417]:
+                      - generic [ref=f40e418]: Sep 21, 2026
+                      - generic [ref=f40e419]: 43 days ago
+                    - cell "Revoked Sep 21, 2026" [ref=f40e420]:
+                      - generic [ref=f40e421]: Revoked
+                      - generic [ref=f40e422]: Sep 21, 2026
+                    - cell "—" [ref=f40e423]
+                    - cell "—" [ref=f40e425]
+                  - row [ref=f40e428] [cursor=pointer]:
+                    - cell [ref=f40e429]:
+                      - checkbox "Select Ryan Loeb" [ref=f40e431]
+                    - cell "Ryan Loeb NMLS 1238221 · ryan.loeb@loanfactory.com" [ref=f40e433]:
+                      - generic [ref=f40e435]:
+                        - generic [ref=f40e436]: Ryan Loeb
+                        - generic [ref=f40e437]: NMLS 1238221 · ryan.loeb@loanfactory.com
+                    - cell "Already at the entry level Level 1 Raise to Loan Officer Ambassador" [ref=f40e438]:
+                      - generic [ref=f40e439]:
+                        - button "Already at the entry level" [disabled]: −
+                        - generic "General Participation" [ref=f40e440]: Level 1
+                        - button "Raise to Loan Officer Ambassador" [ref=f40e441]: +
+                    - cell "no form at this level" [ref=f40e442]
+                    - cell "Sep 16, 2026 48 days ago" [ref=f40e444]:
+                      - generic [ref=f40e445]: Sep 16, 2026
+                      - generic [ref=f40e446]: 48 days ago
+                    - cell "Approved Sep 16, 2026" [ref=f40e447]:
+                      - generic [ref=f40e448]: Approved
+                      - generic [ref=f40e449]: Sep 16, 2026
+                    - cell "No channel" [ref=f40e450]:
+                      - generic "Recruiting is on but no channel is connected, so posts reach nobody." [ref=f40e451]: No channel
+                    - cell [ref=f40e452]:
+                      - generic [ref=f40e453]:
+                        - button "Revoke" [ref=f40e454]
+                        - button "Remove" [ref=f40e455]
+                  - row [ref=f40e456] [cursor=pointer]:
+                    - cell [ref=f40e457]:
+                      - checkbox "Select Tanner B Russell" [ref=f40e459]
+                    - cell "Tanner B Russell NMLS 1374311 · tanner.russell@loanfactory.com" [ref=f40e461]:
+                      - generic [ref=f40e463]:
+                        - generic [ref=f40e464]: Tanner B Russell
+                        - generic [ref=f40e465]: NMLS 1374311 · tanner.russell@loanfactory.com
+                    - cell "Lower to General Participation Level 2 Raise to Senior Loan Officer Ambassador" [ref=f40e466]:
+                      - generic [ref=f40e467]:
+                        - button "Lower to General Participation" [disabled]: −
+                        - generic "Loan Officer Ambassador" [ref=f40e468]: Level 2
+                        - button "Raise to Senior Loan Officer Ambassador" [disabled]: +
+                    - cell "3 social profiles 2,000 – 5,000 self-declared" [ref=f40e469]:
+                      - button "3 social profiles" [ref=f40e470]:
+                        - img "Facebook Profile" [ref=f40e471]
+                        - generic [ref=f40e472]: 3,900
+                        - generic [ref=f40e473]: self-reported
+                        - generic [ref=f40e474]: no screenshot
+                      - generic [ref=f40e475]: 2,000 – 5,000
+                      - generic [ref=f40e476]: self-declared
+                    - cell "Sep 12, 2026 52 days ago" [ref=f40e477]:
+                      - generic [ref=f40e478]: Sep 12, 2026
+                      - generic [ref=f40e479]: 52 days ago
+                    - cell "Pending" [ref=f40e480]
+                    - cell "—" [ref=f40e482]
+                    - cell [ref=f40e484]:
+                      - generic [ref=f40e485]:
+                        - button "Approve" [ref=f40e486]
+                        - button "Decline" [ref=f40e487]
+                        - button "Remove" [ref=f40e488]
+                  - row [ref=f40e489] [cursor=pointer]:
+                    - cell [ref=f40e490]:
+                      - checkbox "Select Meeta Singh" [ref=f40e492]
+                    - cell "Meeta Singh NMLS 957077 · meeta.singh@loanfactory.com" [ref=f40e494]:
+                      - generic [ref=f40e496]:
+                        - generic [ref=f40e497]: Meeta Singh
+                        - generic [ref=f40e498]: NMLS 957077 · meeta.singh@loanfactory.com
+                    - cell "Lower to General Participation Level 2 Raise to Senior Loan Officer Ambassador" [ref=f40e499]:
+                      - generic [ref=f40e500]:
+                        - button "Lower to General Participation" [disabled]: −
+                        - generic "Loan Officer Ambassador" [ref=f40e501]: Level 2
+                        - button "Raise to Senior Loan Officer Ambassador" [disabled]: +
+                    - cell "6 social profiles Under 500 derived from ALLY" [ref=f40e502]:
+                      - button "6 social profiles" [ref=f40e503]:
+                        - img "Facebook Fanpage" [ref=f40e504]
+                        - generic [ref=f40e505]: "361"
+                        - generic [ref=f40e506]: ALLY
+                      - generic [ref=f40e507]: Under 500
+                      - generic [ref=f40e508]: derived from ALLY
+                    - cell "Sep 11, 2026 53 days ago" [ref=f40e509]:
+                      - generic [ref=f40e510]: Sep 11, 2026
+                      - generic [ref=f40e511]: 53 days ago
+                    - cell "Pending" [ref=f40e512]
+                    - cell "—" [ref=f40e514]
+                    - cell [ref=f40e516]:
+                      - generic [ref=f40e517]:
+                        - button "Approve" [ref=f40e518]
+                        - button "Decline" [ref=f40e519]
+                        - button "Remove" [ref=f40e520]
+                  - row [ref=f40e521] [cursor=pointer]:
+                    - cell [ref=f40e522]:
+                      - checkbox "Select Aiswarya Lakshmi Srinivasan" [ref=f40e524]
+                    - cell "Aiswarya Lakshmi Srinivasan NMLS 2658883 · aiswarya.srinivasan@loanfactory.com" [ref=f40e526]:
+                      - generic [ref=f40e528]:
+                        - generic [ref=f40e529]: Aiswarya Lakshmi Srinivasan
+                        - generic [ref=f40e530]: NMLS 2658883 · aiswarya.srinivasan@loanfactory.com
+                    - cell "Lower to General Participation Level 2 Raise to Senior Loan Officer Ambassador" [ref=f40e531]:
+                      - generic [ref=f40e532]:
+                        - button "Lower to General Participation" [disabled]: −
+                        - generic "Loan Officer Ambassador" [ref=f40e533]: Level 2
+                        - button "Raise to Senior Loan Officer Ambassador" [disabled]: +
+                    - cell "10 social profiles Under 500 derived from ALLY" [ref=f40e534]:
+                      - button "10 social profiles" [ref=f40e535]:
+                        - img "Instagram" [ref=f40e536]
+                        - generic [ref=f40e537]: "314"
+                        - generic [ref=f40e538]: ALLY
+                      - generic [ref=f40e539]: Under 500
+                      - generic [ref=f40e540]: derived from ALLY
+                    - cell "Sep 11, 2026 53 days ago" [ref=f40e541]:
+                      - generic [ref=f40e542]: Sep 11, 2026
+                      - generic [ref=f40e543]: 53 days ago
+                    - cell "Pending" [ref=f40e544]
+                    - cell "—" [ref=f40e546]
+                    - cell [ref=f40e548]:
+                      - generic [ref=f40e549]:
+                        - button "Approve" [ref=f40e550]
+                        - button "Decline" [ref=f40e551]
+                        - button "Remove" [ref=f40e552]
+                  - row [ref=f40e553] [cursor=pointer]:
+                    - cell [ref=f40e554]:
+                      - checkbox "Select Aiswarya Lakshmi Srinivasan" [ref=f40e556]
+                    - cell "Aiswarya Lakshmi Srinivasan NMLS 2658883 · aiswarya.srinivasan@loanfactory.com" [ref=f40e558]:
+                      - generic [ref=f40e560]:
+                        - generic [ref=f40e561]: Aiswarya Lakshmi Srinivasan
+                        - generic [ref=f40e562]: NMLS 2658883 · aiswarya.srinivasan@loanfactory.com
+                    - cell "Already at the entry level Level 1 Raise to Loan Officer Ambassador" [ref=f40e563]:
+                      - generic [ref=f40e564]:
+                        - button "Already at the entry level" [disabled]: −
+                        - generic "General Participation" [ref=f40e565]: Level 1
+                        - button "Raise to Loan Officer Ambassador" [ref=f40e566]: +
+                    - cell "no form at this level" [ref=f40e567]
+                    - cell "Sep 11, 2026 53 days ago" [ref=f40e569]:
+                      - generic [ref=f40e570]: Sep 11, 2026
+                      - generic [ref=f40e571]: 53 days ago
+                    - cell "Approved Sep 11, 2026" [ref=f40e572]:
+                      - generic [ref=f40e573]: Approved
+                      - generic [ref=f40e574]: Sep 11, 2026
+                    - cell "On" [ref=f40e575]:
+                      - generic "Recruiting is on in ALLY and a channel is connected — approved content is going out for them." [ref=f40e576]: "On"
+                    - cell [ref=f40e577]:
+                      - generic [ref=f40e578]:
+                        - button "Revoke" [ref=f40e579]
+                        - button "Remove" [ref=f40e580]
+                  - row [ref=f40e581] [cursor=pointer]:
+                    - cell [ref=f40e582]:
+                      - checkbox "Select Barbara Green" [ref=f40e584]
+                    - cell "Barbara Green NMLS 1286652 · barbara.green@loanfactory.com" [ref=f40e586]:
+                      - generic [ref=f40e588]:
+                        - generic [ref=f40e589]: Barbara Green
+                        - generic [ref=f40e590]: NMLS 1286652 · barbara.green@loanfactory.com
+                    - cell "Already at the entry level Level 1 Raise to Loan Officer Ambassador" [ref=f40e591]:
+                      - generic [ref=f40e592]:
+                        - button "Already at the entry level" [disabled]: −
+                        - generic "General Participation" [ref=f40e593]: Level 1
+                        - button "Raise to Loan Officer Ambassador" [ref=f40e594]: +
+                    - cell "no form at this level" [ref=f40e595]
+                    - cell "Sep 11, 2026 53 days ago" [ref=f40e597]:
+                      - generic [ref=f40e598]: Sep 11, 2026
+                      - generic [ref=f40e599]: 53 days ago
+                    - cell "Approved Sep 11, 2026" [ref=f40e600]:
+                      - generic [ref=f40e601]: Approved
+                      - generic [ref=f40e602]: Sep 11, 2026
+                    - cell "No channel" [ref=f40e603]:
+                      - generic "Recruiting is on but no channel is connected, so posts reach nobody." [ref=f40e604]: No channel
+                    - cell [ref=f40e605]:
+                      - generic [ref=f40e606]:
+                        - button "Revoke" [ref=f40e607]
+                        - button "Remove" [ref=f40e608]
+                  - row [ref=f40e609] [cursor=pointer]:
+                    - cell [ref=f40e610]:
+                      - checkbox "Select Seth August" [ref=f40e612]
+                    - cell "Seth August NMLS 1552226 · seth.august@loanfactory.com" [ref=f40e614]:
+                      - generic [ref=f40e616]:
+                        - generic [ref=f40e617]: Seth August
+                        - generic [ref=f40e618]: NMLS 1552226 · seth.august@loanfactory.com
+                    - cell "Lower to Loan Officer Ambassador Level 3 Already at the top level" [ref=f40e619]:
+                      - generic [ref=f40e620]:
+                        - button "Lower to Loan Officer Ambassador" [ref=f40e621]: −
+                        - generic "Senior Loan Officer Ambassador" [ref=f40e622]: Level 3
+                        - button "Already at the top level" [disabled]: +
+                    - cell "8 social profiles 2,000 – 5,000 derived from ALLY" [ref=f40e623]:
+                      - button "8 social profiles" [ref=f40e624]:
+                        - img "Instagram" [ref=f40e625]
+                        - generic [ref=f40e626]: 3,502
+                        - generic [ref=f40e627]: ALLY
+                        - generic [ref=f40e628]: no screenshot
+                      - generic [ref=f40e629]: 2,000 – 5,000
+                      - generic [ref=f40e630]: derived from ALLY
+                    - cell "Sep 10, 2026 54 days ago" [ref=f40e631]:
+                      - generic [ref=f40e632]: Sep 10, 2026
+                      - generic [ref=f40e633]: 54 days ago
+                    - cell "Approved Oct 2, 2026" [ref=f40e634]:
+                      - generic [ref=f40e635]: Approved
+                      - generic [ref=f40e636]: Oct 2, 2026
+                    - cell "On" [ref=f40e637]:
+                      - generic "Recruiting is on in ALLY and a channel is connected — approved content is going out for them." [ref=f40e638]: "On"
+                    - cell [ref=f40e639]:
+                      - generic [ref=f40e640]:
+                        - button "Revoke" [ref=f40e641]
+                        - button "Remove" [ref=f40e642]
+                  - row [ref=f40e643] [cursor=pointer]:
+                    - cell [ref=f40e644]:
+                      - checkbox "Select McCall Puzerewski" [ref=f40e646]
+                    - cell "McCall Puzerewski NMLS 2072262 · mccall.barrett@loanfactory.com" [ref=f40e648]:
+                      - generic [ref=f40e650]:
+                        - generic [ref=f40e651]: McCall Puzerewski
+                        - generic [ref=f40e652]: NMLS 2072262 · mccall.barrett@loanfactory.com
+                    - cell "Already at the entry level Level 1 Raise to Loan Officer Ambassador" [ref=f40e653]:
+                      - generic [ref=f40e654]:
+                        - button "Already at the entry level" [disabled]: −
+                        - generic "General Participation" [ref=f40e655]: Level 1
+                        - button "Raise to Loan Officer Ambassador" [ref=f40e656]: +
+                    - cell "no form at this level" [ref=f40e657]
+                    - cell "Sep 10, 2026 54 days ago" [ref=f40e659]:
+                      - generic [ref=f40e660]: Sep 10, 2026
+                      - generic [ref=f40e661]: 54 days ago
+                    - cell "Approved Sep 10, 2026" [ref=f40e662]:
+                      - generic [ref=f40e663]: Approved
+                      - generic [ref=f40e664]: Sep 10, 2026
+                    - cell "On" [ref=f40e665]:
+                      - generic "Recruiting is on in ALLY and a channel is connected — approved content is going out for them." [ref=f40e666]: "On"
+                    - cell [ref=f40e667]:
+                      - generic [ref=f40e668]:
+                        - button "Revoke" [ref=f40e669]
+                        - button "Remove" [ref=f40e670]
+                  - row [ref=f40e671] [cursor=pointer]:
+                    - cell [ref=f40e672]:
+                      - checkbox "Select Curtis Gruber" [ref=f40e674]
+                    - cell "Curtis Gruber NMLS 449451 · curtis.gruber@loanfactory.com" [ref=f40e676]:
+                      - generic [ref=f40e678]:
+                        - generic [ref=f40e679]: Curtis Gruber
+                        - generic [ref=f40e680]: NMLS 449451 · curtis.gruber@loanfactory.com
+                    - cell "Already at the entry level Level 1 Raise to Loan Officer Ambassador" [ref=f40e681]:
+                      - generic [ref=f40e682]:
+                        - button "Already at the entry level" [disabled]: −
+                        - generic "General Participation" [ref=f40e683]: Level 1
+                        - button "Raise to Loan Officer Ambassador" [ref=f40e684]: +
+                    - cell "no form at this level" [ref=f40e685]
+                    - cell "Sep 9, 2026 55 days ago" [ref=f40e687]:
+                      - generic [ref=f40e688]: Sep 9, 2026
+                      - generic [ref=f40e689]: 55 days ago
+                    - cell "Approved Sep 9, 2026" [ref=f40e690]:
+                      - generic [ref=f40e691]: Approved
+                      - generic [ref=f40e692]: Sep 9, 2026
+                    - cell "On" [ref=f40e693]:
+                      - generic "Recruiting is on in ALLY and a channel is connected — approved content is going out for them." [ref=f40e694]: "On"
+                    - cell [ref=f40e695]:
+                      - generic [ref=f40e696]:
+                        - button "Revoke" [ref=f40e697]
+                        - button "Remove" [ref=f40e698]
+              - generic [ref=f40e699]:
+                - generic [ref=f40e700]: Showing 1–20 of 30
+                - generic [ref=f40e701]:
+                  - button "Prev" [disabled]
+                  - button "1" [ref=f40e702] [cursor=pointer]
+                  - button "2" [ref=f40e703] [cursor=pointer]
+                  - button "Next" [ref=f40e704] [cursor=pointer]
+        - alert [ref=f40e705]
+    - link "Scroll to top" [ref=f38e100] [cursor=pointer]:
+      - /url: javascript:;
+      - generic [ref=f38e271]: keyboard_arrow_up
+  - iframe
+  - generic [ref=f38e101]:
+    - link "Help" [ref=f38e103] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f38e104]: "?"
+    - link "Consumer Chat" [ref=f38e272] [cursor=pointer]:
+      - /url: "javascript:"
+  - log [ref=f38e277]

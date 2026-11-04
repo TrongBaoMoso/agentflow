@@ -1,0 +1,1110 @@
+- generic [ref=e1]:
+  - iframe [aria-hidden] [ref=e2]
+  - generic [ref=e11]:
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - link "Skip to content" [ref=e15] [cursor=pointer]:
+          - /url: ""
+        - link "Using Gmail with screen readers" [ref=e16] [cursor=pointer]:
+          - /url: ""
+      - heading [level=1] [ref=e18]:
+        - banner [ref=e19]:
+          - generic [ref=e20]:
+            - generic [ref=e21]:
+              - button "Main menu" [expanded] [ref=e22] [cursor=pointer]
+              - link "Gmail" [ref=e27] [cursor=pointer]:
+                - /url: "#inbox"
+            - generic [ref=e29]:
+              - search [ref=e31]:
+                - heading "Search" [level=2] [ref=e32]
+                - combobox "Search mail" [ref=e34]
+                - button "Advanced search options" [ref=e35] [cursor=pointer]
+                - button "Search mail" [disabled] [ref=e38] [cursor=pointer]
+              - generic [ref=e42]:
+                - button [ref=e43] [cursor=pointer]
+                - button "Settings" [ref=e46] [cursor=pointer]
+                - generic [ref=e52]:
+                  - link "Upgrade" [ref=e54] [cursor=pointer]
+                  - tooltip [aria-hidden] [ref=e57]: Upgrade for premium features
+                - generic [ref=e59]:
+                  - generic:
+                    - button "Try Gemini" [ref=e66] [cursor=pointer]
+                    - tooltip [aria-hidden] [ref=e69]: Try Gemini
+            - generic [ref=e71]:
+              - button "Google apps" [ref=e75] [cursor=pointer]
+              - 'button "Google Account: BẢO TRỊNH (vutrongbao.trinh.ltb@gmail.com)" [ref=e81] [cursor=pointer]'
+      - alert [ref=e86]:
+        - generic [ref=e87]:
+          - generic [ref=e88]: Enable desktop notifications for Gmail.
+          - generic [ref=e89]:
+            - link "OK" [ref=e90] [cursor=pointer]
+            - link "No thanks" [ref=e91] [cursor=pointer]
+          - button "Close" [ref=e92] [cursor=pointer]
+    - generic [ref=e94]:
+      - navigation [ref=e95]:
+        - button "Compose" [ref=e98] [cursor=pointer]
+        - generic [ref=e104]:
+          - generic [ref=e106]:
+            - heading "Labels" [level=2] [ref=e107]
+            - generic [ref=e108]:
+              - generic [ref=e109]:
+                - generic [ref=e111]:
+                  - generic [ref=e116]:
+                    - link "Inbox 191 unread" [ref=e118] [cursor=pointer]:
+                      - /url: https://mail.google.com/mail/u/0/#inbox
+                      - text: Inbox
+                    - generic [ref=e119]: "191"
+                  - link "Starred" [ref=e126] [cursor=pointer]:
+                    - /url: https://mail.google.com/mail/u/0/#starred
+                  - link "Snoozed" [ref=e133] [cursor=pointer]:
+                    - /url: https://mail.google.com/mail/u/0/#snoozed
+                  - link "Sent" [ref=e140] [cursor=pointer]:
+                    - /url: https://mail.google.com/mail/u/0/#sent
+                - generic [ref=e147]:
+                  - link "Purchases 11 unread has menu" [ref=e149] [cursor=pointer]:
+                    - /url: https://mail.google.com/mail/u/0/#category/purchases
+                    - text: Purchases
+                  - generic [ref=e150]: "11"
+              - button "More labels" [ref=e152] [cursor=pointer]:
+                - generic [ref=e153]: More
+          - generic [ref=e156]:
+            - heading "Labels" [ref=e157]
+            - button "Create new label" [ref=e158] [cursor=pointer]
+          - generic:
+            - generic "Labels":
+              - heading "Labels" [level=2] [ref=e159]
+      - generic [ref=e166]:
+        - main [ref=e169]:
+          - generic [ref=e171]:
+            - generic [ref=e174]:
+              - button "Select" [ref=e176] [cursor=pointer]:
+                - checkbox [ref=e178]
+              - button "Refresh" [ref=e181] [cursor=pointer]
+              - button "More email options" [ref=e185] [cursor=pointer]
+            - generic [ref=e188]:
+              - generic [ref=e190]:
+                - button "Show more messages" [ref=e191] [cursor=pointer]:
+                  - generic [ref=e192]:
+                    - generic [ref=e193]: 1–50
+                    - text: of 1,037
+                - button "Newer" [disabled] [ref=e194]
+                - button "Older" [ref=e195] [cursor=pointer]
+              - generic [ref=e199]:
+                - button "Input tools on/off (Ctrl-Shift-K)" [ref=e200] [cursor=pointer]
+                - button "Select input tool" [ref=e202] [cursor=pointer]
+          - heading "Conversations" [level=2] [ref=e205]
+          - table [ref=e207]:
+            - rowgroup [ref=e208]:
+              - tablist [ref=e209]:
+                - heading [level=3] [ref=e210]:
+                  - tab "Primary" [selected] [ref=e211] [cursor=pointer]
+                - heading [level=3] [ref=e217]:
+                  - tab "Promotions, one new message," [ref=e218] [cursor=pointer]:
+                    - generic [ref=e220]:
+                      - generic [ref=e222]:
+                        - generic [ref=e223]: 1 new
+                        - generic [ref=e224]: Promotions
+                      - generic [ref=e225]: Vietcombank — [QC] ĐÓN FAN MEETING ĐẦU TAY CỦA QUÁN NHÀ HAHA CÙNG NHỮNG SUẤT THAM DỰ SỚM NHẤT VỚI VIETCOMBANK
+                - heading [level=3] [ref=e226]:
+                  - tab "Social, 3 new messages," [ref=e227] [cursor=pointer]:
+                    - generic [ref=e229]:
+                      - generic [ref=e231]:
+                        - generic [ref=e232]: 3 new
+                        - generic [ref=e233]: Social
+                      - generic [ref=e234]: LinkedIn — View Yangshun Tay’s post and your next steps
+                - heading [level=3] [ref=e235]:
+                  - tab "Updates, 4 new messages," [ref=e236] [cursor=pointer]:
+                    - generic [ref=e238]:
+                      - generic [ref=e240]:
+                        - generic [ref=e241]: 4 new
+                        - generic [ref=e242]: Updates
+                      - generic [ref=e243]: "LinkedIn — Adrian Dang - Project Manager reacted to this post: 🚀 YOUR NEXT CAREER…"
+                - cell
+                - cell
+              - row
+          - tabpanel "Primary" [ref=e246]:
+            - grid [ref=e249]:
+              - rowgroup [ref=e250]:
+                - 'row "Manh, me 2, Message from Loan Factory · NMLS 121212, 12:47 AM, G2 reply from LO On Tue, Oct 13, 2026 at 12:47 AM Manh Admin (Loan Factory) <drive@viet18.com> wrote: Loan Factory QA G2 10/10 — please reply." [ref=e251] [cursor=pointer]':
+                  - gridcell [ref=e252]
+                  - 'gridcell "Manh, me 2, Message from Loan Factory · NMLS 121212, 12:47 AM, G2 reply from LO On Tue, Oct 13, 2026 at 12:47 AM Manh Admin (Loan Factory) <drive@viet18.com> wrote: Loan Factory QA G2 10/10 — please reply." [ref=e253]':
+                    - 'checkbox "Manh, me 2, Message from Loan Factory · NMLS 121212, 12:47 AM, G2 reply from LO On Tue, Oct 13, 2026 at 12:47 AM Manh Admin (Loan Factory) <drive@viet18.com> wrote: Loan Factory QA G2 10/10 — please reply." [ref=e254]'
+                  - gridcell [ref=e255]:
+                    - button "Not starred" [ref=e256]
+                  - gridcell "Manh, me 2" [ref=e257]:
+                    - generic [ref=e258]:
+                      - generic [ref=e259]: Manh, me
+                      - generic [ref=e260]: "2"
+                  - gridcell [ref=e261]:
+                    - 'link "Message from Loan Factory · NMLS 121212 - G2 reply from LO On Tue, Oct 13, 2026 at 12:47 AM Manh Admin (Loan Factory) <drive@viet18.com> wrote: Loan Factory QA G2 10/10 — please reply" [ref=e262]':
+                      - generic [ref=e263]:
+                        - generic [ref=e264]: Message from Loan Factory · NMLS 121212
+                        - generic [ref=e266]:
+                          - generic [ref=e267]: "-"
+                          - text: "G2 reply from LO On Tue, Oct 13, 2026 at 12:47 AM Manh Admin (Loan Factory) <drive@viet18.com> wrote: Loan Factory QA G2 10/10 — please reply"
+                  - gridcell [ref=e268]
+                  - gridcell "Tue, Oct 13, 2026, 12:47 AM" [ref=e269]:
+                    - generic "Tue, Oct 13, 2026, 12:47 AM" [ref=e270]: 12:47 AM
+                  - gridcell
+                - 'row "unread, Discord, fablegirl đã đề cập đến bạn trong FableKiss, 12:10 AM, Bạn có 5+ tin nhắn mới #📢│free-previews (FableKiss) Xem tin nhắn Cần giúp đỡ? Hãy liên hệ đội ngũ hỗ trợ của chúng tôi hoặc nhắn tin cho chúng tôi qua X @discord. Muốn cung cấp phản hồi? Hãy cho chúng." [ref=e271] [cursor=pointer]':
+                  - gridcell [ref=e272]
+                  - 'gridcell "unread, Discord, fablegirl đã đề cập đến bạn trong FableKiss, 12:10 AM, Bạn có 5+ tin nhắn mới #📢│free-previews (FableKiss) Xem tin nhắn Cần giúp đỡ? Hãy liên hệ đội ngũ hỗ trợ của chúng tôi hoặc nhắn tin cho chúng tôi qua X @discord. Muốn cung cấp phản hồi? Hãy cho chúng." [ref=e273]':
+                    - 'checkbox "unread, Discord, fablegirl đã đề cập đến bạn trong FableKiss, 12:10 AM, Bạn có 5+ tin nhắn mới #📢│free-previews (FableKiss) Xem tin nhắn Cần giúp đỡ? Hãy liên hệ đội ngũ hỗ trợ của chúng tôi hoặc nhắn tin cho chúng tôi qua X @discord. Muốn cung cấp phản hồi? Hãy cho chúng." [ref=e274]'
+                  - gridcell [ref=e275]:
+                    - button "Not starred" [ref=e276]
+                  - gridcell "Discord" [ref=e277]
+                  - gridcell [ref=e280]:
+                    - 'link "fablegirl đã đề cập đến bạn trong FableKiss - Bạn có 5+ tin nhắn mới #📢│free-previews (FableKiss) Xem tin nhắn Cần giúp đỡ? Hãy liên hệ đội ngũ hỗ trợ của chúng tôi hoặc nhắn tin cho chúng tôi qua X @discord. Muốn cung cấp phản hồi? Hãy cho chúng" [ref=e281]':
+                      - generic [ref=e282]:
+                        - generic [ref=e283]: fablegirl đã đề cập đến bạn trong FableKiss
+                        - generic [ref=e285]:
+                          - generic [ref=e286]: "-"
+                          - text: "Bạn có 5+ tin nhắn mới #"
+                          - img "📢" [ref=e287]
+                          - text: │free-previews (FableKiss) Xem tin nhắn Cần giúp đỡ? Hãy liên hệ đội ngũ hỗ trợ của chúng tôi hoặc nhắn tin cho chúng tôi qua X @discord. Muốn cung cấp phản hồi? Hãy cho chúng
+                  - gridcell [ref=e288]
+                  - gridcell "Tue, Oct 13, 2026, 12:10 AM" [ref=e289]:
+                    - generic "Tue, Oct 13, 2026, 12:10 AM" [ref=e290]: 12:10 AM
+                  - gridcell
+                - row "unread, LO Demo Account (Lo., Your updated home report for 937 WALNUT CREEK LN is ready, Oct 11, Professional Home Intelligence Hi BARRY ALAN, we have updated your October Loan Factory IQ report for 937 WALNUT CREEK LN. Your equity has grown. Your home equity could help turn your home's value." [ref=e291] [cursor=pointer]:
+                  - gridcell [ref=e292]
+                  - gridcell "unread, LO Demo Account (Lo., Your updated home report for 937 WALNUT CREEK LN is ready, Oct 11, Professional Home Intelligence Hi BARRY ALAN, we have updated your October Loan Factory IQ report for 937 WALNUT CREEK LN. Your equity has grown. Your home equity could help turn your home's value." [ref=e293]:
+                    - checkbox "unread, LO Demo Account (Lo., Your updated home report for 937 WALNUT CREEK LN is ready, Oct 11, Professional Home Intelligence Hi BARRY ALAN, we have updated your October Loan Factory IQ report for 937 WALNUT CREEK LN. Your equity has grown. Your home equity could help turn your home's value." [ref=e294]
+                  - gridcell [ref=e295]:
+                    - button "Not starred" [ref=e296]
+                  - gridcell "LO Demo Account (Lo." [ref=e297]
+                  - gridcell [ref=e300]:
+                    - link "Your updated home report for 937 WALNUT CREEK LN is ready - Professional Home Intelligence Hi BARRY ALAN, we have updated your October Loan Factory IQ report for 937 WALNUT CREEK LN. Your equity has grown. Your home equity could help turn your home's value" [ref=e301]:
+                      - generic [ref=e302]:
+                        - generic [ref=e303]: Your updated home report for 937 WALNUT CREEK LN is ready
+                        - generic [ref=e305]:
+                          - generic [ref=e306]: "-"
+                          - text: Professional Home Intelligence Hi BARRY ALAN, we have updated your October Loan Factory IQ report for 937 WALNUT CREEK LN. Your equity has grown. Your home equity could help turn your home's value
+                  - gridcell [ref=e307]
+                  - gridcell "Sun, Oct 11, 2026, 1:09 AM" [ref=e308]:
+                    - generic "Sun, Oct 11, 2026, 1:09 AM" [ref=e309]: Oct 11
+                  - gridcell
+                - row "unread, LO Demo Account (Lo., Your updated home report for 5558 SHOSHONE ST is ready, Oct 10, Professional Home Intelligence Hi COLBURN C, we have updated your October Loan Factory IQ report for 5558 SHOSHONE ST. 📉 Your home value has updated Market changes can affect your home's value—stay." [ref=e310] [cursor=pointer]:
+                  - gridcell [ref=e311]
+                  - gridcell "unread, LO Demo Account (Lo., Your updated home report for 5558 SHOSHONE ST is ready, Oct 10, Professional Home Intelligence Hi COLBURN C, we have updated your October Loan Factory IQ report for 5558 SHOSHONE ST. 📉 Your home value has updated Market changes can affect your home's value—stay." [ref=e312]:
+                    - checkbox "unread, LO Demo Account (Lo., Your updated home report for 5558 SHOSHONE ST is ready, Oct 10, Professional Home Intelligence Hi COLBURN C, we have updated your October Loan Factory IQ report for 5558 SHOSHONE ST. 📉 Your home value has updated Market changes can affect your home's value—stay." [ref=e313]
+                  - gridcell [ref=e314]:
+                    - button "Not starred" [ref=e315]
+                  - gridcell "LO Demo Account (Lo." [ref=e316]
+                  - gridcell [ref=e319]:
+                    - link "Your updated home report for 5558 SHOSHONE ST is ready - Professional Home Intelligence Hi COLBURN C, we have updated your October Loan Factory IQ report for 5558 SHOSHONE ST. 📉 Your home value has updated Market changes can affect your home's value—stay" [ref=e320]:
+                      - generic [ref=e321]:
+                        - generic [ref=e322]: Your updated home report for 5558 SHOSHONE ST is ready
+                        - generic [ref=e324]:
+                          - generic [ref=e325]: "-"
+                          - text: Professional Home Intelligence Hi COLBURN C, we have updated your October Loan Factory IQ report for 5558 SHOSHONE ST.
+                          - img "📉" [ref=e326]
+                          - text: Your home value has updated Market changes can affect your home's value—stay
+                  - gridcell [ref=e327]
+                  - gridcell "Sat, Oct 10, 2026, 1:16 AM" [ref=e328]:
+                    - generic "Sat, Oct 10, 2026, 1:16 AM" [ref=e329]: Oct 10
+                  - gridcell
+                - 'row "Manh, me 3, Message from Loan Factory · NMLS 121212, Oct 9, G2 reply from LO On Fri, Oct 9, 2026 at 1:49 AM TRỊNH VŨ TRỌNG BẢO <vutrongbao.trinh.ltb@gmail.com> wrote: G2 reply from LO On Fri, Oct 9, 2026 at 1:49 AM Manh Admin (Loan Factory) <drive@." [ref=e330] [cursor=pointer]':
+                  - gridcell [ref=e331]
+                  - 'gridcell "Manh, me 3, Message from Loan Factory · NMLS 121212, Oct 9, G2 reply from LO On Fri, Oct 9, 2026 at 1:49 AM TRỊNH VŨ TRỌNG BẢO <vutrongbao.trinh.ltb@gmail.com> wrote: G2 reply from LO On Fri, Oct 9, 2026 at 1:49 AM Manh Admin (Loan Factory) <drive@." [ref=e332]':
+                    - 'checkbox "Manh, me 3, Message from Loan Factory · NMLS 121212, Oct 9, G2 reply from LO On Fri, Oct 9, 2026 at 1:49 AM TRỊNH VŨ TRỌNG BẢO <vutrongbao.trinh.ltb@gmail.com> wrote: G2 reply from LO On Fri, Oct 9, 2026 at 1:49 AM Manh Admin (Loan Factory) <drive@." [ref=e333]'
+                  - gridcell [ref=e334]:
+                    - button "Not starred" [ref=e335]
+                  - gridcell "Manh, me 3" [ref=e336]:
+                    - generic [ref=e337]:
+                      - generic [ref=e338]: Manh, me
+                      - generic [ref=e339]: "3"
+                  - gridcell [ref=e340]:
+                    - 'link "Message from Loan Factory · NMLS 121212 - G2 reply from LO On Fri, Oct 9, 2026 at 1:49 AM TRỊNH VŨ TRỌNG BẢO <vutrongbao.trinh.ltb@gmail.com> wrote: G2 reply from LO On Fri, Oct 9, 2026 at 1:49 AM Manh Admin (Loan Factory) <drive@" [ref=e341]':
+                      - generic [ref=e342]:
+                        - generic [ref=e343]: Message from Loan Factory · NMLS 121212
+                        - generic [ref=e345]:
+                          - generic [ref=e346]: "-"
+                          - text: "G2 reply from LO On Fri, Oct 9, 2026 at 1:49 AM TRỊNH VŨ TRỌNG BẢO <vutrongbao.trinh.ltb@gmail.com> wrote: G2 reply from LO On Fri, Oct 9, 2026 at 1:49 AM Manh Admin (Loan Factory) <drive@"
+                  - gridcell [ref=e347]
+                  - gridcell "Fri, Oct 9, 2026, 1:49 AM" [ref=e348]:
+                    - generic "Fri, Oct 9, 2026, 1:49 AM" [ref=e349]: Oct 9
+                  - gridcell
+                - row "unread, LO Demo Account (Lo., Your updated home report for 5225 CANYON CREST DR 250 is ready, Oct 5, Professional Home Intelligence Hi BAO, we have updated your October Loan Factory IQ report for 5225 CANYON CREST DR 250. Your equity has grown. Your home equity could help turn your home's value." [ref=e350] [cursor=pointer]:
+                  - gridcell [ref=e351]
+                  - gridcell "unread, LO Demo Account (Lo., Your updated home report for 5225 CANYON CREST DR 250 is ready, Oct 5, Professional Home Intelligence Hi BAO, we have updated your October Loan Factory IQ report for 5225 CANYON CREST DR 250. Your equity has grown. Your home equity could help turn your home's value." [ref=e352]:
+                    - checkbox "unread, LO Demo Account (Lo., Your updated home report for 5225 CANYON CREST DR 250 is ready, Oct 5, Professional Home Intelligence Hi BAO, we have updated your October Loan Factory IQ report for 5225 CANYON CREST DR 250. Your equity has grown. Your home equity could help turn your home's value." [ref=e353]
+                  - gridcell [ref=e354]:
+                    - button "Not starred" [ref=e355]
+                  - gridcell "LO Demo Account (Lo." [ref=e356]
+                  - gridcell [ref=e359]:
+                    - link "Your updated home report for 5225 CANYON CREST DR 250 is ready - Professional Home Intelligence Hi BAO, we have updated your October Loan Factory IQ report for 5225 CANYON CREST DR 250. Your equity has grown. Your home equity could help turn your home's value" [ref=e360]:
+                      - generic [ref=e361]:
+                        - generic [ref=e362]: Your updated home report for 5225 CANYON CREST DR 250 is ready
+                        - generic [ref=e364]:
+                          - generic [ref=e365]: "-"
+                          - text: Professional Home Intelligence Hi BAO, we have updated your October Loan Factory IQ report for 5225 CANYON CREST DR 250. Your equity has grown. Your home equity could help turn your home's value
+                  - gridcell [ref=e366]
+                  - gridcell "Mon, Oct 5, 2026, 10:02 PM" [ref=e367]:
+                    - generic "Mon, Oct 5, 2026, 10:02 PM" [ref=e368]: Oct 5
+                  - gridcell
+                - row "unread, LO Demo Account (Lo., Your updated home report for 3208 TRAVIS AVE is ready, Oct 5, Professional Home Intelligence Hi MANUEL F, we have updated your October Loan Factory IQ report for 3208 TRAVIS AVE. 📈 Your home value has increased Your home has gained value over time, strengthening." [ref=e369] [cursor=pointer]:
+                  - gridcell [ref=e370]
+                  - gridcell "unread, LO Demo Account (Lo., Your updated home report for 3208 TRAVIS AVE is ready, Oct 5, Professional Home Intelligence Hi MANUEL F, we have updated your October Loan Factory IQ report for 3208 TRAVIS AVE. 📈 Your home value has increased Your home has gained value over time, strengthening." [ref=e371]:
+                    - checkbox "unread, LO Demo Account (Lo., Your updated home report for 3208 TRAVIS AVE is ready, Oct 5, Professional Home Intelligence Hi MANUEL F, we have updated your October Loan Factory IQ report for 3208 TRAVIS AVE. 📈 Your home value has increased Your home has gained value over time, strengthening." [ref=e372]
+                  - gridcell [ref=e373]:
+                    - button "Not starred" [ref=e374]
+                  - gridcell "LO Demo Account (Lo." [ref=e375]
+                  - gridcell [ref=e378]:
+                    - link "Your updated home report for 3208 TRAVIS AVE is ready - Professional Home Intelligence Hi MANUEL F, we have updated your October Loan Factory IQ report for 3208 TRAVIS AVE. 📈 Your home value has increased Your home has gained value over time, strengthening" [ref=e379]:
+                      - generic [ref=e380]:
+                        - generic [ref=e381]: Your updated home report for 3208 TRAVIS AVE is ready
+                        - generic [ref=e383]:
+                          - generic [ref=e384]: "-"
+                          - text: Professional Home Intelligence Hi MANUEL F, we have updated your October Loan Factory IQ report for 3208 TRAVIS AVE.
+                          - img "📈" [ref=e385]
+                          - text: Your home value has increased Your home has gained value over time, strengthening
+                  - gridcell [ref=e386]:
+                    - toolbar [ref=e387]:
+                      - listitem [ref=e388]
+                      - listitem [ref=e389]
+                      - listitem [ref=e390]
+                      - listitem [ref=e391]
+                  - gridcell
+                - row "unread, Google, Security alert for trinhvutrongbao@gmail.com, Sep 30, This is a copy of a security alert sent to trinhvutrongbao@gmail.com. vutrongbao.trinh.ltb@gmail.com is the recovery email for this account. If you don't recognize this account, remove it. New sign." [ref=e392] [cursor=pointer]:
+                  - gridcell [ref=e393]
+                  - gridcell "unread, Google, Security alert for trinhvutrongbao@gmail.com, Sep 30, This is a copy of a security alert sent to trinhvutrongbao@gmail.com. vutrongbao.trinh.ltb@gmail.com is the recovery email for this account. If you don't recognize this account, remove it. New sign." [ref=e394]:
+                    - checkbox "unread, Google, Security alert for trinhvutrongbao@gmail.com, Sep 30, This is a copy of a security alert sent to trinhvutrongbao@gmail.com. vutrongbao.trinh.ltb@gmail.com is the recovery email for this account. If you don't recognize this account, remove it. New sign." [ref=e395]
+                  - gridcell [ref=e396]:
+                    - button "Not starred" [ref=e397]
+                  - gridcell "Google" [ref=e398]
+                  - gridcell [ref=e401]:
+                    - link "Security alert for trinhvutrongbao@gmail.com - This is a copy of a security alert sent to trinhvutrongbao@gmail.com. vutrongbao.trinh.ltb@gmail.com is the recovery email for this account. If you don't recognize this account, remove it. New sign" [ref=e403]:
+                      - generic [ref=e404]:
+                        - generic [ref=e405]: Security alert for trinhvutrongbao@gmail.com
+                        - generic [ref=e407]:
+                          - generic [ref=e408]: "-"
+                          - text: This is a copy of a security alert sent to trinhvutrongbao@gmail.com. vutrongbao.trinh.ltb@gmail.com is the recovery email for this account. If you don't recognize this account, remove it. New sign
+                  - gridcell [ref=e409]
+                  - gridcell "Wed, Sep 30, 2026, 5:16 PM" [ref=e410]:
+                    - generic "Wed, Sep 30, 2026, 5:16 PM" [ref=e411]: Sep 30
+                  - gridcell
+                - 'row "unread, Fred from Fireflies., You haven''t tried Fireflies yet, Sep 29, Fireflies Logo Hey BẢO, We noticed you haven''t had your first meeting with Fireflies yet. Getting started only takes a minute: just invite Fireflies to your next meeting and it will automatically." [ref=e412] [cursor=pointer]':
+                  - gridcell [ref=e413]
+                  - 'gridcell "unread, Fred from Fireflies., You haven''t tried Fireflies yet, Sep 29, Fireflies Logo Hey BẢO, We noticed you haven''t had your first meeting with Fireflies yet. Getting started only takes a minute: just invite Fireflies to your next meeting and it will automatically." [ref=e414]':
+                    - 'checkbox "unread, Fred from Fireflies., You haven''t tried Fireflies yet, Sep 29, Fireflies Logo Hey BẢO, We noticed you haven''t had your first meeting with Fireflies yet. Getting started only takes a minute: just invite Fireflies to your next meeting and it will automatically." [ref=e415]'
+                  - gridcell [ref=e416]:
+                    - button "Not starred" [ref=e417]
+                  - gridcell "Fred from Fireflies." [ref=e418]
+                  - gridcell [ref=e421]:
+                    - 'link "You haven''t tried Fireflies yet - Fireflies Logo Hey BẢO, We noticed you haven''t had your first meeting with Fireflies yet. Getting started only takes a minute: just invite Fireflies to your next meeting and it will automatically" [ref=e423]':
+                      - generic [ref=e424]:
+                        - generic [ref=e425]: You haven't tried Fireflies yet
+                        - generic [ref=e427]:
+                          - generic [ref=e428]: "-"
+                          - text: "Fireflies Logo Hey BẢO, We noticed you haven't had your first meeting with Fireflies yet. Getting started only takes a minute: just invite Fireflies to your next meeting and it will automatically"
+                  - gridcell [ref=e429]
+                  - gridcell "Tue, Sep 29, 2026, 11:19 PM" [ref=e430]:
+                    - generic "Tue, Sep 29, 2026, 11:19 PM" [ref=e431]: Sep 29
+                  - gridcell
+                - row "unread, VCBDigibank 2, Biên lai chuyển tiền qua tài khoản, Sep 29, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 08:59 Thứ Ba 29/09/2026 Số lệnh giao dịch Order Number 16278706369 Tài khoản nguồn Debit Account 0251002733358." [ref=e432] [cursor=pointer]:
+                  - gridcell [ref=e433]
+                  - gridcell "unread, VCBDigibank 2, Biên lai chuyển tiền qua tài khoản, Sep 29, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 08:59 Thứ Ba 29/09/2026 Số lệnh giao dịch Order Number 16278706369 Tài khoản nguồn Debit Account 0251002733358." [ref=e434]:
+                    - checkbox "unread, VCBDigibank 2, Biên lai chuyển tiền qua tài khoản, Sep 29, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 08:59 Thứ Ba 29/09/2026 Số lệnh giao dịch Order Number 16278706369 Tài khoản nguồn Debit Account 0251002733358." [ref=e435]
+                  - gridcell [ref=e436]:
+                    - button "Not starred" [ref=e437]
+                  - gridcell "VCBDigibank 2" [ref=e438]:
+                    - generic [ref=e439]:
+                      - generic [ref=e440]: VCBDigibank
+                      - generic [ref=e441]: "2"
+                  - gridcell [ref=e442]:
+                    - link "Biên lai chuyển tiền qua tài khoản - Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 08:59 Thứ Ba 29/09/2026 Số lệnh giao dịch Order Number 16278706369 Tài khoản nguồn Debit Account 0251002733358" [ref=e443]:
+                      - generic [ref=e444]:
+                        - generic [ref=e445]: Biên lai chuyển tiền qua tài khoản
+                        - generic [ref=e447]:
+                          - generic [ref=e448]: "-"
+                          - text: Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 08:59 Thứ Ba 29/09/2026 Số lệnh giao dịch Order Number 16278706369 Tài khoản nguồn Debit Account 0251002733358
+                  - gridcell [ref=e449]
+                  - gridcell "Tue, Sep 29, 2026, 9:41 AM" [ref=e450]:
+                    - generic "Tue, Sep 29, 2026, 9:41 AM" [ref=e451]: Sep 29
+                  - gridcell
+                - row "unread, Fred from Fireflies., Fireflies gets better when your whole team shows up, Sep 27, One link to get everyone set up. ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ Fireflies.ai Invite your teammates BẢO, the real value of Fireflies shows up when your whole team is on it.." [ref=e452] [cursor=pointer]:
+                  - gridcell [ref=e453]
+                  - gridcell "unread, Fred from Fireflies., Fireflies gets better when your whole team shows up, Sep 27, One link to get everyone set up. ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ Fireflies.ai Invite your teammates BẢO, the real value of Fireflies shows up when your whole team is on it.." [ref=e454]:
+                    - checkbox "unread, Fred from Fireflies., Fireflies gets better when your whole team shows up, Sep 27, One link to get everyone set up. ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ Fireflies.ai Invite your teammates BẢO, the real value of Fireflies shows up when your whole team is on it.." [ref=e455]
+                  - gridcell [ref=e456]:
+                    - button "Not starred" [ref=e457]
+                  - gridcell "Fred from Fireflies." [ref=e458]
+                  - gridcell [ref=e461]:
+                    - link "Fireflies gets better when your whole team shows up - One link to get everyone set up. ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ Fireflies.ai Invite your teammates BẢO, the real value of Fireflies shows up when your whole team is on it." [ref=e463]:
+                      - generic [ref=e464]:
+                        - generic [ref=e465]: Fireflies gets better when your whole team shows up
+                        - generic [ref=e467]:
+                          - generic [ref=e468]: "-"
+                          - text: One link to get everyone set up. ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ Fireflies.ai Invite your teammates BẢO, the real value of Fireflies shows up when your whole team is on it.
+                  - gridcell [ref=e469]
+                  - gridcell "Sun, Sep 27, 2026, 11:19 PM" [ref=e470]:
+                    - generic "Sun, Sep 27, 2026, 11:19 PM" [ref=e471]: Sep 27
+                  - gridcell
+                - row "unread, OpenArt, Welcome to OpenArt!, Sep 27, Jump in with 40 free credits and start creating in seconds.." [ref=e472] [cursor=pointer]:
+                  - gridcell [ref=e473]
+                  - gridcell "unread, OpenArt, Welcome to OpenArt!, Sep 27, Jump in with 40 free credits and start creating in seconds.." [ref=e474]:
+                    - checkbox "unread, OpenArt, Welcome to OpenArt!, Sep 27, Jump in with 40 free credits and start creating in seconds.." [ref=e475]
+                  - gridcell [ref=e476]:
+                    - button "Not starred" [ref=e477]
+                  - gridcell "OpenArt" [ref=e478]
+                  - gridcell [ref=e481]:
+                    - link "Welcome to OpenArt! - Jump in with 40 free credits and start creating in seconds." [ref=e483]:
+                      - generic [ref=e484]:
+                        - generic [ref=e485]: Welcome to OpenArt!
+                        - generic [ref=e487]:
+                          - generic [ref=e488]: "-"
+                          - text: Jump in with 40 free credits and start creating in seconds.
+                  - gridcell [ref=e489]
+                  - gridcell "Sun, Sep 27, 2026, 5:03 PM" [ref=e490]:
+                    - generic "Sun, Sep 27, 2026, 5:03 PM" [ref=e491]: Sep 27
+                  - gridcell
+                - row "unread, VCBDigibank 6, Biên lai chuyển tiền qua tài khoản, Sep 27, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 08:18 Thứ Bảy 26/09/2026 Số lệnh giao dịch Order Number 16233280001 Tài khoản nguồn Debit Account." [ref=e492] [cursor=pointer]:
+                  - gridcell [ref=e493]
+                  - gridcell "unread, VCBDigibank 6, Biên lai chuyển tiền qua tài khoản, Sep 27, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 08:18 Thứ Bảy 26/09/2026 Số lệnh giao dịch Order Number 16233280001 Tài khoản nguồn Debit Account." [ref=e494]:
+                    - checkbox "unread, VCBDigibank 6, Biên lai chuyển tiền qua tài khoản, Sep 27, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 08:18 Thứ Bảy 26/09/2026 Số lệnh giao dịch Order Number 16233280001 Tài khoản nguồn Debit Account." [ref=e495]
+                  - gridcell [ref=e496]:
+                    - button "Not starred" [ref=e497]
+                  - gridcell "VCBDigibank 6" [ref=e498]:
+                    - generic [ref=e499]:
+                      - generic [ref=e500]: VCBDigibank
+                      - generic [ref=e501]: "6"
+                  - gridcell [ref=e502]:
+                    - link "Biên lai chuyển tiền qua tài khoản - Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 08:18 Thứ Bảy 26/09/2026 Số lệnh giao dịch Order Number 16233280001 Tài khoản nguồn Debit Account" [ref=e503]:
+                      - generic [ref=e504]:
+                        - generic [ref=e505]: Biên lai chuyển tiền qua tài khoản
+                        - generic [ref=e507]:
+                          - generic [ref=e508]: "-"
+                          - text: Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 08:18 Thứ Bảy 26/09/2026 Số lệnh giao dịch Order Number 16233280001 Tài khoản nguồn Debit Account
+                  - gridcell [ref=e509]
+                  - gridcell "Sun, Sep 27, 2026, 7:44 AM" [ref=e510]:
+                    - generic "Sun, Sep 27, 2026, 7:44 AM" [ref=e511]: Sep 27
+                  - gridcell
+                - row "unread, VCBDigibank 2, Biên lai chuyển tiền qua tài khoản, Sep 25, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 14:38 Thứ Sáu 25/09/2026 Số lệnh giao dịch Order Number 16223090739 Tài khoản nguồn Debit Account." [ref=e512] [cursor=pointer]:
+                  - gridcell [ref=e513]
+                  - gridcell "unread, VCBDigibank 2, Biên lai chuyển tiền qua tài khoản, Sep 25, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 14:38 Thứ Sáu 25/09/2026 Số lệnh giao dịch Order Number 16223090739 Tài khoản nguồn Debit Account." [ref=e514]:
+                    - checkbox "unread, VCBDigibank 2, Biên lai chuyển tiền qua tài khoản, Sep 25, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 14:38 Thứ Sáu 25/09/2026 Số lệnh giao dịch Order Number 16223090739 Tài khoản nguồn Debit Account." [ref=e515]
+                  - gridcell [ref=e516]:
+                    - button "Not starred" [ref=e517]
+                  - gridcell "VCBDigibank 2" [ref=e518]:
+                    - generic [ref=e519]:
+                      - generic [ref=e520]: VCBDigibank
+                      - generic [ref=e521]: "2"
+                  - gridcell [ref=e522]:
+                    - link "Biên lai chuyển tiền qua tài khoản - Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 14:38 Thứ Sáu 25/09/2026 Số lệnh giao dịch Order Number 16223090739 Tài khoản nguồn Debit Account" [ref=e523]:
+                      - generic [ref=e524]:
+                        - generic [ref=e525]: Biên lai chuyển tiền qua tài khoản
+                        - generic [ref=e527]:
+                          - generic [ref=e528]: "-"
+                          - text: Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 14:38 Thứ Sáu 25/09/2026 Số lệnh giao dịch Order Number 16223090739 Tài khoản nguồn Debit Account
+                  - gridcell [ref=e529]
+                  - gridcell "Fri, Sep 25, 2026, 3:28 PM" [ref=e530]:
+                    - generic "Fri, Sep 25, 2026, 3:28 PM" [ref=e531]: Sep 25
+                  - gridcell
+                - row "unread, VCBDigibank, Biên lai chuyển tiền qua tài khoản, Sep 24, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 18:57 Thứ Năm 24/09/2026 Số lệnh giao dịch Order Number 16211785764 Tài khoản nguồn Debit Account." [ref=e532] [cursor=pointer]:
+                  - gridcell [ref=e533]
+                  - gridcell "unread, VCBDigibank, Biên lai chuyển tiền qua tài khoản, Sep 24, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 18:57 Thứ Năm 24/09/2026 Số lệnh giao dịch Order Number 16211785764 Tài khoản nguồn Debit Account." [ref=e534]:
+                    - checkbox "unread, VCBDigibank, Biên lai chuyển tiền qua tài khoản, Sep 24, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 18:57 Thứ Năm 24/09/2026 Số lệnh giao dịch Order Number 16211785764 Tài khoản nguồn Debit Account." [ref=e535]
+                  - gridcell [ref=e536]:
+                    - button "Not starred" [ref=e537]
+                  - gridcell "VCBDigibank" [ref=e538]
+                  - gridcell [ref=e541]:
+                    - link "Biên lai chuyển tiền qua tài khoản - Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 18:57 Thứ Năm 24/09/2026 Số lệnh giao dịch Order Number 16211785764 Tài khoản nguồn Debit Account" [ref=e542]:
+                      - generic [ref=e543]:
+                        - generic [ref=e544]: Biên lai chuyển tiền qua tài khoản
+                        - generic [ref=e546]:
+                          - generic [ref=e547]: "-"
+                          - text: Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 18:57 Thứ Năm 24/09/2026 Số lệnh giao dịch Order Number 16211785764 Tài khoản nguồn Debit Account
+                  - gridcell [ref=e548]
+                  - gridcell "Thu, Sep 24, 2026, 6:57 PM" [ref=e549]:
+                    - generic "Thu, Sep 24, 2026, 6:57 PM" [ref=e550]: Sep 24
+                  - gridcell
+                - row "unread, OpenAI, Cập nhật mới của Chính sách quyền riêng tư OpenAI, Sep 24, Cập nhật mới của Chính sách quyền riêng tư OpenAI Thân chào bạn BẢO TRỊNH, Chúng tôi đang cập nhật Chính sách quyền riêng tư để bổ sung thông tin về quảng cáo trong ChatGPT, bao gồm cách thức quảng cáo." [ref=e551] [cursor=pointer]:
+                  - gridcell [ref=e552]
+                  - gridcell "unread, OpenAI, Cập nhật mới của Chính sách quyền riêng tư OpenAI, Sep 24, Cập nhật mới của Chính sách quyền riêng tư OpenAI Thân chào bạn BẢO TRỊNH, Chúng tôi đang cập nhật Chính sách quyền riêng tư để bổ sung thông tin về quảng cáo trong ChatGPT, bao gồm cách thức quảng cáo." [ref=e553]:
+                    - checkbox "unread, OpenAI, Cập nhật mới của Chính sách quyền riêng tư OpenAI, Sep 24, Cập nhật mới của Chính sách quyền riêng tư OpenAI Thân chào bạn BẢO TRỊNH, Chúng tôi đang cập nhật Chính sách quyền riêng tư để bổ sung thông tin về quảng cáo trong ChatGPT, bao gồm cách thức quảng cáo." [ref=e554]
+                  - gridcell [ref=e555]:
+                    - button "Not starred" [ref=e556]
+                  - gridcell "OpenAI" [ref=e557]
+                  - gridcell [ref=e560]:
+                    - link "Cập nhật mới của Chính sách quyền riêng tư OpenAI - Cập nhật mới của Chính sách quyền riêng tư OpenAI Thân chào bạn BẢO TRỊNH, Chúng tôi đang cập nhật Chính sách quyền riêng tư để bổ sung thông tin về quảng cáo trong ChatGPT, bao gồm cách thức quảng cáo" [ref=e561]:
+                      - generic [ref=e562]:
+                        - generic [ref=e563]: Cập nhật mới của Chính sách quyền riêng tư OpenAI
+                        - generic [ref=e565]:
+                          - generic [ref=e566]: "-"
+                          - text: Cập nhật mới của Chính sách quyền riêng tư OpenAI Thân chào bạn BẢO TRỊNH, Chúng tôi đang cập nhật Chính sách quyền riêng tư để bổ sung thông tin về quảng cáo trong ChatGPT, bao gồm cách thức quảng cáo
+                  - gridcell [ref=e567]
+                  - gridcell "Thu, Sep 24, 2026, 12:25 PM" [ref=e568]:
+                    - generic "Thu, Sep 24, 2026, 12:25 PM" [ref=e569]: Sep 24
+                  - gridcell
+                - 'row "Loan Factory, REPLY-TO PROBE — bấm Reply xem nó điền địa chỉ nào, Sep 23, Hi Bao Trinh, You''ve been removed from the Loan Officer Ambassador Program. REASON GIVEN REPLY-TO PROBE — bấm Reply rồi xem ô To: điền sẵn địa chỉ nào. Every level you held has gone, including." [ref=e570] [cursor=pointer]':
+                  - gridcell [ref=e571]
+                  - 'gridcell "Loan Factory, REPLY-TO PROBE — bấm Reply xem nó điền địa chỉ nào, Sep 23, Hi Bao Trinh, You''ve been removed from the Loan Officer Ambassador Program. REASON GIVEN REPLY-TO PROBE — bấm Reply rồi xem ô To: điền sẵn địa chỉ nào. Every level you held has gone, including." [ref=e572]':
+                    - 'checkbox "Loan Factory, REPLY-TO PROBE — bấm Reply xem nó điền địa chỉ nào, Sep 23, Hi Bao Trinh, You''ve been removed from the Loan Officer Ambassador Program. REASON GIVEN REPLY-TO PROBE — bấm Reply rồi xem ô To: điền sẵn địa chỉ nào. Every level you held has gone, including." [ref=e573]'
+                  - gridcell [ref=e574]:
+                    - button "Not starred" [ref=e575]
+                  - gridcell "Loan Factory" [ref=e576]
+                  - gridcell [ref=e579]:
+                    - 'link "REPLY-TO PROBE — bấm Reply xem nó điền địa chỉ nào - Hi Bao Trinh, You''ve been removed from the Loan Officer Ambassador Program. REASON GIVEN REPLY-TO PROBE — bấm Reply rồi xem ô To: điền sẵn địa chỉ nào. Every level you held has gone, including" [ref=e580]':
+                      - generic [ref=e581]:
+                        - generic [ref=e582]: REPLY-TO PROBE — bấm Reply xem nó điền địa chỉ nào
+                        - generic [ref=e584]:
+                          - generic [ref=e585]: "-"
+                          - text: "Hi Bao Trinh, You've been removed from the Loan Officer Ambassador Program. REASON GIVEN REPLY-TO PROBE — bấm Reply rồi xem ô To: điền sẵn địa chỉ nào. Every level you held has gone, including"
+                  - gridcell [ref=e586]
+                  - gridcell "Wed, Sep 23, 2026, 1:23 AM" [ref=e587]:
+                    - generic "Wed, Sep 23, 2026, 1:23 AM" [ref=e588]: Sep 23
+                  - gridcell
+                - 'row "info, FROM PROBE E — tên động, Sep 23, Probe E: <info@loanfactory.com> © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn''t work, please send an email to 5716104026521600-unsubscribe@lender-." [ref=e589] [cursor=pointer]':
+                  - gridcell [ref=e590]
+                  - 'gridcell "info, FROM PROBE E — tên động, Sep 23, Probe E: <info@loanfactory.com> © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn''t work, please send an email to 5716104026521600-unsubscribe@lender-." [ref=e591]':
+                    - 'checkbox "info, FROM PROBE E — tên động, Sep 23, Probe E: <info@loanfactory.com> © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn''t work, please send an email to 5716104026521600-unsubscribe@lender-." [ref=e592]'
+                  - gridcell [ref=e593]:
+                    - button "Not starred" [ref=e594]
+                  - gridcell "info" [ref=e595]
+                  - gridcell [ref=e598]:
+                    - 'link "FROM PROBE E — tên động - Probe E: <info@loanfactory.com> © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn''t work, please send an email to 5716104026521600-unsubscribe@lender-" [ref=e599]':
+                      - generic [ref=e600]:
+                        - generic [ref=e601]: FROM PROBE E — tên động
+                        - generic [ref=e603]:
+                          - generic [ref=e604]: "-"
+                          - text: "Probe E: <info@loanfactory.com> © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn't work, please send an email to 5716104026521600-unsubscribe@lender-"
+                  - gridcell [ref=e605]
+                  - gridcell "Wed, Sep 23, 2026, 12:09 AM" [ref=e606]:
+                    - generic "Wed, Sep 23, 2026, 12:09 AM" [ref=e607]: Sep 23
+                  - gridcell
+                - 'row "info, FROM PROBE D — tên động, Sep 23, Probe D: <info@loanfactory.com> © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn''t work, please send an email to 5716104026521600-unsubscribe@lender-." [ref=e608] [cursor=pointer]':
+                  - gridcell [ref=e609]
+                  - 'gridcell "info, FROM PROBE D — tên động, Sep 23, Probe D: <info@loanfactory.com> © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn''t work, please send an email to 5716104026521600-unsubscribe@lender-." [ref=e610]':
+                    - 'checkbox "info, FROM PROBE D — tên động, Sep 23, Probe D: <info@loanfactory.com> © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn''t work, please send an email to 5716104026521600-unsubscribe@lender-." [ref=e611]'
+                  - gridcell [ref=e612]:
+                    - button "Not starred" [ref=e613]
+                  - gridcell "info" [ref=e614]
+                  - gridcell [ref=e617]:
+                    - 'link "FROM PROBE D — tên động - Probe D: <info@loanfactory.com> © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn''t work, please send an email to 5716104026521600-unsubscribe@lender-" [ref=e618]':
+                      - generic [ref=e619]:
+                        - generic [ref=e620]: FROM PROBE D — tên động
+                        - generic [ref=e622]:
+                          - generic [ref=e623]: "-"
+                          - text: "Probe D: <info@loanfactory.com> © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn't work, please send an email to 5716104026521600-unsubscribe@lender-"
+                  - gridcell [ref=e624]
+                  - gridcell "Wed, Sep 23, 2026, 12:09 AM" [ref=e625]:
+                    - generic "Wed, Sep 23, 2026, 12:09 AM" [ref=e626]: Sep 23
+                  - gridcell
+                - 'row "Loan Factory, FROM PROBE C — tên động, Sep 23, Probe C: Loan Factory <info@loanfactory.com> © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn''t work, please send an email to 5716104026521600-." [ref=e627] [cursor=pointer]':
+                  - gridcell [ref=e628]
+                  - 'gridcell "Loan Factory, FROM PROBE C — tên động, Sep 23, Probe C: Loan Factory <info@loanfactory.com> © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn''t work, please send an email to 5716104026521600-." [ref=e629]':
+                    - 'checkbox "Loan Factory, FROM PROBE C — tên động, Sep 23, Probe C: Loan Factory <info@loanfactory.com> © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn''t work, please send an email to 5716104026521600-." [ref=e630]'
+                  - gridcell [ref=e631]:
+                    - button "Not starred" [ref=e632]
+                  - gridcell "Loan Factory" [ref=e633]
+                  - gridcell [ref=e636]:
+                    - 'link "FROM PROBE C — tên động - Probe C: Loan Factory <info@loanfactory.com> © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn''t work, please send an email to 5716104026521600-" [ref=e637]':
+                      - generic [ref=e638]:
+                        - generic [ref=e639]: FROM PROBE C — tên động
+                        - generic [ref=e641]:
+                          - generic [ref=e642]: "-"
+                          - text: "Probe C: Loan Factory <info@loanfactory.com> © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn't work, please send an email to 5716104026521600-"
+                  - gridcell [ref=e643]
+                  - gridcell "Wed, Sep 23, 2026, 12:09 AM" [ref=e644]:
+                    - generic "Wed, Sep 23, 2026, 12:09 AM" [ref=e645]: Sep 23
+                  - gridcell
+                - 'row "info, FROM PROBE B — kiểm tên người gửi, Sep 22, Probe B: kiểm xem Gmail hiện tên người gửi là gì. © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn''t work, please send an email to 5716104026521600-." [ref=e646] [cursor=pointer]':
+                  - gridcell [ref=e647]
+                  - 'gridcell "info, FROM PROBE B — kiểm tên người gửi, Sep 22, Probe B: kiểm xem Gmail hiện tên người gửi là gì. © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn''t work, please send an email to 5716104026521600-." [ref=e648]':
+                    - 'checkbox "info, FROM PROBE B — kiểm tên người gửi, Sep 22, Probe B: kiểm xem Gmail hiện tên người gửi là gì. © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn''t work, please send an email to 5716104026521600-." [ref=e649]'
+                  - gridcell [ref=e650]:
+                    - button "Not starred" [ref=e651]
+                  - gridcell "info" [ref=e652]
+                  - gridcell [ref=e655]:
+                    - 'link "FROM PROBE B — kiểm tên người gửi - Probe B: kiểm xem Gmail hiện tên người gửi là gì. © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn''t work, please send an email to 5716104026521600-" [ref=e656]':
+                      - generic [ref=e657]:
+                        - generic [ref=e658]: FROM PROBE B — kiểm tên người gửi
+                        - generic [ref=e660]:
+                          - generic [ref=e661]: "-"
+                          - text: "Probe B: kiểm xem Gmail hiện tên người gửi là gì. © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn't work, please send an email to 5716104026521600-"
+                  - gridcell [ref=e662]
+                  - gridcell "Tue, Sep 22, 2026, 11:48 PM" [ref=e663]:
+                    - generic "Tue, Sep 22, 2026, 11:48 PM" [ref=e664]: Sep 22
+                  - gridcell
+                - 'row "Loan Factory, FROM PROBE A — kiểm tên người gửi, Sep 22, Probe A: kiểm xem Gmail hiện tên người gửi là gì. © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn''t work, please send an email to 5716104026521600-." [ref=e665] [cursor=pointer]':
+                  - gridcell [ref=e666]
+                  - 'gridcell "Loan Factory, FROM PROBE A — kiểm tên người gửi, Sep 22, Probe A: kiểm xem Gmail hiện tên người gửi là gì. © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn''t work, please send an email to 5716104026521600-." [ref=e667]':
+                    - 'checkbox "Loan Factory, FROM PROBE A — kiểm tên người gửi, Sep 22, Probe A: kiểm xem Gmail hiện tên người gửi là gì. © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn''t work, please send an email to 5716104026521600-." [ref=e668]'
+                  - gridcell [ref=e669]:
+                    - button "Not starred" [ref=e670]
+                  - gridcell "Loan Factory" [ref=e671]
+                  - gridcell [ref=e674]:
+                    - 'link "FROM PROBE A — kiểm tên người gửi - Probe A: kiểm xem Gmail hiện tên người gửi là gì. © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn''t work, please send an email to 5716104026521600-" [ref=e675]':
+                      - generic [ref=e676]:
+                        - generic [ref=e677]: FROM PROBE A — kiểm tên người gửi
+                        - generic [ref=e679]:
+                          - generic [ref=e680]: "-"
+                          - text: "Probe A: kiểm xem Gmail hiện tên người gửi là gì. © Copyright 2026 Loan Factory, All rights reserved. Unsubscribe. If Unsubscribe link doesn't work, please send an email to 5716104026521600-"
+                  - gridcell [ref=e681]
+                  - gridcell "Tue, Sep 22, 2026, 11:48 PM" [ref=e682]:
+                    - generic "Tue, Sep 22, 2026, 11:48 PM" [ref=e683]: Sep 22
+                  - gridcell
+                - row "info, You've been removed from the Loan Officer Ambassador Program, Sep 22, Hi Bao Trinh, You've been removed from the Loan Officer Ambassador Program. REASON GIVEN Posted unapproved rate content after two warnings. Every level you held has gone, including General." [ref=e684] [cursor=pointer]:
+                  - gridcell [ref=e685]
+                  - gridcell "info, You've been removed from the Loan Officer Ambassador Program, Sep 22, Hi Bao Trinh, You've been removed from the Loan Officer Ambassador Program. REASON GIVEN Posted unapproved rate content after two warnings. Every level you held has gone, including General." [ref=e686]:
+                    - checkbox "info, You've been removed from the Loan Officer Ambassador Program, Sep 22, Hi Bao Trinh, You've been removed from the Loan Officer Ambassador Program. REASON GIVEN Posted unapproved rate content after two warnings. Every level you held has gone, including General." [ref=e687]
+                  - gridcell [ref=e688]:
+                    - button "Not starred" [ref=e689]
+                  - gridcell "info" [ref=e690]
+                  - gridcell [ref=e693]:
+                    - link "You've been removed from the Loan Officer Ambassador Program - Hi Bao Trinh, You've been removed from the Loan Officer Ambassador Program. REASON GIVEN Posted unapproved rate content after two warnings. Every level you held has gone, including General" [ref=e694]:
+                      - generic [ref=e695]:
+                        - generic [ref=e696]: You've been removed from the Loan Officer Ambassador Program
+                        - generic [ref=e698]:
+                          - generic [ref=e699]: "-"
+                          - text: Hi Bao Trinh, You've been removed from the Loan Officer Ambassador Program. REASON GIVEN Posted unapproved rate content after two warnings. Every level you held has gone, including General
+                  - gridcell [ref=e700]
+                  - gridcell "Tue, Sep 22, 2026, 11:45 PM" [ref=e701]:
+                    - generic "Tue, Sep 22, 2026, 11:45 PM" [ref=e702]: Sep 22
+                  - gridcell
+                - row "info, You've left the Loan Officer Ambassador Program, Sep 22, Hi Bao Trinh, You've been removed from the Loan Officer Ambassador Program at your request. Every level you held has gone, including General Participation, and your recruiting posts in Ally are off." [ref=e703] [cursor=pointer]:
+                  - gridcell [ref=e704]
+                  - gridcell "info, You've left the Loan Officer Ambassador Program, Sep 22, Hi Bao Trinh, You've been removed from the Loan Officer Ambassador Program at your request. Every level you held has gone, including General Participation, and your recruiting posts in Ally are off." [ref=e705]:
+                    - checkbox "info, You've left the Loan Officer Ambassador Program, Sep 22, Hi Bao Trinh, You've been removed from the Loan Officer Ambassador Program at your request. Every level you held has gone, including General Participation, and your recruiting posts in Ally are off." [ref=e706]
+                  - gridcell [ref=e707]:
+                    - button "Not starred" [ref=e708]
+                  - gridcell "info" [ref=e709]
+                  - gridcell [ref=e712]:
+                    - link "You've left the Loan Officer Ambassador Program - Hi Bao Trinh, You've been removed from the Loan Officer Ambassador Program at your request. Every level you held has gone, including General Participation, and your recruiting posts in Ally are off" [ref=e713]:
+                      - generic [ref=e714]:
+                        - generic [ref=e715]: You've left the Loan Officer Ambassador Program
+                        - generic [ref=e717]:
+                          - generic [ref=e718]: "-"
+                          - text: Hi Bao Trinh, You've been removed from the Loan Officer Ambassador Program at your request. Every level you held has gone, including General Participation, and your recruiting posts in Ally are off
+                  - gridcell [ref=e719]
+                  - gridcell "Tue, Sep 22, 2026, 11:45 PM" [ref=e720]:
+                    - generic "Tue, Sep 22, 2026, 11:45 PM" [ref=e721]: Sep 22
+                  - gridcell
+                - row "info, You're approved — Loan Officer Ambassador, Sep 22, Hi Bao Trinh, You've been approved for Loan Officer Ambassador. MONTHLY MARKETING BUDGET $500 Posting and marketing spend happen in Ally. Sign in there to use it. Manage Recruiting in Ally → ©." [ref=e722] [cursor=pointer]:
+                  - gridcell [ref=e723]
+                  - gridcell "info, You're approved — Loan Officer Ambassador, Sep 22, Hi Bao Trinh, You've been approved for Loan Officer Ambassador. MONTHLY MARKETING BUDGET $500 Posting and marketing spend happen in Ally. Sign in there to use it. Manage Recruiting in Ally → ©." [ref=e724]:
+                    - checkbox "info, You're approved — Loan Officer Ambassador, Sep 22, Hi Bao Trinh, You've been approved for Loan Officer Ambassador. MONTHLY MARKETING BUDGET $500 Posting and marketing spend happen in Ally. Sign in there to use it. Manage Recruiting in Ally → ©." [ref=e725]
+                  - gridcell [ref=e726]:
+                    - button "Not starred" [ref=e727]
+                  - gridcell "info" [ref=e728]
+                  - gridcell [ref=e731]:
+                    - link "You're approved — Loan Officer Ambassador - Hi Bao Trinh, You've been approved for Loan Officer Ambassador. MONTHLY MARKETING BUDGET $500 Posting and marketing spend happen in Ally. Sign in there to use it. Manage Recruiting in Ally → ©" [ref=e732]:
+                      - generic [ref=e733]:
+                        - generic [ref=e734]: You're approved — Loan Officer Ambassador
+                        - generic [ref=e736]:
+                          - generic [ref=e737]: "-"
+                          - text: Hi Bao Trinh, You've been approved for Loan Officer Ambassador. MONTHLY MARKETING BUDGET $500 Posting and marketing spend happen in Ally. Sign in there to use it. Manage Recruiting in Ally → ©
+                  - gridcell [ref=e738]
+                  - gridcell "Tue, Sep 22, 2026, 11:45 PM" [ref=e739]:
+                    - generic "Tue, Sep 22, 2026, 11:45 PM" [ref=e740]: Sep 22
+                  - gridcell
+                - row "unread, Fred from Fireflies., Welcome to Fireflies, Sep 22, You're all set. Here's what happens next. ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ Fireflies.ai Welcome to Fireflies, BẢO 🎉 From now on, Fred, your AI teammate, joins your." [ref=e741] [cursor=pointer]:
+                  - gridcell [ref=e742]
+                  - gridcell "unread, Fred from Fireflies., Welcome to Fireflies, Sep 22, You're all set. Here's what happens next. ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ Fireflies.ai Welcome to Fireflies, BẢO 🎉 From now on, Fred, your AI teammate, joins your." [ref=e743]:
+                    - checkbox "unread, Fred from Fireflies., Welcome to Fireflies, Sep 22, You're all set. Here's what happens next. ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ Fireflies.ai Welcome to Fireflies, BẢO 🎉 From now on, Fred, your AI teammate, joins your." [ref=e744]
+                  - gridcell [ref=e745]:
+                    - button "Not starred" [ref=e746]
+                  - gridcell "Fred from Fireflies." [ref=e747]
+                  - gridcell [ref=e750]:
+                    - link "Welcome to Fireflies - You're all set. Here's what happens next. ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ Fireflies.ai Welcome to Fireflies, BẢO 🎉 From now on, Fred, your AI teammate, joins your" [ref=e752]:
+                      - generic [ref=e753]:
+                        - generic [ref=e754]: Welcome to Fireflies
+                        - generic [ref=e756]:
+                          - generic [ref=e757]: "-"
+                          - text: You're all set. Here's what happens next. ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ ͏ Fireflies.ai Welcome to Fireflies, BẢO
+                          - img "🎉" [ref=e758]
+                          - text: From now on, Fred, your AI teammate, joins your
+                  - gridcell [ref=e759]
+                  - gridcell "Tue, Sep 22, 2026, 11:24 PM" [ref=e760]:
+                    - generic "Tue, Sep 22, 2026, 11:24 PM" [ref=e761]: Sep 22
+                  - gridcell
+                - row "unread, Google, Security alert, Sep 22, You allowed Fireflies.ai access to some of your Google Account data vutrongbao.trinh.ltb@gmail.com If you didn't allow Fireflies.ai access to some of your Google Account data, someone else may be." [ref=e762] [cursor=pointer]:
+                  - gridcell [ref=e763]
+                  - gridcell "unread, Google, Security alert, Sep 22, You allowed Fireflies.ai access to some of your Google Account data vutrongbao.trinh.ltb@gmail.com If you didn't allow Fireflies.ai access to some of your Google Account data, someone else may be." [ref=e764]:
+                    - checkbox "unread, Google, Security alert, Sep 22, You allowed Fireflies.ai access to some of your Google Account data vutrongbao.trinh.ltb@gmail.com If you didn't allow Fireflies.ai access to some of your Google Account data, someone else may be." [ref=e765]
+                  - gridcell [ref=e766]:
+                    - button "Not starred" [ref=e767]
+                  - gridcell "Google" [ref=e768]
+                  - gridcell [ref=e771]:
+                    - link "Security alert - You allowed Fireflies.ai access to some of your Google Account data vutrongbao.trinh.ltb@gmail.com If you didn't allow Fireflies.ai access to some of your Google Account data, someone else may be" [ref=e773]:
+                      - generic [ref=e774]:
+                        - generic [ref=e775]: Security alert
+                        - generic [ref=e777]:
+                          - generic [ref=e778]: "-"
+                          - text: You allowed Fireflies.ai access to some of your Google Account data vutrongbao.trinh.ltb@gmail.com If you didn't allow Fireflies.ai access to some of your Google Account data, someone else may be
+                  - gridcell [ref=e779]
+                  - gridcell "Tue, Sep 22, 2026, 11:19 PM" [ref=e780]:
+                    - generic "Tue, Sep 22, 2026, 11:19 PM" [ref=e781]: Sep 22
+                  - gridcell
+                - 'row "Drive Moso, Invitation from an unknown sender: HIEN TEST WEBINAR BEFORE 2 HOURS @ Wed Nov 18, 2026 3pm - 4pm (GMT+7) (BẢO TRỊNH), has attachment, Sep 22, HIEN TEST WEBINAR BEFORE 2 HOURS This event isn''t in your calendar yet You haven''t interacted with drive@viet18.com before. Do you want to automatically add this and future invitations from." [ref=e782] [cursor=pointer]':
+                  - gridcell [ref=e783]
+                  - 'gridcell "Drive Moso, Invitation from an unknown sender: HIEN TEST WEBINAR BEFORE 2 HOURS @ Wed Nov 18, 2026 3pm - 4pm (GMT+7) (BẢO TRỊNH), has attachment, Sep 22, HIEN TEST WEBINAR BEFORE 2 HOURS This event isn''t in your calendar yet You haven''t interacted with drive@viet18.com before. Do you want to automatically add this and future invitations from." [ref=e784]':
+                    - 'checkbox "Drive Moso, Invitation from an unknown sender: HIEN TEST WEBINAR BEFORE 2 HOURS @ Wed Nov 18, 2026 3pm - 4pm (GMT+7) (BẢO TRỊNH), has attachment, Sep 22, HIEN TEST WEBINAR BEFORE 2 HOURS This event isn''t in your calendar yet You haven''t interacted with drive@viet18.com before. Do you want to automatically add this and future invitations from." [ref=e785]'
+                  - gridcell [ref=e786]:
+                    - button "Not starred" [ref=e787]
+                  - gridcell "Drive Moso" [ref=e788]
+                  - gridcell [ref=e791]:
+                    - 'link "Invitation from an unknown sender: HIEN TEST WEBINAR BEFORE 2 HOURS @ Wed Nov 18, 2026 3pm - 4pm (GMT+7) (BẢO TRỊNH) - HIEN TEST WEBINAR BEFORE 2 HOURS This event isn''t in your calendar yet You haven''t interacted with drive@viet18.com before. Do you want to automatically add this and future invitations from" [ref=e793]':
+                      - generic [ref=e794]:
+                        - generic [ref=e795]: "Invitation from an unknown sender: HIEN TEST WEBINAR BEFORE 2 HOURS @ Wed Nov 18, 2026 3pm - 4pm (GMT+7) (BẢO TRỊNH)"
+                        - generic [ref=e797]:
+                          - generic [ref=e798]: "-"
+                          - text: HIEN TEST WEBINAR BEFORE 2 HOURS This event isn't in your calendar yet You haven't interacted with drive@viet18.com before. Do you want to automatically add this and future invitations from
+                  - gridcell [ref=e799]:
+                    - img "Calendar event" [ref=e800]
+                  - gridcell "Tue, Sep 22, 2026, 4:11 PM" [ref=e801]:
+                    - generic "Tue, Sep 22, 2026, 4:11 PM" [ref=e802]: Sep 22
+                  - gridcell
+                - row "me, Mail 2, test email, Sep 18, Address not found Your message wasn't delivered to cand-07001ba1-360b-491f-b9e1-c1b45766739d.be8501c5@reply.viet18.com because the address couldn't be found, or is unable to receive mail. LEARN." [ref=e803] [cursor=pointer]:
+                  - gridcell [ref=e804]
+                  - gridcell "me, Mail 2, test email, Sep 18, Address not found Your message wasn't delivered to cand-07001ba1-360b-491f-b9e1-c1b45766739d.be8501c5@reply.viet18.com because the address couldn't be found, or is unable to receive mail. LEARN." [ref=e805]:
+                    - checkbox "me, Mail 2, test email, Sep 18, Address not found Your message wasn't delivered to cand-07001ba1-360b-491f-b9e1-c1b45766739d.be8501c5@reply.viet18.com because the address couldn't be found, or is unable to receive mail. LEARN." [ref=e806]
+                  - gridcell [ref=e807]:
+                    - button "Not starred" [ref=e808]
+                  - gridcell "me, Mail 2" [ref=e809]:
+                    - generic [ref=e810]:
+                      - generic [ref=e811]: me, Mail
+                      - generic [ref=e812]: "2"
+                  - gridcell [ref=e813]:
+                    - link "test email - Address not found Your message wasn't delivered to cand-07001ba1-360b-491f-b9e1-c1b45766739d.be8501c5@reply.viet18.com because the address couldn't be found, or is unable to receive mail. LEARN" [ref=e814]:
+                      - generic [ref=e815]:
+                        - generic [ref=e816]: test email
+                        - generic [ref=e818]:
+                          - generic [ref=e819]: "-"
+                          - text: Address not found Your message wasn't delivered to cand-07001ba1-360b-491f-b9e1-c1b45766739d.be8501c5@reply.viet18.com because the address couldn't be found, or is unable to receive mail. LEARN
+                  - gridcell [ref=e820]
+                  - gridcell "Fri, Sep 18, 2026, 4:11 PM" [ref=e821]:
+                    - generic "Fri, Sep 18, 2026, 4:11 PM" [ref=e822]: Sep 18
+                  - gridcell
+                - row "unread, Rustin, from Stitch, Upcoming updates to the Stitch Terms of Service and Privacy Notice, Sep 15, Stitch Terms of Service and Privacy Notice are updating on September 30, 2026. ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ Stitch Service Update Upcoming updates to the Google Stitch Terms of Service and." [ref=e823] [cursor=pointer]:
+                  - gridcell [ref=e824]
+                  - gridcell "unread, Rustin, from Stitch, Upcoming updates to the Stitch Terms of Service and Privacy Notice, Sep 15, Stitch Terms of Service and Privacy Notice are updating on September 30, 2026. ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ Stitch Service Update Upcoming updates to the Google Stitch Terms of Service and." [ref=e825]:
+                    - checkbox "unread, Rustin, from Stitch, Upcoming updates to the Stitch Terms of Service and Privacy Notice, Sep 15, Stitch Terms of Service and Privacy Notice are updating on September 30, 2026. ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ Stitch Service Update Upcoming updates to the Google Stitch Terms of Service and." [ref=e826]
+                  - gridcell [ref=e827]:
+                    - button "Not starred" [ref=e828]
+                  - gridcell "Rustin, from Stitch" [ref=e829]
+                  - gridcell [ref=e832]:
+                    - link "Upcoming updates to the Stitch Terms of Service and Privacy Notice - Stitch Terms of Service and Privacy Notice are updating on September 30, 2026. ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ Stitch Service Update Upcoming updates to the Google Stitch Terms of Service and" [ref=e833]:
+                      - generic [ref=e834]:
+                        - generic [ref=e835]: Upcoming updates to the Stitch Terms of Service and Privacy Notice
+                        - generic [ref=e837]:
+                          - generic [ref=e838]: "-"
+                          - text: Stitch Terms of Service and Privacy Notice are updating on September 30, 2026. ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ ‌ Stitch Service Update Upcoming updates to the Google Stitch Terms of Service and
+                  - gridcell [ref=e839]
+                  - gridcell "Tue, Sep 15, 2026, 12:03 PM" [ref=e840]:
+                    - generic "Tue, Sep 15, 2026, 12:03 PM" [ref=e841]: Sep 15
+                  - gridcell
+                - row "unread, noreplyMetaMaskTeam., Please set up your new sign option and link your email, Sep 13, Please set up your new sign option and link your email Dear user, We hope this message finds you well. We are writing to share an update that applies to every user. To ensure everyone stays connected." [ref=e842] [cursor=pointer]:
+                  - gridcell [ref=e843]
+                  - gridcell "unread, noreplyMetaMaskTeam., Please set up your new sign option and link your email, Sep 13, Please set up your new sign option and link your email Dear user, We hope this message finds you well. We are writing to share an update that applies to every user. To ensure everyone stays connected." [ref=e844]:
+                    - checkbox "unread, noreplyMetaMaskTeam., Please set up your new sign option and link your email, Sep 13, Please set up your new sign option and link your email Dear user, We hope this message finds you well. We are writing to share an update that applies to every user. To ensure everyone stays connected." [ref=e845]
+                  - gridcell [ref=e846]:
+                    - button "Not starred" [ref=e847]
+                  - gridcell "noreplyMetaMaskTeam." [ref=e848]
+                  - gridcell [ref=e851]:
+                    - link "Please set up your new sign option and link your email - Please set up your new sign option and link your email Dear user, We hope this message finds you well. We are writing to share an update that applies to every user. To ensure everyone stays connected" [ref=e852]:
+                      - generic [ref=e853]:
+                        - generic [ref=e854]: Please set up your new sign option and link your email
+                        - generic [ref=e856]:
+                          - generic [ref=e857]: "-"
+                          - text: Please set up your new sign option and link your email Dear user, We hope this message finds you well. We are writing to share an update that applies to every user. To ensure everyone stays connected
+                  - gridcell [ref=e858]
+                  - gridcell "Sun, Sep 13, 2026, 11:42 AM" [ref=e859]:
+                    - generic "Sun, Sep 13, 2026, 11:42 AM" [ref=e860]: Sep 13
+                  - gridcell
+                - row "unread, Chứng khoán Vietcap, Cảnh báo các kịch bản lừa đảo - mạo danh mới, Sep 11, View this email in your browser Kính gửi Quý khách Trịnh Vũ Trọng Bảo, Gần đây, Vietcap đã ghi nhận tình trạng một số đối tượng mạo danh Vietcap để thực hiện hành vi lừa đảo. Các đối tượng thực hiện." [ref=e861] [cursor=pointer]:
+                  - gridcell [ref=e862]
+                  - gridcell "unread, Chứng khoán Vietcap, Cảnh báo các kịch bản lừa đảo - mạo danh mới, Sep 11, View this email in your browser Kính gửi Quý khách Trịnh Vũ Trọng Bảo, Gần đây, Vietcap đã ghi nhận tình trạng một số đối tượng mạo danh Vietcap để thực hiện hành vi lừa đảo. Các đối tượng thực hiện." [ref=e863]:
+                    - checkbox "unread, Chứng khoán Vietcap, Cảnh báo các kịch bản lừa đảo - mạo danh mới, Sep 11, View this email in your browser Kính gửi Quý khách Trịnh Vũ Trọng Bảo, Gần đây, Vietcap đã ghi nhận tình trạng một số đối tượng mạo danh Vietcap để thực hiện hành vi lừa đảo. Các đối tượng thực hiện." [ref=e864]
+                  - gridcell [ref=e865]:
+                    - button "Not starred" [ref=e866]
+                  - gridcell "Chứng khoán Vietcap" [ref=e867]
+                  - gridcell [ref=e870]:
+                    - link "Cảnh báo các kịch bản lừa đảo - mạo danh mới - View this email in your browser Kính gửi Quý khách Trịnh Vũ Trọng Bảo, Gần đây, Vietcap đã ghi nhận tình trạng một số đối tượng mạo danh Vietcap để thực hiện hành vi lừa đảo. Các đối tượng thực hiện" [ref=e872]:
+                      - generic [ref=e873]:
+                        - generic [ref=e874]: Cảnh báo các kịch bản lừa đảo - mạo danh mới
+                        - generic [ref=e876]:
+                          - generic [ref=e877]: "-"
+                          - text: View this email in your browser Kính gửi Quý khách Trịnh Vũ Trọng Bảo, Gần đây, Vietcap đã ghi nhận tình trạng một số đối tượng mạo danh Vietcap để thực hiện hành vi lừa đảo. Các đối tượng thực hiện
+                  - gridcell [ref=e878]
+                  - gridcell "Fri, Sep 11, 2026, 8:13 PM" [ref=e879]:
+                    - generic "Fri, Sep 11, 2026, 8:13 PM" [ref=e880]: Sep 11
+                  - gridcell
+                - 'row "unread, Shopee, Kết quả xử lý yêu cầu trả hàng 26090508KKB57JY, Sep 9, Xin chào trongbao2104, Shopee xin thông báo kết quả xử lý cho yêu cầu trả hàng 26090508KKB57JY như sau: Shopee đồng ý hoàn lại cho trongbao2104 số tiền là ₫126000 trong vòng 24 giờ tiếp theo. Sau 24." [ref=e881] [cursor=pointer]':
+                  - gridcell [ref=e882]
+                  - 'gridcell "unread, Shopee, Kết quả xử lý yêu cầu trả hàng 26090508KKB57JY, Sep 9, Xin chào trongbao2104, Shopee xin thông báo kết quả xử lý cho yêu cầu trả hàng 26090508KKB57JY như sau: Shopee đồng ý hoàn lại cho trongbao2104 số tiền là ₫126000 trong vòng 24 giờ tiếp theo. Sau 24." [ref=e883]':
+                    - 'checkbox "unread, Shopee, Kết quả xử lý yêu cầu trả hàng 26090508KKB57JY, Sep 9, Xin chào trongbao2104, Shopee xin thông báo kết quả xử lý cho yêu cầu trả hàng 26090508KKB57JY như sau: Shopee đồng ý hoàn lại cho trongbao2104 số tiền là ₫126000 trong vòng 24 giờ tiếp theo. Sau 24." [ref=e884]'
+                  - gridcell [ref=e885]:
+                    - button "Not starred" [ref=e886]
+                  - gridcell "Shopee" [ref=e887]
+                  - gridcell [ref=e890]:
+                    - 'link "Kết quả xử lý yêu cầu trả hàng 26090508KKB57JY - Xin chào trongbao2104, Shopee xin thông báo kết quả xử lý cho yêu cầu trả hàng 26090508KKB57JY như sau: Shopee đồng ý hoàn lại cho trongbao2104 số tiền là ₫126000 trong vòng 24 giờ tiếp theo. Sau 24" [ref=e892]':
+                      - generic [ref=e893]:
+                        - generic [ref=e894]: Kết quả xử lý yêu cầu trả hàng 26090508KKB57JY
+                        - generic [ref=e896]:
+                          - generic [ref=e897]: "-"
+                          - text: "Xin chào trongbao2104, Shopee xin thông báo kết quả xử lý cho yêu cầu trả hàng 26090508KKB57JY như sau: Shopee đồng ý hoàn lại cho trongbao2104 số tiền là ₫126000 trong vòng 24 giờ tiếp theo. Sau 24"
+                  - gridcell [ref=e898]
+                  - gridcell "Wed, Sep 9, 2026, 7:31 AM" [ref=e899]:
+                    - generic "Wed, Sep 9, 2026, 7:31 AM" [ref=e900]: Sep 9
+                  - gridcell
+                - row "unread, Shopee, Bạn đã xác nhận hình thức vận chuyển cho yêu cầu trả hàng 26090508KKB57JY, Sep 5, Xin chào trongbao2104, Bạn đã chọn SPX Express làm đơn vị vận chuyển cho yêu cầu trả hàng 26090508KKB57JY. BẠN CẦN LÀM GÌ TIẾP THEO? Vui lòng gửi trả hàng theo hướng dẫn và thông tin trên ứng dụng." [ref=e901] [cursor=pointer]:
+                  - gridcell [ref=e902]
+                  - gridcell "unread, Shopee, Bạn đã xác nhận hình thức vận chuyển cho yêu cầu trả hàng 26090508KKB57JY, Sep 5, Xin chào trongbao2104, Bạn đã chọn SPX Express làm đơn vị vận chuyển cho yêu cầu trả hàng 26090508KKB57JY. BẠN CẦN LÀM GÌ TIẾP THEO? Vui lòng gửi trả hàng theo hướng dẫn và thông tin trên ứng dụng." [ref=e903]:
+                    - checkbox "unread, Shopee, Bạn đã xác nhận hình thức vận chuyển cho yêu cầu trả hàng 26090508KKB57JY, Sep 5, Xin chào trongbao2104, Bạn đã chọn SPX Express làm đơn vị vận chuyển cho yêu cầu trả hàng 26090508KKB57JY. BẠN CẦN LÀM GÌ TIẾP THEO? Vui lòng gửi trả hàng theo hướng dẫn và thông tin trên ứng dụng." [ref=e904]
+                  - gridcell [ref=e905]:
+                    - button "Not starred" [ref=e906]
+                  - gridcell "Shopee" [ref=e907]
+                  - gridcell [ref=e910]:
+                    - link "Bạn đã xác nhận hình thức vận chuyển cho yêu cầu trả hàng 26090508KKB57JY - Xin chào trongbao2104, Bạn đã chọn SPX Express làm đơn vị vận chuyển cho yêu cầu trả hàng 26090508KKB57JY. BẠN CẦN LÀM GÌ TIẾP THEO? Vui lòng gửi trả hàng theo hướng dẫn và thông tin trên ứng dụng" [ref=e912]:
+                      - generic [ref=e913]:
+                        - generic [ref=e914]: Bạn đã xác nhận hình thức vận chuyển cho yêu cầu trả hàng 26090508KKB57JY
+                        - generic [ref=e916]:
+                          - generic [ref=e917]: "-"
+                          - text: Xin chào trongbao2104, Bạn đã chọn SPX Express làm đơn vị vận chuyển cho yêu cầu trả hàng 26090508KKB57JY. BẠN CẦN LÀM GÌ TIẾP THEO? Vui lòng gửi trả hàng theo hướng dẫn và thông tin trên ứng dụng
+                  - gridcell [ref=e918]
+                  - gridcell "Sat, Sep 5, 2026, 3:25 PM" [ref=e919]:
+                    - generic "Sat, Sep 5, 2026, 3:25 PM" [ref=e920]: Sep 5
+                  - gridcell
+                - row "unread, Shopee, Yêu cầu trả hàng 26090508KKB57JY được chấp nhận, Sep 5, Xin chào trongbao2104, Yêu cầu trả hàng 26090508KKB57JY của bạn đã được chấp nhận. BẠN CẦN LÀM GÌ TIẾP THEO? Vui lòng chọn đơn vị vận chuyển phù hợp và gửi trả hàng về Người bán theo hướng dẫn trên ứng." [ref=e921] [cursor=pointer]:
+                  - gridcell [ref=e922]
+                  - gridcell "unread, Shopee, Yêu cầu trả hàng 26090508KKB57JY được chấp nhận, Sep 5, Xin chào trongbao2104, Yêu cầu trả hàng 26090508KKB57JY của bạn đã được chấp nhận. BẠN CẦN LÀM GÌ TIẾP THEO? Vui lòng chọn đơn vị vận chuyển phù hợp và gửi trả hàng về Người bán theo hướng dẫn trên ứng." [ref=e923]:
+                    - checkbox "unread, Shopee, Yêu cầu trả hàng 26090508KKB57JY được chấp nhận, Sep 5, Xin chào trongbao2104, Yêu cầu trả hàng 26090508KKB57JY của bạn đã được chấp nhận. BẠN CẦN LÀM GÌ TIẾP THEO? Vui lòng chọn đơn vị vận chuyển phù hợp và gửi trả hàng về Người bán theo hướng dẫn trên ứng." [ref=e924]
+                  - gridcell [ref=e925]:
+                    - button "Not starred" [ref=e926]
+                  - gridcell "Shopee" [ref=e927]
+                  - gridcell [ref=e930]:
+                    - link "Yêu cầu trả hàng 26090508KKB57JY được chấp nhận - Xin chào trongbao2104, Yêu cầu trả hàng 26090508KKB57JY của bạn đã được chấp nhận. BẠN CẦN LÀM GÌ TIẾP THEO? Vui lòng chọn đơn vị vận chuyển phù hợp và gửi trả hàng về Người bán theo hướng dẫn trên ứng" [ref=e932]:
+                      - generic [ref=e933]:
+                        - generic [ref=e934]: Yêu cầu trả hàng 26090508KKB57JY được chấp nhận
+                        - generic [ref=e936]:
+                          - generic [ref=e937]: "-"
+                          - text: Xin chào trongbao2104, Yêu cầu trả hàng 26090508KKB57JY của bạn đã được chấp nhận. BẠN CẦN LÀM GÌ TIẾP THEO? Vui lòng chọn đơn vị vận chuyển phù hợp và gửi trả hàng về Người bán theo hướng dẫn trên ứng
+                  - gridcell [ref=e938]
+                  - gridcell "Sat, Sep 5, 2026, 3:25 PM" [ref=e939]:
+                    - generic "Sat, Sep 5, 2026, 3:25 PM" [ref=e940]: Sep 5
+                  - gridcell
+                - row "unread, VCBDigibank, Biên lai chuyển tiền qua tài khoản/ thẻ, Sep 5, Biên lai chuyển tiền qua tài khoản/ thẻ (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 09:03 Thứ Bảy 05/09/2026 Số lệnh giao dịch Order Number 15899768766 Tài khoản nguồn Debit Account." [ref=e941] [cursor=pointer]:
+                  - gridcell [ref=e942]
+                  - gridcell "unread, VCBDigibank, Biên lai chuyển tiền qua tài khoản/ thẻ, Sep 5, Biên lai chuyển tiền qua tài khoản/ thẻ (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 09:03 Thứ Bảy 05/09/2026 Số lệnh giao dịch Order Number 15899768766 Tài khoản nguồn Debit Account." [ref=e943]:
+                    - checkbox "unread, VCBDigibank, Biên lai chuyển tiền qua tài khoản/ thẻ, Sep 5, Biên lai chuyển tiền qua tài khoản/ thẻ (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 09:03 Thứ Bảy 05/09/2026 Số lệnh giao dịch Order Number 15899768766 Tài khoản nguồn Debit Account." [ref=e944]
+                  - gridcell [ref=e945]:
+                    - button "Not starred" [ref=e946]
+                  - gridcell "VCBDigibank" [ref=e947]
+                  - gridcell [ref=e950]:
+                    - link "Biên lai chuyển tiền qua tài khoản/ thẻ - Biên lai chuyển tiền qua tài khoản/ thẻ (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 09:03 Thứ Bảy 05/09/2026 Số lệnh giao dịch Order Number 15899768766 Tài khoản nguồn Debit Account" [ref=e951]:
+                      - generic [ref=e952]:
+                        - generic [ref=e953]: Biên lai chuyển tiền qua tài khoản/ thẻ
+                        - generic [ref=e955]:
+                          - generic [ref=e956]: "-"
+                          - text: Biên lai chuyển tiền qua tài khoản/ thẻ (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 09:03 Thứ Bảy 05/09/2026 Số lệnh giao dịch Order Number 15899768766 Tài khoản nguồn Debit Account
+                  - gridcell [ref=e957]
+                  - gridcell "Sat, Sep 5, 2026, 9:03 AM" [ref=e958]:
+                    - generic "Sat, Sep 5, 2026, 9:03 AM" [ref=e959]: Sep 5
+                  - gridcell
+                - row "unread, VCBDigibank 2, Biên lai chuyển tiền qua tài khoản, Sep 1, BIÊN LAI CHUYỂN TIỀN QUA TÀI KHOẢN/ THẺ (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 10:00 Thứ Ba 01/09/2026 Số lệnh giao dịch Order Number 15841531437 Tài khoản nguồn Debit Account." [ref=e960] [cursor=pointer]:
+                  - gridcell [ref=e961]
+                  - gridcell "unread, VCBDigibank 2, Biên lai chuyển tiền qua tài khoản, Sep 1, BIÊN LAI CHUYỂN TIỀN QUA TÀI KHOẢN/ THẺ (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 10:00 Thứ Ba 01/09/2026 Số lệnh giao dịch Order Number 15841531437 Tài khoản nguồn Debit Account." [ref=e962]:
+                    - checkbox "unread, VCBDigibank 2, Biên lai chuyển tiền qua tài khoản, Sep 1, BIÊN LAI CHUYỂN TIỀN QUA TÀI KHOẢN/ THẺ (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 10:00 Thứ Ba 01/09/2026 Số lệnh giao dịch Order Number 15841531437 Tài khoản nguồn Debit Account." [ref=e963]
+                  - gridcell [ref=e964]:
+                    - button "Not starred" [ref=e965]
+                  - gridcell "VCBDigibank 2" [ref=e966]:
+                    - generic [ref=e967]:
+                      - generic [ref=e968]: VCBDigibank
+                      - generic [ref=e969]: "2"
+                  - gridcell [ref=e970]:
+                    - link "Biên lai chuyển tiền qua tài khoản - BIÊN LAI CHUYỂN TIỀN QUA TÀI KHOẢN/ THẺ (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 10:00 Thứ Ba 01/09/2026 Số lệnh giao dịch Order Number 15841531437 Tài khoản nguồn Debit Account" [ref=e971]:
+                      - generic [ref=e972]:
+                        - generic [ref=e973]: Biên lai chuyển tiền qua tài khoản
+                        - generic [ref=e975]:
+                          - generic [ref=e976]: "-"
+                          - text: BIÊN LAI CHUYỂN TIỀN QUA TÀI KHOẢN/ THẺ (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 10:00 Thứ Ba 01/09/2026 Số lệnh giao dịch Order Number 15841531437 Tài khoản nguồn Debit Account
+                  - gridcell [ref=e977]
+                  - gridcell "Tue, Sep 1, 2026, 10:04 AM" [ref=e978]:
+                    - generic "Tue, Sep 1, 2026, 10:04 AM" [ref=e979]: Sep 1
+                  - gridcell
+                - row "unread, Google, Security alert for c.kirk2104@gmail.com, Aug 31, This is a copy of a security alert sent to c.kirk2104@gmail.com. vutrongbao.trinh.ltb@gmail.com is the recovery email for this account. If you don't recognize this account, remove it. A new sign-in." [ref=e980] [cursor=pointer]:
+                  - gridcell [ref=e981]
+                  - gridcell "unread, Google, Security alert for c.kirk2104@gmail.com, Aug 31, This is a copy of a security alert sent to c.kirk2104@gmail.com. vutrongbao.trinh.ltb@gmail.com is the recovery email for this account. If you don't recognize this account, remove it. A new sign-in." [ref=e982]:
+                    - checkbox "unread, Google, Security alert for c.kirk2104@gmail.com, Aug 31, This is a copy of a security alert sent to c.kirk2104@gmail.com. vutrongbao.trinh.ltb@gmail.com is the recovery email for this account. If you don't recognize this account, remove it. A new sign-in." [ref=e983]
+                  - gridcell [ref=e984]:
+                    - button "Not starred" [ref=e985]
+                  - gridcell "Google" [ref=e986]
+                  - gridcell [ref=e989]:
+                    - link "Security alert for c.kirk2104@gmail.com - This is a copy of a security alert sent to c.kirk2104@gmail.com. vutrongbao.trinh.ltb@gmail.com is the recovery email for this account. If you don't recognize this account, remove it. A new sign-in" [ref=e991]:
+                      - generic [ref=e992]:
+                        - generic [ref=e993]: Security alert for c.kirk2104@gmail.com
+                        - generic [ref=e995]:
+                          - generic [ref=e996]: "-"
+                          - text: This is a copy of a security alert sent to c.kirk2104@gmail.com. vutrongbao.trinh.ltb@gmail.com is the recovery email for this account. If you don't recognize this account, remove it. A new sign-in
+                  - gridcell [ref=e997]
+                  - gridcell "Mon, Aug 31, 2026, 10:20 AM" [ref=e998]:
+                    - generic "Mon, Aug 31, 2026, 10:20 AM" [ref=e999]: Aug 31
+                  - gridcell
+                - row "unread, VCBDigibank 5, Biên lai chuyển tiền qua tài khoản, Aug 28, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 10:52 Thứ Sáu 28/08/2026 Số lệnh giao dịch Order Number 15782844782 Tài khoản nguồn Debit Account." [ref=e1000] [cursor=pointer]:
+                  - gridcell [ref=e1001]
+                  - gridcell "unread, VCBDigibank 5, Biên lai chuyển tiền qua tài khoản, Aug 28, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 10:52 Thứ Sáu 28/08/2026 Số lệnh giao dịch Order Number 15782844782 Tài khoản nguồn Debit Account." [ref=e1002]:
+                    - checkbox "unread, VCBDigibank 5, Biên lai chuyển tiền qua tài khoản, Aug 28, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 10:52 Thứ Sáu 28/08/2026 Số lệnh giao dịch Order Number 15782844782 Tài khoản nguồn Debit Account." [ref=e1003]
+                  - gridcell [ref=e1004]:
+                    - button "Not starred" [ref=e1005]
+                  - gridcell "VCBDigibank 5" [ref=e1006]:
+                    - generic [ref=e1007]:
+                      - generic [ref=e1008]: VCBDigibank
+                      - generic [ref=e1009]: "5"
+                  - gridcell [ref=e1010]:
+                    - link "Biên lai chuyển tiền qua tài khoản - Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 10:52 Thứ Sáu 28/08/2026 Số lệnh giao dịch Order Number 15782844782 Tài khoản nguồn Debit Account" [ref=e1011]:
+                      - generic [ref=e1012]:
+                        - generic [ref=e1013]: Biên lai chuyển tiền qua tài khoản
+                        - generic [ref=e1015]:
+                          - generic [ref=e1016]: "-"
+                          - text: Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 10:52 Thứ Sáu 28/08/2026 Số lệnh giao dịch Order Number 15782844782 Tài khoản nguồn Debit Account
+                  - gridcell [ref=e1017]
+                  - gridcell "Fri, Aug 28, 2026, 8:32 PM" [ref=e1018]:
+                    - generic "Fri, Aug 28, 2026, 8:32 PM" [ref=e1019]: Aug 28
+                  - gridcell
+                - row "unread, VCBDigibank, Biên lai chuyển tiền qua tài khoản/ thẻ, Aug 27, Biên lai chuyển tiền qua tài khoản/ thẻ (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 19:11 Thứ Năm 27/08/2026 Số lệnh giao dịch Order Number 15775638448 Tài khoản nguồn Debit Account." [ref=e1020] [cursor=pointer]:
+                  - gridcell [ref=e1021]
+                  - gridcell "unread, VCBDigibank, Biên lai chuyển tiền qua tài khoản/ thẻ, Aug 27, Biên lai chuyển tiền qua tài khoản/ thẻ (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 19:11 Thứ Năm 27/08/2026 Số lệnh giao dịch Order Number 15775638448 Tài khoản nguồn Debit Account." [ref=e1022]:
+                    - checkbox "unread, VCBDigibank, Biên lai chuyển tiền qua tài khoản/ thẻ, Aug 27, Biên lai chuyển tiền qua tài khoản/ thẻ (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 19:11 Thứ Năm 27/08/2026 Số lệnh giao dịch Order Number 15775638448 Tài khoản nguồn Debit Account." [ref=e1023]
+                  - gridcell [ref=e1024]:
+                    - button "Not starred" [ref=e1025]
+                  - gridcell "VCBDigibank" [ref=e1026]
+                  - gridcell [ref=e1029]:
+                    - link "Biên lai chuyển tiền qua tài khoản/ thẻ - Biên lai chuyển tiền qua tài khoản/ thẻ (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 19:11 Thứ Năm 27/08/2026 Số lệnh giao dịch Order Number 15775638448 Tài khoản nguồn Debit Account" [ref=e1030]:
+                      - generic [ref=e1031]:
+                        - generic [ref=e1032]: Biên lai chuyển tiền qua tài khoản/ thẻ
+                        - generic [ref=e1034]:
+                          - generic [ref=e1035]: "-"
+                          - text: Biên lai chuyển tiền qua tài khoản/ thẻ (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 19:11 Thứ Năm 27/08/2026 Số lệnh giao dịch Order Number 15775638448 Tài khoản nguồn Debit Account
+                  - gridcell [ref=e1036]
+                  - gridcell "Thu, Aug 27, 2026, 7:11 PM" [ref=e1037]:
+                    - generic "Thu, Aug 27, 2026, 7:11 PM" [ref=e1038]: Aug 27
+                  - gridcell
+                - row "unread, VCBDigibank 3, Biên lai chuyển tiền qua tài khoản, Aug 26, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 08:48 Thứ Tư 26/08/2026 Số lệnh giao dịch Order Number 15751666572 Tài khoản nguồn Debit Account 0251002733358." [ref=e1039] [cursor=pointer]:
+                  - gridcell [ref=e1040]
+                  - gridcell "unread, VCBDigibank 3, Biên lai chuyển tiền qua tài khoản, Aug 26, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 08:48 Thứ Tư 26/08/2026 Số lệnh giao dịch Order Number 15751666572 Tài khoản nguồn Debit Account 0251002733358." [ref=e1041]:
+                    - checkbox "unread, VCBDigibank 3, Biên lai chuyển tiền qua tài khoản, Aug 26, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 08:48 Thứ Tư 26/08/2026 Số lệnh giao dịch Order Number 15751666572 Tài khoản nguồn Debit Account 0251002733358." [ref=e1042]
+                  - gridcell [ref=e1043]:
+                    - button "Not starred" [ref=e1044]
+                  - gridcell "VCBDigibank 3" [ref=e1045]:
+                    - generic [ref=e1046]:
+                      - generic [ref=e1047]: VCBDigibank
+                      - generic [ref=e1048]: "3"
+                  - gridcell [ref=e1049]:
+                    - link "Biên lai chuyển tiền qua tài khoản - Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 08:48 Thứ Tư 26/08/2026 Số lệnh giao dịch Order Number 15751666572 Tài khoản nguồn Debit Account 0251002733358" [ref=e1050]:
+                      - generic [ref=e1051]:
+                        - generic [ref=e1052]: Biên lai chuyển tiền qua tài khoản
+                        - generic [ref=e1054]:
+                          - generic [ref=e1055]: "-"
+                          - text: Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 08:48 Thứ Tư 26/08/2026 Số lệnh giao dịch Order Number 15751666572 Tài khoản nguồn Debit Account 0251002733358
+                  - gridcell [ref=e1056]
+                  - gridcell "Wed, Aug 26, 2026, 4:12 PM" [ref=e1057]:
+                    - generic "Wed, Aug 26, 2026, 4:12 PM" [ref=e1058]: Aug 26
+                  - gridcell
+                - row "unread, Google, Security alert, Aug 18, A new sign-in on Xiaomi MiTV vutrongbao.trinh.ltb@gmail.com We noticed a new sign-in to your Google Account on a Xiaomi MiTV device. If this was you, you don't need to do anything. If not, we'." [ref=e1059] [cursor=pointer]:
+                  - gridcell [ref=e1060]
+                  - gridcell "unread, Google, Security alert, Aug 18, A new sign-in on Xiaomi MiTV vutrongbao.trinh.ltb@gmail.com We noticed a new sign-in to your Google Account on a Xiaomi MiTV device. If this was you, you don't need to do anything. If not, we'." [ref=e1061]:
+                    - checkbox "unread, Google, Security alert, Aug 18, A new sign-in on Xiaomi MiTV vutrongbao.trinh.ltb@gmail.com We noticed a new sign-in to your Google Account on a Xiaomi MiTV device. If this was you, you don't need to do anything. If not, we'." [ref=e1062]
+                  - gridcell [ref=e1063]:
+                    - button "Not starred" [ref=e1064]
+                  - gridcell "Google" [ref=e1065]
+                  - gridcell [ref=e1068]:
+                    - link "Security alert - A new sign-in on Xiaomi MiTV vutrongbao.trinh.ltb@gmail.com We noticed a new sign-in to your Google Account on a Xiaomi MiTV device. If this was you, you don't need to do anything. If not, we'" [ref=e1070]:
+                      - generic [ref=e1071]:
+                        - generic [ref=e1072]: Security alert
+                        - generic [ref=e1074]:
+                          - generic [ref=e1075]: "-"
+                          - text: A new sign-in on Xiaomi MiTV vutrongbao.trinh.ltb@gmail.com We noticed a new sign-in to your Google Account on a Xiaomi MiTV device. If this was you, you don't need to do anything. If not, we'
+                  - gridcell [ref=e1076]
+                  - gridcell "Tue, Aug 18, 2026, 3:35 PM" [ref=e1077]:
+                    - generic "Tue, Aug 18, 2026, 3:35 PM" [ref=e1078]: Aug 18
+                  - gridcell
+                - row "nguyentuanh23.hr, Introduction - PM / Division Manager / CTO Positions in Vietnam and Japan, Aug 16, Dear Sir, My name is Linh, Recruitment Team Leader responsible for strategic hiring projects at Appirits Group, Japan, one of the leading global IT groups operating in Japan, the United States,." [ref=e1079] [cursor=pointer]:
+                  - gridcell [ref=e1080]
+                  - gridcell "nguyentuanh23.hr, Introduction - PM / Division Manager / CTO Positions in Vietnam and Japan, Aug 16, Dear Sir, My name is Linh, Recruitment Team Leader responsible for strategic hiring projects at Appirits Group, Japan, one of the leading global IT groups operating in Japan, the United States,." [ref=e1081]:
+                    - checkbox "nguyentuanh23.hr, Introduction - PM / Division Manager / CTO Positions in Vietnam and Japan, Aug 16, Dear Sir, My name is Linh, Recruitment Team Leader responsible for strategic hiring projects at Appirits Group, Japan, one of the leading global IT groups operating in Japan, the United States,." [ref=e1082]
+                  - gridcell [ref=e1083]:
+                    - button "Not starred" [ref=e1084]
+                  - gridcell "nguyentuanh23.hr" [ref=e1085]
+                  - gridcell [ref=e1088]:
+                    - link "Introduction - PM / Division Manager / CTO Positions in Vietnam and Japan - Dear Sir, My name is Linh, Recruitment Team Leader responsible for strategic hiring projects at Appirits Group, Japan, one of the leading global IT groups operating in Japan, the United States," [ref=e1089]:
+                      - generic [ref=e1090]:
+                        - generic [ref=e1091]: Introduction - PM / Division Manager / CTO Positions in Vietnam and Japan
+                        - generic [ref=e1093]:
+                          - generic [ref=e1094]: "-"
+                          - text: Dear Sir, My name is Linh, Recruitment Team Leader responsible for strategic hiring projects at Appirits Group, Japan, one of the leading global IT groups operating in Japan, the United States,
+                  - gridcell [ref=e1095]
+                  - gridcell "Sun, Aug 16, 2026, 10:44 AM" [ref=e1096]:
+                    - generic "Sun, Aug 16, 2026, 10:44 AM" [ref=e1097]: Aug 16
+                  - gridcell
+                - row "unread, LinkedIn, An extra layer of security is coming to your account, Aug 8, 2FA will be enabled for your LinkedIn account." [ref=e1098] [cursor=pointer]:
+                  - gridcell [ref=e1099]
+                  - gridcell "unread, LinkedIn, An extra layer of security is coming to your account, Aug 8, 2FA will be enabled for your LinkedIn account." [ref=e1100]:
+                    - checkbox "unread, LinkedIn, An extra layer of security is coming to your account, Aug 8, 2FA will be enabled for your LinkedIn account." [ref=e1101]
+                  - gridcell [ref=e1102]:
+                    - button "Not starred" [ref=e1103]
+                  - gridcell "LinkedIn" [ref=e1104]
+                  - gridcell [ref=e1107]:
+                    - link "An extra layer of security is coming to your account - 2FA will be enabled for your LinkedIn account" [ref=e1108]:
+                      - generic [ref=e1109]:
+                        - generic [ref=e1110]: An extra layer of security is coming to your account
+                        - generic [ref=e1112]:
+                          - generic [ref=e1113]: "-"
+                          - text: 2FA will be enabled for your LinkedIn account
+                  - gridcell [ref=e1114]
+                  - gridcell "Sat, Aug 8, 2026, 4:22 PM" [ref=e1115]:
+                    - generic "Sat, Aug 8, 2026, 4:22 PM" [ref=e1116]: Aug 8
+                  - gridcell
+                - row "info, Your Registration for VIP After Party in Pasadena, CA (Nov 17, 2026) + VIP Afterparty, Aug 6, Hi Bao Trinh QA External, Thank you for signing up for the VIP After Party in Pasadena, CA (Nov 17, 2026) + VIP Afterparty. We've received your registration, and our team will follow up with you." [ref=e1117] [cursor=pointer]:
+                  - gridcell [ref=e1118]
+                  - gridcell "info, Your Registration for VIP After Party in Pasadena, CA (Nov 17, 2026) + VIP Afterparty, Aug 6, Hi Bao Trinh QA External, Thank you for signing up for the VIP After Party in Pasadena, CA (Nov 17, 2026) + VIP Afterparty. We've received your registration, and our team will follow up with you." [ref=e1119]:
+                    - checkbox "info, Your Registration for VIP After Party in Pasadena, CA (Nov 17, 2026) + VIP Afterparty, Aug 6, Hi Bao Trinh QA External, Thank you for signing up for the VIP After Party in Pasadena, CA (Nov 17, 2026) + VIP Afterparty. We've received your registration, and our team will follow up with you." [ref=e1120]
+                  - gridcell [ref=e1121]:
+                    - button "Not starred" [ref=e1122]
+                  - gridcell "info" [ref=e1123]
+                  - gridcell [ref=e1126]:
+                    - link "Your Registration for VIP After Party in Pasadena, CA (Nov 17, 2026) + VIP Afterparty - Hi Bao Trinh QA External, Thank you for signing up for the VIP After Party in Pasadena, CA (Nov 17, 2026) + VIP Afterparty. We've received your registration, and our team will follow up with you" [ref=e1127]:
+                      - generic [ref=e1128]:
+                        - generic [ref=e1129]: Your Registration for VIP After Party in Pasadena, CA (Nov 17, 2026) + VIP Afterparty
+                        - generic [ref=e1131]:
+                          - generic [ref=e1132]: "-"
+                          - text: Hi Bao Trinh QA External, Thank you for signing up for the VIP After Party in Pasadena, CA (Nov 17, 2026) + VIP Afterparty. We've received your registration, and our team will follow up with you
+                  - gridcell [ref=e1133]
+                  - gridcell "Thu, Aug 6, 2026, 11:22 PM" [ref=e1134]:
+                    - generic "Thu, Aug 6, 2026, 11:22 PM" [ref=e1135]: Aug 6
+                  - gridcell
+                - row "unread, Google, Security alert, Aug 6, New sign-in to your account vutrongbao.trinh.ltb@gmail.com We noticed a new sign-in to your Google Account. If this was you, you don't need to do anything. If not, we'll help you secure your." [ref=e1136] [cursor=pointer]:
+                  - gridcell [ref=e1137]
+                  - gridcell "unread, Google, Security alert, Aug 6, New sign-in to your account vutrongbao.trinh.ltb@gmail.com We noticed a new sign-in to your Google Account. If this was you, you don't need to do anything. If not, we'll help you secure your." [ref=e1138]:
+                    - checkbox "unread, Google, Security alert, Aug 6, New sign-in to your account vutrongbao.trinh.ltb@gmail.com We noticed a new sign-in to your Google Account. If this was you, you don't need to do anything. If not, we'll help you secure your." [ref=e1139]
+                  - gridcell [ref=e1140]:
+                    - button "Not starred" [ref=e1141]
+                  - gridcell "Google" [ref=e1142]
+                  - gridcell [ref=e1145]:
+                    - link "Security alert - New sign-in to your account vutrongbao.trinh.ltb@gmail.com We noticed a new sign-in to your Google Account. If this was you, you don't need to do anything. If not, we'll help you secure your" [ref=e1147]:
+                      - generic [ref=e1148]:
+                        - generic [ref=e1149]: Security alert
+                        - generic [ref=e1151]:
+                          - generic [ref=e1152]: "-"
+                          - text: New sign-in to your account vutrongbao.trinh.ltb@gmail.com We noticed a new sign-in to your Google Account. If this was you, you don't need to do anything. If not, we'll help you secure your
+                  - gridcell [ref=e1153]
+                  - gridcell "Thu, Aug 6, 2026, 10:47 AM" [ref=e1154]:
+                    - generic "Thu, Aug 6, 2026, 10:47 AM" [ref=e1155]: Aug 6
+                  - gridcell
+                - row "unread, VCBDigibank 2, Biên lai chuyển tiền qua tài khoản, Aug 6, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 08:29 Thứ Năm 06/08/2026 Số lệnh giao dịch Order Number 15444869281 Tài khoản nguồn Debit Account." [ref=e1156] [cursor=pointer]:
+                  - gridcell [ref=e1157]
+                  - gridcell "unread, VCBDigibank 2, Biên lai chuyển tiền qua tài khoản, Aug 6, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 08:29 Thứ Năm 06/08/2026 Số lệnh giao dịch Order Number 15444869281 Tài khoản nguồn Debit Account." [ref=e1158]:
+                    - checkbox "unread, VCBDigibank 2, Biên lai chuyển tiền qua tài khoản, Aug 6, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 08:29 Thứ Năm 06/08/2026 Số lệnh giao dịch Order Number 15444869281 Tài khoản nguồn Debit Account." [ref=e1159]
+                  - gridcell [ref=e1160]:
+                    - button "Not starred" [ref=e1161]
+                  - gridcell "VCBDigibank 2" [ref=e1162]:
+                    - generic [ref=e1163]:
+                      - generic [ref=e1164]: VCBDigibank
+                      - generic [ref=e1165]: "2"
+                  - gridcell [ref=e1166]:
+                    - link "Biên lai chuyển tiền qua tài khoản - Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 08:29 Thứ Năm 06/08/2026 Số lệnh giao dịch Order Number 15444869281 Tài khoản nguồn Debit Account" [ref=e1167]:
+                      - generic [ref=e1168]:
+                        - generic [ref=e1169]: Biên lai chuyển tiền qua tài khoản
+                        - generic [ref=e1171]:
+                          - generic [ref=e1172]: "-"
+                          - text: Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 08:29 Thứ Năm 06/08/2026 Số lệnh giao dịch Order Number 15444869281 Tài khoản nguồn Debit Account
+                  - gridcell [ref=e1173]
+                  - gridcell "Thu, Aug 6, 2026, 8:30 AM" [ref=e1174]:
+                    - generic "Thu, Aug 6, 2026, 8:30 AM" [ref=e1175]: Aug 6
+                  - gridcell
+                - row "unread, VCBDigibank 2, Biên lai chuyển tiền qua tài khoản, Aug 4, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 09:49 Thứ Ba 04/08/2026 Số lệnh giao dịch Order Number 15416001275 Tài khoản nguồn Debit Account 0251002733358." [ref=e1176] [cursor=pointer]:
+                  - gridcell [ref=e1177]
+                  - gridcell "unread, VCBDigibank 2, Biên lai chuyển tiền qua tài khoản, Aug 4, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 09:49 Thứ Ba 04/08/2026 Số lệnh giao dịch Order Number 15416001275 Tài khoản nguồn Debit Account 0251002733358." [ref=e1178]:
+                    - checkbox "unread, VCBDigibank 2, Biên lai chuyển tiền qua tài khoản, Aug 4, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 09:49 Thứ Ba 04/08/2026 Số lệnh giao dịch Order Number 15416001275 Tài khoản nguồn Debit Account 0251002733358." [ref=e1179]
+                  - gridcell [ref=e1180]:
+                    - button "Not starred" [ref=e1181]
+                  - gridcell "VCBDigibank 2" [ref=e1182]:
+                    - generic [ref=e1183]:
+                      - generic [ref=e1184]: VCBDigibank
+                      - generic [ref=e1185]: "2"
+                  - gridcell [ref=e1186]:
+                    - link "Biên lai chuyển tiền qua tài khoản - Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 09:49 Thứ Ba 04/08/2026 Số lệnh giao dịch Order Number 15416001275 Tài khoản nguồn Debit Account 0251002733358" [ref=e1187]:
+                      - generic [ref=e1188]:
+                        - generic [ref=e1189]: Biên lai chuyển tiền qua tài khoản
+                        - generic [ref=e1191]:
+                          - generic [ref=e1192]: "-"
+                          - text: Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 09:49 Thứ Ba 04/08/2026 Số lệnh giao dịch Order Number 15416001275 Tài khoản nguồn Debit Account 0251002733358
+                  - gridcell [ref=e1193]
+                  - gridcell "Tue, Aug 4, 2026, 3:38 PM" [ref=e1194]:
+                    - generic "Tue, Aug 4, 2026, 3:38 PM" [ref=e1195]: Aug 4
+                  - gridcell
+                - row "GitHub, [GitHub] Please verify your device, Jul 27, Hey TRONGBAO2104! A sign in attempt requires further verification because we did not recognize your device. To complete the sign in, enter the verification code on the unrecognized device. Device:." [ref=e1196] [cursor=pointer]:
+                  - gridcell [ref=e1197]
+                  - gridcell "GitHub, [GitHub] Please verify your device, Jul 27, Hey TRONGBAO2104! A sign in attempt requires further verification because we did not recognize your device. To complete the sign in, enter the verification code on the unrecognized device. Device:." [ref=e1198]:
+                    - checkbox "GitHub, [GitHub] Please verify your device, Jul 27, Hey TRONGBAO2104! A sign in attempt requires further verification because we did not recognize your device. To complete the sign in, enter the verification code on the unrecognized device. Device:." [ref=e1199]
+                  - gridcell [ref=e1200]:
+                    - button "Not starred" [ref=e1201]
+                  - gridcell "GitHub" [ref=e1202]
+                  - gridcell [ref=e1205]:
+                    - link "[GitHub] Please verify your device - Hey TRONGBAO2104! A sign in attempt requires further verification because we did not recognize your device. To complete the sign in, enter the verification code on the unrecognized device. Device:" [ref=e1206]:
+                      - generic [ref=e1207]:
+                        - generic [ref=e1208]: "[GitHub] Please verify your device"
+                        - generic [ref=e1210]:
+                          - generic [ref=e1211]: "-"
+                          - text: "Hey TRONGBAO2104! A sign in attempt requires further verification because we did not recognize your device. To complete the sign in, enter the verification code on the unrecognized device. Device:"
+                  - gridcell [ref=e1212]
+                  - gridcell "Mon, Jul 27, 2026, 11:53 PM" [ref=e1213]:
+                    - generic "Mon, Jul 27, 2026, 11:53 PM" [ref=e1214]: Jul 27
+                  - gridcell
+                - row "unread, VCBDigibank 2, Biên lai chuyển tiền qua tài khoản, Jul 27, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 13:26 Thứ Hai 27/07/2026 Số lệnh giao dịch Order Number 15305328309 Tài khoản nguồn Debit Account." [ref=e1215] [cursor=pointer]:
+                  - gridcell [ref=e1216]
+                  - gridcell "unread, VCBDigibank 2, Biên lai chuyển tiền qua tài khoản, Jul 27, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 13:26 Thứ Hai 27/07/2026 Số lệnh giao dịch Order Number 15305328309 Tài khoản nguồn Debit Account." [ref=e1217]:
+                    - checkbox "unread, VCBDigibank 2, Biên lai chuyển tiền qua tài khoản, Jul 27, Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 13:26 Thứ Hai 27/07/2026 Số lệnh giao dịch Order Number 15305328309 Tài khoản nguồn Debit Account." [ref=e1218]
+                  - gridcell [ref=e1219]:
+                    - button "Not starred" [ref=e1220]
+                  - gridcell "VCBDigibank 2" [ref=e1221]:
+                    - generic [ref=e1222]:
+                      - generic [ref=e1223]: VCBDigibank
+                      - generic [ref=e1224]: "2"
+                  - gridcell [ref=e1225]:
+                    - link "Biên lai chuyển tiền qua tài khoản - Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 13:26 Thứ Hai 27/07/2026 Số lệnh giao dịch Order Number 15305328309 Tài khoản nguồn Debit Account" [ref=e1226]:
+                      - generic [ref=e1227]:
+                        - generic [ref=e1228]: Biên lai chuyển tiền qua tài khoản
+                        - generic [ref=e1230]:
+                          - generic [ref=e1231]: "-"
+                          - text: Biên lai chuyển tiền qua tài khoản (Payment Receipt) Ngày, giờ giao dịch Trans. Date, Time 13:26 Thứ Hai 27/07/2026 Số lệnh giao dịch Order Number 15305328309 Tài khoản nguồn Debit Account
+                  - gridcell [ref=e1232]
+                  - gridcell "Mon, Jul 27, 2026, 1:32 PM" [ref=e1233]:
+                    - generic "Mon, Jul 27, 2026, 1:32 PM" [ref=e1234]: Jul 27
+                  - gridcell
+        - contentinfo [ref=e1236]:
+          - link "66% of 15 GB used Follow link to manage storage" [ref=e1241] [cursor=pointer]:
+            - /url: https://drive.google.com/u/0/settings/storage?hl=en&utm_medium=web&utm_source=gmail&utm_campaign=storage_meter&utm_content=storage_normal
+            - generic [ref=e1244]:
+              - generic [ref=e1245]: 66% of 15 GB used
+              - img "Follow link to manage storage" [ref=e1246]
+          - generic [ref=e1250]:
+            - link "Terms" [ref=e1251] [cursor=pointer]:
+              - /url: https://www.google.com/intl/en/policies/terms/
+            - text: ·
+            - link "Privacy" [ref=e1252] [cursor=pointer]:
+              - /url: https://www.google.com/intl/en/policies/privacy/
+            - text: ·
+            - link "Program Policies" [ref=e1253] [cursor=pointer]:
+              - /url: https://www.google.com/gmail/about/policy/
+          - generic [ref=e1256]:
+            - generic [ref=e1257]: "Last account activity: 1 hour ago"
+            - link "Details" [ref=e1258] [cursor=pointer]
+      - generic [ref=e1261]:
+        - complementary "Side panel" [ref=e1262]:
+          - tablist [ref=e1264]:
+            - tab "Calendar":
+              - generic [ref=e1265] [cursor=pointer]
+            - tab "Keep":
+              - generic [ref=e1266] [cursor=pointer]
+            - tab "Tasks":
+              - generic [ref=e1267] [cursor=pointer]
+            - tab "Contacts":
+              - generic [ref=e1268] [cursor=pointer]
+            - separator [disabled] [ref=e1269]
+            - tab "Get Add-ons":
+              - generic [ref=e1270] [cursor=pointer]
+        - generic:
+          - button "Hide side panel":
+            - generic [ref=e1271] [cursor=pointer]

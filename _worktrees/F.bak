@@ -1,0 +1,41 @@
+package com.mvu.loan.server.op.recruiting;
+
+import java.util.List;
+
+import com.google.api.server.spi.response.BadRequestException;
+import com.mvu.core.server.JSON;
+import com.mvu.loan.shared.entity.LORecruiting;
+
+/**
+ * Guards the mortgage-website compliance disclosure on the public {@code registerLoanOfficer} body
+ * (agentflow-tdqcv). Only validates when the client sent the fields: older clients and in-progress
+ * registrations still submit without them.
+ */
+public final class MortgageWebsiteDisclosure {
+
+  private static final String HTTPS = "https://";
+
+  private MortgageWebsiteDisclosure() {
+  }
+
+  /**
+   * Drops the client-supplied acknowledgement timestamp (it is stamped server-side by the entity) and
+   * rejects {@code has_mortgage_website=true} without at least one {@code https://} URL.
+   */
+  public static void validateAndSanitize(JSON input) throws BadRequestException {
+    input.remove(LORecruiting.mortgage_website_approval_ack_at);
+    if (!Boolean.TRUE.equals(input.get(LORecruiting.has_mortgage_website))) {
+      return;
+    }
+    List<String> urls = input.get(LORecruiting.mortgage_website_urls);
+    if (urls == null || urls.isEmpty()) {
+      throw new BadRequestException("mortgage_website_urls is required when has_mortgage_website is true");
+    }
+    for (String url : urls) {
+      String trimmed = url == null ? "" : url.trim();
+      if (trimmed.length() <= HTTPS.length() || !trimmed.regionMatches(true, 0, HTTPS, 0, HTTPS.length())) {
+        throw new BadRequestException("mortgage_website_urls must all start with https://");
+      }
+    }
+  }
+}

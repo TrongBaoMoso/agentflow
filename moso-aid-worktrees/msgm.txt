@@ -1,0 +1,9 @@
+feat(lo-programs): packs-only read of who was an approved lo_recruiter member and when
+
+GET /api/lo-programs/standing/members?program_id= returns approved spells
+{user_key, approved_at, ended_at} (keys and dates only), so packs can decide
+recruiter-program credit when a referrer is attached to a lead ("was X a member
+at time T"). Behind its own service key PACKS_INBOUND_SERVICE_KEY (fails closed,
+must differ from the other inbound keys, listed in startup-check).
+
+Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>

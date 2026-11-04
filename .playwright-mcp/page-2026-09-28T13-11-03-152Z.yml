@@ -1,0 +1,250 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]:
+          - img "Loan Factory" [ref=e6]
+          - generic [ref=e7]:
+            - paragraph [ref=e8]: Loan Factory
+            - paragraph [ref=e9]: Account
+        - generic [ref=e10]:
+          - button "Change language, currently English" [ref=e151] [cursor=pointer]:
+            - generic [ref=e152]:
+              - generic [aria-hidden] [ref=e154]: 🇺🇸
+              - generic [ref=e155]: English
+          - button "Switch to dark mode" [ref=e11] [cursor=pointer]
+          - button "Notifications" [ref=e16] [cursor=pointer]
+          - button "Notification settings" [ref=e22] [cursor=pointer]
+          - button "Discovery" [ref=e32] [cursor=pointer]
+          - button "Account menu" [expanded] [ref=e44] [cursor=pointer]:
+            - generic [ref=e45]: OS
+    - navigation [ref=e47]:
+      - navigation "Main navigation" [ref=e48]:
+        - link "Discovery" [ref=e49] [cursor=pointer]:
+          - /url: /home
+        - link "Information" [ref=e55] [cursor=pointer]:
+          - /url: /personal-info
+        - link "Security" [ref=e62] [cursor=pointer]:
+          - /url: /security
+        - link "Your Apps" [ref=e68] [cursor=pointer]:
+          - /url: /your-apps
+        - link "Preferences" [ref=e75] [cursor=pointer]:
+          - /url: /preferences
+        - link "Recent Activity" [ref=e82] [cursor=pointer]:
+          - /url: /activity
+    - main [ref=e88]:
+      - generic [ref=e90]:
+        - generic [ref=e94]:
+          - paragraph [ref=e98]: Discover
+          - heading "Welcome back, ONB" [level=1] [ref=e160]
+          - paragraph [ref=e100]: Find the Loan Factory tools built for the way you work.
+          - generic [ref=e101]:
+            - generic [ref=e108]:
+              - paragraph [ref=e109]: "14"
+              - paragraph [ref=e110]: available to you
+            - generic [ref=e115]:
+              - paragraph [ref=e116]: "0"
+              - paragraph [ref=e117]: in use
+            - generic [ref=e121]:
+              - paragraph [ref=e122]: One
+              - paragraph [ref=e123]: login for every app
+        - generic [ref=e125]:
+          - generic [ref=e126]:
+            - generic [ref=e130]:
+              - paragraph [ref=e131]: Apps for you
+              - paragraph [ref=e132]: You use 0 of 14 · Open the ones you use, or try something new.
+            - generic [ref=e133]:
+              - generic [ref=e134]:
+                - paragraph [ref=e138]: Access
+                - paragraph [ref=e139]: you already use this
+              - generic [ref=e140]:
+                - paragraph [ref=e145]: Try Now
+                - paragraph [ref=e146]: not used yet
+          - generic [ref=e161]:
+            - generic [ref=e162] [cursor=pointer]:
+              - generic [ref=e165]:
+                - paragraph [ref=e167]: AI
+                - paragraph [ref=e168]: AI assistant
+              - generic [ref=e169]:
+                - generic [ref=e170]:
+                  - paragraph [ref=e175]: Draft and summarize in seconds
+                  - paragraph [ref=e180]: Answers from your own data
+                  - paragraph [ref=e185]: Automate repetitive tasks
+                - button [ref=e186]:
+                  - paragraph [ref=e187]: View details
+              - button "Try Now" [ref=e188]
+            - generic [ref=e196] [cursor=pointer]:
+              - generic [ref=e199]:
+                - paragraph [ref=e201]: Ally
+                - paragraph [ref=e202]: Borrower portal
+              - generic [ref=e203]:
+                - generic [ref=e204]:
+                  - paragraph [ref=e209]: Self-serve borrower portal
+                  - paragraph [ref=e214]: Secure document upload
+                  - paragraph [ref=e219]: Real-time status updates
+                - button [ref=e220]:
+                  - paragraph [ref=e221]: View details
+              - button "Try Now" [ref=e222]
+            - generic [ref=e230] [cursor=pointer]:
+              - generic [ref=e233]:
+                - paragraph [ref=e235]: Borrower Portal
+                - paragraph [ref=e236]: Apply, upload documents, and follow your loan to close — in one place.
+              - generic [ref=e237]:
+                - generic [ref=e238]:
+                  - paragraph [ref=e243]: Guided online application
+                  - paragraph [ref=e248]: Secure document upload
+                  - paragraph [ref=e253]: Real-time loan status
+                - button [ref=e254]:
+                  - paragraph [ref=e255]: View details
+              - button "Try Now" [ref=e256]
+            - generic [ref=e264] [cursor=pointer]:
+              - generic [ref=e267]:
+                - paragraph [ref=e269]: CAMS
+                - paragraph [ref=e270]: Track every company asset — assignments, maintenance, and audit-ready reporting.
+              - generic [ref=e271]:
+                - generic [ref=e272]:
+                  - paragraph [ref=e277]: Asset inventory and assignments
+                  - paragraph [ref=e282]: Maintenance and lifecycle tracking
+                  - paragraph [ref=e287]: Audit-ready reporting
+                - button [ref=e288]:
+                  - paragraph [ref=e289]: View details
+              - button "Try Now" [ref=e290]
+            - generic [ref=e298] [cursor=pointer]:
+              - generic [ref=e301]:
+                - paragraph [ref=e303]: CRM
+                - paragraph [ref=e304]: Customers & pipeline
+              - generic [ref=e305]:
+                - generic [ref=e306]:
+                  - paragraph [ref=e311]: Unified contact timeline
+                  - paragraph [ref=e316]: Visual deal pipeline
+                  - paragraph [ref=e321]: Automated follow-ups
+                  - paragraph [ref=e326]: Email and SMS campaigns
+                - button [ref=e327]:
+                  - paragraph [ref=e328]: Show 2 more
+              - button "Try Now" [ref=e329]
+            - generic [ref=e337] [cursor=pointer]:
+              - generic [ref=e340]:
+                - paragraph [ref=e342]: Feedback
+                - paragraph [ref=e343]: Product feedback
+              - generic [ref=e344]:
+                - generic [ref=e345]:
+                  - paragraph [ref=e350]: Capture feedback in one place
+                  - paragraph [ref=e355]: Prioritize by impact
+                  - paragraph [ref=e360]: Close the loop with users
+                - button [ref=e361]:
+                  - paragraph [ref=e362]: View details
+              - button "Try Now" [ref=e363]
+            - generic [ref=e371] [cursor=pointer]:
+              - generic [ref=e374]:
+                - paragraph [ref=e376]: LF IQ
+                - paragraph [ref=e377]: Homeowner insights
+              - generic [ref=e378]:
+                - generic [ref=e379]:
+                  - paragraph [ref=e384]: Live market and rate insights
+                  - paragraph [ref=e389]: Homeowner engagement
+                  - paragraph [ref=e394]: Actionable alerts
+                - button [ref=e395]:
+                  - paragraph [ref=e396]: View details
+              - button "Try Now" [ref=e397]
+            - generic [ref=e405] [cursor=pointer]:
+              - generic [ref=e408]:
+                - paragraph [ref=e410]: Loan Life
+                - paragraph [ref=e411]: Loan lifecycle
+              - generic [ref=e412]:
+                - generic [ref=e413]:
+                  - paragraph [ref=e418]: End-to-end loan servicing
+                  - paragraph [ref=e423]: Payment and escrow tracking
+                  - paragraph [ref=e428]: Automated milestones
+                - button [ref=e429]:
+                  - paragraph [ref=e430]: View details
+              - button "Try Now" [ref=e431]
+            - generic [ref=e439] [cursor=pointer]:
+              - generic [ref=e442]:
+                - paragraph [ref=e444]: Luna
+                - paragraph [ref=e445]: Lender-side loan origination — pipeline, underwriting, closing and funding on one file.
+              - generic [ref=e446]:
+                - generic [ref=e447]:
+                  - paragraph [ref=e452]: Role-based pipeline and worklist
+                  - paragraph [ref=e457]: Underwriting worksheet from the 1003
+                  - paragraph [ref=e462]: Closing, funding and post-close QC
+                - button [ref=e463]:
+                  - paragraph [ref=e464]: View details
+              - button "Try Now" [ref=e465]
+            - generic [ref=e473] [cursor=pointer]:
+              - generic [ref=e476]:
+                - paragraph [ref=e478]: Marketplace
+                - paragraph [ref=e479]: Find the lender that can actually close — one scenario, matched to live AEs.
+              - generic [ref=e480]:
+                - generic [ref=e481]:
+                  - paragraph [ref=e486]: Match a scenario to lenders
+                  - paragraph [ref=e491]: Talk to live account executives
+                  - paragraph [ref=e496]: Lender programs and overlays
+                - button [ref=e497]:
+                  - paragraph [ref=e498]: View details
+              - button "Try Now" [ref=e499]
+            - generic [ref=e507] [cursor=pointer]:
+              - generic [ref=e510]:
+                - paragraph [ref=e512]: Moso
+                - paragraph [ref=e513]: Real estate
+              - generic [ref=e514]:
+                - generic [ref=e515]:
+                  - paragraph [ref=e520]: Browse and manage listings
+                  - paragraph [ref=e525]: Track deals to close
+                  - paragraph [ref=e530]: Connect agents and buyers
+                - button [ref=e531]:
+                  - paragraph [ref=e532]: View details
+              - button "Try Now" [ref=e533]
+            - generic [ref=e541] [cursor=pointer]:
+              - generic [ref=e544]:
+                - paragraph [ref=e546]: Nova
+                - paragraph [ref=e547]: Run the call center — inbound and outbound calls, live queues, and searchable call history.
+              - generic [ref=e548]:
+                - generic [ref=e549]:
+                  - paragraph [ref=e554]: Inbound and outbound calling
+                  - paragraph [ref=e559]: Live queues and routing
+                  - paragraph [ref=e564]: Searchable call history
+                - button [ref=e565]:
+                  - paragraph [ref=e566]: View details
+              - button "Try Now" [ref=e567]
+            - generic [ref=e575] [cursor=pointer]:
+              - generic [ref=e578]:
+                - paragraph [ref=e580]: Recruit
+                - paragraph [ref=e581]: Hire faster — post roles, move candidates through every stage, and schedule interviews in one place.
+              - generic [ref=e582]:
+                - generic [ref=e583]:
+                  - paragraph [ref=e588]: Job postings and pipelines
+                  - paragraph [ref=e593]: Candidate tracking by stage
+                  - paragraph [ref=e598]: Interview scheduling
+                - button [ref=e599]:
+                  - paragraph [ref=e600]: View details
+              - button "Try Now" [ref=e601]
+            - generic [ref=e609] [cursor=pointer]:
+              - generic [ref=e612]:
+                - paragraph [ref=e614]: Tera
+                - paragraph [ref=e615]: Loan origination
+              - generic [ref=e616]:
+                - generic [ref=e617]:
+                  - paragraph [ref=e622]: 1003 application and pipeline
+                  - paragraph [ref=e627]: Real-time collaboration
+                  - paragraph [ref=e632]: Automated compliance
+                - button [ref=e633]:
+                  - paragraph [ref=e634]: View details
+              - button "Try Now" [ref=e635]
+  - dialog "Account menu" [ref=e756]:
+    - generic [ref=e757]:
+      - generic [ref=e758]:
+        - generic [ref=e759]:
+          - generic [ref=e760]: bao.trinh+onb-test@viet18.com
+          - generic [ref=e761]: Managed by Loan Factory
+        - button "Close" [active] [ref=e762] [cursor=pointer]
+      - generic [ref=e767]:
+        - generic [ref=e768]: OS
+        - generic [ref=e770]: Hi, ONB
+      - generic [ref=e771]:
+        - generic [ref=e772]: Linked apps
+        - status [ref=e778]
+        - generic [ref=e779]: No linked apps yet
+      - generic [ref=e780]:
+        - button "Log out" [ref=e781] [cursor=pointer]
+        - status [ref=e789]
+  - alert [ref=e150]

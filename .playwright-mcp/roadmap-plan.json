@@ -1,0 +1,353 @@
+{
+ "project_lorecruit": {
+  "description": "Recruiting pipeline for new loan officers. Live at recruit.loanfactory.com since 2026-09-07; production code = staging since 2026-10-06. Remaining work is mostly switching on integrations that reach real people (write-back to MOSO, e-sign, calendar/Meet) in the agreed order."
+ },
+ "tasks": [
+  {
+   "match": "LO lists - Recruited LO pipeline",
+   "status": "done",
+   "history": [
+    [
+     "2026-09-03",
+     "Hot leads inbox with first-contact deadline clocks (business hours) + Cold list of unowned leads with Claim"
+    ],
+    [
+     "2026-09-07",
+     "Pipeline of all leads: last-contact column, bulk assign/export/archive, saved filter views; Duplicates screen with confirmed merge"
+    ],
+    [
+     "2026-09-15",
+     "MOSO -> Recruit realtime sync live on production (first 163 real candidates); Dormant list with Revive"
+    ],
+    [
+     "2026-09-22",
+     "Manual Add lead form"
+    ],
+    [
+     "2026-10-06",
+     "Kanban + card view; rows show lead source, referrer, webinar session and event; sidebar count badges"
+    ],
+    [
+     "2026-10-07",
+     "Candidate quick view + full profile page (/candidates/[id]) with stage tracker, team on candidate, follow + @mention notes"
+    ],
+    [
+     "2026-10-14",
+     "Hot/Cold redesign: Reset filters, Has/No NMLS filter, Production 12 mo column sortable by loans then volume"
+    ],
+    [
+     "2026-10-15",
+     "MOSO loan officer profile fields imported and shown on the profile (1,066 of 1,082 production candidates filled); edit-conflict warning"
+    ]
+   ],
+   "plan": []
+  },
+  {
+   "match": "Refer a loan officer",
+   "status": "done",
+   "history": [
+    [
+     "2026-09-16",
+     "Referral attribution ledger: who referred whom, admin override, company-must-have-worked hold rule"
+    ],
+    [
+     "2026-10-09",
+     "Referred loan officer always enters as a new lead (59 production rows repaired)"
+    ],
+    [
+     "2026-10-15",
+     "A referrer confirmed late upgrades an untouched lead to REFERRAL"
+    ]
+   ],
+   "plan": []
+  },
+  {
+   "match": "Admin - Loan officer referrals",
+   "status": "active",
+   "history": [
+    [
+     "2026-10-06",
+     "My referrals + Referrals by referrer screens shipped (switched off until the referral program opens)"
+    ]
+   ],
+   "plan": [
+    [
+     "Link program members, run program sync, then switch referrals on for users",
+     null
+    ]
+   ]
+  },
+  {
+   "match": "Referral Tracking",
+   "status": "active",
+   "history": [
+    [
+     "2026-09-16",
+     "Referral attribution ledger: who referred whom, admin override, company hold rule"
+    ],
+    [
+     "2026-10-06",
+     "My referrals: per-referral stage timeline, days onboarded, countdown to bonus eligibility (switched off until the program opens)"
+    ]
+   ],
+   "plan": [
+    [
+     "Switch on for users together with the referral program",
+     null
+    ]
+   ],
+   "notes_append": "Scope update 2026-10-15: Recruit only TRACKS (who referred whom, joined date, days onboarded, eligibility countdown). Calculating and paying the bonus is owned by Accounting / another app."
+  },
+  {
+   "match": "Webinar page + registration",
+   "status": "done",
+   "history": [
+    [
+     "2026-09-22",
+     "Upcoming webinar list read from MOSO; Invite to join window + joining-progress card"
+    ],
+    [
+     "2026-10-06",
+     "My invites page with badge; resend a failed invite email; Ready to join on Exceptions"
+    ],
+    [
+     "2026-10-07",
+     "Offer window predicts the review; manager approves in one step"
+    ],
+    [
+     "2026-10-08",
+     "/loan-officer v1 page + new /register-loan-officer form live on loanfactory.com"
+    ],
+    [
+     "2026-10-13",
+     "Webinar reminder the day before + feedback call the day after the session; only W-2 / 1099 offered"
+    ],
+    [
+     "2026-10-15",
+     "/loan-officer updates from Matt's feedback (mobile fixes) live"
+    ]
+   ],
+   "plan": []
+  },
+  {
+   "match": "Follow up - templates",
+   "status": "done",
+   "history": [
+    [
+     "2026-09-03",
+     "Call result wizard with follow-ups and call script; Call/SMS/Email buttons log the contact"
+    ],
+    [
+     "2026-09-07",
+     "Email/SMS/Call templates with a review step"
+    ],
+    [
+     "2026-09-15",
+     "No-answer retry ladder (3/5/10/30 days, skips weekends); follow-ups stop when the candidate replies"
+    ],
+    [
+     "2026-09-22",
+     "Omni conversation panel (SMS, call, email, manager history) opened from the row; Send info now or scheduled"
+    ],
+    [
+     "2026-10-06",
+     "TCPA consent check before SMS/Email, MOSO block reason shown; Omni inbox bubble"
+    ],
+    [
+     "2026-10-08",
+     "Omni conversations live on production; Send info goes out directly through Omni"
+    ],
+    [
+     "2026-10-15",
+     "Calls count as contacting the loan officer; onboarding specialist gets a Conversation button"
+    ]
+   ],
+   "plan": []
+  },
+  {
+   "match": "Onboarding - ILO pipeline",
+   "status": "done",
+   "history": [
+    [
+     "2026-09-25",
+     "Department work: HR / Licensing / Onboarding / Accounting checklists; Send to HR with blocking reasons"
+    ],
+    [
+     "2026-10-06",
+     "Onboarding 1-1: book via Google Calendar, mark done, W-2/1099 captured; six-stage pipeline"
+    ],
+    [
+     "2026-10-07",
+     "Onboarding progress card, My hand-offs journey bar (Joined only when signed and paid), Missing for HR"
+    ],
+    [
+     "2026-10-08",
+     "Setup call booking; licences read from user-service; HR licence feed"
+    ],
+    [
+     "2026-10-09",
+     "Daily reconcile of signed MOSO agreements"
+    ],
+    [
+     "2026-10-13",
+     "Licensing step done on first sponsored state; setup call required before the last stage"
+    ],
+    [
+     "2026-10-15",
+     "Google Meet attendance on onboarding 1-1 rows (built; switched off on production)"
+    ]
+   ],
+   "plan": [],
+   "notes_append": "Built and on production, switched off until rolled out in the agreed order: write-back to MOSO, e-sign agreement send, 1-1 reminder emails, Google Calendar/Meet events + attendance."
+  },
+  {
+   "match": "Recruiting dashboard + settings",
+   "status": "done",
+   "history": [
+    [
+     "2026-09-03",
+     "Per-recruiter reports + pivot; Audit log (who did what, when)"
+    ],
+    [
+     "2026-09-25",
+     "Admin settings: lead deadlines, re-contact timing, offer review clock; CSV export; notification bell"
+    ],
+    [
+     "2026-10-01",
+     "Weekly KPI trend sparklines on stat cards"
+    ],
+    [
+     "2026-10-06",
+     "Settings > Connections: connect your own Google account"
+    ],
+    [
+     "2026-10-09",
+     "Admin edits business hours (start/end/days)"
+    ]
+   ],
+   "plan": []
+  }
+ ],
+ "new_tasks": [
+  {
+   "name": "Today & Focus - daily work queue",
+   "status": "done",
+   "history": [
+    [
+     "2026-09-03",
+     "Today screen on live data + Focus mode (one candidate per screen)"
+    ],
+    [
+     "2026-09-22",
+     "Today split into four groups; quiet-lead reminders"
+    ],
+    [
+     "2026-10-06",
+     "Today adapts to the user's role, with stat row and nav badge"
+    ],
+    [
+     "2026-10-07",
+     "Team queue with Assigned to / Mine filter"
+    ],
+    [
+     "2026-10-14",
+     "Today v3: one list of the day's work with progress bar; Focus v2; manager review rows"
+    ]
+   ],
+   "plan": []
+  },
+  {
+   "name": "Claim, hand-off & idle release",
+   "status": "done",
+   "history": [
+    [
+     "2026-09-03",
+     "Touching a lead (call/SMS/email) claims it automatically"
+    ],
+    [
+     "2026-09-25",
+     "Hand a lead to a colleague; Remind / Take back from the bell"
+    ],
+    [
+     "2026-10-12",
+     "Claim from the profile page; Claim stays in the row next to call/text/email"
+    ],
+    [
+     "2026-10-15",
+     "Shows who handed a lead over"
+    ]
+   ],
+   "plan": []
+  },
+  {
+   "name": "Access, roles & TERA design",
+   "status": "done",
+   "history": [
+    [
+     "2026-09-07",
+     "recruit.loanfactory.com live with SSO + role-based access enforced"
+    ],
+    [
+     "2026-09-15",
+     "First 7 staff given roles (manager, recruiters, HR, Licensing, Onboarding, Accounting)"
+    ],
+    [
+     "2026-10-06",
+     "Headhunter and team lead roles with scoped access"
+    ],
+    [
+     "2026-10-06",
+     "Moved to the TERA design system + platform shell; sidebar by role"
+    ],
+    [
+     "2026-10-14",
+     "No access / Access Denied pages"
+    ]
+   ],
+   "plan": []
+  },
+  {
+   "name": "Next: rollout & new requests (Oct 2026)",
+   "status": "active",
+   "history": [],
+   "plan": [
+    [
+     "Import the full MOSO cold list (~71.9k loan officers) into Cold - deferred, needs an owner map first",
+     null
+    ],
+    [
+     "One distraction-free sign-up form for every CTA (Matt's wireframe, expected end of week 15/10)",
+     null
+    ],
+    [
+     "Personal /join page for every recruiter and loan officer (meeting 15/10)",
+     null
+    ],
+    [
+     "Switch on write-back to MOSO (after 1-2 weeks of manual use; Seth / Brayan / Miley need MOSO RECRUITING permission)",
+     null
+    ],
+    [
+     "Switch on e-sign agreement send + 1-1 reminder emails + Calendar/Meet events",
+     null
+    ],
+    [
+     "HR app reports completion (BGC, account, to-do/docs) back to Recruit",
+     null
+    ],
+    [
+     "Production metrics + alerts for Recruit (with DevOps)",
+     null
+    ],
+    [
+     "Switch on idle release (only New leads go back to the pool)",
+     null
+    ]
+   ]
+  }
+ ],
+ "project_academy": {
+  "is_done": true,
+  "status": "done"
+ }
+}

@@ -1,0 +1,228 @@
+- generic [active] [ref=f5e1]:
+  - generic [ref=f5e7]:
+    - generic [ref=f5e8]:
+      - generic [ref=f5e9]:
+        - button "Sidebar collapse button" [ref=f5e10] [cursor=pointer]
+        - link [ref=f5e69] [cursor=pointer]:
+          - /url: "#"
+          - text: "SWAT:"
+          - link "Vinh Nguyen is SWAT officer. Please contact him for urgent problem" [ref=f5e70]:
+            - /url: "javascript:"
+          - text: "Parser:"
+          - link "Quyen Anh Vo is monitoring the parser today. Please contact him for problem with parser" [ref=f5e72]:
+            - /url: "javascript:"
+      - list [ref=f5e15]:
+        - listitem [ref=f5e16]:
+          - link "Search" [ref=f5e17] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=f5e74]: search
+        - listitem [ref=f5e18]:
+          - link "Builds" [ref=f5e19] [cursor=pointer]:
+            - /url: "##builds"
+        - listitem [ref=f5e20]:
+          - link "add" [ref=f5e75] [cursor=pointer]:
+            - /url: "##create_small_task"
+        - listitem [ref=f5e22]:
+          - link "Message" [ref=f5e23] [cursor=pointer]:
+            - /url: javascript:;
+            - generic [ref=f5e77]: notifications
+          - text: 
+        - listitem [ref=f5e24]:
+          - link [ref=f5e25] [cursor=pointer]:
+            - /url: javascript:;
+            - text: Bao Trinh
+            - img "Bao Trinh" [ref=f5e26]
+      - generic [ref=f5e27]:
+        - button "search" [ref=f5e28]
+        - generic [ref=f5e79]:
+          - searchbox "Search input" [ref=f5e80]
+          - searchbox "Search input" [ref=f5e29]
+        - link "close search" [ref=f5e30] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=f5e81]: close
+    - generic [ref=f5e32]:
+      - list [ref=f5e33]:
+        - listitem [ref=f5e34]:
+          - link "Bao Trinh  Bao Trinh Dev" [ref=f5e35] [cursor=pointer]:
+            - /url: javascript:;
+            - img "Bao Trinh" [ref=f5e38]
+            - generic [ref=f5e39]:
+              - generic [ref=f5e40]: 
+              - text: Bao Trinh
+              - generic [ref=f5e41]: Dev
+        - listitem: 
+      - list [ref=f5e42]:
+        - listitem [ref=f5e43]: X Moso
+        - listitem [ref=f5e44]:
+          - tab "group Company directory" [ref=f5e83] [cursor=pointer]:
+            - generic [ref=f5e84]: group
+            - text: Company directory
+        - listitem [ref=f5e46]:
+          - link " assignment_o Activities" [ref=f5e85] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f5e48]: 
+            - generic [ref=f5e86]: assignment_o
+            - text: Activities
+        - listitem [ref=f5e49]:
+          - link " check Reports" [ref=f5e87] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f5e51]: 
+            - generic [ref=f5e88]: check
+            - text: Reports
+        - listitem [ref=f5e52]:
+          - link " settings Builds" [ref=f5e89] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f5e54]: 
+            - generic [ref=f5e90]: settings
+            - text: Builds
+        - listitem [ref=f5e55]:
+          - link " bug_report Errors" [ref=f5e91] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f5e57]: 
+            - generic [ref=f5e92]: bug_report
+            - text: Errors
+        - listitem [ref=f5e58]:
+          - link " System" [ref=f5e59] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f5e60]: 
+            - text: System
+    - generic [ref=f5e93]:
+      - heading [level=1] [ref=f5e94]:
+        - text: Builds
+        - paragraph [ref=f5e95]:
+          - generic [ref=f5e97]:
+            - text: bao.trinh@moso.com broke build 8 hour(s) ago. Bao Trinh (TrongBaoMoso) is locking push
+            - strong [ref=f5e98]: because of test break
+      - generic [ref=f5e101]:
+        - tablist [ref=f5e102]:
+          - tab "builds" [ref=f5e103] [cursor=pointer]: Builds
+          - tab "status" [ref=f5e104] [cursor=pointer]:
+            - generic [ref=f5e105]: rss_feed
+            - text: Status
+          - tab "parsers" [ref=f5e106] [cursor=pointer]:
+            - generic [ref=f5e107]: insert_drive_file
+            - text: Parsers
+          - tab "tests" [ref=f5e108] [cursor=pointer]:
+            - generic [ref=f5e109]: insert_drive_file
+            - text: Tests
+          - tab "builders" [ref=f5e110] [cursor=pointer]:
+            - generic [ref=f5e111]: settings
+            - text: Builders
+          - tab "activities" [ref=f5e112] [cursor=pointer]:
+            - generic [ref=f5e113]: history
+            - text: Activities
+        - generic [ref=f5e116]:
+          - generic [ref=f5e117]:
+            - form [ref=f5e118]:
+              - generic "Repo" [ref=f5e119]:
+                - generic [ref=f5e120]:
+                  - text: Repo
+                  - generic [ref=f5e121]: (optional)
+                - combobox [aria-hidden] [ref=f5e122]
+                - combobox "Repo" [ref=f5e125] [cursor=pointer]
+              - generic "Status" [ref=f5e127]:
+                - generic [ref=f5e128]:
+                  - text: Status
+                  - generic [ref=f5e129]: (optional)
+                - combobox [aria-hidden] [ref=f5e130]
+                - combobox "Status" [ref=f5e133] [cursor=pointer]
+            - button "Reset filters" [ref=f5e136] [cursor=pointer]
+          - generic [ref=f5e137]:
+            - generic [ref=f5e139]:
+              - generic [ref=f5e140]: Name
+              - generic [ref=f5e141]: Status
+              - generic [ref=f5e142]: Last build
+              - generic [ref=f5e143]: Times
+              - generic [ref=f5e144]: Build Failed User
+              - generic [ref=f5e145]: Updated
+            - generic [ref=f5e146]:
+              - generic [ref=f5e147]:
+                - generic [ref=f5e148]:
+                  - generic [ref=f5e149] [cursor=pointer]: packs/loan - master
+                  - generic [ref=f5e150]: running
+                  - generic [ref=f5e152] [cursor=pointer]: "6752742041714688"
+                  - generic [ref=f5e153]: "{\"0\":\"417\"}"
+                  - generic [ref=f5e154]: trung.thach@moso.com
+                  - generic [ref=f5e156]: 36 minute(s) ago
+                - generic [ref=f5e157]:
+                  - generic [ref=f5e158] [cursor=pointer]: packs/pylon-apis - master
+                  - generic [ref=f5e159]: failed
+                  - generic [ref=f5e161] [cursor=pointer]: "4932702942265344"
+                  - generic [ref=f5e163]: bao.trinh@moso.com
+                  - generic [ref=f5e165]: 1 hour(s) 13 minute(s) ago
+                - generic [ref=f5e166]:
+                  - generic [ref=f5e167] [cursor=pointer]: moso-pricing - master
+                  - generic [ref=f5e168]: succeeded
+                  - generic [ref=f5e170] [cursor=pointer]: "5218007226253312"
+                  - generic [ref=f5e173]: 2 hour(s) ago
+                - generic [ref=f5e174]:
+                  - generic [ref=f5e175] [cursor=pointer]: moso - master
+                  - generic [ref=f5e176]: queued
+                  - generic [ref=f5e178] [cursor=pointer]: "-1"
+                  - generic [ref=f5e179]: "{}"
+                  - generic [ref=f5e181]: 2 hour(s) ago
+                - generic [ref=f5e182]:
+                  - generic [ref=f5e183] [cursor=pointer]: packs/hr - master
+                  - generic [ref=f5e184]: succeeded
+                  - generic [ref=f5e186] [cursor=pointer]: "5345812559691776"
+                  - generic [ref=f5e189]: 2 hour(s) ago
+                - generic [ref=f5e190]:
+                  - generic [ref=f5e191] [cursor=pointer]: packs/quote - master
+                  - generic [ref=f5e192]: succeeded
+                  - generic [ref=f5e194] [cursor=pointer]: "5543430111887360"
+                  - generic [ref=f5e197]: 2 hour(s) ago
+                - generic [ref=f5e198]:
+                  - generic [ref=f5e199] [cursor=pointer]: packs/ringcentral-apis - master
+                  - generic [ref=f5e200]: succeeded
+                  - generic [ref=f5e202] [cursor=pointer]: "6221223934033920"
+                  - generic [ref=f5e205]: 2 hour(s) ago
+                - generic [ref=f5e206]:
+                  - generic [ref=f5e207] [cursor=pointer]: packs/google-apis - master
+                  - generic [ref=f5e208]: succeeded
+                  - generic [ref=f5e210] [cursor=pointer]: "5144776347746304"
+                  - generic [ref=f5e213]: 2 hour(s) ago
+                - generic [ref=f5e214]:
+                  - generic [ref=f5e215] [cursor=pointer]: packs/billing - master
+                  - generic [ref=f5e216]: succeeded
+                  - generic [ref=f5e218] [cursor=pointer]: "5724773496127488"
+                  - generic [ref=f5e221]: 2 hour(s) ago
+                - generic [ref=f5e222]:
+                  - generic [ref=f5e223] [cursor=pointer]: base/appengine - master
+                  - generic [ref=f5e224]: succeeded
+                  - generic [ref=f5e226] [cursor=pointer]: "5542106255327232"
+                  - generic [ref=f5e229]: 2 hour(s) ago
+              - text: 
+          - generic "Page Navigation" [ref=f5e230]:
+            - list [ref=f5e232]:
+              - listitem [ref=f5e233] [cursor=pointer]:
+                - generic "Previous" [ref=f5e234]: «
+              - listitem [ref=f5e235] [cursor=pointer]:
+                - generic [ref=f5e236]: 1-10 of 30
+              - listitem [ref=f5e237] [cursor=pointer]:
+                - generic "Next" [ref=f5e238]: »
+            - generic [ref=f5e239]:
+              - text: Showing
+              - combobox "Items per page" [ref=f5e240]:
+                - option "5"
+                - option "10" [selected]
+                - option "25"
+                - option "50"
+                - option "100"
+              - text: items per page
+    - link "Scroll to top" [ref=f5e64] [cursor=pointer]:
+      - /url: javascript:;
+      - generic [ref=f5e241]: keyboard_arrow_up
+  - iframe
+  - generic [ref=f5e65]:
+    - link "System Improvement?" [ref=f5e66] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f5e242]: send
+    - link "Help?" [ref=f5e67] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f5e243]: help
+    - link "Chat" [ref=f5e68] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f5e244]: chat
+  - log [ref=f5e245]
+  - log [ref=f5e246]
+  - log [ref=f5e247]

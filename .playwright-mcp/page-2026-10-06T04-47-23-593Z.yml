@@ -1,0 +1,48 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e3]:
+      - link [ref=e5] [cursor=pointer]:
+        - /url: "##"
+      - generic [ref=e6]:
+        - list [ref=e7]:
+          - listitem [ref=e8]:
+            - link "Home" [ref=e9] [cursor=pointer]:
+              - /url: "##home"
+          - listitem [ref=e10]:
+            - link "Contact" [ref=e11] [cursor=pointer]:
+              - /url: "#"
+        - list [ref=e13]:
+          - listitem [ref=e14]:
+            - link "Sign in" [ref=e15] [cursor=pointer]:
+              - /url: javascript:gotoPlace('login?popup=1')
+  - main [ref=e17]
+  - contentinfo [ref=e18]:
+    - generic [ref=e22]:
+      - generic [ref=e23]:
+        - heading "Contact us" [level=3] [ref=e24]
+        - list [ref=e26]:
+          - listitem [ref=e27]: (048) 900-9131
+          - listitem [ref=e28]:
+            - link "Send a message" [ref=e29] [cursor=pointer]:
+              - /url: "##contact_us"
+          - listitem [ref=e30]: 63d Vo Van Tan, 3, Hồ Chí Minh, VN
+      - generic [ref=e31]:
+        - heading "Menu" [level=3] [ref=e32]
+        - list [ref=e34]:
+          - listitem [ref=e35]:
+            - link "Privacy policies" [ref=e36] [cursor=pointer]:
+              - /url: "##privacy"
+          - listitem [ref=e37]:
+            - link "Terms and conditions" [ref=e38] [cursor=pointer]:
+              - /url: "##terms_and_conditions"
+          - listitem [ref=e39]:
+            - link "ADA Accessibility Statement" [ref=e40] [cursor=pointer]:
+              - /url: "##ada"
+          - listitem [ref=e41]:
+            - link "Our team" [ref=e42] [cursor=pointer]:
+              - /url: "##our_team"
+      - generic [ref=e43]:
+        - heading "Social" [level=3] [ref=e44]
+        - list
+    - generic [ref=e46]: © Copyright 2026 X Moso, All rights reserved.
+  - iframe

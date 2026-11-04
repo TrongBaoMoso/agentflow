@@ -1,0 +1,43 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - generic [ref=f1e3]:
+      - button "Change language, currently English" [ref=f1e4] [cursor=pointer]:
+        - generic [ref=f1e5]:
+          - generic [aria-hidden] [ref=f1e7]: 🇺🇸
+          - generic [ref=f1e8]: English
+      - button "Switch to dark mode" [ref=f1e13] [cursor=pointer]
+    - generic [ref=f1e19]:
+      - generic [ref=f1e20]:
+        - generic [ref=f1e21]:
+          - img "My Account" [ref=f1e22]
+          - paragraph [ref=f1e23]: One login for the entire Loan Factory platform
+        - paragraph [ref=f1e24]: Secure sign-in
+      - generic [ref=f1e30]:
+        - generic [ref=f1e31]:
+          - heading "Sign in" [level=1] [ref=f1e32]
+          - paragraph [ref=f1e33]: to continue to Recruit
+        - generic [ref=f1e35]:
+          - generic [ref=f1e36]:
+            - generic: Email or phone
+            - textbox "Email or phone" [ref=f1e42]:
+              - /placeholder: ""
+              - text: bao.trinh+onb-test@viet18.com
+          - generic [ref=f1e43]:
+            - generic [ref=f1e44]:
+              - generic: Password
+              - generic [ref=f1e45]:
+                - textbox "Password" [ref=f1e52]:
+                  - /placeholder: ""
+                  - text: Onb-U4u5c0Fb8SlWqAv8pH!9
+                - button "Toggle password visibility" [ref=f1e54] [cursor=pointer]
+            - link "Forgot password?" [ref=f1e58] [cursor=pointer]:
+              - /url: /forgot-password?app=RECRUIT&return_to=https%3A%2F%2Frecruit.viet18.com%2Fauth%2Fcallback
+          - button "Sign in" [ref=f1e59] [cursor=pointer]
+          - separator [ref=f1e62]:
+            - generic [ref=f1e63]: or
+          - button "Sign in with Google" [ref=f1e64] [cursor=pointer]
+    - generic [ref=f1e73]:
+      - button "Help" [ref=f1e74] [cursor=pointer]
+      - button "Privacy" [ref=f1e75] [cursor=pointer]
+      - button "Terms" [ref=f1e76] [cursor=pointer]
+  - alert [ref=f1e77]

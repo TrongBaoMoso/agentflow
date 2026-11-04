@@ -1,0 +1,480 @@
+package com.mvu.loan.server.op.recruiting;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import com.google.appengine.api.NS;
+import com.mvu.appengine.AppEngineTest;
+import com.mvu.appengine.db.Bean;
+import com.mvu.appengine.db.Bundle;
+import com.mvu.core.MockHttpServletRequest;
+import com.mvu.core.server.JSON;
+import com.mvu.core.server.QueueService;
+import com.mvu.core.server.Server;
+import com.mvu.core.shared.entity.Configuration;
+import com.mvu.core.shared.entity.HasActive;
+import com.mvu.core.shared.entity.HasKey;
+import com.mvu.gapi.server.MockGoogleAdmin;
+import com.mvu.loan.server.op.api.WebPlusAPI;
+import com.mvu.loan.server.op.cron.GenerateMonthlyReferILORecruiterCronOp;
+import com.mvu.loan.server.op.dashboard.UpdateReferrerLoanOfficerReport;
+import com.mvu.loan.server.op.loan.LoanOps;
+import com.mvu.loan.server.op.user.ILOAutomaticAssignOwnerOp;
+import com.mvu.loan.shared.PerformanceReportUtils;
+import com.mvu.loan.shared.entity.Admin;
+import com.mvu.loan.shared.entity.Company;
+import com.mvu.loan.shared.entity.CountingType;
+import com.mvu.loan.shared.entity.ILOAssignmentOwner;
+import com.mvu.loan.shared.entity.LORecruiting;
+import com.mvu.loan.shared.entity.PerformanceReport;
+import com.mvu.loan.shared.entity.ToFollowUp;
+import com.mvu.loan.shared.entity.WebinarAttendeeStatus;
+
+/**
+ * The pay/credit reports and the staff-side automation, for a Loan Officer who is credited through the LO
+ * Recruiter Program (lead.recruiter = their key) but carries NO HR recruiter flag (Bao 23/10: flags are MOSO staff
+ * roles and are never set on members). Only the reports widen; nothing here may hand the member a staff capability.
+ */
+public class RecruiterProgramMemberReportsTest extends AppEngineTest {
+
+  private static final String NS_LF = Company.LOAN_FACTORY;
+  private static final String MEMBER_KEY = "member-login@test.com";
+  private static final String STAFF_KEY = "staff-login@test.com";
+  private static final String OUTSIDE_KEY = "outside-login@test.com";
+  private static final String PLAIN_LO_KEY = "plain-lo-login@test.com";
+  private static final String NON_LO_KEY = "non-lo-login@test.com";
+
+  private static final Date WINDOW_FROM = new Date(System.currentTimeMillis() - 30L * 24 * 3600 * 1000);
+  private static final Date WINDOW_TO = new Date(System.currentTimeMillis() + 24L * 3600 * 1000);
+  private static final String MONTH = "2026-10";
+
+  @BeforeAll
+  public static void init() {
+    init("test_config");
+  }
+
+  @BeforeEach
+  public void setUp() {
+    MockGoogleAdmin.createInstance().clearGroups();
+    NS.set("");
+    new Bundle().ensure(Company.TYPE, Long.parseLong(NS_LF)).set(Company.name, "Loan Factory").set(HasActive.active, true).save();
+    NS.set(NS_LF);
+    Bundle bundle = new Bundle();
+    if (bundle.get(Configuration.TYPE, 1L) == null) {
+      bundle.create(Configuration.TYPE, 1L);
+      bundle.commit();
+    }
+    new Bundle().ensure(Company.TYPE, Company.DEFAULT).save();
+    Server.queueService(new QueueService() {
+      @Override
+      public QueueService getQueue(String queueName) {
+        return this;
+      }
+
+      @Override
+      protected void queueTask(String taskName, String op, HttpServletRequest request, String payLoad, long delay) {
+        // executes nothing
+      }
+    });
+    Bundle caller = new Bundle();
+    caller.create(Admin.TYPE, "caller@test.com").set(Admin.email, "caller@test.com").set(HasActive.active, true);
+    caller.commit();
+    MockHttpServletRequest login = new MockHttpServletRequest();
+    login.setUser(Admin.TYPE, "caller@test.com");
+    com.mvu.core.server.ThreadContext.setRequest(login);
+
+    admin(MEMBER_KEY, "member.lo@loanfactory.com", false, true, false);
+    admin(STAFF_KEY, "staff.recruiter@loanfactory.com", true, false, false);
+    admin(OUTSIDE_KEY, "outside.recruiter@loanfactory.com", false, false, true);
+    admin(PLAIN_LO_KEY, "plain.lo@loanfactory.com", false, true, false);
+    admin(NON_LO_KEY, "non.lo@loanfactory.com", false, false, false);
+    anonymous();
+  }
+
+  /** Public sign-ups are anonymous; a signed-in create trips an unrelated follow-up container assertion. */
+  private static void anonymous() {
+    com.mvu.core.server.ThreadContext.setRequest(new MockHttpServletRequest());
+    NS.set(NS_LF);
+  }
+
+  private static void signedIn() {
+    MockHttpServletRequest login = new MockHttpServletRequest();
+    login.setUser(Admin.TYPE, "caller@test.com");
+    com.mvu.core.server.ThreadContext.setRequest(login);
+    NS.set(NS_LF);
+  }
+
+  private Bean admin(String keyName, String companyEmail, boolean staffRecruiter, boolean loanOriginator, boolean outsideRecruiter) {
+    Bundle bundle = new Bundle();
+    Bean created = bundle.create(Admin.TYPE, keyName)
+            .set(Admin.email, keyName)
+            .set(Admin.company_email, companyEmail)
+            .set(Admin.first_name, "Test")
+            .set(Admin.last_name, keyName)
+            .set(Admin.url, keyName.substring(0, keyName.indexOf('@')))
+            .set(HasActive.active, true);
+    if (staffRecruiter) {
+      created.set(Admin.is_recruiter, true);
+    }
+    if (outsideRecruiter) {
+      created.set(Admin.is_out_sourcing_recruiter, true).set(Admin.available, true)
+              .set(Admin.employee_start_date, "2020-01-01"); // the round-robin orders by it
+    }
+    if (loanOriginator) {
+      created.set(Admin.is_loan_originator, true);
+    }
+    bundle.commit();
+    Bean stored = new Bundle().get(Admin.TYPE, keyName);
+    assertThat(stored).as("stored " + keyName).isNotNull();
+    assertThat(stored.is(Admin.is_recruiter)).as("is_recruiter " + keyName).isEqualTo(staffRecruiter);
+    return created;
+  }
+
+  /** A lead the SERVER marked as program credit (what beforeCreated writes after the moso-aid check). */
+  private Bean markedLead(String email, String recruiterKey, WebinarAttendeeStatus status) {
+    return lead(email, recruiterKey, status, true);
+  }
+
+  private Bean lead(String email, String recruiterKey, WebinarAttendeeStatus status) {
+    return lead(email, recruiterKey, status, false);
+  }
+
+  private Bean lead(String email, String recruiterKey, WebinarAttendeeStatus status, boolean marker) {
+    Bundle bundle = new Bundle();
+    Bean row = bundle.create(LORecruiting.TYPE)
+            .set(LORecruiting.recruiting_type, LORecruiting.RecruitingType.interested)
+            .set(LORecruiting.email, email)
+            .set(LORecruiting.recruiter, recruiterKey);
+    if (status != null) {
+      row.set(LORecruiting.status, status);
+    }
+    bundle.commit();
+    if (marker) {
+      // beforeCreated clears every stamp field, then sets the marker itself: mimic that with a second save.
+      Bundle mark = new Bundle();
+      mark.get(row.key()).set(LORecruiting.lead_origin_recruiter_credit, true).set(LORecruiting.lead_origin_owner_key, recruiterKey);
+      mark.commit();
+    }
+    return new Bundle().get(row.key());
+  }
+
+  private Bean monthlyRow(String adminKey) {
+    return new Bundle().get(PerformanceReport.TYPE,
+            PerformanceReportUtils.getReportKeyName(CountingType.ilo_refer_by_recruiter, adminKey));
+  }
+
+  private void runMonthly(String adminKey) {
+    Bundle bundle = new Bundle();
+    GenerateMonthlyReferILORecruiterCronOp.calculate(bundle, bundle.get(Admin.TYPE, adminKey), WINDOW_FROM, WINDOW_TO, MONTH,
+            GenerateMonthlyReferILORecruiterCronOp.markedRecruiterKeys(new Bundle(), WINDOW_FROM, WINDOW_TO));
+    bundle.commit();
+  }
+
+  // ── monthly "ILOs referred by recruiter" ───────────────────────────────────
+
+  @Test
+  public void aStaffRecruiterStillGetsARowEvenWithNoLeads() {
+    runMonthly(STAFF_KEY);
+
+    Bean row = monthlyRow(STAFF_KEY);
+    assertThat(row).isNotNull();
+    assertThat((Integer) row.get(GenerateMonthlyReferILORecruiterCronOp.monthTotalField(MONTH))).isZero();
+  }
+
+  @Test
+  public void aProgramMemberWithCreditedLeadsIsCountedWithoutAnyFlag() {
+    markedLead("m1@example.com", MEMBER_KEY, WebinarAttendeeStatus.joined);
+    markedLead("m2@example.com", MEMBER_KEY, null);
+
+    runMonthly(MEMBER_KEY);
+
+    Bean row = monthlyRow(MEMBER_KEY);
+    assertThat(row).isNotNull();
+    assertThat((Integer) row.get(GenerateMonthlyReferILORecruiterCronOp.monthTotalField(MONTH))).isEqualTo(2);
+    assertThat((Integer) row.get(com.mvu.loan.shared.PerformanceReportUtils.monthCountField(MONTH))).isEqualTo(1);
+    Bean member = new Bundle().get(Admin.TYPE, MEMBER_KEY);
+    assertThat(member.is(Admin.is_recruiter)).isFalse();
+    assertThat(member.is(Admin.is_out_sourcing_recruiter)).isFalse();
+  }
+
+  @Test
+  public void aLoanOfficerWithNoCreditedLeadsGetsNoRow() {
+    runMonthly(PLAIN_LO_KEY);
+
+    assertThat(monthlyRow(PLAIN_LO_KEY)).isNull();
+  }
+
+  @Test
+  public void anAdminWhoIsNeitherStaffRecruiterNorLoanOfficerIsNeverCounted() {
+    lead("n1@example.com", NON_LO_KEY, null);
+
+    runMonthly(NON_LO_KEY);
+
+    assertThat(monthlyRow(NON_LO_KEY)).isNull();
+  }
+
+  // ── referrer_lo_detail ─────────────────────────────────────────────────────
+
+  @Test
+  public void theReferrerReportIncludesMembersWithCreditedLeadsAndNobodyElseNewly() {
+    Bean memberLead = markedLead("r1@example.com", MEMBER_KEY, null);
+    lead("r2@example.com", NON_LO_KEY, null);
+    List<Bean> activeAdmins = new Bundle().find(Admin.TYPE).whereEquals(Admin.active, true).list();
+
+    List<String> keys = UpdateReferrerLoanOfficerReport.reportRecruiters(activeAdmins, List.of(memberLead,
+            lead("r3@example.com", NON_LO_KEY, null))).stream().map(Bean::keyName).toList();
+
+    assertThat(keys).contains(MEMBER_KEY, STAFF_KEY, OUTSIDE_KEY);
+    assertThat(keys).doesNotContain(PLAIN_LO_KEY, NON_LO_KEY);
+  }
+
+  @Test
+  public void theReferrerReportOpWritesAnActiveRowForTheMemberAndSetsNoFlag() throws Exception {
+    markedLead("r4@example.com", MEMBER_KEY, WebinarAttendeeStatus.interested);
+
+    getOp(UpdateReferrerLoanOfficerReport.class).execute(JSON.empty());
+
+    Bean row = new Bundle().get(PerformanceReport.TYPE,
+            PerformanceReportUtils.getReportKeyName(CountingType.referrer_lo_detail, MEMBER_KEY));
+    assertThat(row).isNotNull();
+    assertThat(row.is(PerformanceReport.active)).isTrue();
+    assertThat(new Bundle().get(Admin.TYPE, MEMBER_KEY).is(Admin.is_recruiter)).isFalse();
+    assertThat(new Bundle().get(Admin.TYPE, MEMBER_KEY).is(Admin.is_out_sourcing_recruiter)).isFalse();
+  }
+
+  // ── G1: a forged recruiter on a PUBLIC body must never reach the pay reports ──
+
+  private static MockHttpServletRequest publicRequest() {
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    request.setMethod("POST");
+    return request;
+  }
+
+  private Bean registerPublicly(JSON body) throws Exception {
+    body.set("kind", LORecruiting.TYPE.name());
+    JSON response = (JSON) new WebPlusAPI().registerLoanOfficer(publicRequest(), NS_LF, body);
+    return new Bundle().get(response.key());
+  }
+
+  private static JSON forgedBody(String email) {
+    return JSON.empty()
+            .set(LORecruiting.email, email)
+            .set(LORecruiting.first_name, "Cand")
+            .set(LORecruiting.last_name, "Idate")
+            .set(LORecruiting.recruiter, PLAIN_LO_KEY)
+            .set(LORecruiting.referred_lo, PLAIN_LO_KEY);
+  }
+
+  @Test
+  public void aForgedRecruiterOnAPublicRegistrationGivesNoReportRow() throws Exception {
+    registerPublicly(forgedBody("forge1@example.com"));
+
+    runMonthly(PLAIN_LO_KEY);
+
+    assertThat(monthlyRow(PLAIN_LO_KEY)).as("a client-sent recruiter must not put a Loan Officer on the pay report").isNull();
+  }
+
+
+  // G1 / G2: the marker, not the recruiter value, is what the reports and the automation trust
+
+  @Test
+  public void aLoanOfficerOnAnUnmarkedLeadIsNotCountedByEitherReport() throws Exception {
+    // e.g. a manual assignment, a CSV import, or a forged value
+    Bean unmarked = lead("u1@example.com", PLAIN_LO_KEY, null);
+
+    runMonthly(PLAIN_LO_KEY);
+    List<String> keys = UpdateReferrerLoanOfficerReport.reportRecruiters(
+            new Bundle().find(Admin.TYPE).whereEquals(Admin.active, true).list(), List.of(unmarked)).stream().map(Bean::keyName).toList();
+
+    assertThat(monthlyRow(PLAIN_LO_KEY)).isNull();
+    assertThat(keys).doesNotContain(PLAIN_LO_KEY);
+  }
+
+  @Test
+  public void aMarkedLeadIsCountedAndRemovingTheMarkerRemovesTheRow() throws Exception {
+    Bean marked = markedLead("u2@example.com", MEMBER_KEY, null);
+    runMonthly(MEMBER_KEY);
+    assertThat(monthlyRow(MEMBER_KEY)).isNotNull();
+
+    Bundle unmark = new Bundle();
+    unmark.get(marked.key()).remove(LORecruiting.lead_origin_recruiter_credit);
+    unmark.commit();
+    new Bundle().find(PerformanceReport.TYPE).whereEquals(PerformanceReport.counting_type, CountingType.ilo_refer_by_recruiter)
+            .list().forEach(r -> new Bundle().get(r.key()).delete());
+    runMonthly(MEMBER_KEY);
+
+    assertThat(monthlyRow(MEMBER_KEY)).isNull();
+  }
+
+  @Test
+  public void aForgedMarkerOnAPublicBodyIsStrippedAndGivesNoRow() throws Exception {
+    Bean row = registerPublicly(forgedBody("forge2@example.com").set(LORecruiting.lead_origin_recruiter_credit, true));
+
+    assertThat(row.is(LORecruiting.lead_origin_recruiter_credit)).isFalse();
+    runMonthly(PLAIN_LO_KEY);
+    assertThat(monthlyRow(PLAIN_LO_KEY)).isNull();
+  }
+
+  @Test
+  public void thePublicBodyCannotSetRecruiterOrReferredLo() throws Exception {
+    Bean row = registerPublicly(forgedBody("forge3@example.com"));
+
+    assertThat(row.hasValue(LORecruiting.recruiter)).isFalse();
+    assertThat(row.hasValue(LORecruiting.referred_lo)).isFalse();
+  }
+
+  @Test
+  public void aKeyedPublicUpdateCannotSetRecruiter() throws Exception {
+    Bean existing = lead("forge4@example.com", null, null);
+
+    new WebPlusAPI().registerLoanOfficer(publicRequest(), NS_LF, JSON.empty()
+            .set("kind", LORecruiting.TYPE.name())
+            .set(LORecruiting.key, existing.key())
+            .set(LORecruiting.recruiter, PLAIN_LO_KEY)
+            .set(LORecruiting.lead_origin_recruiter_credit, true)
+            .set(LORecruiting.first_name, "Renamed"));
+
+    Bean after = new Bundle().get(existing.key());
+    assertThat(after.hasValue(LORecruiting.recruiter)).isFalse();
+    assertThat(after.is(LORecruiting.lead_origin_recruiter_credit)).isFalse();
+    assertThat((String) after.get(LORecruiting.first_name)).isEqualTo("Renamed");
+  }
+
+  @Test
+  public void aStaffSaveThroughTheInternalOpStillSetsRecruiter() throws Exception {
+    Bean saved = new Bundle().get(getOp(RegisterInterestedLoanOfficer.class).execute(
+            JSON.empty().set("kind", LORecruiting.TYPE.name()).set(LORecruiting.email, "staff1@example.com").set(LORecruiting.first_name, "S")
+                    .set(LORecruiting.recruiter, STAFF_KEY)).key());
+
+    assertThat((String) saved.get(LORecruiting.recruiter)).isEqualTo(STAFF_KEY);
+    assertThat(saved.is(LORecruiting.lead_origin_recruiter_credit)).isFalse();
+  }
+
+  @Test
+  public void aLegacyLeadOfADeFlaggedExRecruiterKeepsTheOldStaffHandling() throws Exception {
+    // PLAIN_LO stands for an ex-staff recruiter whose flags were removed: recruiter set, no marker
+    turnOnRecruiterRoundRobin();
+    Bean legacy = lead("legacy1@example.com", PLAIN_LO_KEY, null);
+
+    runRoundRobin(legacy);
+
+    assertThat((String) new Bundle().get(legacy.key()).get(LORecruiting.recruiter)).isEqualTo(OUTSIDE_KEY);
+    assertThat(followUpRecipients(lead("legacy2@example.com", PLAIN_LO_KEY, null))).containsExactly("$recruiter");
+  }
+
+
+  // reassignment: the marker stays on the row, but the credit belongs to the member it was written for
+
+  private void reassign(Bean lead, String newRecruiterKey) {
+    Bundle bundle = new Bundle();
+    bundle.get(lead.key()).set(LORecruiting.recruiter, newRecruiterKey);
+    bundle.commit();
+  }
+
+  @Test
+  public void aMarkedLeadReassignedToAStaffRecruiterGetsStaffHandlingBack() throws Exception {
+    turnOnRecruiterRoundRobin();
+    Bean lead = markedLead("re1@example.com", MEMBER_KEY, null);
+    reassign(lead, STAFF_KEY);
+    Bean reassigned = new Bundle().get(lead.key());
+
+    assertThat(LoRecruiterProgramStanding.holdsProgramMemberCredit(reassigned)).isFalse();
+    assertThat(followUpRecipients(reassigned)).containsExactly("$recruiter");
+    runRoundRobin(reassigned);
+    assertThat((String) new Bundle().get(lead.key()).get(LORecruiting.recruiter)).isEqualTo(OUTSIDE_KEY);
+  }
+
+  @Test
+  public void aMarkedLeadReassignedToAnotherLoanOfficerDoesNotCountForThem() throws Exception {
+    Bean lead = markedLead("re2@example.com", MEMBER_KEY, null);
+    reassign(lead, PLAIN_LO_KEY);
+    Bean reassigned = new Bundle().get(lead.key());
+
+    runMonthly(PLAIN_LO_KEY);
+    runMonthly(MEMBER_KEY);
+    List<String> keys = UpdateReferrerLoanOfficerReport.reportRecruiters(
+            new Bundle().find(Admin.TYPE).whereEquals(Admin.active, true).list(), List.of(reassigned)).stream().map(Bean::keyName).toList();
+
+    assertThat(monthlyRow(PLAIN_LO_KEY)).isNull();
+    assertThat(monthlyRow(MEMBER_KEY)).as("the original member no longer holds the lead").isNull();
+    assertThat(keys).doesNotContain(PLAIN_LO_KEY, MEMBER_KEY);
+  }
+
+  // ── side effects of recruiter= on a member's lead ──────────────────────────
+
+  private void turnOnRecruiterRoundRobin() {
+    Bundle bundle = new Bundle();
+    bundle.ensure(ILOAssignmentOwner.TYPE, 1L)
+            .set(ILOAssignmentOwner.is_automatic_assignment, true)
+            .set(ILOAssignmentOwner.is_automatic_assigment_recruiter, true);
+    bundle.commit();
+  }
+
+  /** The owner is saved before the notification mail, whose template is not seeded in this datastore. */
+  private void runRoundRobin(Bean lead) {
+    try {
+      getOp(ILOAutomaticAssignOwnerOp.class).execute(JSON.empty().set(LORecruiting.key, lead.key()));
+    } catch (Exception mailTemplateNotSeeded) {
+      // assertions below read the stored owner
+    }
+  }
+
+  @Test
+  public void theRoundRobinNeverOverwritesAProgramMembersCredit() throws Exception {
+    turnOnRecruiterRoundRobin();
+    Bean lead = markedLead("rr1@example.com", MEMBER_KEY, null);
+
+    runRoundRobin(lead);
+
+    assertThat((String) new Bundle().get(lead.key()).get(LORecruiting.recruiter)).isEqualTo(MEMBER_KEY);
+  }
+
+  @Test
+  public void theRoundRobinStillAssignsStaffLeadsAsBefore() throws Exception {
+    turnOnRecruiterRoundRobin();
+    Bean lead = lead("rr2@example.com", STAFF_KEY, null);
+
+    runRoundRobin(lead);
+
+    assertThat((String) new Bundle().get(lead.key()).get(LORecruiting.recruiter)).isEqualTo(OUTSIDE_KEY);
+  }
+
+  private List<String> followUpRecipients(Bean lead) {
+    signedIn();
+    try {
+      LoanOps.createDefaultFollowUpForLORecruiting(lead);
+    } finally {
+      anonymous();
+    }
+    Bean followUp = new Bundle().get(ToFollowUp.TYPE, lead.get(LORecruiting.follow_up));
+    List<String> recipients = followUp.get(ToFollowUp.recipient_fks);
+    return recipients == null ? List.of() : recipients;
+  }
+
+  @Test
+  public void aProgramMembersLeadGetsNoStaffFollowUpTask() {
+    assertThat(followUpRecipients(markedLead("fu1@example.com", MEMBER_KEY, null))).isEmpty();
+  }
+
+  @Test
+  public void aStaffRecruitersLeadStillGetsTheirFollowUpTask() {
+    assertThat(followUpRecipients(lead("fu2@example.com", STAFF_KEY, null))).containsExactly("$recruiter");
+  }
+
+  @Test
+  public void theMemberGainsNoStaffRecruiterRole() {
+    Bean member = new Bundle().get(Admin.TYPE, MEMBER_KEY);
+
+    assertThat(LoRecruiterProgramStanding.isStaffRecruiter(member)).isFalse();
+    assertThat(LoRecruiterProgramStanding.isStaffRecruiter(new Bundle().get(Admin.TYPE, STAFF_KEY))).isTrue();
+
+  }
+}

@@ -1,0 +1,2948 @@
+[      48ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3320/conversations:0
+[     165ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ webpack-internal:///(pages-dir-browser)/./node_modules/react-dom/cjs/react-dom.development.js:29889
+[     174ms] Error: Module not found: Package path ./chat.css is not exported from package /Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@loanfactory-inc/platform-chat (see exports field in /Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@loanfactory-inc/platform-chat/package.json)
+  18 | import '@loanfactory-inc/platform-react/theme.css'
+  19 | import '@loanfactory-inc/platform-react/assistant/styles.css'
+> 20 | import '@loanfactory-inc/platform-chat/chat.css'
+     | ^
+  21 | // The HR app's dropdown kit (ai-hr-fe, copied 16/10): after the platform sheets, before recruit's own.
+  22 | import '@styles/hrKit.css'
+  23 | import '@styles/global.css'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./src/shared/providers/AppProvider/index.tsx
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at getNotFoundError (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/parseNotFoundError.js:140:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async getModuleBuildError (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/webpackModuleError.js:103:27)
+    at async (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/index.js:29:49)
+    at async (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/index.js:27:21)
+[     174ms] [LOG] [HMR] connected @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js:45
+[     175ms] [ERROR] ./src/shared/providers/ThemeProvider/index.tsx:20:1
+Module not found: Package path ./chat.css is not exported from package /Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@loanfactory-inc/platform-chat (see exports field in /Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@loanfactory-inc/platform-chat/package.json)
+  18 | import '@loanfactory-inc/platform-react/theme.css'
+  19 | import '@loanfactory-inc/platform-react/assistant/styles.css'
+> 20 | import '@loanfactory-inc/platform-chat/chat.css'
+     | ^
+  21 | // The HR app's dropdown kit (ai-hr-fe, copied 16/10): after the platform sheets, before recruit's own.
+  22 | import '@styles/hrKit.css'
+  23 | import '@styles/global.css'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./src/shared/providers/AppProvider/index.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[     175ms] [ERROR] ./src/app/[locale]/(private)/layout.tsx:11:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   9 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+  10 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 11 |   require('@styles/design-2026-caps.css')
+     |   ^
+  12 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  13 |   require('@styles/design-2026.css')
+  14 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[     175ms] [ERROR] ./src/app/[locale]/[...rest]/not-found.tsx:10:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   8 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+   9 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 10 |   require('@styles/design-2026-caps.css')
+     |   ^
+  11 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  12 |   require('@styles/design-2026.css')
+  13 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[     188ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[   30333ms] [ERROR] WebSocket connection to 'ws://localhost:3320/_next/webpack-hmr' failed: Connection closed before receiving a handshake response @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js:88
+[   31337ms] [ERROR] WebSocket connection to 'ws://localhost:3320/_next/webpack-hmr' failed: Connection closed before receiving a handshake response @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js:88
+[   33247ms] [LOG] [HMR] connected @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js:45
+[   34094ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js:206
+[   37214ms] [ERROR] ./src/app/[locale]/[...rest]/not-found.tsx:10:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   8 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+   9 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 10 |   require('@styles/design-2026-caps.css')
+     |   ^
+  11 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  12 |   require('@styles/design-2026.css')
+  13 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   37215ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaDefaults.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import { bareJid, type ConversationId, type DefaultChannel, type DefaultContacts } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   37215ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaDispatch.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import {
+  4 |   DISPATCH_NS,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   37215ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaExtensions.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 |
+  3 | import { ROOM_MEMBERSHIP_NS, ROOM_READ_NS } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   37215ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaInbox.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 |
+  3 | import { bareJid } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   37215ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaPep.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent } from 'stanza'
+    | ^
+  2 | import type { DataForm, PubsubItem, PubsubItemContent } from 'stanza/protocol'
+  3 |
+  4 | import {
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   37215ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaReaders.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import { ROOM_READ_NS } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   37215ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaRooms.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 | import type { DataFormField, ReceivedMUCPresence, VCardTempRecord } from 'stanza/protocol'
+  3 |
+  4 | import { mentionUri, type Mention } from '@loanfactory-inc/platform-core'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   37215ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, createClient, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 | import type { Credentials } from 'stanza/lib/sasl'
+  3 |
+  4 | import {
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   37215ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationListVirtual.js:3:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   37215ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPickerPanel.js:3:1
+Module not found: Can't resolve 'frimousse'
+  1 | 'use client'
+  2 |
+> 3 | import { EmojiPicker } from 'frimousse'
+    | ^
+  4 | import { useLocale, useTranslations } from 'next-intl'
+  5 | import type { ComponentProps } from 'react'
+  6 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPopover.js
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/Composer.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   37215ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/MessageList.js:5:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  3 | import { Button, Text } from '@mantine/core'
+  4 | import { useThrottledValue } from '@mantine/hooks'
+> 5 | import { useVirtualizer } from '@tanstack/react-virtual'
+    | ^
+  6 | import { useLocale, useTranslations } from 'next-intl'
+  7 | import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
+  8 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   37215ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[   42568ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaDefaults.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import { bareJid, type ConversationId, type DefaultChannel, type DefaultContacts } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   42568ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaDispatch.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import {
+  4 |   DISPATCH_NS,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   42568ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaExtensions.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 |
+  3 | import { ROOM_MEMBERSHIP_NS, ROOM_READ_NS } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   42568ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaInbox.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 |
+  3 | import { bareJid } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   42568ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaPep.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent } from 'stanza'
+    | ^
+  2 | import type { DataForm, PubsubItem, PubsubItemContent } from 'stanza/protocol'
+  3 |
+  4 | import {
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   42568ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaReaders.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import { ROOM_READ_NS } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   42568ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaRooms.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 | import type { DataFormField, ReceivedMUCPresence, VCardTempRecord } from 'stanza/protocol'
+  3 |
+  4 | import { mentionUri, type Mention } from '@loanfactory-inc/platform-core'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   42568ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, createClient, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 | import type { Credentials } from 'stanza/lib/sasl'
+  3 |
+  4 | import {
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   42569ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationListVirtual.js:3:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   42569ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPickerPanel.js:3:1
+Module not found: Can't resolve 'frimousse'
+  1 | 'use client'
+  2 |
+> 3 | import { EmojiPicker } from 'frimousse'
+    | ^
+  4 | import { useLocale, useTranslations } from 'next-intl'
+  5 | import type { ComponentProps } from 'react'
+  6 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPopover.js
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/Composer.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   42569ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/MessageList.js:5:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  3 | import { Button, Text } from '@mantine/core'
+  4 | import { useThrottledValue } from '@mantine/hooks'
+> 5 | import { useVirtualizer } from '@tanstack/react-virtual'
+    | ^
+  6 | import { useLocale, useTranslations } from 'next-intl'
+  7 | import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
+  8 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   42569ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[   43247ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js:206
+[   43643ms] [ERROR] ./src/app/[locale]/(private)/layout.tsx:11:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   9 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+  10 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 11 |   require('@styles/design-2026-caps.css')
+     |   ^
+  12 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  13 |   require('@styles/design-2026.css')
+  14 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   43643ms] [ERROR] ./src/app/[locale]/[...rest]/not-found.tsx:10:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   8 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+   9 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 10 |   require('@styles/design-2026-caps.css')
+     |   ^
+  11 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  12 |   require('@styles/design-2026.css')
+  13 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   43643ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaDefaults.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import { bareJid, type ConversationId, type DefaultChannel, type DefaultContacts } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   43643ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaDispatch.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import {
+  4 |   DISPATCH_NS,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   43643ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaExtensions.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 |
+  3 | import { ROOM_MEMBERSHIP_NS, ROOM_READ_NS } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   43644ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaInbox.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 |
+  3 | import { bareJid } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   43644ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaPep.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent } from 'stanza'
+    | ^
+  2 | import type { DataForm, PubsubItem, PubsubItemContent } from 'stanza/protocol'
+  3 |
+  4 | import {
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   43644ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaReaders.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import { ROOM_READ_NS } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   43644ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaRooms.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 | import type { DataFormField, ReceivedMUCPresence, VCardTempRecord } from 'stanza/protocol'
+  3 |
+  4 | import { mentionUri, type Mention } from '@loanfactory-inc/platform-core'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   43644ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, createClient, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 | import type { Credentials } from 'stanza/lib/sasl'
+  3 |
+  4 | import {
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   43644ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationListVirtual.js:3:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   43644ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPickerPanel.js:3:1
+Module not found: Can't resolve 'frimousse'
+  1 | 'use client'
+  2 |
+> 3 | import { EmojiPicker } from 'frimousse'
+    | ^
+  4 | import { useLocale, useTranslations } from 'next-intl'
+  5 | import type { ComponentProps } from 'react'
+  6 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPopover.js
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/Composer.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   43644ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/MessageList.js:5:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  3 | import { Button, Text } from '@mantine/core'
+  4 | import { useThrottledValue } from '@mantine/hooks'
+> 5 | import { useVirtualizer } from '@tanstack/react-virtual'
+    | ^
+  6 | import { useLocale, useTranslations } from 'next-intl'
+  7 | import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
+  8 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   43644ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[   43646ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaDefaults.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import { bareJid, type ConversationId, type DefaultChannel, type DefaultContacts } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   43646ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaDispatch.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import {
+  4 |   DISPATCH_NS,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   43646ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaExtensions.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 |
+  3 | import { ROOM_MEMBERSHIP_NS, ROOM_READ_NS } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   43646ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaInbox.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 |
+  3 | import { bareJid } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   43646ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaPep.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent } from 'stanza'
+    | ^
+  2 | import type { DataForm, PubsubItem, PubsubItemContent } from 'stanza/protocol'
+  3 |
+  4 | import {
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   43646ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaReaders.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import { ROOM_READ_NS } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   43646ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaRooms.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 | import type { DataFormField, ReceivedMUCPresence, VCardTempRecord } from 'stanza/protocol'
+  3 |
+  4 | import { mentionUri, type Mention } from '@loanfactory-inc/platform-core'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   43646ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, createClient, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 | import type { Credentials } from 'stanza/lib/sasl'
+  3 |
+  4 | import {
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   43646ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationListVirtual.js:3:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   43646ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPickerPanel.js:3:1
+Module not found: Can't resolve 'frimousse'
+  1 | 'use client'
+  2 |
+> 3 | import { EmojiPicker } from 'frimousse'
+    | ^
+  4 | import { useLocale, useTranslations } from 'next-intl'
+  5 | import type { ComponentProps } from 'react'
+  6 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPopover.js
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/Composer.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   43646ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/MessageList.js:5:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  3 | import { Button, Text } from '@mantine/core'
+  4 | import { useThrottledValue } from '@mantine/hooks'
+> 5 | import { useVirtualizer } from '@tanstack/react-virtual'
+    | ^
+  6 | import { useLocale, useTranslations } from 'next-intl'
+  7 | import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
+  8 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   43646ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[   44273ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaDefaults.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import { bareJid, type ConversationId, type DefaultChannel, type DefaultContacts } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44273ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaDispatch.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import {
+  4 |   DISPATCH_NS,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44273ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaExtensions.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 |
+  3 | import { ROOM_MEMBERSHIP_NS, ROOM_READ_NS } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44273ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaInbox.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 |
+  3 | import { bareJid } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44273ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaPep.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent } from 'stanza'
+    | ^
+  2 | import type { DataForm, PubsubItem, PubsubItemContent } from 'stanza/protocol'
+  3 |
+  4 | import {
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44273ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaReaders.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import { ROOM_READ_NS } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44273ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaRooms.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 | import type { DataFormField, ReceivedMUCPresence, VCardTempRecord } from 'stanza/protocol'
+  3 |
+  4 | import { mentionUri, type Mention } from '@loanfactory-inc/platform-core'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44273ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, createClient, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 | import type { Credentials } from 'stanza/lib/sasl'
+  3 |
+  4 | import {
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44273ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationListVirtual.js:3:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44273ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPickerPanel.js:3:1
+Module not found: Can't resolve 'frimousse'
+  1 | 'use client'
+  2 |
+> 3 | import { EmojiPicker } from 'frimousse'
+    | ^
+  4 | import { useLocale, useTranslations } from 'next-intl'
+  5 | import type { ComponentProps } from 'react'
+  6 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPopover.js
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/Composer.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44273ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/MessageList.js:5:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  3 | import { Button, Text } from '@mantine/core'
+  4 | import { useThrottledValue } from '@mantine/hooks'
+> 5 | import { useVirtualizer } from '@tanstack/react-virtual'
+    | ^
+  6 | import { useLocale, useTranslations } from 'next-intl'
+  7 | import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
+  8 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44273ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js:206
+[   44582ms] [ERROR] ./src/app/[locale]/(private)/layout.tsx:11:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   9 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+  10 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 11 |   require('@styles/design-2026-caps.css')
+     |   ^
+  12 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  13 |   require('@styles/design-2026.css')
+  14 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44582ms] [ERROR] ./src/app/[locale]/[...rest]/not-found.tsx:10:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   8 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+   9 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 10 |   require('@styles/design-2026-caps.css')
+     |   ^
+  11 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  12 |   require('@styles/design-2026.css')
+  13 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44582ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaDefaults.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import { bareJid, type ConversationId, type DefaultChannel, type DefaultContacts } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44582ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaDispatch.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import {
+  4 |   DISPATCH_NS,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44582ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaExtensions.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 |
+  3 | import { ROOM_MEMBERSHIP_NS, ROOM_READ_NS } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44582ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaInbox.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 |
+  3 | import { bareJid } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44582ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaPep.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent } from 'stanza'
+    | ^
+  2 | import type { DataForm, PubsubItem, PubsubItemContent } from 'stanza/protocol'
+  3 |
+  4 | import {
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44582ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaReaders.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import { ROOM_READ_NS } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44582ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaRooms.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 | import type { DataFormField, ReceivedMUCPresence, VCardTempRecord } from 'stanza/protocol'
+  3 |
+  4 | import { mentionUri, type Mention } from '@loanfactory-inc/platform-core'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44582ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, createClient, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 | import type { Credentials } from 'stanza/lib/sasl'
+  3 |
+  4 | import {
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44582ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationListVirtual.js:3:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44582ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPickerPanel.js:3:1
+Module not found: Can't resolve 'frimousse'
+  1 | 'use client'
+  2 |
+> 3 | import { EmojiPicker } from 'frimousse'
+    | ^
+  4 | import { useLocale, useTranslations } from 'next-intl'
+  5 | import type { ComponentProps } from 'react'
+  6 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPopover.js
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/Composer.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44582ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/MessageList.js:5:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  3 | import { Button, Text } from '@mantine/core'
+  4 | import { useThrottledValue } from '@mantine/hooks'
+> 5 | import { useVirtualizer } from '@tanstack/react-virtual'
+    | ^
+  6 | import { useLocale, useTranslations } from 'next-intl'
+  7 | import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
+  8 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44582ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[   44814ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3320/_next/static/webpack/09676ac628b0c945.webpack.hot-update.json:0
+[   44814ms] [WARNING] [Fast Refresh] performing full reload
+
+Fast Refresh will perform a full reload when you edit a file that's imported by modules outside of the React rendering tree.
+You might have a file which exports a React component but also exports a value that is imported by a non-React component file.
+Consider migrating the non-React component export to a separate file and importing it into both files.
+
+It is also possible the parent component of the component you edited is a class component, which disables Fast Refresh.
+Fast Refresh requires at least one parent function component in your React tree. @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js:345
+[   44823ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaDefaults.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import { bareJid, type ConversationId, type DefaultChannel, type DefaultContacts } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44823ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaDispatch.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import {
+  4 |   DISPATCH_NS,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44823ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaExtensions.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 |
+  3 | import { ROOM_MEMBERSHIP_NS, ROOM_READ_NS } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44823ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaInbox.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 |
+  3 | import { bareJid } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44824ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaPep.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent } from 'stanza'
+    | ^
+  2 | import type { DataForm, PubsubItem, PubsubItemContent } from 'stanza/protocol'
+  3 |
+  4 | import {
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44824ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaReaders.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import { ROOM_READ_NS } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44824ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaRooms.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 | import type { DataFormField, ReceivedMUCPresence, VCardTempRecord } from 'stanza/protocol'
+  3 |
+  4 | import { mentionUri, type Mention } from '@loanfactory-inc/platform-core'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44824ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, createClient, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 | import type { Credentials } from 'stanza/lib/sasl'
+  3 |
+  4 | import {
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44824ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationListVirtual.js:3:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44824ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPickerPanel.js:3:1
+Module not found: Can't resolve 'frimousse'
+  1 | 'use client'
+  2 |
+> 3 | import { EmojiPicker } from 'frimousse'
+    | ^
+  4 | import { useLocale, useTranslations } from 'next-intl'
+  5 | import type { ComponentProps } from 'react'
+  6 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPopover.js
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/Composer.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44824ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/MessageList.js:5:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  3 | import { Button, Text } from '@mantine/core'
+  4 | import { useThrottledValue } from '@mantine/hooks'
+> 5 | import { useVirtualizer } from '@tanstack/react-virtual'
+    | ^
+  6 | import { useLocale, useTranslations } from 'next-intl'
+  7 | import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
+  8 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44824ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[   44982ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaDefaults.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import { bareJid, type ConversationId, type DefaultChannel, type DefaultContacts } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44982ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaDispatch.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import {
+  4 |   DISPATCH_NS,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44982ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaExtensions.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 |
+  3 | import { ROOM_MEMBERSHIP_NS, ROOM_READ_NS } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44982ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaInbox.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 |
+  3 | import { bareJid } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44982ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaPep.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent } from 'stanza'
+    | ^
+  2 | import type { DataForm, PubsubItem, PubsubItemContent } from 'stanza/protocol'
+  3 |
+  4 | import {
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44982ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaReaders.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import { ROOM_READ_NS } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44982ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaRooms.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 | import type { DataFormField, ReceivedMUCPresence, VCardTempRecord } from 'stanza/protocol'
+  3 |
+  4 | import { mentionUri, type Mention } from '@loanfactory-inc/platform-core'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44982ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, createClient, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 | import type { Credentials } from 'stanza/lib/sasl'
+  3 |
+  4 | import {
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44982ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationListVirtual.js:3:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44982ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPickerPanel.js:3:1
+Module not found: Can't resolve 'frimousse'
+  1 | 'use client'
+  2 |
+> 3 | import { EmojiPicker } from 'frimousse'
+    | ^
+  4 | import { useLocale, useTranslations } from 'next-intl'
+  5 | import type { ComponentProps } from 'react'
+  6 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPopover.js
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/Composer.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   44982ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/MessageList.js:5:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  3 | import { Button, Text } from '@mantine/core'
+  4 | import { useThrottledValue } from '@mantine/hooks'
+> 5 | import { useVirtualizer } from '@tanstack/react-virtual'
+    | ^
+  6 | import { useLocale, useTranslations } from 'next-intl'
+  7 | import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
+  8 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45359ms] [ERROR] ./src/app/[locale]/(private)/layout.tsx:11:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   9 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+  10 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 11 |   require('@styles/design-2026-caps.css')
+     |   ^
+  12 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  13 |   require('@styles/design-2026.css')
+  14 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45359ms] [ERROR] ./src/app/[locale]/[...rest]/not-found.tsx:10:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   8 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+   9 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 10 |   require('@styles/design-2026-caps.css')
+     |   ^
+  11 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  12 |   require('@styles/design-2026.css')
+  13 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45359ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaDefaults.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import { bareJid, type ConversationId, type DefaultChannel, type DefaultContacts } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45359ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaDispatch.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import {
+  4 |   DISPATCH_NS,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45359ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaExtensions.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 |
+  3 | import { ROOM_MEMBERSHIP_NS, ROOM_READ_NS } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45359ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaInbox.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 |
+  3 | import { bareJid } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45359ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaPep.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent } from 'stanza'
+    | ^
+  2 | import type { DataForm, PubsubItem, PubsubItemContent } from 'stanza/protocol'
+  3 |
+  4 | import {
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45359ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaReaders.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import { ROOM_READ_NS } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45359ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaRooms.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 | import type { DataFormField, ReceivedMUCPresence, VCardTempRecord } from 'stanza/protocol'
+  3 |
+  4 | import { mentionUri, type Mention } from '@loanfactory-inc/platform-core'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45359ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, createClient, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 | import type { Credentials } from 'stanza/lib/sasl'
+  3 |
+  4 | import {
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45359ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationListVirtual.js:3:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45359ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPickerPanel.js:3:1
+Module not found: Can't resolve 'frimousse'
+  1 | 'use client'
+  2 |
+> 3 | import { EmojiPicker } from 'frimousse'
+    | ^
+  4 | import { useLocale, useTranslations } from 'next-intl'
+  5 | import type { ComponentProps } from 'react'
+  6 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPopover.js
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/Composer.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45359ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/MessageList.js:5:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  3 | import { Button, Text } from '@mantine/core'
+  4 | import { useThrottledValue } from '@mantine/hooks'
+> 5 | import { useVirtualizer } from '@tanstack/react-virtual'
+    | ^
+  6 | import { useLocale, useTranslations } from 'next-intl'
+  7 | import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
+  8 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45359ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[   45375ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3320/conversations:0
+[   45671ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ webpack-internal:///(pages-dir-browser)/./node_modules/react-dom/cjs/react-dom.development.js:29889
+[   45715ms] Error: Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import { bareJid, type ConversationId, type DefaultChannel, type DefaultContacts } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at getNotFoundError (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/parseNotFoundError.js:140:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async getModuleBuildError (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/webpackModuleError.js:103:27)
+    at async (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/index.js:29:49)
+    at async (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/index.js:27:21)
+[   45715ms] [LOG] [HMR] connected @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js:45
+[   45717ms] [ERROR] ./src/app/[locale]/(private)/layout.tsx:11:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   9 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+  10 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 11 |   require('@styles/design-2026-caps.css')
+     |   ^
+  12 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  13 |   require('@styles/design-2026.css')
+  14 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45717ms] [ERROR] ./src/app/[locale]/[...rest]/not-found.tsx:10:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   8 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+   9 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 10 |   require('@styles/design-2026-caps.css')
+     |   ^
+  11 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  12 |   require('@styles/design-2026.css')
+  13 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45717ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaDefaults.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import { bareJid, type ConversationId, type DefaultChannel, type DefaultContacts } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45717ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaDispatch.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import {
+  4 |   DISPATCH_NS,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45717ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaExtensions.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 |
+  3 | import { ROOM_MEMBERSHIP_NS, ROOM_READ_NS } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45717ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaInbox.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 |
+  3 | import { bareJid } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45717ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaPep.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent } from 'stanza'
+    | ^
+  2 | import type { DataForm, PubsubItem, PubsubItemContent } from 'stanza/protocol'
+  3 |
+  4 | import {
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45717ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaReaders.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, type Agent } from 'stanza'
+    | ^
+  2 |
+  3 | import { ROOM_READ_NS } from '@loanfactory-inc/platform-core'
+  4 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45717ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaRooms.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 | import type { DataFormField, ReceivedMUCPresence, VCardTempRecord } from 'stanza/protocol'
+  3 |
+  4 | import { mentionUri, type Mention } from '@loanfactory-inc/platform-core'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45717ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/engine/stanzaTransport.js:1:1
+Module not found: Can't resolve 'stanza'
+> 1 | import { JXT, Namespaces, createClient, type Agent, type Stanzas } from 'stanza'
+    | ^
+  2 | import type { Credentials } from 'stanza/lib/sasl'
+  3 |
+  4 | import {
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/react/ChatProvider.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45717ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationListVirtual.js:3:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45717ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPickerPanel.js:3:1
+Module not found: Can't resolve 'frimousse'
+  1 | 'use client'
+  2 |
+> 3 | import { EmojiPicker } from 'frimousse'
+    | ^
+  4 | import { useLocale, useTranslations } from 'next-intl'
+  5 | import type { ComponentProps } from 'react'
+  6 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPopover.js
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/Composer.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45717ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/MessageList.js:5:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  3 | import { Button, Text } from '@mantine/core'
+  4 | import { useThrottledValue } from '@mantine/hooks'
+> 5 | import { useVirtualizer } from '@tanstack/react-virtual'
+    | ^
+  6 | import { useLocale, useTranslations } from 'next-intl'
+  7 | import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
+  8 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[   45733ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[  394413ms] [ERROR] WebSocket connection to 'ws://localhost:3320/_next/webpack-hmr' failed: Connection closed before receiving a handshake response @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js:88
+[  395416ms] [ERROR] WebSocket connection to 'ws://localhost:3320/_next/webpack-hmr' failed: Connection closed before receiving a handshake response @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js:88
+[  397192ms] [LOG] [HMR] connected @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js:45
+[  398125ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js:206
+[  401372ms] [ERROR] ./src/app/[locale]/[...rest]/not-found.tsx:10:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   8 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+   9 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 10 |   require('@styles/design-2026-caps.css')
+     |   ^
+  11 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  12 |   require('@styles/design-2026.css')
+  13 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  401372ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationListVirtual.js:3:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  401372ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPickerPanel.js:3:1
+Module not found: Can't resolve 'frimousse'
+  1 | 'use client'
+  2 |
+> 3 | import { EmojiPicker } from 'frimousse'
+    | ^
+  4 | import { useLocale, useTranslations } from 'next-intl'
+  5 | import type { ComponentProps } from 'react'
+  6 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPopover.js
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/Composer.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  401372ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/MessageList.js:5:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  3 | import { Button, Text } from '@mantine/core'
+  4 | import { useThrottledValue } from '@mantine/hooks'
+> 5 | import { useVirtualizer } from '@tanstack/react-virtual'
+    | ^
+  6 | import { useLocale, useTranslations } from 'next-intl'
+  7 | import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
+  8 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  401373ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[  407387ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationListVirtual.js:3:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  407387ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPickerPanel.js:3:1
+Module not found: Can't resolve 'frimousse'
+  1 | 'use client'
+  2 |
+> 3 | import { EmojiPicker } from 'frimousse'
+    | ^
+  4 | import { useLocale, useTranslations } from 'next-intl'
+  5 | import type { ComponentProps } from 'react'
+  6 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPopover.js
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/Composer.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  407387ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/MessageList.js:5:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  3 | import { Button, Text } from '@mantine/core'
+  4 | import { useThrottledValue } from '@mantine/hooks'
+> 5 | import { useVirtualizer } from '@tanstack/react-virtual'
+    | ^
+  6 | import { useLocale, useTranslations } from 'next-intl'
+  7 | import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
+  8 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  407388ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[  408058ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js:206
+[  408534ms] [ERROR] ./src/app/[locale]/(private)/layout.tsx:11:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   9 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+  10 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 11 |   require('@styles/design-2026-caps.css')
+     |   ^
+  12 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  13 |   require('@styles/design-2026.css')
+  14 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  408534ms] [ERROR] ./src/app/[locale]/[...rest]/not-found.tsx:10:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   8 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+   9 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 10 |   require('@styles/design-2026-caps.css')
+     |   ^
+  11 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  12 |   require('@styles/design-2026.css')
+  13 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  408534ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationListVirtual.js:3:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  408534ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPickerPanel.js:3:1
+Module not found: Can't resolve 'frimousse'
+  1 | 'use client'
+  2 |
+> 3 | import { EmojiPicker } from 'frimousse'
+    | ^
+  4 | import { useLocale, useTranslations } from 'next-intl'
+  5 | import type { ComponentProps } from 'react'
+  6 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPopover.js
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/Composer.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  408535ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/MessageList.js:5:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  3 | import { Button, Text } from '@mantine/core'
+  4 | import { useThrottledValue } from '@mantine/hooks'
+> 5 | import { useVirtualizer } from '@tanstack/react-virtual'
+    | ^
+  6 | import { useLocale, useTranslations } from 'next-intl'
+  7 | import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
+  8 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  408535ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[  408536ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationListVirtual.js:3:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  408536ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPickerPanel.js:3:1
+Module not found: Can't resolve 'frimousse'
+  1 | 'use client'
+  2 |
+> 3 | import { EmojiPicker } from 'frimousse'
+    | ^
+  4 | import { useLocale, useTranslations } from 'next-intl'
+  5 | import type { ComponentProps } from 'react'
+  6 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPopover.js
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/Composer.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  408536ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/MessageList.js:5:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  3 | import { Button, Text } from '@mantine/core'
+  4 | import { useThrottledValue } from '@mantine/hooks'
+> 5 | import { useVirtualizer } from '@tanstack/react-virtual'
+    | ^
+  6 | import { useLocale, useTranslations } from 'next-intl'
+  7 | import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
+  8 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  408537ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[  409271ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationListVirtual.js:3:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  409271ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPickerPanel.js:3:1
+Module not found: Can't resolve 'frimousse'
+  1 | 'use client'
+  2 |
+> 3 | import { EmojiPicker } from 'frimousse'
+    | ^
+  4 | import { useLocale, useTranslations } from 'next-intl'
+  5 | import type { ComponentProps } from 'react'
+  6 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPopover.js
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/Composer.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  409271ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/MessageList.js:5:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  3 | import { Button, Text } from '@mantine/core'
+  4 | import { useThrottledValue } from '@mantine/hooks'
+> 5 | import { useVirtualizer } from '@tanstack/react-virtual'
+    | ^
+  6 | import { useLocale, useTranslations } from 'next-intl'
+  7 | import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
+  8 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  409271ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js:206
+[  409604ms] [ERROR] ./src/app/[locale]/(private)/layout.tsx:11:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   9 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+  10 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 11 |   require('@styles/design-2026-caps.css')
+     |   ^
+  12 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  13 |   require('@styles/design-2026.css')
+  14 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  409604ms] [ERROR] ./src/app/[locale]/[...rest]/not-found.tsx:10:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   8 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+   9 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 10 |   require('@styles/design-2026-caps.css')
+     |   ^
+  11 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  12 |   require('@styles/design-2026.css')
+  13 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  409604ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationListVirtual.js:3:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  409604ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPickerPanel.js:3:1
+Module not found: Can't resolve 'frimousse'
+  1 | 'use client'
+  2 |
+> 3 | import { EmojiPicker } from 'frimousse'
+    | ^
+  4 | import { useLocale, useTranslations } from 'next-intl'
+  5 | import type { ComponentProps } from 'react'
+  6 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPopover.js
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/Composer.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  409604ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/MessageList.js:5:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  3 | import { Button, Text } from '@mantine/core'
+  4 | import { useThrottledValue } from '@mantine/hooks'
+> 5 | import { useVirtualizer } from '@tanstack/react-virtual'
+    | ^
+  6 | import { useLocale, useTranslations } from 'next-intl'
+  7 | import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
+  8 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  409604ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[  409851ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3320/_next/static/webpack/94c7d09c2d8a3f59.webpack.hot-update.json:0
+[  409851ms] [WARNING] [Fast Refresh] performing full reload
+
+Fast Refresh will perform a full reload when you edit a file that's imported by modules outside of the React rendering tree.
+You might have a file which exports a React component but also exports a value that is imported by a non-React component file.
+Consider migrating the non-React component export to a separate file and importing it into both files.
+
+It is also possible the parent component of the component you edited is a class component, which disables Fast Refresh.
+Fast Refresh requires at least one parent function component in your React tree. @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js:345
+[  409858ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationListVirtual.js:3:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  409858ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPickerPanel.js:3:1
+Module not found: Can't resolve 'frimousse'
+  1 | 'use client'
+  2 |
+> 3 | import { EmojiPicker } from 'frimousse'
+    | ^
+  4 | import { useLocale, useTranslations } from 'next-intl'
+  5 | import type { ComponentProps } from 'react'
+  6 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPopover.js
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/Composer.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  409858ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/MessageList.js:5:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  3 | import { Button, Text } from '@mantine/core'
+  4 | import { useThrottledValue } from '@mantine/hooks'
+> 5 | import { useVirtualizer } from '@tanstack/react-virtual'
+    | ^
+  6 | import { useLocale, useTranslations } from 'next-intl'
+  7 | import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
+  8 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  409859ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[  410091ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationListVirtual.js:3:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  410091ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPickerPanel.js:3:1
+Module not found: Can't resolve 'frimousse'
+  1 | 'use client'
+  2 |
+> 3 | import { EmojiPicker } from 'frimousse'
+    | ^
+  4 | import { useLocale, useTranslations } from 'next-intl'
+  5 | import type { ComponentProps } from 'react'
+  6 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPopover.js
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/Composer.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  410091ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/MessageList.js:5:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  3 | import { Button, Text } from '@mantine/core'
+  4 | import { useThrottledValue } from '@mantine/hooks'
+> 5 | import { useVirtualizer } from '@tanstack/react-virtual'
+    | ^
+  6 | import { useLocale, useTranslations } from 'next-intl'
+  7 | import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
+  8 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  410403ms] [ERROR] ./src/app/[locale]/(private)/layout.tsx:11:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   9 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+  10 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 11 |   require('@styles/design-2026-caps.css')
+     |   ^
+  12 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  13 |   require('@styles/design-2026.css')
+  14 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  410403ms] [ERROR] ./src/app/[locale]/[...rest]/not-found.tsx:10:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   8 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+   9 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 10 |   require('@styles/design-2026-caps.css')
+     |   ^
+  11 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  12 |   require('@styles/design-2026.css')
+  13 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  410403ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationListVirtual.js:3:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  410403ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPickerPanel.js:3:1
+Module not found: Can't resolve 'frimousse'
+  1 | 'use client'
+  2 |
+> 3 | import { EmojiPicker } from 'frimousse'
+    | ^
+  4 | import { useLocale, useTranslations } from 'next-intl'
+  5 | import type { ComponentProps } from 'react'
+  6 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPopover.js
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/Composer.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  410403ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/MessageList.js:5:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  3 | import { Button, Text } from '@mantine/core'
+  4 | import { useThrottledValue } from '@mantine/hooks'
+> 5 | import { useVirtualizer } from '@tanstack/react-virtual'
+    | ^
+  6 | import { useLocale, useTranslations } from 'next-intl'
+  7 | import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
+  8 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  410404ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[  410425ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3320/conversations:0
+[  410740ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ webpack-internal:///(pages-dir-browser)/./node_modules/react-dom/cjs/react-dom.development.js:29889
+[  410784ms] Error: Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at getNotFoundError (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/parseNotFoundError.js:140:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async getModuleBuildError (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/webpackModuleError.js:103:27)
+    at async (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/index.js:29:49)
+    at async (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/index.js:27:21)
+[  410784ms] [LOG] [HMR] connected @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js:45
+[  410786ms] [ERROR] ./src/app/[locale]/(private)/layout.tsx:11:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   9 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+  10 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 11 |   require('@styles/design-2026-caps.css')
+     |   ^
+  12 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  13 |   require('@styles/design-2026.css')
+  14 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  410786ms] [ERROR] ./src/app/[locale]/[...rest]/not-found.tsx:10:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   8 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+   9 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 10 |   require('@styles/design-2026-caps.css')
+     |   ^
+  11 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  12 |   require('@styles/design-2026.css')
+  13 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  410786ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationListVirtual.js:3:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  410786ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPickerPanel.js:3:1
+Module not found: Can't resolve 'frimousse'
+  1 | 'use client'
+  2 |
+> 3 | import { EmojiPicker } from 'frimousse'
+    | ^
+  4 | import { useLocale, useTranslations } from 'next-intl'
+  5 | import type { ComponentProps } from 'react'
+  6 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPopover.js
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/Composer.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  410786ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/MessageList.js:5:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  3 | import { Button, Text } from '@mantine/core'
+  4 | import { useThrottledValue } from '@mantine/hooks'
+> 5 | import { useVirtualizer } from '@tanstack/react-virtual'
+    | ^
+  6 | import { useLocale, useTranslations } from 'next-intl'
+  7 | import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
+  8 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  410808ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[  585152ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3320/conversations:0
+[  585273ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ webpack-internal:///(pages-dir-browser)/./node_modules/react-dom/cjs/react-dom.development.js:29889
+[  585279ms] Error: Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at getNotFoundError (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/parseNotFoundError.js:140:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async getModuleBuildError (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/webpackModuleError.js:103:27)
+    at async (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/index.js:29:49)
+    at async (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/index.js:27:21)
+[  585281ms] [LOG] [HMR] connected @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js:45
+[  585282ms] [ERROR] ./src/app/[locale]/(private)/layout.tsx:11:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   9 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+  10 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 11 |   require('@styles/design-2026-caps.css')
+     |   ^
+  12 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  13 |   require('@styles/design-2026.css')
+  14 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  585282ms] [ERROR] ./src/app/[locale]/[...rest]/not-found.tsx:10:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   8 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+   9 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 10 |   require('@styles/design-2026-caps.css')
+     |   ^
+  11 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  12 |   require('@styles/design-2026.css')
+  13 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  585282ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationListVirtual.js:3:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  585282ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPickerPanel.js:3:1
+Module not found: Can't resolve 'frimousse'
+  1 | 'use client'
+  2 |
+> 3 | import { EmojiPicker } from 'frimousse'
+    | ^
+  4 | import { useLocale, useTranslations } from 'next-intl'
+  5 | import type { ComponentProps } from 'react'
+  6 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPopover.js
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/Composer.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  585282ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/MessageList.js:5:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  3 | import { Button, Text } from '@mantine/core'
+  4 | import { useThrottledValue } from '@mantine/hooks'
+> 5 | import { useVirtualizer } from '@tanstack/react-virtual'
+    | ^
+  6 | import { useLocale, useTranslations } from 'next-intl'
+  7 | import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
+  8 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  585289ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[  585861ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3320/conversations:0
+[  585967ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ webpack-internal:///(pages-dir-browser)/./node_modules/react-dom/cjs/react-dom.development.js:29889
+[  585972ms] Error: Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at getNotFoundError (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/parseNotFoundError.js:140:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async getModuleBuildError (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/webpackModuleError.js:103:27)
+    at async (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/index.js:29:49)
+    at async (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/index.js:27:21)
+[  585973ms] [LOG] [HMR] connected @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js:45
+[  585974ms] [ERROR] ./src/app/[locale]/(private)/layout.tsx:11:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   9 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+  10 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 11 |   require('@styles/design-2026-caps.css')
+     |   ^
+  12 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  13 |   require('@styles/design-2026.css')
+  14 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  585974ms] [ERROR] ./src/app/[locale]/[...rest]/not-found.tsx:10:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   8 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+   9 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 10 |   require('@styles/design-2026-caps.css')
+     |   ^
+  11 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  12 |   require('@styles/design-2026.css')
+  13 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  585974ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationListVirtual.js:3:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  1 | 'use client'
+  2 |
+> 3 | import { measureElement, observeElementRect, useVirtualizer, type Virtualizer } from '@tanstack/react-virtual'
+    | ^
+  4 | import {
+  5 |   useContext,
+  6 |   useEffect,
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/ConversationPanel.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  585974ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPickerPanel.js:3:1
+Module not found: Can't resolve 'frimousse'
+  1 | 'use client'
+  2 |
+> 3 | import { EmojiPicker } from 'frimousse'
+    | ^
+  4 | import { useLocale, useTranslations } from 'next-intl'
+  5 | import type { ComponentProps } from 'react'
+  6 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/EmojiPopover.js
+./node_modules/@loanfactory-inc/platform-chat/dist/ui/Composer.js
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  585974ms] [ERROR] ./node_modules/@loanfactory-inc/platform-chat/dist/ui/MessageList.js:5:1
+Module not found: Can't resolve '@tanstack/react-virtual'
+  3 | import { Button, Text } from '@mantine/core'
+  4 | import { useThrottledValue } from '@mantine/hooks'
+> 5 | import { useVirtualizer } from '@tanstack/react-virtual'
+    | ^
+  6 | import { useLocale, useTranslations } from 'next-intl'
+  7 | import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react'
+  8 |
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./node_modules/@loanfactory-inc/platform-chat/dist/index.js
+./src/app/[locale]/(private)/_components/RecruitShell.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  585979ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[  613411ms] [ERROR] WebSocket connection to 'ws://localhost:3320/_next/webpack-hmr' failed: Connection closed before receiving a handshake response @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js:88
+[  614413ms] [ERROR] WebSocket connection to 'ws://localhost:3320/_next/webpack-hmr' failed: Connection closed before receiving a handshake response @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js:88
+[  616230ms] [LOG] [HMR] connected @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js:45
+[  617025ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js:206
+[  620293ms] [ERROR] ./src/app/[locale]/[...rest]/not-found.tsx:10:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   8 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+   9 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 10 |   require('@styles/design-2026-caps.css')
+     |   ^
+  11 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  12 |   require('@styles/design-2026.css')
+  13 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  620294ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[  626176ms] [WARNING] __barrel_optimize__?names=Notifications!=!./node_modules/@mantine/notifications/esm/index.mjs
+There are multiple modules with names that only differ in casing.
+This can lead to unexpected behavior when compiling on a filesystem with other case-semantic.
+Use equal casing. Compare these module identifiers:
+* javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js??next-barrel-loader:?names=Notifications!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@mantine/notifications/esm/index.mjs|app-pages-browser
+    Used by 1 module(s), i. e.
+    javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/src/shared/providers/ThemeProvider/index.tsx|app-pages-browser
+* javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js??next-barrel-loader:?names=notifications!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@mantine/notifications/esm/index.mjs|app-pages-browser
+    Used by 2 module(s), i. e.
+    javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/src/hooks/useToast.tsx|app-pages-browser
+
+Import trace for requested module:
+__barrel_optimize__?names=Notifications!=!./node_modules/@mantine/notifications/esm/index.mjs
+./src/shared/providers/ThemeProvider/index.tsx
+./src/shared/providers/AppProvider/index.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js:138
+[  626767ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js:206
+[  627133ms] [ERROR] ./src/app/[locale]/(private)/layout.tsx:11:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   9 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+  10 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 11 |   require('@styles/design-2026-caps.css')
+     |   ^
+  12 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  13 |   require('@styles/design-2026.css')
+  14 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  627133ms] [ERROR] ./src/app/[locale]/[...rest]/not-found.tsx:10:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   8 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+   9 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 10 |   require('@styles/design-2026-caps.css')
+     |   ^
+  11 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  12 |   require('@styles/design-2026.css')
+  13 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  627134ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[  627136ms] [WARNING] __barrel_optimize__?names=Notifications!=!./node_modules/@mantine/notifications/esm/index.mjs
+There are multiple modules with names that only differ in casing.
+This can lead to unexpected behavior when compiling on a filesystem with other case-semantic.
+Use equal casing. Compare these module identifiers:
+* javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js??next-barrel-loader:?names=Notifications!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@mantine/notifications/esm/index.mjs|app-pages-browser
+    Used by 1 module(s), i. e.
+    javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/src/shared/providers/ThemeProvider/index.tsx|app-pages-browser
+* javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js??next-barrel-loader:?names=notifications!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@mantine/notifications/esm/index.mjs|app-pages-browser
+    Used by 2 module(s), i. e.
+    javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/src/hooks/useToast.tsx|app-pages-browser
+
+Import trace for requested module:
+__barrel_optimize__?names=Notifications!=!./node_modules/@mantine/notifications/esm/index.mjs
+./src/shared/providers/ThemeProvider/index.tsx
+./src/shared/providers/AppProvider/index.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js:138
+[  627761ms] [WARNING] __barrel_optimize__?names=Notifications!=!./node_modules/@mantine/notifications/esm/index.mjs
+There are multiple modules with names that only differ in casing.
+This can lead to unexpected behavior when compiling on a filesystem with other case-semantic.
+Use equal casing. Compare these module identifiers:
+* javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js??next-barrel-loader:?names=Notifications!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@mantine/notifications/esm/index.mjs|app-pages-browser
+    Used by 1 module(s), i. e.
+    javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/src/shared/providers/ThemeProvider/index.tsx|app-pages-browser
+* javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js??next-barrel-loader:?names=notifications!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@mantine/notifications/esm/index.mjs|app-pages-browser
+    Used by 2 module(s), i. e.
+    javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/src/hooks/useToast.tsx|app-pages-browser
+
+Import trace for requested module:
+__barrel_optimize__?names=Notifications!=!./node_modules/@mantine/notifications/esm/index.mjs
+./src/shared/providers/ThemeProvider/index.tsx
+./src/shared/providers/AppProvider/index.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js:138
+[  627761ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js:206
+[  628158ms] [ERROR] ./src/app/[locale]/(private)/layout.tsx:11:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   9 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+  10 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 11 |   require('@styles/design-2026-caps.css')
+     |   ^
+  12 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  13 |   require('@styles/design-2026.css')
+  14 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  628158ms] [ERROR] ./src/app/[locale]/[...rest]/not-found.tsx:10:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   8 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+   9 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 10 |   require('@styles/design-2026-caps.css')
+     |   ^
+  11 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  12 |   require('@styles/design-2026.css')
+  13 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  628159ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[  628380ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3320/_next/static/webpack/ef16de1b5f475b67.webpack.hot-update.json:0
+[  628380ms] [WARNING] [Fast Refresh] performing full reload
+
+Fast Refresh will perform a full reload when you edit a file that's imported by modules outside of the React rendering tree.
+You might have a file which exports a React component but also exports a value that is imported by a non-React component file.
+Consider migrating the non-React component export to a separate file and importing it into both files.
+
+It is also possible the parent component of the component you edited is a class component, which disables Fast Refresh.
+Fast Refresh requires at least one parent function component in your React tree. @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js:345
+[  628416ms] [WARNING] __barrel_optimize__?names=Notifications!=!./node_modules/@mantine/notifications/esm/index.mjs
+There are multiple modules with names that only differ in casing.
+This can lead to unexpected behavior when compiling on a filesystem with other case-semantic.
+Use equal casing. Compare these module identifiers:
+* javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js??next-barrel-loader:?names=Notifications!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@mantine/notifications/esm/index.mjs|app-pages-browser
+    Used by 1 module(s), i. e.
+    javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/src/shared/providers/ThemeProvider/index.tsx|app-pages-browser
+* javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js??next-barrel-loader:?names=notifications!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@mantine/notifications/esm/index.mjs|app-pages-browser
+    Used by 2 module(s), i. e.
+    javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/src/hooks/useToast.tsx|app-pages-browser
+
+Import trace for requested module:
+__barrel_optimize__?names=Notifications!=!./node_modules/@mantine/notifications/esm/index.mjs
+./src/shared/providers/ThemeProvider/index.tsx
+./src/shared/providers/AppProvider/index.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js:138
+[  628691ms] [WARNING] __barrel_optimize__?names=Notifications!=!./node_modules/@mantine/notifications/esm/index.mjs
+There are multiple modules with names that only differ in casing.
+This can lead to unexpected behavior when compiling on a filesystem with other case-semantic.
+Use equal casing. Compare these module identifiers:
+* javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js??next-barrel-loader:?names=Notifications!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@mantine/notifications/esm/index.mjs|app-pages-browser
+    Used by 1 module(s), i. e.
+    javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/src/shared/providers/ThemeProvider/index.tsx|app-pages-browser
+* javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js??next-barrel-loader:?names=notifications!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@mantine/notifications/esm/index.mjs|app-pages-browser
+    Used by 2 module(s), i. e.
+    javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/src/hooks/useToast.tsx|app-pages-browser
+
+Import trace for requested module:
+__barrel_optimize__?names=Notifications!=!./node_modules/@mantine/notifications/esm/index.mjs
+./src/shared/providers/ThemeProvider/index.tsx
+./src/shared/providers/AppProvider/index.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js:138
+[  629112ms] [ERROR] ./src/app/[locale]/(private)/layout.tsx:11:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   9 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+  10 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 11 |   require('@styles/design-2026-caps.css')
+     |   ^
+  12 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  13 |   require('@styles/design-2026.css')
+  14 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  629113ms] [ERROR] ./src/app/[locale]/[...rest]/not-found.tsx:10:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   8 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+   9 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 10 |   require('@styles/design-2026-caps.css')
+     |   ^
+  11 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  12 |   require('@styles/design-2026.css')
+  13 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  629113ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[  629217ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3320/conversations:0
+[  629365ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ webpack-internal:///(pages-dir-browser)/./node_modules/react-dom/cjs/react-dom.development.js:29889
+[  629372ms] Error: Module not found: Can't resolve '@styles/design-2026-caps.css'
+   9 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+  10 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 11 |   require('@styles/design-2026-caps.css')
+     |   ^
+  12 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  13 |   require('@styles/design-2026.css')
+  14 | }
+
+https://nextjs.org/docs/messages/module-not-found
+
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at getNotFoundError (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/parseNotFoundError.js:140:16)
+    at async getModuleBuildError (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/webpackModuleError.js:103:27)
+    at async (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/index.js:29:49)
+    at async (file:///Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/index.js:27:21)
+[  629376ms] [LOG] [HMR] connected @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/websocket.js:45
+[  629377ms] [ERROR] ./src/app/[locale]/(private)/layout.tsx:11:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   9 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+  10 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 11 |   require('@styles/design-2026-caps.css')
+     |   ^
+  12 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  13 |   require('@styles/design-2026.css')
+  14 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  629377ms] [ERROR] ./src/app/[locale]/[...rest]/not-found.tsx:10:3
+Module not found: Can't resolve '@styles/design-2026-caps.css'
+   8 | if (process.env.NEXT_PUBLIC_TERA_DESIGN === 'true') {
+   9 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+> 10 |   require('@styles/design-2026-caps.css')
+     |   ^
+  11 |   // eslint-disable-next-line @typescript-eslint/no-require-imports
+  12 |   require('@styles/design-2026.css')
+  13 | }
+
+https://nextjs.org/docs/messages/module-not-found @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/next-devtools/userspace/pages/pages-dev-overlay-setup.js:76
+[  629379ms] [LOG] {file: Object} @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/compiled/next-devtools/index.js:1630
+[  815457ms] [WARNING] __barrel_optimize__?names=Notifications!=!./node_modules/@mantine/notifications/esm/index.mjs
+There are multiple modules with names that only differ in casing.
+This can lead to unexpected behavior when compiling on a filesystem with other case-semantic.
+Use equal casing. Compare these module identifiers:
+* javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js??next-barrel-loader:?names=Notifications!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@mantine/notifications/esm/index.mjs|app-pages-browser
+    Used by 1 module(s), i. e.
+    javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/src/shared/providers/ThemeProvider/index.tsx|app-pages-browser
+* javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js??next-barrel-loader:?names=notifications!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@mantine/notifications/esm/index.mjs|app-pages-browser
+    Used by 2 module(s), i. e.
+    javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/src/hooks/useToast.tsx|app-pages-browser
+
+Import trace for requested module:
+__barrel_optimize__?names=Notifications!=!./node_modules/@mantine/notifications/esm/index.mjs
+./src/shared/providers/ThemeProvider/index.tsx
+./src/shared/providers/AppProvider/index.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js:138
+[  815457ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js:206
+[  816516ms] [WARNING] __barrel_optimize__?names=Notifications!=!./node_modules/@mantine/notifications/esm/index.mjs
+There are multiple modules with names that only differ in casing.
+This can lead to unexpected behavior when compiling on a filesystem with other case-semantic.
+Use equal casing. Compare these module identifiers:
+* javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js??next-barrel-loader:?names=Notifications!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@mantine/notifications/esm/index.mjs|app-pages-browser
+    Used by 1 module(s), i. e.
+    javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/src/shared/providers/ThemeProvider/index.tsx|app-pages-browser
+* javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js??next-barrel-loader:?names=notifications!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@mantine/notifications/esm/index.mjs|app-pages-browser
+    Used by 2 module(s), i. e.
+    javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/src/hooks/useToast.tsx|app-pages-browser
+
+Import trace for requested module:
+__barrel_optimize__?names=Notifications!=!./node_modules/@mantine/notifications/esm/index.mjs
+./src/shared/providers/ThemeProvider/index.tsx
+./src/shared/providers/AppProvider/index.tsx @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js:138
+[  817869ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3320/_next/static/webpack/ef16de1b5f475b67.webpack.hot-update.json:0
+[  817870ms] [WARNING] [Fast Refresh] performing full reload because your application had an unrecoverable error @ webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/dev/hot-reloader/pages/hot-reloader-pages.js:347
+[  818209ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.development.js:25630
+[  818526ms] [WARNING] __barrel_optimize__?names=Notifications!=!./node_modules/@mantine/notifications/esm/index.mjs
+There are multiple modules with names that only differ in casing.
+This can lead to unexpected behavior when compiling on a filesystem with other case-semantic.
+Use equal casing. Compare these module identifiers:
+* javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js??next-barrel-loader:?names=Notifications!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@mantine/notifications/esm/index.mjs|app-pages-browser
+    Used by 1 module(s), i. e.
+    javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/src/shared/providers/ThemeProvider/index.tsx|app-pages-browser
+* javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-barrel-loader.js??next-barrel-loader:?names=notifications!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/@mantine/notifications/esm/index.mjs|app-pages-browser
+    Used by 2 module(s), i. e.
+    javascript/auto|/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/compiled/@next/react-refresh-utils/dist/loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-flight-client-module-loader.js!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/node_modules/next/dist/build/webpack/loaders/next-swc-loader.js??ruleSet[1].rules[17].oneOf[6].use[1]!/Users/apple/Projects/agentflow/recruit-fe-worktrees/conversations-b/src/hooks/useToast.tsx|app-pages-browser @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:241
+[  819229ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/dev/hot-reloader/app/hot-reloader-app.js:196

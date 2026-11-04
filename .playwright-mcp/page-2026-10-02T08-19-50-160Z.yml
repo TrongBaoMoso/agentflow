@@ -1,0 +1,279 @@
+- generic [ref=f9e1]:
+  - img "op" [ref=f9e2]
+  - generic [ref=f9e5]:
+    - banner [ref=f9e7]:
+      - generic [ref=f9e8]:
+        - generic [ref=f9e9]:
+          - link "/":
+            - /url: /vi/
+          - button [ref=f9e10] [cursor=pointer]:
+            - generic [ref=f9e11]:
+              - img "Quốc kỳ Việt Nam" [ref=f9e12]
+              - text: VI
+              - img [aria-hidden] [ref=f9e13]: keyboard_arrow_down
+          - generic [ref=f9e16] [cursor=pointer]:
+            - generic [ref=f9e17]: ✓
+            - text: Nguyễn Lý Phương Mai
+        - generic [ref=f9e20]:
+          - link "logo" [ref=f9e21] [cursor=pointer]:
+            - /url: https://dichvucongbnv.moha.gov.vn
+          - generic [ref=f9e24]:
+            - link [ref=f9e25] [cursor=pointer]:
+              - /url: https://dichvucongbnv.moha.gov.vn
+              - text: BỘ NỘI VỤ
+              - paragraph [ref=f9e26]: HỆ THỐNG THÔNG TIN GIẢI QUYẾT THỦ TỤC HÀNH CHÍNH
+            - paragraph [ref=f9e27]: Hành chính phục vụ
+    - generic [ref=f9e1121]:
+      - generic [ref=f9e1123]:
+        - link "Trang chủ" [ref=f9e1124] [cursor=pointer]:
+          - /url: /vi/padsvc/apply-online/6986daa0fd137028de97457f
+        - img [aria-hidden] [ref=f9e1125]: navigate_next
+        - link "Dịch vụ công trực tuyến" [ref=f9e1126] [cursor=pointer]:
+          - /url: /vi/padsvc/apply-online/6986daa0fd137028de97457f
+      - generic [ref=f9e1128]:
+        - heading "Thông báo hằng tháng về việc tìm kiếm việc làm (Cấp tỉnh)" [level=2] [ref=f9e1129]
+        - heading [level=3] [ref=f9e1130]:
+          - generic [ref=f9e1132]:
+            - img [aria-hidden] [ref=f9e1133]: account_balance
+            - text: Một cửa TTVL Trung tâm Dịch vụ việc làm Thành phố Hồ Chí Minh (Phường Gia Định)
+        - heading "Toàn trình" [level=3] [ref=f9e1134]:
+          - img [aria-hidden] [ref=f9e1135]: label_important
+          - text: Toàn trình
+        - 'heading "Quy trình: Quy trình giải quyết Bảo hiểm thất nghiệp - TT Dịch vụ việc làm - 0 Ngày làm việc" [level=3] [ref=f9e1136]'
+        - heading [level=3]
+        - tablist [ref=f9e1139]:
+          - generic [ref=f9e1140]:
+            - tab "Thông tin hồ sơ" [selected]:
+              - generic:
+                - generic:
+                  - img [aria-hidden]: create
+            - tab "2 Thành phần hồ sơ":
+              - generic: "2"
+              - generic: Thành phần hồ sơ
+            - tab "3 Thông tin bổ sung":
+              - generic: "3"
+              - generic: Thông tin bổ sung
+            - tab "4 Nộp hồ sơ":
+              - generic: "4"
+              - generic: Nộp hồ sơ
+          - tabpanel "Thông tin hồ sơ" [ref=f9e1142]:
+            - button [ref=f9e1143] [cursor=pointer]:
+              - generic [ref=f9e1144]:
+                - text: Lấy dữ liệu từ bộ ngành
+                - img [aria-hidden] [ref=f9e1145]: save
+            - generic [ref=f9e1153]:
+              - button "THÔNG TIN CHỦ HỒ SƠ" [expanded] [ref=f9e1154]
+              - generic [ref=f9e1156]:
+                - generic [ref=f9e1157]:
+                  - generic [ref=f9e1158]:
+                    - generic [ref=f9e1159]:
+                      - generic [ref=f9e1160]: Họ và tên chủ hồ sơ *
+                      - textbox "Họ và tên chủ hồ sơ *" [disabled] [ref=f9e1162]:
+                        - /placeholder: Nhập họ và tên chủ hồ sơ
+                        - text: Nguyễn Lý Phương Mai
+                    - generic [ref=f9e1163]:
+                      - generic [ref=f9e1164]: Số định danh cá nhân *
+                      - textbox "Số định danh cá nhân *" [ref=f9e1166]:
+                        - /placeholder: Nhập số định danh cá nhân
+                        - text: "079195036801"
+                    - generic [ref=f9e1167]:
+                      - generic [ref=f9e1168]: Số điện thoại *
+                      - textbox "Số điện thoại *" [ref=f9e1170]:
+                        - /placeholder: Nhập số điện thoại
+                        - text: "0904498317"
+                  - generic [ref=f9e1171]:
+                    - generic [ref=f9e1172]:
+                      - generic [ref=f9e1173]: Ngày sinh *
+                      - generic [ref=f9e1175]:
+                        - textbox [disabled] [ref=f9e1176]: 17/01/1995
+                        - generic [ref=f9e1178]: 
+                    - generic [ref=f9e1181]:
+                      - generic [ref=f9e1182]: Ngày cấp *
+                      - generic [ref=f9e1184]:
+                        - textbox [ref=f9e1185]: 22/12/2021
+                        - generic [ref=f9e1187]: 
+                    - generic [ref=f9e1190]:
+                      - generic [ref=f9e1191]: Địa chỉ Email
+                      - textbox "Địa chỉ Email" [ref=f9e1193]:
+                        - /placeholder: Nhập email
+                        - text: mai.nlp1701@gmail.com
+                  - generic [ref=f9e1194]:
+                    - generic [ref=f9e1195]:
+                      - generic [ref=f9e1196]: Giới tính *
+                      - combobox [ref=f9e1197] [cursor=pointer]:
+                        - generic [ref=f9e1409]:
+                          - text: Nữ
+                          - 'button "Remove item: ''[object Object]''" [ref=f9e1410]': Remove item
+                      - textbox "autocomplete" [ref=f9e1202]
+                    - generic [ref=f9e1203]:
+                      - generic [ref=f9e1204]: Nơi cấp *
+                      - textbox "Nơi cấp *" [ref=f9e1206]:
+                        - /placeholder: Nhập nơi cấp
+                        - text: Cục Trưởng Cục Cảnh Sát Quản Lý Hành Chính Về Trật Tự Xã Hội
+                    - generic [ref=f9e1207]:
+                      - generic [ref=f9e1208]: Quốc gia *
+                      - combobox [ref=f9e1209] [cursor=pointer]:
+                        - generic [ref=f9e1415]:
+                          - text: Việt Nam
+                          - 'button "Remove item: ''[object Object]''" [ref=f9e1416]': Remove item
+                      - textbox "autocomplete" [ref=f9e1214]
+                - paragraph [ref=f9e1216]: Nơi thường trú
+                - generic [ref=f9e1217]:
+                  - generic [ref=f9e1219]:
+                    - generic [ref=f9e1220]: Tỉnh/thành phố *
+                    - combobox [ref=f9e1221] [cursor=pointer]:
+                      - generic [ref=f9e1454]:
+                        - text: Thành phố Hồ Chí Minh
+                        - 'button "Remove item: ''[object Object]''" [ref=f9e1455]': Remove item
+                    - textbox "autocomplete" [ref=f9e1226]
+                  - generic [ref=f9e1228]:
+                    - generic [ref=f9e1229]: Phường/xã *
+                    - combobox [ref=f9e1230] [cursor=pointer]:
+                      - generic [ref=f9e1627]:
+                        - text: Phường Bảy Hiền
+                        - 'button "Remove item: ''[object Object]''" [ref=f9e1628]': Remove item
+                    - textbox "autocomplete" [ref=f9e1235]
+                  - generic [ref=f9e1237]:
+                    - generic [ref=f9e1238]: Địa chỉ chi tiết *
+                    - textbox "Địa chỉ chi tiết *" [ref=f9e1240]:
+                      - /placeholder: Nhập số nhà, số ngõ/ngách/hẻm (nếu có), đường/phố
+                      - text: 53 Sơn Cang
+                - paragraph [ref=f9e1242]: Nơi ở hiện tại
+                - generic [ref=f9e1243]:
+                  - generic [ref=f9e1245]:
+                    - generic [ref=f9e1246]: Tỉnh/thành phố *
+                    - combobox [ref=f9e1247] [cursor=pointer]:
+                      - generic [ref=f9e1250]:
+                        - text: Chọn Tỉnh/TP
+                        - 'button "Remove item: ''Chọn Tỉnh/TP''" [ref=f9e1251]': Remove item
+                    - textbox "autocomplete" [ref=f9e1252]
+                  - generic [ref=f9e1254]:
+                    - generic [ref=f9e1255]: Phường/xã *
+                    - combobox [ref=f9e1256] [cursor=pointer]:
+                      - generic [ref=f9e1259]:
+                        - text: Chọn Phường/xã
+                        - 'button "Remove item: ''Chọn Phường/xã''" [ref=f9e1260]': Remove item
+                    - textbox "autocomplete" [ref=f9e1261]
+                  - generic [ref=f9e1263]:
+                    - generic [ref=f9e1264]: Địa chỉ chi tiết *
+                    - textbox "Địa chỉ chi tiết *" [ref=f9e1266]:
+                      - /placeholder: Nhập số nhà, số ngõ/ngách/hẻm (nếu có), đường/phố
+                      - text: 53 Sơn Cang
+                - generic [ref=f9e1267]:
+                  - generic [ref=f9e1268]: Địa chỉ liên hệ *
+                  - textbox "Địa chỉ liên hệ *" [ref=f9e1270]:
+                    - /placeholder: Nhập số nhà, số ngõ/ngách/hẻm (nếu có), đường/phố, phường/xã, tên tỉnh/thành phố
+                    - text: 53 Sơn Cang, phường Bảy Hiền, Thành phố Hồ Chí Minh
+            - generic [ref=f9e1276]:
+              - generic [ref=f9e1278]:
+                - button "THÔNG TIN TÌNH TRẠNG HƯỞNG TRỢ CẤP THẤT NGHIỆP" [expanded] [ref=f9e1279]
+                - generic [ref=f9e1282]:
+                  - generic [ref=f9e1283]:
+                    - generic [ref=f9e1284]:
+                      - generic [ref=f9e1285]: Số Quyết định hưởng trợ cấp thất nghiệp *
+                      - textbox "Số Quyết định hưởng trợ cấp thất nghiệp *" [ref=f9e1287]:
+                        - /placeholder: Nhập số quyết định
+                        - text: 158949/QĐ-SNV-TCTN
+                    - generic [ref=f9e1288]:
+                      - generic [ref=f9e1289]: Từ ngày *
+                      - generic [ref=f9e1291]:
+                        - textbox [ref=f9e1292]: 28/09/2026
+                        - generic [ref=f9e1294]: 
+                  - generic [ref=f9e1297]:
+                    - generic [ref=f9e1298]:
+                      - generic [ref=f9e1299]: Ngày cấp *
+                      - generic [ref=f9e1301]:
+                        - textbox [ref=f9e1302]: 28/09/2026
+                        - generic [ref=f9e1304]: 
+                    - generic [ref=f9e1307]:
+                      - generic [ref=f9e1308]: Đến ngày *
+                      - generic [ref=f9e1310]:
+                        - textbox [ref=f9e1311]: 27/05/2027
+                        - generic [ref=f9e1313]: 
+                  - generic [ref=f9e1316]:
+                    - generic [ref=f9e1317]:
+                      - generic [ref=f9e1318]: Số tháng hưởng trợ cấp thất nghiệp *
+                      - textbox "Số tháng hưởng trợ cấp thất nghiệp *" [ref=f9e1320]:
+                        - /placeholder: Nhập số tháng
+                        - text: "8"
+                    - generic [ref=f9e1321]:
+                      - generic [ref=f9e1322]: Tỉnh/thành phố hưởng trợ cấp thất nghiệp *
+                      - combobox [ref=f9e1323] [cursor=pointer]:
+                        - generic [ref=f9e1326]:
+                          - text: Chọn Tỉnh/TP
+                          - 'button "Remove item: ''Chọn Tỉnh/TP''" [ref=f9e1327]': Remove item
+                      - textbox "autocomplete" [ref=f9e1328]
+              - generic [ref=f9e1329]:
+                - generic [ref=f9e1330]: Thông tin tìm việc
+                - table [ref=f9e1331]:
+                  - rowgroup [ref=f9e1332]:
+                    - row [ref=f9e1333]:
+                      - columnheader "STT" [ref=f9e1334]
+                      - columnheader "Tên đơn vị" [ref=f9e1335]
+                      - columnheader "Địa chỉ" [ref=f9e1336]
+                      - columnheader "Người liên hệ trực tiếp" [ref=f9e1337]
+                      - columnheader "Vị trí ứng tuyển" [ref=f9e1338]
+                      - columnheader "Kết quả" [ref=f9e1339]
+                      - columnheader "Add/Remove" [ref=f9e1340]
+                  - rowgroup [ref=f9e1342]:
+                    - row [ref=f9e1343]:
+                      - cell "1" [ref=f9e1344]
+                      - cell [ref=f9e1347]:
+                        - textbox "Nhập tên đơn vị" [ref=f9e1350]
+                      - cell [ref=f9e1351]:
+                        - textbox "Nhập địa chỉ" [ref=f9e1354]
+                      - cell [ref=f9e1355]:
+                        - textbox "Nhập người liên hệ" [ref=f9e1358]
+                      - cell [ref=f9e1359]:
+                        - textbox "Nhập vị trí ứng tuyển" [ref=f9e1362]
+                      - cell [ref=f9e1363]:
+                        - textbox "Nhập kết quả tuyển dụng" [ref=f9e1366]
+                      - cell [ref=f9e1367]:
+                        - button "remove" [ref=f9e1368] [cursor=pointer]:
+                          - generic [ref=f9e1369]: 
+                  - rowgroup [ref=f9e1370]:
+                    - row [ref=f9e1371]:
+                      - cell [ref=f9e1372]:
+                        - button " Thêm dòng" [ref=f9e1373] [cursor=pointer]:
+                          - generic [ref=f9e1374]: 
+                          - text: Thêm dòng
+              - generic [ref=f9e1376]:
+                - button "THÔNG TIN TÌM VIỆC VÀ TÌNH TRẠNG VIỆC LÀM" [expanded] [ref=f9e1377]
+                - generic [ref=f9e1379]:
+                  - generic [ref=f9e1382]:
+                    - checkbox " Không có việc làm" [checked] [ref=f9e1408]
+                    - generic [ref=f9e1384]:  Không có việc làm
+                  - generic [ref=f9e1387]:
+                    - checkbox "Đang thử việc hoặc đào tạo, nâng cao trình độ kỹ năng nghề để làm việc cho người sử dụng lao động (Hợp đồng thử việc/Hợp đồng đào tạo nghề/Hợp đồng lao động)" [ref=f9e1388]
+                    - generic [ref=f9e1389]: Đang thử việc hoặc đào tạo, nâng cao trình độ kỹ năng nghề để làm việc cho người sử dụng lao động (Hợp đồng thử việc/Hợp đồng đào tạo nghề/Hợp đồng lao động)
+                  - generic [ref=f9e1392]:
+                    - checkbox "Có việc làm nhưng chưa giao kết HĐLĐ/HĐLV (ghi rõ tên đơn vị, địa chỉ, công việc đang làm)" [ref=f9e1393]
+                    - generic [ref=f9e1394]: Có việc làm nhưng chưa giao kết HĐLĐ/HĐLV (ghi rõ tên đơn vị, địa chỉ, công việc đang làm)
+                  - generic [ref=f9e1397]:
+                    - checkbox "Tình trạng khác" [ref=f9e1398]
+                    - generic [ref=f9e1399]: Tình trạng khác
+            - generic [ref=f9e1400]:
+              - button "Quay lại" [ref=f9e1401] [cursor=pointer]
+              - button "Tiếp tục" [ref=f9e1402] [cursor=pointer]
+    - generic [ref=f9e315]:
+      - generic [ref=f9e317]:
+        - paragraph [ref=f9e318]
+        - paragraph [ref=f9e319]: HỆ THỐNG THÔNG TIN GIẢI QUYẾT THỦ TỤC HÀNH CHÍNH BỘ NỘI VỤ
+        - paragraph [ref=f9e320]: "Cơ quan chủ quản: Bộ Nội vụ"
+        - paragraph [ref=f9e321]: "Địa chỉ: Số 8 Tôn Thất Thuyết - Nam Từ Liêm - Hà Nội"
+        - paragraph [ref=f9e322]
+      - generic [ref=f9e323]:
+        - link [ref=f9e324] [cursor=pointer]:
+          - /url: http://ipv6-test.com/validate.php?url=dichvucong.dienbien.gov.vn
+          - img "ipv6 ready" [ref=f9e325]
+        - link [ref=f9e326] [cursor=pointer]:
+          - /url: https://tinnhiemmang.vn/danh-ba-tin-nhiem/dichvucongdienbiengovvn-1700532066
+          - img "Chung nhan Tin Nhiem Mang" [ref=f9e327]
+  - link "EMC Đã kết nối EMC" [ref=f9e332] [cursor=pointer]:
+    - /url: javascript:void(0)
+    - img "EMC" [ref=f9e334]
+    - generic [ref=f9e335]: Đã kết nối EMC
+  - link "Hình ảnh":
+    - /url: blob:https://dichvucongbnv.moha.gov.vn/f71e4398-4803-427d-9d81-1468bb9755fe
+  - link "blob:https://dichvucongbnv.moha.gov.vn/a8875cc6-b652-494a-a41d-5818a3908a4b":
+    - /url: blob:https://dichvucongbnv.moha.gov.vn/a8875cc6-b652-494a-a41d-5818a3908a4b

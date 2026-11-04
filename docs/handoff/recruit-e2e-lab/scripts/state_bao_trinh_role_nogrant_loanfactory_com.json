@@ -1,0 +1,79 @@
+{
+  "cookies": [
+    {
+      "name": "NEXT_LOCALE",
+      "value": "en",
+      "domain": "recruit.viet18.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "NEXT_LOCALE",
+      "value": "en",
+      "domain": "account.viet18.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "__Host-lf_account_refresh",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1NWY3Y2FlZi1iYmQwLTQ0OTctYWViOS00Y2UzM2IxZjRiMmUiLCJpc3MiOiJodHRwczovL2FjY291bnQudmlldDE4LmNvbSIsImFjY291bnRfaWQiOiJiZDc5NTBjYS1hZjBmLTQ0ZDMtYTM1Yi0xZTQ5NmMzNjcxMTQiLCJ1c2VyX2lkIjoiNTVmN2NhZWYtYmJkMC00NDk3LWFlYjktNGNlMzNiMWY0YjJlIiwidGltZV96b25lIjoiWiIsImlhdCI6MTc5Mzc4MzAyMCwiZXhwIjoxNzk0MDQyMjIwLCJhY2Nlc3NfdHlwZSI6IlJFRlJFU0hfVE9LRU4iLCJpZGVudGlmaWVycyI6WyJiYW8udHJpbmgrcm9sZS1ub2dyYW50QGxvYW5mYWN0b3J5LmNvbSIsImJhby50cmluaCtyb2xlLW5vZ3JhbnQrMUBsb2FuZmFjdG9yeS5jb20iXSwic3RhdHVzIjoiQUNUSVZFIiwidmVyaWZ5Ijp0cnVlLCJhdXRob3JpdGllcyI6WyJNQVJLRVRQTEFDRSNFTVBMT1lFRSIsIlJFQ1JVSVQjUkVGRVJSRVIiLCJMT1MjRU1QTE9ZRUUiLCJIUiNFTVBMT1lFRSIsIkhSI0NVU1RPTUVSX1NFUlZJQ0UiLCJBQ0NPVU5UI1VTRVIiXSwicHJvZHVjdCI6IkxPUyIsInNpZCI6ImNkNThjMmI1LTU2OTQtNGMzYS1hYjVmLWI4ZmYwNzVmNmI3MyJ9.rVIWYyOTUUX6a3pSiJH_6TVyLNiSSBpj0sjmLYQY8vw",
+      "domain": "account.viet18.com",
+      "path": "/",
+      "expires": 1794042220.421661,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "lf_session",
+      "value": "1",
+      "domain": ".viet18.com",
+      "path": "/",
+      "expires": 1794042220.422601,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Strict"
+    },
+    {
+      "name": "lf_app",
+      "value": "1",
+      "domain": "recruit.viet18.com",
+      "path": "/",
+      "expires": 1794387822.302821,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "GCLB",
+      "value": "CIff8Yv32eHwvwEQAw",
+      "domain": "msg.viet18.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://recruit.viet18.com",
+      "localStorage": [
+        {
+          "name": "recruit-fe-auth-storage",
+          "value": "{\"state\":{\"accessToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1NWY3Y2FlZi1iYmQwLTQ0OTctYWViOS00Y2UzM2IxZjRiMmUiLCJpc3MiOiJodHRwczovL2FjY291bnQudmlldDE4LmNvbSIsImFjY291bnRfaWQiOiJiZDc5NTBjYS1hZjBmLTQ0ZDMtYTM1Yi0xZTQ5NmMzNjcxMTQiLCJ1c2VyX2lkIjoiNTVmN2NhZWYtYmJkMC00NDk3LWFlYjktNGNlMzNiMWY0YjJlIiwidGltZV96b25lIjoiWiIsImlhdCI6MTc5Mzc4MzAyMiwiZXhwIjoxNzkzNzkwMjIyLCJhY2Nlc3NfdHlwZSI6IkFDQ0VTU19UT0tFTiIsImlkZW50aWZpZXJzIjpbImJhby50cmluaCtyb2xlLW5vZ3JhbnRAbG9hbmZhY3RvcnkuY29tIiwiYmFvLnRyaW5oK3JvbGUtbm9ncmFudCsxQGxvYW5mYWN0b3J5LmNvbSJdLCJzdGF0dXMiOiJBQ1RJVkUiLCJ2ZXJpZnkiOnRydWUsImF1dGhvcml0aWVzIjpbIk1BUktFVFBMQUNFI0VNUExPWUVFIiwiUkVDUlVJVCNSRUZFUlJFUiIsIkxPUyNFTVBMT1lFRSIsIkhSI0VNUExPWUVFIiwiSFIjQ1VTVE9NRVJfU0VSVklDRSIsIkFDQ09VTlQjVVNFUiJdLCJwcm9kdWN0IjoiUkVDUlVJVCIsInNpZCI6ImNkNThjMmI1LTU2OTQtNGMzYS1hYjVmLWI4ZmYwNzVmNmI3MyJ9.kiMMJbLTCRavkUUcbWxZUdLKCV_oX6zyxsPdm2qSneo\",\"refreshToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1NWY3Y2FlZi1iYmQwLTQ0OTctYWViOS00Y2UzM2IxZjRiMmUiLCJpc3MiOiJodHRwczovL2FjY291bnQudmlldDE4LmNvbSIsImFjY291bnRfaWQiOiJiZDc5NTBjYS1hZjBmLTQ0ZDMtYTM1Yi0xZTQ5NmMzNjcxMTQiLCJ1c2VyX2lkIjoiNTVmN2NhZWYtYmJkMC00NDk3LWFlYjktNGNlMzNiMWY0YjJlIiwidGltZV96b25lIjoiWiIsImlhdCI6MTc5Mzc4MzAyMiwiZXhwIjoxNzk0MDQyMjE5LCJhY2Nlc3NfdHlwZSI6IlJFRlJFU0hfVE9LRU4iLCJpZGVudGlmaWVycyI6WyJiYW8udHJpbmgrcm9sZS1ub2dyYW50QGxvYW5mYWN0b3J5LmNvbSIsImJhby50cmluaCtyb2xlLW5vZ3JhbnQrMUBsb2FuZmFjdG9yeS5jb20iXSwic3RhdHVzIjoiQUNUSVZFIiwidmVyaWZ5Ijp0cnVlLCJhdXRob3JpdGllcyI6WyJNQVJLRVRQTEFDRSNFTVBMT1lFRSIsIlJFQ1JVSVQjUkVGRVJSRVIiLCJMT1MjRU1QTE9ZRUUiLCJIUiNFTVBMT1lFRSIsIkhSI0NVU1RPTUVSX1NFUlZJQ0UiLCJBQ0NPVU5UI1VTRVIiXSwicHJvZHVjdCI6IlJFQ1JVSVQiLCJzaWQiOiJjZDU4YzJiNS01Njk0LTRjM2EtYWI1Zi1iOGZmMDc1ZjZiNzMifQ.ZX3b7FtmCbQKXnEkUYgPcLmWata6eHHjekm9lJP39Jk\",\"user\":{\"id\":\"55f7caef-bbd0-4497-aeb9-4ce33b1f4b2e\",\"created_by\":\"super.admin@viet18.com\",\"created_date\":{\"timestamp\":1791625003,\"formatted\":\"2026-10-10T09:36:43.90339\",\"zone\":\"Z\"},\"last_modified_by\":\"super.admin@viet18.com\",\"last_modified_date\":{\"timestamp\":1792141239,\"formatted\":\"2026-10-16T09:00:39.878511\",\"zone\":\"Z\"},\"key\":\"ahNzfmxlbmRlcnJhdGUtbWFzdGVycjELEgVBZG1pbiImYmFvLnRyaW5oK3JvbGUtbm9ncmFudEBsb2FuZmFjdG9yeS5jb20MogEQNTcxNjEwNDAyNjUyMTYwMA\",\"ref_keys\":[\"491aad3c-4149-4fad-86f0-450bf6b80878\",\"ahNzfmxlbmRlcnJhdGUtbWFzdGVycjELEgVBZG1pbiImYmFvLnRyaW5oK3JvbGUtbm9ncmFudEBsb2FuZmFjdG9yeS5jb20MogEQNTcxNjEwNDAyNjUyMTYwMA\"],\"first_name\":\"QA\",\"middle_name\":null,\"last_name\":\"Nogrant Role\",\"email\":\"bao.trinh+role-nogrant@loanfactory.com\",\"phone\":null,\"avatar\":null,\"date_of_birth\":null,\"gender\":\"UNKNOWN\",\"status\":\"ACTIVE\",\"source\":\"HR\",\"mfa_enabled\":false,\"settings\":{\"language\":\"en\",\"time_zone\":null,\"preferred_languages\":null,\"theme\":null,\"email_signature\":null},\"favorite_apps\":null,\"legal_first_name\":null,\"legal_last_name\":null,\"marital_status\":null,\"citizenship\":null,\"company_email\":\"bao.trinh+role-nogrant+1@loanfactory.com\",\"company_phone\":null,\"social_links\":null,\"addresses\":null,\"nmls\":null,\"title\":null,\"office_address\":\"2195 Tully Road, San Jose, CA\",\"self_declared_states\":null,\"signature_logo\":null,\"websites\":null,\"licenses\":null,\"national_type\":null,\"national_number\":null,\"identify_type\":null,\"identify_number\":null,\"ssn\":null,\"authorities\":{\"MARKETPLACE\":[\"EMPLOYEE\"],\"RECRUIT\":[\"REFERRER\"],\"LOS\":[\"EMPLOYEE\"],\"HR\":[\"EMPLOYEE\",\"CUSTOMER_SERVICE\"],\"ACCOUNT\":[\"USER\"]},\"licensed_states\":[],\"full_name\":\"QA Nogrant Role\"}},\"version\":0}"
+        },
+        {
+          "name": "lf_recruit_nav_seen",
+          "value": "[\"leads\",\"manage\",\"setup\",\"referrals\"]"
+        }
+      ]
+    }
+  ]
+}

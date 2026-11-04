@@ -1,0 +1,103 @@
+- generic [ref=f5e1]:
+  - generic [ref=f5e2]:
+    - banner [ref=f5e3]:
+      - button [ref=f5e4] [cursor=pointer]
+      - generic [ref=f5e6]: Recruit
+      - generic [aria-hidden] [ref=f5e14]: "?"
+    - navigation [ref=f5e15]:
+      - navigation [ref=f5e16]:
+        - generic [ref=f5e17]: Frequent
+        - link [ref=f5e18] [cursor=pointer]:
+          - /url: /today
+        - link [ref=f5e23] [cursor=pointer]:
+          - /url: /inbox/hot
+        - link [ref=f5e27] [cursor=pointer]:
+          - /url: /inbox/cold
+        - link [ref=f5e42] [cursor=pointer]:
+          - /url: /pipeline
+        - link [ref=f5e47] [cursor=pointer]:
+          - /url: /exceptions
+        - link [ref=f5e51] [cursor=pointer]:
+          - /url: /reports
+        - link [ref=f5e57] [cursor=pointer]:
+          - /url: /work
+        - link [ref=f5e62] [cursor=pointer]:
+          - /url: /sponsorships
+      - navigation [ref=f5e68]:
+        - generic [ref=f5e69]: Configuration
+        - link [ref=f5e75] [cursor=pointer]:
+          - /url: /duplicates
+        - link [ref=f5e81] [cursor=pointer]:
+          - /url: /dormant
+        - link [ref=f5e86] [cursor=pointer]:
+          - /url: /conversations
+        - link [ref=f5e100] [cursor=pointer]:
+          - /url: /licensing-rules
+    - main [ref=f5e110]:
+      - generic [ref=f5e117]:
+        - generic [ref=f5e118]:
+          - generic [ref=f5e119]:
+            - generic [ref=f5e120]: Licensing · Sponsorships
+            - heading [level=1] [ref=f5e121]:
+              - text: Every state, every Loan Officer —
+              - emphasis [ref=f5e122]: where sponsorship stands
+          - textbox "Search sponsorships" [ref=f5e129]:
+            - /placeholder: "Name, NMLS # or state"
+        - group "Filter Loan Officers" [ref=f5e130]:
+          - button "Ready · …" [ref=f5e131] [cursor=pointer]
+          - button "Loan Officer · …" [ref=f5e132] [cursor=pointer]
+          - button "State · …" [ref=f5e133] [cursor=pointer]
+          - button "MOSO · …" [ref=f5e134] [cursor=pointer]
+          - button "Done · …" [ref=f5e135] [cursor=pointer]
+        - generic [ref=f5e137]:
+          - text: All
+          - generic [ref=f5e138]: …
+  - dialog [ref=f5e145]:
+    - banner [ref=f5e146]:
+      - heading "Corin Maddox (sample) NMLS 1000003 · recruiter Unowned S6 Onboarding" [level=2] [ref=f5e147]:
+        - generic [ref=f5e148]:
+          - generic [aria-hidden] [ref=f5e149]: C(
+          - generic [ref=f5e150]:
+            - generic [ref=f5e151]: Corin Maddox (sample)
+            - generic [ref=f5e152]:
+              - text: NMLS 1000003 · recruiter Unowned
+              - generic [ref=f5e153]: S6 Onboarding
+      - button "Close" [active] [ref=f5e154] [cursor=pointer]
+    - generic [ref=f5e158]:
+      - generic [ref=f5e160]:
+        - term [ref=f5e161]: NMLS access
+        - definition [ref=f5e162]: Granted Sep 2
+        - definition
+        - term [ref=f5e163]: States to sponsor
+        - definition [ref=f5e164]: SC, NV
+        - definition
+      - region "South Carolina sponsorship" [ref=f5e165]:
+        - generic [ref=f5e166]:
+          - generic [ref=f5e167]: South Carolina
+          - generic "South Carolina · State needs items" [ref=f5e168]: SC · State needs items
+          - generic [ref=f5e169]: Requested 9 days ago
+        - generic [ref=f5e170]:
+          - list "Progress" [ref=f5e171]:
+            - listitem [ref=f5e172]: Requested
+            - listitem [ref=f5e173]: State needs items
+            - listitem [ref=f5e174]: Sponsored
+          - paragraph [ref=f5e175]: Day 9.
+          - generic [ref=f5e176]: State wants the 2.5-hour course certificate
+          - generic [ref=f5e177]:
+            - button "State approved" [ref=f5e178] [cursor=pointer]
+            - button "Rejected / blocked" [ref=f5e181] [cursor=pointer]
+      - region "Nevada sponsorship" [ref=f5e184]:
+        - generic [ref=f5e185]:
+          - generic [ref=f5e186]: Nevada
+          - generic "Nevada · Sponsored" [ref=f5e187]: NV · Sponsored
+          - generic [ref=f5e188]: Sponsored Sep 14
+        - generic [ref=f5e189]:
+          - list "Progress" [ref=f5e190]:
+            - listitem [ref=f5e191]: Requested
+            - listitem [ref=f5e192]: State reviewing
+            - listitem [ref=f5e193]: Sponsored
+          - button "Removed for this state" [ref=f5e195] [cursor=pointer]
+      - button "Loan Officer removed access…" [ref=f5e198] [cursor=pointer]
+      - group [ref=f5e201]:
+        - generic "Copy for the NMLS form" [ref=f5e202] [cursor=pointer]
+  - alert [ref=f5e116]

@@ -1,0 +1,10 @@
+mvn_exit=1
+released
+LoRecruiterProgramCreditTest 72 fail 6 err 0
+  RED reconcileRechecksRecentNotAMemberLeadsAtTheirCreationTime
+  RED theRecheckJudgesAtTheAttachTimeWhenItIsStamped
+  RED aNotAMemberJudgementStampsWhoWasJudgedAndWhen
+  RED theRecheckAlsoSelectsLeadsWithAReferrerButNoLinkAndCreditsThemWhenTheReferrerWasAMember
+  RED aLeadNeverJudgedBecauseTheFeatureWasOffIsNotStampedNorRechecked
+  RED theRealCronOverSeveralFlaggedLeadsInOneRunSettlesAllOfThem
+DONE

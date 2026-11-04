@@ -1,0 +1,45 @@
+- generic [active] [ref=f4e1]:
+  - generic [ref=f4e2]:
+    - banner [ref=f4e3]:
+      - button [ref=f4e4] [cursor=pointer]
+      - generic [ref=f4e6]: Recruit
+      - generic [aria-hidden] [ref=f4e14]: "?"
+    - navigation [ref=f4e15]:
+      - navigation [ref=f4e16]:
+        - generic [ref=f4e17]: Frequent
+        - link [ref=f4e18] [cursor=pointer]:
+          - /url: /today
+        - link [ref=f4e23] [cursor=pointer]:
+          - /url: /inbox/hot
+        - link [ref=f4e27] [cursor=pointer]:
+          - /url: /inbox/cold
+        - link [ref=f4e42] [cursor=pointer]:
+          - /url: /pipeline
+        - link [ref=f4e47] [cursor=pointer]:
+          - /url: /exceptions
+        - link [ref=f4e51] [cursor=pointer]:
+          - /url: /reports
+        - link [ref=f4e57] [cursor=pointer]:
+          - /url: /work
+        - link [ref=f4e62] [cursor=pointer]:
+          - /url: /sponsorships
+      - navigation [ref=f4e68]:
+        - generic [ref=f4e69]: Configuration
+        - link [ref=f4e70] [cursor=pointer]:
+          - /url: /templates
+        - link [ref=f4e75] [cursor=pointer]:
+          - /url: /duplicates
+        - link [ref=f4e81] [cursor=pointer]:
+          - /url: /dormant
+        - link [ref=f4e86] [cursor=pointer]:
+          - /url: /conversations
+        - link [ref=f4e90] [cursor=pointer]:
+          - /url: /audit
+        - link [ref=f4e95] [cursor=pointer]:
+          - /url: /settings
+        - link [ref=f4e100] [cursor=pointer]:
+          - /url: /licensing-rules
+        - link [ref=f4e105] [cursor=pointer]:
+          - /url: /permissions
+    - main [ref=f4e110]
+  - alert [ref=f4e116]

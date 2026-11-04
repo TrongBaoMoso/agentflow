@@ -1,0 +1,167 @@
+- generic [active] [ref=f6e1]:
+  - generic [ref=f6e7]:
+    - generic [ref=f6e8]:
+      - generic [ref=f6e9]:
+        - button "Sidebar collapse button" [ref=f6e10] [cursor=pointer]
+        - link "X Moso" [ref=f6e14] [cursor=pointer]:
+          - /url: "#"
+      - list [ref=f6e15]:
+        - listitem [ref=f6e16]:
+          - link "Search" [ref=f6e17] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=f6e69]: search
+        - listitem [ref=f6e18]:
+          - link "Builds" [ref=f6e19] [cursor=pointer]:
+            - /url: "##builds"
+        - listitem [ref=f6e20]:
+          - link "add" [ref=f6e70] [cursor=pointer]:
+            - /url: "##create_small_task"
+        - listitem [ref=f6e22]:
+          - link "Message" [ref=f6e23] [cursor=pointer]:
+            - /url: javascript:;
+            - generic [ref=f6e72]: notifications
+          - text: 
+        - listitem [ref=f6e24]:
+          - link [ref=f6e25] [cursor=pointer]:
+            - /url: javascript:;
+            - text: Bao Trinh
+            - img "Bao Trinh" [ref=f6e26]
+      - generic [ref=f6e27]:
+        - button "search" [ref=f6e28]
+        - generic [ref=f6e74]:
+          - searchbox "Search input" [ref=f6e75]
+          - searchbox "Search input" [ref=f6e76]
+        - link "close search" [ref=f6e30] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=f6e77]: close
+    - generic [ref=f6e32]:
+      - list [ref=f6e33]:
+        - listitem [ref=f6e34]:
+          - link "Bao Trinh  Bao Trinh Dev" [ref=f6e35] [cursor=pointer]:
+            - /url: javascript:;
+            - img "Bao Trinh" [ref=f6e38]
+            - generic [ref=f6e39]:
+              - generic [ref=f6e40]: 
+              - text: Bao Trinh
+              - generic [ref=f6e41]: Dev
+        - listitem: 
+      - list [ref=f6e42]:
+        - listitem [ref=f6e43]: X Moso
+        - listitem [ref=f6e44]:
+          - tab "group Company directory" [ref=f6e79] [cursor=pointer]:
+            - generic [ref=f6e80]: group
+            - text: Company directory
+        - listitem [ref=f6e46]:
+          - link " assignment_o Activities" [ref=f6e81] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f6e48]: 
+            - generic [ref=f6e82]: assignment_o
+            - text: Activities
+        - listitem [ref=f6e49]:
+          - link " check Reports" [ref=f6e83] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f6e51]: 
+            - generic [ref=f6e84]: check
+            - text: Reports
+        - listitem [ref=f6e52]:
+          - link " settings Builds" [ref=f6e85] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f6e54]: 
+            - generic [ref=f6e86]: settings
+            - text: Builds
+        - listitem [ref=f6e55]:
+          - link " bug_report Errors" [ref=f6e87] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f6e57]: 
+            - generic [ref=f6e88]: bug_report
+            - text: Errors
+        - listitem [ref=f6e58]:
+          - link " System" [ref=f6e59] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f6e60]: 
+            - text: System
+    - generic [ref=f6e89]:
+      - heading "Builds" [level=1] [ref=f6e90]:
+        - text: Builds
+        - paragraph
+      - generic [ref=f6e93]:
+        - tablist [ref=f6e94]:
+          - tab "builds" [ref=f6e95] [cursor=pointer]: Builds
+          - tab "status" [ref=f6e96] [cursor=pointer]:
+            - generic [ref=f6e97]: rss_feed
+            - text: Status
+          - tab "parsers" [ref=f6e98] [cursor=pointer]:
+            - generic [ref=f6e99]: insert_drive_file
+            - text: Parsers
+          - tab "tests" [ref=f6e100] [cursor=pointer]:
+            - generic [ref=f6e101]: insert_drive_file
+            - text: Tests
+          - tab "builders" [ref=f6e102] [cursor=pointer]:
+            - generic [ref=f6e103]: settings
+            - text: Builders
+          - tab "activities" [ref=f6e104] [cursor=pointer]:
+            - generic [ref=f6e105]: history
+            - text: Activities
+        - generic [ref=f6e108]:
+          - generic [ref=f6e109]:
+            - generic [ref=f6e110]:
+              - button "sync" [ref=f6e111] [cursor=pointer]
+              - link [ref=f6e114] [cursor=pointer]:
+                - /url: "javascript:"
+            - form [ref=f6e115]:
+              - generic "Repo" [ref=f6e116]:
+                - generic [ref=f6e117]:
+                  - text: Repo
+                  - generic [ref=f6e118]: (optional)
+                - combobox [disabled] [aria-hidden] [ref=f6e119]
+                - combobox "Repo" [ref=f6e122]
+              - generic "Type" [ref=f6e124]:
+                - generic [ref=f6e125]:
+                  - text: Type
+                  - generic [ref=f6e126]: (optional)
+                - combobox [aria-hidden] [ref=f6e127]
+                - combobox "× test" [ref=f6e130] [cursor=pointer]:
+                  - generic "test" [ref=f6e131]:
+                    - generic [ref=f6e132]: ×
+                    - text: test
+              - generic "Status" [ref=f6e133]:
+                - generic [ref=f6e134]:
+                  - text: Status
+                  - generic [ref=f6e135]: (optional)
+                - combobox [aria-hidden] [ref=f6e136]
+                - combobox "Status" [ref=f6e139] [cursor=pointer]
+            - generic [ref=f6e141]:
+              - button "Reset filters" [ref=f6e142] [cursor=pointer]
+              - button "More" [ref=f6e143] [cursor=pointer]
+          - generic [ref=f6e144]: 
+          - generic "Page Navigation" [ref=f6e150]:
+            - list [ref=f6e152]:
+              - listitem [ref=f6e153] [cursor=pointer]:
+                - generic "Previous" [ref=f6e154]: «
+              - listitem [ref=f6e155] [cursor=pointer]:
+                - generic [ref=f6e156]: 1-1 of over 0
+            - generic [ref=f6e157]:
+              - text: Showing
+              - combobox "Items per page" [ref=f6e158]:
+                - option "5"
+                - option "10" [selected]
+                - option "25"
+                - option "50"
+                - option "100"
+              - text: items per page
+    - link "Scroll to top" [ref=f6e64] [cursor=pointer]:
+      - /url: javascript:;
+      - generic [ref=f6e159]: keyboard_arrow_up
+  - iframe
+  - generic [ref=f6e65]:
+    - link "System Improvement?" [ref=f6e66] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f6e160]: send
+    - link "Help?" [ref=f6e67] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f6e161]: help
+    - link "Chat" [ref=f6e68] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f6e162]: chat
+  - log [ref=f6e163]
+  - log [ref=f6e164]

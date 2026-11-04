@@ -1,0 +1,30 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [aria-hidden] [ref=e6]:
+        - generic [ref=e7]: Loading
+        - progressbar [aria-hidden] [ref=e8]
+      - main [ref=e15]:
+        - generic [ref=e20]:
+          - heading "Verify it’s you" [level=1] [ref=e21]
+          - generic [ref=e22]: bao.trinh@loanfactory.com
+        - generic [ref=e29]: To help keep your account secure, Google needs to verify it’s you. Please sign in again to continue to Gmail.
+        - button "Next" [ref=e43]
+    - contentinfo [ref=e50]:
+      - combobox "Change language English (United States)" [ref=e54] [cursor=pointer]:
+        - generic [aria-hidden]:
+          - generic: English (United States)
+      - list [ref=e56]:
+        - listitem [ref=e57]:
+          - link "Open Google Account Help Center (external, opens in a new window)" [ref=e58] [cursor=pointer]:
+            - /url: https://support.google.com/accounts?hl=en&p=account_iph
+            - text: Help
+        - listitem [ref=e59]:
+          - link "Privacy Policy (external, opens in a new window)" [ref=e60] [cursor=pointer]:
+            - /url: https://accounts.google.com/TOS?loc=VN&hl=en&privacy=true
+            - text: Privacy
+        - listitem [ref=e61]:
+          - link "Google Terms of Service (external, opens in a new window)" [ref=e62] [cursor=pointer]:
+            - /url: https://accounts.google.com/TOS?loc=VN&hl=en
+            - text: Terms
+  - iframe [ref=e63]

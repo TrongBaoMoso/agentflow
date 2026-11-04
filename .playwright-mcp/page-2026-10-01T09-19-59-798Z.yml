@@ -1,0 +1,316 @@
+- generic [active] [ref=e1]:
+  - region "Review bar" [ref=e2]:
+    - generic [ref=e3]:
+      - strong [ref=e4]: /loan-officer Â· design ideas
+      - tablist "Design option" [ref=e5]:
+        - tab "Option A Â· Ecosystem (Phuong's pick)" [selected] [ref=e6] [cursor=pointer]
+        - tab "Option B Â· Choose your path (first draft)" [ref=e7] [cursor=pointer]
+      - generic [ref=e8] [cursor=pointer]:
+        - checkbox "Show notes" [checked] [ref=e9]
+        - text: Show notes
+  - banner [ref=e10]:
+    - generic [ref=e11]:
+      - generic [ref=e12]: LOAN FACTORY
+      - navigation "Main" [ref=e13]:
+        - generic [ref=e14]: Why Loan Factory
+        - generic [ref=e15]: Software
+        - generic [ref=e16]: Programs
+        - generic [ref=e17]: Webinar
+      - button "All Loan Factory apps" [ref=e18] [cursor=pointer]
+  - main [ref=e28]:
+    - generic [ref=e29]:
+      - img "Thuan Nguyen with a Loan Officer at Loan Factory Summit 2026" [ref=e30]
+      - generic [ref=e31]:
+        - generic [ref=e32]:
+          - text: For Loan Officers
+          - heading "A mortgage company that runs on its own software and AI." [level=1] [ref=e33]
+          - paragraph [ref=e34]: We build the tools. Our Loan Officers use them for free.
+          - generic [ref=e35]:
+            - link "Join a Friday webinar" [ref=e36] [cursor=pointer]:
+              - /url: "#webinar"
+            - link "See the software" [ref=e37] [cursor=pointer]:
+              - /url: "#software"
+          - link "Watch the Summit 2026 recap Â· 3:19" [ref=e38] [cursor=pointer]:
+            - /url: https://drive.google.com/file/d/1ZlfZxHTNcMbU7BkLrI8UmtQWNXZggl_j/view
+          - generic [ref=e40]: NOTE Â· Hero background = a frame from the Summit footage. On the live page this becomes a muted, looping clip from the recap video (marketing to cut 10â€“15s).
+        - 'generic "Example: how AI works on a loan file" [ref=e41]':
+          - generic [ref=e42]:
+            - generic [ref=e43]: TERA Â· LOS
+            - generic [ref=e44]: Example
+          - generic [ref=e45]:
+            - generic [ref=e46]:
+              - text: "Loan file #1042"
+              - generic [ref=e47]: Purchase Â· Conventional
+            - generic [ref=e48]: AI
+          - list [ref=e49]:
+            - listitem [ref=e50]:
+              - generic [ref=e51]: "1"
+              - generic [ref=e52]: Application comes in
+              - generic [ref=e53]: DONE
+            - listitem [ref=e54]:
+              - generic [ref=e55]: "2"
+              - generic [ref=e56]: AI reviews the documents
+              - generic [ref=e57]: DONE
+            - listitem [ref=e58]:
+              - generic [ref=e59]: "3"
+              - generic [ref=e60]: AI checks the loan against lending rules
+              - generic [ref=e61]: WORKING
+            - listitem [ref=e62]:
+              - generic [ref=e63]: "4"
+              - generic [ref=e64]: File goes to the right processor
+              - generic [ref=e65]: NEXT
+    - generic [ref=e67]:
+      - generic [ref=e68]:
+        - generic [ref=e69]: 2,640+
+        - generic [ref=e70]: Loan Officers
+      - generic [ref=e71]:
+        - generic [ref=e72]: "48"
+        - generic [ref=e73]: states licensed
+      - generic [ref=e74]:
+        - generic [ref=e75]: 100%
+        - generic [ref=e76]: commission, minus a $595 flat fee
+      - generic [ref=e77]:
+        - generic [ref=e78]: $0
+        - generic [ref=e79]: monthly desk fee
+      - generic [ref=e80]:
+        - generic [ref=e81]: "8"
+        - generic [ref=e82]: apps, free for you
+    - generic [ref=e84]:
+      - generic [ref=e85]:
+        - generic [ref=e86]: Our software and AI
+        - heading "We build it. You use it for free." [level=2] [ref=e87]
+        - paragraph [ref=e88]: Every app is made by Loan Factory. Click one to see how it works.
+      - generic [ref=e89]:
+        - link "LOS & Pricing screenshot LOS & Pricing AI AI reviews the application, documents and underwriting before a person looks at the file. Pricing is in the same system. See LOS & Pricing â†’" [ref=e90] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=e91]: LOS & Pricing screenshot
+          - generic [ref=e92]:
+            - heading "LOS & Pricing" [level=3] [ref=e93]
+            - generic [ref=e94]: AI
+          - paragraph [ref=e95]: AI reviews the application, documents and underwriting before a person looks at the file. Pricing is in the same system.
+          - generic [ref=e96]: See LOS & Pricing â†’
+        - link "Ally screenshot Ally AI AI writes your posts and runs your Facebook ads. See Ally â†’" [ref=e97] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=e98]: Ally screenshot
+          - generic [ref=e99]:
+            - heading "Ally" [level=3] [ref=e100]
+            - generic [ref=e101]: AI
+          - paragraph [ref=e102]: AI writes your posts and runs your Facebook ads.
+          - generic [ref=e103]: See Ally â†’
+        - link "CRM screenshot CRM AI All your leads and Realtors. AI helps you follow up. See CRM â†’" [ref=e104] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=e105]: CRM screenshot
+          - generic [ref=e106]:
+            - heading "CRM" [level=3] [ref=e107]
+            - generic [ref=e108]: AI
+          - paragraph [ref=e109]: All your leads and Realtors. AI helps you follow up.
+          - generic [ref=e110]: See CRM â†’
+        - link "Marketplace screenshot Marketplace Talk to lenders and loan experts live. See Marketplace â†’" [ref=e111] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=e112]: Marketplace screenshot
+          - heading "Marketplace" [level=3] [ref=e114]
+          - paragraph [ref=e115]: Talk to lenders and loan experts live.
+          - generic [ref=e116]: See Marketplace â†’
+        - link "LUNA+ screenshot LUNA+ Funding and post-closing. See LUNA+ â†’" [ref=e117] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=e118]: LUNA+ screenshot
+          - heading "LUNA+" [level=3] [ref=e120]
+          - paragraph [ref=e121]: Funding and post-closing.
+          - generic [ref=e122]: See LUNA+ â†’
+        - link "Loan Factory Mobile screenshot Loan Factory Mobile Your loans on your phone. See Loan Factory Mobile â†’" [ref=e123] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=e124]: Loan Factory Mobile screenshot
+          - heading "Loan Factory Mobile" [level=3] [ref=e126]
+          - paragraph [ref=e127]: Your loans on your phone.
+          - generic [ref=e128]: See Loan Factory Mobile â†’
+        - link "Loan Factory IQ screenshot Loan Factory IQ Stay in touch with past clients. See Loan Factory IQ â†’" [ref=e129] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=e130]: Loan Factory IQ screenshot
+          - heading "Loan Factory IQ" [level=3] [ref=e132]
+          - paragraph [ref=e133]: Stay in touch with past clients.
+          - generic [ref=e134]: See Loan Factory IQ â†’
+        - link "MOSO Real Estate screenshot MOSO Real Estate Real estate deals for CA DRE license holders. See MOSO Real Estate â†’" [ref=e135] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=e136]: MOSO Real Estate screenshot
+          - heading "MOSO Real Estate" [level=3] [ref=e138]
+          - paragraph [ref=e139]: Real estate deals for CA DRE license holders.
+          - generic [ref=e140]: See MOSO Real Estate â†’
+      - generic [ref=e141]:
+        - generic [ref=e142]: $963
+        - generic [ref=e143]: a month you don't pay for outside software.
+      - generic [ref=e144]: NOTE Â· Striped boxes = app screenshots. Each app team sends 1 clean screenshot (no real borrower data).
+    - generic [ref=e146]:
+      - generic [ref=e147]:
+        - generic [ref=e148]: Programs
+        - heading "More ways to earn and grow." [level=2] [ref=e149]
+      - generic [ref=e150]:
+        - generic [ref=e151]:
+          - heading "Earn more" [level=3] [ref=e152]
+          - generic [ref=e153]:
+            - button "Up to $20,000 Loan Officer Ambassador Program Refer loan officers and earn up to $20,000 per hire, as cash or Loan Factory stock. We handle your recruiting posts, and you can unlock up to $1,000/month in company-paid ads. Read more â†’" [ref=e154] [cursor=pointer]:
+              - generic [ref=e155]: Up to $20,000
+              - heading "Loan Officer Ambassador Program" [level=4] [ref=e156]
+              - paragraph [ref=e157]: Refer loan officers and earn up to $20,000 per hire, as cash or Loan Factory stock. We handle your recruiting posts, and you can unlock up to $1,000/month in company-paid ads.
+              - generic [ref=e158]: Read more â†’
+            - button "$40Kâ€“$60K Loan Officer Recruiter Program A full-time recruiting job with a $40,000â€“$60,000 base salary and uncapped bonuses of up to $20,000 for each loan officer you bring in. Read more â†’" [ref=e159] [cursor=pointer]:
+              - generic [ref=e160]: $40Kâ€“$60K
+              - heading "Loan Officer Recruiter Program" [level=4] [ref=e161]
+              - paragraph [ref=e162]: A full-time recruiting job with a $40,000â€“$60,000 base salary and uncapped bonuses of up to $20,000 for each loan officer you bring in.
+              - generic [ref=e163]: Read more â†’
+            - button "Keep more Executive & Presidential Partner Program Hit the annual production target to earn Partner status, keep more of your commission and unlock exclusive perks for the next year. Read more â†’" [ref=e164] [cursor=pointer]:
+              - generic [ref=e165]: Keep more
+              - heading "Executive & Presidential Partner Program" [level=4] [ref=e166]
+              - paragraph [ref=e167]: Hit the annual production target to earn Partner status, keep more of your commission and unlock exclusive perks for the next year.
+              - generic [ref=e168]: Read more â†’
+            - button "Ad spend matched Language Team Ad Fund Serve a language community? Hit your team's production goals and Loan Factory will match your Facebook ad spend up to a monthly budget, so you reach more borrowers and grow your team. Read more â†’" [ref=e169] [cursor=pointer]:
+              - generic [ref=e170]: Ad spend matched
+              - heading "Language Team Ad Fund" [level=4] [ref=e171]
+              - paragraph [ref=e172]: Serve a language community? Hit your team's production goals and Loan Factory will match your Facebook ad spend up to a monthly budget, so you reach more borrowers and grow your team.
+              - generic [ref=e173]: Read more â†’
+        - generic [ref=e174]:
+          - heading "Get help" [level=3] [ref=e175]
+          - generic [ref=e176]:
+            - button "Free coach Corporate Coach Program New to lending and not on a team? Get a free, experienced coach who reviews your files, answers questions live 7 days a week and helps you close faster and stay compliant. Read more â†’" [ref=e177] [cursor=pointer]:
+              - generic [ref=e178]: Free coach
+              - heading "Corporate Coach Program" [level=4] [ref=e179]
+              - paragraph [ref=e180]: New to lending and not on a team? Get a free, experienced coach who reviews your files, answers questions live 7 days a week and helps you close faster and stay compliant.
+              - generic [ref=e181]: Read more â†’
+            - 'button "$150â€“$250 / loan Loan Coordinator Service For Executive and Presidential Partners: a dedicated coordinator takes on your paperwork, borrower follow-up and pipeline tracking, so you can spend more time selling and close more loans. Read more â†’" [ref=e182] [cursor=pointer]':
+              - generic [ref=e183]: $150â€“$250 / loan
+              - heading "Loan Coordinator Service" [level=4] [ref=e184]
+              - paragraph [ref=e185]: "For Executive and Presidential Partners: a dedicated coordinator takes on your paperwork, borrower follow-up and pipeline tracking, so you can spend more time selling and close more loans."
+              - generic [ref=e186]: Read more â†’
+            - button "Join or lead Loan Officer Teams Join a team for coaching, accountability and support from an experienced Team Leader, or lead your own team and earn a share of its commission. Read more â†’" [ref=e187] [cursor=pointer]:
+              - generic [ref=e188]: Join or lead
+              - heading "Loan Officer Teams" [level=4] [ref=e189]
+              - paragraph [ref=e190]: Join a team for coaching, accountability and support from an experienced Team Leader, or lead your own team and earn a share of its commission.
+              - generic [ref=e191]: Read more â†’
+      - generic [ref=e192]: "NOTE Â· Card text = Phuong's short version, word for word. Click a card: popup shows her tagline + medium paragraph and a button to the program page. Big orange labels (Keep more, Free coachâ€¦) are placeholders, not Phuong's copy. Her long policy summaries are for the program pages, not here."
+    - generic [ref=e194]:
+      - generic [ref=e196]:
+        - img "Loan Factory Summit 2026" [ref=e197]
+        - generic [ref=e198]: Loan Factory Summit 2026
+      - generic [ref=e203]:
+        - generic [ref=e204]: Small Talk, Big Ideas
+        - heading "Hear it from our Loan Officers." [level=2] [ref=e205]
+        - paragraph [ref=e206]: Thuan Nguyen, CEO, talks with Loan Officers about their work at Loan Factory.
+      - generic [ref=e207]:
+        - link "David Kim with Thuan Nguyen 6:31 David Kim Loan Officer Â· with Thuan Nguyen" [ref=e208] [cursor=pointer]:
+          - /url: https://drive.google.com/file/d/1q9dTGBWE8BaL1ZQt8x7a7rR3zCkvcyzr/view
+          - generic [ref=e209]:
+            - img "David Kim with Thuan Nguyen" [ref=e210]
+            - generic [ref=e212]: 6:31
+          - generic [ref=e213]: David Kim
+          - generic [ref=e214]: Loan Officer Â· with Thuan Nguyen
+        - link "Anne Nguyen with Thuan Nguyen 3:05 Anne Nguyen Loan Officer Â· with Thuan Nguyen" [ref=e215] [cursor=pointer]:
+          - /url: https://drive.google.com/file/d/1UyPehAnHa9sjpa8Gv1TCNf_UmWqPU3m_/view
+          - generic [ref=e216]:
+            - img "Anne Nguyen with Thuan Nguyen" [ref=e217]
+            - generic [ref=e219]: 3:05
+          - generic [ref=e220]: Anne Nguyen
+          - generic [ref=e221]: Loan Officer Â· with Thuan Nguyen
+        - link "Terry Huy Nguyen with Thuan Nguyen 3:40 Terry Huy Nguyen Loan Officer Â· with Thuan Nguyen" [ref=e222] [cursor=pointer]:
+          - /url: https://drive.google.com/file/d/1ezeQ2Zhwglu8pZXoFP3odU1khZJZIH2S/view
+          - generic [ref=e223]:
+            - img "Terry Huy Nguyen with Thuan Nguyen" [ref=e224]
+            - generic [ref=e226]: 3:40
+          - generic [ref=e227]: Terry Huy Nguyen
+          - generic [ref=e228]: Loan Officer Â· with Thuan Nguyen
+        - link "Sheilla Lavadia with Thuan Nguyen 2:39 Sheilla Lavadia Loan Officer Â· with Thuan Nguyen" [ref=e229] [cursor=pointer]:
+          - /url: https://drive.google.com/file/d/1tXYX18OYYKzoyQ5IxNkLP0056Emt8Jfo/view
+          - generic [ref=e230]:
+            - img "Sheilla Lavadia with Thuan Nguyen" [ref=e231]
+            - generic [ref=e233]: 2:39
+          - generic [ref=e234]: Sheilla Lavadia
+          - generic [ref=e235]: Loan Officer Â· with Thuan Nguyen
+        - link "Vivian Pang with Thuan Nguyen 1:43 Vivian Pang Loan Officer Â· with Thuan Nguyen" [ref=e236] [cursor=pointer]:
+          - /url: https://drive.google.com/file/d/16O8bWDIXaW4k-btCYGckfuI-D9WYpXer/view
+          - generic [ref=e237]:
+            - img "Vivian Pang with Thuan Nguyen" [ref=e238]
+            - generic [ref=e240]: 1:43
+          - generic [ref=e241]: Vivian Pang
+          - generic [ref=e242]: Loan Officer Â· with Thuan Nguyen
+        - link "Edward Arvizo with Thuan Nguyen 2:33 Edward Arvizo Loan Officer Â· with Thuan Nguyen" [ref=e243] [cursor=pointer]:
+          - /url: https://drive.google.com/file/d/1CmURKt1bzShz69uaMX8Ctp8cLQMR6PkJ/view
+          - generic [ref=e244]:
+            - img "Edward Arvizo with Thuan Nguyen" [ref=e245]
+            - generic [ref=e247]: 2:33
+          - generic [ref=e248]: Edward Arvizo
+          - generic [ref=e249]: Loan Officer Â· with Thuan Nguyen
+      - link "See all 16 videos" [ref=e251] [cursor=pointer]:
+        - /url: https://drive.google.com/drive/folders/122oBHe5hJwhEQobouyyG7vPJvQ595BRB
+      - generic [ref=e252]: "NOTE Â· Real thumbnails and lengths from the \"Small talk big ideas / Edited\" folder. Click opens the video on Drive. Live page: host on YouTube or company video hosting."
+    - generic [ref=e254]:
+      - generic [ref=e255]:
+        - generic [ref=e256]: How to join
+        - heading "Four steps." [level=2] [ref=e257]
+      - list [ref=e258]:
+        - listitem [ref=e259]:
+          - generic [ref=e260]: Join a webinar
+          - generic [ref=e261]: Learn how Loan Factory works. Every Friday.
+        - listitem [ref=e262]:
+          - generic [ref=e263]: Register
+          - generic [ref=e264]: Send your basic info.
+        - listitem [ref=e265]:
+          - generic [ref=e266]: Sign and get sponsored
+          - generic [ref=e267]: Sign your agreement. We handle NMLS sponsorship.
+        - listitem [ref=e268]:
+          - generic [ref=e269]: Start working
+          - generic [ref=e270]: Get your accounts and start using the software.
+    - generic [ref=e272]:
+      - generic [ref=e273]:
+        - generic [ref=e274]:
+          - generic [ref=e275]: Friday webinar
+          - heading "Pick a date." [level=2] [ref=e276]
+          - paragraph [ref=e277]: Thuan Nguyen, CEO, shows how Loan Factory works. Online.
+        - group "Upcoming webinars" [ref=e278]:
+          - button "OCT 2 Friday, Oct 2 10:00 AM PT Â· Online Selected" [pressed] [ref=e279] [cursor=pointer]:
+            - generic [ref=e280]:
+              - generic [ref=e281]: OCT
+              - generic [ref=e282]: "2"
+            - generic [ref=e283]:
+              - generic [ref=e284]: Friday, Oct 2
+              - text: 10:00 AM PT Â· Online
+            - generic [ref=e285]: Selected
+          - button "OCT 9 Friday, Oct 9 10:00 AM PT Â· Online Pick" [ref=e286] [cursor=pointer]:
+            - generic [ref=e287]:
+              - generic [ref=e288]: OCT
+              - generic [ref=e289]: "9"
+            - generic [ref=e290]:
+              - generic [ref=e291]: Friday, Oct 9
+              - text: 10:00 AM PT Â· Online
+            - generic [ref=e292]: Pick
+          - button "OCT 16 Friday, Oct 16 10:00 AM PT Â· Online Pick" [ref=e293] [cursor=pointer]:
+            - generic [ref=e294]:
+              - generic [ref=e295]: OCT
+              - generic [ref=e296]: "16"
+            - generic [ref=e297]:
+              - generic [ref=e298]: Friday, Oct 16
+              - text: 10:00 AM PT Â· Online
+            - generic [ref=e299]: Pick
+      - generic [ref=e300]:
+        - heading "Save your seat" [level=3] [ref=e301]
+        - paragraph [ref=e302]: "Webinar: Friday, Oct 2 Â· 10:00 AM PT"
+        - generic [ref=e303]:
+          - generic [ref=e304]:
+            - generic [ref=e305]: First name
+            - textbox "First name" [ref=e306]
+          - generic [ref=e307]:
+            - generic [ref=e308]: Last name
+            - textbox "Last name" [ref=e309]
+        - generic [ref=e310]:
+          - generic [ref=e311]: Email
+          - textbox "Email" [ref=e312]
+        - generic [ref=e313]:
+          - generic [ref=e314]: Phone
+          - textbox "Phone" [ref=e315]:
+            - /placeholder: (000) 000-0000
+        - paragraph [ref=e316]: By providing your phone number, you agree to receive SMS messages from us.
+        - button "Register me for the webinar" [ref=e317] [cursor=pointer]
+        - button "Skip the webinar. I want to join now" [ref=e318] [cursor=pointer]
+  - contentinfo [ref=e319]:
+    - generic [ref=e320]:
+      - generic [ref=e321]: LOAN FACTORY
+      - generic [ref=e322]: "Who can join: newly licensed, or 2+ loans closed in the past year. Background check and management approval required."
+      - generic [ref=e323]: We dare you to compare
+  - iframe [ref=e324]

@@ -1,0 +1,520 @@
+- generic [ref=f10e1]:
+  - generic [ref=f10e7]:
+    - generic [ref=f10e8]:
+      - generic [ref=f10e9]:
+        - button "Sidebar collapse button" [ref=f10e10] [cursor=pointer]
+        - link [ref=f10e69] [cursor=pointer]:
+          - /url: "#"
+          - text: "SWAT:"
+          - link "Vinh Nguyen is SWAT officer. Please contact him for urgent problem" [ref=f10e70]:
+            - /url: "javascript:"
+          - text: "Parser:"
+          - link "Quyen Anh Vo is monitoring the parser today. Please contact him for problem with parser" [ref=f10e72]:
+            - /url: "javascript:"
+      - list [ref=f10e15]:
+        - listitem [ref=f10e16]:
+          - link "Search" [ref=f10e17] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=f10e74]: search
+        - listitem [ref=f10e18]:
+          - link "Builds" [ref=f10e19] [cursor=pointer]:
+            - /url: "##builds"
+        - listitem [ref=f10e20]:
+          - link "add" [ref=f10e75] [cursor=pointer]:
+            - /url: "##create_small_task"
+        - listitem [ref=f10e22]:
+          - link "Message" [ref=f10e23] [cursor=pointer]:
+            - /url: javascript:;
+            - generic [ref=f10e77]: notifications
+          - text: 
+        - listitem [ref=f10e24]:
+          - link [ref=f10e25] [cursor=pointer]:
+            - /url: javascript:;
+            - text: Bao Trinh
+            - img "Bao Trinh" [ref=f10e26]
+      - generic [ref=f10e27]:
+        - button "search" [ref=f10e28]
+        - generic [ref=f10e79]:
+          - searchbox "Search input" [ref=f10e80]
+          - searchbox "Search input" [ref=f10e81]
+        - link "close search" [ref=f10e30] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=f10e82]: close
+    - generic [ref=f10e32]:
+      - list [ref=f10e33]:
+        - listitem [ref=f10e34]:
+          - link "Bao Trinh  Bao Trinh Dev" [ref=f10e35] [cursor=pointer]:
+            - /url: javascript:;
+            - img "Bao Trinh" [ref=f10e38]
+            - generic [ref=f10e39]:
+              - generic [ref=f10e40]: 
+              - text: Bao Trinh
+              - generic [ref=f10e41]: Dev
+        - listitem: 
+      - list [ref=f10e42]:
+        - listitem [ref=f10e43]: X Moso
+        - listitem [ref=f10e44]:
+          - tab "group Company directory" [ref=f10e84] [cursor=pointer]:
+            - generic [ref=f10e85]: group
+            - text: Company directory
+        - listitem [ref=f10e46]:
+          - link " assignment_o Activities" [ref=f10e86] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f10e48]: 
+            - generic [ref=f10e87]: assignment_o
+            - text: Activities
+        - listitem [ref=f10e49]:
+          - link " check Reports" [ref=f10e88] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f10e51]: 
+            - generic [ref=f10e89]: check
+            - text: Reports
+        - listitem [ref=f10e52]:
+          - link " settings Builds" [ref=f10e90] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f10e54]: 
+            - generic [ref=f10e91]: settings
+            - text: Builds
+        - listitem [ref=f10e55]:
+          - link " bug_report Errors" [ref=f10e92] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f10e57]: 
+            - generic [ref=f10e93]: bug_report
+            - text: Errors
+        - listitem [ref=f10e58]:
+          - link " System" [ref=f10e59] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f10e60]: 
+            - text: System
+    - generic [ref=f10e94]:
+      - heading "Builds bao.trinh@moso.com broke build 10 hour(s) ago." [level=1] [ref=f10e95]:
+        - text: Builds
+        - paragraph [ref=f10e96]:
+          - generic [ref=f10e97]: bao.trinh@moso.com broke build 10 hour(s) ago.
+      - generic [ref=f10e100]:
+        - tablist [ref=f10e101]:
+          - tab "builds" [ref=f10e102] [cursor=pointer]: Builds
+          - tab "status" [ref=f10e103] [cursor=pointer]:
+            - generic [ref=f10e104]: rss_feed
+            - text: Status
+          - tab "parsers" [ref=f10e105] [cursor=pointer]:
+            - generic [ref=f10e106]: insert_drive_file
+            - text: Parsers
+          - tab "tests" [ref=f10e107] [cursor=pointer]:
+            - generic [ref=f10e108]: insert_drive_file
+            - text: Tests
+          - tab "builders" [ref=f10e109] [cursor=pointer]:
+            - generic [ref=f10e110]: settings
+            - text: Builders
+          - tab "activities" [ref=f10e111] [cursor=pointer]:
+            - generic [ref=f10e112]: history
+            - text: Activities
+        - generic [ref=f10e115]:
+          - generic [ref=f10e116]:
+            - generic [ref=f10e117]:
+              - button "sync" [ref=f10e118] [cursor=pointer]
+              - link [ref=f10e121] [cursor=pointer]:
+                - /url: "javascript:"
+            - form [ref=f10e122]:
+              - generic "Repo" [ref=f10e123]:
+                - generic [ref=f10e124]:
+                  - text: Repo
+                  - generic [ref=f10e125]: (optional)
+                - combobox [aria-hidden] [ref=f10e126]
+                - combobox "Repo" [ref=f10e129] [cursor=pointer]
+              - generic "Type" [ref=f10e131]:
+                - generic [ref=f10e132]:
+                  - text: Type
+                  - generic [ref=f10e133]: (optional)
+                - combobox [aria-hidden] [ref=f10e134]
+                - combobox "× install" [ref=f10e137] [cursor=pointer]:
+                  - generic "install" [ref=f10e138]:
+                    - generic [ref=f10e139]: ×
+                    - text: install
+              - generic "Status" [ref=f10e140]:
+                - generic [ref=f10e141]:
+                  - text: Status
+                  - generic [ref=f10e142]: (optional)
+                - combobox [aria-hidden] [ref=f10e143]
+                - combobox "Status" [ref=f10e146] [cursor=pointer]
+            - generic [ref=f10e148]:
+              - button "Reset filters" [ref=f10e149] [cursor=pointer]
+              - button "More" [ref=f10e150] [cursor=pointer]
+          - generic [ref=f10e151]:
+            - generic [ref=f10e153]:
+              - generic [ref=f10e154]: Type
+              - generic [ref=f10e155]: Status
+              - generic [ref=f10e156]: Note
+              - generic [ref=f10e157]: Server
+              - generic [ref=f10e158]: Time (m)
+            - generic [ref=f10e159]:
+              - generic [ref=f10e160]:
+                - generic [ref=f10e161]:
+                  - generic [ref=f10e162]:
+                    - group [ref=f10e164]:
+                      - button "install" [ref=f10e165] [cursor=pointer]
+                    - generic [ref=f10e166]: moso-pricing
+                  - generic [ref=f10e167]: succeeded
+                  - generic [ref=f10e171]:
+                    - text: Bao (packs)
+                    - link [ref=f10e172] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/51d6b5a0c23f7d2081ce7ae025a7bec70b2b2640
+                      - text: "Log the Drive config key, not the entity, when the owner change fails (#3644) GoogleDrive.afterAccountChanged logged \"Could not change owner: \" + config, which prints every property of GoogleDriveConfig(1), including the OAuth access_token and refresh_token of the integrated Super Admin account. Those fields are not SECURED, so the base entity redaction does not cover them. Log the key only. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f10e173]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                    - text: Bao (base)
+                    - link [ref=f10e174] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f10e175]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f10e176] [cursor=pointer]: batman
+                  - generic [ref=f10e177]:
+                    - generic [ref=f10e178]: 22s
+                    - generic [ref=f10e179]: 10/9/2026, 5:15:53 PM
+                - generic [ref=f10e180]:
+                  - generic [ref=f10e181]:
+                    - group [ref=f10e183]:
+                      - button "install" [ref=f10e184] [cursor=pointer]
+                    - generic [ref=f10e185]: packs/hr
+                  - generic [ref=f10e186]: succeeded
+                  - generic [ref=f10e190]:
+                    - text: Bao (base)
+                    - link [ref=f10e191] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f10e192]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f10e193] [cursor=pointer]: batman
+                  - generic [ref=f10e194]:
+                    - generic [ref=f10e195]: 8s
+                    - generic [ref=f10e196]: 10/9/2026, 5:14:43 PM
+                - generic [ref=f10e197]:
+                  - generic [ref=f10e198]:
+                    - group [ref=f10e200]:
+                      - button "install" [ref=f10e201] [cursor=pointer]
+                    - generic [ref=f10e202]: packs/quote
+                  - generic [ref=f10e203]: succeeded
+                  - generic [ref=f10e207]:
+                    - text: Bao (packs)
+                    - link [ref=f10e208] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/51d6b5a0c23f7d2081ce7ae025a7bec70b2b2640
+                      - text: "Log the Drive config key, not the entity, when the owner change fails (#3644) GoogleDrive.afterAccountChanged logged \"Could not change owner: \" + config, which prints every property of GoogleDriveConfig(1), including the OAuth access_token and refresh_token of the integrated Super Admin account. Those fields are not SECURED, so the base entity redaction does not cover them. Log the key only. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f10e209]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                    - text: Bao (base)
+                    - link [ref=f10e210] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f10e211]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f10e212] [cursor=pointer]: batman
+                  - generic [ref=f10e213]:
+                    - generic [ref=f10e214]: 11s
+                    - generic [ref=f10e215]: 10/9/2026, 5:14:23 PM
+                - generic [ref=f10e216]:
+                  - generic [ref=f10e217]:
+                    - group [ref=f10e219]:
+                      - button "install" [ref=f10e220] [cursor=pointer]
+                    - generic [ref=f10e221]: packs/ringcentral-apis
+                  - generic [ref=f10e222]: succeeded
+                  - generic [ref=f10e226]:
+                    - text: Bao (base)
+                    - link [ref=f10e227] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f10e228]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f10e229] [cursor=pointer]: batman
+                  - generic [ref=f10e230]:
+                    - generic [ref=f10e231]: 12s
+                    - generic [ref=f10e232]: 10/9/2026, 5:13:48 PM
+                - generic [ref=f10e233]:
+                  - generic [ref=f10e234]:
+                    - group [ref=f10e236]:
+                      - button "install" [ref=f10e237] [cursor=pointer]
+                    - generic [ref=f10e238]: packs/google-apis
+                  - generic [ref=f10e239]: succeeded
+                  - generic [ref=f10e243]:
+                    - text: Bao (packs)
+                    - link [ref=f10e244] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/51d6b5a0c23f7d2081ce7ae025a7bec70b2b2640
+                      - text: "Log the Drive config key, not the entity, when the owner change fails (#3644) GoogleDrive.afterAccountChanged logged \"Could not change owner: \" + config, which prints every property of GoogleDriveConfig(1), including the OAuth access_token and refresh_token of the integrated Super Admin account. Those fields are not SECURED, so the base entity redaction does not cover them. Log the key only. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f10e245]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                    - text: Bao (base)
+                    - link [ref=f10e246] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f10e247]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f10e248] [cursor=pointer]: batman
+                  - generic [ref=f10e249]:
+                    - generic [ref=f10e250]: 12s
+                    - generic [ref=f10e251]: 10/9/2026, 5:13:32 PM
+                - generic [ref=f10e252]:
+                  - generic [ref=f10e253]:
+                    - group [ref=f10e255]:
+                      - button "install" [ref=f10e256] [cursor=pointer]
+                    - generic [ref=f10e257]: packs/billing
+                  - generic [ref=f10e258]: succeeded
+                  - generic [ref=f10e262]:
+                    - text: Bao (base)
+                    - link [ref=f10e263] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f10e264]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f10e265] [cursor=pointer]: batman
+                  - generic [ref=f10e266]:
+                    - generic [ref=f10e267]: 10s
+                    - generic [ref=f10e268]: 10/9/2026, 5:13:20 PM
+                - generic [ref=f10e269]:
+                  - generic [ref=f10e270]:
+                    - group [ref=f10e272]:
+                      - button "install" [ref=f10e273] [cursor=pointer]
+                    - generic [ref=f10e274]: base/appengine
+                  - generic [ref=f10e275]: succeeded
+                  - generic [ref=f10e279]:
+                    - text: Bao (base)
+                    - link [ref=f10e280] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f10e281]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f10e282] [cursor=pointer]: batman
+                  - generic [ref=f10e283]:
+                    - generic [ref=f10e284]: 19s
+                    - generic [ref=f10e285]: 10/9/2026, 5:12:33 PM
+                - generic [ref=f10e286]:
+                  - generic [ref=f10e287]:
+                    - group [ref=f10e289]:
+                      - button "install" [expanded] [active] [ref=f10e290] [cursor=pointer]
+                      - generic [ref=f10e471]:
+                        - link "Report" [ref=f10e472] [cursor=pointer]:
+                          - /url: javascript:;
+                        - listitem [ref=f10e473]
+                        - link "Rerun" [ref=f10e475] [cursor=pointer]:
+                          - /url: javascript:;
+                        - link "Mark done" [ref=f10e476] [cursor=pointer]:
+                          - /url: javascript:;
+                        - listitem [ref=f10e477]
+                        - listitem [ref=f10e479]
+                        - listitem [ref=f10e481]
+                        - listitem [ref=f10e483]
+                        - listitem [ref=f10e485]
+                        - listitem [ref=f10e487]
+                        - listitem [ref=f10e489]
+                    - generic [ref=f10e291]: base/core
+                  - generic [ref=f10e292]: succeeded
+                  - generic [ref=f10e296]:
+                    - text: Bao (base)
+                    - link [ref=f10e297] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f10e298]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f10e299] [cursor=pointer]: batman
+                  - generic [ref=f10e300]:
+                    - generic [ref=f10e301]: 23s
+                    - generic [ref=f10e302]: 10/9/2026, 5:08:52 PM
+                - generic [ref=f10e303]:
+                  - generic [ref=f10e304]:
+                    - group [ref=f10e306]:
+                      - button "install" [ref=f10e307] [cursor=pointer]
+                    - generic [ref=f10e308]: moso-pricing
+                  - generic [ref=f10e309]: succeeded
+                  - generic [ref=f10e313]:
+                    - text: Trung (packs)
+                    - 'link "PennyMac: assert full Conv ladder and 15-day NY prices" [ref=f10e314] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/96bda2d96f9d36dac17f9bec63f707a768506e48
+                    - text: Trung (packs)
+                    - 'link "HomeXpress: parse the 10/06 sheet in the adjustment test" [ref=f10e315] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/8a3e182636d4ed868965455c2d1f2c5c2bef4891
+                    - text: Trung (packs)
+                    - 'link "Freedom: Manufactured Home LLPA is 0.5, not the 2-4 Unit row" [ref=f10e316] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/26a9f35058f7299082bdbab7d7f08e4925721189
+                    - text: Trung (packs)
+                    - 'link "T-0018: rename Employment history to Employment, show it below Document type" [ref=f10e317] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/c26b144a2aba3b9ded4551bb57acdf2baee6313c
+                  - generic [ref=f10e318] [cursor=pointer]: batman
+                  - generic [ref=f10e319]:
+                    - generic [ref=f10e320]: 24s
+                    - generic [ref=f10e321]: 10/9/2026, 4:49:43 PM
+                - generic [ref=f10e322]:
+                  - generic [ref=f10e323]:
+                    - group [ref=f10e325]:
+                      - button "install" [ref=f10e326] [cursor=pointer]
+                    - generic [ref=f10e327]: packs/quote
+                  - generic [ref=f10e328]: succeeded
+                  - generic [ref=f10e332]:
+                    - text: Trung (packs)
+                    - 'link "PennyMac: assert full Conv ladder and 15-day NY prices" [ref=f10e333] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/96bda2d96f9d36dac17f9bec63f707a768506e48
+                    - text: Trung (packs)
+                    - 'link "HomeXpress: parse the 10/06 sheet in the adjustment test" [ref=f10e334] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/8a3e182636d4ed868965455c2d1f2c5c2bef4891
+                    - text: Trung (packs)
+                    - 'link "Freedom: Manufactured Home LLPA is 0.5, not the 2-4 Unit row" [ref=f10e335] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/26a9f35058f7299082bdbab7d7f08e4925721189
+                    - text: Trung (packs)
+                    - 'link "T-0018: rename Employment history to Employment, show it below Document type" [ref=f10e336] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/c26b144a2aba3b9ded4551bb57acdf2baee6313c
+                  - generic [ref=f10e337] [cursor=pointer]: batman
+                  - generic [ref=f10e338]:
+                    - generic [ref=f10e339]: 13s
+                    - generic [ref=f10e340]: 10/9/2026, 4:47:36 PM
+                - generic [ref=f10e341]:
+                  - generic [ref=f10e342]:
+                    - group [ref=f10e344]:
+                      - button "install" [ref=f10e345] [cursor=pointer]
+                    - generic [ref=f10e346]: moso-pricing
+                  - generic [ref=f10e347]: succeeded
+                  - generic [ref=f10e351]:
+                    - text: Trung (moso-pricing)
+                    - 'link "KeyStone: escrow, VA over 1.5M LTV caps and a 75k minimum loan" [ref=f10e352] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/moso-pricing/commit/6a31cb626886710fae58b7f30f16eaeb3d498c28
+                    - text: Trung (moso-pricing)
+                    - 'link "T-0011: read AHL pages by title, 30-day prices, retire Plus/Prime Star" [ref=f10e353] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/moso-pricing/commit/c8658d09359ac43410a0272011316d045f251ecf
+                    - text: Trung (moso-pricing)
+                    - 'link "T-0012: rebuild AHL Invest Star for the 10/01 sheet, add 5-10 units" [ref=f10e354] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/moso-pricing/commit/302b2f97faad4e092ab1d1f7ca5dcfe91b89f9d2
+                    - text: Trung (moso-pricing)
+                    - 'link "T-0012: block 30-year interest-only on AHL Invest Star" [ref=f10e355] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/moso-pricing/commit/357b736675c1904e3eb41882638ed2aa5fba0f3f
+                    - text: Trung (moso-pricing)
+                    - 'link "T-0013: add AHL Invest Star Income program" [ref=f10e356] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/moso-pricing/commit/4e22e142ff458998b5a64a25049127e2a5aaaaeb
+                    - text: Trung (moso-pricing)
+                    - 'link "T-0014: rebuild AHL All Star for the 10/01 sheet" [ref=f10e357] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/moso-pricing/commit/6c8b7c5db4271024e6eb4405ad2151a62ab0b649
+                    - text: Trung (moso-pricing)
+                    - 'link "T-0015: re-key AHL Rising Star credit grades, fix its eligibility rules" [ref=f10e358] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/moso-pricing/commit/e113545e6c8d7039a3a5c6f17d509076c40f15f6
+                    - text: Trung (moso-pricing)
+                    - 'link "T-0010: price AHL grids on CLTV, cap AHL loans at 4 borrowers" [ref=f10e359] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/moso-pricing/commit/2a7f1c09f32b0047836145f85b23291b98d9ad70
+                    - text: Trung (moso-pricing)
+                    - link "update lender mail for AHL lender" [ref=f10e360] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/moso-pricing/commit/9ad1e2510a80ded7724a6179d05ddaea4733990a
+                  - generic [ref=f10e361] [cursor=pointer]: batman
+                  - generic [ref=f10e362]:
+                    - generic [ref=f10e363]: 23s
+                    - generic [ref=f10e364]: 10/9/2026, 1:50:04 PM
+                - generic [ref=f10e365]:
+                  - generic [ref=f10e366]:
+                    - group [ref=f10e368]:
+                      - button "install" [ref=f10e369] [cursor=pointer]
+                    - generic [ref=f10e370]: moso-pricing
+                  - generic [ref=f10e371]: succeeded
+                  - generic [ref=f10e375]:
+                    - text: Trung (moso-pricing)
+                    - 'link "KeyStone: align validators with every Keystone guideline and the sheet''s NA cells" [ref=f10e376] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/moso-pricing/commit/a33e1c395db293894da2511fbaeefa8d6b2ced98
+                    - text: Trung (moso-pricing)
+                    - 'link "MyWorkBook: evaluate formulas with an immutable stability classifier" [ref=f10e377] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/moso-pricing/commit/85909fe25e9a021df0c7ba4b0c05598530d14659
+                  - generic [ref=f10e378] [cursor=pointer]: batman
+                  - generic [ref=f10e379]:
+                    - generic [ref=f10e380]: 25s
+                    - generic [ref=f10e381]: 10/9/2026, 10:57:01 AM
+                - generic [ref=f10e382]:
+                  - generic [ref=f10e383]:
+                    - group [ref=f10e385]:
+                      - button "install" [ref=f10e386] [cursor=pointer]
+                    - generic [ref=f10e387]: packs/loan
+                  - generic [ref=f10e388]: succeeded
+                  - generic [ref=f10e392]:
+                    - text: Dao (packs)
+                    - link "Cap lender logo width at 200px so it stays inside the Best lender column" [ref=f10e393] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/2bca0c1dee5aff9ef6560cf5e510cead65fdacd4
+                  - generic [ref=f10e394] [cursor=pointer]: batman
+                  - generic [ref=f10e395]:
+                    - generic [ref=f10e396]: 1m 40s
+                    - generic [ref=f10e397]: 10/9/2026, 9:41:51 AM
+                - generic [ref=f10e398]:
+                  - generic [ref=f10e399]:
+                    - group [ref=f10e401]:
+                      - button "install" [ref=f10e402] [cursor=pointer]
+                    - generic [ref=f10e403]: moso-pricing
+                  - generic [ref=f10e404]: succeeded
+                  - generic [ref=f10e408]:
+                    - text: Trung (moso-pricing)
+                    - 'link "T-0004: correct Tech CU conforming ceiling to the sheet''s $832,750" [ref=f10e409] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/moso-pricing/commit/895edbcc91e9074b86926c56de1c6b8bd726f6fb
+                    - text: Trung (moso-pricing)
+                    - 'link "PennyMac: read the new Govt LLPA grids of the 10/06 sheet New grids: FHA Streamline Only, VA IRRRL; FHA 600k row, Florida, USDA. Re-run the PennyMac parse after deploy: field_73/74 have no data yet." [ref=f10e410] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/moso-pricing/commit/5af03351e44cdfe30a13cd13e6b157ac482712f1
+                    - text: Trung (moso-pricing)
+                    - 'link "VantageScore 4.0: price both models per lender, keep the cheaper rate" [ref=f10e411] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/moso-pricing/commit/cd080acf1f537d520f05a9f5f8e4d4691d13637d
+                    - text: Trung (moso-pricing)
+                    - 'link "Merge pull request #67 from LoanFactory-Inc/feat/vs4-effective-score Feat/vs4 effective score" [ref=f10e412] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/moso-pricing/commit/180839f0bcb9baeca34a81daeb4e2c0399576143
+                  - generic [ref=f10e413] [cursor=pointer]: batman
+                  - generic [ref=f10e414]:
+                    - generic [ref=f10e415]: 22s
+                    - generic [ref=f10e416]: 10/9/2026, 7:29:43 AM
+                - generic [ref=f10e417]:
+                  - generic [ref=f10e418]:
+                    - group [ref=f10e420]:
+                      - button "install" [ref=f10e421] [cursor=pointer]
+                    - generic [ref=f10e422]: moso-pricing
+                  - generic [ref=f10e423]: succeeded
+                  - generic [ref=f10e427]:
+                    - text: Trung (packs)
+                    - 'link "PennyMac: 10/06 sheet, Govt LLPA tests, re-accepted expectations" [ref=f10e428] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/43218e3163497fb2896636165d135c69349fbbf0
+                    - text: Trung (packs)
+                    - 'link "VantageScore 4.0: loan score, tag, badges, quote and alert pricing" [ref=f10e429] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/5757b1eb997fa6140b1ee5920f9d7a70547eea5a
+                    - text: Trung (packs)
+                    - 'link "Merge pull request #3639 from LoanFactory-Inc/feat/vs4-effective-score Feat/vs4 effective score" [ref=f10e430] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/832b8d31fb7a3adcefef0087c29e16acdd43eec6
+                  - generic [ref=f10e431] [cursor=pointer]: batman
+                  - generic [ref=f10e432]:
+                    - generic [ref=f10e433]: 22s
+                    - generic [ref=f10e434]: 10/8/2026, 9:41:42 PM
+              - text: 
+          - generic "Page Navigation" [ref=f10e435]:
+            - list [ref=f10e437]:
+              - listitem [ref=f10e438] [cursor=pointer]:
+                - generic "Previous" [ref=f10e439]: «
+              - listitem [ref=f10e440] [cursor=pointer]:
+                - generic [ref=f10e441]: 1-15 of over 100
+              - listitem [ref=f10e442] [cursor=pointer]:
+                - generic "Next" [ref=f10e443]: »
+            - generic [ref=f10e444]:
+              - text: Showing
+              - combobox "Items per page" [ref=f10e445]:
+                - option "5"
+                - option "10" [selected]
+                - option "25"
+                - option "50"
+                - option "100"
+              - text: items per page
+    - link "Scroll to top" [ref=f10e64] [cursor=pointer]:
+      - /url: javascript:;
+      - generic [ref=f10e446]: keyboard_arrow_up
+  - iframe
+  - generic [ref=f10e65]:
+    - link "System Improvement?" [ref=f10e66] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f10e447]: send
+    - link "Help?" [ref=f10e67] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f10e448]: help
+    - link "Chat" [ref=f10e68] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f10e449]: chat
+  - log [ref=f10e450]
+  - log [ref=f10e451]
+  - log [ref=f10e452]
+  - log [ref=f10e453]
+  - log [ref=f10e454]
+  - log [ref=f10e455]
+  - log [ref=f10e456]
+  - log [ref=f10e457]
+  - log [ref=f10e458]
+  - log [ref=f10e459]
+  - log [ref=f10e460]
+  - log [ref=f10e461]
+  - log [ref=f10e462]
+  - log [ref=f10e463]
+  - log [ref=f10e464]
+  - log [ref=f10e465]
+  - log [ref=f10e466]
+  - log [ref=f10e467]
+  - log [ref=f10e468]
+  - log [ref=f10e469]
+  - log [ref=f10e470]

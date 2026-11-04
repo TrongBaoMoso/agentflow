@@ -1,0 +1,23 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - button "Change language" [ref=e4] [cursor=pointer]:
+        - generic [ref=e5]: English
+      - button "Switch to dark mode" [ref=e15] [cursor=pointer]
+    - generic [ref=e21]:
+      - generic [ref=e22]:
+        - generic [ref=e23]:
+          - img "Loan Factory" [ref=e24]
+          - paragraph [ref=e25]: One login for the entire Loan Factory platform
+        - paragraph [ref=e26]: Secure sign-in
+      - generic [ref=e32]:
+        - generic [ref=e33]:
+          - heading "Sign in" [level=1] [ref=e34]
+          - paragraph [ref=e35]: Use your Loan Factory account to continue.
+        - alert [ref=e37]:
+          - generic [ref=e38]: Central SSO isn't configured for this build (NEXT_PUBLIC_ACCOUNT_URL). Deployed builds point at the Account portal; local dev uses the persona switcher instead.
+    - generic [ref=e45]:
+      - button "Help" [ref=e46] [cursor=pointer]
+      - button "Privacy" [ref=e47] [cursor=pointer]
+      - button "Terms" [ref=e48] [cursor=pointer]
+  - alert [ref=e49]

@@ -1,0 +1,248 @@
+- generic [active] [ref=f2e1]:
+  - alert [ref=f2e2]
+  - generic [ref=f2e3]:
+    - banner [ref=f2e4]:
+      - generic [ref=f2e5]:
+        - img "Loan Factory" [ref=f2e6]
+        - generic [ref=f2e7]: Recruit
+      - generic [aria-hidden] [ref=f2e8]:
+        - generic [ref=f2e12]: Search candidates, NMLS, companies…
+        - generic [ref=f2e13]: ⌘ K
+      - generic [ref=f2e14]:
+        - button "Notifications, 3 unread" [ref=f2e15] [cursor=pointer]:
+          - generic [aria-hidden] [ref=f2e20]: "3"
+        - generic [ref=f2e21]:
+          - button "Change language" [ref=f2e22] [cursor=pointer]:
+            - generic [ref=f2e23]: English
+          - button "Switch to dark mode" [ref=f2e33] [cursor=pointer]
+        - button "Discovery" [ref=f2e37] [cursor=pointer]
+        - button "Your account" [ref=f2e49] [cursor=pointer]:
+          - generic [ref=f2e50]:
+            - generic [ref=f2e51]: Manh Admin
+            - generic [ref=f2e52]: RECRUITER · manhadmin@viet18.com
+    - navigation [ref=f2e53]:
+      - navigation [ref=f2e54]:
+        - generic [ref=f2e55]: Frequent
+        - link [ref=f2e56] [cursor=pointer]:
+          - /url: /today
+        - link [ref=f2e61] [cursor=pointer]:
+          - /url: /inbox/hot
+        - link [ref=f2e65] [cursor=pointer]:
+          - /url: /inbox/cold
+        - link [ref=f2e80] [cursor=pointer]:
+          - /url: /pipeline
+        - link [ref=f2e85] [cursor=pointer]:
+          - /url: /exceptions
+        - link [ref=f2e89] [cursor=pointer]:
+          - /url: /reports
+        - link [ref=f2e95] [cursor=pointer]:
+          - /url: /work
+        - link [ref=f2e100] [cursor=pointer]:
+          - /url: /sponsorships
+      - navigation [ref=f2e106]:
+        - generic [ref=f2e107]: Configuration
+        - link [ref=f2e108] [cursor=pointer]:
+          - /url: /templates
+        - link [ref=f2e113] [cursor=pointer]:
+          - /url: /duplicates
+        - link [ref=f2e119] [cursor=pointer]:
+          - /url: /dormant
+        - link [ref=f2e124] [cursor=pointer]:
+          - /url: /conversations
+        - link [ref=f2e128] [cursor=pointer]:
+          - /url: /settings
+    - main [ref=f2e133]:
+      - generic [ref=f2e134]:
+        - generic [ref=f2e135]:
+          - generic [ref=f2e136]:
+            - generic [ref=f2e137]: Tuesday, 09/29/2026
+            - heading [level=1] [ref=f2e138]:
+              - text: Today's work
+              - emphasis [ref=f2e139]: comes to you
+          - link "Focus mode" [ref=f2e140] [cursor=pointer]:
+            - /url: /today/focus
+          - button "Select" [ref=f2e150] [cursor=pointer]
+        - alert "Too much today?" [ref=f2e153]:
+          - generic [ref=f2e155]:
+            - generic [ref=f2e156]: Too much today?
+            - generic [ref=f2e159]:
+              - generic [ref=f2e160]: "Press Select, tick a few of your leads and hand them to a colleague. No manager needed. Leads that aren't due today: hand them off from the candidate drawer."
+              - button "Dismiss" [ref=f2e161] [cursor=pointer]
+        - generic [ref=f2e164]:
+          - button "To do today includes anything late 9" [pressed] [ref=f2e165] [cursor=pointer]:
+            - generic [ref=f2e170]:
+              - generic [ref=f2e171]: To do today
+              - generic [ref=f2e172]: includes anything late
+            - generic [ref=f2e173]: "9"
+          - button "Not contacted yet you haven't called, texted or emailed 3" [ref=f2e174] [cursor=pointer]:
+            - generic [ref=f2e181]:
+              - generic [ref=f2e182]: Not contacted yet
+              - generic [ref=f2e183]: you haven't called, texted or emailed
+            - generic [ref=f2e184]: "3"
+        - generic [ref=f2e186]:
+          - paragraph [ref=f2e187]: 1 more of yours is scheduled for another day
+          - generic "Next up" [ref=f2e188]:
+            - generic [aria-hidden] [ref=f2e189]: R
+            - generic [ref=f2e190]:
+              - button "Revav" [ref=f2e191] [cursor=pointer]
+              - generic [ref=f2e193]: After Party · San Diego · RSVP'd Sep 12
+              - link "NMLS 121212" [ref=f2e194] [cursor=pointer]:
+                - /url: https://www.nmlsconsumeraccess.org/EntityDetails.aspx/INDIVIDUAL/121212
+            - generic [ref=f2e195]:
+              - button "Call now" [ref=f2e197] [cursor=pointer]
+              - button "SMS" [ref=f2e203] [cursor=pointer]
+              - button "Email" [ref=f2e207] [cursor=pointer]
+              - separator [ref=f2e212]
+              - button "Open conversation" [ref=f2e213] [cursor=pointer]
+            - generic [ref=f2e218]:
+              - generic [ref=f2e219]: Call again · no answer Sep 22
+              - generic [ref=f2e220]:
+                - generic [ref=f2e226]:
+                  - generic [ref=f2e227]: Overdue
+                  - text: Sep 25 · 7:00am
+                - button "Change date" [ref=f2e228] [cursor=pointer]
+            - generic [ref=f2e236]: AI call prep for this person · coming soon
+          - generic [ref=f2e240]:
+            - generic [ref=f2e241]:
+              - text: No follow-up set
+              - generic [ref=f2e245]: "8"
+            - generic [ref=f2e246] [cursor=pointer]:
+              - button "Grant Horwitz E Mortgage Capital" [ref=f2e247]:
+                - generic [aria-hidden] [ref=f2e248]: GH
+                - generic [ref=f2e249]:
+                  - generic [ref=f2e250]: Grant Horwitz
+                  - generic [ref=f2e252]: E Mortgage Capital
+              - generic "Not contacted yet · send the first email" [ref=f2e253]:
+                - generic [ref=f2e254]:
+                  - button "Add follow-up" [ref=f2e256]
+                  - generic [ref=f2e258]: Not contacted yet · send the first email
+              - generic [ref=f2e259]:
+                - generic "No phone on file — email first, or log the result to mark Wrong information" [ref=f2e260]:
+                  - button "Call" [disabled] [ref=f2e261]
+                - generic "No phone on file — email first, or log the result to mark Wrong information" [ref=f2e265]:
+                  - button "SMS" [disabled] [ref=f2e266]
+                - button "Email" [ref=f2e270]
+                - separator [ref=f2e275]
+                - button "Open conversation" [ref=f2e276]
+                - button "Row actions" [ref=f2e281]
+            - generic [ref=f2e287] [cursor=pointer]:
+              - button "QA DeferFeeMobile Offer · Filled the website form · Sep 23 Contact now · due yesterday · 2:00am" [ref=f2e288]:
+                - generic [aria-hidden] [ref=f2e289]: QD
+                - generic [ref=f2e290]:
+                  - generic [ref=f2e291]: QA DeferFeeMobile
+                  - generic [ref=f2e293]: Offer · Filled the website form · Sep 23
+                  - generic [ref=f2e294]: Contact now · due yesterday · 2:00am
+              - generic "Not contacted yet · make the first call" [ref=f2e295]:
+                - generic [ref=f2e296]:
+                  - button "Add follow-up" [ref=f2e298]
+                  - generic [ref=f2e300]: Not contacted yet · make the first call
+              - generic [ref=f2e301]:
+                - button "Call" [ref=f2e302]
+                - button "SMS" [ref=f2e306]
+                - button "Email" [ref=f2e310]
+                - separator [ref=f2e315]
+                - button "Open conversation" [ref=f2e316]
+                - button "Row actions" [ref=f2e321]
+            - generic [ref=f2e327] [cursor=pointer]:
+              - button "AVCAAA Offer" [ref=f2e328]:
+                - generic [aria-hidden] [ref=f2e329]: A
+                - generic [ref=f2e330]:
+                  - generic [ref=f2e331]: AVCAAA
+                  - generic [ref=f2e333]: Offer
+              - generic "Not contacted yet · make the first call" [ref=f2e334]:
+                - generic [ref=f2e335]:
+                  - button "Add follow-up" [ref=f2e337]
+                  - generic [ref=f2e339]: Not contacted yet · make the first call
+              - generic [ref=f2e340]:
+                - button "Call" [ref=f2e341]
+                - button "SMS" [ref=f2e345]
+                - button "Email" [ref=f2e349]
+                - separator [ref=f2e354]
+                - button "Open conversation" [ref=f2e355]
+                - button "Row actions" [ref=f2e360]
+            - generic [ref=f2e366] [cursor=pointer]:
+              - button "Batoreh Nguyen E2E Writeback Test LLC · RSVP'd for an event · Sep 14" [ref=f2e367]:
+                - generic [aria-hidden] [ref=f2e368]: BN
+                - generic [ref=f2e369]:
+                  - generic [ref=f2e370]: Batoreh Nguyen
+                  - generic [ref=f2e372]: E2E Writeback Test LLC · RSVP'd for an event · Sep 14
+              - generic "No reply for 9 days · call again" [ref=f2e373]:
+                - generic [ref=f2e374]:
+                  - button "Add follow-up" [ref=f2e376]
+                  - generic [ref=f2e378]: No reply for 9 days · call again
+              - generic [ref=f2e379]:
+                - button "Call" [ref=f2e380]
+                - button "SMS" [ref=f2e384]
+                - button "Email" [ref=f2e388]
+                - separator [ref=f2e393]
+                - button "Open conversation" [ref=f2e394]
+                - button "Row actions" [ref=f2e399]
+            - generic [ref=f2e405] [cursor=pointer]:
+              - button "Nesebis Nesebis,inc · After Party · San Diego · RSVP'd Sep 12" [ref=f2e406]:
+                - generic [aria-hidden] [ref=f2e407]: "N"
+                - generic [ref=f2e408]:
+                  - generic [ref=f2e409]: Nesebis
+                  - generic [ref=f2e411]: Nesebis,inc · After Party · San Diego · RSVP'd Sep 12
+              - generic "No reply for 4 days · send a follow-up text" [ref=f2e412]:
+                - generic [ref=f2e413]:
+                  - button "Add follow-up" [ref=f2e415]
+                  - generic [ref=f2e417]: No reply for 4 days · send a follow-up text
+              - generic [ref=f2e418]:
+                - button "Call" [ref=f2e419]
+                - button "SMS" [ref=f2e423]
+                - button "Email" [ref=f2e427]
+                - separator [ref=f2e432]
+                - button "Open conversation" [ref=f2e433]
+                - button "Row actions" [ref=f2e438]
+            - generic [ref=f2e444] [cursor=pointer]:
+              - button "TRINH VU TRONG BAO After Party · Houston · RSVP'd Sep 18" [ref=f2e445]:
+                - generic [aria-hidden] [ref=f2e446]: TB
+                - generic [ref=f2e447]:
+                  - generic [ref=f2e448]: TRINH VU TRONG BAO
+                  - generic [ref=f2e450]: After Party · Houston · RSVP'd Sep 18
+              - generic "No reply for 4 days · send a follow-up text" [ref=f2e451]:
+                - generic [ref=f2e452]:
+                  - button "Add follow-up" [ref=f2e454]
+                  - generic [ref=f2e456]: No reply for 4 days · send a follow-up text
+              - generic [ref=f2e457]:
+                - button "Call" [ref=f2e458]
+                - button "SMS" [ref=f2e462]
+                - button "Email" [ref=f2e466]
+                - separator [ref=f2e471]
+                - button "Open conversation" [ref=f2e472]
+                - button "Row actions" [ref=f2e477]
+            - generic [ref=f2e483] [cursor=pointer]:
+              - button "Janotv Offer · After Party · San Diego · RSVP'd Sep 13" [ref=f2e484]:
+                - generic [aria-hidden] [ref=f2e485]: J
+                - generic [ref=f2e486]:
+                  - generic [ref=f2e487]: Janotv
+                  - generic [ref=f2e489]: Offer · After Party · San Diego · RSVP'd Sep 13
+              - generic "No reply since yesterday · send a follow-up text" [ref=f2e490]:
+                - generic [ref=f2e491]:
+                  - button "Add follow-up" [ref=f2e493]
+                  - generic [ref=f2e495]: No reply since yesterday · send a follow-up text
+              - generic [ref=f2e496]:
+                - button "Call" [ref=f2e497]
+                - button "SMS" [ref=f2e501]
+                - button "Email" [ref=f2e505]
+                - separator [ref=f2e510]
+                - button "Open conversation" [ref=f2e511]
+                - button "Row actions" [ref=f2e516]
+            - generic [ref=f2e522] [cursor=pointer]:
+              - button "QA Aone Offer · Filled the website form · Sep 29" [ref=f2e523]:
+                - generic [aria-hidden] [ref=f2e524]: QA
+                - generic [ref=f2e525]:
+                  - generic [ref=f2e526]: QA Aone
+                  - generic [ref=f2e528]: Offer · Filled the website form · Sep 29
+              - generic "Contacted today · no reply yet" [ref=f2e529]:
+                - generic [ref=f2e530]:
+                  - button "Add follow-up" [ref=f2e532]
+                  - generic [ref=f2e534]: Contacted today · no reply yet
+              - generic [ref=f2e535]:
+                - button "Call" [ref=f2e536]
+                - button "SMS" [ref=f2e540]
+                - button "Email" [ref=f2e544]
+                - separator [ref=f2e549]
+                - button "Open conversation" [ref=f2e550]
+                - button "Row actions" [ref=f2e555]
+          - paragraph [ref=f2e561]: "All times: GMT+7"

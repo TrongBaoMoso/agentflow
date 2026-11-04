@@ -1,0 +1,53 @@
+- generic [active] [ref=f1e1]:
+  - alert [ref=f1e2]
+  - generic [ref=f1e3]:
+    - banner [ref=f1e4]:
+      - generic [ref=f1e5]:
+        - link "Go to the start of this app" [ref=f1e7] [cursor=pointer]:
+          - /url: /today
+          - img "Loan Factory" [ref=f1e8]
+          - generic [ref=f1e9]:
+            - paragraph [ref=f1e10]: Loan Factory
+            - paragraph [ref=f1e11]: Recruit
+        - generic [ref=f1e12]:
+          - generic [ref=f1e14]:
+            - combobox "Search candidates, NMLS, companies…" [ref=f1e19]
+            - generic:
+              - generic "Press ⌘ K to search from anywhere": ⌘ K
+          - status [ref=f1e20]
+        - generic [ref=f1e21]:
+          - button "Notifications" [ref=f1e22] [cursor=pointer]
+          - button "Switch to dark mode" [ref=f1e27] [cursor=pointer]
+          - button "Notifications" [ref=f1e33] [cursor=pointer]
+          - button "Discovery" [ref=f1e38] [cursor=pointer]
+          - button "Account menu" [ref=f1e50] [cursor=pointer]:
+            - generic [ref=f1e51]: "?"
+    - navigation [ref=f1e53]:
+      - button "Collapse menu" [expanded] [ref=f1e54] [cursor=pointer]
+      - navigation "Main navigation" [ref=f1e57]:
+        - generic [ref=f1e58]:
+          - button "Frequent" [expanded] [ref=f1e59] [cursor=pointer]
+          - list "Frequent" [ref=f1e64]:
+            - listitem [ref=f1e65]:
+              - link "My work today" [ref=f1e66] [cursor=pointer]:
+                - /url: /today
+        - generic [ref=f1e72]:
+          - button "Configuration" [expanded] [ref=f1e73] [cursor=pointer]
+          - list "Configuration" [ref=f1e78]:
+            - listitem [ref=f1e79]:
+              - link "Templates" [ref=f1e80] [cursor=pointer]:
+                - /url: /templates
+            - listitem [ref=f1e86]:
+              - link "Audit" [ref=f1e87] [cursor=pointer]:
+                - /url: /audit
+            - listitem [ref=f1e93]:
+              - link "Settings" [ref=f1e94] [cursor=pointer]:
+                - /url: /settings
+            - listitem [ref=f1e100]:
+              - link "Checklist templates" [ref=f1e101] [cursor=pointer]:
+                - /url: /checklist-templates
+            - listitem [ref=f1e108]:
+              - link "Permissions" [ref=f1e109] [cursor=pointer]:
+                - /url: /permissions
+      - button "AI Assistant" [ref=f1e116] [cursor=pointer]
+    - main [ref=f1e127]

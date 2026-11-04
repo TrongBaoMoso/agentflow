@@ -1,0 +1,1561 @@
+package com.mvu.loan.shared.entity;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import com.google.gwt.core.shared.GwtIncompatible;
+import com.moso.core.Logger;
+import com.mvu.appengine.db.Bean;
+import com.mvu.appengine.db.Bundle;
+import com.mvu.appengine.server.op.EmailTemplateOp;
+import com.mvu.appengine.server.op.SaveGenericNoteOp;
+import com.mvu.core.server.CanBeStored;
+import com.mvu.core.server.JSON;
+import com.mvu.core.server.Server;
+import com.mvu.core.server.TypeMethods;
+import com.mvu.core.shared.App;
+import com.mvu.core.shared.ErrorMessage;
+import com.mvu.core.shared.FieldsBase;
+import com.mvu.core.shared.HasValues;
+import com.mvu.core.shared.Optional;
+import com.mvu.core.shared.Type;
+import com.mvu.core.shared.Validators;
+import com.mvu.core.shared.datatype.BooleanType;
+import com.mvu.core.shared.datatype.DateType;
+import com.mvu.core.shared.datatype.DecimalType;
+import com.mvu.core.shared.datatype.EnumType;
+import com.mvu.core.shared.datatype.IntegerType;
+import com.mvu.core.shared.datatype.JsonArrayType;
+import com.mvu.core.shared.datatype.LongType;
+import com.mvu.core.shared.datatype.StringType;
+import com.mvu.core.shared.entity.Contact;
+import com.mvu.core.shared.entity.HasKey;
+import com.mvu.core.shared.entity.HasProgress;
+import com.mvu.core.shared.entity.HasResume;
+import com.mvu.core.shared.entity.HasTCPAConsent;
+import com.mvu.core.shared.entity.Note;
+import com.mvu.core.shared.entity.Template;
+import com.mvu.core.shared.field.FK;
+import com.mvu.core.shared.field.Field;
+import com.mvu.core.shared.params.EmailParams;
+import com.mvu.core.shared.typekey.QueueType;
+import com.mvu.core.shared.typekey.YesNo;
+import com.mvu.core.shared.util.Colls;
+import com.mvu.core.shared.util.Dates;
+import com.mvu.core.shared.util.Strings;
+import com.mvu.core.shared.validator.RegExValidator;
+import com.mvu.loan.server.folder.UpdateAssociateToDoFolderOp;
+import com.mvu.loan.server.op.FindGoogleReviews;
+import com.mvu.loan.server.op.GetNextWebinarOp;
+import com.mvu.loan.server.op.dashboard.UpdateReferralLoanOfficerReport;
+import com.mvu.loan.server.op.recruiting.LeadOriginStamp;
+import com.mvu.loan.server.op.recruiting.LoRecruiterProgramStanding;
+import com.mvu.loan.server.op.loan.CreateAutoEscalationTicketsOp;
+import com.mvu.loan.server.op.loan.LoanOps;
+import com.mvu.loan.server.op.loan.SaveFollowUpOp;
+import com.mvu.loan.server.op.recruiting.EnsureSigningSessionsRegisterInterestedLoanOfficer;
+import com.mvu.loan.server.op.referral.EnsureLORecruiterOp;
+import com.mvu.loan.server.op.statistics.UpdateInterestedLoanOfficerStatisticOp;
+import com.mvu.loan.server.op.subscription.AddLORecruitingToSubscriptionOp;
+import com.mvu.loan.server.op.subscription.CheckAndUpdateLORecruitingForSubscription;
+import com.mvu.loan.server.op.user.ILOAutomaticAssignOwnerOp;
+import com.mvu.loan.server.op.user.SyncStatusModex;
+import com.mvu.loan.shared.LORecruitingUtils;
+import com.mvu.loan.shared.StatisticUtils;
+import com.mvu.loan.shared.typekey.CaDreLicenseType;
+import com.mvu.loan.shared.typekey.CommissionRequestStatus;
+import com.mvu.loan.shared.typekey.LoanOfficerReferredSection;
+import com.mvu.loan.shared.typekey.LoanOfficerReferredSource;
+import com.mvu.loan.shared.typekey.NotificationMethodType;
+
+import static com.mvu.core.client.resource.CoreMessages.coreMessages;
+import static com.mvu.core.shared.typekey.AccessLevel.PUBLIC;
+import static com.mvu.loan.client.bundle.LoanMessages.loanMessages;
+import static com.mvu.loan.client.view.CommissionMessages.commissionMessages;
+import static com.mvu.loan.shared.entity.Company.LOAN_FACTORY;
+import static com.mvu.loan.shared.label.LoanAdminLabels.loanAdminLabels;
+
+public interface LORecruiting extends WebinarAttendee, HasReferInfo, HasResume, HasFollowUp, HasAddedByAdmin,
+        HasCommunicationStatisticSummary, HasProgress, HasLoanPriority, HasUtmCampaign, GoogleReview, HasTCPAConsent, HasESign, HasBlackListed {
+  Type TYPE = Type.add(LORecruiting.class, WebinarAttendee.TYPE, HasFollowUp.TYPE, HasAddedByAdmin.TYPE, HasProgress.TYPE, HasReferInfo.TYPE)
+          .trackCreation(true).trackUpdate(true).captureAuditLog(true);
+
+  Field<Boolean> brokerage = TYPE.f("brokerage", "LO is NOT exclusively originating loans with Loan Factory", true, BooleanType.instance()).track();
+  Field<List<String>> sponsor_states = TYPE.f("sponsor_states", StringType.instance().listType()).track();
+  Field<String> sponsor_state = TYPE.f("sponsor_state", StringType.instance()).track();
+  Field<String> nmls = TYPE.f("nmls", "NMLS", true, StringType.instance()).track()
+          .is(new RegExValidator(Agent.NMLS_REGEX, loanMessages.invalid_format_nmls_message()));
+  Field<NmlsStatus> nmls_status = TYPE.f("nmls_status", "NMLS status", true, EnumType.instance(NmlsStatus.class)).track();
+  Field<Date> nmls_sponsor_first_day = TYPE.f("nmls_sponsor_first_day", DateType.datetime());
+  Field<Date> nmls_sponsor_last_day = TYPE.f("nmls_sponsor_last_day", DateType.datetime());
+  Field<Date> temporary_nmls_sponsor_first_day = TYPE.f("temporary_nmls_sponsor_first_day", DateType.datetime());
+  Field<String> nmls_sponsor_duration = TYPE.f("nmls_sponsor_duration", "NMLS sponsor duration", false, StringType.instance()).function(item -> {
+    String result;
+    Integer duration = LORecruitingUtils.calDuration(item);
+    if (duration == null) {
+      result = "N/A";
+    } else {
+      result = duration + " day(s)";
+    }
+
+    return Optional.of(result);
+  });
+  Field<HrStatus> hr_status = TYPE.f("hr_status", "HR status", true, EnumType.instance(HrStatus.class)).defaultValue(HrStatus.not_initiated).track();
+  @Deprecated
+  Field<OnboardingSupportStatus> onboarding_support_status = TYPE.f("onboarding_support_status", "Onboarding Support Status", true, EnumType.instance(OnboardingSupportStatus.class)).defaultValue(OnboardingSupportStatus.onboarding_intro_not_scheduled);
+  Field<Boolean> give_nmls_access = TYPE.f("give_nmls_access", BooleanType.instance()).track();
+  Field<Integer> annual_volume = TYPE.f("annual_volume", IntegerType.instance()).track();
+  Field<List<String>> lo_agreements = TYPE.f("lo_agreements", "Upload Agreements", true, StringType.instance().listType());
+  Field<String> lo_agreement = TYPE.f("lo_agreement", "Upload Agreement", true, StringType.instance()).track();
+  FK<List<String>> associate_todo_folders = TYPE.fk("associate_todo_folders", false, StringType.instance().listType()).ref(DriveFile.TYPE);
+  Field<Boolean> lo_agreement_signed = TYPE.f("lo_agreement_signed", "Agreement signed", true, BooleanType.instance()).defaultValue(false).track();
+  Field<Boolean> is_from_fb_ad = TYPE.f("is_from_fb_ad", true, BooleanType.instance()).track();
+
+  Field<Boolean> is_corporate_loan_officer = TYPE.f("is_corporate_loan_officer", "Loan officer type", true, BooleanType.instance()).track();
+  Field<Boolean> referred_by_lo = TYPE.f("referred_by_source", BooleanType.instance()).track();
+  Field<Boolean> referred_by_lo_inside = TYPE.f("referred_by_lo_inside", BooleanType.instance()).track();
+  Field<Boolean> may_reach_to_us_before = TYPE.f("may_reach_to_us_before", BooleanType.instance());
+  Field<Long> ref = TYPE.f("ref", LongType.instance()).persistable(false);
+  Field<Experience> experience = TYPE.f("experience", EnumType.instance(Experience.class)).track();
+  Field<String> experience_name = TYPE.f("experience_name", false, StringType.instance())
+          .function(item -> item.hasValue(experience) ? Optional.of(item.get(experience).toString()) : Optional.of(""));
+  Field<YesNo> required_to_join_membership = TYPE.f("required_to_join_membership", "Required to join membership", true, EnumType.instance(YesNo.class)).track();
+  Field<Integer> closed_loan_past_12_months = TYPE.f("closed_loan_past_12_months", "Closed loan in 12 months", true, IntegerType.instance()).track();
+  Field<Double> total_volume_past_12_months = TYPE.f("total_volume_past_12_months", "total volume 12-month loans", true, DecimalType.money()).min(0.0).track();
+  Field<List<HasValues>> trans_history_past_12_months = TYPE.f("trans_history_past_12_months", "Transaction history in the past 12 months", false, JsonArrayType.objects()).track();
+  Field<Integer> closed_loan_since_2021 = TYPE.f("closed_loan_since_2021", "Loans since 2021", true, IntegerType.instance()).track();
+  Field<String> licensed_since = TYPE.f("licensed_since", StringType.dateOnly()).track();
+  Field<Integer> months_in_business = TYPE.f("months_in_business", "Years in business", false, IntegerType.instance()).function(officer -> {
+    if (officer.hasValue(licensed_since)) {
+      return Optional.of(Dates.dates.getMonthsBetween(new Date(), Dates.dates.getDateFromISOString(officer.get(licensed_since))));
+    }
+    return Optional.absent();
+  });
+  Field<Double> total_volume = TYPE.f("total_volume", DecimalType.money()).track().min(0D);
+  Field<Integer> total_closed_loan = TYPE.f("total_closed_loan", IntegerType.instance()).track().min(0);
+  Field<Integer> approximately_closed_loans = TYPE.f("approximately_closed_loans", "Approximately, how many loans closed by this loan officer?", true, IntegerType.instance()).track();
+
+  Field<Boolean> also_recruiter = TYPE.f("also_recruiter", BooleanType.instance()).track();
+  Field<String> also_recruiter_label = TYPE.f("also_recruiter_label", StringType.instance())
+          .function(item -> item.is(also_recruiter) ? Optional.of("LO_Recruiter") : Optional.absent());
+  Field<Boolean> added_by_referrer = TYPE.f("added_by_referrer", BooleanType.instance()).track();
+  Field<String> added_by_referrer_label = TYPE.f("added_by_referrer_label", StringType.instance()).track();
+  FK<String> referrer = TYPE.fk("referrer", "Recruiter name", false, StringType.instance()).ref(LORecruiter.TYPE);
+  Field<Boolean> referrer_internal_associate = TYPE.f("referrer_internal_associate", true, BooleanType.instance());
+  Field<Boolean> referrer_is_internal_loan_officers = TYPE.f("referrer_is_internal_loan_officers", true, BooleanType.instance());
+  FK<Long> referrer_follow_up = TYPE.fk("referrer_follow_up", loanMessages.need_to_follow_up(), false, LongType.instance()).ref(ToFollowUp.TYPE).owner();
+  Field<String> referrer_wakeup_date_tz = TYPE.f("referrer_wakeup_date_tz", true, StringType.date());
+  FK<String> loan_officer_assistant = TYPE.fk("loan_officer_assistant", StringType.instance()).ref(Admin.TYPE).track();
+  FK<String> onboarding_specialist = TYPE.fk("onboarding_specialist", StringType.instance()).ref(Admin.TYPE).track();
+  FK<String> support_specialist = TYPE.fk("support_specialist", StringType.instance()).ref(Admin.TYPE).track();
+  FK<String> recruiter = TYPE.fk("recruiter", StringType.instance()).ref(Admin.TYPE).track();
+  FK<String> referred_lo = TYPE.fk("referred_lo", "Referring LO", true, StringType.instance()).ref(Admin.TYPE).track();
+  Field<Boolean> has_referred_lo = TYPE.f("has_referred_lo", BooleanType.instance())
+          .function(bean -> bean.hasValue(referred_lo) ? Optional.of(true) : Optional.absent());
+  Field<List<String>> owners_of_lo = TYPE.f("owners_of_lo", StringType.instance().listType());
+
+  Field<Boolean> overwrite_current_onboarding = TYPE.f("overwrite_current_onboarding", BooleanType.instance()).persistable(false);
+  Field<Boolean> overwrite_current_recruiter = TYPE.f("overwrite_current_recruiter", BooleanType.instance()).persistable(false);
+
+  Field<LoanOfficerReferredSource> referred_source = TYPE.f("referred_source", "Detail source", true, EnumType.instance(LoanOfficerReferredSource.class)).track();
+  Field<LoanOfficerReferredSection> referred_section = TYPE.f("referred_section", "Source", true, EnumType.instance(LoanOfficerReferredSection.class)).track();
+  Field<String> referred_source_other_reason = TYPE.f("referred_source_other_reason", "Other reason", true, StringType.instance()).track();
+
+  Field<Boolean> ready_to_join = TYPE.f("ready_to_join", BooleanType.instance()).track();
+
+  Field<String> appointment_time = TYPE.f("appointment_time", StringType.instance());
+  Field<String> appointment_date = TYPE.f("appointment_date", StringType.instance());
+  Field<String> account_created_date = TYPE.f("account_created_date", StringType.date());
+  Field<String> started_date = TYPE.f("started_date", StringType.date()).track();
+
+  String APPOINTMENT_DATE_TIME_FORMAT = "MM/dd/yyyy HH:mm a";
+  String EMAIL_ID_PREFIX = "lo-recruit-email-id=";
+
+  Field<Boolean> register_for_webinar = TYPE.f("register_for_webinar", BooleanType.instance()).track();
+  Field<Boolean> not_registered_webinar = TYPE.f("not_registered_webinar", "Not registered webinar", true, BooleanType.instance()).track();
+  /**
+   * Filter-only: the id of a {@link TradeShow} whose {@code has_vip_after_party} is on, used to
+   * narrow the interested-loan-officer list to the people who registered for that show.
+   *
+   * <p>Not persisted, and deliberately not a field on the row: there is no ILO -> trade show
+   * reference in Datastore. The link is the registration itself — a {@link TradeShowAttendee}
+   * under the show carrying the person's email — so the filter is resolved by
+   * {@code FindInterestedLoanOfficersOp}, which turns the selected show into its attendee emails
+   * and matches those against {@link #email}. Anything reading this off a row will get nothing.</p>
+   */
+  Field<Long> registered_vip_after_party_show = TYPE.f("registered_vip_after_party_show", "Registered VIP After Party", true, LongType.instance()).persistable(false);
+  Field<Boolean> paid_startup_fee = TYPE.f("paid_startup_fee", BooleanType.instance()).defaultValue(false).track();
+  Field<Boolean> waive_startup_fee = TYPE.f("waive_startup_fee", BooleanType.instance()).defaultValue(false).track();
+  Field<String> waive_startup_fee_reason = TYPE.f("waive_startup_fee_reason", StringType.instance()).track();
+  Field<String> startup_fee_status = TYPE.f("startup_fee_status", "Startup fee", false, StringType.instance())
+          .function(officer -> Optional.of(officer.is(waive_startup_fee) ? loanMessages.waived()
+                  : officer.is(paid_startup_fee) ? commissionMessages.paid()
+                  : commissionMessages.unpaid()));
+  Field<String> paypal_order_id = TYPE.f("paypal_order_id", StringType.instance()).track();
+
+  Field<Boolean> completed_detail_form = TYPE.f("completed_detail_form", BooleanType.instance()).track();
+
+  Field<Double> target_compensation = TYPE.f("target_compensation", true, DecimalType.percentage());
+  Field<Double> rocket_target_compensation = TYPE.f("rocket_target_compensation", true, DecimalType.percentage()).track();
+  Field<String> office_phone = TYPE.f("office_phone", "Office phone", true, StringType.phone()).track();
+  Field<String> bio = TYPE.f("bio", "About/Bio", false, StringType.html());
+  Field<String> website = TYPE.f("website", false, StringType.instance()).is(Validators.url());
+  Field<String> company_name = TYPE.f("company_name", false, StringType.instance()).track();
+  Field<String> company_url = TYPE.f("company_url", false, StringType.instance()).is(Validators.url()).track();
+  Field<String> company_nmls = TYPE.f("company_nmls", false, StringType.instance()).track();
+
+  Field<RecruitingType> recruiting_type = TYPE.f("recruiting_type", EnumType.instance(RecruitingType.class)).track();
+  Field<OutSourceStatus> out_source_status = TYPE.f("out_source_status", "Status", true, EnumType.instance(OutSourceStatus.class)).track();
+  Field<Boolean> out_source_active = TYPE.f("out_source_active", "Active", true, BooleanType.instance()).track();
+  Field<Friendship> friendship = TYPE.f("friendship", EnumType.instance(Friendship.class)).defaultValue(Friendship.not_friend).track();
+  Field<Channel> channel = TYPE.f("channel", "Loan officer channel", true, EnumType.instance(Channel.class)).track();
+  Field<Boolean> claimed_profile = TYPE.f("claimed_profile", BooleanType.instance()).track();
+  Field<Boolean> claimed_profile_want_join = TYPE.f("claimed_profile_want_join", BooleanType.instance()).persistable(false);
+  Field<Boolean> pending_approval = TYPE.f("pending_approval", BooleanType.instance()).track();
+  Field<Boolean> block_display = TYPE.f("block_display", BooleanType.instance()).track();
+  Field<NotificationMethodType> communication_method = TYPE.f("communication_method", "Preferred method of communication?", false, EnumType.instance(NotificationMethodType.class)).track();
+  Field<Boolean> paid_and_signed = TYPE.f("paid_and_signed", "Paid and Signed", false, BooleanType.instance())
+          .function(input -> Optional.of(input.is(paid_startup_fee) && input.is(lo_agreement_signed)));
+  Field<Boolean> check_social_media = TYPE.f("check_social_media", "Check social media?", true, BooleanType.instance()).track();
+  Field<Boolean> has_social_media = TYPE.f("has_social_media", BooleanType.instance());
+
+  Field<List<String>> lo_labels = TYPE.f("lo_labels", "Labels", false, StringType.instance().listType().unique()).access(PUBLIC).track().defaultOptional(Optional.nullOptional());
+  Field<List<String>> lo_search_labels = TYPE.f("lo_search_labels", "Search Labels", false, StringType.instance().listType().unique()).access(PUBLIC).track().defaultOptional(Optional.nullOptional());
+  // WHEN this row last arrived through a public registration form, and WHICH event it was for.
+  // Stamped only by RegisterInterestedLoanOfficer (the RSVP / recruiting-form path); an admin
+  // editing the record in the back office goes through a plain SaveOp and leaves them untouched.
+  //
+  // That separation is the whole point. Downstream (recruit-be) a row is delivered again on ANY
+  // save, machine or human, and the row's CONTENT is identical either way — a QA record was
+  // observed receiving two identical `lorecruiting.saved` deliveries 32 minutes apart with
+  // nobody having registered in between. Without a registration clock there is no way to tell
+  // "this person raised their hand again" from "something re-saved the row", and a system that
+  // guesses will tell a recruiter someone came back when they did not.
+  //
+  // lo_labels alone cannot answer it: it is a unique-value list, so a second registration for an
+  // event already in the list changes nothing at all, and the list never says which entry is the
+  // latest one.
+  Field<Date> last_registration_at = TYPE.f("last_registration_at", "Last registration at", false, DateType.datetime()).track();
+  Field<String> last_registration_event = TYPE.f("last_registration_event", "Last registration event", false, StringType.instance()).track();
+
+  // Origin stamp (agentflow-cn1rh P1a): WHICH entry page created this row. Written ONCE, at create, by
+  // LeadOriginStamp; every field below except lead_origin/lead_origin_slug is derived server-side and is
+  // never taken from a request. lead_origin and lead_origin_owner_key are INDEXED (third argument true):
+  // the P2a read op (ReferralByOwner) finds a referrer's rows by equality on them. Plain strings (not an enum) so a malformed client value is dropped by
+  // LeadOriginStamp instead of failing the whole registration. See LeadOriginStamp for the value sets.
+  Field<String> lead_origin = TYPE.f("lead_origin", "Lead origin", true, StringType.instance());
+  Field<String> lead_origin_slug = TYPE.f("lead_origin_slug", "Lead origin slug", false, StringType.instance());
+  Field<String> lead_origin_owner_key = TYPE.f("lead_origin_owner_key", "Lead origin owner key", true, StringType.instance());
+  Field<String> lead_origin_owner_email = TYPE.f("lead_origin_owner_email", "Lead origin owner email", false, StringType.instance());
+  Field<String> lead_origin_owner_match = TYPE.f("lead_origin_owner_match", "Lead origin owner match", false, StringType.instance());
+  Field<String> lead_origin_reject = TYPE.f("lead_origin_reject", "Lead origin reject reason", false, StringType.instance());
+  Field<Date> lead_origin_at = TYPE.f("lead_origin_at", "Lead origin stamped at", false, DateType.datetime());
+
+  /**
+   * Which agreement flow this row follows (agentflow-7mwf0, "Option C"). {@code null} is the legacy MOSO
+   * desk and the whole pre-existing behaviour; {@link #AGREEMENT_FLOW_RECRUIT_V2} marks a row recruit-be
+   * hands to the onboarding specialist WITHOUT the invite email, whose agreement is built when the LO
+   * submits the profile after the 1-1, not at "Done".
+   *
+   * <p>Write-once by exactly one writer: {@code RecruitAPI.recordOnboardingMeeting}, in the same save as
+   * {@code onboarding_meeting_status=pre_onboarding_done}, and only on an explicit request flag. Never
+   * stamped from a public form: {@code RegisterInterestedLoanOfficer#protectAgreementFlow} strips it from
+   * every public body. No MOSO view lists it, so the dropdown and the GWT forms cannot set it either.</p>
+   */
+  Field<String> agreement_flow = TYPE.f("agreement_flow", "Agreement flow", false, StringType.instance()).track();
+  String AGREEMENT_FLOW_RECRUIT_V2 = "RECRUIT_V2";
+
+  /**
+   * How long the build queued when a RECRUIT_V2 profile is completed waits (agentflow-gglqk), so the
+   * keyed form's own registerSigningAgreement, sent right after the save, builds first and the queued
+   * build only reuses that envelope.
+   */
+  long PROFILE_COMPLETED_BUILD_DELAY_MILLIS = 60_000L;
+
+  /** True only for a row stamped {@link #AGREEMENT_FLOW_RECRUIT_V2}; null, blank or any other value is the legacy desk. */
+  static boolean isRecruitV2(HasValues row) {
+    return row != null && AGREEMENT_FLOW_RECRUIT_V2.equals(row.get(agreement_flow));
+  }
+
+  Field<String> event_to_do = TYPE.f("event_to_do", false, StringType.instance()).persistable(false);
+  Field<Boolean> is_changed_condition_fields_onboarding_associate_todo = TYPE.f("is_changed_condition_fields_onboarding_associate_todo", false, BooleanType.instance()).persistable(false);
+  Field<Integer> count_associates_to_dos = TYPE.f("count_associates_to_dos", IntegerType.instance()).persistable(false);
+  Field<Integer> count_loa_associates_to_dos = TYPE.f("count_loa_associates_to_dos", IntegerType.instance()).persistable(false);
+  Field<Integer> count_recruiter_associates_to_dos = TYPE.f("count_recruiter_associates_to_dos", IntegerType.instance()).persistable(false);
+  Field<Integer> count_onboarding_specialist_associates_to_dos = TYPE.f("count_onboarding_specialist_associates_to_dos", IntegerType.instance()).persistable(false);
+  Field<Integer> count_support_specialist_associates_to_dos = TYPE.f("count_support_specialist_associates_to_dos", IntegerType.instance()).persistable(false);
+  Field<Integer> count_department_associates_to_dos = TYPE.f("count_department_associates_to_dos", IntegerType.instance()).persistable(false);
+  Field<Boolean> is_synced_modex = TYPE.f("is_synced_modex", "Synced", false, BooleanType.instance());
+
+  Field<List<HasValues>> previous_employee_history = TYPE.f("previous_employee_history", "Past employer", false, JsonArrayType.objects()).track();
+
+  FK<Long> previous_employee_history_company_id = TYPE.fk("previous_employee_history_company_id", "Company Id", false, LongType.instance()).ref(RLOCompanies.TYPE).track();
+  Field<String> previous_employee_history_company_name = TYPE.f("previous_employee_history_company_name", "Company Name", false, StringType.instance());
+  Field<String> previous_employee_history_company_nmls = TYPE.f("previous_employee_history_company_nmls", "Company NMLS", false, StringType.instance());
+  Field<String> previous_employee_history_duration = TYPE.f("previous_employee_history_duration", "Duration", false, StringType.instance());
+  Field<Boolean> refer_loan_officer_email_me = TYPE.f("refer_loan_officer_email_me", false, BooleanType.instance()).track();
+  Field<String> webinar_feedback = TYPE.f("webinar_feedback", false, StringType.unindexedText()).track();
+
+  Field<Boolean> has_dre_endorsed = TYPE.f("has_dre_endorsed", BooleanType.instance()).track();
+  Field<Boolean> has_dre_real_estate = TYPE.f("has_dre_real_estate", BooleanType.instance()).track();
+  Field<Boolean> has_sos_licensed = TYPE.f("has_sos_licensed", BooleanType.instance()).track();
+  Field<Boolean> practice_real_estate = TYPE.f("practice_real_estate", "Practice Real estate", true, BooleanType.instance()).track();
+  Field<String> ca_dre_license = TYPE.f("ca_dre_license", loanAdminLabels.ca_dre_license(), true, StringType.instance()).track();
+  Field<CaDreLicenseType> ca_dre_license_type = TYPE.f("ca_dre_license_type", "CA-DRE License Type", true, EnumType.instance(CaDreLicenseType.class)).track();
+
+  @Deprecated
+  Field<Boolean> on_boarding_intro_completed_but_hr_not_initiated = TYPE.f("on_boarding_intro_completed_but_hr_not_initiated", "Onboarding intro completed but HR not initiated", true, BooleanType.instance());
+
+  Field<Boolean> on_boarding_meeting_completed_but_hr_not_initiated = TYPE.f("on_boarding_meeting_completed_but_hr_not_initiated", "1-1 Onboarding meeting completed but HR not initiated", true, BooleanType.instance());
+  Field<Boolean> paid_but_not_signed = TYPE.f("paid_but_not_signed", "Paid but not signed", true, BooleanType.instance());
+  Field<Boolean> nmls_sponsored_but_hr_onboarding = TYPE.f("nmls_sponsored_but_hr_onboarding", "NMLS sponsored but HR onboarding", true, BooleanType.instance());
+  Field<Boolean> hr_completed_but_nmls_not_sponsored = TYPE.f("hr_completed_but_nmls_not_sponsored", "HR completed but NMLS not sponsored", true, BooleanType.instance());
+  @Deprecated
+  Field<Boolean> meeting_status = TYPE.f("meeting_status", "1-1 Onboarding meeting", false, BooleanType.instance()).defaultValue(false).track();
+  Field<StatusMeeting> onboarding_meeting_status = TYPE.f("onboarding_meeting_status", "1-1 Onboarding meeting", false, EnumType.instance(StatusMeeting.class)).defaultValue(null).track();
+  Field<Date> meeting_date = TYPE.f("meeting_date", DateType.datetime()).track();
+  Field<List<HasValues>> referral_bonus_requests = TYPE.f("referral_bonus_requests", JsonArrayType.objects());
+  Field<Boolean> is_referral_bonus_requested = TYPE.f("is_referral_bonus_requested", "Referral bonus request", true, BooleanType.instance()).defaultValue(false);
+  Field<Boolean> is_attended = TYPE.f("is_attended", "Attended", true, BooleanType.instance()).track();
+  Field<String> duration = TYPE.f("duration", "Duration", false, StringType.instance()).track();
+  Field<String> url_signing_sessions = TYPE.f("url_signing_sessions", false, StringType.instance());
+  Field<Boolean> is_actively_recruiting = TYPE.f("is_actively_recruiting", "Actively Recruiting", false, BooleanType.instance()).defaultValue(false);
+  Field<Boolean> confirm_sponsorship = TYPE.f("confirm_sponsorship", "Sponsorship confirmation", true, BooleanType.instance()).track()
+          .historyLabels(isConfirmSponsorship -> {
+            if (isConfirmSponsorship == null) {
+              return "Blank";
+            }
+            if (isConfirmSponsorship) {
+              return "Confirmed";
+            }
+
+            return "Not confirmed";
+          }, "Loan officer type");
+  Field<Boolean> is_not_onboarded = TYPE.f("is_not_onboarded", BooleanType.instance()).defaultValue(false);
+  Field<Boolean> have_social_links = TYPE.f("have_social_links", "Do you have any social media links?", true, BooleanType.instance()).defaultValue(true);
+  // agentflow-tdqcv: compliance disclosure. No default on purpose: null means "never answered", false means "answered No".
+  Field<Boolean> has_mortgage_website = TYPE.f("has_mortgage_website", "Do you currently have a website or landing page that promotes mortgages?", false, BooleanType.instance()).track().access(PUBLIC);
+  Field<List<String>> mortgage_website_urls = TYPE.f("mortgage_website_urls", "Mortgage website URLs", false, StringType.instance().listType()).track().access(PUBLIC);
+  Field<Boolean> mortgage_website_approval_ack = TYPE.f("mortgage_website_approval_ack", "Will obtain Loan Factory approval before creating any new mortgage website", false, BooleanType.instance()).track().access(PUBLIC);
+  /** Server-stamped the first time the acknowledgement becomes true; never taken from a client. */
+  Field<Date> mortgage_website_approval_ack_at = TYPE.f("mortgage_website_approval_ack_at", "Mortgage website approval acknowledged at", false, DateType.datetime()).track().access(PUBLIC);
+  Field<String> business_phone = TYPE.f("business_phone", true, StringType.phone()).track();
+  Field<DeniedReasonType> denied_reason = TYPE.f("denied_reason", "Denied reason", false, EnumType.instance(DeniedReasonType.class)).defaultValue(null).track();
+  Field<String> denied_reason_detail = TYPE.f("denied_reason_detail", "Detailed reason", false, StringType.instance()).track();
+  Field<Boolean> is_loan_referral = TYPE.f("is_loan_referral", "Loan referral", false, BooleanType.instance()).track().historyLabels("Loan referral");
+
+  @Deprecated
+  Field<String> preferred_start_date = TYPE.f("preferred_start_date", true, StringType.dateOnly()).track();
+  @Deprecated
+  Field<String> preferred_start_date_display = TYPE.f("preferred_start_date_display", false, StringType.instance())
+          .function(item -> item.hasValue(preferred_start_date) ? Optional.of(Dates.dates.convertDateStringToFormat(item.get(preferred_start_date), "MM/dd/yyyy")) : Optional.of(""));
+  Field<String> unresponsive_date = TYPE.f("unresponsive_date", true, StringType.dateOnly()).track();
+  Field<Boolean> responded = TYPE.f("responded", true, BooleanType.instance()).defaultValue(false).track();
+  Field<Integer> number_of_unresponsive_days = TYPE.f("number_of_unresponsive_days", true, IntegerType.instance()).track();
+
+  Field<RecruitingLicenseStatus> recruiting_license_status = TYPE.f("recruiting_license_status", "License status", false, EnumType.instance(RecruitingLicenseStatus.class)).defaultValue(null).track();
+
+  enum RecruitingLicenseStatus {
+    nmls_na("NMLS N/A"),
+    nmls_licensed("NMLS Licensed"),
+    ;
+
+    private final String description;
+
+    RecruitingLicenseStatus(String description) {
+      this.description = description;
+    }
+
+    @Override
+    public String toString() {
+      return description;
+    }
+  }
+
+  String UPDATE_ILO_CREATED_FROM_FB_EMAIL_NAME = "interested_loan_officer_existed";
+
+  Map<String, Field<?>> IMPORT_FIELDS = new HashMap<String, Field<?>>() {{
+    put("First name*", first_name);
+    put("Middle name", middle_name);
+    put("Last name", last_name);
+    put("Email*", email);
+    put("Phone*", phone);
+    put("Street address", street);
+    put("ZIP code", zip);
+    put("City", city);
+    put("Company name", company_name);
+    put("Company NMLS #", company_nmls);
+    put("NMLS #", nmls);
+    put("Website", website);
+    put("Languages", preferred_languages);
+    put("About/Bio", bio);
+  }};
+  Map<String, String> IMPORT_SOCIAL_LINKS = new HashMap<String, String>() {{
+    put("Facebook", "facebook_profile");
+    put("Linkedin", "linked_in");
+    put("Instagram", "instagram");
+    put("Twitter", "twitter");
+    put("Other link", "others");
+  }};
+
+  List<String> SPONSORSHIP_CONFIRMATION_STATES = Colls.asList("GA", "MT", "OH", "OR", "PA");
+  List<String> ILO_LICENSED_STATES_CHECK = Colls.asList("SC", "AR", "NE");
+  List<String> LICENSED_CONFIRMATION_STATES = Colls.asList("VA", "MS");
+  List<String> BACKGROUND_CHECK_SPONSOR_STATES = Colls.asList("OR", "GA", "KY");
+
+  List<Field<?>> INTERESTED_SUMMARY_STATISTIC_WATCH_FIELD = Arrays.asList(recruiting_type, active, status,
+          paid_startup_fee, lo_agreement_signed, owners_of_lo, on_boarding_meeting_completed_but_hr_not_initiated,
+          paid_but_not_signed, nmls_sponsored_but_hr_onboarding, hr_completed_but_nmls_not_sponsored);
+
+  Field[] EXPORT_LIST_FIELDS = new Field[]{
+          created, first_name, last_name, email, phone, company_name, company_nmls, waive_startup_fee,
+          nmls, states, sponsor_states, nmls_status, experience, closed_loan_past_12_months, total_volume_past_12_months,
+          closed_loan_since_2021, licensed_since, months_in_business, total_volume, total_closed_loan, full_address, full_mailing_address,
+          alias_first_name, marital_status, citizenship, birthday, is_corporate_loan_officer, target_compensation, referred_section, referred_source,
+          loan_officer_assistant, onboarding_specialist, support_specialist, recruiter, status, hr_status, denied_reason,
+          referrer_name, referred_by, referrer_phone
+  };
+
+  @GwtIncompatible
+  Set<Field<?>> labelFields = TYPE.includeInLabels(email, phone, first_name, last_name, full_name, pending_approval,
+          nmls, status, active, not_joined, webinar, sponsor_states, nmls_status, experience, completed_detail_form, block_display,
+          referred_section, referred_source, referred_by_lo, referred_by_lo_inside, referred_by, referrer_is_internal_loan_officers, referrer_internal_associate,
+          added_by_admin, is_corporate_loan_officer, lo_labels, priority, also_recruiter_label,
+          hr_status, out_source_status, out_source_active, friendship, recruiting_type, company_name, company_nmls, claimed_profile,
+          preferred_languages, states, channel, state, county_name, county_search, city, check_social_media, has_social_media,
+          loan_officer_assistant, onboarding_specialist, support_specialist, recruiter, referred_lo, has_referred_lo, owners_of_lo,
+          paid_startup_fee, waive_startup_fee, lo_agreement_signed, appointment_date,
+          total_reviews, avg_rating, utm_campaign, sponsor_state, not_registered_webinar, referrer,
+          referrer.dot(LORecruiter.recruiter_phone), referrer.dot(LORecruiter.recruiter_name), referrer.dot(LORecruiter.keyName), on_boarding_meeting_completed_but_hr_not_initiated,
+          paid_but_not_signed, nmls_sponsored_but_hr_onboarding, hr_completed_but_nmls_not_sponsored, meeting_date, is_referral_bonus_requested, is_attended, state,
+          is_actively_recruiting, confirm_sponsorship, rocket_target_compensation, is_not_onboarded, onboarding_meeting_status, meeting_status,
+          denied_reason, is_from_fb_ad, is_loan_referral, lo_search_labels, join_lf_recruiter_group, refer_bonus_method,
+          practice_real_estate, ca_dre_license, is_blacklisted, blacklisted_labels);
+
+  enum DeniedReasonType {
+    not_providing_leads("Not interested"),
+    found_a_better_company("Went with other company"),
+    not_a_good_fit("Federally Licensed"),
+    not_in_the_business("Not in the business"),
+    @Deprecated
+    no_response("No respond"),
+    other("Other"),
+    base_salary("Base salary"),
+    mentorship("Mentorship"),
+    w2_licensing("W2 licensing");
+
+    private final String description;
+
+    DeniedReasonType(String description) {
+      this.description = description;
+    }
+
+    @Override
+    public String toString() {
+      return description;
+    }
+
+    public static final List<DeniedReasonType> LIST_REASON = Arrays.asList(found_a_better_company, not_in_the_business,
+            not_providing_leads, not_a_good_fit, base_salary, mentorship, w2_licensing, other);
+  }
+
+  interface ReferralBonusRequest {
+    Field<String> key = new Field<>("key", StringType.key());
+    Field<CommissionRequestStatus> status = new Field<>("status", false, EnumType.instance(CommissionRequestStatus.class));
+  }
+
+  enum RecruitingType {
+    recruiting {
+      @Override
+      public String toString() {
+        return "Recruiting";
+      }
+    }, interested {
+      @Override
+      public String toString() {
+        return "Interested";
+      }
+    };
+  }
+
+  enum StatusMeeting {
+    pre_onboarding_done("Pre-onboarding done"),
+    setup_done("Setup call done"),
+    @Deprecated
+    done("Done"),
+    unselect("Unselect");
+
+    private final String description;
+
+    StatusMeeting(String description) {
+      this.description = description;
+    }
+
+    @Override
+    public String toString() {
+      return description;
+    }
+
+    public static final List<StatusMeeting> LIST_STATUS = Arrays.asList(pre_onboarding_done, setup_done, unselect);
+  }
+
+  enum Experience {
+    New {
+      @Override
+      public String toString() {
+        return "Inexperienced";
+      }
+    },
+    Experienced,
+    Team_lead {
+      @Override
+      public String toString() {
+        return "High producer";
+      }
+    },
+    Newly_licensed {
+      @Override
+      public String toString() {
+        return "Newly Licensed";
+      }
+    },
+    ;
+
+    @Override
+    public String toString() {
+      return Strings.toTitle(name());
+    }
+
+    public static final List<Experience> LIST_EXPERIENCE = Arrays.asList(Newly_licensed, New, Experienced, Team_lead);
+  }
+
+  enum NmlsStatus {
+    access_removal,
+    no_access_right,
+    access_right_is_given,
+    applied_for_sponsorship,
+    active_license_items,
+    sponsored {
+      @Override
+      public String toString() {
+        return "NMLS Sponsored";
+      }
+    };
+
+    @Override
+    public String toString() {
+      return Strings.toTitle(name());
+    }
+  }
+
+  enum HrStatus {
+    not_initiated {
+      @Override
+      public String toString() {
+        return "HR not initiated";
+      }
+    },
+    pending_bgc_or_az_docs {
+      @Override
+      public String toString() {
+        return "Pending BGC";
+      }
+    },
+    done_bgc_or_az_docs {
+      @Override
+      public String toString() {
+        return "Done BGC";
+      }
+    },
+    in_progress {
+      @Override
+      public String toString() {
+        return "HR onboarding";
+      }
+    },
+    completed {
+      @Override
+      public String toString() {
+        return "HR Completed";
+      }
+    };
+
+    @Override
+    public String toString() {
+      return Strings.toTitle(name());
+    }
+  }
+
+  enum OutSourceStatus {
+    not_touched,
+    in_progress {
+      @Override
+      public String toString() {
+        return "Initiate contact";
+      }
+    },
+    message_sent,
+    dialogue,
+    invited_to_join,
+    interested_but_thinking,
+    want_to_join,
+    archived,
+    archived_wrong_information {
+      @Override
+      public String toString() {
+        return "Archived - Wrong information";
+      }
+    },
+    block_display;
+
+    @Override
+    public String toString() {
+      return Strings.toTitle(name());
+    }
+  }
+
+  enum Friendship {
+    not_friend,
+    friend_requested,
+    cannot_make_friend_request,
+    friend;
+
+    @Override
+    public String toString() {
+      return Strings.toTitle(name());
+    }
+
+    public static String getButtonStyle(Friendship value) {
+      String color = not_friend.equals(value) ? "#f44336"
+              : friend_requested.equals(value) ? "#ffc107"
+              : cannot_make_friend_request.equals(value) ? "#894c23"
+              : friend.equals(value) ? "#009688"
+              : "#6c757d";
+      return "color:white;background-color:" + color + ";";
+    }
+  }
+
+  enum Channel {
+    broker,
+    lender,
+    broker_owner;
+
+    @Override
+    public String toString() {
+      return equals(broker) ? "Wholesale LO"
+              : equals(lender) ? "Retail LO"
+              : "Broker/Owner";
+    }
+  }
+
+  enum OnboardingSupportStatus {
+    onboarding_intro_not_scheduled,
+    onboarding_intro_scheduled,
+    onboarding_intro_completed;
+
+    @Override
+    public String toString() {
+      return Strings.toTitle(name());
+    }
+  }
+
+
+  @GwtIncompatible
+  TypeMethods __methods = TYPE.methods(new TypeMethods() {
+    @Override
+    public void beforeCreated(CanBeStored<?> bean) {
+      WebinarAttendee.__beforeCreated.accept(bean);
+
+      // Origin stamp: first thing, and independent of the attribution block below (which is gated on
+      // isChanged(referred_by)). Recomputes every derived stamp field; nothing on the bean is trusted.
+      LeadOriginStamp.resolveOnCreate(bean);
+
+      setDefaultValueIfMissing(bean, pending_approval, false);
+      setDefaultValueIfMissing(bean, block_display, false);
+      setDefaultValueIfMissing(bean, recruiting_type, RecruitingType.interested);
+      setDefaultValueIfMissing(bean, hr_status, HrStatus.not_initiated);
+      setDefaultValueIfMissing(bean, onboarding_meeting_status, StatusMeeting.unselect);
+      bean.set(total_reviews, 0);
+      bean.set(avg_rating, 0D);
+
+      boolean hasSocialLinks = bean.hasValue(stored_social_links);
+      setDefaultValueIfMissing(bean, check_social_media, hasSocialLinks);
+      setDefaultValueIfMissing(bean, has_social_media, hasSocialLinks);
+
+      if (bean.is(recruiting_type, RecruitingType.recruiting)) {
+        setDefaultValueIfMissing(bean, out_source_status, OutSourceStatus.not_touched);
+        setDefaultValueIfMissing(bean, friendship, Friendship.not_friend);
+        setDefaultValueIfMissing(bean, claimed_profile, false);
+      }
+
+      if (bean.is(recruiting_type, RecruitingType.interested)) {
+        if (bean.is(ready_to_join)) {
+          bean.add(lo_labels, "Ready to join");
+        } else if (bean.is(register_for_webinar) && !bean.hasValue(webinar)) {
+          HasValues nextWebinar = GetNextWebinarOp.get(bean.bundle(), WebinarType.loan_officer_recruiting);
+          if (nextWebinar != null) {
+            bean.set(webinar, nextWebinar.id());
+          }
+        }
+
+        if (bean.isChanged(LORecruiting.referred_by)) {
+          if (bean.hasValue(LORecruiting.referred_by)) {
+            Bean referAdmin = new Bundle().find(Admin.TYPE)
+                    .whereEquals(Admin.company_email, bean.get(LORecruiting.referred_by))
+                    .whereEquals(Admin.active, true)
+                    .first();
+            if (referAdmin != null) {
+              if (bean.is(LORecruiting.referred_source, LoanOfficerReferredSource.recruiter)
+                      && (referAdmin.is(Admin.is_recruiter) || referAdmin.is(Admin.is_out_sourcing_recruiter))) {
+                bean.set(LORecruiting.recruiter, referAdmin.keyName());
+              } else if (referAdmin.is(Admin.is_loan_originator)) {
+                LoRecruiterProgramStanding.Outcome credit = LoRecruiterProgramStanding.creditFor(bean, referAdmin);
+                if (credit == LoRecruiterProgramStanding.Outcome.RECRUITER) {
+                  // Approved LO Recruiter Program member without the HR flag, through their own site (server-resolved
+                  // slug stamp + moso-aid standing): stored exactly as an HR-flagged recruiter's lead is.
+                  bean.set(LORecruiting.recruiter, referAdmin.keyName());
+                } else {
+                  bean.set(LORecruiting.referred_lo, referAdmin.keyName());
+                  bean.set(LORecruiting.referred_source, LoanOfficerReferredSource.loan_officer);
+                  if (credit == LoRecruiterProgramStanding.Outcome.UNVERIFIED) {
+                    // The standing lookup failed (not "no"): leave a visible trace so the lead can be reviewed.
+                    bean.add(LORecruiting.lo_labels, LoRecruiterProgramStanding.UNVERIFIED_LABEL);
+                  }
+                }
+              }
+            }
+          } else {
+            bean.remove(LORecruiting.recruiter);
+            bean.remove(LORecruiting.referred_lo);
+          }
+        }
+
+        if (bean.is(referred_source, LoanOfficerReferredSource.recruiter)) {
+          if (bean.hasValue(referred_by)) {
+            java.util.Optional<? extends CanBeStored> foundRecruiter = bean.bundle().find(Admin.TYPE)
+                    .whereEquals(Admin.company_email, bean.get(referred_by))
+                    .whereEquals(Admin.active, true)
+                    .whereEquals(Admin.is_lock, false)
+                    .list().stream()
+                    .filter(admin -> admin.get(Admin.role).isAnyRecruiter()).findFirst();
+            foundRecruiter.ifPresent(canBeStored -> bean.set(recruiter, canBeStored.keyName()));
+          } else if (App.currentUser().get(Admin.role).isAnyRecruiter()) {
+            bean.set(recruiter, App.currentUsername());
+          }
+        } else if (bean.is(referred_source, LoanOfficerReferredSource.loan_officer)
+                && !bean.hasValue(referred_by)
+                && App.currentUser().get(Admin.role).isLoanOriginator()) {
+          bean.set(referred_by, App.currentUser().get(Admin.company_email));
+        }
+
+        Stream.of(added_by_admin, paid_startup_fee, lo_agreement_signed)
+                .forEach(f -> setDefaultValueIfMissing(bean, f, false));
+      }
+
+      Bundle bundle = new Bundle();
+      Bean communicationStatistic = bundle.create(CommunicationStatistic.TYPE);
+      communicationStatistic.save();
+      bean.set(Loan.communication_statistic, communicationStatistic.id());
+      if (checkUserInBlackListOp(bean.toMap(email, phone).set(BlackListUser.originator_nmls, bean.get(nmls)), bundle)) {
+        bean.set(is_blacklisted, true);
+      }
+      if (checkNotEligibleForRehire(bean, bundle)) {
+        bean.add(lo_labels, "Warning: LO is not eligible for rehire");
+      }
+    }
+
+    private <T> void setDefaultValueIfMissing(HasValues bean, Field<T> field, T value) {
+      if (!bean.hasValue(field)) {
+        bean.set(field, value);
+      }
+    }
+
+    @Override
+    public void beforeSave(CanBeStored<?> bean) {
+      Bundle bundle = new Bundle();
+      if (bean.getOldValues().hasValue(recruiting_type)
+              && bean.is(recruiting_type, RecruitingType.interested)) {
+        bean.add(lo_labels, true, "Converted from recruited LO");
+      }
+      if (bean.is(recruiting_type, RecruitingType.recruiting)) {
+        if (bean.isChanged(nmls) && bean.hasValue(nmls) && bean.bundle().find(TYPE).whereEquals(nmls, bean.get(nmls)).exists()) {
+          throw new ErrorMessage("Duplicated NMLS");
+        }
+        if (!(bean.hasValue(started_date) || bean.isNew())) {
+          bean.set(started_date, Dates.dates.getISOStringFromDate(new Date()));
+        }
+      }
+
+      if (!bean.isNew() && (bean.isChanged(email) || bean.isChanged(nmls))) {
+        bean.set(is_blacklisted, false);
+        bean.remove(lo_labels, "Warning: LO is not eligible for rehire");
+        Bundle checkBundle = new Bundle();
+        JSON checkInput = bean.toMap(email, phone).set(BlackListUser.originator_nmls, bean.get(nmls));
+        if (checkUserInBlackListOp(checkInput, checkBundle)) {
+          bean.set(is_blacklisted, true);
+        }
+        if (checkNotEligibleForRehire(bean, checkBundle)) {
+          bean.add(lo_labels, "Warning: LO is not eligible for rehire");
+        }
+      }
+      if (bean.isChanged(stored_social_links)) {
+        bean.set(has_social_media, bean.hasValue(stored_social_links));
+      }
+
+      // agentflow-tdqcv: first acknowledgement wins; the timestamp is legal evidence, so it is never rewritten.
+      // Tamper-proof on every save path (public body, admin, generic SaveOp): an existing stamp is restored, and
+      // once stamped the acknowledgement cannot be withdrawn.
+      Date stampedAt;
+      if (bean.isNew()) {
+        stampedAt = null;
+      } else if (bean.isChanged(mortgage_website_approval_ack_at)) {
+        stampedAt = bean.getOldValues().get(mortgage_website_approval_ack_at);
+      } else {
+        stampedAt = bean.get(mortgage_website_approval_ack_at);
+      }
+      if (stampedAt != null) {
+        bean.set(mortgage_website_approval_ack_at, stampedAt);
+        bean.set(mortgage_website_approval_ack, true);
+      } else if (bean.is(mortgage_website_approval_ack, true)) {
+        bean.set(mortgage_website_approval_ack_at, new Date());
+      } else if (bean.hasValue(mortgage_website_approval_ack_at)) {
+        // Only clear a stamp that truly must go: Bean.remove always marks the field changed, and a stale bean's
+        // save would replay that removal onto a row another bean has just stamped.
+        bean.remove(mortgage_website_approval_ack_at);
+      }
+      // A stored answer can be changed Yes<->No on any save path, but never set back to "never answered".
+      if (!bean.isNew() && bean.isChanged(has_mortgage_website) && bean.get(has_mortgage_website) == null
+              && bean.getOldValues().get(has_mortgage_website) != null) {
+        bean.set(has_mortgage_website, bean.getOldValues().get(has_mortgage_website));
+      }
+
+      if ((bean.isChanged(nmls_status) || bean.isChanged(hr_status) || bean.isChanged(onboarding_meeting_status))
+              && bean.is(nmls_status, NmlsStatus.sponsored)
+              && bean.is(hr_status, HrStatus.completed)
+              && bean.is(onboarding_meeting_status, StatusMeeting.setup_done)) {
+        bean.set(status, WebinarAttendeeStatus.joined);
+      }
+      if (bean.isChanged(hr_status) && bean.is(hr_status, HrStatus.completed) && bean.hasValue(onboarding_specialist)) {
+        sendEmailWhenHrCompleted(bean);
+      }
+
+      if (bean.isChanged(status)) {
+        if (bean.is(status, WebinarAttendeeStatus.interviewed_and_accepted)) {
+          Server.queueService().addTask(EmailTemplateOp.class,
+                  JSON.make(EmailParams.template, "onboarding_interested_loan_officer")
+                          .set("root", bean.key()));
+        }
+
+        if (bean.is(status, WebinarAttendeeStatus.hiatus)) {
+          Date nextMonth = new Date();
+          nextMonth.setMonth(nextMonth.getMonth() + 1);
+          String recipient = bean.hasValue(LORecruiting.onboarding_specialist) ? "$" + LORecruiting.onboarding_specialist.name() : "";
+
+          Server.queueService(QueueType.DEFAULT).addTask(SaveFollowUpOp.class, FieldsBase.create()
+                  .set(ToFollowUp.container, bean.key())
+                  .set(ToFollowUp.recipient_fks, Collections.singletonList(recipient))
+                  .set(ToFollowUp.note, "FU is created automatically by system")
+                  .set(ToFollowUp.send_email, true)
+                  .set(ToFollowUp.send_text, false)
+                  .set(ToFollowUp.system_notification, false)
+                  .set(ToFollowUp.wakeup_date_tz, Dates.dates.getISOStringFromDate(nextMonth)));
+        }
+
+        bean.set(is_actively_recruiting, bean.isIn(LORecruiting.status, WebinarAttendeeStatus.interested, WebinarAttendeeStatus.invited_to_join));
+        bean.set(is_not_onboarded, bean.isIn(LORecruiting.status, WebinarAttendeeStatus.interested, WebinarAttendeeStatus.invited_to_join,
+                WebinarAttendeeStatus.interviewed_and_accepted, WebinarAttendeeStatus.no_response, WebinarAttendeeStatus.interviewed_and_rejected,
+                WebinarAttendeeStatus.denied_by_LO));
+      }
+      if (bean.isChanged(give_nmls_access) && bean.is(give_nmls_access)
+              && (!bean.hasValue(nmls_status) || bean.is(nmls_status, NmlsStatus.no_access_right))) {
+        bean.set(nmls_status, NmlsStatus.access_right_is_given);
+      }
+
+      bean.set(owners_of_lo, Stream.of(loan_officer_assistant, onboarding_specialist, support_specialist, recruiter)
+              .filter(bean::hasValue).map(bean::get).collect(Collectors.toList()));
+
+      if (Server.isEnabledModule("SUBSCRIPTION") && bean.hasValue(LORecruiting.email) && (bean.isChanged(LORecruiting.email) || bean.isChanged(LORecruiting.phone))) {
+        Server.queueService(QueueType.SUBSCRIPTION).addTask(CheckAndUpdateLORecruitingForSubscription.class, JSON.empty().set(LORecruiting.id, bean.id()));
+      }
+
+      if (bean.isChanged(out_source_status)) {
+        bean.set(block_display, bean.isIn(out_source_status, OutSourceStatus.archived_wrong_information, OutSourceStatus.block_display));
+        bean.set(out_source_active, bean.isNot(block_display) && bean.isNot(out_source_status, OutSourceStatus.archived));
+      }
+
+      if (bean.isChanged(google_place_id)) {
+        if (bean.hasValue(google_place_id)) {
+          try {
+            JSON reviews = new FindGoogleReviews().execute(JSON.empty().copyFrom(bean, google_place_id));
+            bean.copyFrom(reviews, total_reviews, avg_rating, google_url);
+          } catch (Exception ex) {
+            Logger.getLogger(LORecruiting.class.getName()).warn("Could not get LORecruiting google place reviews: " + bean.id());
+          }
+        } else {
+          bean.removeAll(total_reviews, avg_rating);
+        }
+      }
+
+
+      if (bean.is(recruiting_type, RecruitingType.interested)) {
+        if (Stream.of(first_name, last_name, email, recruiting_type).anyMatch(bean::isChanged)) {
+          JSON data = JSON.empty().set(Admin.key, bean.key()).set(LORecruiting.full_name, bean.get(LORecruiting.full_name));
+          if (bean.isChanged(LORecruiting.email)) {
+            data.set(LORecruiting.email, bean.get(LORecruiting.email));
+            data.set(HasKey.old_values, bean.getOldValues());
+          }
+          Server.queueService(QueueType.DRIVE).addTask(UpdateAssociateToDoFolderOp.class, data, 3000);
+        }
+        if (bean.isChanged(webinar)) {
+          bean.set(not_registered_webinar, !bean.hasValue(webinar));
+        }
+      }
+
+      if (bean.isChanged(LORecruiting.onboarding_specialist) || bean.isChanged(LORecruiting.recruiter)) {
+        LoanOps.createDefaultFollowUpForLORecruiting(bean);
+      }
+
+      WebinarAttendee.__checkAndUpdateStatus.accept(bean);
+
+      if (bean.isChanged(referred_by)) {
+        if (bean.hasValue(referred_by)) {
+          String name = bean.get(LORecruiter.recruiter_name, "");
+          if (Strings.isEmpty(name)) {
+            Bean admin = bundle.find(Admin.TYPE)
+                    .whereEquals(Admin.company_email, bean.get(referred_by)).first();
+            name = (admin == null) ? bean.get(referred_by) : admin.get(Admin.full_name);
+          }
+          bean.set(LORecruiting.added_by_referrer_label, "Referred by " + name);
+        } else {
+          bean.set(LORecruiting.added_by_referrer_label, "");
+        }
+      }
+
+      if (bean.isChanged(referred_source)) {
+        if (bean.hasValue(referred_source)) {
+          bean.set(referred_section, bean.get(referred_source).section());
+        }
+        if (bean.isNot(referred_section, LoanOfficerReferredSection.other)) {
+          bean.remove(referred_source_other_reason);
+        }
+        if (bean.isNot(referred_source, LoanOfficerReferredSource.loan_officer)) {
+          bean.remove(LORecruiting.join_lf_recruiter_group);
+        }
+        if (!bean.isIn(referred_source, LoanOfficerReferredSource.outside_loan_officer, LoanOfficerReferredSource.others)) {
+          bean.remove(referrer_have_zelle_account);
+          bean.remove(is_zelle_info_same_as_contact_info);
+          bean.remove(zelle_the_referrer_bonus);
+          bean.remove(referral_zelle_info);
+          bean.remove(referral_preferred_payment_method);
+        }
+      }
+
+      bean.set(on_boarding_meeting_completed_but_hr_not_initiated, bean.is(onboarding_meeting_status, StatusMeeting.pre_onboarding_done) && bean.hasValue(hr_status) && bean.is(hr_status, HrStatus.not_initiated));
+      if (bean.hasValue(paid_startup_fee) && bean.hasValue(lo_agreement_signed)) {
+        bean.set(paid_but_not_signed, bean.is(paid_startup_fee) && bean.isNot(lo_agreement_signed));
+      }
+      if (bean.hasValue(nmls_status) && bean.hasValue(hr_status)) {
+        bean.set(nmls_sponsored_but_hr_onboarding, bean.is(nmls_status, NmlsStatus.sponsored) && bean.is(hr_status, HrStatus.in_progress));
+        bean.set(hr_completed_but_nmls_not_sponsored, bean.isIn(nmls_status, NmlsStatus.no_access_right, NmlsStatus.access_right_is_given, NmlsStatus.applied_for_sponsorship, NmlsStatus.active_license_items) && bean.is(hr_status, HrStatus.completed));
+      }
+
+      updateSponorDuration(bean);
+
+      if (bean.isChanged(paypal_order_id) && bean.hasValue(paypal_order_id)
+              && bean.isIn(status, WebinarAttendeeStatus.no_response, WebinarAttendeeStatus.interviewed_and_rejected,
+              WebinarAttendeeStatus.denied_by_LO)) {
+        AutoEscalationDesk.createAutoEscalationTicket(bean, AutoEscalationDesk.ILO_ARCHIVED_BUT_STARTUP_PAYMENT_PROCESSED);
+      }
+
+      if ((bean.isChanged(paid_startup_fee) && bean.is(paid_startup_fee))
+              || (bean.isChanged(lo_agreement_signed) && bean.is(lo_agreement_signed))
+              || (bean.isChanged(nmls_status) && bean.is(nmls_status, NmlsStatus.access_right_is_given))) {
+        bean.set(LORecruiting.status, WebinarAttendeeStatus.interviewed_and_accepted);
+      }
+
+      if (bean.isChanged(LORecruiting.is_loan_referral)) {
+        if (bean.is(LORecruiting.is_loan_referral)) {
+          bean.add(lo_search_labels, true, LORecruiting.is_loan_referral.label());
+        } else {
+          bean.remove(lo_search_labels, LORecruiting.is_loan_referral.label());
+        }
+      }
+
+      if (App.currentUser() == null && bean.is(recruiting_type, RecruitingType.interested) && bean.hasValue(recruiter)
+              && bean.is(status, WebinarAttendeeStatus.no_response) && hasProfileChanges(bean)) {
+        Server.queueService().addTask(EmailTemplateOp.class,
+                JSON.make(EmailParams.template, "ilo_return").set("root", bean.key()));
+      }
+    }
+
+    private boolean hasProfileChanges(CanBeStored<?> bean) {
+      HasValues oldValues = bean.getOldValues();
+      return Stream.of(
+              first_name, last_name, alias_first_name, email, phone,
+              street, city, zip, state, county_name, mailing_street, mailing_city, mailing_zip, mailing_state,
+              nmls, brokerage, confirm_sponsorship, is_corporate_loan_officer, target_compensation, rocket_target_compensation,
+              have_social_links, citizenship,
+              referred_by, referrer_name, referrer_phone, referrer_have_zelle_account,
+              zelle_the_referrer_bonus, referral_zelle_info, referral_preferred_payment_method
+      ).anyMatch(bean::isChanged)
+              || isListFieldChanged(bean, oldValues, states)
+              || isListFieldChanged(bean, oldValues, sponsor_states)
+              || isListFieldChanged(bean, oldValues, preferred_languages)
+              || isListFieldChanged(bean, oldValues, stored_social_links);
+    }
+
+    private boolean isListFieldChanged(CanBeStored<?> bean, HasValues oldValues, Field<?> field) {
+      if (!bean.isChanged(field)) {
+        return false;
+      }
+      List<?> newList = bean.get(field) instanceof List ? (List<?>) bean.get(field) : null;
+      List<?> oldList = oldValues.get(field) instanceof List ? (List<?>) oldValues.get(field) : null;
+      if (Colls.isEmpty(newList) && Colls.isEmpty(oldList)) {
+        return false;
+      }
+      return !Objects.equals(newList, oldList);
+    }
+
+    @Override
+    public void afterCreated(CanBeStored<?> bean) {
+      //Add Recruited loan officers to the LO newsletter subscriptions
+      if (bean.is(recruiting_type, RecruitingType.recruiting)) {
+        Server.queueService(QueueType.SUBSCRIPTION).addTask(AddLORecruitingToSubscriptionOp.class, JSON.empty().copyFrom(bean, Contact.first_name, Contact.last_name, Contact.phone, Contact.email));
+      }
+
+      Server.queueService().addTask(ILOAutomaticAssignOwnerOp.class, JSON.empty().set(LORecruiting.key, bean.key()));
+    }
+
+    @Override
+    public void afterSave(CanBeStored<?> bean) {
+      ensureIloESignDocumentsForOfficer(bean);
+      sendUpdateNotificationEmailToLOA(bean, lo_agreement_signed);
+      sendUpdateNotificationEmailToLOA(bean, paid_startup_fee);
+      notifyReffererAboutStatus(bean);
+      emailReferrerWhenILOAttend(bean);
+
+      updateSummaryStatistic(bean);
+
+      if (Stream.of(recruiting_type, block_display, pending_approval).anyMatch(bean::isChanged)) {
+        Server.cache().delete(Admin.LOAN_OFFICERS_TOTAL_CACHE);
+      }
+
+      if (bean.is(waive_startup_fee) && bean.isChanged(waive_startup_fee_reason)) {
+        Server.queueService().addTask(SaveGenericNoteOp.class, JSON.empty()
+                .set(Note.container, bean.key())
+                .set(Note.content, "Reason to waive start up fee: " + bean.get(waive_startup_fee_reason)));
+      }
+
+      if (bean.isChanged(referred_by) && bean.getOldValues().hasValue(referred_by)) {
+        String oldReferredBy = bean.getOldValues().get(referred_by);
+        Server.queueService(QueueType.ADMIN).addTask(EnsureLORecruiterOp.class, JSON.empty().copyFrom(bean.toMap())
+                .set("old_referred_by", oldReferredBy, StringType.instance())
+                .set(HasKey.key, bean.key())
+        );
+      }
+      if (Stream.of(recruiting_type, active, referred_by).anyMatch(bean::isChanged)) {
+        List<String> referredByEmails = Stream.of(bean, bean.getOldValues())
+                .map(referred_by).filter(Strings::isNotEmpty)
+                .collect(Collectors.toList());
+        Server.queueService().addTask(UpdateReferralLoanOfficerReport.class, JSON.empty().set(Admin.company_email.s(), referredByEmails));
+      }
+
+      if (bean.isChanged(webinar) && bean.hasValue(webinar)) {
+        Bundle bundle = new Bundle();
+        Bean joinedWebinar = bundle.get(Webinar.TYPE, bean.get(webinar));
+        joinedWebinar.add(Webinar.guests, true, bean.get(email));
+        joinedWebinar.save();
+      }
+
+      if (bean.is(recruiting_type, RecruitingType.interested) &&
+              bean.isChanged(status) &&
+              bean.is(status, WebinarAttendeeStatus.joined)) {
+        Bundle bundle = new Bundle();
+        Bean adminConvertFromILO = bundle.find(Admin.TYPE).whereEquals(Admin.converted_from_ilo, bean.key()).first();
+        if (adminConvertFromILO != null) {
+          adminConvertFromILO.set(Admin.is_pending_loan_officer, false);
+          adminConvertFromILO.save();
+          sendEmailWhenILOJoinedCompany(adminConvertFromILO);
+        }
+      }
+
+      if (bean.isChanged(paid_startup_fee) && bean.is(paid_startup_fee)) {
+        Server.queueService(QueueType.EMAIL).addTask(EmailTemplateOp.class,
+                JSON.make(EmailParams.template, "email/paid_startup_fee_by_ilo").set("root", bean.key()));
+        Server.queueService(QueueType.EMAIL).addTask(EmailTemplateOp.class,
+                JSON.make(EmailParams.template, "email/paid_startup_fee_successfully").set("root", bean.key()));
+      }
+
+      if (bean.isChanged(onboarding_meeting_status) && bean.is(onboarding_meeting_status, StatusMeeting.pre_onboarding_done)) {
+        if (LOAN_FACTORY.equals(App.ns())) {
+          // agentflow-7mwf0: a RECRUIT_V2 row gets this same e-mail; it is the "complete your registration"
+          // mail of Option C, and its register-page link lands an incomplete profile on its first step.
+          Server.queueService(QueueType.EMAIL).addTask(EmailTemplateOp.class,
+                  JSON.make(EmailParams.template, "pre_onboarding_done").set("root", bean));
+        }
+      }
+      sendBackgroundCheckEmailToILO(bean);
+      createEscalationDeskTicket(bean);
+      if (LOAN_FACTORY.equals(App.ns())) {
+        Server.queueService(QueueType.DEFAULT).addTask(SyncStatusModex.class, JSON.empty());
+      }
+    }
+
+    private void sendBackgroundCheckEmailToILO(CanBeStored<?> bean) {
+      if (!LOAN_FACTORY.equals(App.ns())) {
+        return;
+      }
+      boolean triggerFieldChanged = Stream.of(status, paid_startup_fee, lo_agreement_signed, sponsor_states)
+              .anyMatch(bean::isChanged);
+      boolean conditionsMet = bean.is(status, WebinarAttendeeStatus.interviewed_and_accepted)
+              && bean.is(paid_startup_fee)
+              && bean.is(lo_agreement_signed)
+              && bean.hasValue(sponsor_states)
+              && bean.get(sponsor_states).stream().anyMatch(BACKGROUND_CHECK_SPONSOR_STATES::contains);
+      if (triggerFieldChanged && conditionsMet) {
+        Server.queueService(QueueType.EMAIL).addTask(EmailTemplateOp.class,
+                JSON.make(EmailParams.template, "ILO_completes_background_check").set("root", bean.key()));
+      }
+    }
+
+    private boolean hasRefferEmail(CanBeStored bean) {
+      return bean.hasValue(LORecruiting.referred_by) &&
+              bean.isIn(LORecruiting.referred_source,
+                      LoanOfficerReferredSource.recruiter,
+                      LoanOfficerReferredSource.loan_officer,
+                      LoanOfficerReferredSource.others);
+    }
+
+    private void updateSponorDuration(CanBeStored bean) {
+      if (bean.is(recruiting_type, RecruitingType.interested)) {
+        if (bean.isChanged(nmls_status)) {
+          if (bean.is(nmls_status, NmlsStatus.access_right_is_given)) {
+            bean.set(temporary_nmls_sponsor_first_day, new Date());
+          }
+          if (bean.is(nmls_status, NmlsStatus.sponsored) && bean.hasValue(temporary_nmls_sponsor_first_day)) {
+            bean.set(nmls_sponsor_first_day, bean.get(temporary_nmls_sponsor_first_day));
+            bean.set(nmls_sponsor_last_day, new Date());
+            bean.set(temporary_nmls_sponsor_first_day, null);
+          }
+        }
+
+        if (bean.hasValue(sponsor_states)
+                && bean.get(sponsor_states).size() == 1
+                && bean.hasValue(nmls_sponsor_first_day)
+                && bean.hasValue(nmls_sponsor_last_day)) {
+          bean.set(sponsor_state, bean.get(sponsor_states).get(0));
+        } else {
+          bean.set(sponsor_state, null);
+        }
+      }
+    }
+
+    private void updateSummaryStatistic(CanBeStored<?> bean) {
+      if (bean.is(recruiting_type, RecruitingType.interested)
+              ? INTERESTED_SUMMARY_STATISTIC_WATCH_FIELD.stream().anyMatch(bean::isChanged)
+              : bean.isChanged(recruiting_type)) {
+        Server.queueService(QueueType.DEFAULT).addTask(UpdateInterestedLoanOfficerStatisticOp.class,
+                StatisticUtils.oldValuesFromBean(bean, INTERESTED_SUMMARY_STATISTIC_WATCH_FIELD));
+      }
+    }
+
+    /**
+     * The ONE dispatch point for {@link EnsureSigningSessionsRegisterInterestedLoanOfficer} off an
+     * ILO save (agentflow-qo5my review). A legal-name correction that needs the envelope
+     * regenerated is folded into THIS payload — {@code force_regenerate=true} — rather than a
+     * second, separate queue add: two queue adds off the same save race each other against the
+     * same envelope (two Inkless emails, or an orphaned envelope), whichever queue worker happens
+     * to run first.
+     *
+     * <p>Widened on purpose: the original condition only fired on {@code onboarding_meeting_status}
+     * or {@code onboarding_specialist} changing. A legal name corrected AFTER the meeting (both of
+     * those already settled, unchanged by this save) still needs to reach this method, or a stale
+     * envelope from before the correction would never be caught.</p>
+     */
+    private void ensureIloESignDocumentsForOfficer(CanBeStored<?> officer) {
+      boolean meetingOrSpecialistChanged =
+              officer.isChanged(onboarding_meeting_status) || officer.isChanged(onboarding_specialist);
+      // agentflow-7mwf0: ONLY a row stamped RECRUIT_V2 widens what counts as an input change; for every
+      // other row this stays false and the method is the legacy one, line for line.
+      boolean recruitV2 = isRecruitV2(officer);
+      // agentflow-gglqk: for a V2 row, a form that re-posts "" where the row holds nothing is not a new
+      // legal name. The legacy row keeps the plain isChanged it always had.
+      boolean legalNameChanged = recruitV2
+              ? changedIgnoringBlank(officer, legal_given_name) || changedIgnoringBlank(officer, legal_last_name)
+              : officer.isChanged(legal_given_name) || officer.isChanged(legal_last_name);
+      boolean otherInputsChanged = recruitV2 && agreementInputsChanged(officer);
+      // agentflow-gglqk: the keyless email-dedupe submit completes the profile and redirects without ever
+      // calling registerSigningAgreement, so for a V2 row the completion itself must ask for the build.
+      boolean profileJustCompleted = recruitV2 && profileJustCompleted(officer);
+      if (!(meetingOrSpecialistChanged || legalNameChanged || otherInputsChanged || profileJustCompleted)
+              || !officer.hasValue(onboarding_specialist)
+              || !officer.is(onboarding_meeting_status, StatusMeeting.pre_onboarding_done)) {
+        return;
+      }
+      if (recruitV2 && !officer.is(completed_detail_form)) {
+        // No profile yet, so the envelope would be built from an empty row: wrong documents or blanks, and
+        // a billable Inkless envelope (staging uses the production account). The first profile submit,
+        // registerSigningAgreement, builds it fresh.
+        Logger.getLogger(LORecruiting.class.getName()).info(
+                "Skipping the e-sign build for " + officer.key() + ": RECRUIT_V2 row, profile not completed yet");
+        return;
+      }
+      try {
+        // This path only generates the e-sign documents. The op emails only when
+        // EmailParams.template is present, and that email is the admin re-generate action's job.
+        JSON payload = officer.toMap();
+        boolean inputsChanged = legalNameChanged || otherInputsChanged;
+        boolean envelopeOnFile = (inputsChanged || profileJustCompleted) && hasUnsignedInklessEnvelope(officer.key());
+        boolean forceRegenerate = inputsChanged && envelopeOnFile;
+        if (!(meetingOrSpecialistChanged || legalNameChanged) && !forceRegenerate) {
+          // Only a V2 trigger is left (a profile edit or the profile's completion) and there is no
+          // envelope to rebuild. Legacy rows never get here: their only triggers are the two above.
+          if (profileJustCompleted && !envelopeOnFile) {
+            queueProfileCompletedBuild(officer.key());
+          }
+          return;
+        }
+        if (forceRegenerate) {
+          payload.set("force_regenerate", true, BooleanType.instance());
+        }
+        Server.queueService(QueueType.DEFAULT).addTask(EnsureSigningSessionsRegisterInterestedLoanOfficer.class, payload);
+      } catch (Exception ex) {
+        // Best-effort, and this runs INSIDE the same save as the meeting/specialist/legal-name
+        // write (agentflow-qo5my review): a failure here — the envelope-lookup query, a queue
+        // outage — must never escape afterSave and turn an already-committed write into a
+        // caller-visible failure (RecruitAPI.onboardingMeeting's handle() wrapper would otherwise
+        // report {"updated":false,"error":...} for a row that was, in fact, written). No PII in
+        // the log: officer.key() only, never the name itself.
+        Logger.getLogger(LORecruiting.class.getName()).warn(
+                "Could not queue EnsureSigningSessionsRegisterInterestedLoanOfficer for " + officer.key(), ex);
+      }
+    }
+
+    /**
+     * What the agreement PDF and its document selection are filled from, other than the legal name:
+     * NMLS, the address parts {@code full_address} joins, and the classification inputs of
+     * {@code EnsureSigningSessionsRegisterInterestedLoanOfficer.computeRequiredDocs} (W-2/1099, CA
+     * sponsorship and DRE endorsement, licensed states). Only consulted for {@link #isRecruitV2} rows.
+     */
+    private boolean agreementInputsChanged(CanBeStored<?> officer) {
+      // agentflow-gglqk: compared by VALUE, so an identical step-0 resubmit is not a change: the state
+      // lists as sets (the form may post them in another order), "" the same as absent (street2 etc.).
+      return Stream.of(nmls, street, street2, city, state, zip, is_corporate_loan_officer, has_dre_endorsed)
+              .anyMatch(field -> changedIgnoringBlank(officer, field))
+              || isListFieldChangedAsSet(officer, states)
+              || isListFieldChangedAsSet(officer, sponsor_states);
+    }
+
+    /** {@code isChanged}, except that "" (or whitespace) and absent count as the same value. */
+    private boolean changedIgnoringBlank(CanBeStored<?> officer, Field<?> field) {
+      if (!officer.isChanged(field)) {
+        return false;
+      }
+      return !Objects.equals(blankToNull(officer.get(field)), blankToNull(officer.getOldValues().get(field)));
+    }
+
+    private static Object blankToNull(Object value) {
+      return value instanceof String && ((String) value).trim().isEmpty() ? null : value;
+    }
+
+    /**
+     * Whether a list field changed as a SET: order and duplicates do not count, and null equals empty.
+     * Only for the V2 rebuild inputs; {@link #isListFieldChanged} keeps its ordered compare for the
+     * legacy callers ({@code hasProfileChanges}).
+     */
+    private boolean isListFieldChangedAsSet(CanBeStored<?> officer, Field<?> field) {
+      if (!officer.isChanged(field)) {
+        return false;
+      }
+      return !asSet(officer.get(field)).equals(asSet(officer.getOldValues().get(field)));
+    }
+
+    private static Set<Object> asSet(Object value) {
+      return value instanceof List ? new java.util.HashSet<>((List<?>) value) : Collections.emptySet();
+    }
+
+    /** {@code completed_detail_form} went from false or absent to true in this save. */
+    private boolean profileJustCompleted(CanBeStored<?> officer) {
+      return officer.isChanged(completed_detail_form) && officer.is(completed_detail_form)
+              && !Boolean.TRUE.equals(officer.getOldValues().get(completed_detail_form));
+    }
+
+    /**
+     * Queues the fresh envelope build for a V2 profile that was just completed (agentflow-gglqk). The
+     * same unforced op call registerSigningAgreement makes, deferred by
+     * {@link #PROFILE_COMPLETED_BUILD_DELAY_MILLIS}: on the KEYED submit, lf-homepage calls
+     * registerSigningAgreement in the same sitting and builds first, and this task then finds that
+     * envelope and reuses it (REUSE, no second envelope). On the keyless dedupe submit nothing else
+     * builds, and this task does.
+     */
+    private void queueProfileCompletedBuild(String officerKey) {
+      Server.queueService(QueueType.DEFAULT).addTask(EnsureSigningSessionsRegisterInterestedLoanOfficer.class,
+              JSON.empty().key(officerKey), PROFILE_COMPLETED_BUILD_DELAY_MILLIS);
+      Logger.getLogger(LORecruiting.class.getName()).info(
+              "Queued the e-sign build for " + officerKey + ": RECRUIT_V2 profile completed");
+    }
+
+    /**
+     * Whether {@code candidateKey} already has an Inkless envelope pending signature: a not-done
+     * {@code SigningSession} carrying a non-empty {@code inkless_signing_id}. Mirrors the {@code
+     * pendingEnvelopeIds} computation in {@link
+     * EnsureSigningSessionsRegisterInterestedLoanOfficer#evaluateEnvelope} — a session that was
+     * created but never actually sent (no id yet) does not count as "an envelope to regenerate".
+     */
+    private boolean hasUnsignedInklessEnvelope(String candidateKey) {
+      return new Bundle().find(SigningSession.TYPE)
+              .whereEquals(SigningSession.container, candidateKey)
+              .whereEquals(SigningSession.use_inkless, true)
+              .whereEquals(SigningSession.done, false)
+              .list()
+              .stream()
+              .anyMatch(session -> Strings.isNotEmpty(session.get(SigningSession.inkless_signing_id)));
+    }
+
+    private void sendUpdateNotificationEmailToLOA(CanBeStored<?> officer, Field<Boolean> updateInfo) {
+      if (officer.isChanged(updateInfo) && officer.is(updateInfo)) {
+        String loaEmail = officer.get(LORecruiting.loan_officer_assistant.dot(Admin.company_email));
+        String action = lo_agreement_signed.equals(updateInfo) ? "signed agreement" : updateInfo.label();
+        if (Strings.isNotEmpty(loaEmail)) {
+          String content = "Hi " + officer.get(LORecruiting.loan_officer_assistant.dot(Admin.first_name))
+                  + "<br>Loan Officer " + officer.get(LORecruiting.full_name) + " has " + action;
+          Server.queueService(QueueType.EMAIL).addTask(EmailTemplateOp.class, JSON.make(EmailParams.template, "action")
+                  .set(Template.labels, Arrays.asList("email", officer.key()))
+                  .set("title", "Loan Officer " + officer.get(LORecruiting.full_name) + " has " + action)
+                  .set("body", content)
+                  .set("action", coreMessages.view())
+                  .set("url", Server.baseUrl() + "/lo_recruiting?_e=" + officer.key())
+                  .set("to", Collections.singletonList(loaEmail)));
+        }
+      }
+    }
+
+    private void notifyReffererAboutStatus(CanBeStored<?> bean) {
+      if (bean.isChanged(active) && bean.isNot(active) && hasRefferEmail(bean)) {
+        List<String> cc = new ArrayList<>();
+        HasValues recruiter = bean.load(LORecruiting.recruiter);
+        if (bean.hasValue(onboarding_specialist)) {
+          cc.add(bean.get(onboarding_specialist.dot(Admin.company_email)));
+        }
+        if (bean.isIn(status, WebinarAttendeeStatus.no_response, WebinarAttendeeStatus.denied_by_LO, WebinarAttendeeStatus.interviewed_and_rejected) &&
+                bean.isIn(hr_status, HrStatus.in_progress, HrStatus.completed)) {
+          cc.add(Server.getCompany().get(Company.hr_dept_email, ""));
+          cc.add(Server.getCompany().get(Company.licensing_dept_email, ""));
+        }
+        String status = bean.hasValue(LORecruiting.status) ? String.valueOf(bean.get(LORecruiting.status)) : null;
+        String nmlsStatus = bean.hasValue(LORecruiting.nmls_status) ? String.valueOf(bean.get(LORecruiting.nmls_status)) : null;
+        Server.queueService(QueueType.EMAIL).addTask(EmailTemplateOp.class,
+                JSON.make(EmailParams.template, "email/notify_referrer_ILOstatus")
+                        .set("ilo", bean)
+                        .set("cc", cc)
+                        .set("recruiter", recruiter)
+                        .set("status", status)
+                        .set("nmlsStatus", nmlsStatus)
+                        .set("iloOnboardingSpecialist", bean.load(onboarding_specialist)));
+      }
+    }
+
+    private Boolean checkUserInBlackListOp(JSON input, Bundle bundle) {
+      boolean checkExist;
+
+      checkExist = checkIfExists(input, BlackListUser.email, bundle);
+      checkExist = checkExist || checkIfExists(input, BlackListUser.phone, bundle);
+      checkExist = checkExist || checkIfExists(input, BlackListUser.originator_nmls, bundle);
+
+      return checkExist;
+    }
+
+    private boolean checkIfExists(JSON input, Field<String> inputField, Bundle bundle) {
+      if (input.hasValue(inputField)) {
+        return bundle.find(BlackListUser.TYPE)
+                .whereEquals(inputField, input.get(inputField)).exists();
+      }
+      return false;
+    }
+
+    private boolean checkNotEligibleForRehire(HasValues bean, Bundle bundle) {
+      String emailVal = bean.get(email, "");
+      String nmlsVal = bean.get(nmls, "");
+      if (!emailVal.isEmpty()) {
+        if (bundle.find(Admin.TYPE)
+                .whereEquals(Admin.email, emailVal)
+                .whereEquals(Admin.not_eligible_for_rehire, true).exists()) {
+          return true;
+        }
+      }
+      if (!nmlsVal.isEmpty()) {
+        if (bundle.find(Admin.TYPE)
+                .whereEquals(Admin.originator_nmls, nmlsVal)
+                .whereEquals(Admin.not_eligible_for_rehire, true).exists()) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    private void emailReferrerWhenILOAttend(CanBeStored<?> bean) {
+      Bundle bundle = new Bundle();
+      if (bean.hasValue(referrer) && bean.is(refer_loan_officer_email_me)) {
+        HasValues recruiter = bundle.get(LORecruiter.TYPE, bean.get(referrer));
+        if (bean.isChanged(is_attended) && bean.is(is_attended) && bean.hasValue(webinar)) {
+          HasValues webinar = bundle.get(Webinar.TYPE, bean.get(LORecruiting.webinar));
+          if (webinar != null && bean.hasValue(onboarding_specialist)) {
+            String webinarTitle = webinar.get(Webinar.title);
+            Server.queueService(QueueType.EMAIL).addTask(EmailTemplateOp.class,
+                    JSON.make(EmailParams.template, "email_referrer_when_ILO_attend_webinar")
+                            .set("root", bean.key())
+                            .set("webinar_title", webinarTitle)
+                            .set("date_of_webinar", Dates.dates.convertDateStringToFormat(webinar.get(Webinar.time), "MM-dd-yyyy h:mm a"))
+                            .set("from", bean.get(onboarding_specialist.dot(Admin.company_email)))
+                            .set("to", Collections.singletonList(bean.get(LORecruiting.referrer)))
+                            .set("recruiter", recruiter));
+          }
+        }
+        if (bean.isChanged(status) && bean.is(status, WebinarAttendeeStatus.joined)) {
+          boolean referrerIsLO = recruiter.is(LORecruiter.is_internal_loan_officers);
+          Server.queueService(QueueType.EMAIL).addTask(EmailTemplateOp.class,
+                  JSON.make(EmailParams.template, "email_referrer_when_ILO_onboarded")
+                          .set("to", Collections.singletonList(bean.get(LORecruiting.referrer)))
+                          .set("referrer_is_lo", referrerIsLO)
+                          .set("root", bean.key())
+                          .set("recruiter", recruiter));
+        }
+
+      }
+
+    }
+
+    private void sendEmailWhenHrCompleted(CanBeStored<?> bean) {
+      Server.queueService(QueueType.EMAIL).addTask(EmailTemplateOp.class,
+              JSON.make(EmailParams.template, "hr_status_changed_to_completed")
+                      .set("root", bean.key())
+                      .set("to", Collections.singletonList(bean.get(LORecruiting.onboarding_specialist.dot(Admin.company_email))))
+                      .set("from", App.currentUser().get(Admin.company_email))
+                      .set("onboarding_specialist_full_name", bean.get(LORecruiting.onboarding_specialist.dot(Admin.full_name)))
+                      .set("url", Server.baseUrl() + "/lo_recruiting/company?labels=" + bean.get(LORecruiting.email))
+      );
+    }
+
+    private void sendEmailWhenILOJoinedCompany(Bean adminConvertFromILO) {
+      if (LOAN_FACTORY.equals(App.ns())) {
+        Server.queueService(QueueType.EMAIL).addTask(EmailTemplateOp.class, JSON.make(EmailParams.template, "email/lender_credential_guide")
+                .set("root", adminConvertFromILO.key()));
+      }
+    }
+
+    private void createEscalationDeskTicket(CanBeStored<?> bean) {
+      List<String> autoEscalationTickets = new ArrayList<>();
+
+      if (bean.isChanged(onboarding_meeting_status) && bean.is(onboarding_meeting_status, StatusMeeting.pre_onboarding_done) && bean.is(LORecruiting.recruiting_type, RecruitingType.interested)
+              && bean.is(LORecruiting.status, WebinarAttendeeStatus.interviewed_and_accepted) && bean.is(LORecruiting.hr_status, HrStatus.completed)) {
+        autoEscalationTickets.add(AutoEscalationDesk.ILO_IS_PRE_ONBOARDING_DONE_AND_IS_HR_COMPLETED_AND_IS_ONBOARDING);
+      }
+
+      boolean isAccepted = bean.is(status, WebinarAttendeeStatus.interviewed_and_accepted);
+      boolean isPreMeetingDone = bean.is(onboarding_meeting_status, StatusMeeting.pre_onboarding_done);
+      if (changedAny(bean, status, paid_startup_fee)
+              && isAccepted
+              && bean.is(paid_startup_fee)) {
+        autoEscalationTickets.add(AutoEscalationDesk.ILO_ONBOARDING_STATUS_ONBOARDING_FEE_PAID);
+      }
+
+      if (changedAny(bean, onboarding_meeting_status, paid_startup_fee, waive_startup_fee, lo_agreement_signed, status, hr_status)
+              && isPreMeetingDone
+              && (bean.is(paid_startup_fee) || bean.is(waive_startup_fee))
+              && bean.is(lo_agreement_signed)
+              && isAccepted
+              && bean.is(hr_status, HrStatus.in_progress)) {
+        autoEscalationTickets.add(AutoEscalationDesk.ILO_PRE_MEETING_FEE_SIGNED);
+      }
+
+      if (changedAny(bean, onboarding_meeting_status, paid_startup_fee, waive_startup_fee, lo_agreement_signed, status, recruiting_license_status, hr_status)
+              && isPreMeetingDone
+              && (bean.is(paid_startup_fee) || bean.is(waive_startup_fee))
+              && bean.is(lo_agreement_signed)
+              && isAccepted
+              && bean.is(recruiting_license_status, RecruitingLicenseStatus.nmls_licensed)
+              && bean.is(hr_status, HrStatus.not_initiated)) {
+        autoEscalationTickets.add(AutoEscalationDesk.ILO_CREATED_US_BRANCH_CONTRACTOR);
+      }
+
+      if (changedAny(bean, status, nmls_status, hr_status)
+              && isAccepted
+              && bean.is(nmls_status, NmlsStatus.sponsored)
+              && bean.is(hr_status, HrStatus.in_progress)) {
+        autoEscalationTickets.add(AutoEscalationDesk.ILO_ONBOARDING_SPONSORED_HR);
+      }
+
+      if (changedAny(bean, onboarding_meeting_status, hr_status)
+              && isPreMeetingDone
+              && bean.is(hr_status, HrStatus.completed)) {
+        autoEscalationTickets.add(AutoEscalationDesk.ILO_PRE_MEETING_HR_DONE);
+      }
+
+      if (changedAny(bean, hr_status, nmls_status, status)
+              && bean.is(hr_status, HrStatus.completed)
+              && bean.is(nmls_status, NmlsStatus.sponsored)
+              && bean.is(status, WebinarAttendeeStatus.joined)) {
+        autoEscalationTickets.add(AutoEscalationDesk.ILO_HR_DONE_NMLS_SPONSORED);
+        autoEscalationTickets.add(AutoEscalationDesk.ILO_AGREEMENT_SIGNED_ALL_DONE);
+      }
+
+      if (changedAny(bean, status, nmls_status) && bean.isIn(status, WebinarAttendeeStatus.joined, WebinarAttendeeStatus.interviewed_and_accepted)
+              && bean.is(nmls_status, NmlsStatus.access_removal)) {
+        autoEscalationTickets.add(AutoEscalationDesk.ILO_NMLS_ACCESS_REMOVAL);
+      }
+
+      if (changedAny(bean, paid_startup_fee, waive_startup_fee, lo_agreement_signed, recruiting_license_status)
+              && bean.is(recruiting_license_status, RecruitingLicenseStatus.nmls_na)
+              && (bean.is(paid_startup_fee) || bean.is(waive_startup_fee)) && bean.is(lo_agreement_signed)) {
+        autoEscalationTickets.add(AutoEscalationDesk.ILO_NMLS_STATUS_NA);
+      }
+
+      if (bean.isChanged(status) && bean.is(status, WebinarAttendeeStatus.interviewed_and_accepted)) {
+        autoEscalationTickets.add(AutoEscalationDesk.NEW_ASSOCIATE_CREATED_US_BRANCH_CONTRACTOR);
+      }
+
+      // Ticket: ILO Status is No Response AND HR status is Pending BGC or HR Onboarding or HR Completed
+      if (changedAny(bean, status, hr_status)
+              && bean.is(status, WebinarAttendeeStatus.no_response)
+              && bean.isIn(hr_status, HrStatus.pending_bgc_or_az_docs, HrStatus.in_progress, HrStatus.completed)) {
+        autoEscalationTickets.add(AutoEscalationDesk.ILO_STATUS_NO_RESPONSE_HR_PENDING_OR_ONBOARDING_OR_COMPLETED);
+      }
+
+      if (changedAny(bean, status, hr_status)
+              && bean.isIn(status, WebinarAttendeeStatus.denied_by_LO, WebinarAttendeeStatus.interviewed_and_rejected)
+              && bean.isIn(hr_status, HrStatus.in_progress, HrStatus.completed)) {
+        Bundle bundle = new Bundle();
+        Bean adminConvertFromILO = bundle.find(Admin.TYPE).whereEquals(Admin.converted_from_ilo, bean.key()).first();
+        if (adminConvertFromILO != null && adminConvertFromILO.is(Admin.active)) {
+          AutoEscalationDesk.createAutoEscalationTicket(adminConvertFromILO, AutoEscalationDesk.ACTIVE_LO_HAS_ILO_DENIED);
+        }
+      }
+
+      if (changedAny(bean, status, hr_status)
+              && bean.is(status, WebinarAttendeeStatus.interviewed_and_accepted)
+              && bean.is(hr_status, HrStatus.done_bgc_or_az_docs)) {
+        autoEscalationTickets.add(AutoEscalationDesk.ILO_ONBOARDING_HR_DONE_BGC_AZ_DOCS);
+      }
+
+      if (!autoEscalationTickets.isEmpty()) {
+        Server.queueService().addTask(CreateAutoEscalationTicketsOp.class, FieldsBase.create()
+                .set(AutoEscalationDesk.keyName.s(), autoEscalationTickets)
+                .set(Loan.key, bean.key()));
+      }
+    }
+
+    private boolean changedAny(CanBeStored<?> b, Field<?>... fields) {
+      return Arrays.stream(fields).anyMatch(b::isChanged);
+    }
+
+  });
+}

@@ -1,0 +1,465 @@
+- generic [active] [ref=f4e1]:
+  - generic [ref=f4e7]:
+    - generic [ref=f4e8]:
+      - generic [ref=f4e9]:
+        - button "Sidebar collapse button" [ref=f4e10] [cursor=pointer]
+        - link [ref=f4e448] [cursor=pointer]:
+          - /url: "#"
+          - text: "SWAT:"
+          - link "Vinh Nguyen is SWAT officer. Please contact him for urgent problem" [ref=f4e449]:
+            - /url: "javascript:"
+          - text: "Parser:"
+          - link "Quyen Anh Vo is monitoring the parser today. Please contact him for problem with parser" [ref=f4e451]:
+            - /url: "javascript:"
+      - list [ref=f4e15]:
+        - listitem [ref=f4e16]:
+          - link "Search" [ref=f4e17] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=f4e69]: search
+        - listitem [ref=f4e18]:
+          - link "Builds" [ref=f4e19] [cursor=pointer]:
+            - /url: "##builds"
+        - listitem [ref=f4e20]:
+          - link "add" [ref=f4e70] [cursor=pointer]:
+            - /url: "##create_small_task"
+        - listitem [ref=f4e22]:
+          - link "Message" [ref=f4e23] [cursor=pointer]:
+            - /url: javascript:;
+            - generic [ref=f4e72]: notifications
+          - text: 
+        - listitem [ref=f4e24]:
+          - link [ref=f4e25] [cursor=pointer]:
+            - /url: javascript:;
+            - text: Bao Trinh
+            - img "Bao Trinh" [ref=f4e26]
+      - generic [ref=f4e27]:
+        - button "search" [ref=f4e28]
+        - generic [ref=f4e74]:
+          - searchbox "Search input" [ref=f4e75]
+          - searchbox "Search input" [ref=f4e29]
+        - link "close search" [ref=f4e30] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=f4e76]: close
+    - generic [ref=f4e32]:
+      - list [ref=f4e33]:
+        - listitem [ref=f4e34]:
+          - link "Bao Trinh  Bao Trinh Dev" [ref=f4e35] [cursor=pointer]:
+            - /url: javascript:;
+            - img "Bao Trinh" [ref=f4e38]
+            - generic [ref=f4e39]:
+              - generic [ref=f4e40]: 
+              - text: Bao Trinh
+              - generic [ref=f4e41]: Dev
+        - listitem: 
+      - list [ref=f4e42]:
+        - listitem [ref=f4e43]: X Moso
+        - listitem [ref=f4e44]:
+          - tab "group Company directory" [ref=f4e78] [cursor=pointer]:
+            - generic [ref=f4e79]: group
+            - text: Company directory
+        - listitem [ref=f4e46]:
+          - link " assignment_o Activities" [ref=f4e80] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f4e48]: 
+            - generic [ref=f4e81]: assignment_o
+            - text: Activities
+        - listitem [ref=f4e49]:
+          - link " check Reports" [ref=f4e82] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f4e51]: 
+            - generic [ref=f4e83]: check
+            - text: Reports
+        - listitem [ref=f4e52]:
+          - link " settings Builds" [ref=f4e84] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f4e54]: 
+            - generic [ref=f4e85]: settings
+            - text: Builds
+        - listitem [ref=f4e55]:
+          - link " bug_report Errors" [ref=f4e86] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f4e57]: 
+            - generic [ref=f4e87]: bug_report
+            - text: Errors
+        - listitem [ref=f4e58]:
+          - link " System" [ref=f4e59] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f4e60]: 
+            - text: System
+    - generic [ref=f4e88]:
+      - heading [level=1] [ref=f4e453]:
+        - text: Builds
+        - paragraph [ref=f4e454]:
+          - generic [ref=f4e456]:
+            - text: bao.trinh@moso.com broke build 8 hour(s) ago. Bao Trinh (TrongBaoMoso) is locking push
+            - strong [ref=f4e457]: because of test break
+      - generic [ref=f4e92]:
+        - tablist [ref=f4e93]:
+          - tab "builds" [ref=f4e94] [cursor=pointer]: Builds
+          - tab "status" [ref=f4e95] [cursor=pointer]:
+            - generic [ref=f4e96]: rss_feed
+            - text: Status
+          - tab "parsers" [ref=f4e97] [cursor=pointer]:
+            - generic [ref=f4e98]: insert_drive_file
+            - text: Parsers
+          - tab "tests" [ref=f4e99] [cursor=pointer]:
+            - generic [ref=f4e100]: insert_drive_file
+            - text: Tests
+          - tab "builders" [ref=f4e101] [cursor=pointer]:
+            - generic [ref=f4e102]: settings
+            - text: Builders
+          - tab "activities" [ref=f4e103] [cursor=pointer]:
+            - generic [ref=f4e104]: history
+            - text: Activities
+        - generic [ref=f4e107]:
+          - generic [ref=f4e108]:
+            - generic [ref=f4e109]:
+              - button "sync" [ref=f4e110] [cursor=pointer]
+              - link [ref=f4e113] [cursor=pointer]:
+                - /url: "javascript:"
+            - form [ref=f4e114]:
+              - generic "Repo" [ref=f4e115]:
+                - generic [ref=f4e116]:
+                  - text: Repo
+                  - generic [ref=f4e117]: (optional)
+                - combobox [aria-hidden] [ref=f4e118]
+                - combobox "Repo" [ref=f4e121] [cursor=pointer]
+              - generic "Type" [ref=f4e123]:
+                - generic [ref=f4e124]:
+                  - text: Type
+                  - generic [ref=f4e125]: (optional)
+                - combobox [aria-hidden] [ref=f4e126]
+                - combobox "× test" [ref=f4e129] [cursor=pointer]:
+                  - generic "test" [ref=f4e130]:
+                    - generic [ref=f4e131]: ×
+                    - text: test
+              - generic "Status" [ref=f4e132]:
+                - generic [ref=f4e133]:
+                  - text: Status
+                  - generic [ref=f4e134]: (optional)
+                - combobox [aria-hidden] [ref=f4e135]
+                - combobox "Status" [ref=f4e138] [cursor=pointer]
+            - generic [ref=f4e140]:
+              - button "Reset filters" [ref=f4e141] [cursor=pointer]
+              - button "More" [ref=f4e142] [cursor=pointer]
+          - generic [ref=f4e143]:
+            - generic [ref=f4e145]:
+              - generic [ref=f4e146]: Type
+              - generic [ref=f4e147]: Status
+              - generic [ref=f4e148]: Note
+              - generic [ref=f4e149]: Server
+              - generic [ref=f4e150]: Time (m)
+            - generic [ref=f4e151]:
+              - generic [ref=f4e152]:
+                - generic [ref=f4e153]:
+                  - generic [ref=f4e154]:
+                    - group [ref=f4e156]:
+                      - button "test" [ref=f4e157] [cursor=pointer]
+                    - generic [ref=f4e158]: packs/loan
+                  - generic [ref=f4e159]:
+                    - generic [ref=f4e160] [cursor=pointer]: running
+                    - generic [ref=f4e162] [cursor=pointer]: "37"
+                  - generic "mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999" [ref=f4e164]:
+                    - text: Khai (packs)
+                    - link [ref=f4e165] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/754ee62c15367d0fedd77be1e875a8e49439c2b5
+                  - generic [ref=f4e166] [cursor=pointer]: b1
+                  - generic [ref=f4e167]: 10/9/2026, 6:50:45 PM
+                - generic [ref=f4e169]:
+                  - generic [ref=f4e170]:
+                    - group [ref=f4e172]:
+                      - button "test" [ref=f4e173] [cursor=pointer]
+                    - generic [ref=f4e174]: moso
+                  - generic [ref=f4e175]:
+                    - generic [ref=f4e176] [cursor=pointer]: killed
+                    - generic [ref=f4e178] [cursor=pointer]: "0"
+                  - 'generic "Expired: created more than 2 hours ago" [ref=f4e180]':
+                    - text: Bao (base)
+                    - link [ref=f4e181] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f4e182]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                - generic [ref=f4e185]:
+                  - generic [ref=f4e186]:
+                    - group [ref=f4e188]:
+                      - button "test" [ref=f4e189] [cursor=pointer]
+                    - generic [ref=f4e190]: moso
+                  - generic [ref=f4e191]:
+                    - generic [ref=f4e192] [cursor=pointer]: killed
+                    - generic [ref=f4e194] [cursor=pointer]: "8"
+                  - 'generic "Expired: created more than 2 hours ago" [ref=f4e196]':
+                    - text: Bao (base)
+                    - link [ref=f4e197] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f4e198]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                - generic [ref=f4e201]:
+                  - generic [ref=f4e202]:
+                    - group [ref=f4e204]:
+                      - button "test" [ref=f4e205] [cursor=pointer]
+                    - generic [ref=f4e206]: packs/loan
+                  - generic [ref=f4e207]:
+                    - generic [ref=f4e208] [cursor=pointer]: succeeded
+                    - generic [ref=f4e210] [cursor=pointer]: "0"
+                  - generic [ref=f4e212]:
+                    - text: Khai (packs)
+                    - link [ref=f4e213] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/754ee62c15367d0fedd77be1e875a8e49439c2b5
+                  - generic [ref=f4e214] [cursor=pointer]: b4
+                  - generic [ref=f4e215]:
+                    - generic [ref=f4e216]: 13m 54s
+                    - generic [ref=f4e217]: 10/9/2026, 6:50:45 PM
+                - generic [ref=f4e218]:
+                  - generic [ref=f4e219]:
+                    - group [ref=f4e221]:
+                      - button "test" [ref=f4e222] [cursor=pointer]
+                    - generic [ref=f4e223]: packs/pylon-apis
+                  - generic [ref=f4e224]: failed
+                  - 'generic "failed: mvn clean test -N -B -U -e -q -DCI=true >> /home/ato/logs/4932702942265344.txt 2>&1;: Error: Command failed: mvn clean test -N -B -U -e -q -DCI=true >> /home/ato/logs/4932702942265344.txt 2>&1;" [ref=f4e228]':
+                    - text: Bao (base)
+                    - link [ref=f4e229] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f4e230]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f4e231] [cursor=pointer]: b6
+                  - generic [ref=f4e232]:
+                    - generic [ref=f4e233]: 74m 49s
+                    - generic [ref=f4e234]: 10/9/2026, 5:12:55 PM
+                - generic [ref=f4e235]:
+                  - generic [ref=f4e236]:
+                    - group [ref=f4e238]:
+                      - button "test" [ref=f4e239] [cursor=pointer]
+                    - generic [ref=f4e240]: packs/loan
+                  - generic [ref=f4e241]:
+                    - generic [ref=f4e242] [cursor=pointer]: failed
+                    - generic [ref=f4e244] [cursor=pointer]: "37"
+                  - 'generic "failed: mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999 -Dlog=/home/ato/logs/4648093914497024_summary.txt >> /home/ato/logs/4648093914497024.txt 2>&1;: Error: Command failed: mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999 -Dlog=/home/ato/logs/4648093914497024_summary.txt >> /home/ato/logs/4648093914497024.txt 2>&1;" [ref=f4e246]':
+                    - text: Khai (packs)
+                    - link [ref=f4e247] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/747ccebe8be60a03fac213ba66058ea5a4ce1576
+                  - generic [ref=f4e248] [cursor=pointer]: b4
+                  - generic [ref=f4e249]: 20m 10s
+                - generic [ref=f4e251]:
+                  - generic [ref=f4e252]:
+                    - group [ref=f4e254]:
+                      - button "test" [ref=f4e255] [cursor=pointer]
+                    - generic [ref=f4e256]: packs/loan
+                  - generic [ref=f4e257]:
+                    - generic [ref=f4e258] [cursor=pointer]: succeeded
+                    - generic [ref=f4e260] [cursor=pointer]: "0"
+                  - generic [ref=f4e262]:
+                    - text: Khai (packs)
+                    - link [ref=f4e263] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/747ccebe8be60a03fac213ba66058ea5a4ce1576
+                  - generic [ref=f4e264] [cursor=pointer]: b2
+                  - generic [ref=f4e265]:
+                    - generic [ref=f4e266]: 8m 12s
+                    - generic [ref=f4e267]: 10/9/2026, 5:48:03 PM
+                - generic [ref=f4e268]:
+                  - generic [ref=f4e269]:
+                    - group [ref=f4e271]:
+                      - button "test" [ref=f4e272] [cursor=pointer]
+                    - generic [ref=f4e273]: packs/loan
+                  - generic [ref=f4e274]:
+                    - generic [ref=f4e275] [cursor=pointer]: failed
+                    - generic [ref=f4e277] [cursor=pointer]: "37"
+                  - 'generic "failed: mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999 -Dlog=/home/ato/logs/5514128033054720_summary.txt >> /home/ato/logs/5514128033054720.txt 2>&1;: Error: Command failed: mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999 -Dlog=/home/ato/logs/5514128033054720_summary.txt >> /home/ato/logs/5514128033054720.txt 2>&1;" [ref=f4e279]':
+                    - text: Bao (packs)
+                    - link [ref=f4e280] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/51d6b5a0c23f7d2081ce7ae025a7bec70b2b2640
+                      - text: "Log the Drive config key, not the entity, when the owner change fails (#3644) GoogleDrive.afterAccountChanged logged \"Could not change owner: \" + config, which prints every property of GoogleDriveConfig(1), including the OAuth access_token and refresh_token of the integrated Super Admin account. Those fields are not SECURED, so the base entity redaction does not cover them. Log the key only. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f4e281]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                    - text: Bao (base)
+                    - link [ref=f4e282] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f4e283]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f4e284] [cursor=pointer]: b4
+                  - generic [ref=f4e285]:
+                    - generic [ref=f4e286]: 18m 47s
+                    - generic [ref=f4e287]: 10/9/2026, 5:16:17 PM
+                - generic [ref=f4e288]:
+                  - generic [ref=f4e289]:
+                    - group [ref=f4e291]:
+                      - button "test" [ref=f4e292] [cursor=pointer]
+                    - generic [ref=f4e293]: packs/loan
+                  - generic [ref=f4e294]:
+                    - generic [ref=f4e295] [cursor=pointer]: succeeded
+                    - generic [ref=f4e297] [cursor=pointer]: "0"
+                  - generic [ref=f4e299]:
+                    - text: Bao (packs)
+                    - link [ref=f4e300] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/51d6b5a0c23f7d2081ce7ae025a7bec70b2b2640
+                      - text: "Log the Drive config key, not the entity, when the owner change fails (#3644) GoogleDrive.afterAccountChanged logged \"Could not change owner: \" + config, which prints every property of GoogleDriveConfig(1), including the OAuth access_token and refresh_token of the integrated Super Admin account. Those fields are not SECURED, so the base entity redaction does not cover them. Log the key only. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f4e301]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                    - text: Bao (base)
+                    - link [ref=f4e302] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f4e303]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f4e304] [cursor=pointer]: b1
+                  - generic [ref=f4e305]:
+                    - generic [ref=f4e306]: 9m 32s
+                    - generic [ref=f4e307]: 10/9/2026, 5:16:17 PM
+                - generic [ref=f4e308]:
+                  - generic [ref=f4e309]:
+                    - group [ref=f4e311]:
+                      - button "test" [ref=f4e312] [cursor=pointer]
+                    - generic [ref=f4e313]: moso-pricing
+                  - generic [ref=f4e314]: succeeded
+                  - generic [ref=f4e318]:
+                    - text: Bao (packs)
+                    - link [ref=f4e319] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/51d6b5a0c23f7d2081ce7ae025a7bec70b2b2640
+                      - text: "Log the Drive config key, not the entity, when the owner change fails (#3644) GoogleDrive.afterAccountChanged logged \"Could not change owner: \" + config, which prints every property of GoogleDriveConfig(1), including the OAuth access_token and refresh_token of the integrated Super Admin account. Those fields are not SECURED, so the base entity redaction does not cover them. Log the key only. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f4e320]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                    - text: Bao (base)
+                    - link [ref=f4e321] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f4e322]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f4e323] [cursor=pointer]: b3
+                  - generic [ref=f4e324]:
+                    - generic [ref=f4e325]: 1m 14s
+                    - generic [ref=f4e326]: 10/9/2026, 5:14:36 PM
+                - generic [ref=f4e327]:
+                  - generic [ref=f4e328]:
+                    - group [ref=f4e330]:
+                      - button "test" [ref=f4e331] [cursor=pointer]
+                    - generic [ref=f4e332]: packs/hr
+                  - generic [ref=f4e333]: succeeded
+                  - generic [ref=f4e337]:
+                    - text: Bao (base)
+                    - link [ref=f4e338] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f4e339]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f4e340] [cursor=pointer]: b2
+                  - generic [ref=f4e341]:
+                    - generic [ref=f4e342]: 53s
+                    - generic [ref=f4e343]: 10/9/2026, 5:13:48 PM
+                - generic [ref=f4e344]:
+                  - generic [ref=f4e345]:
+                    - group [ref=f4e347]:
+                      - button "test" [ref=f4e348] [cursor=pointer]
+                    - generic [ref=f4e349]: packs/loan
+                  - generic [ref=f4e350]:
+                    - generic [ref=f4e351] [cursor=pointer]: killed
+                    - generic [ref=f4e353] [cursor=pointer]: "0"
+                  - generic "Killed when creating moso-pricing" [ref=f4e355]:
+                    - text: Bao (base)
+                    - link [ref=f4e356] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f4e357]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f4e358] [cursor=pointer]: b3
+                  - generic [ref=f4e359]: 10/9/2026, 5:14:02 PM
+                - generic [ref=f4e361]:
+                  - generic [ref=f4e362]:
+                    - group [ref=f4e364]:
+                      - button "test" [ref=f4e365] [cursor=pointer]
+                    - generic [ref=f4e366]: packs/loan
+                  - generic [ref=f4e367]:
+                    - generic [ref=f4e368] [cursor=pointer]: killed
+                    - generic [ref=f4e370] [cursor=pointer]: "37"
+                  - generic "Killed when creating moso-pricing" [ref=f4e372]:
+                    - text: Bao (base)
+                    - link [ref=f4e373] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f4e374]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f4e375] [cursor=pointer]: b4
+                  - generic [ref=f4e376]: 10/9/2026, 5:14:02 PM
+                - generic [ref=f4e378]:
+                  - generic [ref=f4e379]:
+                    - group [ref=f4e381]:
+                      - button "test" [ref=f4e382] [cursor=pointer]
+                    - generic [ref=f4e383]: packs/quote
+                  - generic [ref=f4e384]: succeeded
+                  - generic [ref=f4e388]:
+                    - text: Bao (packs)
+                    - link [ref=f4e389] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/51d6b5a0c23f7d2081ce7ae025a7bec70b2b2640
+                      - text: "Log the Drive config key, not the entity, when the owner change fails (#3644) GoogleDrive.afterAccountChanged logged \"Could not change owner: \" + config, which prints every property of GoogleDriveConfig(1), including the OAuth access_token and refresh_token of the integrated Super Admin account. Those fields are not SECURED, so the base entity redaction does not cover them. Log the key only. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f4e390]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                    - text: Bao (base)
+                    - link [ref=f4e391] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f4e392]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f4e393] [cursor=pointer]: b5
+                  - generic [ref=f4e394]:
+                    - generic [ref=f4e395]: 33s
+                    - generic [ref=f4e396]: 10/9/2026, 5:13:46 PM
+                - generic [ref=f4e397]:
+                  - generic [ref=f4e398]:
+                    - group [ref=f4e400]:
+                      - button "test" [ref=f4e401] [cursor=pointer]
+                    - generic [ref=f4e402]: packs/google-apis
+                  - generic [ref=f4e403]: succeeded
+                  - generic [ref=f4e407]:
+                    - text: Bao (packs)
+                    - link [ref=f4e408] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/51d6b5a0c23f7d2081ce7ae025a7bec70b2b2640
+                      - text: "Log the Drive config key, not the entity, when the owner change fails (#3644) GoogleDrive.afterAccountChanged logged \"Could not change owner: \" + config, which prints every property of GoogleDriveConfig(1), including the OAuth access_token and refresh_token of the integrated Super Admin account. Those fields are not SECURED, so the base entity redaction does not cover them. Log the key only. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f4e409]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                    - text: Bao (base)
+                    - link [ref=f4e410] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f4e411]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f4e412] [cursor=pointer]: b5
+                  - generic [ref=f4e413]:
+                    - generic [ref=f4e414]: 30s
+                    - generic [ref=f4e415]: 10/9/2026, 5:12:56 PM
+              - text: 
+          - generic "Page Navigation" [ref=f4e416]:
+            - list [ref=f4e418]:
+              - listitem [ref=f4e419] [cursor=pointer]:
+                - generic "Previous" [ref=f4e420]: «
+              - listitem [ref=f4e421] [cursor=pointer]:
+                - generic [ref=f4e422]: 1-15 of over 100
+              - listitem [ref=f4e423] [cursor=pointer]:
+                - generic "Next" [ref=f4e424]: »
+            - generic [ref=f4e425]:
+              - text: Showing
+              - combobox "Items per page" [ref=f4e426]:
+                - option "5"
+                - option "10" [selected]
+                - option "25"
+                - option "50"
+                - option "100"
+              - text: items per page
+    - link "Scroll to top" [ref=f4e64] [cursor=pointer]:
+      - /url: javascript:;
+      - generic [ref=f4e427]: keyboard_arrow_up
+  - iframe
+  - generic [ref=f4e65]:
+    - link "System Improvement?" [ref=f4e66] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f4e428]: send
+    - link "Help?" [ref=f4e67] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f4e429]: help
+    - link "Chat" [ref=f4e68] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f4e430]: chat
+  - log [ref=f4e431]
+  - log [ref=f4e432]
+  - log [ref=f4e433]
+  - log [ref=f4e434]
+  - log [ref=f4e435]
+  - log [ref=f4e436]
+  - log [ref=f4e437]
+  - log [ref=f4e438]
+  - log [ref=f4e439]
+  - log [ref=f4e440]
+  - log [ref=f4e441]
+  - log [ref=f4e442]
+  - log [ref=f4e443]
+  - log [ref=f4e444]
+  - log [ref=f4e445]
+  - log [ref=f4e446]
+  - log [ref=f4e447]
+  - log [ref=f4e458]
+  - log [ref=f4e459]

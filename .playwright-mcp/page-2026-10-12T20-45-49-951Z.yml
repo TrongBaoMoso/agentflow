@@ -1,0 +1,273 @@
+- generic [active] [ref=e1]:
+  - iframe [aria-hidden] [ref=e2]
+  - generic [ref=e11]:
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - link "Skip to content" [ref=e15] [cursor=pointer]:
+          - /url: ""
+        - link "Using Gmail with screen readers" [ref=e16] [cursor=pointer]:
+          - /url: ""
+      - heading [level=1] [ref=e18]:
+        - banner [ref=e19]:
+          - generic [ref=e20]:
+            - generic [ref=e21]:
+              - button "Main menu" [expanded] [ref=e22] [cursor=pointer]
+              - link "Gmail" [ref=e27] [cursor=pointer]:
+                - /url: "#inbox"
+            - generic [ref=e29]:
+              - search [ref=e31]:
+                - heading "Search" [level=2] [ref=e32]
+                - table [ref=e252]:
+                  - rowgroup [ref=e253]:
+                    - row [ref=e254]:
+                      - cell [ref=e255]:
+                        - textbox "Search mail" [ref=e256]: "\"QA G2 10/10\""
+                - button "Advanced search options" [ref=e35] [cursor=pointer]
+                - button "Clear search" [ref=e38] [cursor=pointer]
+                - button "Search mail" [disabled] [ref=e42] [cursor=pointer]
+              - generic [ref=e46]:
+                - button "Support" [ref=e258] [cursor=pointer]
+                - button "Settings" [ref=e50] [cursor=pointer]
+                - generic [ref=e56]:
+                  - link "Upgrade" [ref=e58] [cursor=pointer]
+                  - tooltip [aria-hidden] [ref=e61]: Upgrade for premium features
+                - generic [ref=e63]:
+                  - generic:
+                    - button "Try Gemini" [ref=e70] [cursor=pointer]
+                    - tooltip [aria-hidden] [ref=e73]: Try Gemini
+            - generic [ref=e75]:
+              - button "Google apps" [ref=e79] [cursor=pointer]
+              - 'button "Google Account: BẢO TRỊNH (vutrongbao.trinh.ltb@gmail.com)" [ref=e85] [cursor=pointer]'
+      - alert [ref=e90]:
+        - generic [ref=e91]:
+          - generic [ref=e799]:
+            - generic [ref=e800]: Message sent
+            - alert [ref=e802] [cursor=pointer]: Undo
+          - button "Close" [ref=e803] [cursor=pointer]
+    - generic [ref=e98]:
+      - navigation [ref=e99]:
+        - button "Compose" [ref=e102] [cursor=pointer]
+        - generic [ref=e108]:
+          - generic [ref=e110]:
+            - heading "Labels" [level=2] [ref=e111]
+            - generic [ref=e112]:
+              - generic [ref=e113]:
+                - generic [ref=e115]:
+                  - generic [ref=e120]:
+                    - link "Inbox 191 unread" [ref=e122] [cursor=pointer]:
+                      - /url: https://mail.google.com/mail/u/0/#inbox
+                      - text: Inbox
+                    - generic [ref=e123]: "191"
+                  - link "Starred" [ref=e130] [cursor=pointer]:
+                    - /url: https://mail.google.com/mail/u/0/#starred
+                  - link "Snoozed" [ref=e137] [cursor=pointer]:
+                    - /url: https://mail.google.com/mail/u/0/#snoozed
+                  - link "Sent" [ref=e144] [cursor=pointer]:
+                    - /url: https://mail.google.com/mail/u/0/#sent
+                - generic [ref=e151]:
+                  - link "Purchases 11 unread has menu" [ref=e153] [cursor=pointer]:
+                    - /url: https://mail.google.com/mail/u/0/#category/purchases
+                    - text: Purchases
+                  - generic [ref=e154]: "11"
+              - button "More labels" [ref=e156] [cursor=pointer]:
+                - generic [ref=e157]: More
+          - generic [ref=e160]:
+            - heading "Labels" [ref=e161]
+            - button "Create new label" [ref=e162] [cursor=pointer]
+          - generic:
+            - generic "Labels":
+              - heading "Labels" [level=2] [ref=e163]
+      - generic [ref=e168]:
+        - generic [ref=e351]:
+          - generic [ref=e353]:
+            - button "Back to Search Results" [ref=e355] [cursor=pointer]
+            - generic [ref=e358]:
+              - button "Archive" [ref=e359] [cursor=pointer]
+              - button "Report spam" [ref=e362] [cursor=pointer]
+              - button "Delete" [ref=e365] [cursor=pointer]
+            - generic [ref=e368]:
+              - button "Mark as unread" [ref=e369] [cursor=pointer]
+              - button "Move to Inbox" [ref=e373] [cursor=pointer]
+            - button "More email options" [ref=e377] [cursor=pointer]
+          - generic [ref=e380]:
+            - generic [ref=e382]:
+              - generic [ref=e383]: 1 of 1
+              - button "Newer" [disabled] [ref=e384]
+              - button "Older" [disabled] [ref=e385]
+            - generic [ref=e389]:
+              - button "Input tools on/off (Ctrl-Shift-K)" [ref=e390] [cursor=pointer]
+              - button "Select input tool" [ref=e392] [cursor=pointer]
+        - main [ref=e394]:
+          - generic [ref=e396]:
+            - generic [ref=e398]:
+              - generic [ref=e400]:
+                - generic [ref=e401]:
+                  - button "Collapse all" [ref=e402] [cursor=pointer]
+                  - tooltip [aria-hidden] [ref=e408]: Collapse all
+                - generic [ref=e409]:
+                  - button "Print all" [ref=e410] [cursor=pointer]
+                  - tooltip [aria-hidden] [ref=e416]: Print all
+                - generic [ref=e417]:
+                  - button "In new window" [ref=e418] [cursor=pointer]
+                  - tooltip [aria-hidden] [ref=e424]: In new window
+              - generic [ref=e426]:
+                - heading "Message from Loan Factory · NMLS 121212" [level=2] [ref=e427]
+                - generic [ref=e429] [cursor=pointer]:
+                  - generic [ref=e430]:
+                    - button "Search for all messages with label Inbox" [ref=e432]: Inbox
+                    - tooltip [aria-hidden] [ref=e433]: Search for all messages with label Inbox
+                  - generic [ref=e434]:
+                    - button "Remove label Inbox from this conversation" [ref=e436]: ×
+                    - tooltip [aria-hidden] [ref=e437]: Remove label Inbox from this conversation
+            - list [ref=e440]:
+              - listitem [ref=e441]:
+                - generic [ref=e447]:
+                  - generic [ref=e448] [cursor=pointer]
+                  - generic [ref=e452]:
+                    - table [ref=e454] [cursor=pointer]:
+                      - rowgroup [ref=e455]:
+                        - row [ref=e456]:
+                          - cell [ref=e457]:
+                            - table [ref=e458]:
+                              - rowgroup [ref=e459]:
+                                - row [ref=e460]:
+                                  - cell [ref=e461]:
+                                    - heading [level=3] [ref=e462]:
+                                      - gridcell "Manh Admin (Loan Factory)" [ref=e463]
+                                    - heading [level=3]
+                          - cell [ref=e465]:
+                            - generic [ref=e466]:
+                              - gridcell "12:47 AM (2 hours ago)" [ref=e467]
+                              - checkbox "Not starred" [ref=e469]
+                          - cell
+                          - cell [ref=e471]:
+                            - generic [ref=e473]:
+                              - button "You can't react to a message with a reply-to address" [disabled] [ref=e474]
+                              - tooltip [aria-hidden] [ref=e480]: You can't react to a message with a reply-to address
+                            - generic [ref=e481]:
+                              - button "Reply" [ref=e482]
+                              - tooltip [aria-hidden] [ref=e488]: Reply
+                            - generic [ref=e491]:
+                              - button "More message options" [ref=e492]
+                              - tooltip [aria-hidden] [ref=e497]: More
+                        - row [ref=e498]:
+                          - cell [ref=e499]:
+                            - table [ref=e500]:
+                              - rowgroup [ref=e501]:
+                                - row [ref=e502]:
+                                  - cell "to me Show details" [ref=e503]:
+                                    - generic [ref=e504]: to me
+                                    - button "Show details" [ref=e506]
+                    - generic [ref=e510]:
+                      - paragraph [ref=e511]: Loan Factory
+                      - generic [ref=e513]: QA G2 10/10
+                      - text: — please reply
+              - listitem [ref=e514]:
+                - generic [ref=e520]:
+                  - generic [ref=e521] [cursor=pointer]
+                  - generic [ref=e525]:
+                    - table [ref=e527] [cursor=pointer]:
+                      - rowgroup [ref=e528]:
+                        - row [ref=e529]:
+                          - cell [ref=e530]:
+                            - table [ref=e531]:
+                              - rowgroup [ref=e532]:
+                                - row [ref=e533]:
+                                  - cell [ref=e534]:
+                                    - heading [level=3] [ref=e535]:
+                                      - gridcell "TRỊNH VŨ TRỌNG BẢO vutrongbao.trinh.ltb@gmail.com" [ref=e536]:
+                                        - generic [ref=e537]: TRỊNH VŨ TRỌNG BẢO
+                                        - generic [ref=e538]: <vutrongbao.trinh.ltb@gmail.com>
+                                    - heading [level=3]
+                          - cell [ref=e539]:
+                            - generic [ref=e540]:
+                              - gridcell "12:47 AM (2 hours ago)" [ref=e541]
+                              - checkbox "Not starred" [ref=e543]
+                          - cell
+                          - cell [ref=e545]:
+                            - generic [ref=e547]:
+                              - button "Add reaction" [ref=e548]
+                              - tooltip [aria-hidden] [ref=e554]: Add reaction
+                            - generic [ref=e555]:
+                              - button "Reply" [ref=e556]
+                              - tooltip [aria-hidden] [ref=e562]: Reply
+                            - generic "More message options" [ref=e563]:
+                              - generic [ref=e565]:
+                                - button "More message options" [ref=e566]
+                                - tooltip [aria-hidden] [ref=e571]: More
+                        - row [ref=e572]:
+                          - cell [ref=e573]:
+                            - table [ref=e574]:
+                              - rowgroup [ref=e575]:
+                                - row [ref=e576]:
+                                  - cell "to Manh Show details" [ref=e577]:
+                                    - generic [ref=e579]:
+                                      - text: to
+                                      - generic [ref=e580]: Manh
+                                    - button "Show details" [ref=e581]
+                    - generic [ref=e585]:
+                      - generic [ref=e586]: G2 reply from LO
+                      - button "Show trimmed content" [ref=e588] [cursor=pointer]
+              - listitem [ref=e805]:
+                - generic [ref=e816]:
+                  - table [ref=e818]:
+                    - rowgroup [ref=e819]:
+                      - row [ref=e820]:
+                        - cell [ref=e821]:
+                          - table [ref=e822]:
+                            - rowgroup [ref=e823]:
+                              - row [ref=e824]:
+                                - cell [ref=e825]:
+                                  - heading [level=3] [ref=e826]:
+                                    - gridcell "TRỊNH VŨ TRỌNG BẢO" [ref=e827]
+                                  - heading [level=3]
+                        - cell [ref=e829]:
+                          - generic [ref=e830]:
+                            - gridcell "3:45 AM (0 minutes ago)" [ref=e831]
+                            - checkbox "Not starred" [ref=e833] [cursor=pointer]
+                        - cell
+                        - cell [ref=e835]:
+                          - generic [ref=e837]:
+                            - button "You can't react with an emoji to a group" [disabled] [ref=e838]
+                            - tooltip [aria-hidden] [ref=e844]: You can't react with an emoji to a group
+                          - generic [ref=e845]:
+                            - button "Reply" [ref=e846] [cursor=pointer]
+                            - tooltip [aria-hidden] [ref=e852]: Reply
+                          - generic "More message options" [ref=e853]:
+                            - generic [ref=e855]:
+                              - button "More message options" [ref=e856] [cursor=pointer]
+                              - tooltip [aria-hidden] [ref=e861]: More
+                      - row [ref=e862]:
+                        - cell [ref=e863]:
+                          - table [ref=e864]:
+                            - rowgroup [ref=e865]:
+                              - row [ref=e866]:
+                                - cell "to Manh Show details" [ref=e867]:
+                                  - generic [ref=e868]: to Manh
+                                  - button "Show details" [ref=e870]
+                  - generic [ref=e873]:
+                    - generic [ref=e874]: "G2 retest after recruit-be #626 (13/10 03:47 VN) - reply from LO"
+                    - button "Show trimmed content" [ref=e876] [cursor=pointer]
+            - generic [ref=e881]:
+              - link "Reply" [ref=e882] [cursor=pointer]
+              - link "Forward" [ref=e883] [cursor=pointer]
+              - generic [ref=e885]:
+                - button "Add reaction" [ref=e886] [cursor=pointer]
+                - tooltip [aria-hidden] [ref=e892]: Add reaction
+      - generic [ref=e238]:
+        - complementary "Side panel" [ref=e239]:
+          - tablist [ref=e241]:
+            - tab "Calendar":
+              - generic [ref=e242] [cursor=pointer]
+            - tab "Keep":
+              - generic [ref=e243] [cursor=pointer]
+            - tab "Tasks":
+              - generic [ref=e244] [cursor=pointer]
+            - tab "Contacts":
+              - generic [ref=e245] [cursor=pointer]
+            - separator [disabled] [ref=e246]
+            - tab "Get Add-ons":
+              - generic [ref=e247] [cursor=pointer]
+        - generic:
+          - button "Hide side panel":
+            - generic [ref=e248] [cursor=pointer]

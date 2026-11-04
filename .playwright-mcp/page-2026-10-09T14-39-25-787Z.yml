@@ -1,0 +1,351 @@
+- generic [active] [ref=f26e1]:
+  - generic [ref=f26e7]:
+    - generic [ref=f26e8]:
+      - generic [ref=f26e9]:
+        - button "Sidebar collapse button" [ref=f26e10] [cursor=pointer]
+        - link [ref=f26e69] [cursor=pointer]:
+          - /url: "#"
+          - text: "SWAT:"
+          - link "Vinh Nguyen is SWAT officer. Please contact him for urgent problem" [ref=f26e70]:
+            - /url: "javascript:"
+          - text: "Parser:"
+          - link "Quyen Anh Vo is monitoring the parser today. Please contact him for problem with parser" [ref=f26e72]:
+            - /url: "javascript:"
+      - list [ref=f26e15]:
+        - listitem [ref=f26e16]:
+          - link "Search" [ref=f26e17] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=f26e74]: search
+        - listitem [ref=f26e18]:
+          - link "Builds" [ref=f26e19] [cursor=pointer]:
+            - /url: "##builds"
+        - listitem [ref=f26e20]:
+          - link "add" [ref=f26e75] [cursor=pointer]:
+            - /url: "##create_small_task"
+        - listitem [ref=f26e22]:
+          - link "Message" [ref=f26e23] [cursor=pointer]:
+            - /url: javascript:;
+            - generic [ref=f26e77]: notifications
+          - text: 
+        - listitem [ref=f26e24]:
+          - link [ref=f26e25] [cursor=pointer]:
+            - /url: javascript:;
+            - text: Bao Trinh
+            - img "Bao Trinh" [ref=f26e26]
+      - generic [ref=f26e27]:
+        - button "search" [ref=f26e28]
+        - generic [ref=f26e79]:
+          - searchbox "Search input" [ref=f26e80]
+          - searchbox "Search input" [ref=f26e81]
+        - link "close search" [ref=f26e30] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=f26e82]: close
+    - generic [ref=f26e32]:
+      - list [ref=f26e33]:
+        - listitem [ref=f26e34]:
+          - link "Bao Trinh  Bao Trinh Dev" [ref=f26e35] [cursor=pointer]:
+            - /url: javascript:;
+            - img "Bao Trinh" [ref=f26e38]
+            - generic [ref=f26e39]:
+              - generic [ref=f26e40]: 
+              - text: Bao Trinh
+              - generic [ref=f26e41]: Dev
+        - listitem: 
+      - list [ref=f26e42]:
+        - listitem [ref=f26e43]: X Moso
+        - listitem [ref=f26e44]:
+          - tab "group Company directory" [ref=f26e84] [cursor=pointer]:
+            - generic [ref=f26e85]: group
+            - text: Company directory
+        - listitem [ref=f26e46]:
+          - link " assignment_o Activities" [ref=f26e86] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f26e48]: 
+            - generic [ref=f26e87]: assignment_o
+            - text: Activities
+        - listitem [ref=f26e49]:
+          - link " check Reports" [ref=f26e88] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f26e51]: 
+            - generic [ref=f26e89]: check
+            - text: Reports
+        - listitem [ref=f26e52]:
+          - link " settings Builds" [ref=f26e90] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f26e54]: 
+            - generic [ref=f26e91]: settings
+            - text: Builds
+        - listitem [ref=f26e55]:
+          - link " bug_report Errors" [ref=f26e92] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f26e57]: 
+            - generic [ref=f26e93]: bug_report
+            - text: Errors
+        - listitem [ref=f26e58]:
+          - link " System" [ref=f26e59] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f26e60]: 
+            - text: System
+    - generic [ref=f26e94]:
+      - heading "Builds bao.trinh@moso.com broke build 10 hour(s) ago." [level=1] [ref=f26e95]:
+        - text: Builds
+        - paragraph [ref=f26e96]:
+          - generic [ref=f26e97]: bao.trinh@moso.com broke build 10 hour(s) ago.
+      - generic [ref=f26e100]:
+        - tablist [ref=f26e101]:
+          - tab "builds" [ref=f26e102] [cursor=pointer]: Builds
+          - tab "status" [ref=f26e103] [cursor=pointer]:
+            - generic [ref=f26e104]: rss_feed
+            - text: Status
+          - tab "parsers" [ref=f26e105] [cursor=pointer]:
+            - generic [ref=f26e106]: insert_drive_file
+            - text: Parsers
+          - tab "tests" [ref=f26e107] [cursor=pointer]:
+            - generic [ref=f26e108]: insert_drive_file
+            - text: Tests
+          - tab "builders" [ref=f26e109] [cursor=pointer]:
+            - generic [ref=f26e110]: settings
+            - text: Builders
+          - tab "activities" [ref=f26e111] [cursor=pointer]:
+            - generic [ref=f26e112]: history
+            - text: Activities
+        - generic [ref=f26e115]:
+          - generic [ref=f26e116]:
+            - generic [ref=f26e117]:
+              - button "sync" [ref=f26e118] [cursor=pointer]
+              - button "Add" [ref=f26e120] [cursor=pointer]
+              - button "Delete" [disabled] [ref=f26e121]
+            - form [ref=f26e122]:
+              - generic "Active" [ref=f26e123]:
+                - generic [ref=f26e124]:
+                  - text: Active
+                  - generic [ref=f26e125]: (optional)
+                - combobox [aria-hidden] [ref=f26e126]
+                - combobox "Active" [ref=f26e129] [cursor=pointer]
+            - button "Reset filters" [ref=f26e132] [cursor=pointer]
+          - table [ref=f26e133]:
+            - rowgroup [ref=f26e146]:
+              - row [ref=f26e147]:
+                - columnheader [ref=f26e148]:
+                  - checkbox [ref=f26e149]
+                - columnheader "Activate" [ref=f26e150]
+                - columnheader "Name" [ref=f26e151]
+                - columnheader "URL" [ref=f26e152]
+                - columnheader "Type" [ref=f26e153]
+                - columnheader "Active" [ref=f26e154]
+                - columnheader "Busy" [ref=f26e155]
+                - columnheader [ref=f26e156]:
+                  - generic "Click to check the status of builder" [ref=f26e157] [cursor=pointer]: Online
+                - columnheader "Last build" [ref=f26e158]
+                - columnheader "Last build" [ref=f26e159]
+                - columnheader "Last build" [ref=f26e160]
+            - rowgroup [ref=f26e161]:
+              - row [ref=f26e162]:
+                - cell [ref=f26e163]:
+                  - checkbox "Row 1" [ref=f26e164]
+                - cell "sync" [ref=f26e165] [cursor=pointer]
+                - cell "b1" [ref=f26e167]
+                - cell "https://10.0.0.13:8080" [ref=f26e168] [cursor=pointer]
+                - cell "LARGE" [ref=f26e169]
+                - cell [ref=f26e170]:
+                  - checkbox "Row 1 Active" [ref=f26e171]
+                - cell "check" [ref=f26e172]
+                - cell [ref=f26e174]:
+                  - button "Offline" [ref=f26e175] [cursor=pointer]
+                - cell "packs/loan" [ref=f26e176]
+                - cell "running" [ref=f26e177]
+                - cell [ref=f26e178]:
+                  - generic "mvn clean test -N -B -U -e -q -DCI=true -Dtest=TestPartition -Dstart=37 -Dend=999999" [ref=f26e179]:
+                    - text: Khai (packs)
+                    - link [ref=f26e180] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/754ee62c15367d0fedd77be1e875a8e49439c2b5
+              - row [ref=f26e181]:
+                - cell [ref=f26e182]:
+                  - checkbox "Row 2" [ref=f26e183]
+                - cell "sync" [ref=f26e184] [cursor=pointer]
+                - cell "b2" [ref=f26e186]
+                - cell "https://10.0.0.5:8080" [ref=f26e187] [cursor=pointer]
+                - cell "LARGE" [ref=f26e188]
+                - cell [ref=f26e189]:
+                  - checkbox "Row 2 Active" [checked] [ref=f26e190]
+                - cell "check" [ref=f26e191]
+                - cell [ref=f26e193]:
+                  - button "Online" [ref=f26e194] [cursor=pointer]
+                - cell "moso-pricing" [ref=f26e195]
+                - cell "running" [ref=f26e196]
+                - cell "Run newUnitedParser" [ref=f26e197]
+              - row [ref=f26e198]:
+                - cell [ref=f26e199]:
+                  - checkbox "Row 3" [ref=f26e200]
+                - cell "sync" [ref=f26e201] [cursor=pointer]
+                - cell "b3" [ref=f26e203]
+                - cell "https://10.0.0.6:8080" [ref=f26e204] [cursor=pointer]
+                - cell "LARGE" [ref=f26e205]
+                - cell [ref=f26e206]:
+                  - checkbox "Row 3 Active" [checked] [ref=f26e207]
+                - cell "check" [ref=f26e208]
+                - cell [ref=f26e210]:
+                  - button "Online" [ref=f26e211] [cursor=pointer]
+                - cell "moso-pricing" [ref=f26e212]
+                - cell "running" [ref=f26e213]
+                - cell "Run newProvidentParserVT" [ref=f26e214]
+              - row [ref=f26e215]:
+                - cell [ref=f26e216]:
+                  - checkbox "Row 4" [ref=f26e217]
+                - cell "sync" [ref=f26e218] [cursor=pointer]
+                - cell "b4" [ref=f26e220]
+                - cell "https://10.0.0.7:8080" [ref=f26e221] [cursor=pointer]
+                - cell "SMALL" [ref=f26e222]
+                - cell [ref=f26e223]:
+                  - checkbox "Row 4 Active" [checked] [ref=f26e224]
+                - cell "check" [ref=f26e225]
+                - cell [ref=f26e227]:
+                  - button "Online" [ref=f26e228] [cursor=pointer]
+                - cell "moso-pricing" [ref=f26e229]
+                - cell "running" [ref=f26e230]
+                - cell "Run newProvidentParserSC" [ref=f26e231]
+              - row [ref=f26e232]:
+                - cell [ref=f26e233]:
+                  - checkbox "Row 5" [ref=f26e234]
+                - cell "sync" [ref=f26e235] [cursor=pointer]
+                - cell "b5" [ref=f26e237]
+                - cell "https://10.0.0.10:8080" [ref=f26e238] [cursor=pointer]
+                - cell "SMALL" [ref=f26e239]
+                - cell [ref=f26e240]:
+                  - checkbox "Row 5 Active" [checked] [ref=f26e241]
+                - cell "check" [ref=f26e242]
+                - cell [ref=f26e244]:
+                  - button "Online" [ref=f26e245] [cursor=pointer]
+                - cell "moso-pricing" [ref=f26e246]
+                - cell "running" [ref=f26e247]
+                - cell "Run newProvidentParserMA" [ref=f26e248]
+              - row [ref=f26e249]:
+                - cell [ref=f26e250]:
+                  - checkbox "Row 6" [ref=f26e251]
+                - cell "sync" [ref=f26e252] [cursor=pointer]
+                - cell "b6" [ref=f26e254]
+                - cell "https://10.0.0.9:8080" [ref=f26e255] [cursor=pointer]
+                - cell "SMALL" [ref=f26e256]
+                - cell [ref=f26e257]:
+                  - checkbox "Row 6 Active" [checked] [ref=f26e258]
+                - cell "check" [ref=f26e259]
+                - cell [ref=f26e261]:
+                  - button "Online" [ref=f26e262] [cursor=pointer]
+                - cell "moso-pricing" [ref=f26e263]
+                - cell "running" [ref=f26e264]
+                - cell "Run newProvidentParserNH" [ref=f26e265]
+              - row [ref=f26e266]:
+                - cell [ref=f26e267]:
+                  - checkbox "Row 7" [ref=f26e268]
+                - cell "sync" [ref=f26e269] [cursor=pointer]
+                - cell "batman" [ref=f26e271]
+                - cell "https://vn3.moso.com:17788" [ref=f26e272] [cursor=pointer]
+                - cell "LARGE" [ref=f26e273]
+                - cell [ref=f26e274]:
+                  - checkbox "Row 7 Active" [checked] [ref=f26e275]
+                - cell "close" [ref=f26e276]
+                - cell [ref=f26e278]:
+                  - button "Online" [ref=f26e279] [cursor=pointer]
+                - cell "moso-pricing" [ref=f26e280]
+                - cell "succeeded" [ref=f26e281]
+                - cell [ref=f26e282]:
+                  - generic [ref=f26e283]: Viet RerunRun newPennyMacCorrespondentParser__reparse__
+              - row [ref=f26e284]:
+                - cell [ref=f26e285]:
+                  - checkbox "Row 8" [ref=f26e286]
+                - cell "sync" [ref=f26e287] [cursor=pointer]
+                - cell "bmac" [ref=f26e289]
+                - cell "https://vn3.moso.com:17980" [ref=f26e290] [cursor=pointer]
+                - cell "LARGE" [ref=f26e291]
+                - cell [ref=f26e292]:
+                  - checkbox "Row 8 Active" [checked] [ref=f26e293]
+                - cell "check" [ref=f26e294]
+                - cell [ref=f26e296]:
+                  - button "Online" [ref=f26e297] [cursor=pointer]
+                - cell "moso-pricing" [ref=f26e298]
+                - cell "running" [ref=f26e299]
+                - cell "Run newProvidentParserND" [ref=f26e300]
+              - row [ref=f26e301]:
+                - cell [ref=f26e302]:
+                  - checkbox "Row 9" [ref=f26e303]
+                - cell "sync" [ref=f26e304] [cursor=pointer]
+                - cell "ironman" [ref=f26e306]
+                - cell "https://10.0.0.12:8080" [ref=f26e307] [cursor=pointer]
+                - cell "LARGE" [ref=f26e308]
+                - cell [ref=f26e309]:
+                  - checkbox "Row 9 Active" [ref=f26e310]
+                - cell "close" [ref=f26e311]
+                - cell [ref=f26e313]:
+                  - button "Offline" [ref=f26e314] [cursor=pointer]
+                - cell "packs/loan" [ref=f26e315]
+                - cell "succeeded" [ref=f26e316]
+                - cell [ref=f26e317]:
+                  - generic [ref=f26e318]:
+                    - text: Nghia (packs)
+                    - 'link "feat(mcp): sync CompanyHoliday to MCP company_holiday table Live watcher + queue op mirroring the LicenseInfo pattern. Sends all countries'' holidays (name, description, year, country list, start_tz/ end_tz, legacy date_tz) to /ai/mcp/api/company_holiday/sync. Used by the Lead Management KPI to compute working days per month (35 completed tickets per working day target). Co-Authored-By: Claude Fable 5" [ref=f26e319] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/04db853c6a815d856c6fa1e436f884596d05ad4c
+                    - text: Nghia (packs)
+                    - 'link "Merge pull request #3380 from LoanFactory-Inc/feat/mcp-company-holiday-sync feat(mcp): sync CompanyHoliday to MCP company_holiday table" [ref=f26e320] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/23a714a63068ff569c72d123054d0f8d3ee45ff2
+              - row [ref=f26e321]:
+                - cell [ref=f26e322]:
+                  - checkbox "Row 10" [ref=f26e323]
+                - cell "sync" [ref=f26e324] [cursor=pointer]
+                - cell "nexus" [ref=f26e326]
+                - cell "https://nexus.moso.com:8080" [ref=f26e327] [cursor=pointer]
+                - cell "SMALL" [ref=f26e328]
+                - cell "No" [ref=f26e329]
+                - cell "close" [ref=f26e330]
+                - cell [ref=f26e332]:
+                  - button "Online" [ref=f26e333] [cursor=pointer]
+                - cell [ref=f26e334]
+                - cell [ref=f26e335]
+                - cell [ref=f26e336]
+            - text: 
+          - generic "Page Navigation" [ref=f26e337]:
+            - list [ref=f26e339]:
+              - listitem [ref=f26e340] [cursor=pointer]:
+                - generic "Previous" [ref=f26e341]: «
+              - listitem [ref=f26e342] [cursor=pointer]:
+                - generic [ref=f26e343]: 1-10 of 17
+              - listitem [ref=f26e344] [cursor=pointer]:
+                - generic "Next" [ref=f26e345]: »
+            - generic [ref=f26e346]:
+              - text: Showing
+              - combobox "Items per page" [ref=f26e347]:
+                - option "5"
+                - option "10" [selected]
+                - option "25"
+                - option "50"
+                - option "100"
+              - text: items per page
+    - link "Scroll to top" [ref=f26e64] [cursor=pointer]:
+      - /url: javascript:;
+      - generic [ref=f26e348]: keyboard_arrow_up
+  - iframe
+  - generic [ref=f26e65]:
+    - link "System Improvement?" [ref=f26e66] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f26e349]: send
+    - link "Help?" [ref=f26e67] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f26e350]: help
+    - link "Chat" [ref=f26e68] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f26e351]: chat
+  - log [ref=f26e352]
+  - log [ref=f26e353]
+  - log [ref=f26e354]
+  - log [ref=f26e355]
+  - log [ref=f26e356]
+  - log [ref=f26e357]
+  - log [ref=f26e358]
+  - log [ref=f26e359]
+  - log [ref=f26e360]
+  - log [ref=f26e361]
+  - log [ref=f26e362]
+  - log [ref=f26e363]
+  - log [ref=f26e364]
+  - log [ref=f26e365]
+  - log [ref=f26e366]
+  - log [ref=f26e367]

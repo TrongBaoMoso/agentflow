@@ -1,0 +1,91 @@
+- generic [active] [ref=f3e1]:
+  - alert [ref=f3e2]
+  - generic [ref=f3e3]:
+    - banner [ref=f3e4]:
+      - generic [ref=f3e5]:
+        - img "Loan Factory" [ref=f3e6]
+        - generic [ref=f3e7]: Recruit
+      - generic [aria-hidden] [ref=f3e8]:
+        - generic [ref=f3e12]: Search candidates, NMLS, companies…
+        - generic [ref=f3e13]: ⌘ K
+      - generic [ref=f3e14]:
+        - button "Notifications" [ref=f3e15] [cursor=pointer]
+        - generic [ref=f3e20]:
+          - button "Change language" [ref=f3e21] [cursor=pointer]:
+            - generic [ref=f3e22]: English
+          - button "Switch to dark mode" [ref=f3e32] [cursor=pointer]
+        - button "Your account" [ref=f3e36] [cursor=pointer]:
+          - generic [ref=f3e37]:
+            - generic [ref=f3e38]: Manh Admin
+            - generic [ref=f3e39]: manhadmin@viet18.com
+    - navigation [ref=f3e40]:
+      - navigation [ref=f3e41]:
+        - generic [ref=f3e42]: Frequent
+        - link [ref=f3e43] [cursor=pointer]:
+          - /url: /today
+        - link [ref=f3e48] [cursor=pointer]:
+          - /url: /inbox/hot
+        - link [ref=f3e52] [cursor=pointer]:
+          - /url: /inbox/cold
+        - link [ref=f3e67] [cursor=pointer]:
+          - /url: /pipeline
+        - link [ref=f3e72] [cursor=pointer]:
+          - /url: /exceptions
+        - link [ref=f3e76] [cursor=pointer]:
+          - /url: /reports
+        - link [ref=f3e82] [cursor=pointer]:
+          - /url: /work
+        - link [ref=f3e87] [cursor=pointer]:
+          - /url: /sponsorships
+      - navigation [ref=f3e93]:
+        - generic [ref=f3e94]: Configuration
+        - link [ref=f3e95] [cursor=pointer]:
+          - /url: /templates
+        - link [ref=f3e100] [cursor=pointer]:
+          - /url: /duplicates
+        - link [ref=f3e106] [cursor=pointer]:
+          - /url: /dormant
+        - link [ref=f3e111] [cursor=pointer]:
+          - /url: /conversations
+        - link [ref=f3e115] [cursor=pointer]:
+          - /url: /audit
+        - link [ref=f3e120] [cursor=pointer]:
+          - /url: /settings
+        - link [ref=f3e125] [cursor=pointer]:
+          - /url: /checklist-templates
+        - link [ref=f3e131] [cursor=pointer]:
+          - /url: /licensing-rules
+        - link [ref=f3e136] [cursor=pointer]:
+          - /url: /permissions
+    - main [ref=f3e141]:
+      - generic [ref=f3e142]:
+        - generic [ref=f3e144]:
+          - generic [ref=f3e145]: Hot leads · hand-raised — first touch
+          - heading [level=1] [ref=f3e146]:
+            - text: They reached out
+            - emphasis [ref=f3e147]: first
+            - text: — answer before it cools
+        - generic [ref=f3e148]:
+          - generic [ref=f3e153]:
+            - generic [ref=f3e154]: TEAM · waiting for first touch
+            - generic [ref=f3e155]: unowned, source raised a hand
+          - generic [ref=f3e164]:
+            - generic [ref=f3e165]: OVERDUE · past their SLA
+            - generic [ref=f3e166]: per-source first-touch hours
+        - table [ref=f3e170]:
+          - rowgroup [ref=f3e171]:
+            - row [ref=f3e172]:
+              - columnheader "Candidate" [ref=f3e173]
+              - columnheader "Source" [ref=f3e174]
+              - columnheader "Waiting" [ref=f3e175]
+              - columnheader "First-touch due" [ref=f3e176]
+              - columnheader [ref=f3e177]
+          - rowgroup [ref=f3e178]:
+            - row [ref=f3e179]:
+              - cell [ref=f3e180]
+            - row [ref=f3e182]:
+              - cell [ref=f3e183]
+            - row [ref=f3e185]:
+              - cell [ref=f3e186]
+            - row [ref=f3e188]:
+              - cell [ref=f3e189]

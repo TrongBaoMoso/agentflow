@@ -1,0 +1,124 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - heading "Follow-ups modal, v2 proposal" [level=1] [ref=e4]
+    - paragraph [ref=e5]: "The list a Recruiter opens from a time chip on Today: what is planned for this Loan Officer, and the quick actions on each plan. Each follow-up is one card: what and when with its actions on the same line, the note under it. No helper text."
+  - generic [ref=e6]:
+    - region [ref=e7]:
+      - heading "List" [level=2] [ref=e8]
+      - generic [ref=e10]:
+        - generic [ref=e11]:
+          - heading "Follow-ups · Hhlead Testthree2" [level=3] [ref=e12]
+          - button "Close" [ref=e13]: ✕
+        - generic [ref=e14]:
+          - generic [ref=e15]:
+            - generic [ref=e16]:
+              - generic [ref=e17]:
+                - generic [ref=e18]: Call
+                - generic [ref=e19]: ◷ Mon, Oct 5 · 7:00am
+              - generic [ref=e20]: agentflow-35 staging check e3g3a.1 (next_step_at)
+            - generic [ref=e21]:
+              - button "✓ Done" [ref=e22] [cursor=pointer]
+              - button "Remind later ⌄" [ref=e23] [cursor=pointer]
+              - button "Edit" [ref=e24] [cursor=pointer]: ✎
+          - generic [ref=e25]:
+            - generic [ref=e26]:
+              - generic [ref=e27]:
+                - generic [ref=e28]: Call
+                - generic [ref=e29]: ◷ Mon, Oct 5 · 9:00pm
+              - generic [ref=e30]: agentflow-35 staging check e3g3a.1 (old fields)
+            - generic [ref=e31]:
+              - button "✓ Done" [ref=e32] [cursor=pointer]
+              - button "Remind later ⌄" [ref=e33] [cursor=pointer]
+              - button "Edit" [ref=e34] [cursor=pointer]: ✎
+          - generic [ref=e35]:
+            - generic [ref=e36]:
+              - generic [ref=e37]:
+                - generic [ref=e38]: Send info
+                - generic [ref=e39]: ◷ Thu, Oct 22 · 11:00pm
+              - generic [ref=e40]: Send the comp plan PDF
+            - generic [ref=e41]:
+              - button "✓ Done" [ref=e42] [cursor=pointer]
+              - button "Remind later ⌄" [ref=e43] [cursor=pointer]
+              - button "Edit" [ref=e44] [cursor=pointer]: ✎
+        - button "＋ Add follow-up" [ref=e46] [cursor=pointer]
+    - region [ref=e47]:
+      - heading "Remind later opened" [level=2] [ref=e48]
+      - generic [ref=e50]:
+        - generic [ref=e51]:
+          - heading "Follow-ups · Hhlead Testthree2" [level=3] [ref=e52]
+          - button "Close" [ref=e53]: ✕
+        - generic [ref=e54]:
+          - generic [ref=e55]:
+            - generic [ref=e56]:
+              - generic [ref=e57]:
+                - generic [ref=e58]: Call
+                - generic [ref=e59]: ◷ Mon, Oct 5 · 7:00am
+              - generic [ref=e60]: agentflow-35 staging check e3g3a.1 (next_step_at)
+            - generic [ref=e61]:
+              - button "✓ Done" [ref=e62] [cursor=pointer]
+              - generic [ref=e63]:
+                - button "Remind later ⌄" [expanded] [ref=e64] [cursor=pointer]
+                - menu [ref=e65]:
+                  - menuitem "Tomorrow morning Tue · 11:00pm" [ref=e66] [cursor=pointer]:
+                    - text: Tomorrow morning
+                    - generic [ref=e67]: Tue · 11:00pm
+                  - menuitem "Next week Mon, Oct 26 · 11:00pm" [ref=e68] [cursor=pointer]:
+                    - text: Next week
+                    - generic [ref=e69]: Mon, Oct 26 · 11:00pm
+                  - separator [ref=e70]
+                  - menuitem "Pick a day…" [ref=e71] [cursor=pointer]
+              - button "Edit" [ref=e72] [cursor=pointer]: ✎
+          - generic [ref=e73]:
+            - generic [ref=e74]:
+              - generic [ref=e75]:
+                - generic [ref=e76]: Call
+                - generic [ref=e77]: ◷ Mon, Oct 5 · 9:00pm
+              - generic [ref=e78]: agentflow-35 staging check e3g3a.1 (old fields)
+            - generic [ref=e79]:
+              - button "✓ Done" [ref=e80] [cursor=pointer]
+              - button "Remind later ⌄" [ref=e81] [cursor=pointer]
+              - button "Edit" [ref=e82] [cursor=pointer]: ✎
+        - button "＋ Add follow-up" [ref=e84] [cursor=pointer]
+    - region [ref=e85]:
+      - heading "Add follow-up" [level=2] [ref=e86]
+      - generic [ref=e88]:
+        - generic [ref=e89]:
+          - heading "New follow-up · Hhlead Testthree2" [level=3] [ref=e90]
+          - button "Close" [ref=e91]: ✕
+        - generic [ref=e92]:
+          - generic [ref=e93]:
+            - generic [ref=e94]:
+              - text: Kind
+              - emphasis [ref=e95]: "*"
+            - generic [ref=e96]:
+              - generic [ref=e97]: Call again
+              - text: ⌄
+          - generic [ref=e98]:
+            - generic [ref=e99]:
+              - generic [ref=e100]:
+                - text: Date
+                - emphasis [ref=e101]: "*"
+              - generic [ref=e102]:
+                - generic [ref=e103]: Oct 20, 2026
+                - text: ▦
+            - generic [ref=e104]:
+              - generic [ref=e105]: Time
+              - generic [ref=e106]:
+                - generic [ref=e107]: 23:00
+                - text: ⌄
+          - generic [ref=e108]:
+            - generic [ref=e109]: Note
+            - textbox "Note" [ref=e110]:
+              - /placeholder: e.g. Chase the Q3 referral we discussed
+        - generic [ref=e111]:
+          - button "Back" [ref=e112] [cursor=pointer]
+          - button "Save follow-up" [ref=e113] [cursor=pointer]
+  - generic [ref=e114]:
+    - heading "What changes from today" [level=3] [ref=e115]
+    - list [ref=e116]:
+      - listitem [ref=e117]: "One card per follow-up: kind + time on the left and Done / Remind later / Edit on the right of the same line; the full note under it (wraps, never cut with …). The \"To do today\" label is gone; overdue times are red."
+      - listitem [ref=e118]: "Done replaces Clear: it says what the click records (the follow-up was done)."
+      - listitem [ref=e119]: The three actions are the same height and sit together at the right.
+      - listitem [ref=e120]: "Remind later menu: one line per choice with its time on the right. Removed: Closed until Tue 9:00am PT, the PT times and the your time second lines."
+      - listitem [ref=e121]: "New follow-up form: removed Pick the date and the time. It counts as past due once that moment passes., Your time. Same as Tue 9:00am PT. and Reminds you Today · 11:00pm. Buttons are 40px with 8px corners, same as the Log result modal."
+      - listitem [ref=e122]: "\"Add follow-up\" is a real outlined button in the footer instead of a dashed pill."

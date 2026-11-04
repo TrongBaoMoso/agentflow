@@ -23,3 +23,9 @@
 - Fewest words possible, plain words someone understands on first read.
 - Labels and status words only: e.g. "Waiting on HR · 3 days", "Missing for HR: NMLS", "Mark done", "Undo".
 - No sentences that explain how the system works, e.g. "Ticks itself when…" or "HR app will tick this later" — drop them.
+
+## SPEED MODE (product owner, 07/10 ~16:40): "ship mọi thứ nhanh nhất có thể, skip được thì skip"
+- Do NOT wait on the RAM gate for local integration tests. Push and let CI run them ("Integration tests" runs every IT on real Postgres). Locally run only unit tests, tsc and eslint on the changed scope.
+- Negative controls: only for permission / data-loss / money guards. Skip the rest.
+- Open the PR as soon as unit tests and the build pass. CI is the gate.
+- Keep: DECISIONS entry (short), en + vi strings, the no-hints UI rule.

@@ -1,0 +1,9 @@
+mvn_exit=1
+released
+RecruiterProgramMemberReportsTest 11 fail 5 err 0
+  RED theReferrerReportOpWritesAnActiveRowForTheMemberAndSetsNoFlag
+  RED aProgramMemberWithCreditedLeadsIsCountedWithoutAnyFlag
+  RED aProgramMembersLeadGetsNoStaffFollowUpTask
+  RED theReferrerReportIncludesMembersWithCreditedLeadsAndNobodyElseNewly
+  RED theRoundRobinNeverOverwritesAProgramMembersCredit
+DONE

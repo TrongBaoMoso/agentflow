@@ -1,0 +1,16 @@
+feat(recruiting): widen pay/credit reports to program members; keep staff automation off their leads
+
+Bao 23/10: approved LO Recruiter Program members must not get the MOSO staff
+recruiter flags. So the two credit reports now also include an active Loan
+Officer that leads are credited to (recruiter=<key>), with no flag:
+- GenerateMonthlyReferILORecruiterCronOp (ilo_refer_by_recruiter): members
+  get a row only when they have credited leads in the month.
+- UpdateReferrerLoanOfficerReport (referrer_lo_detail).
+
+Side effects of recruiter=<member> removed: ILOAutomaticAssignOwnerOp no
+longer overwrites a member's credit with the staff round-robin, and the
+default LO-recruiting follow-up is not assigned to a member. Staff recruiters
+behave exactly as before. Capability-only sites (RecruitAPI actor gate,
+role statistics, AssignOwners pickers) are unchanged.
+
+Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>

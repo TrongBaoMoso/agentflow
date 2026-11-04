@@ -319,9 +319,24 @@ Ranked by *blocking factor removed per unit of work*, not by feature size.
 4. **Offer approve/reject screen.** Six hooks already exist with zero call sites and a
    permission already gates them. This is UI-only work against a finished, tested backend —
    and it is the exact ask Brian escalated (LOs paying before approval, then needing refunds).
-5. **Onboarding / HR / Licensing admin screens.** `/admin/checklist/templates`,
+5. **Onboarding and Licensing admin screens — but NOT HR.** `/admin/checklist/templates`,
    `/admin/licensing/state-rules`, `/admin/sponsorships` all run with **no UI whatsoever**.
-   Three departments are blocked by the thinnest possible layer.
+
+   **Corrected 23/09 — D77 forbids the HR half of this.** `DECISIONS.md` D77 (27/08):
+   *"HR + Accounting = **KHÔNG GHẾ** trong V1. Không có dòng `rbac_grants` ⇒ mọi endpoint 403;
+   việc đến với họ bằng **link / omni / app của chính họ**, recruit app là trung gian."*
+   Onboarding gets a **narrow** seat only (D78), explicitly *"không mở rộng thành ghế đầy"*.
+
+   So: build the Licensing screens and Onboarding's own item queue. Do **not** build an HR
+   console — by design HR never signs in.
+
+   **This has a consequence for what I shipped today.** `V097` grants `CHECKLIST_ITEM_MANAGE_HR`
+   and `CHECKLIST_READ` to the `HR` role. Under D77 nobody holds that role, so the grant is inert
+   rather than harmful — but it leaves an unanswered question the bead did not consider:
+   **who actually closes HR's checklist items, if HR never signs in?** Either Onboarding closes
+   them on HR's behalf (which the strict per-department gate forbids), or the close arrives from
+   outside via `ai-hr-be`. Neither path exists today. Raise with Bao before HR items are made
+   `mandatory`.
 
 ### Tier 2 — real new work, ordered by who is blocked
 
@@ -424,6 +439,38 @@ Note the CEO already asked for exactly this and it was demoed as accepted:
 > chuyện này xảy ra thì làm vậy dậy dậy."* (DEMOED-OK)
 
 Whatever was demoed on 13/08, it is not in `recruit-be` on `origin/master` today.
+
+### The old system already had the routing engine — and the repo already documented it
+
+`recruit-be/docs/EVIDENCE.md:109` records the legacy **Escalation Desk → "Automation
+configuration"**: roughly **50 rules** of the form *"field combination matches → auto-create a
+ticket for department X"*, each with a default owner, a priority, a `${full_name}` template, a
+per-rule on/off switch and a per-rule audit log. Captured from a PDF on 12/08.
+
+The chain it documents is T1–T10 from the other side:
+
+| Condition | Fires |
+|---|---|
+| Paid | ticket 14 — LO Recruiting (pre-onboarding meeting) |
+| Paid + Signed + meeting + HR onboarding | ticket 09 — Licensing, "Start NMLS onboarding" |
+| NMLS Sponsored + HR Onboarding | ticket 08 — HR (license approved, checklist) |
+| **HR Completed** | **ticket 14 — Setup Call** |
+| 100% onboarded | ticket 08 — HR **+** ticket 00 — LO Support (training, assign Support Specialist) |
+
+Two things follow, and both sharpen §6 rather than replace it.
+
+**The repo's own verdict is that the model is right and should be ported**: *"Mô hình rule-đẩy-việc-liên-phòng là ĐÚNG và đã dynamic — mang sang làm routing engine (`recruit_settings`).
+Điểm hỏng không nằm ở rule mà ở **INPUT**: mọi điều kiện là dropdown bấm tay, và 'việc' tạo ra là
+**ticket văn xuôi thay vì checklist có trạng thái**."*
+
+That is a direct endorsement of the direction `agentflow-5pb2` took — replacing prose tickets with
+stateful checklist items — and it means the routing engine is not a blank-page design: ~50 rules
+already exist, with owners and priorities, and can be read off the legacy configuration.
+
+**It also settles a §6 open question.** `HR Completed → ticket 14 (Setup Call)` is documented with
+a source, so the setup-call trigger does **not** need to be asked of Miley. It also means
+`V067`'s placement of `ONB_SETUP_CALL` under `ON_100_ONBOARDED` — i.e. *after* 100% — is simply
+wrong: the legacy rule fires it on **HR Completed**, which is *before*.
 
 ### Three stubs, one pattern
 

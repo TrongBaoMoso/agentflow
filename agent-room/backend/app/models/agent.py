@@ -96,3 +96,20 @@ AGENT_CONFIGS: dict[str, AgentConfig] = {
         desk_position=(5, 3),
     ),
 }
+
+# Agents that support parallel instances (multiple can run simultaneously)
+PARALLEL_AGENT_BASES: set[str] = {"dev-be", "dev-fe"}
+
+
+def make_parallel_config(base_id: str, instance: int) -> AgentConfig:
+    """Create config for a parallel agent instance, e.g. dev-fe-2."""
+    base = AGENT_CONFIGS[base_id]
+    return AgentConfig(
+        id=f"{base_id}-{instance}",
+        name=f"{base.name} #{instance}",
+        model=base.model,
+        system_prompt=base.system_prompt,
+        auto_approve_tools=base.auto_approve_tools,
+        color=base.color,
+        desk_position=(0, 0),  # Frontend computes position dynamically
+    )

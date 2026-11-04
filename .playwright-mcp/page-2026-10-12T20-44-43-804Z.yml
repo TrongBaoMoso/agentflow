@@ -1,0 +1,104 @@
+- generic [ref=e1]:
+  - iframe [aria-hidden] [ref=e2]
+  - generic [ref=e11]:
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - link "Skip to content" [ref=e15] [cursor=pointer]:
+          - /url: ""
+        - link "Using Gmail with screen readers" [ref=e16] [cursor=pointer]:
+          - /url: ""
+      - heading [level=1] [ref=e18]:
+        - banner [ref=e19]:
+          - generic [ref=e20]:
+            - generic [ref=e21]:
+              - button "Main menu" [expanded] [ref=e22] [cursor=pointer]
+              - link "Gmail" [ref=e27] [cursor=pointer]:
+                - /url: "#inbox"
+            - generic [ref=e29]:
+              - search [ref=e31]:
+                - heading "Search" [level=2] [ref=e32]
+                - combobox "Search mail" [ref=e34]: "\"QA G2 10/10\""
+                - button "Advanced search options" [ref=e35] [cursor=pointer]
+                - button "Clear search" [ref=e38] [cursor=pointer]
+                - button "Search mail" [disabled] [ref=e42] [cursor=pointer]
+              - generic [ref=e46]:
+                - button [ref=e47] [cursor=pointer]
+                - button "Settings" [ref=e50] [cursor=pointer]
+                - generic [ref=e56]:
+                  - link "Upgrade" [ref=e58] [cursor=pointer]
+                  - tooltip [aria-hidden] [ref=e61]: Upgrade for premium features
+                - generic [ref=e63]:
+                  - generic:
+                    - button "Try Gemini" [ref=e70] [cursor=pointer]
+                    - tooltip [aria-hidden] [ref=e73]: Try Gemini
+            - generic [ref=e75]:
+              - button "Google apps" [ref=e79] [cursor=pointer]
+              - 'button "Google Account: BẢO TRỊNH (vutrongbao.trinh.ltb@gmail.com)" [ref=e85] [cursor=pointer]'
+      - alert [ref=e90]:
+        - generic [ref=e91]:
+          - generic [ref=e92]: Enable desktop notifications for Gmail.
+          - generic [ref=e93]:
+            - link "OK" [ref=e94] [cursor=pointer]
+            - link "No thanks" [ref=e95] [cursor=pointer]
+          - button "Close" [ref=e96] [cursor=pointer]
+    - generic [ref=e98]:
+      - navigation [ref=e99]:
+        - button "Compose" [ref=e102] [cursor=pointer]
+        - generic [ref=e108]:
+          - generic [ref=e110]:
+            - heading "Labels" [level=2] [ref=e111]
+            - generic [ref=e112]:
+              - generic [ref=e113]:
+                - generic [ref=e115]:
+                  - generic [ref=e120]:
+                    - link "Inbox 191 unread" [ref=e122] [cursor=pointer]:
+                      - /url: https://mail.google.com/mail/u/0/#inbox
+                      - text: Inbox
+                    - generic [ref=e123]: "191"
+                  - link "Starred" [ref=e130] [cursor=pointer]:
+                    - /url: https://mail.google.com/mail/u/0/#starred
+                  - link "Snoozed" [ref=e137] [cursor=pointer]:
+                    - /url: https://mail.google.com/mail/u/0/#snoozed
+                  - link "Sent" [ref=e144] [cursor=pointer]:
+                    - /url: https://mail.google.com/mail/u/0/#sent
+                - generic [ref=e151]:
+                  - link "Purchases 11 unread has menu" [ref=e153] [cursor=pointer]:
+                    - /url: https://mail.google.com/mail/u/0/#category/purchases
+                    - text: Purchases
+                  - generic [ref=e154]: "11"
+              - button "More labels" [ref=e156] [cursor=pointer]:
+                - generic [ref=e157]: More
+          - generic [ref=e160]:
+            - heading "Labels" [ref=e161]
+            - button "Create new label" [ref=e162] [cursor=pointer]
+          - generic:
+            - generic "Labels":
+              - heading "Labels" [level=2] [ref=e163]
+      - generic [ref=e176]:
+        - generic [ref=e177]: Loading Indicator
+        - main [ref=e207]:
+          - generic [ref=e208]:
+            - toolbar "search refinement"
+            - generic [ref=e210]:
+              - button "Showing most relevant" [ref=e216] [cursor=pointer]
+              - generic [ref=e228]:
+                - button "Input tools on/off (Ctrl-Shift-K)" [ref=e229] [cursor=pointer]
+                - button "Select input tool" [ref=e231] [cursor=pointer]
+          - heading "Conversations" [level=2] [ref=e234]
+      - generic [ref=e238]:
+        - complementary "Side panel" [ref=e239]:
+          - tablist [ref=e241]:
+            - tab "Calendar":
+              - generic [ref=e242] [cursor=pointer]
+            - tab "Keep":
+              - generic [ref=e243] [cursor=pointer]
+            - tab "Tasks":
+              - generic [ref=e244] [cursor=pointer]
+            - tab "Contacts":
+              - generic [ref=e245] [cursor=pointer]
+            - separator [disabled] [ref=e246]
+            - tab "Get Add-ons":
+              - generic [ref=e247] [cursor=pointer]
+        - generic:
+          - button "Hide side panel":
+            - generic [ref=e248] [cursor=pointer]

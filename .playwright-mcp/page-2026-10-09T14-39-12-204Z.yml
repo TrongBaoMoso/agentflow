@@ -1,0 +1,380 @@
+- generic [active] [ref=f24e1]:
+  - generic [ref=f24e7]:
+    - generic [ref=f24e8]:
+      - generic [ref=f24e9]:
+        - button "Sidebar collapse button" [ref=f24e10] [cursor=pointer]
+        - link [ref=f24e69] [cursor=pointer]:
+          - /url: "#"
+          - text: "SWAT:"
+          - link "Vinh Nguyen is SWAT officer. Please contact him for urgent problem" [ref=f24e70]:
+            - /url: "javascript:"
+          - text: "Parser:"
+          - link "Quyen Anh Vo is monitoring the parser today. Please contact him for problem with parser" [ref=f24e72]:
+            - /url: "javascript:"
+      - list [ref=f24e15]:
+        - listitem [ref=f24e16]:
+          - link "Search" [ref=f24e17] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=f24e74]: search
+        - listitem [ref=f24e18]:
+          - link "Builds" [ref=f24e19] [cursor=pointer]:
+            - /url: "##builds"
+        - listitem [ref=f24e20]:
+          - link "add" [ref=f24e75] [cursor=pointer]:
+            - /url: "##create_small_task"
+        - listitem [ref=f24e22]:
+          - link "Message" [ref=f24e23] [cursor=pointer]:
+            - /url: javascript:;
+            - generic [ref=f24e77]: notifications
+          - text: 
+        - listitem [ref=f24e24]:
+          - link [ref=f24e25] [cursor=pointer]:
+            - /url: javascript:;
+            - text: Bao Trinh
+            - img "Bao Trinh" [ref=f24e26]
+      - generic [ref=f24e27]:
+        - button "search" [ref=f24e28]
+        - generic [ref=f24e79]:
+          - searchbox "Search input" [ref=f24e80]
+          - searchbox "Search input" [ref=f24e81]
+        - link "close search" [ref=f24e30] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=f24e82]: close
+    - generic [ref=f24e32]:
+      - list [ref=f24e33]:
+        - listitem [ref=f24e34]:
+          - link "Bao Trinh  Bao Trinh Dev" [ref=f24e35] [cursor=pointer]:
+            - /url: javascript:;
+            - img "Bao Trinh" [ref=f24e38]
+            - generic [ref=f24e39]:
+              - generic [ref=f24e40]: 
+              - text: Bao Trinh
+              - generic [ref=f24e41]: Dev
+        - listitem: 
+      - list [ref=f24e42]:
+        - listitem [ref=f24e43]: X Moso
+        - listitem [ref=f24e44]:
+          - tab "group Company directory" [ref=f24e84] [cursor=pointer]:
+            - generic [ref=f24e85]: group
+            - text: Company directory
+        - listitem [ref=f24e46]:
+          - link " assignment_o Activities" [ref=f24e86] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f24e48]: 
+            - generic [ref=f24e87]: assignment_o
+            - text: Activities
+        - listitem [ref=f24e49]:
+          - link " check Reports" [ref=f24e88] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f24e51]: 
+            - generic [ref=f24e89]: check
+            - text: Reports
+        - listitem [ref=f24e52]:
+          - link " settings Builds" [ref=f24e90] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f24e54]: 
+            - generic [ref=f24e91]: settings
+            - text: Builds
+        - listitem [ref=f24e55]:
+          - link " bug_report Errors" [ref=f24e92] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f24e57]: 
+            - generic [ref=f24e93]: bug_report
+            - text: Errors
+        - listitem [ref=f24e58]:
+          - link " System" [ref=f24e59] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f24e60]: 
+            - text: System
+    - generic [ref=f24e94]:
+      - heading "Builds bao.trinh@moso.com broke build 10 hour(s) ago." [level=1] [ref=f24e95]:
+        - text: Builds
+        - paragraph [ref=f24e96]:
+          - generic [ref=f24e97]: bao.trinh@moso.com broke build 10 hour(s) ago.
+      - generic [ref=f24e100]:
+        - tablist [ref=f24e101]:
+          - tab "builds" [ref=f24e102] [cursor=pointer]: Builds
+          - tab "status" [ref=f24e103] [cursor=pointer]:
+            - generic [ref=f24e104]: rss_feed
+            - text: Status
+          - tab "parsers" [ref=f24e105] [cursor=pointer]:
+            - generic [ref=f24e106]: insert_drive_file
+            - text: Parsers
+          - tab "tests" [ref=f24e107] [cursor=pointer]:
+            - generic [ref=f24e108]: insert_drive_file
+            - text: Tests
+          - tab "builders" [ref=f24e109] [cursor=pointer]:
+            - generic [ref=f24e110]: settings
+            - text: Builders
+          - tab "activities" [ref=f24e111] [cursor=pointer]:
+            - generic [ref=f24e112]: history
+            - text: Activities
+        - generic [ref=f24e115]:
+          - generic [ref=f24e116]:
+            - generic [ref=f24e117]:
+              - button "sync" [ref=f24e118] [cursor=pointer]
+              - link [ref=f24e121] [cursor=pointer]:
+                - /url: "javascript:"
+            - form [ref=f24e122]:
+              - generic "Repo" [ref=f24e123]:
+                - generic [ref=f24e124]:
+                  - text: Repo
+                  - generic [ref=f24e125]: (optional)
+                - combobox [aria-hidden] [ref=f24e126]
+                - combobox "× moso" [ref=f24e129] [cursor=pointer]:
+                  - generic "moso" [ref=f24e130]:
+                    - generic [ref=f24e131]: ×
+                    - text: moso
+              - generic "Type" [ref=f24e132]:
+                - generic [ref=f24e133]:
+                  - text: Type
+                  - generic [ref=f24e134]: (optional)
+                - combobox [aria-hidden] [ref=f24e135]
+                - combobox "Type" [ref=f24e138] [cursor=pointer]
+              - generic "Status" [ref=f24e140]:
+                - generic [ref=f24e141]:
+                  - text: Status
+                  - generic [ref=f24e142]: (optional)
+                - combobox [aria-hidden] [ref=f24e143]
+                - combobox "Status" [ref=f24e146] [cursor=pointer]
+            - generic [ref=f24e148]:
+              - button "Reset filters" [ref=f24e149] [cursor=pointer]
+              - button "More" [ref=f24e150] [cursor=pointer]
+          - generic [ref=f24e151]:
+            - generic [ref=f24e153]:
+              - generic [ref=f24e154]: Type
+              - generic [ref=f24e155]: Status
+              - generic [ref=f24e156]: Note
+              - generic [ref=f24e157]: Server
+              - generic [ref=f24e158]: Time (m)
+            - generic [ref=f24e159]:
+              - generic [ref=f24e160]:
+                - generic [ref=f24e161]:
+                  - group [ref=f24e164]:
+                    - button "deploy_hot_fix" [ref=f24e165] [cursor=pointer]
+                  - generic [ref=f24e166]: succeeded
+                  - generic [ref=f24e169]: Khai Nguyen Deploy Hot Fix for Moso v3.64.1 (d)
+                  - generic [ref=f24e171] [cursor=pointer]: batman
+                  - generic [ref=f24e172]:
+                    - generic [ref=f24e173]: 15m 40s
+                    - generic [ref=f24e174]: 10/9/2026, 7:34:57 PM
+                - generic [ref=f24e175]:
+                  - generic [ref=f24e176]:
+                    - group [ref=f24e178]:
+                      - button "test" [ref=f24e179] [cursor=pointer]
+                    - generic [ref=f24e180]: moso
+                  - generic [ref=f24e181]:
+                    - generic [ref=f24e182] [cursor=pointer]: killed
+                    - generic [ref=f24e184] [cursor=pointer]: "0"
+                  - 'generic "Expired: created more than 2 hours ago" [ref=f24e186]':
+                    - text: Bao (base)
+                    - link [ref=f24e187] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f24e188]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                - generic [ref=f24e191]:
+                  - generic [ref=f24e192]:
+                    - group [ref=f24e194]:
+                      - button "test" [ref=f24e195] [cursor=pointer]
+                    - generic [ref=f24e196]: moso
+                  - generic [ref=f24e197]:
+                    - generic [ref=f24e198] [cursor=pointer]: killed
+                    - generic [ref=f24e200] [cursor=pointer]: "8"
+                  - 'generic "Expired: created more than 2 hours ago" [ref=f24e202]':
+                    - text: Bao (base)
+                    - link [ref=f24e203] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f24e204]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                - generic [ref=f24e207]:
+                  - group [ref=f24e210]:
+                    - button "deploy_hot_fix" [ref=f24e211] [cursor=pointer]
+                  - generic [ref=f24e212]: succeeded
+                  - generic [ref=f24e215]: Tho Le Deploy Hot Fix for Moso v3.64.1 (c)
+                  - generic [ref=f24e217] [cursor=pointer]: batman
+                  - generic [ref=f24e218]: 15m 43s
+                - generic [ref=f24e220]:
+                  - generic [ref=f24e221]:
+                    - group [ref=f24e223]:
+                      - button "deploy_prod" [ref=f24e224] [cursor=pointer]
+                    - generic [ref=f24e225]: b-dot-lender-rate
+                  - generic [ref=f24e226]: killed
+                  - generic "git gc --auto" [ref=f24e230]:
+                    - text: Khai Deploy PRODUCTION lender-rateDao (packs)
+                    - link "Cap lender logo width at 200px so it stays inside the Best lender column" [ref=f24e231] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/2bca0c1dee5aff9ef6560cf5e510cead65fdacd4
+                  - generic [ref=f24e232] [cursor=pointer]: batman
+                  - generic [ref=f24e233]: 10/9/2026, 10:12:15 AM
+                - generic [ref=f24e235]:
+                  - generic [ref=f24e236]:
+                    - group [ref=f24e238]:
+                      - button "deploy_cloud_tasks" [ref=f24e239] [cursor=pointer]
+                    - generic [ref=f24e240]: b-dot-lenderrate-master
+                  - generic [ref=f24e241]: succeeded
+                  - generic [ref=f24e244]: Deploy cloud tasks to lenderrate-master version b
+                  - generic [ref=f24e245] [cursor=pointer]: batman
+                  - generic [ref=f24e246]:
+                    - generic [ref=f24e247]: 1m 40s
+                    - generic [ref=f24e248]: 10/9/2026, 9:57:26 AM
+                - generic [ref=f24e249]:
+                  - generic [ref=f24e250]:
+                    - group [ref=f24e252]:
+                      - button "change_version" [ref=f24e253] [cursor=pointer]
+                    - generic [ref=f24e254]: b-dot-lenderrate-master
+                  - generic [ref=f24e255]: failed
+                  - generic [ref=f24e258]: Set default lenderrate-master to b
+                  - generic [ref=f24e259] [cursor=pointer]: b1
+                  - generic [ref=f24e260]:
+                    - generic [ref=f24e261]: 23s
+                    - generic [ref=f24e262]: 10/9/2026, 9:57:50 AM
+                - generic [ref=f24e263]:
+                  - generic [ref=f24e264]:
+                    - group [ref=f24e266]:
+                      - button "config" [ref=f24e267] [cursor=pointer]
+                    - generic [ref=f24e268]: b-dot-lenderrate-master
+                  - generic [ref=f24e269]: succeeded
+                  - generic [ref=f24e272]: "Sync customization: lenderrate-master"
+                  - generic [ref=f24e273] [cursor=pointer]: b2
+                  - generic [ref=f24e274]:
+                    - generic [ref=f24e275]: 47s
+                    - generic [ref=f24e276]: 10/9/2026, 9:57:01 AM
+                - generic [ref=f24e277]:
+                  - generic [ref=f24e278]:
+                    - group [ref=f24e280]:
+                      - button "deploy" [ref=f24e281] [cursor=pointer]
+                    - generic [ref=f24e282]: b-dot-lenderrate-master
+                  - generic [ref=f24e283]: succeeded
+                  - generic [ref=f24e287]:
+                    - text: Dao (packs)
+                    - link "Cap lender logo width at 200px so it stays inside the Best lender column" [ref=f24e288] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/2bca0c1dee5aff9ef6560cf5e510cead65fdacd4
+                  - generic [ref=f24e289] [cursor=pointer]: batman
+                  - generic [ref=f24e290]:
+                    - generic [ref=f24e291]: 2m 47s
+                    - generic [ref=f24e292]: 10/9/2026, 9:54:12 AM
+                - generic [ref=f24e293]:
+                  - generic [ref=f24e294]:
+                    - group [ref=f24e296]:
+                      - button "packaging" [ref=f24e297] [cursor=pointer]
+                    - generic [ref=f24e298]: moso
+                  - generic [ref=f24e299]: succeeded
+                  - generic [ref=f24e303]:
+                    - text: Dao (packs)
+                    - link "Cap lender logo width at 200px so it stays inside the Best lender column" [ref=f24e304] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/2bca0c1dee5aff9ef6560cf5e510cead65fdacd4
+                  - generic [ref=f24e305] [cursor=pointer]: batman
+                  - generic [ref=f24e306]:
+                    - generic [ref=f24e307]: 8m 14s
+                    - generic [ref=f24e308]: 10/9/2026, 9:45:56 AM
+                - generic [ref=f24e309]:
+                  - generic [ref=f24e310]:
+                    - group [ref=f24e312]:
+                      - button "test" [ref=f24e313] [cursor=pointer]
+                    - generic [ref=f24e314]: moso
+                  - generic [ref=f24e315]:
+                    - generic [ref=f24e316] [cursor=pointer]: succeeded
+                    - generic [ref=f24e318] [cursor=pointer]: "0"
+                  - generic [ref=f24e320]:
+                    - text: Dao (packs)
+                    - link "Cap lender logo width at 200px so it stays inside the Best lender column" [ref=f24e321] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/2bca0c1dee5aff9ef6560cf5e510cead65fdacd4
+                  - generic [ref=f24e322] [cursor=pointer]: b4
+                  - generic [ref=f24e323]:
+                    - generic [ref=f24e324]: 2m 18s
+                    - generic [ref=f24e325]: 10/9/2026, 9:43:34 AM
+                - generic [ref=f24e326]:
+                  - generic [ref=f24e327]:
+                    - group [ref=f24e329]:
+                      - button "test" [ref=f24e330] [cursor=pointer]
+                    - generic [ref=f24e331]: moso
+                  - generic [ref=f24e332]:
+                    - generic [ref=f24e333] [cursor=pointer]: succeeded
+                    - generic [ref=f24e335] [cursor=pointer]: "8"
+                  - generic [ref=f24e337]:
+                    - text: Dao (packs)
+                    - link "Cap lender logo width at 200px so it stays inside the Best lender column" [ref=f24e338] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/2bca0c1dee5aff9ef6560cf5e510cead65fdacd4
+                  - generic [ref=f24e339] [cursor=pointer]: bmac
+                  - generic [ref=f24e340]:
+                    - generic [ref=f24e341]: 1m 9s
+                    - generic [ref=f24e342]: 10/9/2026, 9:43:34 AM
+                - generic [ref=f24e343]:
+                  - group [ref=f24e346]:
+                    - button "sync" [ref=f24e347] [cursor=pointer]
+                  - generic [ref=f24e348]: failed
+                  - generic [ref=f24e351]: "!5716104026521600:Template(\"admins/ag1zfmxlbmRlci1yYXRlch8LEgVBZG1pbiIUa2JhcmF0YWtrZUBnbWFpbC5jb20MogEQNTcxNjEwNDAyNjUyMTYwMA/agent_basic_funnel\") updated on lender-rate"
+                  - generic [ref=f24e352] [cursor=pointer]: b4
+                  - generic [ref=f24e353]:
+                    - generic [ref=f24e354]: 28s
+                    - generic [ref=f24e355]: 10/9/2026, 5:47:21 AM
+                - generic [ref=f24e356]:
+                  - group [ref=f24e359]:
+                    - button "sync" [ref=f24e360] [cursor=pointer]
+                  - generic [ref=f24e361]: failed
+                  - generic [ref=f24e364]: "!5716104026521600:Template(\"admins/ag1zfmxlbmRlci1yYXRlch8LEgVBZG1pbiIUa2JhcmF0YWtrZUBnbWFpbC5jb20MogEQNTcxNjEwNDAyNjUyMTYwMA/agent_heloc_funnel\") updated on lender-rate"
+                  - generic [ref=f24e365] [cursor=pointer]: b5
+                  - generic [ref=f24e366]:
+                    - generic [ref=f24e367]: 46s
+                    - generic [ref=f24e368]: 10/9/2026, 5:47:02 AM
+                - generic [ref=f24e369]:
+                  - group [ref=f24e372]:
+                    - button "sync" [ref=f24e373] [cursor=pointer]
+                  - generic [ref=f24e374]: failed
+                  - generic [ref=f24e377]: "!5716104026521600:Template(\"admins/ag1zfmxlbmRlci1yYXRlch8LEgVBZG1pbiIUa2JhcmF0YWtrZUBnbWFpbC5jb20MogEQNTcxNjEwNDAyNjUyMTYwMA/agent_va_funnel\") updated on lender-rate"
+                  - generic [ref=f24e378] [cursor=pointer]: b2
+                  - generic [ref=f24e379]:
+                    - generic [ref=f24e380]: 24s
+                    - generic [ref=f24e381]: 10/9/2026, 5:47:20 AM
+              - text: 
+          - generic "Page Navigation" [ref=f24e382]:
+            - list [ref=f24e384]:
+              - listitem [ref=f24e385] [cursor=pointer]:
+                - generic "Previous" [ref=f24e386]: «
+              - listitem [ref=f24e387] [cursor=pointer]:
+                - generic [ref=f24e388]: 1-15 of over 100
+              - listitem [ref=f24e389] [cursor=pointer]:
+                - generic "Next" [ref=f24e390]: »
+            - generic [ref=f24e391]:
+              - text: Showing
+              - combobox "Items per page" [ref=f24e392]:
+                - option "5"
+                - option "10" [selected]
+                - option "25"
+                - option "50"
+                - option "100"
+              - text: items per page
+    - link "Scroll to top" [ref=f24e64] [cursor=pointer]:
+      - /url: javascript:;
+      - generic [ref=f24e393]: keyboard_arrow_up
+  - iframe
+  - generic [ref=f24e65]:
+    - link "System Improvement?" [ref=f24e66] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f24e394]: send
+    - link "Help?" [ref=f24e67] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f24e395]: help
+    - link "Chat" [ref=f24e68] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f24e396]: chat
+  - log [ref=f24e397]
+  - log [ref=f24e398]
+  - log [ref=f24e399]
+  - log [ref=f24e400]
+  - log [ref=f24e401]
+  - log [ref=f24e402]
+  - log [ref=f24e403]
+  - log [ref=f24e404]
+  - log [ref=f24e405]
+  - log [ref=f24e406]
+  - log [ref=f24e407]
+  - log [ref=f24e408]
+  - log [ref=f24e409]
+  - log [ref=f24e410]
+  - log [ref=f24e411]
+  - log [ref=f24e412]
+  - log [ref=f24e413]
+  - log [ref=f24e414]
+  - log [ref=f24e415]
+  - log [ref=f24e416]
+  - log [ref=f24e417]

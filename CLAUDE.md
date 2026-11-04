@@ -91,7 +91,7 @@ User: "I want feature X"
 | Pre-commit hook | husky + lint-staged (ESLint fix → Prettier → stylelint) + `npm run build` |
 | Deployment | Docker (Dockerfile + Dockerfile.production), Next.js standalone |
 | Product | LoanFactory public marketing site (US fintech mortgage) |
-| Git repo | Separate repo: `github.com/mosoteam/lf-homepage` — branch FROM `production`, merge INTO `master` |
+| Git repo | Separate repo: `github.com/LoanFactory-Inc/lf-homepage` — **since 2026-09-22: branch FROM `master`, PR INTO `master` (deploys STAGING), then PR `master` INTO `production` (deploys PRODUCTION). The `release` branch was deleted; its tip is the tag `archive/release-2026-09-22`. No more twin cherry-picks.** |
 
 ### lf-borrower-portal/
 

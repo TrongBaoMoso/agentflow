@@ -1,0 +1,52 @@
+- generic [ref=f3e2]:
+  - banner [ref=f3e3]:
+    - link [ref=f3e4] [cursor=pointer]:
+      - /url: /
+      - img "Logo Chính phủ Việt Nam" [ref=f3e5]
+    - link [ref=f3e7] [cursor=pointer]:
+      - /url: https://sso.dancuquocgia.gov.vn/auth?response_type=code&client_id=sso-c12-dvc-web&redirect_uri=https%3A%2F%2Fdichvucong.gov.vn%2Fsso&scope=openid
+      - button "Đăng nhập" [ref=f3e8]
+  - generic [ref=f3e10]:
+    - banner [ref=f3e11]:
+      - navigation [ref=f3e14]:
+        - list [ref=f3e15]:
+          - listitem [ref=f3e16]:
+            - link [ref=f3e17] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=f3e20]:
+            - generic [ref=f3e21] [cursor=pointer]: Thông tin và dịch vụ
+          - listitem [ref=f3e22]:
+            - link "Thanh toán trực tuyến" [ref=f3e23] [cursor=pointer]:
+              - /url: /thanh-toan-truc-tuyen
+          - listitem [ref=f3e24]:
+            - generic [ref=f3e25] [cursor=pointer]: Phản ánh kiến nghị
+          - listitem [ref=f3e28]:
+            - generic [ref=f3e29] [cursor=pointer]: Hỗ trợ
+    - navigation [ref=f3e35]:
+      - list [ref=f3e36]:
+        - listitem [ref=f3e37]:
+          - generic [ref=f3e38] [cursor=pointer]: Thủ tục hành chính
+        - listitem [ref=f3e41]:
+          - link "Dịch vụ công trực tuyến" [ref=f3e42] [cursor=pointer]:
+            - /url: /dvc-dich-vu-cong-truc-tuyen
+        - listitem [ref=f3e43]:
+          - link "Dịch vụ công nổi bật" [ref=f3e44] [cursor=pointer]:
+            - /url: /dich-vu-cong-noi-bat
+        - listitem [ref=f3e45]:
+          - link "Tra cứu hồ sơ" [ref=f3e46] [cursor=pointer]:
+            - /url: /tra-cuu-ho-so
+        - listitem [ref=f3e47]:
+          - link "Câu hỏi thường gặp" [ref=f3e48] [cursor=pointer]:
+            - /url: /cau-hoi-thuong-gap
+    - navigation [ref=f3e50]:
+      - link "Trang chủ" [ref=f3e52] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f3e53]: Thủ tục hành chính
+      - link "Thủ tục hành chính" [ref=f3e60] [cursor=pointer]:
+        - /url: /thu-tuc-hanh-chinh
+      - generic [ref=f3e61]: Chi tiết thủ tục
+  - main [ref=f3e65]:
+    - img "Loading..." [ref=f3e69]
+  - contentinfo [ref=f3e70]:
+    - generic [ref=f3e71]: "Cơ quan chủ quản: Trung tâm dữ liệu quốc gia - Bộ Công an. Tổng đài hỗ trợ: 18001096"
+  - region "Notifications Alt+T"

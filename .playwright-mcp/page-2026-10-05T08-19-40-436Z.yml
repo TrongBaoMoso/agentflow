@@ -1,0 +1,21 @@
+- generic [active] [ref=f4e1]:
+  - generic [ref=f4e2]:
+    - banner [ref=f4e3]:
+      - generic [ref=f4e4]:
+        - link "Loan Factory HR Center" [ref=f4e8] [cursor=pointer]:
+          - /url: /tasks
+          - generic [ref=f4e16]:
+            - img "Loan Factory" [ref=f4e17]
+            - generic [ref=f4e33]: HR Center
+        - generic [ref=f4e34]:
+          - button "Switch to dark mode" [ref=f4e35] [cursor=pointer]
+          - button "Notifications" [ref=f4e40] [cursor=pointer]
+          - button "Discovery" [ref=f4e45] [cursor=pointer]
+          - button "Account menu" [ref=f4e57] [cursor=pointer]:
+            - generic [ref=f4e58]: "?"
+    - navigation [ref=f4e60]:
+      - navigation "Main navigation" [ref=f4e61]
+      - button "AI Assistant" [ref=f4e63] [cursor=pointer]
+      - button "Collapse menu" [expanded] [ref=f4e74] [cursor=pointer]
+    - main [ref=f4e77]
+  - alert [ref=f4e81]

@@ -72,3 +72,22 @@ class AgentManager:
     def get_all_agents(self) -> list[AgentConfig]:
         """Return a list of all agent configurations."""
         return list(AGENT_CONFIGS.values())
+
+    async def register_agent(self, session_id: str, agent_id: str) -> None:
+        """Dynamically register a new parallel agent for this session."""
+        if session_id not in self._states:
+            self._init_session(session_id)
+        self._states[session_id][agent_id] = {'state': 'idle', 'detail': None}
+        await self._event_bus.publish(session_id, {
+            'type': 'agent_registered',
+            'agent': agent_id,
+        })
+
+    async def unregister_agent(self, session_id: str, agent_id: str) -> None:
+        """Remove a parallel agent when its task completes."""
+        if session_id in self._states:
+            self._states[session_id].pop(agent_id, None)
+        await self._event_bus.publish(session_id, {
+            'type': 'agent_unregistered',
+            'agent': agent_id,
+        })

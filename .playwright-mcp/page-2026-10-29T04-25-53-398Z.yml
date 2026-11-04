@@ -1,0 +1,220 @@
+- generic [ref=e2]:
+  - navigation "Main navigation" [ref=e3]:
+    - generic [ref=e4]:
+      - link "Loan Factory Recruit" [ref=e5] [cursor=pointer]:
+        - /url: "#top"
+        - generic [ref=e6]: Recruit
+      - generic [ref=e8]:
+        - button "Loan Factory apps" [ref=e10] [cursor=pointer]
+        - link "Sign in" [ref=e20] [cursor=pointer]:
+          - /url: /login
+  - main [ref=e21]:
+    - region [ref=e22]:
+      - generic [ref=e23]:
+        - generic [ref=e24]:
+          - generic [ref=e25]: For Loan Officers who refer Loan Officers
+          - heading [level=1] [ref=e26]:
+            - text: Refer a Loan Officer.
+            - emphasis [ref=e27]: See when you get paid.
+          - paragraph [ref=e28]: Every person you referred, their stage, and your bonus. In one place.
+          - generic [ref=e29]:
+            - link "Already referred someone? Sign in →" [ref=e30] [cursor=pointer]:
+              - /url: /login
+            - link "See how it works" [ref=e31] [cursor=pointer]:
+              - /url: "#track"
+          - paragraph [ref=e32]: No referral yet? Share your own website + /loan-officer with Loan Officers you know. Come back here after your first referral.
+          - generic [ref=e33]:
+            - generic [ref=e34]:
+              - generic [aria-hidden] [ref=e35]: ●
+              - text: Live stage updates
+            - generic [ref=e36]:
+              - generic [aria-hidden] [ref=e37]: ●
+              - text: Bonus countdown
+        - group "Example referral" [ref=e38]:
+          - generic [ref=e41]:
+            - generic [ref=e42]: Licensed in TX, CA
+            - text: Today
+          - generic [ref=e43]:
+            - generic [ref=e44]:
+              - generic [ref=e45]: JL
+              - generic [ref=e46]:
+                - generic [ref=e47]: Jordan Lee
+                - generic [ref=e48]: Referred Aug 4 · Example
+              - generic [ref=e49]: Onboarded
+            - generic [ref=e50]:
+              - generic [ref=e51]:
+                - generic [ref=e53]: Referred
+                - generic [ref=e54]: Aug 4
+              - generic [ref=e55]:
+                - generic [ref=e57]: Licensed
+                - generic [ref=e58]: Aug 20
+              - generic [ref=e59]:
+                - generic [ref=e61]: Onboarded
+                - generic [ref=e62]: Sep 8
+            - generic [ref=e63]:
+              - paragraph [ref=e64]: "Bonus: 60 days after onboarding"
+              - paragraph [ref=e67]:
+                - generic [ref=e68]: Day 37 of 60
+                - text: · Eligible on Nov 7
+          - generic [ref=e71]:
+            - generic [ref=e72]: Bonus approved
+            - text: Maria Gomez
+    - region "Features" [ref=e73]:
+      - generic [ref=e74]:
+        - generic [ref=e75]:
+          - generic [ref=e76]:
+            - generic [ref=e77]: Your referrals
+            - heading "Know where every referral stands." [level=2] [ref=e78]
+            - paragraph [ref=e79]: No more asking the recruiter. Each person's stage updates on its own.
+            - list [ref=e80]:
+              - listitem [ref=e81]: ✓ Referred, licensed, onboarded, with dates
+              - listitem [ref=e82]: ✓ Licensed states for each person
+              - listitem [ref=e83]: ✓ Filter by stage
+          - generic [ref=e85]:
+            - generic [ref=e86]:
+              - generic [ref=e87]: My referrals
+              - generic [ref=e88]: Example
+            - generic [ref=e89]:
+              - generic [ref=e90]: All 6
+              - generic [ref=e91]: In progress 3
+              - generic [ref=e92]: Onboarded 2
+            - list [ref=e93]:
+              - listitem [ref=e94]:
+                - generic [ref=e95]: JL
+                - generic [ref=e96]:
+                  - generic [ref=e97]: Jordan Lee
+                  - text: Onboarded Sep 8
+                - generic [ref=e98]: Onboarded
+              - listitem [ref=e99]:
+                - generic [ref=e100]: AN
+                - generic [ref=e101]:
+                  - generic [ref=e102]: An Nguyen
+                  - text: Referred Sep 12 · Licensed TX, CA
+                - generic [ref=e103]: Onboarding
+              - listitem [ref=e104]:
+                - generic [ref=e105]: MG
+                - generic [ref=e106]:
+                  - generic [ref=e107]: Maria Gomez
+                  - text: Onboarded Aug 30
+                - generic [ref=e108]: Onboarded
+              - listitem [ref=e109]:
+                - generic [ref=e110]: DP
+                - generic [ref=e111]:
+                  - generic [ref=e112]: David Park
+                  - text: Referred Oct 9
+                - generic [ref=e113]: Referred
+        - generic [ref=e114]:
+          - generic [ref=e115]:
+            - generic [ref=e116]: Your bonus
+            - heading "See the day your bonus is due." [level=2] [ref=e117]
+            - paragraph [ref=e118]: A countdown for each person, then every payment step.
+            - list [ref=e119]:
+              - listitem [ref=e120]: ✓ Eligible 60 days after they are onboarded
+              - listitem [ref=e121]: ✓ Requested, approved, paid
+              - listitem [ref=e122]: ✓ The date of each step
+          - generic [ref=e124]:
+            - generic [ref=e125]:
+              - generic [ref=e126]: Maria Gomez · bonus
+              - generic [ref=e127]: Example
+            - generic [ref=e128]:
+              - generic [aria-hidden] [ref=e129]: ✓
+              - paragraph [ref=e130]:
+                - generic [ref=e131]: Bonus reached
+                - text: Eligible since Oct 29
+            - generic [ref=e132]:
+              - generic [ref=e133]:
+                - generic [ref=e134]: ✓
+                - generic [ref=e135]: Requested
+                - generic [ref=e136]: Oct 30
+              - generic [ref=e137]:
+                - generic [ref=e138]: ✓
+                - generic [ref=e139]: Approved
+                - generic [ref=e140]: Nov 3
+              - generic [ref=e141]:
+                - generic [ref=e142]: "3"
+                - generic [ref=e143]: Paid
+                - generic [ref=e144]: Waiting
+        - generic [ref=e145]:
+          - generic [ref=e146]:
+            - generic [ref=e147]: Your numbers
+            - heading "All your referrals at a glance." [level=2] [ref=e148]
+            - paragraph [ref=e149]: Five numbers that show how your referrals are doing.
+            - list [ref=e150]:
+              - listitem [ref=e151]: ✓ Referred and in progress
+              - listitem [ref=e152]: ✓ Onboarded
+              - listitem [ref=e153]: ✓ Bonus pending and paid
+          - generic [ref=e155]:
+            - generic [ref=e156]:
+              - generic [ref=e157]: This year
+              - generic [ref=e158]: Example
+            - generic [ref=e159]:
+              - generic [ref=e160]:
+                - generic [ref=e161]: "6"
+                - generic [ref=e162]: Referred
+              - generic [ref=e163]:
+                - generic [ref=e164]: "3"
+                - generic [ref=e165]: In progress
+              - generic [ref=e166]:
+                - generic [ref=e167]: "2"
+                - generic [ref=e168]: Onboarded
+              - generic [ref=e169]:
+                - generic [ref=e170]: "1"
+                - generic [ref=e171]: Bonus pending
+              - generic [ref=e172]:
+                - generic [ref=e173]: "1"
+                - generic [ref=e174]: Bonus paid
+    - region [ref=e175]:
+      - generic [ref=e177]:
+        - generic [ref=e178]:
+          - heading "Refer more with the Ambassador Program." [level=2] [ref=e179]
+          - paragraph [ref=e180]: Loan Factory pays you back for the ads you run to bring in Loan Officers.
+        - link "See the program →" [ref=e181] [cursor=pointer]:
+          - /url: https://www.loanfactory.com/ambassador-program
+  - contentinfo [ref=e182]:
+    - generic [ref=e183]:
+      - generic [ref=e184]:
+        - generic [ref=e185]:
+          - generic [ref=e186]:
+            - img "Loan Factory" [ref=e187]
+            - generic [ref=e188]: Recruit
+          - paragraph [ref=e189]: Track every Loan Officer you refer, and when your bonus is paid.
+          - list "Loan Factory on social media" [ref=e190]:
+            - listitem [ref=e191]:
+              - link "Facebook" [ref=e192] [cursor=pointer]:
+                - /url: https://www.facebook.com/LoanFactoryHQ
+            - listitem [ref=e193]:
+              - link "Instagram" [ref=e194] [cursor=pointer]:
+                - /url: https://www.instagram.com/loanfactoryhq/
+            - listitem [ref=e195]:
+              - link "LinkedIn" [ref=e196] [cursor=pointer]:
+                - /url: https://www.linkedin.com/company/17774093
+            - listitem [ref=e197]:
+              - link "TikTok" [ref=e198] [cursor=pointer]:
+                - /url: https://tiktok.com/@loanfactoryhq
+            - listitem [ref=e199]:
+              - link "X" [ref=e200] [cursor=pointer]:
+                - /url: https://x.com/loanfactoryus
+            - listitem [ref=e201]:
+              - link "YouTube" [ref=e202] [cursor=pointer]:
+                - /url: https://youtube.com/@loanfactoryhq
+        - generic [ref=e203]:
+          - heading "Contact" [level=2] [ref=e204]
+          - paragraph [ref=e205]: Questions? We're one message away.
+          - link "support@loanfactory.com" [ref=e206] [cursor=pointer]:
+            - /url: mailto:support@loanfactory.com
+          - paragraph [ref=e207]: Loan Factory, Inc.2195 Tully Road, San Jose, CA 95122
+        - generic [ref=e208]:
+          - heading "Programs" [level=2] [ref=e209]
+          - link "Ambassador Program" [ref=e210] [cursor=pointer]:
+            - /url: https://www.loanfactory.com/ambassador-program
+          - link "Refer a Loan Officer" [ref=e211] [cursor=pointer]:
+            - /url: https://www.loanfactory.com/refer/refer-a-loan-officer
+          - link "For Loan Officers" [ref=e212] [cursor=pointer]:
+            - /url: https://www.loanfactory.com/loan-officer
+        - generic [ref=e213]:
+          - heading "Legal" [level=2] [ref=e214]
+          - link "Terms and Conditions" [ref=e215] [cursor=pointer]:
+            - /url: https://www.loanfactory.com/terms-and-conditions
+          - link "Privacy Policy" [ref=e216] [cursor=pointer]:
+            - /url: https://www.loanfactory.com/privacy
+      - generic [ref=e217]: © 2026 Loan Factory, Inc. All rights reserved.

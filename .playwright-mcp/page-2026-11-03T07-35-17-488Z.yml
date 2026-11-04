@@ -1,0 +1,1029 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - heading "/join Â· full flow" [level=1] [ref=e4]
+    - paragraph [ref=e5]: "Every control works: pick, type, add rows. The site's global header and footer sit above and below each screen."
+    - navigation "Screens" [ref=e6]:
+      - link "1 About you" [ref=e7] [cursor=pointer]:
+        - /url: "#s1"
+      - link "2 License details" [ref=e8] [cursor=pointer]:
+        - /url: "#s2"
+      - link "3 Quick call?" [ref=e9] [cursor=pointer]:
+        - /url: "#s3"
+      - link "Call requested" [ref=e10] [cursor=pointer]:
+        - /url: "#s3b"
+      - link "4 Finish your application" [ref=e11] [cursor=pointer]:
+        - /url: "#s4"
+      - link "5 Review" [ref=e12] [cursor=pointer]:
+        - /url: "#s5"
+      - link "Waiting for review" [ref=e13] [cursor=pointer]:
+        - /url: "#s5b"
+      - link "6 Pay $100" [ref=e14] [cursor=pointer]:
+        - /url: "#s6"
+      - link "6 Sign" [ref=e15] [cursor=pointer]:
+        - /url: "#s7"
+      - link "7 NMLS access" [ref=e16] [cursor=pointer]:
+        - /url: "#s8"
+      - link "Done" [ref=e17] [cursor=pointer]:
+        - /url: "#s9"
+  - generic [ref=e19]:
+    - generic [ref=e20]:
+      - generic [ref=e21]: Step 1 Â· About you
+      - generic [ref=e22]: /join
+    - generic [ref=e23]:
+      - generic [ref=e24]: "Page:"
+      - button "Company page" [pressed] [ref=e25] [cursor=pointer]
+      - button "A Loan Officer's own page (e.g. /mattmoghaddam/join)" [ref=e26] [cursor=pointer]
+    - generic [ref=e27]:
+      - generic [ref=e28]: "Hero style:"
+      - button "A Â· Orange band, white stat cards" [pressed] [ref=e29] [cursor=pointer]
+      - button "B Â· Light orange band, orange accents" [ref=e30] [cursor=pointer]
+    - generic [ref=e31]:
+      - generic [ref=e32]: Site header (global)
+      - generic [ref=e33]:
+        - generic [ref=e34]: JOIN LOAN FACTORY
+        - heading "Grow your mortgage business on a platform built for loan officers" [level=2] [ref=e35]
+        - paragraph [ref=e36]: Access to the lenders you need, the tech to run your pipeline, and a team that gets your license sponsored fast.
+        - generic [ref=e37]:
+          - generic [ref=e38]:
+            - generic [ref=e39]: 240+
+            - text: wholesale lenders
+          - generic [ref=e40]:
+            - generic [ref=e41]: 2,600+
+            - text: loan officers on the platform
+          - generic [ref=e42]:
+            - generic [ref=e43]: $100
+            - text: one-time fee, only after your call
+      - generic [ref=e44]:
+        - generic [ref=e45]:
+          - generic [ref=e46]:
+            - generic [ref=e47]: "1"
+            - generic [ref=e48]: About you
+          - generic [ref=e49]:
+            - generic [ref=e50]: "2"
+            - generic [ref=e51]: License details
+          - generic [ref=e52]:
+            - generic [ref=e53]: "3"
+            - generic [ref=e54]: Book your call
+        - generic [ref=e55]:
+          - generic [ref=e56]:
+            - heading "First, tell us a bit about yourself" [level=1] [ref=e57]
+            - generic [ref=e58]:
+              - generic [ref=e59]:
+                - generic [ref=e60]:
+                  - generic [ref=e61]:
+                    - text: First name
+                    - generic [ref=e62]: Required
+                  - textbox "First name Required" [ref=e63]:
+                    - /placeholder: Jane
+                - generic [ref=e64]:
+                  - generic [ref=e65]:
+                    - text: Last name
+                    - generic [ref=e66]: Required
+                  - textbox "Last name Required" [ref=e67]:
+                    - /placeholder: Smith
+              - generic [ref=e68]:
+                - generic [ref=e69]:
+                  - generic [ref=e70]:
+                    - text: Email
+                    - generic [ref=e71]: Required
+                  - textbox "Email Required" [ref=e72]:
+                    - /placeholder: jane@email.com
+                - generic [ref=e73]:
+                  - generic [ref=e74]:
+                    - text: Mobile phone
+                    - generic [ref=e75]: Required
+                  - textbox "Mobile phone Required" [ref=e76]:
+                    - /placeholder: (000) 000-0000
+              - generic [ref=e77]:
+                - generic [ref=e78]:
+                  - text: How did you hear about Loan Factory?
+                  - generic [ref=e79]: Required
+                - combobox "How did you hear about Loan Factory? Required" [ref=e80]:
+                  - option "Select"
+                  - option "A Loan Factory Loan Officer referred me" [selected]
+                  - option "Social media"
+                  - option "Google search"
+                  - option "Job posting"
+                  - option "Webinar or event"
+                  - option "Other"
+              - generic [ref=e81]:
+                - generic [ref=e82]:
+                  - text: Which Loan Factory Loan Officer referred you?
+                  - generic [ref=e83]: Required
+                - textbox "Search by first name, last name, email or NMLS" [ref=e85]
+              - generic [ref=e86]:
+                - checkbox "Text me about my application. Msg and data rates may apply. Reply STOP to opt out. Privacy Â· Terms" [ref=e87]
+                - text: Text me about my application. Msg and data rates may apply. Reply STOP to opt out. Privacy Â· Terms
+              - button "Continue" [ref=e89] [cursor=pointer]
+          - complementary [ref=e90]:
+            - heading "What happens next" [level=4] [ref=e91]
+            - list [ref=e92]:
+              - listitem [ref=e93]:
+                - generic [ref=e94]: "1"
+                - text: Tell us about you
+              - listitem [ref=e95]:
+                - generic [ref=e96]: "2"
+                - text: Book a short intro call
+              - listitem [ref=e97]:
+                - generic [ref=e98]: "3"
+                - text: Get sponsored
+      - generic [ref=e99]: Site footer (global)
+  - generic [ref=e101]:
+    - generic [ref=e102]:
+      - generic [ref=e103]: Step 2 Â· License details
+      - generic [ref=e104]: /join/license
+    - generic [ref=e105]:
+      - generic [ref=e106]: "Sponsor states:"
+      - button "Texas only" [pressed] [ref=e107] [cursor=pointer]
+      - button "California Â· DFPI" [ref=e108] [cursor=pointer]
+      - button "California Â· DRE" [ref=e109] [cursor=pointer]
+      - button "Indiana" [ref=e110] [cursor=pointer]
+      - button "South Carolina" [ref=e111] [cursor=pointer]
+    - generic [ref=e112]:
+      - generic [ref=e113]: Site header (global)
+      - generic [ref=e114]:
+        - generic [ref=e115]: Grow your mortgage business on a platform built for loan officers
+        - generic [ref=e116]:
+          - generic [ref=e117]:
+            - emphasis [ref=e118]: 240+
+            - text: wholesale lenders
+          - generic [ref=e119]:
+            - emphasis [ref=e120]: 2,600+
+            - text: loan officers
+          - generic [ref=e121]:
+            - emphasis [ref=e122]: $100
+            - text: fee only after your call
+      - generic [ref=e123]:
+        - generic [ref=e124]:
+          - generic [ref=e125]:
+            - generic [ref=e126]: âœ“
+            - generic [ref=e127]: About you
+          - generic [ref=e128]:
+            - generic [ref=e129]: "2"
+            - generic [ref=e130]: License details
+          - generic [ref=e131]:
+            - generic [ref=e132]: "3"
+            - generic [ref=e133]: Book your call
+        - generic [ref=e134]:
+          - generic [ref=e135]:
+            - heading "Your license details" [level=1] [ref=e136]
+            - generic [ref=e137]:
+              - generic [ref=e138]:
+                - generic [ref=e139]: Quick check before you continue
+                - list [ref=e140]:
+                  - listitem [ref=e141]: You have an NMLS ID
+                  - listitem [ref=e142]: Your license in each state below is Active or Approved-Inactive (expired? renew on NMLS first)
+                  - listitem [ref=e143]: You're committed to closing at least 1 loan every 6 months
+                - generic [ref=e144]:
+                  - checkbox "I meet these requirements" [checked] [ref=e145]
+                  - text: I meet these requirements
+              - generic [ref=e147]:
+                - generic [ref=e148]:
+                  - text: NMLS ID
+                  - generic [ref=e149]: Required
+                - textbox "NMLS ID Required" [ref=e150]: "1234567"
+              - generic [ref=e152]:
+                - generic [ref=e153]:
+                  - text: States you want us to sponsor
+                  - generic [ref=e154]: Required
+                - generic [ref=e155]:
+                  - generic [ref=e156]:
+                    - text: Texas
+                    - button "Remove Texas" [ref=e157] [cursor=pointer]: Ã—
+                  - combobox "Add" [ref=e158]:
+                    - option [selected]
+                    - option "Alabama"
+                    - option "Arizona"
+                    - option "California"
+                    - option "Colorado"
+                    - option "Florida"
+                    - option "Georgia"
+                    - option "Illinois"
+                    - option "Indiana"
+                    - option "New York"
+                    - option "North Carolina"
+                    - option "South Carolina"
+                    - option "Washington"
+              - generic [ref=e159]:
+                - generic [ref=e160]:
+                  - text: Do you have a website or landing page that promotes mortgages?
+                  - generic [ref=e161]: Required
+                - generic [ref=e162]:
+                  - button "Yes" [pressed] [ref=e163] [cursor=pointer]
+                  - button "No" [ref=e164] [cursor=pointer]
+              - generic [ref=e165]:
+                - generic [ref=e166]:
+                  - text: Website URL
+                  - generic [ref=e167]: Required
+                - generic [ref=e169]:
+                  - textbox "Website URL" [ref=e170]:
+                    - /placeholder: https://
+                    - text: https://janesmithloans.com
+                  - button "Remove" [ref=e171] [cursor=pointer]: Ã—
+                - button "+ Add another website" [ref=e172] [cursor=pointer]
+              - generic [ref=e173]:
+                - checkbox "I'll get Loan Factory's approval before launching or changing a mortgage website." [ref=e174]
+                - text: I'll get Loan Factory's approval before launching or changing a mortgage website.
+              - generic [ref=e175]:
+                - button "Back" [ref=e176] [cursor=pointer]
+                - button "Continue to book your call" [ref=e177] [cursor=pointer]
+          - complementary [ref=e178]:
+            - heading "What happens next" [level=4] [ref=e179]
+            - list [ref=e180]:
+              - listitem [ref=e181]:
+                - generic [ref=e182]: âœ“
+                - text: Tell us about you
+              - listitem [ref=e183]:
+                - generic [ref=e184]: "2"
+                - text: Book a short intro call
+              - listitem [ref=e185]:
+                - generic [ref=e186]: "3"
+                - text: Get sponsored
+      - generic [ref=e187]: Site footer (global)
+  - generic [ref=e189]:
+    - generic [ref=e190]:
+      - generic [ref=e191]: Step 3 Â· Would you like a quick call first?
+      - generic [ref=e192]: /join/book
+    - generic [ref=e193]:
+      - generic [ref=e194]: Site header (global)
+      - generic [ref=e195]:
+        - generic [ref=e196]: Grow your mortgage business on a platform built for loan officers
+        - generic [ref=e197]:
+          - generic [ref=e198]:
+            - emphasis [ref=e199]: 240+
+            - text: wholesale lenders
+          - generic [ref=e200]:
+            - emphasis [ref=e201]: 2,600+
+            - text: loan officers
+          - generic [ref=e202]:
+            - emphasis [ref=e203]: $100
+            - text: fee only after your call
+      - generic [ref=e204]:
+        - generic [ref=e205]:
+          - generic [ref=e206]:
+            - generic [ref=e207]: âœ“
+            - generic [ref=e208]: About you
+          - generic [ref=e209]:
+            - generic [ref=e210]: âœ“
+            - generic [ref=e211]: License details
+          - generic [ref=e212]:
+            - generic [ref=e213]: "3"
+            - generic [ref=e214]: Book your call
+        - heading "Would you like a quick call first?" [level=1] [ref=e215]
+        - generic [ref=e216]:
+          - button "â˜Ž Yes, book a 30-min call We'll go over comp, our platform and your questions" [pressed] [ref=e217] [cursor=pointer]:
+            - generic [ref=e218]: â˜Ž
+            - generic [ref=e219]: Yes, book a 30-min call
+            - generic [ref=e220]: We'll go over comp, our platform and your questions
+          - button "âœ“ No, I'm ready to join I already spoke with your team" [ref=e221] [cursor=pointer]:
+            - generic [ref=e222]: âœ“
+            - generic [ref=e223]: No, I'm ready to join
+            - generic [ref=e224]: I already spoke with your team
+        - generic [ref=e225]:
+          - generic [ref=e226]:
+            - generic [ref=e227]:
+              - generic [ref=e228]: Pick up to 3 times that work for you
+              - button "Any time works for me" [ref=e229] [cursor=pointer]
+            - generic [ref=e230]:
+              - generic [ref=e231]:
+                - button "Previous month" [disabled] [ref=e232]: â€¹
+                - generic [ref=e233]: November 2026
+                - button "Next month" [ref=e234] [cursor=pointer]: â€º
+              - generic [ref=e235]:
+                - generic [ref=e236]: S
+                - generic [ref=e237]: M
+                - generic [ref=e238]: T
+                - generic [ref=e239]: W
+                - generic [ref=e240]: T
+                - generic [ref=e241]: F
+                - generic [ref=e242]: S
+                - generic [ref=e243]: "1"
+                - button "Mon Nov 02 2026" [ref=e244] [cursor=pointer]: "2"
+                - button "Tue Nov 03 2026" [ref=e245] [cursor=pointer]: "3"
+                - button "Wed Nov 04 2026" [ref=e246] [cursor=pointer]: "4"
+                - button "Thu Nov 05 2026" [ref=e247] [cursor=pointer]: "5"
+                - button "Fri Nov 06 2026" [ref=e248] [cursor=pointer]: "6"
+                - generic [ref=e249]: "7"
+                - generic [ref=e250]: "8"
+                - button "Mon Nov 09 2026" [ref=e251] [cursor=pointer]: "9"
+                - button "Tue Nov 10 2026" [ref=e252] [cursor=pointer]: "10"
+                - button "Wed Nov 11 2026" [ref=e253] [cursor=pointer]: "11"
+                - button "Thu Nov 12 2026" [ref=e254] [cursor=pointer]: "12"
+                - button "Fri Nov 13 2026" [ref=e255] [cursor=pointer]: "13"
+                - generic [ref=e256]: "14"
+                - generic [ref=e257]: "15"
+                - button "Mon Nov 16 2026" [ref=e258] [cursor=pointer]: "16"
+                - button "Tue Nov 17 2026" [ref=e259] [cursor=pointer]: "17"
+                - button "Wed Nov 18 2026" [ref=e260] [cursor=pointer]: "18"
+                - button "Thu Nov 19 2026" [ref=e261] [cursor=pointer]: "19"
+                - button "Fri Nov 20 2026" [ref=e262] [cursor=pointer]: "20"
+                - generic [ref=e263]: "21"
+                - generic [ref=e264]: "22"
+                - button "Mon Nov 23 2026" [ref=e265] [cursor=pointer]: "23"
+                - button "Tue Nov 24 2026" [ref=e266] [cursor=pointer]: "24"
+                - button "Wed Nov 25 2026" [ref=e267] [cursor=pointer]: "25"
+                - button "Thu Nov 26 2026" [ref=e268] [cursor=pointer]: "26"
+                - button "Fri Nov 27 2026" [ref=e269] [cursor=pointer]: "27"
+                - generic [ref=e270]: "28"
+                - generic [ref=e271]: "29"
+                - button "Mon Nov 30 2026" [ref=e272] [cursor=pointer]: "30"
+            - generic [ref=e273]:
+              - generic [ref=e274]: Wednesday, Nov 4
+              - button "9â€“11 AM" [ref=e275] [cursor=pointer]
+              - button "11 AMâ€“1 PM" [pressed] [ref=e276] [cursor=pointer]
+              - button "1â€“3 PM" [ref=e277] [cursor=pointer]
+              - button "3â€“5 PM" [ref=e278] [cursor=pointer]
+          - generic [ref=e279]:
+            - generic [ref=e280]:
+              - text: Wed, Nov 4 Â· 11 AMâ€“1 PM
+              - button "Remove" [ref=e281] [cursor=pointer]: Ã—
+            - generic [ref=e282]:
+              - text: Thu, Nov 5 Â· 1â€“3 PM
+              - button "Remove" [ref=e283] [cursor=pointer]: Ã—
+        - generic [ref=e284]:
+          - button "Back" [ref=e285] [cursor=pointer]
+          - button "Request my call (2/3)" [ref=e286] [cursor=pointer]
+      - generic [ref=e287]: Site footer (global)
+  - generic [ref=e289]:
+    - generic [ref=e290]:
+      - generic [ref=e291]: Call requested
+      - generic [ref=e292]: /join/booked Â· Matt's confirmation layout
+    - generic [ref=e293]:
+      - generic [ref=e294]: "Scenario:"
+      - button "Picked times" [pressed] [ref=e295] [cursor=pointer]
+      - button "Any time" [ref=e296] [cursor=pointer]
+    - generic [ref=e297]:
+      - generic [ref=e298]: Site header (global)
+      - generic [ref=e300]:
+        - generic [ref=e301]: âœ“
+        - heading "You're all set, Jane!" [level=2] [ref=e302]
+        - paragraph [ref=e303]: An onboarding specialist will call (714) 555-0142 in one of these times. We'll email you the exact time.
+        - generic [ref=e304]:
+          - generic [ref=e305]: Wed, Nov 4 Â· 11 AMâ€“1 PM
+          - generic [ref=e306]: Thu, Nov 5 Â· 1â€“3 PM
+        - generic [ref=e307]:
+          - heading "See where you'll be working" [level=3] [ref=e308]
+          - generic [ref=e309]: â–¶
+          - generic [ref=e310]:
+            - generic [ref=e311]:
+              - generic [ref=e312]: â–¶
+              - text: What is it like to join Loan Factory
+            - generic [ref=e313]:
+              - generic [ref=e314]: â–¶
+              - text: Video 2
+            - generic [ref=e315]:
+              - generic [ref=e316]: â–¶
+              - text: Video 3
+          - button "Watch more on our YouTube channel â†’" [ref=e317] [cursor=pointer]
+      - generic [ref=e318]: Site footer (global)
+  - generic [ref=e320]:
+    - generic [ref=e321]:
+      - generic [ref=e322]: Step 4 Â· Finish your application
+      - generic [ref=e323]: opened from the team's link, or after "No, I'm ready to join"
+    - generic [ref=e324]:
+      - generic [ref=e325]: "Employment type:"
+      - button "Set on the call" [pressed] [ref=e326] [cursor=pointer]
+      - button "Required by state (e.g. GA)" [ref=e327] [cursor=pointer]
+      - button "Loan Officer picks" [ref=e328] [cursor=pointer]
+    - generic [ref=e329]:
+      - generic [ref=e330]: Site header (global)
+      - generic [ref=e331]: Welcome back, Jane
+      - generic [ref=e333]:
+        - generic [ref=e334]:
+          - generic [ref=e335]:
+            - generic [ref=e336]: âœ“
+            - generic [ref=e337]: About you
+          - generic [ref=e338]:
+            - generic [ref=e339]: âœ“
+            - generic [ref=e340]: License details
+          - generic [ref=e341]:
+            - generic [ref=e342]: âœ“
+            - generic [ref=e343]: Intro call
+          - generic [ref=e344]:
+            - generic [ref=e345]: "4"
+            - generic [ref=e346]: Application
+          - generic [ref=e347]:
+            - generic [ref=e348]: "5"
+            - generic [ref=e349]: Review
+          - generic [ref=e350]:
+            - generic [ref=e351]: "6"
+            - generic [ref=e352]: Pay & sign
+          - generic [ref=e353]:
+            - generic [ref=e354]: "7"
+            - generic [ref=e355]: NMLS access
+        - generic [ref=e356]:
+          - generic [ref=e357]:
+            - heading "Finish your application" [level=1] [ref=e358]
+            - generic [ref=e359]:
+              - generic [ref=e360]:
+                - generic [ref=e361]: "1"
+                - generic [ref=e362]: Personal details
+              - generic [ref=e363]:
+                - generic [ref=e364]:
+                  - generic [ref=e365]:
+                    - generic [ref=e366]:
+                      - text: Legal first name
+                      - generic [ref=e367]: Required
+                    - textbox "Legal first name Required" [ref=e368]: Jane
+                  - generic [ref=e369]:
+                    - generic [ref=e370]:
+                      - text: Legal last name
+                      - generic [ref=e371]: Required
+                    - textbox "Legal last name Required" [ref=e372]: Smith
+                - generic [ref=e373]:
+                  - generic [ref=e374]:
+                    - generic [ref=e375]: Alias first name
+                    - textbox "Alias first name" [ref=e376]:
+                      - /placeholder: e.g. JJ
+                  - generic [ref=e377]:
+                    - generic [ref=e378]:
+                      - text: Citizenship
+                      - generic [ref=e379]: Required
+                    - combobox "Citizenship Required" [ref=e380]:
+                      - option "Select" [selected]
+                      - option "U.S. citizen"
+                      - option "Permanent resident"
+                      - option "Work visa"
+                      - option "Other"
+                - generic [ref=e381]:
+                  - generic [ref=e382]: Preferred languages
+                  - generic [ref=e383]:
+                    - generic [ref=e384]:
+                      - text: English
+                      - button "Remove English" [ref=e385] [cursor=pointer]: Ã—
+                    - generic [ref=e386]:
+                      - text: Vietnamese
+                      - button "Remove Vietnamese" [ref=e387] [cursor=pointer]: Ã—
+                    - combobox "Add" [ref=e388]:
+                      - option [selected]
+                      - option "Spanish"
+                      - option "Chinese"
+                      - option "Korean"
+                      - option "Tagalog"
+            - generic [ref=e389]:
+              - generic [ref=e390]:
+                - generic [ref=e391]: "2"
+                - generic [ref=e392]: Address
+              - generic [ref=e393]:
+                - generic [ref=e394]:
+                  - generic [ref=e395]:
+                    - generic [ref=e396]:
+                      - text: Street address
+                      - generic [ref=e397]: Required
+                    - textbox "Street address Required" [ref=e398]: 1200 Main St
+                  - generic [ref=e399]:
+                    - generic [ref=e400]: Apt / Unit
+                    - textbox "Apt / Unit" [ref=e401]
+                - generic [ref=e402]:
+                  - generic [ref=e403]:
+                    - generic [ref=e404]:
+                      - text: ZIP
+                      - generic [ref=e405]: Required
+                    - textbox "ZIP Required" [ref=e406]: "92614"
+                  - generic [ref=e407]:
+                    - generic [ref=e408]:
+                      - text: City
+                      - generic [ref=e409]: Required
+                    - textbox "City Required" [ref=e410]: Irvine
+                - generic [ref=e411]:
+                  - checkbox "Mailing address is the same" [checked] [ref=e412]
+                  - text: Mailing address is the same
+            - generic [ref=e413]:
+              - generic [ref=e414]:
+                - generic [ref=e415]: "3"
+                - generic [ref=e416]: Licensing
+              - generic [ref=e417]:
+                - generic [ref=e418]:
+                  - generic [ref=e419]:
+                    - text: States where you're licensed
+                    - generic [ref=e420]: Required
+                  - generic [ref=e421]:
+                    - generic [ref=e422]:
+                      - text: California
+                      - button "Remove California" [ref=e423] [cursor=pointer]: Ã—
+                    - generic [ref=e424]:
+                      - text: Texas
+                      - button "Remove Texas" [ref=e425] [cursor=pointer]: Ã—
+                    - combobox "Add" [ref=e426]:
+                      - option [selected]
+                      - option "Alabama"
+                      - option "Arizona"
+                      - option "Colorado"
+                      - option "Florida"
+                      - option "Georgia"
+                      - option "Illinois"
+                      - option "Indiana"
+                      - option "New York"
+                      - option "North Carolina"
+                      - option "South Carolina"
+                      - option "Washington"
+                - generic [ref=e427]:
+                  - checkbox "I also originate loans with another company" [ref=e428]
+                  - text: I also originate loans with another company
+            - generic [ref=e429]:
+              - generic [ref=e430]:
+                - generic [ref=e431]: "4"
+                - generic [ref=e432]: Compensation
+              - generic [ref=e433]:
+                - generic [ref=e434]:
+                  - generic [ref=e435]:
+                    - generic [ref=e436]:
+                      - text: Main target compensation
+                      - generic [ref=e437]: Required
+                    - combobox "Main target compensation Required" [ref=e438]:
+                      - option "Select" [selected]
+                      - option "0.5%"
+                      - option "0.625%"
+                      - option "0.75%"
+                      - option "0.875%"
+                      - option "1%"
+                      - option "1.125%"
+                      - option "1.25%"
+                      - option "1.375%"
+                      - option "1.5%"
+                      - option "1.625%"
+                      - option "1.75%"
+                      - option "1.875%"
+                      - option "2%"
+                      - option "2.125%"
+                      - option "2.25%"
+                      - option "2.375%"
+                      - option "2.5%"
+                  - generic [ref=e439]:
+                    - generic [ref=e440]:
+                      - text: Correspondent target compensation
+                      - generic [ref=e441]: Required
+                    - combobox "Correspondent target compensation Required" [ref=e442]:
+                      - option "Select" [selected]
+                      - option "0.5%"
+                      - option "0.625%"
+                      - option "0.75%"
+                      - option "0.875%"
+                      - option "1%"
+                      - option "1.125%"
+                      - option "1.25%"
+                      - option "1.375%"
+                      - option "1.5%"
+                      - option "1.625%"
+                      - option "1.75%"
+                      - option "1.875%"
+                      - option "2%"
+                      - option "2.125%"
+                      - option "2.25%"
+                      - option "2.375%"
+                      - option "2.5%"
+                - generic [ref=e443]:
+                  - generic [ref=e444]: "Employment type: Independent (1099)"
+                  - generic [ref=e445]: Set on your call
+            - generic [ref=e446]:
+              - generic [ref=e447]:
+                - generic [ref=e448]: "5"
+                - generic [ref=e449]: Online presence
+              - generic [ref=e450]:
+                - generic [ref=e451]:
+                  - generic [ref=e452]: Do you have social media profiles for your mortgage business?
+                  - generic [ref=e453]:
+                    - button "Yes" [pressed] [ref=e454] [cursor=pointer]
+                    - button "No" [ref=e455] [cursor=pointer]
+                - generic [ref=e456]:
+                  - generic [ref=e457]:
+                    - combobox "Platform" [ref=e458]:
+                      - option "Platform"
+                      - option "Facebook"
+                      - option "Instagram"
+                      - option "LinkedIn" [selected]
+                      - option "TikTok"
+                      - option "YouTube"
+                      - option "Google Business"
+                      - option "Zillow"
+                      - option "Yelp"
+                      - option "X"
+                      - option "Other"
+                    - textbox "Profile URL" [ref=e459]: https://linkedin.com/in/janesmith
+                    - button "Remove" [ref=e460] [cursor=pointer]: Ã—
+                  - generic [ref=e461]:
+                    - combobox "Platform" [ref=e462]:
+                      - option "Platform"
+                      - option "Facebook" [selected]
+                      - option "Instagram"
+                      - option "LinkedIn"
+                      - option "TikTok"
+                      - option "YouTube"
+                      - option "Google Business"
+                      - option "Zillow"
+                      - option "Yelp"
+                      - option "X"
+                      - option "Other"
+                    - textbox "Profile URL" [ref=e463]: https://facebook.com/janesmithloans
+                    - button "Remove" [ref=e464] [cursor=pointer]: Ã—
+                - button "+ Add another profile" [ref=e465] [cursor=pointer]
+            - generic [ref=e466]:
+              - generic [ref=e467]:
+                - generic [ref=e468]: "6"
+                - generic [ref=e469]: Special requests
+                - generic [ref=e470]: One request per row
+              - generic [ref=e471]:
+                - generic [ref=e472]:
+                  - generic [ref=e473]:
+                    - generic [ref=e474]: "1"
+                    - textbox "Request" [ref=e475]:
+                      - /placeholder: Describe one request
+                      - text: "Team name: Smith Lending Group"
+                    - button "Remove request" [ref=e476] [cursor=pointer]: Ã—
+                  - generic [ref=e477]:
+                    - generic [ref=e478]: "2"
+                    - textbox "Request" [ref=e479]:
+                      - /placeholder: Describe one request
+                      - text: Fee waiver
+                    - button "Remove request" [ref=e480] [cursor=pointer]: Ã—
+                - generic [ref=e481]:
+                  - button "+ Add a request" [ref=e482] [cursor=pointer]
+                  - button "Team name" [ref=e483] [cursor=pointer]
+                  - button "Powered by" [ref=e484] [cursor=pointer]
+                  - button "Coaching waiver" [ref=e485] [cursor=pointer]
+                  - button "Fee waiver" [ref=e486] [cursor=pointer]
+                - generic [ref=e487]:
+                  - checkbox "All approved requests/terms remain subject to state/federal lending regulations and company policy updates required to maintain legal compliance." [ref=e488]
+                  - text: All approved requests/terms remain subject to state/federal lending regulations and company policy updates required to maintain legal compliance.
+            - generic [ref=e489]:
+              - button "Back" [ref=e490] [cursor=pointer]
+              - button "Review my details" [ref=e491] [cursor=pointer]
+          - complementary [ref=e492]:
+            - heading "What happens next" [level=4] [ref=e493]
+            - list [ref=e494]:
+              - listitem [ref=e495]:
+                - generic [ref=e496]: âœ“
+                - text: Tell us about you
+              - listitem [ref=e497]:
+                - generic [ref=e498]: âœ“
+                - text: Intro call
+              - listitem [ref=e499]:
+                - generic [ref=e500]: "3"
+                - text: Finish your application
+              - listitem [ref=e501]:
+                - generic [ref=e502]: "4"
+                - text: Pay $100 & sign
+              - listitem [ref=e503]:
+                - generic [ref=e504]: "5"
+                - text: Get sponsored
+      - generic [ref=e505]: Site footer (global)
+  - generic [ref=e507]:
+    - generic [ref=e508]:
+      - generic [ref=e509]: Step 5 Â· Review
+      - generic [ref=e510]: after "Review my details"
+    - generic [ref=e511]:
+      - generic [ref=e512]: Site header (global)
+      - generic [ref=e513]: Welcome back, Jane
+      - generic [ref=e515]:
+        - generic [ref=e516]:
+          - generic [ref=e517]:
+            - generic [ref=e518]: âœ“
+            - generic [ref=e519]: About you
+          - generic [ref=e520]:
+            - generic [ref=e521]: âœ“
+            - generic [ref=e522]: License details
+          - generic [ref=e523]:
+            - generic [ref=e524]: âœ“
+            - generic [ref=e525]: Intro call
+          - generic [ref=e526]:
+            - generic [ref=e527]: âœ“
+            - generic [ref=e528]: Application
+          - generic [ref=e529]:
+            - generic [ref=e530]: "5"
+            - generic [ref=e531]: Review
+          - generic [ref=e532]:
+            - generic [ref=e533]: "6"
+            - generic [ref=e534]: Pay & sign
+          - generic [ref=e535]:
+            - generic [ref=e536]: "7"
+            - generic [ref=e537]: NMLS access
+        - generic [ref=e538]:
+          - heading "Check your details" [level=1] [ref=e539]
+          - generic [ref=e540]:
+            - generic [ref=e541]:
+              - generic [ref=e542]: "1"
+              - generic [ref=e543]: About you
+              - link "Edit" [ref=e544] [cursor=pointer]:
+                - /url: "#s1"
+            - generic [ref=e546]:
+              - generic [ref=e547]:
+                - term [ref=e548]: Name
+                - definition [ref=e549]: Jane Smith
+              - generic [ref=e550]:
+                - term [ref=e551]: Email
+                - definition [ref=e552]: jane@email.com
+              - generic [ref=e553]:
+                - term [ref=e554]: Mobile
+                - definition [ref=e555]: (714) 555-0142
+              - generic [ref=e556]:
+                - term [ref=e557]: Referred by
+                - definition [ref=e558]: Matt Moghaddam
+          - generic [ref=e559]:
+            - generic [ref=e560]:
+              - generic [ref=e561]: "2"
+              - generic [ref=e562]: License
+              - link "Edit" [ref=e563] [cursor=pointer]:
+                - /url: "#s2"
+            - generic [ref=e565]:
+              - generic [ref=e566]:
+                - term [ref=e567]: NMLS ID
+                - definition [ref=e568]: "1234567"
+              - generic [ref=e569]:
+                - term [ref=e570]: States to sponsor
+                - definition [ref=e571]: California (DRE-endorsed), Texas
+              - generic [ref=e572]:
+                - term [ref=e573]: Licensed states
+                - definition [ref=e574]: California, Texas
+          - generic [ref=e575]:
+            - generic [ref=e576]:
+              - generic [ref=e577]: "3"
+              - generic [ref=e578]: Website
+              - link "Edit" [ref=e579] [cursor=pointer]:
+                - /url: "#s2"
+            - generic [ref=e582]:
+              - term [ref=e583]: Websites (3)
+              - definition [ref=e584]:
+                - list [ref=e585]:
+                  - listitem [ref=e586]: https://janesmithloans.com
+                  - listitem [ref=e587]: https://jane-smith.loanfactory.com
+                  - listitem [ref=e588]: https://homesbyjane.com
+          - generic [ref=e589]:
+            - generic [ref=e590]:
+              - generic [ref=e591]: "4"
+              - generic [ref=e592]: Personal details
+              - link "Edit" [ref=e593] [cursor=pointer]:
+                - /url: "#s4"
+            - generic [ref=e595]:
+              - generic [ref=e596]:
+                - term [ref=e597]: Legal name
+                - definition [ref=e598]:
+                  - text: Jane Smith
+                  - generic [ref=e599]:
+                    - generic [ref=e600]: Set by our team
+                    - link "This is wrong" [ref=e601] [cursor=pointer]:
+                      - /url: "#"
+              - generic [ref=e602]:
+                - term [ref=e603]: Citizenship
+                - definition [ref=e604]: U.S. citizen
+              - generic [ref=e605]:
+                - term [ref=e606]: Languages
+                - definition [ref=e607]: English, Vietnamese
+          - generic [ref=e608]:
+            - generic [ref=e609]:
+              - generic [ref=e610]: "5"
+              - generic [ref=e611]: Address
+              - link "Edit" [ref=e612] [cursor=pointer]:
+                - /url: "#s4"
+            - generic [ref=e614]:
+              - generic [ref=e615]:
+                - term [ref=e616]: Home
+                - definition [ref=e617]: 1200 Main St, Irvine, CA 92614
+              - generic [ref=e618]:
+                - term [ref=e619]: Mailing
+                - definition [ref=e620]: Same as home
+          - generic [ref=e621]:
+            - generic [ref=e622]:
+              - generic [ref=e623]: "6"
+              - generic [ref=e624]: Compensation
+              - link "Edit" [ref=e625] [cursor=pointer]:
+                - /url: "#s4"
+            - generic [ref=e627]:
+              - generic [ref=e628]:
+                - term [ref=e629]: Main target
+                - definition [ref=e630]: 1.75%
+              - generic [ref=e631]:
+                - term [ref=e632]: Correspondent target
+                - definition [ref=e633]: 1.5%
+              - generic [ref=e634]:
+                - term [ref=e635]: Employment type
+                - definition [ref=e636]:
+                  - text: Independent (1099)
+                  - generic [ref=e637]:
+                    - generic [ref=e638]: Set by our team
+                    - link "This is wrong" [ref=e639] [cursor=pointer]:
+                      - /url: "#"
+          - generic [ref=e640]:
+            - generic [ref=e641]:
+              - generic [ref=e642]: "7"
+              - generic [ref=e643]: Online presence & requests
+              - link "Edit" [ref=e644] [cursor=pointer]:
+                - /url: "#s4"
+            - generic [ref=e646]:
+              - generic [ref=e647]:
+                - term [ref=e648]: Social media (2)
+                - definition [ref=e649]:
+                  - list [ref=e650]:
+                    - listitem [ref=e651]: LinkedIn Â· https://linkedin.com/in/janesmith
+                    - listitem [ref=e652]: Facebook Â· https://facebook.com/janesmithloans
+              - generic [ref=e653]:
+                - term [ref=e654]: Special requests (2)
+                - definition [ref=e655]:
+                  - list [ref=e656]:
+                    - listitem [ref=e657]: "Team name: Smith Lending Group"
+                    - listitem [ref=e658]: Fee waiver
+          - generic [ref=e659]:
+            - checkbox "I confirm all information I provided is true and correct." [ref=e660]
+            - text: I confirm all information I provided is true and correct.
+          - generic [ref=e661]:
+            - button "Back" [ref=e662] [cursor=pointer]
+            - button "Continue to payment" [ref=e663] [cursor=pointer]
+      - generic [ref=e664]: Site footer (global)
+  - generic [ref=e666]:
+    - generic [ref=e667]:
+      - generic [ref=e668]: Waiting for review
+      - generic [ref=e669]: only after "No, I'm ready to join", until the team approves
+    - generic [ref=e670]:
+      - generic [ref=e671]: Site header (global)
+      - generic [ref=e672]: Welcome back, Jane
+      - generic [ref=e674]:
+        - generic [ref=e675]:
+          - generic [ref=e676]:
+            - generic [ref=e677]: âœ“
+            - generic [ref=e678]: About you
+          - generic [ref=e679]:
+            - generic [ref=e680]: âœ“
+            - generic [ref=e681]: License details
+          - generic [ref=e682]:
+            - generic [ref=e683]: âœ“
+            - generic [ref=e684]: Intro call
+          - generic [ref=e685]:
+            - generic [ref=e686]: âœ“
+            - generic [ref=e687]: Application
+          - generic [ref=e688]:
+            - generic [ref=e689]: âœ“
+            - generic [ref=e690]: Review
+          - generic [ref=e691]:
+            - generic [ref=e692]: "6"
+            - generic [ref=e693]: Pay & sign
+          - generic [ref=e694]:
+            - generic [ref=e695]: "7"
+            - generic [ref=e696]: NMLS access
+        - generic [ref=e697]:
+          - generic [ref=e698]: "â\x8f³"
+          - heading "Thanks, our team is reviewing your application" [level=2] [ref=e699]
+          - generic [ref=e700]: We'll email you a link to pay the $100 fee and sign your agreement, usually within 1 business day.
+          - generic [ref=e701]:
+            - generic [ref=e702]:
+              - generic [ref=e703]: âœ‰
+              - generic [ref=e704]: We'll email
+              - generic [ref=e705]: jane@email.com
+            - generic [ref=e706]:
+              - generic [ref=e707]: "?"
+              - generic [ref=e708]: Questions
+              - generic [ref=e709]: recruiting@loanfactory.com
+      - generic [ref=e710]: Site footer (global)
+  - generic [ref=e712]:
+    - generic [ref=e713]: Step 6 Â· Pay $100
+    - generic [ref=e715]:
+      - generic [ref=e716]: "Scenario:"
+      - button "Pays the fee" [pressed] [ref=e717] [cursor=pointer]
+      - button "Fee waived" [ref=e718] [cursor=pointer]
+    - generic [ref=e719]:
+      - generic [ref=e720]: Site header (global)
+      - generic [ref=e721]: Welcome back, Jane
+      - generic [ref=e723]:
+        - generic [ref=e724]:
+          - generic [ref=e725]:
+            - generic [ref=e726]: âœ“
+            - generic [ref=e727]: About you
+          - generic [ref=e728]:
+            - generic [ref=e729]: âœ“
+            - generic [ref=e730]: License details
+          - generic [ref=e731]:
+            - generic [ref=e732]: âœ“
+            - generic [ref=e733]: Intro call
+          - generic [ref=e734]:
+            - generic [ref=e735]: âœ“
+            - generic [ref=e736]: Application
+          - generic [ref=e737]:
+            - generic [ref=e738]: âœ“
+            - generic [ref=e739]: Review
+          - generic [ref=e740]:
+            - generic [ref=e741]: "6"
+            - generic [ref=e742]: Pay & sign
+          - generic [ref=e743]:
+            - generic [ref=e744]: "7"
+            - generic [ref=e745]: NMLS access
+        - generic [ref=e746]:
+          - heading "One-time $100 onboarding fee" [level=2] [ref=e747]
+          - generic [ref=e748]: Covers your NMLS sponsorship and account setup.
+          - generic [ref=e749]:
+            - generic [ref=e750]: PayPal
+            - generic [ref=e751]: Debit or credit card
+      - generic [ref=e752]: Site footer (global)
+  - generic [ref=e754]:
+    - generic [ref=e755]:
+      - generic [ref=e756]: Step 6 Â· Sign your agreement
+      - generic [ref=e757]: opens Inkless
+    - generic [ref=e758]:
+      - generic [ref=e759]: Site header (global)
+      - generic [ref=e760]: Welcome back, Jane
+      - generic [ref=e762]:
+        - generic [ref=e763]:
+          - generic [ref=e764]:
+            - generic [ref=e765]: âœ“
+            - generic [ref=e766]: About you
+          - generic [ref=e767]:
+            - generic [ref=e768]: âœ“
+            - generic [ref=e769]: License details
+          - generic [ref=e770]:
+            - generic [ref=e771]: âœ“
+            - generic [ref=e772]: Intro call
+          - generic [ref=e773]:
+            - generic [ref=e774]: âœ“
+            - generic [ref=e775]: Application
+          - generic [ref=e776]:
+            - generic [ref=e777]: âœ“
+            - generic [ref=e778]: Review
+          - generic [ref=e779]:
+            - generic [ref=e780]: "6"
+            - generic [ref=e781]: Pay & sign
+          - generic [ref=e782]:
+            - generic [ref=e783]: "7"
+            - generic [ref=e784]: NMLS access
+        - generic [ref=e785]:
+          - heading "Sign your Loan Officer agreement" [level=2] [ref=e786]
+          - generic [ref=e787]:
+            - generic [ref=e788]: Independent Loan Officer Agreement
+            - generic [ref=e789]: Jane Smith Â· NMLS 1234567
+            - generic [ref=e790]: 1200 Main St, Irvine, CA 92614
+          - button "Open agreement to sign" [ref=e794] [cursor=pointer]
+      - generic [ref=e795]: Site footer (global)
+  - generic [ref=e797]:
+    - generic [ref=e798]: Step 7 Â· NMLS access
+    - generic [ref=e800]:
+      - generic [ref=e801]: Site header (global)
+      - generic [ref=e802]: Welcome back, Jane
+      - generic [ref=e804]:
+        - generic [ref=e805]:
+          - generic [ref=e806]:
+            - generic [ref=e807]: âœ“
+            - generic [ref=e808]: About you
+          - generic [ref=e809]:
+            - generic [ref=e810]: âœ“
+            - generic [ref=e811]: License details
+          - generic [ref=e812]:
+            - generic [ref=e813]: âœ“
+            - generic [ref=e814]: Intro call
+          - generic [ref=e815]:
+            - generic [ref=e816]: âœ“
+            - generic [ref=e817]: Application
+          - generic [ref=e818]:
+            - generic [ref=e819]: âœ“
+            - generic [ref=e820]: Review
+          - generic [ref=e821]:
+            - generic [ref=e822]: âœ“
+            - generic [ref=e823]: Pay & sign
+          - generic [ref=e824]:
+            - generic [ref=e825]: "7"
+            - generic [ref=e826]: NMLS access
+        - generic [ref=e827]:
+          - heading "Give Loan Factory access to your NMLS record?" [level=2] [ref=e828]
+          - generic [ref=e829]: We need it to file your sponsorship. You can do it later with your onboarding specialist.
+          - generic [ref=e830]:
+            - button "Yes, give access" [pressed] [ref=e831] [cursor=pointer]
+            - button "Not now" [ref=e832] [cursor=pointer]
+          - button "Finish" [ref=e833] [cursor=pointer]
+      - generic [ref=e834]: Site footer (global)
+  - generic [ref=e836]:
+    - generic [ref=e837]: Done
+    - generic [ref=e839]:
+      - generic [ref=e840]: Site header (global)
+      - generic [ref=e841]: Welcome back, Jane
+      - generic [ref=e843]:
+        - generic [ref=e844]:
+          - generic [ref=e845]:
+            - generic [ref=e846]: âœ“
+            - generic [ref=e847]: About you
+          - generic [ref=e848]:
+            - generic [ref=e849]: âœ“
+            - generic [ref=e850]: License details
+          - generic [ref=e851]:
+            - generic [ref=e852]: âœ“
+            - generic [ref=e853]: Intro call
+          - generic [ref=e854]:
+            - generic [ref=e855]: âœ“
+            - generic [ref=e856]: Application
+          - generic [ref=e857]:
+            - generic [ref=e858]: âœ“
+            - generic [ref=e859]: Review
+          - generic [ref=e860]:
+            - generic [ref=e861]: âœ“
+            - generic [ref=e862]: Pay & sign
+          - generic [ref=e863]:
+            - generic [ref=e864]: âœ“
+            - generic [ref=e865]: NMLS access
+        - generic [ref=e866]:
+          - generic [ref=e867]: âœ“
+          - heading "You're all set" [level=2] [ref=e868]
+          - generic [ref=e869]: We'll file your sponsorship in NMLS and set up your accounts.
+          - generic [ref=e870]:
+            - generic [ref=e871]:
+              - generic [ref=e872]: âœ‰
+              - generic [ref=e873]: Receipt sent to
+              - generic [ref=e874]: jane@email.com
+            - generic [ref=e875]:
+              - generic [ref=e876]: "?"
+              - generic [ref=e877]: Questions
+              - generic [ref=e878]: recruiting@loanfactory.com
+      - generic [ref=e879]: Site footer (global)

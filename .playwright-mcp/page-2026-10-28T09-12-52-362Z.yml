@@ -1,0 +1,142 @@
+- generic [active] [ref=f12e1]:
+  - iframe [ref=f12e2]
+  - region
+  - generic [ref=f12e4]:
+    - navigation [ref=f12e5]:
+      - button "Skip to main content" [ref=f12e7] [cursor=pointer]
+      - button "Keyboard shortcuts" [ref=f12e11] [cursor=pointer]
+      - button "Accessibility feedback" [ref=f12e15] [cursor=pointer]
+    - banner [ref=f12e19]:
+      - generic [ref=f12e20]:
+        - link "Drive" [ref=f12e24] [cursor=pointer]:
+          - /url: https://drive.google.com/?tab=oo&authuser=1
+        - generic [ref=f12e27]:
+          - search [ref=f12e29]:
+            - table [ref=f12e31]:
+              - rowgroup [ref=f12e32]:
+                - row [ref=f12e33]:
+                  - cell [ref=f12e34]:
+                    - textbox "Get answers from Drive" [ref=f12e35]
+            - button "Advanced search" [ref=f12e36] [cursor=pointer]
+            - button "Search Google Drive" [ref=f12e39] [cursor=pointer]
+          - generic [ref=f12e42]:
+            - button "Support" [ref=f12e45] [cursor=pointer]
+            - button "Settings" [ref=f12e50] [cursor=pointer]
+            - generic [ref=f12e57]:
+              - generic:
+                - button "Ask Gemini" [ref=f12e64] [cursor=pointer]
+                - tooltip [aria-hidden] [ref=f12e67]: Ask Gemini
+        - generic [ref=f12e69]:
+          - button "Google apps" [ref=f12e73] [cursor=pointer]
+          - 'button "Google Account: Bao Trinh (bao.trinh@loanfactory.com)" [ref=f12e77] [cursor=pointer]':
+            - 'button "Google Account: Bao Trinh (bao.trinh@loanfactory.com)" [ref=f12e82]'
+    - button "New" [ref=f12e87] [cursor=pointer]
+    - navigation [ref=f12e98]:
+      - heading "Folders and views" [level=2] [ref=f12e99]
+      - tree "Folders and views" [ref=f12e100]:
+        - treeitem [ref=f12e101]:
+          - link "Home" [ref=f12e102] [cursor=pointer]:
+            - generic "Home" [ref=f12e120]
+          - group
+        - treeitem [ref=f12e121]:
+          - link "Activity" [ref=f12e122] [cursor=pointer]:
+            - generic "Activity" [ref=f12e138]
+          - group
+        - treeitem [ref=f12e139]:
+          - link "Projects" [ref=f12e140] [cursor=pointer]:
+            - generic "Projects" [ref=f12e152]
+          - group
+        - treeitem [ref=f12e153]:
+          - link "Workspaces" [ref=f12e154] [cursor=pointer]:
+            - generic "Workspaces" [ref=f12e170]
+          - group
+        - treeitem [ref=f12e171]:
+          - link "My Drive Collapsed" [ref=f12e172] [cursor=pointer]:
+            - generic "My Drive" [ref=f12e189]
+            - text: Collapsed
+        - treeitem [ref=f12e190]:
+          - link "Shared drives Collapsed" [ref=f12e191] [cursor=pointer]:
+            - generic "Shared drives" [ref=f12e213]
+            - text: Collapsed
+        - treeitem [ref=f12e214]:
+          - link "Items shared with me" [ref=f12e215] [cursor=pointer]:
+            - generic "Items shared with me" [ref=f12e234]: Shared with me
+          - group
+        - treeitem [ref=f12e235]:
+          - link "Recent items" [ref=f12e236] [cursor=pointer]:
+            - generic "Recent items" [ref=f12e255]: Recent
+          - group
+        - treeitem [ref=f12e256]:
+          - link "Starred items" [ref=f12e257] [cursor=pointer]:
+            - generic "Starred items" [ref=f12e271]: Starred
+          - group
+        - treeitem [ref=f12e272]:
+          - link "Spam" [ref=f12e273] [cursor=pointer]:
+            - generic "Spam" [ref=f12e290]
+          - group
+        - treeitem [ref=f12e291]:
+          - link "Trashed items" [ref=f12e292] [cursor=pointer]:
+            - generic "Trashed items" [ref=f12e310]: Trash
+          - group
+        - treeitem [ref=f12e311]:
+          - link "Storage" [ref=f12e312] [cursor=pointer]:
+            - generic "Storage" [ref=f12e328]
+          - group
+      - progressbar "3.81 GB used" [ref=f12e331]
+    - generic [ref=f12e335]:
+      - generic [ref=f12e344]:
+        - generic [ref=f12e346]:
+          - generic:
+            - navigation:
+              - heading "Folder Path" [ref=f12e347]
+              - list "Folder Path"
+        - toolbar [ref=f12e348]:
+          - generic [ref=f12e349]:
+            - radiogroup "List or Grid layout (⌥V then L)" [ref=f12e353]:
+              - generic [ref=f12e354]:
+                - radio "List" [ref=f12e355] [cursor=pointer]
+                - radio "Grid" [checked] [ref=f12e364] [cursor=pointer]
+            - button "View details (⌥V then D)" [ref=f12e373] [cursor=pointer]
+      - main [ref=f12e381]:
+        - region [ref=f12e387]:
+          - generic [ref=f12e388]:
+            - grid [ref=f12e390]:
+              - generic [ref=f12e396]:
+                - 'button "Sort by: A to Z" [ref=f12e398] [cursor=pointer]':
+                  - generic [aria-hidden] [ref=f12e400]: Name
+                - tooltip [aria-hidden] [ref=f12e406]: "Sort by: A to Z"
+              - row [ref=f12e407]:
+                - gridcell "1 - Flow and decision tree.png Image More info (Option + →)" [ref=f12e408]:
+                  - generic [ref=f12e411]:
+                    - generic [ref=f12e420]: 1 - Flow and decision tree.png
+                    - generic [ref=f12e424]:
+                      - button [ref=f12e425] [cursor=pointer]
+                      - tooltip [aria-hidden] [ref=f12e431]: More actions
+                - gridcell "2 - Screen 1 About You.png Image More info (Option + →)" [ref=f12e443]:
+                  - generic [ref=f12e446]:
+                    - generic [ref=f12e455]: 2 - Screen 1 About You.png
+                    - generic [ref=f12e459]:
+                      - button [ref=f12e460] [cursor=pointer]
+                      - tooltip [aria-hidden] [ref=f12e466]: More actions
+                - gridcell "3 - Screen 2 License Details.png Image More info (Option + →)" [ref=f12e478]:
+                  - generic [ref=f12e481]:
+                    - generic [ref=f12e490]: 3 - Screen 2 License Details.png
+                    - generic [ref=f12e494]:
+                      - button [ref=f12e495] [cursor=pointer]
+                      - tooltip [aria-hidden] [ref=f12e501]: More actions
+                - gridcell "4 - Screen 3 Book the Call.png Image More info (Option + →)" [ref=f12e513]:
+                  - generic [ref=f12e516]:
+                    - generic [ref=f12e525]: 4 - Screen 3 Book the Call.png
+                    - generic [ref=f12e529]:
+                      - button [ref=f12e530] [cursor=pointer]
+                      - tooltip [aria-hidden] [ref=f12e536]: More actions
+                - gridcell "5 - Screen 4 Confirmation.png Image More info (Option + →)" [ref=f12e548]:
+                  - generic [ref=f12e551]:
+                    - generic [ref=f12e560]: 5 - Screen 4 Confirmation.png
+                    - generic [ref=f12e564]:
+                      - button [ref=f12e565] [cursor=pointer]
+                      - tooltip [aria-hidden] [ref=f12e571]: More actions
+            - progressbar [ref=f12e585]
+      - generic:
+        - navigation
+  - region

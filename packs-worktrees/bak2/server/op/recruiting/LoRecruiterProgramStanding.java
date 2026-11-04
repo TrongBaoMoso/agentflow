@@ -1,0 +1,310 @@
+package com.mvu.loan.server.op.recruiting;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HexFormat;
+import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.LongSupplier;
+
+import com.moso.core.Logger;
+import com.mvu.appengine.db.Bean;
+import com.mvu.core.server.CanBeStored;
+import com.mvu.core.server.JSON;
+import com.mvu.core.shared.HasValues;
+import com.mvu.loan.shared.entity.Admin;
+import com.mvu.core.server.Server;
+import com.mvu.core.shared.util.Strings;
+import com.mvu.loan.shared.entity.LORecruiting;
+import com.mvu.loan.shared.typekey.LoanOfficerReferredSource;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+
+/**
+ * Decides whether a sign-up through a Loan Officer's own site is credited as RECRUITER credit
+ * (agentflow, Bao 23/10 option a): the owner is an approved LO Recruiter Program member but does not carry
+ * the HR "recruiter" flag. Accounting still pays the program from MOSO, so the lead must be stored exactly as
+ * an HR-flagged recruiter's lead ({@code referred_source=recruiter}, {@code recruiter=<owner key name>}).
+ *
+ * <p><b>Membership is never taken from the visitor.</b> Two independent proofs are both required:</p>
+ * <ol>
+ *   <li>the origin stamp resolved on the server ({@link LeadOriginStamp#MATCH_SLUG_SERVER_RESOLVED}: exactly
+ *       one active Admin owns the {@code referred_by} e-mail and the slug is that Admin's own slug) and names
+ *       the Admin the caller is about to credit; and</li>
+ *   <li>moso-aid, which owns the program roster, says that Admin holds recruiter standing, answered by the
+ *       public {@code GET <moso_aid_base_url>/join-page?key=<websafe Admin key>} ({@code data.recruiter_slug}
+ *       is present only for a member). The key sent is the Admin's own, chosen from the Admin table.</li>
+ * </ol>
+ *
+ * <p><b>Three outcomes, never two.</b> {@link Outcome#UNVERIFIED} (the lookup could not be completed) is kept
+ * apart from {@link Outcome#NOT_CREDITED} (moso-aid answered "no"): the first is logged as the greppable
+ * {@code recruiter-standing-lookup-failed} WARN and the caller labels the lead, so a transient outage can be
+ * found and corrected later instead of passing as a clean "not a member". Both keep today's
+ * {@code loan_officer} credit; the lead is always saved and nothing is thrown.</p>
+ *
+ * <p>Wire hardening: https only (plain http solely for a loopback host, used by tests), the base must end in
+ * {@code /api}, no redirects, response body capped, short timeouts with one retry on timeout/5xx, and a small
+ * per-owner TTL cache for definite answers (failures are never cached). Logs carry a hash of the Admin, never
+ * the login e-mail.</p>
+ *
+ * <p>Evaluated only inside {@code LORecruiting.beforeCreated}, i.e. at first touch: a sign-up after approval
+ * is credited, an existing lead is never re-credited (update paths never reach this class).</p>
+ */
+public final class LoRecruiterProgramStanding {
+
+  /** System property: moso-aid's {@code /api} root, e.g. {@code https://moso-aid-....run.app/api}. Unset = feature off. */
+  public static final String BASE_URL_PROPERTY = "moso_aid_base_url";
+
+  /** Label put on a lead whose recruiter standing could not be verified at sign-up time. */
+  public static final String UNVERIFIED_LABEL = "Warning: recruiter credit not verified (program lookup failed)";
+
+  public enum Outcome {
+    /** Credit as recruiter, exactly as an HR-flagged recruiter's lead. */
+    RECRUITER,
+    /** Today's behaviour (loan officer referral): not claimed, not stamped, not configured, or moso-aid said no. */
+    NOT_CREDITED,
+    /** Today's behaviour, but the standing lookup failed: label the lead so it can be reviewed. */
+    UNVERIFIED
+  }
+
+  private static final Logger logger = Logger.getLogger(LoRecruiterProgramStanding.class.getSimpleName());
+
+  static final long CACHE_TTL_MILLIS = 60_000L;
+  private static final int MAX_CACHE_ENTRIES = 500;
+  private static final int MAX_BODY_BYTES = 16 * 1024;
+  private static final int ATTEMPTS = 2;
+  private static final long TIMEOUT_MILLIS = 1_000L;
+  private static final long CALL_TIMEOUT_MILLIS = 1_400L;
+
+  /** Built lazily, like FeedbackPortalClient: loading this class for its pure statics builds no client. */
+  private static volatile OkHttpClient client;
+
+  private static OkHttpClient client() {
+    OkHttpClient result = client;
+    if (result == null) {
+      synchronized (LoRecruiterProgramStanding.class) {
+        result = client;
+        if (result == null) {
+          client = result = new OkHttpClient.Builder()
+                  .connectTimeout(TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
+                  .readTimeout(TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
+                  .callTimeout(CALL_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS)
+                  .followRedirects(false)
+                  .followSslRedirects(false)
+                  .build();
+        }
+      }
+    }
+    return result;
+  }
+
+  /** What moso-aid said for one owner key. {@code slug} is null for "not a member". */
+  private record Answer(String slug, long expiresAt) {
+  }
+
+  private static final Map<String, Answer> CACHE = new ConcurrentHashMap<>();
+  private static final AtomicReference<String> LAST_CONFIG_WARNING = new AtomicReference<>();
+  private static volatile LongSupplier clock = System::currentTimeMillis;
+
+  private LoRecruiterProgramStanding() {
+  }
+
+  /** Test seam: forget cached answers, the once-only config warning, and restore the real clock. */
+  static void resetForTests() {
+    CACHE.clear();
+    LAST_CONFIG_WARNING.set(null);
+    clock = System::currentTimeMillis;
+  }
+
+  static void useClockForTests(LongSupplier testClock) {
+    clock = testClock;
+  }
+
+  /**
+   * Whether a lead that claims {@code referred_source=recruiter} through {@code owner}'s site must be
+   * credited as recruiter credit even though {@code owner} has no HR recruiter flag.
+   */
+  public static Outcome creditFor(CanBeStored<?> lead, Bean owner) {
+    if (!lead.is(LORecruiting.referred_source, LoanOfficerReferredSource.recruiter)
+            || !isServerResolvedSlugStampFor(lead, owner)) {
+      return Outcome.NOT_CREDITED;
+    }
+    String baseUrl = configuredBaseUrl();
+    if (baseUrl == null) {
+      return Outcome.NOT_CREDITED;
+    }
+    String expectedSlug = lead.get(LORecruiting.lead_origin_slug);
+    String adminId = adminId(owner);
+    String ownerKey = owner.key();
+
+    Answer cached = CACHE.get(ownerKey);
+    if (cached != null && cached.expiresAt() > clock.getAsLong()) {
+      return decide(cached.slug(), expectedSlug);
+    }
+    Answer fresh = lookup(baseUrl, ownerKey, adminId);
+    if (fresh == null) {
+      return Outcome.UNVERIFIED;
+    }
+    if (CACHE.size() >= MAX_CACHE_ENTRIES) {
+      CACHE.clear();
+    }
+    CACHE.put(ownerKey, fresh);
+    return decide(fresh.slug(), expectedSlug);
+  }
+
+  private static Outcome decide(String answeredSlug, String expectedSlug) {
+    return answeredSlug != null && answeredSlug.trim().toLowerCase(Locale.ROOT).equals(expectedSlug)
+            ? Outcome.RECRUITER : Outcome.NOT_CREDITED;
+  }
+
+  private static boolean isServerResolvedSlugStampFor(CanBeStored<?> lead, Bean owner) {
+    String origin = lead.get(LORecruiting.lead_origin);
+    boolean slugOrigin = LeadOriginStamp.JOIN_SLUG.equals(origin) || LeadOriginStamp.RECRUIT_SLUG.equals(origin);
+    return slugOrigin
+            && LeadOriginStamp.MATCH_SLUG_SERVER_RESOLVED.equals(lead.get(LORecruiting.lead_origin_owner_match))
+            && Strings.isNotEmpty(lead.get(LORecruiting.lead_origin_slug))
+            && owner.keyName().equals(lead.get(LORecruiting.lead_origin_owner_key));
+  }
+
+  /** The validated moso-aid {@code /api} root, or null (feature off) with a once-only warning. */
+  static String configuredBaseUrl() {
+    String raw = Server.getSystemProperty(BASE_URL_PROPERTY);
+    if (Strings.isEmpty(raw) || Strings.isEmpty(raw.trim())) {
+      warnConfigOnce("recruiter-standing-not-configured: " + BASE_URL_PROPERTY + " is unset; program members are credited as Loan Officer referrals");
+      return null;
+    }
+    String base = raw.trim().replaceAll("/+$", "");
+    try {
+      URI uri = URI.create(base);
+      boolean loopback = "127.0.0.1".equals(uri.getHost()) || "localhost".equals(uri.getHost());
+      boolean schemeOk = "https".equals(uri.getScheme()) || ("http".equals(uri.getScheme()) && loopback);
+      if (schemeOk && uri.getHost() != null && uri.getRawQuery() == null && uri.getRawFragment() == null
+              && uri.getRawUserInfo() == null && base.endsWith("/api")) {
+        return base;
+      }
+    } catch (IllegalArgumentException malformed) {
+      // falls through to the warning below
+    }
+    warnConfigOnce("recruiter-standing-misconfigured: " + BASE_URL_PROPERTY + " must be an https URL ending in /api; feature off");
+    return null;
+  }
+
+  private static void warnConfigOnce(String message) {
+    if (!message.equals(LAST_CONFIG_WARNING.getAndSet(message))) {
+      logger.warn(message);
+    }
+  }
+
+  /** One definite answer from moso-aid, or null when the lookup could not be completed (already logged). */
+  private static Answer lookup(String baseUrl, String ownerKey, String adminId) {
+    String url = baseUrl + "/join-page?key=" + URLEncoder.encode(ownerKey, StandardCharsets.UTF_8);
+    String failure = "no attempt";
+    for (int attempt = 1; attempt <= ATTEMPTS; attempt++) {
+      boolean retryable;
+      try (Response response = client().newCall(new Request.Builder().url(url).get().build()).execute()) {
+        int status = response.code();
+        if (status == 404) {
+          logger.info("recruiter-standing-not-found admin_id=" + adminId + " (moso-aid has no join page for this Admin: not a member)");
+          return new Answer(null, clock.getAsLong() + CACHE_TTL_MILLIS);
+        }
+        if (response.isSuccessful()) {
+          Read read = readSlug(response.body());
+          if (read.readable()) {
+            return new Answer(read.slug(), clock.getAsLong() + CACHE_TTL_MILLIS);
+          }
+          failure = "unreadable response";
+          retryable = false;
+        } else {
+          failure = "status " + status;
+          retryable = status >= 500;
+        }
+      } catch (IOException ioException) {
+        failure = ioException.getClass().getSimpleName();
+        retryable = true;
+      } catch (RuntimeException unexpected) {
+        failure = unexpected.getClass().getSimpleName();
+        retryable = false;
+      }
+      if (!retryable) {
+        break;
+      }
+    }
+    logger.warn("recruiter-standing-lookup-failed admin_id=" + adminId + " reason=" + failure
+            + "; crediting as a Loan Officer referral and labelling the lead");
+    return null;
+  }
+
+  /** A parsed moso-aid answer: {@code readable=false} for an oversized or unparseable body; {@code slug} may be null. */
+  record Read(boolean readable, String slug) {
+  }
+
+  private static Read readSlug(ResponseBody body) throws IOException {
+    if (body == null) {
+      return new Read(false, null);
+    }
+    byte[] bytes = body.byteStream().readNBytes(MAX_BODY_BYTES + 1);
+    if (bytes.length > MAX_BODY_BYTES) {
+      return new Read(false, null);
+    }
+    return recruiterSlugOf(new String(bytes, StandardCharsets.UTF_8));
+  }
+
+  /** {@code data.recruiter_slug} of a moso-aid {@code /join-page} answer. */
+  static Read recruiterSlugOf(String responseBody) {
+    Object parsed;
+    try {
+      parsed = JSON.parse(responseBody);
+    } catch (RuntimeException notJson) {
+      return new Read(false, null);
+    }
+    if (!(parsed instanceof JSON json)) {
+      return new Read(false, null);
+    }
+    Object data = json.getRaw("data");
+    Object slug = data instanceof JSON dataJson ? dataJson.getRaw("recruiter_slug")
+            : data instanceof Map<?, ?> map ? map.get("recruiter_slug") : null;
+    return new Read(true, slug instanceof String text && Strings.isNotEmpty(text) ? text : null);
+  }
+
+
+  /**
+   * True when {@code admin} is a MOSO staff recruiter (HR {@code is_recruiter} / {@code is_out_sourcing_recruiter}).
+   * A Loan Officer credited through the LO Recruiter Program is deliberately NOT one: the program grants credit,
+   * never staff-recruiter powers.
+   */
+  public static boolean isStaffRecruiter(HasValues admin) {
+    return admin != null && (admin.is(Admin.is_recruiter) || admin.is(Admin.is_out_sourcing_recruiter)
+            || (admin.get(Admin.role) != null && admin.get(Admin.role).isAnyRecruiter()));
+  }
+
+  /**
+   * True when this lead's recruiter credit was confirmed by the server for a program member: the server-set marker
+   * {@code lead_origin_recruiter_credit} (never a public body: it is part of the stripped origin stamp) plus a
+   * recruiter. Staff-side automation (round-robin owner assignment, default follow-ups) leaves such a lead alone:
+   * it would otherwise overwrite the credit or hand the member a staff task. A legacy lead whose recruiter is a
+   * de-flagged ex-staff recruiter carries no marker and keeps the old handling.
+   */
+  public static boolean holdsProgramMemberCredit(HasValues lead) {
+    return lead != null && lead.hasValue(LORecruiting.recruiter) && lead.is(LORecruiting.lead_origin_recruiter_credit);
+  }
+
+  /** Stable, non-reversible id for logs: the first 12 hex chars of SHA-256(keyName). Never the login e-mail. */
+  static String adminId(Bean owner) {
+    try {
+      byte[] digest = MessageDigest.getInstance("SHA-256").digest(owner.keyName().getBytes(StandardCharsets.UTF_8));
+      return HexFormat.of().formatHex(digest, 0, 6);
+    } catch (NoSuchAlgorithmException impossible) {
+      return "unknown";
+    }
+  }
+}

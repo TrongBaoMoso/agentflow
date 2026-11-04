@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <linearGradient id="e-tile" x1="20" y1="20" x2="236" y2="236" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4F8BFF"/>
+      <stop offset="0.55" stop-color="#3B5BFF"/>
+      <stop offset="1" stop-color="#7B4DFF"/>
+    </linearGradient>
+    <linearGradient id="e-star" x1="150" y1="20" x2="240" y2="110" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFD54F"/>
+      <stop offset="0.5" stop-color="#FF7AC6"/>
+      <stop offset="1" stop-color="#A24BFF"/>
+    </linearGradient>
+    <linearGradient id="e-shine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.35"/>
+      <stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="e-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#1B2A8C" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <g filter="url(#e-shadow)">
+    <rect x="22" y="42" width="190" height="190" rx="52" fill="url(#e-tile)"/>
+  </g>
+  <rect x="22" y="42" width="190" height="190" rx="52" fill="url(#e-shine)"/>
+  <path d="M150 84C167 84 179 96 179 112S167 140 150 140 121 128 121 112 133 84 150 84Z" fill="#DCE3FF"/>
+  <path d="M108 186C108 165 126 150 150 150S192 165 192 186C192 191 189 194 184 194H116C111 194 108 191 108 186Z" fill="#DCE3FF"/>
+  <path stroke="url(#e-tile)" stroke-width="10" paint-order="stroke" stroke-linejoin="round" d="M98 98C118 98 131 111 131 129S118 160 98 160 65 147 65 129 78 98 98 98Z" fill="#FFFFFF"/>
+  <path d="M44 204C44 182 68 168 98 168S152 182 152 204C152 209 149 212 144 212H52C47 212 44 209 44 204Z" fill="#FFFFFF" stroke="url(#e-tile)" stroke-width="10" paint-order="stroke" stroke-linejoin="round"/>
+  <g filter="url(#e-shadow)">
+    <rect x="182" y="18" width="28" height="84" rx="14" fill="url(#e-star)"/>
+    <rect x="154" y="46" width="84" height="28" rx="14" fill="url(#e-star)"/>
+  </g>
+</svg>

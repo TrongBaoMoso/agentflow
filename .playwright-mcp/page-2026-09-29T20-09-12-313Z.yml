@@ -1,0 +1,105 @@
+- generic [active] [ref=f4e1]:
+  - alert [ref=f4e2]
+  - generic [ref=f4e3]:
+    - banner [ref=f4e4]:
+      - generic [ref=f4e5]:
+        - img "Loan Factory" [ref=f4e6]
+        - generic [ref=f4e7]: Recruit
+      - generic [aria-hidden] [ref=f4e8]:
+        - generic [ref=f4e12]: Search candidates, NMLS, companies…
+        - generic [ref=f4e13]: ⌘ K
+      - generic [ref=f4e14]:
+        - button "Notifications" [ref=f4e15] [cursor=pointer]
+        - generic [ref=f4e20]:
+          - button "Change language" [ref=f4e21] [cursor=pointer]:
+            - generic [ref=f4e22]: English
+          - button "Switch to dark mode" [ref=f4e32] [cursor=pointer]
+        - button "Your account" [ref=f4e36] [cursor=pointer]:
+          - generic [ref=f4e37]:
+            - generic [ref=f4e38]: Manh Admin
+            - generic [ref=f4e39]: manhadmin@viet18.com
+    - navigation [ref=f4e40]:
+      - navigation [ref=f4e41]:
+        - generic [ref=f4e42]: Frequent
+        - link [ref=f4e43] [cursor=pointer]:
+          - /url: /today
+        - link [ref=f4e48] [cursor=pointer]:
+          - /url: /inbox/hot
+        - link [ref=f4e52] [cursor=pointer]:
+          - /url: /inbox/cold
+        - link [ref=f4e67] [cursor=pointer]:
+          - /url: /pipeline
+        - link [ref=f4e72] [cursor=pointer]:
+          - /url: /exceptions
+        - link [ref=f4e76] [cursor=pointer]:
+          - /url: /reports
+        - link [ref=f4e82] [cursor=pointer]:
+          - /url: /work
+        - link [ref=f4e87] [cursor=pointer]:
+          - /url: /sponsorships
+      - navigation [ref=f4e93]:
+        - generic [ref=f4e94]: Configuration
+        - link [ref=f4e95] [cursor=pointer]:
+          - /url: /templates
+        - link [ref=f4e100] [cursor=pointer]:
+          - /url: /duplicates
+        - link [ref=f4e106] [cursor=pointer]:
+          - /url: /dormant
+        - link [ref=f4e111] [cursor=pointer]:
+          - /url: /conversations
+        - link [ref=f4e115] [cursor=pointer]:
+          - /url: /audit
+        - link [ref=f4e120] [cursor=pointer]:
+          - /url: /settings
+        - link [ref=f4e125] [cursor=pointer]:
+          - /url: /checklist-templates
+        - link [ref=f4e131] [cursor=pointer]:
+          - /url: /licensing-rules
+        - link [ref=f4e136] [cursor=pointer]:
+          - /url: /permissions
+    - main [ref=f4e141]:
+      - generic [ref=f4e142]:
+        - generic [ref=f4e144]:
+          - generic [ref=f4e145]: Cold list · Modex directory — outbound hunting
+          - heading [level=1] [ref=f4e146]:
+            - text: Know who's
+            - emphasis [ref=f4e147]: good
+            - text: first, then spend the effort
+        - generic [ref=f4e148]:
+          - generic [ref=f4e164]:
+            - generic [ref=f4e165]: TEAM · unclaimed
+            - generic [ref=f4e166]: active, no recruiter yet
+          - generic [ref=f4e175]:
+            - generic [ref=f4e176]: YOU · currently holding
+            - generic [ref=f4e177]: a mirror, not a gate
+        - generic [ref=f4e179]:
+          - textbox "Name, NMLS, company…" [ref=f4e186]
+          - button "Has NMLS" [ref=f4e187] [cursor=pointer]
+          - textbox [ref=f4e196] [cursor=pointer]: 50 / page
+        - generic [ref=f4e197]:
+          - table [ref=f4e199]:
+            - rowgroup [ref=f4e200]:
+              - row [ref=f4e201]:
+                - columnheader "Candidate" [ref=f4e202]
+                - columnheader "Source" [ref=f4e203]
+                - columnheader [ref=f4e204]
+            - rowgroup [ref=f4e205]:
+              - row [ref=f4e206]:
+                - cell [ref=f4e207]
+              - row [ref=f4e209]:
+                - cell [ref=f4e210]
+              - row [ref=f4e212]:
+                - cell [ref=f4e213]
+              - row [ref=f4e215]:
+                - cell [ref=f4e216]
+              - row [ref=f4e218]:
+                - cell [ref=f4e219]
+              - row [ref=f4e221]:
+                - cell [ref=f4e222]
+          - generic [ref=f4e224]:
+            - generic [ref=f4e225]: …
+            - generic [ref=f4e226]: newest import first — the default sort is config, never a hidden-field ranking
+            - generic [ref=f4e228]:
+              - button [disabled] [ref=f4e229]
+              - button "1" [ref=f4e232] [cursor=pointer]
+              - button [disabled] [ref=f4e233]

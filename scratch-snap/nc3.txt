@@ -1,0 +1,113 @@
+FAIL packages/omni-react/src/conversation/ConversationSection/_components/composer/__tests__/ComposerChannelSnap.test.tsx
+  ● Composer - a restored draft on a channel the host has since closed › a restored SMS draft with SMS closed cannot go out as an SMS, by any route
+
+    expect(received).not.toContain(expected) // indexOf
+
+    Expected value: not "SMS"
+    Received array:     ["SMS"]
+
+      91 |     trySendEveryWay()
+      92 |
+    > 93 |     expect(sentChannels().flat()).not.toContain('SMS')
+         |                                       ^
+      94 |   })
+      95 |
+      96 |   it('the draft snaps onto a tab that exists, the text comes with it, and the UI says which', () => {
+
+      at Object.toContain (packages/omni-react/src/conversation/ConversationSection/_components/composer/__tests__/ComposerChannelSnap.test.tsx:93:39)
+
+  ● Composer - a restored draft on a channel the host has since closed › the draft snaps onto a tab that exists, the text comes with it, and the UI says which
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 3
+    + Received  + 1
+
+    - Array [
+    -   "Email",
+    - ]
+    + Array []
+
+      100 |
+      101 |     expect(screen.queryByRole('button', { name: 'SMS' })).not.toBeInTheDocument()
+    > 102 |     expect(activeTab()).toEqual(['Email'])
+          |                         ^
+      103 |     expect(screen.getByPlaceholderText(PH.extEmail)).toHaveValue('Docs are signed.')
+      104 |     expect(screen.queryByTestId('sms-char-count')).not.toBeInTheDocument()
+      105 |   })
+
+      at Object.toEqual (packages/omni-react/src/conversation/ConversationSection/_components/composer/__tests__/ComposerChannelSnap.test.tsx:102:25)
+
+  ● Composer - a restored draft on a channel the host has since closed › what it DOES send is the email the reader can see
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Array [
+        Array [
+    -     "EMAIL",
+    +     "SMS",
+        ],
+      ]
+
+      111 |     fireEvent.click(screen.getByTestId('composer-send'))
+      112 |
+    > 113 |     expect(sentChannels()).toEqual([['EMAIL']])
+          |                            ^
+      114 |   })
+      115 | })
+      116 |
+
+      at Object.toEqual (packages/omni-react/src/conversation/ConversationSection/_components/composer/__tests__/ComposerChannelSnap.test.tsx:113:28)
+
+  ● Composer - the profile closing a channel mid-session › snaps off SMS when a refetch closes it, and Enter no longer sends a text
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 3
+    + Received  + 1
+
+    - Array [
+    -   "Email",
+    - ]
+    + Array []
+
+      121 |     rerender(composer(NO_SMS))
+      122 |
+    > 123 |     expect(activeTab()).toEqual(['Email'])
+          |                         ^
+      124 |     expect(screen.getByPlaceholderText(PH.extEmail)).toHaveValue('Rate is locked.')
+      125 |     trySendEveryWay()
+      126 |     expect(sentChannels().flat()).not.toContain('SMS')
+
+      at Object.toEqual (packages/omni-react/src/conversation/ConversationSection/_components/composer/__tests__/ComposerChannelSnap.test.tsx:123:25)
+
+  ● Composer - the profile closing a channel mid-session › stays on the tab it snapped to when the channel re-opens, and a remount agrees
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Array [
+    -   "Email",
+    +   "SMS",
+      ]
+
+      132 |
+      133 |     rerender(composer(ALL))
+    > 134 |     expect(activeTab()).toEqual(['Email'])
+          |                         ^
+      135 |
+      136 |     unmount()
+      137 |     renderComposer(ALL)
+
+      at Object.toEqual (packages/omni-react/src/conversation/ConversationSection/_components/composer/__tests__/ComposerChannelSnap.test.tsx:134:25)
+
+Test Suites: 1 failed, 1 total
+Tests:       5 failed, 2 passed, 7 total
+Snapshots:   0 total
+Time:        0.861 s, estimated 1 s
+Ran all test suites matching packages/omni-react/src/conversation/ConversationSection/_components/composer/__tests__/ComposerChannelSnap.test.tsx.

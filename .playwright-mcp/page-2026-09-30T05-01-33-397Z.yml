@@ -1,0 +1,76 @@
+- generic [active] [ref=f3e1]:
+  - alert [ref=f3e2]
+  - generic [ref=f3e3]:
+    - banner [ref=f3e4]:
+      - generic [ref=f3e5]:
+        - img "Loan Factory" [ref=f3e6]
+        - generic [ref=f3e7]: Recruit
+      - generic [aria-hidden] [ref=f3e8]:
+        - generic [ref=f3e12]: Search candidates, NMLS, companies…
+        - generic [ref=f3e13]: ⌘ K
+      - generic [ref=f3e14]:
+        - button "Notifications" [ref=f3e15] [cursor=pointer]
+        - generic [ref=f3e20]:
+          - button "Change language" [ref=f3e21] [cursor=pointer]:
+            - generic [ref=f3e22]: English
+          - button "Switch to dark mode" [ref=f3e32] [cursor=pointer]
+        - button "Your account" [ref=f3e36] [cursor=pointer]:
+          - generic [ref=f3e37]:
+            - generic [ref=f3e38]: Manh Admin
+            - generic [ref=f3e39]: manhadmin@viet18.com
+    - navigation [ref=f3e40]:
+      - navigation [ref=f3e41]:
+        - generic [ref=f3e42]: Frequent
+        - link [ref=f3e43] [cursor=pointer]:
+          - /url: /today
+        - link [ref=f3e48] [cursor=pointer]:
+          - /url: /inbox/hot
+        - link [ref=f3e52] [cursor=pointer]:
+          - /url: /inbox/cold
+        - link [ref=f3e67] [cursor=pointer]:
+          - /url: /pipeline
+        - link [ref=f3e72] [cursor=pointer]:
+          - /url: /invites
+        - link [ref=f3e77] [cursor=pointer]:
+          - /url: /exceptions
+        - link [ref=f3e81] [cursor=pointer]:
+          - /url: /reports
+        - link [ref=f3e87] [cursor=pointer]:
+          - /url: /work
+        - link [ref=f3e92] [cursor=pointer]:
+          - /url: /sponsorships
+      - navigation [ref=f3e98]:
+        - generic [ref=f3e99]: Configuration
+        - link [ref=f3e100] [cursor=pointer]:
+          - /url: /templates
+        - link [ref=f3e105] [cursor=pointer]:
+          - /url: /duplicates
+        - link [ref=f3e111] [cursor=pointer]:
+          - /url: /dormant
+        - link [ref=f3e116] [cursor=pointer]:
+          - /url: /conversations
+        - link [ref=f3e120] [cursor=pointer]:
+          - /url: /audit
+        - link [ref=f3e125] [cursor=pointer]:
+          - /url: /settings
+        - link [ref=f3e130] [cursor=pointer]:
+          - /url: /checklist-templates
+        - link [ref=f3e136] [cursor=pointer]:
+          - /url: /licensing-rules
+        - link [ref=f3e141] [cursor=pointer]:
+          - /url: /permissions
+    - main [ref=f3e146]:
+      - generic [ref=f3e147]:
+        - generic [ref=f3e149]:
+          - generic [ref=f3e150]: Duplicates · one person, one row
+          - heading [level=1] [ref=f3e151]:
+            - text: Same person,
+            - emphasis [ref=f3e152]: twice
+            - text: — pick who stays
+        - generic [ref=f3e153]:
+          - generic [ref=f3e160]:
+            - generic [ref=f3e161]: GROUPS · same NMLS
+            - generic [ref=f3e162]: the stronger identity — listed first
+          - generic [ref=f3e170]:
+            - generic [ref=f3e171]: GROUPS · same email
+            - generic [ref=f3e172]: normalized; hidden when covered by an NMLS group

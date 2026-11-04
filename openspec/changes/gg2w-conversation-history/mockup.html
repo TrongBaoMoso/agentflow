@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Conversations — mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .note { border-left: 3px solid #f59e0b; background: #fffbeb; }
+</style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+<div class="max-w-6xl mx-auto p-6 space-y-8">
+
+  <header class="space-y-1">
+    <h1 class="text-2xl font-semibold">Conversations — mockup để duyệt</h1>
+    <p class="text-sm text-slate-500">
+      Phương án (B+) · cập nhật sau khi Bao chốt 19/09.
+      <b>Danh sách dùng lại đúng kiểu dòng ứng viên đang có</b>, và
+      <b>ô hội thoại là ConversationModal của Omni đang chạy</b> — không dựng UI mới.
+    </p>
+  </header>
+
+  <!-- ==================== MÀN 1 ==================== -->
+  <section class="space-y-3">
+    <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Màn 1 — danh sách</h2>
+
+    <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
+      <div class="px-4 py-3 border-b border-slate-100 flex items-center gap-3">
+        <input class="flex-1 text-sm px-3 py-1.5 border border-slate-200 rounded" placeholder="Tìm theo tên hoặc số điện thoại"/>
+        <select class="text-sm px-3 py-1.5 border border-slate-200 rounded">
+          <option>Tất cả recruiter</option><option>Luis Ramirez</option>
+        </select>
+      </div>
+
+      <table class="w-full text-sm">
+        <thead class="text-xs uppercase text-slate-500 bg-slate-50">
+          <tr>
+            <th class="text-left font-medium px-4 py-2">Ứng viên</th>
+            <th class="text-left font-medium px-4 py-2">Phụ trách</th>
+            <th class="text-left font-medium px-4 py-2">Tin cuối</th>
+            <th class="px-4 py-2"></th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-3">
+              <div class="font-medium">Kaprice Bohoki</div>
+              <div class="text-xs text-slate-500">NMLS 383382 · S2</div>
+            </td>
+            <td class="px-4 py-3">Luis Ramirez</td>
+            <td class="px-4 py-3">
+              <div>2 giờ trước</div>
+              <div class="text-xs text-slate-500 truncate max-w-xs">“Em cảm ơn anh, để em xem lại rồi…”</div>
+            </td>
+            <td class="px-4 py-3 text-right">
+              <button class="text-sm px-3 py-1.5 rounded bg-slate-900 text-white">Mở</button>
+            </td>
+          </tr>
+
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-3">
+              <div class="font-medium">Tommy Le</div>
+              <div class="text-xs text-slate-500">NMLS 219044 · S1</div>
+            </td>
+            <td class="px-4 py-3">Sara Acosta</td>
+            <td class="px-4 py-3"><div>Hôm qua</div>
+              <div class="text-xs text-slate-500 truncate max-w-xs">“Anh gửi em link chương trình nhé”</div></td>
+            <td class="px-4 py-3 text-right">
+              <button class="text-sm px-3 py-1.5 rounded bg-slate-900 text-white">Mở</button>
+            </td>
+          </tr>
+
+          <tr class="bg-slate-50/60">
+            <td class="px-4 py-3">
+              <div class="font-medium text-slate-500">Wegina Ramos</div>
+              <div class="text-xs text-slate-400">NMLS 771203 · S0</div>
+            </td>
+            <td class="px-4 py-3 text-slate-400">chưa ai</td>
+            <td class="px-4 py-3 text-slate-400 text-xs italic">chưa có hội thoại</td>
+            <td class="px-4 py-3 text-right">
+              <button disabled class="text-sm px-3 py-1.5 rounded bg-slate-200 text-slate-400 cursor-not-allowed">Mở</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note p-3 text-sm rounded-r">
+      <b>Dòng 3 cố tình bị khoá.</b> Ứng viên chưa từng được liên hệ thì chưa có hội thoại nào để đọc.
+      Backend từ chối thẳng thay vì mở ra một khung trống — và quan trọng hơn, thay vì
+      <i>khai sinh</i> một hội thoại cho người chưa ai nhắn.
+    </div>
+  </section>
+
+  <!-- ==================== MÀN 2 ==================== -->
+  <section class="space-y-3">
+    <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Màn 2 — mở hội thoại (ConversationModal có sẵn của Omni)</h2>
+
+    <div class="bg-white rounded-lg border border-slate-200 max-w-3xl">
+      <div class="px-4 py-3 border-b border-slate-100 flex items-start justify-between">
+        <div>
+          <div class="font-medium">Kaprice Bohoki</div>
+          <div class="text-xs text-slate-500">Luis Ramirez phụ trách</div>
+        </div>
+        <button class="text-slate-400 text-lg leading-none">&times;</button>
+      </div>
+
+      <div class="px-4 py-2 bg-amber-50 border-b border-amber-100">
+        <div class="text-xs text-amber-900">
+          👁 <b>Bạn đang xem với tư cách quan sát.</b>
+          Tên bạn hiện trong danh sách người tham gia. Bạn chưa gửi tin nào.
+        </div>
+      </div>
+
+      <div class="p-4 space-y-3 text-sm">
+        <div class="flex gap-2">
+          <div class="w-8 h-8 rounded-full bg-slate-200 shrink-0"></div>
+          <div><div class="text-xs text-slate-500 mb-0.5">Luis · SMS · 14/09 09:12</div>
+            <div class="bg-slate-100 rounded px-3 py-2">Chào Kaprice, bên anh có chương trình mới…</div></div>
+        </div>
+        <div class="flex gap-2 justify-end">
+          <div><div class="text-xs text-slate-500 mb-0.5 text-right">Kaprice · SMS · 14/09 11:40</div>
+            <div class="bg-blue-50 rounded px-3 py-2">Em cảm ơn anh, để em xem lại rồi báo anh nhé</div></div>
+        </div>
+        <div class="flex gap-2">
+          <div class="w-8 h-8 rounded-full bg-amber-100 shrink-0"></div>
+          <div><div class="text-xs text-slate-500 mb-0.5">Luis · ghi chú nội bộ · 15/09</div>
+            <div class="bg-amber-50 border border-amber-200 rounded px-3 py-2 italic">
+              Bạn này hơi lăn tăn về comp. Tuần sau gọi lại.</div></div>
+        </div>
+      </div>
+
+      <div class="px-4 py-3 border-t border-slate-100">
+        <textarea class="w-full text-sm border border-slate-200 rounded px-3 py-2" rows="2"
+          placeholder="Trả lời với tư cách Victoria Pham…"></textarea>
+        <div class="flex items-center justify-between mt-2">
+          <div class="text-xs text-slate-500">Gửi đi sẽ hiện tên bạn với ứng viên.</div>
+          <button class="text-sm px-3 py-1.5 rounded bg-slate-900 text-white">Gửi</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="note p-3 text-sm rounded-r">
+      <b>Phần duy nhất thêm vào modal là dải vàng.</b> Hai tab Team / Candidate &amp; parties, bộ lọc
+      kênh, ô soạn tin — tất cả là ConversationModal đang chạy, không đụng tới.
+      <br/><br/>
+      <b>Dải vàng là phần “+” của phương án.</b> Không có cách nào đọc mà không có tên trong hội thoại —
+      hệ thống tin nhắn từ chối mọi người ngoài danh sách. Nên thay vì giấu việc đó, màn hình
+      <i>nói thẳng</i>: bạn đang ở đây, mọi người thấy, và bạn chưa gửi gì.
+    </div>
+  </section>
+
+  <!-- ==================== MÀN 3 ==================== -->
+  <section class="space-y-3">
+    <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Màn 3 — recruiter nhìn thấy gì</h2>
+
+    <div class="bg-white rounded-lg border border-slate-200 max-w-3xl p-4">
+      <div class="text-xs text-slate-500 mb-2">Hồ sơ Kaprice · góc nhìn của Luis</div>
+      <div class="flex items-center gap-2 text-sm bg-amber-50 border border-amber-200 rounded px-3 py-2">
+        👁 <span><b>Victoria Pham</b> đang theo dõi hội thoại này từ 14/09.</span>
+      </div>
+    </div>
+
+    <div class="note p-3 text-sm rounded-r">
+      <b>Đây là chỗ đổi “bị giám sát ngầm” thành “minh bạch”.</b> Luis thấy được ai đang xem hồ sơ mình phụ trách.
+      Nếu giấu, thì đúng nghĩa là giấu việc giám sát khỏi chính người bị giám sát.
+    </div>
+  </section>
+
+  <section class="space-y-2 text-sm">
+    <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Bao đã chốt 19/09</h2>
+    <ul class="list-disc ml-5 space-y-1">
+      <li>Cột “Đang theo dõi” ở danh sách: <b>BỎ</b>.</li>
+      <li>Dải vàng trong hội thoại: <b>giữ</b>, chữ như hiện tại.</li>
+      <li>Màn 3 (recruiter thấy quản lý đang xem): <b>tuỳ</b> — giữ, vì nó là nửa còn lại của “minh bạch”.</li>
+      <li>Nút “Rời”: <b>BỎ</b> khỏi UI.</li>
+    </ul>
+    <div class="note p-3 rounded-r mt-2">
+      <b>Hệ quả của việc bỏ nút “Rời”, nói trước để không ai ngạc nhiên sau:</b>
+      không có nút rời và không có hạn, nên mỗi hồ sơ Victoria mở là cô ở lại đó <i>vĩnh viễn</i>.
+      Sau một tháng cô có tên trên hàng trăm hội thoại. Đúng ý “Manager không ràng buộc”, nhưng
+      đáng biết.
+      <br/><br/>
+      Có một đường dọn tự động: backend <b>hỏi lại quyền mỗi lần dựng danh sách</b>, nên ngày
+      Victoria thôi làm quản lý, cô rời khỏi <i>tất cả</i> hội thoại ở lần đẩy kế tiếp, không cần ai
+      bấm gì. Và endpoint gỡ vẫn còn cho admin dùng khi cần — chỉ là không lộ trên giao diện.
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

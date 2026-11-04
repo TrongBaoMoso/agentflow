@@ -1,0 +1,13 @@
+mvn_exit=1
+released
+RecruiterProgramMemberReportsTest 19 fail 9 err 0
+  RED theRoundRobinStillAssignsStaffLeadsAsBefore
+  RED aForgedRecruiterOnAPublicRegistrationGivesNoReportRow
+  RED aLoanOfficerOnAnUnmarkedLeadIsNotCountedByEitherReport
+  RED aForgedMarkerOnAPublicBodyIsStrippedAndGivesNoRow
+  RED aKeyedPublicUpdateCannotSetRecruiter
+  RED thePublicBodyCannotSetRecruiterOrReferredLo
+  RED aLegacyLeadOfADeFlaggedExRecruiterKeepsTheOldStaffHandling
+  RED aMarkedLeadIsCountedAndRemovingTheMarkerRemovesTheRow
+  RED aStaffRecruitersLeadStillGetsTheirFollowUpTask
+DONE

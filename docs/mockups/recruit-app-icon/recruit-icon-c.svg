@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <linearGradient id="c-tile" x1="20" y1="20" x2="236" y2="236" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4F8BFF"/>
+      <stop offset="0.55" stop-color="#3B5BFF"/>
+      <stop offset="1" stop-color="#7B4DFF"/>
+    </linearGradient>
+    <linearGradient id="c-star" x1="150" y1="20" x2="240" y2="110" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFD54F"/>
+      <stop offset="0.5" stop-color="#FF7AC6"/>
+      <stop offset="1" stop-color="#A24BFF"/>
+    </linearGradient>
+    <linearGradient id="c-shine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.35"/>
+      <stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="c-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#1B2A8C" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <g filter="url(#c-shadow)">
+    <rect x="22" y="42" width="190" height="190" rx="52" fill="url(#c-tile)"/>
+  </g>
+  <rect x="22" y="42" width="190" height="190" rx="52" fill="url(#c-shine)"/>
+  <path d="M117 82C137 82 151 96 151 116S137 150 117 150 83 136 83 116 97 82 117 82Z" fill="#FFFFFF"/>
+  <path d="M57 200C57 176 83 160 117 160S177 176 177 200C177 206 173 210 167 210H67C61 210 57 206 57 200Z" fill="#FFFFFF" fill-opacity="0.92"/>
+  <g filter="url(#c-shadow)">
+    <path d="M196 14C200 44 212 56 242 60C212 64 200 76 196 106C192 76 180 64 150 60C180 56 192 44 196 14Z" fill="url(#c-star)"/>
+  </g>
+</svg>

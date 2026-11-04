@@ -1,0 +1,250 @@
+<title>Today Row Layout</title>
+<style>
+/* Layout: paired panels per surface (current left/top, proposed right/bottom). The proposed row is a 4-column grid that uses the empty middle: Who | Details | Next step | Actions. */
+:root {
+  --page: #f6f4f2; --card: #ffffff; --ink: #1d1a17; --ink-2: #57514b; --ink-3: #8b847c; --line: #e8e3de;
+  --accent: #e8622a; --accent-ink: #ffffff; --accent-soft: #fde9df;
+  --hero-a: #fdf1ea; --hero-b: #fffaf7; --hero-line: #f1b48f;
+  --hot: #c2341f; --hot-tint: #fdecea; --badge: #e5484d;
+  --gn-bg: #eef7f0; --gn-ink: #1e6b3a; --am-bg: #fdf6dc; --am-ink: #92400e; --bl-bg: #eef3ff; --bl-ink: #1d4ed8;
+  --mark: #fff1b8; --zone: #fff7f2; --zone-line: #f3c9b1;
+  --old: #c2341f; --new: #1e6b3a;
+  --font-ui: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-note: "Be Vietnam Pro", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --page: #151311; --card: #1f1c19; --ink: #f2eee9; --ink-2: #c4bcb3; --ink-3: #8f877e; --line: #34302b;
+  --accent: #f07a45; --accent-ink: #1a0f08; --accent-soft: #3a2418; --hero-a: #2a1d15; --hero-b: #221a14; --hero-line: #7a4a2e;
+  --hot: #ff8a7a; --hot-tint: #3a1f1b; --badge: #ff6b70;
+  --gn-bg: #1b2c20; --gn-ink: #8ee0a8; --am-bg: #2f2814; --am-ink: #fbbf24; --bl-bg: #1a2238; --bl-ink: #93b8ff;
+  --mark: #4a3d0c; --zone: #261c16; --zone-line: #6b4129; --old: #ff8a7a; --new: #8ee0a8; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --page: #151311; --card: #1f1c19; --ink: #f2eee9; --ink-2: #c4bcb3; --ink-3: #8f877e; --line: #34302b;
+  --accent: #f07a45; --accent-ink: #1a0f08; --accent-soft: #3a2418; --hero-a: #2a1d15; --hero-b: #221a14; --hero-line: #7a4a2e;
+  --hot: #ff8a7a; --hot-tint: #3a1f1b; --badge: #ff6b70;
+  --gn-bg: #1b2c20; --gn-ink: #8ee0a8; --am-bg: #2f2814; --am-ink: #fbbf24; --bl-bg: #1a2238; --bl-ink: #93b8ff;
+  --mark: #4a3d0c; --zone: #261c16; --zone-line: #6b4129; --old: #ff8a7a; --new: #8ee0a8; color-scheme: dark }
+
+body { background: var(--page); color: var(--ink); font-family: var(--font-ui); }
+.wrap { max-width: 1320px; margin: 0 auto; padding-inline: 16px; padding-block: 32px 64px; display: grid; gap: 44px; }
+header.top { display: grid; gap: 10px; max-width: 76ch; }
+h1 { font-size: 1.75rem; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+.lede, header.top p { margin: 0; color: var(--ink-2); line-height: 1.55; font-family: var(--font-note); }
+.changes { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; color: var(--ink-2); font-family: var(--font-note); line-height: 1.5; }
+.changes b { color: var(--ink); }
+section.pair { display: grid; gap: 12px; }
+section.pair > h2 { margin: 0; font-size: 1.15rem; }
+.stack { display: grid; gap: 18px; }
+.side { display: grid; gap: 8px; min-width: 0; }
+.tag { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; }
+.tag.before { color: var(--old); } .tag.after { color: var(--new); }
+
+/* shared bits */
+.avatar { flex: none; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); font-weight: 700; font-size: 0.7rem; }
+.avatar.lg { width: 52px; height: 52px; font-size: 0.95rem; background: var(--card); border: 1.5px solid var(--hero-line); }
+.name { font-weight: 700; font-size: 0.88rem; }
+.hero .name { font-size: 1.1rem; }
+.name-line { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-width: 0; }
+.sub { color: var(--ink-2); font-size: 0.76rem; }
+.muted { color: var(--ink-3); font-size: 0.74rem; }
+.warn { color: var(--hot); font-size: 0.74rem; }
+.chip { display: inline-flex; align-items: center; max-width: 14rem; border-radius: 999px; padding: 1px 8px; font-size: 0.7rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.5; }
+.chip.gn { background: var(--gn-bg); color: var(--gn-ink); } .chip.am { background: var(--am-bg); color: var(--am-ink); } .chip.bl { background: var(--bl-bg); color: var(--bl-ink); }
+.contact { display: flex; flex-wrap: wrap; gap: 2px 10px; font-size: 0.74rem; color: var(--ink-2); min-width: 0; }
+.contact span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+.copy { display: inline-block; width: 12px; height: 12px; border: 1.5px solid var(--ink-3); border-radius: 3px; margin-left: 4px; vertical-align: -1px; }
+.nmls { color: var(--accent); font-size: 0.74rem; text-decoration: underline; text-underline-offset: 2px; }
+.pill { display: inline-flex; align-items: center; gap: 4px; color: var(--hot); background: var(--hot-tint); border-radius: 999px; padding: 2px 8px; font-size: 0.72rem; font-weight: 600; white-space: nowrap; }
+.pill.add { color: var(--accent); background: transparent; border: 1px dashed var(--zone-line); font-weight: 500; }
+.say { color: var(--hot); font-size: 0.76rem; }
+.say.tone-warn { color: var(--am-ink); }
+.say.tone-info { color: var(--ink-2); }
+.lic { color: var(--ink-2); font-size: 0.74rem; }
+.contact.col { flex-direction: column; gap: 2px; }
+.more { border-bottom: 1px dotted var(--ink-3); cursor: help; }
+.vt td .sub, .vt td .say { display: inline; }
+.acts { display: flex; gap: 6px; align-items: center; justify-content: flex-end; }
+.ib { position: relative; width: 28px; height: 28px; border-radius: 7px; border: 1px solid var(--line); background: var(--card); display: grid; place-items: center; color: var(--ink-3); font-size: 0.8rem; }
+.ib.omni { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.ib.off { opacity: 0.45; }
+.ib .dot { position: absolute; top: -7px; right: -8px; min-width: 18px; height: 18px; padding: 0 4px; border-radius: 999px; background: var(--badge); color: #fff; font-size: 0.62rem; font-weight: 700; display: grid; place-items: center; border: 2px solid var(--card); }
+.unread { background: var(--badge); color: #fff; font-size: 0.66rem; font-weight: 700; border-radius: 999px; padding: 1px 6px; }
+.btn { border: 0; background: var(--accent); color: var(--accent-ink); font: inherit; font-size: 0.78rem; font-weight: 600; padding: 7px 12px; border-radius: 7px; white-space: nowrap; }
+.ghost { color: var(--ink-3); border: 1px solid var(--line); border-radius: 6px; padding: 2px 8px; font-size: 0.72rem; background: var(--card); }
+
+/* list frame */
+.queue { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow-x: auto; }
+.queue-head { padding: 10px 14px; font-weight: 600; font-size: 0.85rem; border-bottom: 1px solid var(--line); display: flex; gap: 8px; align-items: center; }
+.count { background: var(--page); color: var(--ink-2); border-radius: 999px; padding: 0 7px; font-size: 0.7rem; }
+
+/* CURRENT row: who | due (narrow) | ......... empty ......... | actions */
+.row-old { display: grid; grid-template-columns: minmax(220px, 260px) minmax(200px, 240px) minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--line); min-width: 860px; }
+.row-old:last-child { border-bottom: 0; }
+.row-old .who { display: flex; gap: 10px; align-items: flex-start; min-width: 0; }
+.row-old .who > div { display: grid; gap: 2px; min-width: 0; }
+.row-old .gap { align-self: stretch; border: 1.5px dashed var(--old); border-radius: 6px; opacity: 0.45; }
+
+/* PROPOSED row: who | details | next step | actions — fills the width */
+.cols-head, .row-new { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.25fr) minmax(0, 1.2fr) auto; gap: 18px; align-items: center; padding: 10px 14px; min-width: 860px; }
+.cols-head { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); border-bottom: 1px solid var(--line); padding-block: 8px; }
+.row-new { border-bottom: 1px solid var(--line); }
+.row-new:last-child { border-bottom: 0; }
+.row-new .who { display: flex; gap: 10px; align-items: flex-start; min-width: 0; }
+.row-new .who > div, .row-new .det, .row-new .next { display: grid; gap: 3px; min-width: 0; }
+.row-new .next .line { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.row-new.hl { background: var(--zone); }
+
+/* HERO */
+.hero { background: linear-gradient(110deg, var(--hero-a), var(--hero-b)); border: 1.5px solid var(--hero-line); border-radius: 12px; padding: 18px; display: grid; gap: 14px; }
+.hero-old { display: flex; gap: 14px; align-items: flex-start; flex-wrap: wrap; }
+.hero-old .id { display: grid; gap: 3px; flex: 1 1 220px; min-width: 0; }
+.hero-new { display: grid; grid-template-columns: auto minmax(0, 1.3fr) minmax(0, 1.2fr) auto; gap: 18px; align-items: center; }
+.hero-new .id, .hero-new .det { display: grid; gap: 4px; min-width: 0; }
+.hero-task { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 0.84rem; }
+.hero-task b { color: var(--hot); }
+@media (max-width: 860px) { .hero-new { grid-template-columns: auto minmax(0, 1fr); } .hero-new .det { grid-column: 2; } .hero-new .acts { grid-column: 1 / -1; justify-content: flex-start; } }
+
+/* phone */
+.phone { width: min(100%, 375px); border: 1px solid var(--line); border-radius: 22px; padding: 12px 10px; background: var(--page); }
+.row-m { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 10px; padding: 10px 12px; background: var(--card); border-bottom: 1px solid var(--line); }
+.row-m:first-child { border-radius: 12px 12px 0 0; } .row-m:last-child { border-radius: 0 0 12px 12px; border-bottom: 0; }
+.row-m > .avatar { grid-row: span 4; }
+.row-m .acts { justify-content: flex-start; margin-top: 4px; }
+
+.notes { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 20px; display: grid; gap: 8px; font-family: var(--font-note); line-height: 1.5; color: var(--ink-2); }
+.notes h2 { margin: 0; font-size: 1.05rem; color: var(--ink); font-family: var(--font-ui); }
+.notes ol, .notes ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+.notes b { color: var(--ink); }
+.fine { color: var(--ink-3); font-size: 0.78rem; font-family: var(--font-note); }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600&display=swap">
+
+<main class="wrap">
+  <header class="top">
+    <h1>Today: dàn lại dòng danh sách và thẻ nổi bật</h1>
+    <p>Bản trước là staging lúc 17:47 ngày 05/10 (đã có chip nguồn nhạt). Bản sau gộp 4 thay đổi bạn vừa chốt.</p>
+    <ul class="changes">
+      <li><b>Dùng khoảng giữa đang trống</b>: dòng chia 4 cột Loan officer · Liên hệ · Việc cần làm · Nút.</li>
+      <li><b>Dòng liên hệ</b>: <code>✉ email · ☏ số</code>, bỏ nút copy.</li>
+      <li><b>Badge tin chưa đọc</b> nằm trên icon Omni (nút viền cam) như TERA, ở cả thẻ nổi bật lẫn dòng danh sách.</li>
+      <li><b>Thẻ nổi bật và dòng danh sách hiện cùng thông tin</b>: Công ty, NMLS · bang có license (cùng cột Loan officer), liên hệ. Bỏ chữ stage.</li>
+      <li><b>Dòng chữ việc cần làm chỉ hiện khi hiếm và có ích</b>, màu theo mức độ (mục 5).</li>
+    </ul>
+  </header>
+
+  <section class="pair" aria-labelledby="h-row">
+    <h2 id="h-row">1. Dòng danh sách</h2>
+    <p class="lede">Khung đỏ nét đứt bên trên là khoảng bạn khoanh: hiện không có gì. Bên dưới, khoảng đó thành cột "Chi tiết" (liên hệ + NMLS), cột việc cần làm rộng hơn để chữ không bị dồn.</p>
+    <div class="stack">
+      <div class="side">
+        <span class="tag before">Hiện tại · staging</span>
+        <div class="queue">
+          <div class="queue-head">No follow-up set <span class="count">10</span></div>
+          <div class="row-old"><div class="who"><span class="avatar">GH</span><div><span class="name">Grant Horwitz</span><span class="sub">E Mortgage Capital</span><span class="contact"><span>✉ ghorwitz@emortgagecapital.com<i class="copy"></i></span></span></div></div><div><span class="pill add">+ Add follow-up</span><div class="say">Not contacted yet · send the first email</div></div><div class="gap" aria-hidden="true"></div><div class="acts"><span class="ib off">☏</span><span class="ib off">💬</span><span class="ib">✉</span><span class="ib omni">⇄</span><span class="ib">⋯</span></div></div>
+          <div class="row-old"><div class="who"><span class="avatar">QA</span><div><div class="name-line"><span class="name">QA AnewO</span><span class="chip gn">Web form</span></div><span class="warn">Contact now · due Oct 3 · 2:00am</span><span class="contact"><span>✉ bao.trinh+a3009o@loanfactory…<i class="copy"></i></span></span></div></div><div><span class="pill add">+ Add follow-up</span><div class="say">Not contacted yet · make the first call</div></div><div class="gap" aria-hidden="true"></div><div class="acts"><span class="ib">☏</span><span class="ib">💬</span><span class="ib">✉</span><span class="ib omni">⇄</span><span class="ib">⋯</span></div></div>
+          <div class="row-old"><div class="who"><span class="avatar">S</span><div><span class="name">Secoxe</span><span><span class="chip am">After Party · Pasadena · Nov 17</span></span><span class="warn">Contact now · due Oct 2 · 2:00am</span><span class="contact"><span>✉ secoxe1290@airychen.com<i class="copy"></i></span></span></div></div><div><span class="pill add">+ Add follow-up</span><div class="say">Not contacted yet · make the first call</div></div><div class="gap" aria-hidden="true"></div><div class="acts"><span class="ib">☏</span><span class="ib">💬</span><span class="ib">✉</span><span class="ib omni">⇄</span><span class="ib">⋯</span></div></div>
+          <div class="row-old"><div class="who"><span class="avatar">TB</span><div><div class="name-line"><span class="name">TRINH VU TRONG BAO</span><span class="unread">14</span></div><span><span class="chip am">After Party · Houston · Nov 3</span></span><span class="contact"><span>✉ vutrongbao.trinh.tb@gmail.com<i class="copy"></i></span></span></div></div><div><span class="pill add">+ Add follow-up</span><div class="say">They replied 1 day ago · reminders paused</div></div><div class="gap" aria-hidden="true"></div><div class="acts"><span class="ib">☏</span><span class="ib">💬</span><span class="ib">✉</span><span class="ib omni">⇄</span><span class="ib">⋯</span></div></div>
+        </div>
+      </div>
+      <div class="side">
+        <span class="tag after">Đề xuất</span>
+        <div class="queue">
+          <div class="queue-head">No follow-up set <span class="count">10</span></div>
+          <div class="cols-head" aria-hidden="true"><span>Loan officer</span><span>Liên hệ</span><span>Việc cần làm</span><span></span></div>
+          <div class="row-new"><div class="who"><span class="avatar">GH</span><div><span class="name">Grant Horwitz</span><span class="sub">E Mortgage Capital</span><span class="lic"><a class="nmls" href="#h-row">NMLS 2005545</a> · CA</span></div></div><div class="det"><span class="contact col"><span>✉ ghorwitz@emortgagecapital.com</span></span></div><div class="next"><div class="line"><span class="pill add">+ Add follow-up</span></div></div><div class="acts"><span class="ib off">☏</span><span class="ib off">💬</span><span class="ib">✉</span><span class="ib omni">⇄</span><span class="ib">⋯</span></div></div>
+          <div class="row-new hl"><div class="who"><span class="avatar">QA</span><div><div class="name-line"><span class="name">QA AnewO</span><span class="chip gn">Web form</span></div><span class="lic">CA, TX, FL <span class="more" title="AZ, NV, OR, WA">+4</span></span></div></div><div class="det"><span class="contact col"><span>✉ bao.trinh+a3009o@loanfactory-test.com</span><span>☏ (714) 555-0186</span></span></div><div class="next"><div class="line"><span class="pill add">+ Add follow-up</span><span class="warn">Contact now · due Oct 3 · 2:00am</span></div></div><div class="acts"><span class="ib">☏</span><span class="ib">💬</span><span class="ib">✉</span><span class="ib omni">⇄</span><span class="ib">⋯</span></div></div>
+          <div class="row-new"><div class="who"><span class="avatar">S</span><div><div class="name-line"><span class="name">Secoxe</span><span class="chip am">After Party · Pasadena · Nov 17</span></div><span class="lic"><a class="nmls" href="#h-row">NMLS 121212</a></span></div></div><div class="det"><span class="contact col"><span>✉ secoxe1290@airychen.com</span><span>☏ (626) 555-0143</span></span></div><div class="next"><div class="line"><span class="pill add">+ Add follow-up</span><span class="warn">Contact now · due Oct 2 · 2:00am</span></div></div><div class="acts"><span class="ib">☏</span><span class="ib">💬</span><span class="ib">✉</span><span class="ib omni">⇄</span><span class="ib">⋯</span></div></div>
+          <div class="row-new"><div class="who"><span class="avatar">BN</span><div><div class="name-line"><span class="name">Batoreh Nguyen</span><span class="chip am">Event</span></div><span class="sub">E2E Writeback Test LLC</span><span class="lic"><a class="nmls" href="#h-row">NMLS 2568229</a> · TX</span></div></div><div class="det"><span class="contact col"><span>✉ batoreh948@daugr.com</span><span>☏ (832) 555-0119</span></span></div><div class="next"><div class="line"><span class="pill add">+ Add follow-up</span></div><span class="say tone-warn">No reply for 14 days · call again</span></div><div class="acts"><span class="ib">☏</span><span class="ib">💬</span><span class="ib">✉</span><span class="ib omni">⇄</span><span class="ib">⋯</span></div></div>
+          <div class="row-new"><div class="who"><span class="avatar">TB</span><div><div class="name-line"><span class="name">TRINH VU TRONG BAO</span><span class="chip am">After Party · Houston · Nov 3</span></div><span class="lic"><a class="nmls" href="#h-row">NMLS 121212</a> · TX, LA</span></div></div><div class="det"><span class="contact col"><span>✉ vutrongbao.trinh.tb@gmail.com</span><span>☏ (713) 555-0127</span></span></div><div class="next"><div class="line"><span class="pill add">+ Add follow-up</span></div><span class="say tone-info">They replied 1 day ago · reminders paused</span></div><div class="acts"><span class="ib">☏</span><span class="ib">💬</span><span class="ib">✉</span><span class="ib omni" aria-label="Conversations, 14 unread">⇄<span class="dot">14</span></span><span class="ib">⋯</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pair" aria-labelledby="h-hero">
+    <h2 id="h-hero">2. Thẻ nổi bật</h2>
+    <p class="lede">Cùng bộ thông tin với dòng danh sách, cùng vị trí badge. Khác biệt duy nhất: chữ to hơn và nút "Call now" có chữ.</p>
+    <div class="stack">
+      <div class="side">
+        <span class="tag before">Hiện tại · staging</span>
+        <article class="hero">
+          <div class="hero-old">
+            <span class="avatar lg">R</span>
+            <div class="id"><div class="name-line"><span class="name">Revav</span><span class="chip am">After Party · San Diego · Aug 6</span></div><a class="nmls" href="#h-hero">NMLS 121212</a><span class="contact"><span>✉ revav44463@liondapt.com<i class="copy"></i></span></span></div>
+            <div class="acts"><button class="btn" type="button">☏ Call now</button><span class="ib">💬</span><span class="ib">✉</span><span class="ib omni">⇄</span></div>
+          </div>
+          <div class="hero-task"><b>Call again · no answer Sep 22</b><span class="pill">◷ Sep 25 · 7:00am</span><span class="ghost">Change date</span></div>
+        </article>
+      </div>
+      <div class="side">
+        <span class="tag after">Đề xuất</span>
+        <article class="hero">
+          <div class="hero-new">
+            <span class="avatar lg">R</span>
+            <div class="id"><div class="name-line"><span class="name">Revav</span><span class="chip am">After Party · San Diego · Aug 6</span></div><span class="lic"><a class="nmls" href="#h-hero">NMLS 121212</a> · CA</span></div>
+            <div class="det"><span class="contact col"><span>✉ revav44463@liondapt.com</span><span>☏ (619) 555-0142</span></span></div>
+            <div class="acts"><button class="btn" type="button">☏ Call now</button><span class="ib">💬</span><span class="ib">✉</span><span class="ib omni" aria-label="Conversations, 2 unread">⇄<span class="dot">2</span></span></div>
+          </div>
+          <div class="hero-task"><b>Call again · no answer Sep 22</b><span class="pill">◷ Sep 25 · 7:00am</span><span class="ghost">Change date</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="pair" aria-labelledby="h-phone">
+    <h2 id="h-phone">3. Màn hình hẹp (375px)</h2>
+    <p class="lede">Bốn cột xếp chồng: tên và chip, chi tiết, việc cần làm, rồi hàng nút. Badge vẫn ở icon Omni.</p>
+    <div class="phone">
+      <div class="row-m"><span class="avatar">TB</span><div class="name-line"><span class="name">TRINH VU TRONG BAO</span><span class="chip am">After Party · Houston · Nov 3</span></div><span class="contact"><span>✉ vutrongbao.trinh.tb@gmail.com</span><span>☏ (713) 555-0127</span></span><span class="say tone-info">They replied 1 day ago · reminders paused</span><div class="acts"><span class="ib">☏</span><span class="ib">💬</span><span class="ib">✉</span><span class="ib omni">⇄<span class="dot">14</span></span><span class="ib">⋯</span></div></div>
+      <div class="row-m"><span class="avatar">QA</span><div class="name-line"><span class="name">QA AnewO</span><span class="chip gn">Web form</span></div><span class="contact"><span>✉ bao.trinh+a3009o@loanfactory-test.com</span><span>☏ (714) 555-0186</span></span><span class="warn">Contact now · due Oct 3 · 2:00am</span><div class="acts"><span class="ib">☏</span><span class="ib">💬</span><span class="ib">✉</span><span class="ib omni">⇄</span><span class="ib">⋯</span></div></div>
+    </div>
+  </section>
+
+  <section class="pair" aria-labelledby="h-var">
+    <h2 id="h-var">4. Biến thể: công ty, NMLS và bang dưới tên</h2>
+    <p class="lede">Hai dòng dưới tên: <b>Công ty</b>, rồi <b>NMLS · các bang có license</b> (NMLS và bang license cùng từ hồ sơ NMLS nên đi chung). Bỏ chữ stage (Offer, Engaged…). Bang lấy từ <b>các bang LO có license</b> (licensed_states). Cột "state" một bang cũ trống 100% trên cả staging lẫn production (0/291), nên dòng phụ hiện tại thực tế chưa bao giờ hiện bang.</p>
+    <div class="queue"><table class="vt" style="width:100%;border-collapse:collapse;font-size:.8rem;min-width:620px">
+      <thead><tr><th style="text-align:left;padding:8px 12px">Dữ liệu</th><th style="text-align:left;padding:8px 12px">Dòng phụ</th><th style="text-align:left;padding:8px 12px">Tỉ lệ trên production</th></tr></thead>
+      <tbody>
+        <tr><td style="padding:8px 12px">Có công ty, 1 bang</td><td style="padding:8px 12px"><span class="sub">E Mortgage Capital</span><br><span class="lic">NMLS 2005545 · CA</span></td><td style="padding:8px 12px">57% có đúng 1 bang</td></tr>
+        <tr><td style="padding:8px 12px">Có công ty, 2–3 bang</td><td style="padding:8px 12px"><span class="sub">Guild Mortgage</span><br><span class="lic">NMLS 3011 · CA, TX, FL</span></td><td style="padding:8px 12px">9%</td></tr>
+        <tr><td style="padding:8px 12px">4 bang trở lên</td><td style="padding:8px 12px"><span class="sub">Guild Mortgage</span><br><span class="lic">NMLS 3011 · CA, TX, FL <span class="more" title="AZ, NV, OR, WA, …">+45</span></span></td><td style="padding:8px 12px">4% (nhiều nhất 48 bang). Rê chuột vào "+N" xem đủ</td></tr>
+        <tr><td style="padding:8px 12px">Không có bang</td><td style="padding:8px 12px"><span class="sub">E Mortgage Capital</span><br><span class="lic">NMLS 2005545</span></td><td style="padding:8px 12px">30%</td></tr>
+        <tr><td style="padding:8px 12px">Không có công ty</td><td style="padding:8px 12px"><span class="lic">NMLS 2005545 · CA, TX</span></td><td style="padding:8px 12px">—</td></tr>
+        <tr><td style="padding:8px 12px">Không có NMLS</td><td style="padding:8px 12px"><span class="sub">E Mortgage Capital</span><br><span class="lic">CA, TX</span></td><td style="padding:8px 12px">—</td></tr>
+        <tr><td style="padding:8px 12px">Không có gì cả</td><td style="padding:8px 12px"><span class="muted">(ẩn dòng phụ)</span></td><td style="padding:8px 12px">—</td></tr>
+      </tbody></table></div>
+  </section>
+
+  <section class="pair" aria-labelledby="h-say">
+    <h2 id="h-say">5. Biến thể: dòng chữ việc cần làm</h2>
+    <p class="lede">Chỉ hiện khi câu đó cho bạn biết điều mà hàng nút và nhóm chưa nói. Màu theo mức độ: đỏ = hạn chót / quá hạn, vàng = cần chú ý, xám = thông tin.</p>
+    <div class="queue"><table class="vt" style="width:100%;border-collapse:collapse;font-size:.8rem;min-width:680px">
+      <thead><tr><th style="text-align:left;padding:8px 12px">Tình huống</th><th style="text-align:left;padding:8px 12px">Hiện tại</th><th style="text-align:left;padding:8px 12px">Đề xuất</th></tr></thead>
+      <tbody>
+        <tr><td style="padding:8px 12px">Chưa liên hệ lần nào (phần lớn nhóm No follow-up set)</td><td style="padding:8px 12px"><span class="say">Not contacted yet · make the first call / send the first email</span></td><td style="padding:8px 12px"><b>Ẩn</b>. Ô "Not contacted yet 7" ở đầu trang đã đếm; nút nào bấm được đã cho biết gọi hay mail</td></tr>
+        <tr><td style="padding:8px 12px">Không có cả số lẫn email</td><td style="padding:8px 12px"><span class="say">No phone or email on file · add contact details</span></td><td style="padding:8px 12px"><span class="say">No phone or email on file · add contact details</span> (đỏ, vì không làm gì được)</td></tr>
+        <tr><td style="padding:8px 12px">Sắp bị trả về pool / hạn liên hệ</td><td style="padding:8px 12px"><span class="say">Contact now · due Oct 3 · 2:00am</span></td><td style="padding:8px 12px"><span class="say">Contact now · due Oct 3 · 2:00am</span> (giữ đỏ)</td></tr>
+        <tr><td style="padding:8px 12px">Im lặng N ngày, đến mốc nhắc</td><td style="padding:8px 12px"><span class="say">No reply for 14 days · call again</span></td><td style="padding:8px 12px"><span class="say tone-warn">No reply for 14 days · call again</span> (vàng)</td></tr>
+        <tr><td style="padding:8px 12px">Gọi hết thang không ai nghe</td><td style="padding:8px 12px"><span class="say">No answer after 4 tries · pick the next step</span></td><td style="padding:8px 12px"><span class="say tone-warn">No answer after 4 tries · pick the next step</span> (vàng)</td></tr>
+        <tr><td style="padding:8px 12px">LO vừa trả lời, nhắc tự động tạm dừng</td><td style="padding:8px 12px"><span class="say">They replied 1 day ago · reminders paused</span></td><td style="padding:8px 12px"><span class="say tone-info">They replied 1 day ago · reminders paused</span> (xám)</td></tr>
+        <tr><td style="padding:8px 12px">Đã liên hệ, đang yên (không có gì gấp)</td><td style="padding:8px 12px"><span class="say">Last contacted 5 days ago</span></td><td style="padding:8px 12px"><b>Ẩn</b></td></tr>
+        <tr><td style="padding:8px 12px">Có follow-up (nhóm Overdue, Later today…)</td><td style="padding:8px 12px"><span class="say">Call again · no answer Sep 22</span></td><td style="padding:8px 12px">Giữ, đỏ khi quá hạn, vàng khi đến hạn hôm nay, xám khi chưa tới</td></tr>
+      </tbody></table></div>
+  </section>
+
+  <section class="notes" aria-labelledby="h-n">
+    <h2 id="h-n">Quy tắc và quyết định</h2>
+    <ul>
+      <li><b>Dòng liên hệ</b>: email và số là chữ thường (bôi đen copy được), KHÔNG bấm để gọi hay mở mail. Gọi/nhắn/mail phải qua hàng nút để app ghi lại lần liên hệ. Thiếu cái nào bỏ cái đó; thiếu cả hai thì cột Chi tiết chỉ còn NMLS. Menu ⋯ "Copy phone" vẫn giữ.</li>
+      <li><b>Badge</b>: số tin chưa đọc của mọi kênh, đặt ở góc icon Omni; 100 trở lên ghi 99+; lỗi đếm thì icon có dấu ⚠ nhỏ. Badge cạnh tên bị bỏ.</li>
+      <li><b>"Contact now · due …" và "Back to the pool …"</b> chuyển từ dưới tên sang cột Việc cần làm, vì đó là hạn chót của việc cần làm.</li>
+    </ul>
+    <ol>
+      <li><span style="color:var(--new);font-weight:600">Đã chốt:</span> tiêu đề cột hiện trên mỗi nhóm.</li>
+      <li><span style="color:var(--new);font-weight:600">Đã chốt:</span> Focus mode đổi theo cùng bộ thông tin.</li>
+    </ol>
+    <p class="fine">Số điện thoại (555) và các bang trên trang là minh hoạ; tên, công ty, NMLS, email lấy từ staging. Tỉ lệ bang đo chỉ-đọc trên production 05/10 (291 lead đang làm việc). Màu và khoảng cách dựng lại gần đúng app.</p>
+  </section>
+</main>

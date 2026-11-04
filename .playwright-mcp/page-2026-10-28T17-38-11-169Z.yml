@@ -1,0 +1,708 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e5]:
+        - link "LoanFactory" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - img "LoanFactory Logo" [ref=e8]
+          - generic [ref=e9]: WE DARE YOU TO COMPARE
+        - generic [ref=e10]:
+          - list [ref=e11] [cursor=pointer]:
+            - listitem [ref=e12]:
+              - link "Rate Quote" [ref=e13]:
+                - /url: https://www.viet18.com/quote
+          - list [ref=e14] [cursor=pointer]:
+            - menuitem [ref=e15]:
+              - listitem [ref=e17]: Loan Products
+          - list [ref=e21] [cursor=pointer]:
+            - menuitem [ref=e22]:
+              - listitem [ref=e24]: Resources
+          - list [ref=e28] [cursor=pointer]:
+            - listitem [ref=e29]:
+              - paragraph [ref=e33]: Download App
+        - generic [ref=e34]:
+          - link "Sign In" [ref=e35] [cursor=pointer]:
+            - /url: https://www.viet18.com/login
+          - link "Start My Application" [ref=e36] [cursor=pointer]:
+            - /url: https://www.viet18.com/apply
+          - button [ref=e39] [cursor=pointer]
+    - main [ref=e44]:
+      - generic [ref=e46]:
+        - heading "Loan Officer information" [level=2] [ref=e47]
+        - generic [ref=e51]:
+          - paragraph [ref=e52]: "Please fill out your information below. We will call you to talk about the details. Here is the onboarding process:"
+          - list [ref=e53]:
+            - listitem [ref=e54]: Fill out your information
+            - listitem [ref=e55]: Talk with us on a short call
+            - listitem [ref=e56]: Pay the $100 startup fee
+            - listitem [ref=e57]: Sign the LO Agreement
+            - listitem [ref=e58]: Give Loan Factory access to your NMLS record
+            - listitem [ref=e59]:
+              - link "licensing@loanfactory.com" [ref=e60] [cursor=pointer]:
+                - /url: mailto:licensing@loanfactory.com
+              - text: sponsors you
+            - listitem [ref=e61]: HR sets up your account
+            - listitem [ref=e62]:
+              - text: Start working at
+              - link "Loan Factory" [ref=e63] [cursor=pointer]:
+                - /url: "${Server.baseUrl()}"
+      - generic [ref=e64]:
+        - generic [ref=e67]:
+          - heading "Before You Begin" [level=3] [ref=e591]
+          - heading "2 Fill Out Basic Information" [level=3] [ref=e74] [cursor=pointer]:
+            - generic [ref=e75]: "2"
+            - generic [ref=e78]: Fill Out Basic Information
+          - heading "3 Paying one-time fee After your call" [level=3] [ref=e80]:
+            - generic [ref=e81]: "3"
+            - generic [ref=e86]:
+              - generic [ref=e87]: Paying one-time fee
+              - generic [ref=e88]: After your call
+          - heading "4 Review and Sign agreement" [level=3] [ref=e90]:
+            - generic [ref=e91]: "4"
+            - generic [ref=e94]: Review and Sign agreement
+          - heading "5 Grant Access on NMLS" [level=3] [ref=e96]:
+            - generic [ref=e97]: "5"
+            - generic [ref=e99]: Grant Access on NMLS
+        - separator [ref=e101]
+        - generic [ref=e102]:
+          - heading "Register Loan Officer" [level=1] [ref=e105]
+          - progressbar [ref=e108]
+          - generic [ref=e109]:
+            - generic [ref=e596]:
+              - heading "Fill Out Basic Information" [level=2] [ref=e598]
+              - generic [ref=e600]:
+                - generic [ref=e601]: First name *
+                - textbox "First name" [ref=e603]
+              - generic [ref=e605]:
+                - generic [ref=e606]: Last name
+                - textbox "Last name" [ref=e608]
+              - generic [ref=e610]:
+                - generic [ref=e611]: Legal first name
+                - textbox "Legal first name" [ref=e613]
+              - generic [ref=e615]:
+                - generic [ref=e616]: Legal last name
+                - textbox "Legal last name" [ref=e618]
+              - generic [ref=e620]:
+                - generic [ref=e621]: Email *
+                - textbox "Email" [ref=e627]
+              - generic [ref=e629]:
+                - generic [ref=e630]: Phone
+                - textbox "Phone" [ref=e635]:
+                  - /placeholder: (000) 000-0000
+              - generic [ref=e637]:
+                - generic [ref=e638]: Alias first name
+                - textbox "Alias first name" [ref=e640]
+              - generic [ref=e642]:
+                - generic [ref=e643]: Citizenship *
+                - textbox "Citizenship" [ref=e645] [cursor=pointer]
+              - generic [ref=e648]:
+                - checkbox "By providing your phone number, you agree to receive SMS messages from us regarding customer support. Message and data rates may apply. Reply STOP to opt-out; Reply HELP for support; Message & data rates may apply; Messaging frequency may vary. Visit Privacy to see our privacy policy and Terms And Conditions for our Terms of Service." [checked] [ref=e650]
+                - generic [ref=e653]:
+                  - text: By providing your phone number, you agree to receive SMS messages from us regarding customer support. Message and data rates may apply. Reply STOP to opt-out; Reply HELP for support; Message & data rates may apply; Messaging frequency may vary. Visit
+                  - link "Privacy" [ref=e654] [cursor=pointer]:
+                    - /url: /privacy
+                    - text: www.loanfactory.com/privacy
+                  - text: to see our privacy policy and
+                  - link "Terms And Conditions" [ref=e655] [cursor=pointer]:
+                    - /url: /terms-and-conditions
+                    - text: www.loanfactory.com/terms-and-conditions
+                  - text: for our Terms of Service.
+              - generic [ref=e656]:
+                - paragraph [ref=e661]: Personal Address
+                - paragraph [ref=e662]: This is where the associate lives so the company can set up state income tax deduction accordingly. Any new changes regarding this matter must be reported to the Human Resources Department.
+              - generic [ref=e664]:
+                - generic [ref=e665]: Street address *
+                - textbox "Street address" [ref=e667]
+              - generic [ref=e669]:
+                - generic [ref=e670]: Apt/Unit
+                - textbox "Apt/Unit" [ref=e672]
+              - generic [ref=e674]:
+                - generic [ref=e675]: Zip code *
+                - textbox "Zip code" [ref=e681]
+              - generic [ref=e683]:
+                - generic [ref=e684]: City *
+                - textbox "City" [ref=e686]
+              - generic [ref=e687]:
+                - paragraph [ref=e693]: Mailing Address
+                - paragraph [ref=e694]: The company will send W2/W9 to this mailing address at the end of the year. Any new changes regarding this matter must be reported to the Human Resources Department
+              - generic [ref=e697]:
+                - checkbox "Same as personal address" [ref=e699]
+                - generic [ref=e700]: Same as personal address
+              - generic [ref=e703]:
+                - generic [ref=e704]: Mailing street address *
+                - textbox "Mailing street address" [ref=e706]
+              - generic [ref=e708]:
+                - generic [ref=e709]: Mailing Apt/Unit
+                - textbox "Mailing Apt/Unit" [ref=e711]
+              - generic [ref=e713]:
+                - generic [ref=e714]: Mailing ZIP code *
+                - textbox "Mailing ZIP code" [ref=e720]
+              - generic [ref=e722]:
+                - generic [ref=e723]: Mailing city *
+                - textbox "Mailing city" [ref=e725]
+              - paragraph [ref=e731]: Others
+              - generic [ref=e733]:
+                - generic [ref=e734]: NMLS *
+                - textbox "NMLS" [ref=e736]
+              - generic [ref=e738]:
+                - generic [ref=e739]: Licensed states *
+                - textbox "Licensed states" [ref=e743]:
+                  - /placeholder: Select Licensed states
+              - generic [ref=e746]:
+                - checkbox "Loan Officer is NOT exclusively originating loans with Loan Factory." [ref=e748]
+                - generic [ref=e749]: Loan Officer is NOT exclusively originating loans with Loan Factory.
+              - generic [ref=e752]:
+                - generic [ref=e753]: States that you want Loan Factory to sponsor *
+                - textbox "States that you want Loan Factory to sponsor" [ref=e757]:
+                  - /placeholder: Select States that you want Loan Factory to sponsor
+                - paragraph [ref=e758]: Loan Factory can sponsor your license if it's Approved–Inactive, Approved, or Pending due to a missing sponsor. If expired, it must be renewed before sponsorship. You may continue onboarding in the meantime, and we'll submit the request once your license is active.
+              - generic [ref=e760]:
+                - generic [ref=e761]: Loan Officer type *
+                - textbox "Loan Officer type" [ref=e763]:
+                  - /placeholder: Select Loan Officer type
+              - generic [ref=e765]:
+                - generic [ref=e766]: Main target compensation *
+                - textbox "Main target compensation" [ref=e768]:
+                  - /placeholder: Select Main target compensation
+                - paragraph [ref=e769]: Main target compensation will affect the rates on your pricing engine (on your website), as it will be the built-in compensation for borrower-paid comp (BPC). It will also be the default BPC when converting a loan. You can manually decrease or increase your BPC on a transaction if needed and allowed by the Lender.
+              - generic [ref=e771]:
+                - generic [ref=e772]: Correspondent target compensation *
+                - textbox "Correspondent target compensation" [ref=e779]
+                - paragraph [ref=e780]:
+                  - text: We are required to set a correspondent target compensation for the investors we partner with. This setting can only be updated once every 3 months. You are not required to choose between wholesale or correspondent channels—loans can be submitted through either. This field is required to complete your profile setup in our system. Please refer to the
+                  - link "Correspondent Handbook" [ref=e781] [cursor=pointer]:
+                    - /url: https://docs.google.com/document/d/1AFLUDa4hgWhUlxO_Gt9wexpnBAiwr0l7MAh6f-uN6z0
+                  - text: for more details.
+              - generic [ref=e783]:
+                - generic [ref=e784]: Preferred languages
+                - textbox "Preferred languages" [ref=e788]:
+                  - /placeholder: Select Preferred languages
+              - generic [ref=e790]:
+                - generic [ref=e791]:
+                  - generic [ref=e792]: Do you currently have a website or landing page that promotes mortgages?
+                  - paragraph [ref=e793]: Social media profiles are listed separately below.
+                  - generic [ref=e794]:
+                    - button "Yes" [ref=e795] [cursor=pointer]
+                    - button "No" [ref=e798] [cursor=pointer]
+                - generic [ref=e802]:
+                  - checkbox "I agree to obtain Loan Factory's approval before creating any new website or landing page that promotes mortgages." [ref=e804]
+                  - generic [ref=e805]: I agree to obtain Loan Factory's approval before creating any new website or landing page that promotes mortgages.
+              - generic [ref=e808]:
+                - generic [ref=e809]: Do you have any social media links?
+                - generic [ref=e810]:
+                  - button "Yes" [ref=e811] [cursor=pointer]
+                  - button "No" [ref=e814] [cursor=pointer]
+              - generic [ref=e818]:
+                - text: Social links
+                - paragraph [ref=e819]: Recommend saving your Facebook personal profile, Facebook Fan Page, LinkedIn page, Google Business Profile (to collect reviews), Zillow, Yelp, and Tiktok.
+                - table [ref=e823]:
+                  - rowgroup [ref=e824]:
+                    - row [ref=e825]:
+                      - columnheader [ref=e826]
+                      - columnheader "Social name" [ref=e827]
+                      - columnheader "URL" [ref=e828]
+                  - rowgroup [ref=e829]:
+                    - row [ref=e830]:
+                      - cell "No social links added yet" [ref=e831]
+                    - row [ref=e832]:
+                      - cell "New" [ref=e833]
+                      - cell [ref=e836]
+                      - cell [ref=e837]
+              - generic [ref=e839]:
+                - generic [ref=e840]: Are you referred to Loan Factory by?
+                - textbox "Are you referred to Loan Factory by?" [ref=e842]:
+                  - /placeholder: Select Are you referred to Loan Factory by?
+              - generic [ref=e845]:
+                - checkbox "By checking this box, I confirm that all information provided is true, accurate, and complete, and I understand that any misrepresentation may affect my application." [ref=e847]
+                - generic [ref=e848]: By checking this box, I confirm that all information provided is true, accurate, and complete, and I understand that any misrepresentation may affect my application.
+              - paragraph [ref=e851]:
+                - text: If you have any questions while completing this form, please contact our Recruiting team at
+                - link "recruiting@loanfactory.com" [ref=e852] [cursor=pointer]:
+                  - /url: mailto:recruiting@loanfactory.com
+                - text: .
+            - button "Next" [ref=e854] [cursor=pointer]
+      - generic [ref=e167] [cursor=pointer]
+      - generic [ref=e170]:
+        - generic [ref=e171] [cursor=pointer]
+        - iframe [ref=e175]:
+          - generic [ref=f1e1]:
+            - generic "YouTube Video Player" [ref=f1e3]
+            - generic [ref=f1e5]:
+              - generic:
+                - generic:
+                  - generic [ref=f1e6] [cursor=pointer]
+                  - button "Play video" [ref=f1e10] [cursor=pointer]
+                  - button "Hide player controls" [ref=f1e14] [cursor=pointer]
+                  - generic [ref=f1e16]:
+                    - generic [ref=f1e23]:
+                      - generic [ref=f1e24]:
+                        - link "What is it like to join Loan Factory?" [ref=f1e25] [cursor=pointer]:
+                          - /url: https://www.youtube.com/watch?v=LcvWkSwtcms
+                        - link "Loan Factory - The Best Mortgage Platform" [ref=f1e26] [cursor=pointer]:
+                          - /url: /channel/UCBP5eLaYsYieH-mzqmCo3eg
+                      - generic [ref=f1e28]:
+                        - button [ref=f1e29] [cursor=pointer]:
+                          - img "thumbnail-image" [ref=f1e30]
+                        - generic [ref=f1e32]:
+                          - generic: Loan Factory - The Best Mortgage Platform
+                          - generic: 3.01K subscribers
+                    - generic [ref=f1e33]:
+                      - generic [ref=f1e34]:
+                        - button "Share" [ref=f1e36] [cursor=pointer]
+                        - button "Watch later" [ref=f1e45] [cursor=pointer]
+                      - link "Watch on YouTube" [ref=f1e56] [cursor=pointer]:
+                        - /url: https://www.youtube.com/watch?v=LcvWkSwtcms
+                        - generic [ref=f1e57]: Watch on
+    - contentinfo [ref=e176]:
+      - generic [ref=e177]:
+        - generic [ref=e179]:
+          - heading "contact us" [level=3] [ref=e180]
+          - list [ref=e181]:
+            - listitem [ref=e182]:
+              - paragraph [ref=e183]: Thuan Nguyen
+            - listitem [ref=e184]:
+              - link "660-333-3333" [ref=e187] [cursor=pointer]:
+                - /url: tel:6603333333
+            - listitem [ref=e188]:
+              - link "customer@loanfactory.com" [ref=e192] [cursor=pointer]:
+                - /url: mailto:customer@loanfactory.com
+            - listitem [ref=e193]:
+              - link "Send us feedback" [ref=e199] [cursor=pointer]:
+                - /url: /contact-us
+            - listitem [ref=e200]:
+              - link "Facebook" [ref=e203] [cursor=pointer]:
+                - /url: https://www.facebook.com/LoanFactoryHQ
+            - listitem [ref=e204]:
+              - link "X (Twitter)" [ref=e208] [cursor=pointer]:
+                - /url: https://x.com/LoanFactoryUS
+            - listitem [ref=e209]:
+              - link "LinkedIn" [ref=e213] [cursor=pointer]:
+                - /url: https://www.linkedin.com/company/loan-factory-inc
+        - generic [ref=e215]:
+          - heading "Locations" [level=3] [ref=e216]
+          - generic [ref=e217]:
+            - button "View more »" [ref=e218] [cursor=pointer]
+            - region [ref=e219]:
+              - list [ref=e221]:
+                - listitem [ref=e222]:
+                  - paragraph [ref=e223]:
+                    - strong [ref=e224]: "ASSD:"
+                    - link "(514) 698-6785" [ref=e225] [cursor=pointer]:
+                      - /url: tel:5146986785
+                    - text: 425 Sunset Boulevard, San Jose, CA 95132
+                - listitem [ref=e226]:
+                  - paragraph [ref=e227]:
+                    - strong [ref=e228]: "AZ-Phoenix:"
+                    - link "(567) 734-5565" [ref=e229] [cursor=pointer]:
+                      - /url: tel:5677345565
+                    - text: Arizona 202, Sun City, AZ 85373
+                  - paragraph [ref=e230]: Licensed in AZ
+                - listitem [ref=e231]:
+                  - paragraph [ref=e232]:
+                    - strong [ref=e233]: "AZ-Yuma:"
+                    - link "(444) 556-1702" [ref=e234] [cursor=pointer]:
+                      - /url: tel:4445561702
+                    - text: Arizona 202, Phoenix, AZ 85001
+                  - paragraph [ref=e235]: Licensed in AZ
+                - listitem [ref=e236]:
+                  - paragraph [ref=e237]:
+                    - strong [ref=e238]: "Alaska:"
+                    - text: 301 North Fern Creek Avenue, Orlando, FL 32803
+                - listitem [ref=e239]:
+                  - paragraph [ref=e240]:
+                    - strong [ref=e241]: "Branch bdc 2:"
+                    - text: 8497 Jackson Street, Benicia, CA 94510
+                  - paragraph [ref=e242]: Licensed in CA
+                - listitem [ref=e243]:
+                  - paragraph [ref=e244]:
+                    - strong [ref=e245]: "Branch picture (optional):"
+                    - text: 8944 Sunset Boulevard, Birds Landing, CA 94512
+                - listitem [ref=e246]:
+                  - paragraph [ref=e247]:
+                    - strong [ref=e248]: "Branch picture 223:"
+                    - text: 9915 Oak Lawn Avenue, Calistoga, CA 94515
+                - listitem [ref=e249]:
+                  - paragraph [ref=e250]:
+                    - strong [ref=e251]: "CA-San Jose:"
+                    - text: 2195 Tully Road, South Lake Tahoe, CA 96152
+                - listitem [ref=e252]:
+                  - paragraph [ref=e253]:
+                    - strong [ref=e254]: "CA-San Jose:"
+                    - text: 5545 1st Avenue, San Jose, CA 95132
+                - listitem [ref=e255]:
+                  - paragraph [ref=e256]:
+                    - strong [ref=e257]: "CA-San Jose:"
+                    - text: 3263 1st Avenue, San Jose, CA 95132
+                - listitem [ref=e258]:
+                  - paragraph [ref=e259]:
+                    - strong [ref=e260]: "CA-San Jose A:"
+                    - link "(575) 686-7675" [ref=e261] [cursor=pointer]:
+                      - /url: tel:5756867675
+                    - text: 8425 Belvedere Avenue, Sacramento, CA 95826
+                  - paragraph [ref=e262]: Licensed in CA, FL
+                - listitem [ref=e263]:
+                  - paragraph [ref=e264]:
+                    - strong [ref=e265]: "CA-San Jose Test address:"
+                    - text: 5618 Time Boulevard, Forbestown, CA 95941
+                - listitem [ref=e266]:
+                  - paragraph [ref=e267]:
+                    - strong [ref=e268]: "CA-San Jose-hjhjhjhhj:"
+                    - text: 5787 Sunset Boulevard, San Jose, CA 95111
+                - listitem [ref=e269]:
+                  - paragraph [ref=e270]:
+                    - strong [ref=e271]: "CA-San Jose-mamama:"
+                    - text: 6805 1st Avenue, Cypress, TX 77410
+                - listitem [ref=e272]:
+                  - paragraph [ref=e273]:
+                    - strong [ref=e274]: "CA-San Jose1:"
+                    - text: 6907 Sunset Boulevard, Mount Hamilton, CA 95140
+                - listitem [ref=e275]:
+                  - paragraph [ref=e276]:
+                    - strong [ref=e277]: "CA-San Jose11:"
+                    - text: 308 Main Street, Alameda, CA 94501
+                - listitem [ref=e278]:
+                  - paragraph [ref=e279]:
+                    - strong [ref=e280]: "CA-San Jose1111:"
+                    - text: 6108 Time Boulevard, San Jose, CA 95132
+                - listitem [ref=e281]:
+                  - paragraph [ref=e282]:
+                    - strong [ref=e283]: "CA-San Jose434343:"
+                    - text: 1181 Sunset Boulevard, Cypress, TX 77410
+                - listitem [ref=e284]:
+                  - paragraph [ref=e285]:
+                    - strong [ref=e286]: "CA-San Joseasd:"
+                    - text: 771 1st Avenue, Maple City, KS 67102
+                - listitem [ref=e287]:
+                  - paragraph [ref=e288]:
+                    - strong [ref=e289]: "CA-San Joses:"
+                    - text: 2829 1st Avenue, Winkelman, AZ 85192
+                - listitem [ref=e290]:
+                  - paragraph [ref=e291]:
+                    - strong [ref=e292]: "CA-Stanford:"
+                    - text: 270 Galvez Street, Stanford, CA 94305
+                - listitem [ref=e293]:
+                  - paragraph [ref=e294]:
+                    - strong [ref=e295]: "CA-VietNam:"
+                    - text: 1825 Sunset Boulevard, Los Gatos, CA 95031
+                  - paragraph [ref=e296]: Licensed in CA
+                - listitem [ref=e297]:
+                  - paragraph [ref=e298]:
+                    - strong [ref=e299]: "CO-Denver:"
+                    - link "(325) 262-4653" [ref=e300] [cursor=pointer]:
+                      - /url: tel:3252624653
+                    - text: 105 Wood Duck Road, Columbia, SC 29223
+                  - paragraph [ref=e301]: Licensed in MS, SC, WY
+                - listitem [ref=e302]:
+                  - paragraph [ref=e303]:
+                    - strong [ref=e304]: "CO-Erie:"
+                    - link "(392) 847-4937" [ref=e305] [cursor=pointer]:
+                      - /url: tel:3928474937
+                    - text: 2825 Saratoga Trail, Erie, CO 80516
+                  - paragraph [ref=e306]: Licensed in CO
+                - listitem [ref=e307]:
+                  - paragraph [ref=e308]:
+                    - strong [ref=e309]: "Delaware the state:"
+                    - text: 2140 Sunset Boulevard, Frederica, DE 19946
+                  - paragraph [ref=e310]: Licensed in CA
+                - listitem [ref=e311]:
+                  - paragraph [ref=e312]:
+                    - strong [ref=e313]: "FBI Branches:"
+                    - link "(111) 111-1111" [ref=e314] [cursor=pointer]:
+                      - /url: tel:1111111111
+                    - text: 2195 Tully Road, San Jose, CA 95122
+                - listitem [ref=e315]:
+                  - paragraph [ref=e316]:
+                    - strong [ref=e317]: "GA-Duluth:"
+                    - text: 396 Savannah Road, Suite 137, Toms River, NJ 08757
+                  - paragraph [ref=e318]: Licensed in AR, MS
+                - listitem [ref=e319]:
+                  - paragraph [ref=e320]:
+                    - strong [ref=e321]: "Hai Test:"
+                    - link "(222) 222-2222" [ref=e322] [cursor=pointer]:
+                      - /url: tel:2222222222
+                    - text: 7505 1st Avenue, Airway Heights, WA 99001
+                - listitem [ref=e323]:
+                  - paragraph [ref=e324]:
+                    - strong [ref=e325]: "Hao Test Branch:"
+                    - text: 578 Time Boulevard, Blairsden-graeagle, CA 96103
+                - listitem [ref=e326]:
+                  - paragraph [ref=e327]:
+                    - strong [ref=e328]: "Hao le:"
+                    - text: 682 Oak Lawn Avenue, Airway Heights, WA 99001
+                - listitem [ref=e329]:
+                  - paragraph [ref=e330]:
+                    - strong [ref=e331]: "Hien Vietnam:"
+                    - text: 9534 Main Street, Umbarger, TX 79091
+                - listitem [ref=e332]:
+                  - paragraph [ref=e333]:
+                    - strong [ref=e334]: "HoustonBaby111:"
+                    - text: 1311 Kapiolani Boulevard, Suite 210, Honolulu, HI 96814
+                - listitem [ref=e335]:
+                  - paragraph [ref=e336]:
+                    - strong [ref=e337]: "MA-Barre:"
+                    - text: 123th ST, Barre, MA 01005
+                - listitem [ref=e338]:
+                  - paragraph [ref=e339]:
+                    - strong [ref=e340]: "MD-Towson:"
+                    - text: 97 Phan Chau Trinh, 97 Phan Chau Trinh, Towson, MD 21286
+                - listitem [ref=e341]:
+                  - paragraph [ref=e342]:
+                    - strong [ref=e343]: "MOSO TEST:"
+                    - link "(245) 634-3643" [ref=e344] [cursor=pointer]:
+                      - /url: tel:2456343643
+                    - text: 7305 Time Boulevard, Milwaukee, WI 53205
+                - listitem [ref=e345]:
+                  - paragraph [ref=e346]:
+                    - strong [ref=e347]: "MS-Natchez:"
+                    - link "(235) 234-6534" [ref=e348] [cursor=pointer]:
+                      - /url: tel:2352346534
+                    - text: 5871 Sunset Boulevard, Natchez, MS 39120
+                  - paragraph [ref=e349]: Licensed in MS
+                - listitem [ref=e350]:
+                  - paragraph [ref=e351]:
+                    - strong [ref=e352]: "Minh Branch:"
+                    - text: 5510 1st Avenue, San Jose, CA 95132
+                - listitem [ref=e353]:
+                  - paragraph [ref=e354]:
+                    - strong [ref=e355]: "Minnessota:"
+                    - text: 5600 Northeast Antioch Road, Kansas City, MO 64119
+                - listitem [ref=e356]:
+                  - paragraph [ref=e357]:
+                    - strong [ref=e358]: "Moc Thanh:"
+                    - link "(453) 453-4521" [ref=e359] [cursor=pointer]:
+                      - /url: tel:4534534521
+                    - text: Canal Street, Los Angeles, CA 90001
+                  - paragraph [ref=e360]: Licensed in CA
+                - listitem [ref=e361]:
+                  - paragraph [ref=e362]:
+                    - strong [ref=e363]: "NH-Amherst:"
+                    - text: 5566 1st Avenue, Amherst, NH 03031
+                - listitem [ref=e364]:
+                  - paragraph [ref=e365]:
+                    - strong [ref=e366]: "NH-Wonalancet:"
+                    - link "(463) 464-3636" [ref=e367] [cursor=pointer]:
+                      - /url: tel:4634643636
+                    - text: 9305 Second Street, Wonalancet, NH 03897
+                - listitem [ref=e368]:
+                  - paragraph [ref=e369]:
+                    - strong [ref=e370]: "NJ-Sicklerville:"
+                    - text: 1741 Sunset Boulevard, Sicklerville, NJ 08081
+                - listitem [ref=e371]:
+                  - paragraph [ref=e372]:
+                    - strong [ref=e373]: "NV-Las Vegas:"
+                    - text: 8470 Main Street, Las Vegas, NV 89108
+                  - paragraph [ref=e374]: Licensed in AK, CA, FL
+                - listitem [ref=e375]:
+                  - paragraph [ref=e376]:
+                    - strong [ref=e377]: "NY-New York:"
+                    - text: 7214 Time Boulevard, New York, NY 10001
+                - listitem [ref=e378]:
+                  - paragraph [ref=e379]:
+                    - strong [ref=e380]: "New York:"
+                    - text: 6909 West Ray Road, Suite 21-17A, Secaucus, NJ 07094
+                - listitem [ref=e381]:
+                  - paragraph [ref=e382]:
+                    - strong [ref=e383]: "Northern Cali:"
+                    - text: 5630 Second Street, Burlingame, CA 94010
+                - listitem [ref=e384]:
+                  - paragraph [ref=e385]:
+                    - strong [ref=e386]: "Phuong-Branch:"
+                    - link "(435) 574-7586" [ref=e387] [cursor=pointer]:
+                      - /url: tel:4355747586
+                    - text: 6615 Main Street, Stamford, CT 06902
+                - listitem [ref=e388]:
+                  - paragraph [ref=e389]:
+                    - strong [ref=e390]: "Southern Cali:"
+                    - link "(424) 252-6271" [ref=e391] [cursor=pointer]:
+                      - /url: tel:4242526271
+                    - text: 2425 Holly Hall Street, Houston, TX 77054
+                  - paragraph [ref=e392]: Licensed in AR, CA
+                - listitem [ref=e393]:
+                  - paragraph [ref=e394]:
+                    - strong [ref=e395]: "TX-Denison:"
+                    - link "(658) 574-7573" [ref=e396] [cursor=pointer]:
+                      - /url: tel:6585747573
+                    - text: 459 Time Boulevard, Grand Prairie, TX 75051
+                - listitem [ref=e397]:
+                  - paragraph [ref=e398]:
+                    - strong [ref=e399]: "Test Branch:"
+                    - text: 4760 South Pecos Rd., Suite 201, Las Vegas, NV 89121
+                - listitem [ref=e400]:
+                  - paragraph [ref=e401]:
+                    - strong [ref=e402]: "Test submit branch:"
+                    - text: 3112 Time Boulevard, San Jose, CA 95132
+                - listitem [ref=e403]:
+                  - paragraph [ref=e404]:
+                    - strong [ref=e405]: "ThoLe branch:"
+                    - text: 6542 Time Boulevard, Adrian, TX 79001
+                - listitem [ref=e406]:
+                  - paragraph [ref=e407]:
+                    - strong [ref=e408]: "Thuan_test:"
+                    - text: Arizona State Route 303, Phoenix, AZ 85008
+                - listitem [ref=e409]:
+                  - paragraph [ref=e410]:
+                    - strong [ref=e411]: "VA-Virginia Beach:"
+                    - text: 97 PCT, Virginia Beach, VA 23456
+                - listitem [ref=e412]:
+                  - paragraph [ref=e413]:
+                    - strong [ref=e414]: "VN-lalaa:"
+                    - text: 2108 1st Avenue, Owensboro, KY 42301
+                - listitem [ref=e415]:
+                  - paragraph [ref=e416]:
+                    - strong [ref=e417]: "Viet_Nam_Es:"
+                    - link "(435) 364-5645" [ref=e418] [cursor=pointer]:
+                      - /url: tel:4353645645
+                    - text: 6410 Sunset Boulevard, San Jose, CA 95132
+                - listitem [ref=e419]:
+                  - paragraph [ref=e420]:
+                    - strong [ref=e421]: "WI-Milwaukee:"
+                    - link "(325) 342-6354" [ref=e422] [cursor=pointer]:
+                      - /url: tel:3253426354
+                    - text: 1058 Reed Street, Green Bay, WI 54303
+                  - paragraph [ref=e423]: Licensed in WI
+                - listitem [ref=e424]:
+                  - paragraph [ref=e425]:
+                    - strong [ref=e426]: "Z Branch:"
+                    - text: 6515 Sunset Boulevard, New York, NY 10004
+                - listitem [ref=e427]:
+                  - paragraph [ref=e428]:
+                    - strong [ref=e429]: "da nang:"
+                    - text: 6334 Jackson Street, Winkelman, AZ 85192
+                - listitem [ref=e430]:
+                  - paragraph [ref=e431]:
+                    - strong [ref=e432]: "dddddd:"
+                    - text: 123123 William Street, New York, NY 10038
+                - listitem [ref=e433]:
+                  - paragraph [ref=e434]:
+                    - strong [ref=e435]: "ffffffffff:"
+                    - text: 1269 Second Street, San Jose, CA 95132
+                - listitem [ref=e436]:
+                  - paragraph [ref=e437]:
+                    - strong [ref=e438]: "hao ne 1234:"
+                    - text: 5079 Time Boulevard, San Jose, CA 95132
+                - listitem [ref=e439]:
+                  - paragraph [ref=e440]:
+                    - strong [ref=e441]: "hao ne 234234:"
+                    - text: 8396 Oak Lawn Avenue, San Jose, CA 95132
+                - listitem [ref=e442]:
+                  - paragraph [ref=e443]:
+                    - strong [ref=e444]: "hao test:"
+                    - text: 893 Time Boulevard, San Jose, CA 95132
+                - listitem [ref=e445]:
+                  - paragraph [ref=e446]:
+                    - strong [ref=e447]: "hihi90890890:"
+                    - text: 6945 1st Avenue, San Jose, CA 95132
+                - listitem [ref=e448]:
+                  - paragraph [ref=e449]:
+                    - strong [ref=e450]: "háhoiasd:"
+                    - text: 4560 Oak Lawn Avenue, San Jose, CA 95132
+                - listitem [ref=e451]:
+                  - paragraph [ref=e452]:
+                    - strong [ref=e453]: "mimi:"
+                    - text: 8632 1st Avenue, San Jose, CA 95132
+                  - paragraph [ref=e454]: Licensed in CA
+                - listitem [ref=e455]:
+                  - paragraph [ref=e456]:
+                    - strong [ref=e457]: "name2471:"
+                    - text: 9523 Bolsa Avenue, Westminster, CA 92683
+                - listitem [ref=e458]:
+                  - paragraph [ref=e459]:
+                    - strong [ref=e460]: "new 2:"
+                    - text: 936 Broad Street, Augusta, GA 30901
+                  - paragraph [ref=e461]: Licensed in CA
+                - listitem [ref=e462]:
+                  - paragraph [ref=e463]:
+                    - strong [ref=e464]: "new testing branch:"
+                    - link "(444) 444-4444" [ref=e465] [cursor=pointer]:
+                      - /url: tel:4444444444
+                    - text: Ste 100 U.S. 9, 333, Englishtown, NJ 07726
+                  - paragraph [ref=e466]: Licensed in CA
+                - listitem [ref=e467]:
+                  - paragraph [ref=e468]:
+                    - strong [ref=e469]: "update name:"
+                    - text: 5600 Northeast Antioch Road, Colonia, NJ 07067
+                  - paragraph [ref=e470]: Licensed in CA
+        - generic [ref=e472]:
+          - heading "About Us" [level=3] [ref=e473]
+          - list [ref=e474]:
+            - listitem [ref=e475]:
+              - 'link "Company NMLS#: 320841" [ref=e476] [cursor=pointer]':
+                - /url: http://www.nmlsconsumeraccess.org/EntityDetails.aspx/COMPANY/320841
+                - text: "Company NMLS#: 320841. Go here for the Loan Factory, Inc. NMLS consumer access page"
+            - listitem [ref=e477]:
+              - paragraph [ref=e478]: "For licensing information, go to:"
+              - link "www.nmlsconsumeraccess.org" [ref=e479] [cursor=pointer]:
+                - /url: http://www.nmlsconsumeraccess.org/EntityDetails.aspx/COMPANY/320841
+                - text: https://www.nmlsconsumeraccess.org
+            - listitem [ref=e480]:
+              - 'link "CA DRE #: 01771313" [ref=e483] [cursor=pointer]':
+                - /url: https://www2.dre.ca.gov/PublicASP/pplinfo.asp?License_id=01771313
+            - listitem [ref=e484]:
+              - link "Loan Officer? Join Us" [ref=e488] [cursor=pointer]:
+                - /url: /loan-officer
+            - listitem [ref=e489]:
+              - link "Branches" [ref=e493] [cursor=pointer]:
+                - /url: /branches
+            - listitem [ref=e494]:
+              - link "State Licenses" [ref=e498] [cursor=pointer]:
+                - /url: /state-licenses
+            - listitem [ref=e499]:
+              - link "Terms & Conditions" [ref=e503] [cursor=pointer]:
+                - /url: /terms-and-conditions
+            - listitem [ref=e504]:
+              - link "Privacy Policies" [ref=e508] [cursor=pointer]:
+                - /url: /privacy
+            - listitem [ref=e509]:
+              - link "Email/Text Policy" [ref=e512] [cursor=pointer]:
+                - /url: /email-communication
+            - listitem [ref=e513]:
+              - link "Terms of Service and Privacy Policy — Use of AI" [ref=e518] [cursor=pointer]:
+                - /url: /use-of-ai
+            - listitem [ref=e519]:
+              - link "ADA Accessibility Statement" [ref=e524] [cursor=pointer]:
+                - /url: /ada
+            - listitem [ref=e525]:
+              - link "Careers" [ref=e530] [cursor=pointer]:
+                - /url: /careers
+            - listitem [ref=e531]:
+              - link "Press Release" [ref=e534] [cursor=pointer]:
+                - /url: /press-release
+            - listitem [ref=e535]:
+              - link "Texas Disclosures" [ref=e539] [cursor=pointer]:
+                - /url: /texas-disclosures
+            - listitem [ref=e540]:
+              - link "Google Reviews" [ref=e541] [cursor=pointer]:
+                - /url: /testimonials
+                - paragraph [ref=e542]: 0+
+                - img "google-star" [ref=e543]
+        - generic [ref=e545]:
+          - heading "Mortgage" [level=3] [ref=e546]
+          - list [ref=e547]:
+            - listitem [ref=e548]:
+              - link "Mortgage Disclosures" [ref=e552] [cursor=pointer]:
+                - /url: /disclosure
+            - listitem [ref=e553]:
+              - link "Our Loan Process" [ref=e557] [cursor=pointer]:
+                - /url: /loan-process
+            - listitem [ref=e558]:
+              - link "Why Loan Factory" [ref=e562] [cursor=pointer]:
+                - /url: /why-us
+            - listitem [ref=e563]:
+              - link "Blogs" [ref=e567] [cursor=pointer]:
+                - /url: https://blog.loanfactory.com/
+            - listitem [ref=e568]:
+              - link "Testimonials" [ref=e572] [cursor=pointer]:
+                - /url: /testimonials
+            - listitem [ref=e573]:
+              - link "Acronyms & Abbreviations" [ref=e577] [cursor=pointer]:
+                - /url: /acronyms-abbreviations
+            - listitem [ref=e578]:
+              - img "ehl-w" [ref=e579]
+            - listitem [ref=e580]:
+              - img "ssl-secure-image" [ref=e581]
+      - generic [ref=e582]: Copyright © 2026 Loan Factory. All Rights Reserved.
+      - generic [ref=e583]:
+        - paragraph [ref=e584]: Powered by
+        - img "Tera Logo" [ref=e585]
+  - alert [ref=e586]
+  - generic [ref=e588] [cursor=pointer]

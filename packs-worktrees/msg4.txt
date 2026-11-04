@@ -1,0 +1,10 @@
+fix(recruiting): program credit holds only while the lead still belongs to the credited member
+
+The marker alone went stale when staff reassigned a marked lead (AssignOwners,
+Recruit sync, CSV). A lead is now member credit only when the marker is set AND
+recruiter equals lead_origin_owner_key (both written at create). One definition,
+LoRecruiterProgramStanding.isMemberCredit, is used by the staff-automation
+guards and by both reports' non-staff admission, so a reassigned lead returns
+to staff handling and the new recruiter does not inherit the credit.
+
+Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>

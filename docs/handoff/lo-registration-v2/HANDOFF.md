@@ -1,6 +1,39 @@
 # LO Registration v2 — HANDOFF
 
-## RESUME POINT — PAUSED 30/10 evening (+07), session 8658d500
+## RESUME POINT — PAUSED 04/11 evening (+07), session 8658d500
+
+**Done 04/11**
+- Read the New Landing Page chat + Victoria's feedback doc (Google Doc 1hlnCe8dANHZBWKa4Op02nxBZwZi2Zm5DvRlDaYVTDGs,
+  Brayan's notes inside). Victoria: 3 two-hour windows OK; special requests approved by the Recruiting Manager
+  (Victoria → Benjamin). Hero A/B not answered.
+- Bao GO → mockup updated (artifact 92Yarua4tCB9TwhQontgn7 version 16, source `mockup/join-flow.html`) + PLAN.md §9,
+  commit 56b73a6 pushed. §9 also holds the state-rule audit vs the Licenses settings page (CT/NY/VI in STATES,
+  MS forced W-2, NC/KY missing from exclusivity groups, RI missing from distance list).
+- Group reply drafted (EN + VI) in the chat, NOT sent yet — item 7 must be rewritten (see below).
+
+**Open question to Bao (asked, no answer yet): when can the Loan Officer change W-2/1099?**
+Measured on latest code 04/11:
+- OB picks W-2/1099 at Mark done in Recruit (OnboardingHireMeetingModal, prefilled from lo_type, MOSO value as hint);
+  write-back sets `is_corporate_loan_officer` + `pre_onboarding_done`.
+- packs `RegisterInterestedLoanOfficer.protectMeetingClassification` (also on prod 3.64.1) silently drops any public-form
+  change after the meeting; lf `getLockedLoanOfficerType` shows it read-only.
+- Agreement docs follow the stored value (`computeRequiredDocs`: W-2 or 1099 agreement, + Exclusive Agent for 1099 in
+  VA/MS, + CA compliance when CA without DRE). A staff change while unsigned rebuilds the envelope (`force_regenerate`, prod too).
+- packs builds 1099 + Exclusive Agent for MS → MS allows 1099; lf/lo forcing MS to W-2 is outdated.
+- Mockup v16 lets the Loan Officer change it in Step 4 (after the call) → conflicts with the packs guard.
+- **Proposal waiting for Bao:** move employment type to Step 2 (before the 1-1), prefilled by state, editable except
+  W-2-required states; OB confirms at Mark done (unchanged); Step 4 + Review read-only "Confirmed on your call".
+  If OK: edit mockup + republish same URL, update PLAN §9 item 9, rewrite group message item 7 to:
+  "Employment type is now on Step 2, prefilled from the states. The Loan Officer can change it (except in states that
+  require W-2), and our onboarding specialist confirms it on the 1-1 call."
+
+**Next on resume**
+1. Get Bao's answer on the W-2/1099 proposal → apply.
+2. Give Bao the final group message (EN + VI, no horizontal rules) to send himself.
+3. Still unanswered from 30/10: turn on D268/D269 staging flags? close tdqcv/zo816/tax65/lr5an? do wcwfu + lm8sc?
+4. No code until Bao says go.
+
+## (SUPERSEDED) RESUME POINT — PAUSED 30/10 evening (+07), session 8658d500
 
 Resume: `claude --resume 8658d500-15e8-4830-b017-aaec2ebd2e74`, or a new session that reads this section + PLAN.md §7–§8.
 

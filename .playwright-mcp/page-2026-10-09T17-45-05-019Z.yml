@@ -1,0 +1,103 @@
+- generic [active] [ref=f3e1]:
+  - alert [ref=f3e2]
+  - generic [ref=f3e3]:
+    - banner [ref=f3e4]:
+      - generic [ref=f3e5]:
+        - link "Go to the start of this app" [ref=f3e7] [cursor=pointer]:
+          - /url: /today
+          - img "Loan Factory" [ref=f3e8]
+          - generic [ref=f3e9]:
+            - paragraph [ref=f3e10]: Loan Factory
+            - paragraph [ref=f3e11]: Recruit
+        - generic [ref=f3e12]:
+          - generic [ref=f3e14]:
+            - combobox "Search candidates, NMLS, companies…" [ref=f3e19]
+            - generic:
+              - generic "Press ⌘ K to search from anywhere": ⌘ K
+          - status [ref=f3e20]
+        - generic [ref=f3e21]:
+          - button "Notifications" [ref=f3e22] [cursor=pointer]
+          - button "Switch to dark mode" [ref=f3e27] [cursor=pointer]
+          - button "Notifications" [ref=f3e33] [cursor=pointer]
+          - button "Discovery" [ref=f3e38] [cursor=pointer]
+          - button "Account menu" [ref=f3e50] [cursor=pointer]:
+            - generic [ref=f3e51]: "?"
+    - navigation [ref=f3e53]:
+      - button "Collapse menu" [expanded] [ref=f3e54] [cursor=pointer]
+      - navigation "Main navigation" [ref=f3e57]:
+        - generic [ref=f3e58]:
+          - button "Frequent" [expanded] [ref=f3e59] [cursor=pointer]
+          - list "Frequent" [ref=f3e64]:
+            - listitem [ref=f3e65]:
+              - link "My work today" [ref=f3e66] [cursor=pointer]:
+                - /url: /today
+        - generic [ref=f3e72]:
+          - button "Configuration" [expanded] [ref=f3e73] [cursor=pointer]
+          - list "Configuration" [ref=f3e78]:
+            - listitem [ref=f3e79]:
+              - link "Templates" [ref=f3e80] [cursor=pointer]:
+                - /url: /templates
+            - listitem [ref=f3e86]:
+              - link "Audit" [ref=f3e87] [cursor=pointer]:
+                - /url: /audit
+            - listitem [ref=f3e93]:
+              - link "Settings" [ref=f3e94] [cursor=pointer]:
+                - /url: /settings
+            - listitem [ref=f3e100]:
+              - link "Checklist templates" [ref=f3e101] [cursor=pointer]:
+                - /url: /checklist-templates
+            - listitem [ref=f3e108]:
+              - link "Permissions" [ref=f3e109] [cursor=pointer]:
+                - /url: /permissions
+      - button "AI Assistant" [ref=f3e116] [cursor=pointer]
+    - main [ref=f3e127]:
+      - generic [ref=f3e131]:
+        - heading "Pipeline" [level=1] [ref=f3e139]
+        - tablist [ref=f3e141]:
+          - tab "All" [ref=f3e142] [cursor=pointer]
+          - tab "Unclaimed" [ref=f3e143] [cursor=pointer]
+          - tab "New lead" [ref=f3e144] [cursor=pointer]
+          - tab "Engaged" [ref=f3e145] [cursor=pointer]
+          - tab "Verified" [selected] [ref=f3e146] [cursor=pointer]
+          - tab "Meeting" [ref=f3e147] [cursor=pointer]
+          - tab "Offer" [ref=f3e148] [cursor=pointer]
+          - tab "Joined" [ref=f3e149] [cursor=pointer]
+          - tab "Onboarded" [ref=f3e150] [cursor=pointer]
+        - generic [ref=f3e151]:
+          - textbox "Name, NMLS, company…" [ref=f3e158]
+          - textbox "Status" [ref=f3e161] [cursor=pointer]: ACTIVE — alive
+          - group [ref=f3e162]:
+            - button "More filters" [ref=f3e163] [cursor=pointer]
+          - button "No owner yet" [ref=f3e174] [cursor=pointer]
+          - button "Saved filters" [ref=f3e179] [cursor=pointer]
+          - group "Switch between table, board and card view" [ref=f3e183]:
+            - button "Table view" [pressed] [ref=f3e184] [cursor=pointer]
+            - button "Board view" [ref=f3e186] [cursor=pointer]
+            - button "Card view" [ref=f3e190] [cursor=pointer]
+          - button "Refresh" [ref=f3e196] [cursor=pointer]
+        - table [ref=f3e202]:
+          - rowgroup [ref=f3e213]:
+            - row [ref=f3e214]:
+              - columnheader [ref=f3e215]:
+                - checkbox "Select every row on this page" [disabled] [ref=f3e219]
+              - columnheader "Candidate" [ref=f3e220]
+              - columnheader "Source" [ref=f3e221]
+              - columnheader "Stage" [ref=f3e222]
+              - columnheader "Status" [ref=f3e223]
+              - columnheader "Last touch" [ref=f3e224]
+              - columnheader "Follow-up" [ref=f3e225]
+              - columnheader "Owner" [ref=f3e226]
+              - columnheader [aria-hidden] [ref=f3e227]
+          - rowgroup [ref=f3e228]:
+            - row [ref=f3e229]:
+              - cell [ref=f3e230]
+            - row [ref=f3e232]:
+              - cell [ref=f3e233]
+            - row [ref=f3e235]:
+              - cell [ref=f3e236]
+            - row [ref=f3e238]:
+              - cell [ref=f3e239]
+            - row [ref=f3e241]:
+              - cell [ref=f3e242]
+            - row [ref=f3e244]:
+              - cell [ref=f3e245]

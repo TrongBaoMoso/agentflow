@@ -1,0 +1,1297 @@
+<title>LO Pages Simplified</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+:root {
+  color-scheme: light;
+  --orange: #f36f20;
+  --orange-hover: #e2600f;
+  --orange-ink: #b9500f;
+  --orange-soft: #fff1e7;
+  --navy: #0f1626;
+  --navy-2: #1b2438;
+  --navy-3: #2a3550;
+  --ink: #141a26;
+  --ink-2: #4a5263;
+  --ink-3: #6b7282;
+  --line: #e7e2da;
+  --line-2: #d6cfc4;
+  --paper: #faf7f2;
+  --white: #ffffff;
+  --green: #17864a;
+  --green-soft: #e6f5ec;
+  --red: #b42318;
+  --red-soft: #fdecea;
+  --blue-soft: #eaf0fb;
+  --blue-ink: #234a9c;
+  --tool-bg: #10151f;
+  --font: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --text-body: 18px;
+  --text-small: 16px;
+  --text-h1: 56px;
+  --text-h2: 40px;
+  --text-h3: 22px;
+  --radius-s: 8px;
+  --radius-m: 14px;
+  --radius-l: 22px;
+  --shadow-card: 0 1px 2px rgb(15 22 38 / 0.06), 0 8px 24px -12px rgb(15 22 38 / 0.18);
+  --shadow-lift: 0 2px 4px rgb(15 22 38 / 0.08), 0 18px 40px -18px rgb(15 22 38 / 0.35);
+  --duration-fast: 150ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: #e9e5de;
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+button, input, select { font: inherit; color: inherit; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+
+/* ---------- Toolbar ---------- */
+.toolbar {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 50;
+  background: var(--tool-bg);
+  color: #fff;
+  border-bottom: 1px solid #000;
+}
+.toolbar-row {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 10px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+.tool-brand { font-weight: 800; font-size: 14px; letter-spacing: 0.02em; margin-right: auto; white-space: nowrap; }
+.tool-brand span { color: var(--orange); }
+.seg {
+  display: inline-flex;
+  background: #232a38;
+  border-radius: 999px;
+  padding: 3px;
+  gap: 2px;
+}
+.seg button {
+  border: 0;
+  background: transparent;
+  color: #c9cfdb;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--duration-fast), color var(--duration-fast);
+}
+.seg button:hover { color: #fff; }
+.seg button[aria-pressed="true"] { background: #fff; color: var(--navy); }
+.seg.seg-accent button[aria-pressed="true"] { background: var(--orange); color: #fff; }
+.tool-note {
+  background: #1a202c;
+  color: #dfe3ea;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.tool-note-inner { max-width: 1320px; margin: 0 auto; padding: 10px 16px 12px; }
+.tool-note b { color: #fff; }
+.tool-note .removed { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.tool-note .removed span {
+  border: 1px solid #3a4356;
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 13px;
+  color: #c9cfdb;
+}
+.tool-note .removed span b { color: #ffb37f; font-weight: 600; }
+
+/* ---------- Stage / frame ---------- */
+.stage { padding: 24px 16px 64px; }
+.frame {
+  container-type: inline-size;
+  container-name: page;
+  margin: 0 auto;
+  max-width: 1280px;
+  background: var(--white);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.35);
+}
+.stage[data-device="mobile"] .frame {
+  max-width: 375px;
+  border-radius: 28px;
+  border: 8px solid #10151f;
+}
+.view { display: none; }
+.view.is-active { display: block; }
+
+/* ---------- Shared page typography ---------- */
+.pg { font-size: var(--text-body); line-height: 1.6; color: var(--ink); }
+.pg h1, .pg h2, .pg h3 { margin: 0; letter-spacing: -0.02em; }
+.pg h1 { font-size: var(--text-h1); line-height: 1.05; font-weight: 800; }
+.pg h2 { font-size: var(--text-h2); line-height: 1.1; font-weight: 800; }
+.pg h3 { font-size: var(--text-h3); line-height: 1.25; font-weight: 700; }
+:where(.pg) p { margin: 0; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 40px; }
+.sec { padding: 96px 0; }
+.kicker {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--orange-ink);
+  margin-bottom: 14px;
+}
+.sec-head { max-width: 680px; margin-bottom: 44px; }
+.sec-head p { margin-top: 14px; color: var(--ink-2); }
+.accent { color: var(--orange); }
+.confirm {
+  display: inline-block;
+  background: #fff4cc;
+  color: #7a5200;
+  border: 1px dashed #d9a400;
+  border-radius: 6px;
+  padding: 0 6px;
+  font-size: 0.8em;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.placeholder {
+  background: #fff4cc;
+  color: #7a5200;
+  border: 1px dashed #d9a400;
+  border-radius: 6px;
+  padding: 1px 8px;
+  font-weight: 600;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 56px;
+  padding: 0 28px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-out), background var(--duration-fast), box-shadow var(--duration-fast);
+}
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--orange); color: #fff; box-shadow: 0 10px 24px -10px rgb(243 111 32 / 0.7); }
+.btn-primary:hover { background: var(--orange-hover); }
+.btn-ghost { background: #fff; color: var(--navy); border-color: var(--line-2); }
+.btn-ghost:hover { border-color: var(--navy); }
+.btn-on-dark { background: transparent; color: #fff; border-color: rgb(255 255 255 / 0.4); }
+.btn-on-dark:hover { border-color: #fff; }
+.link { color: var(--orange-ink); font-weight: 700; text-decoration: none; border-bottom: 2px solid rgb(243 111 32 / 0.35); }
+.link:hover { border-bottom-color: var(--orange); }
+
+/* ---------- Recruiting header ---------- */
+.rhead { border-bottom: 1px solid var(--line); background: #fff; }
+.rhead .wrap { display: flex; align-items: center; gap: 24px; height: 76px; }
+.logo { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 20px; letter-spacing: -0.02em; text-decoration: none; color: var(--navy); }
+.logo-mark {
+  width: 34px; height: 34px; border-radius: 9px; background: var(--orange);
+  display: grid; place-items: center; color: #fff; font-size: 15px; font-weight: 800;
+}
+.rnav { display: flex; gap: 30px; margin-left: auto; align-items: center; font-size: 17px; font-weight: 600; }
+.rnav a { text-decoration: none; color: var(--ink-2); }
+.rnav a:hover { color: var(--navy); }
+.rnav .signin { color: var(--navy); border: 2px solid var(--line-2); padding: 8px 18px; border-radius: 10px; }
+.menu-btn { display: none; margin-left: auto; width: 44px; height: 44px; border-radius: 10px; border: 2px solid var(--line-2); background: #fff; }
+
+/* ---------- Hero ---------- */
+.hero { padding: 104px 0 88px; background: linear-gradient(180deg, #fff 0%, var(--paper) 100%); position: relative; overflow: hidden; }
+.hero::after {
+  content: ""; position: absolute; right: -180px; top: -160px; width: 560px; height: 560px; border-radius: 50%;
+  background: radial-gradient(circle, rgb(243 111 32 / 0.14), rgb(243 111 32 / 0) 68%);
+  pointer-events: none;
+}
+.hero .wrap { position: relative; z-index: 1; }
+.hero h1 { max-width: 820px; }
+.hero-line { margin-top: 22px; font-size: 22px; color: var(--ink-2); max-width: 640px; }
+.hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 36px; }
+.hero-sub { margin-top: 18px; font-size: 17px; }
+.stats {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+  margin-top: 72px; border-top: 1px solid var(--line-2);
+}
+.stat { padding: 26px 24px 0 0; }
+.stat + .stat { padding-left: 28px; border-left: 1px solid var(--line); }
+.stat b { display: block; font-size: 44px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: var(--navy); }
+.stat span { display: block; margin-top: 8px; color: var(--ink-2); font-size: 17px; }
+
+/* ---------- Webinar ---------- */
+.webinar { background: var(--navy); color: #fff; }
+.webinar .kicker { color: #ffb37f; }
+.web-grid { display: grid; grid-template-columns: 1fr 460px; gap: 56px; align-items: start; }
+.web-left p.lead { margin-top: 18px; color: #c9d0dc; font-size: 20px; }
+.host {
+  margin-top: 36px; position: relative; width: 300px; aspect-ratio: 4 / 5; border-radius: var(--radius-l); overflow: hidden;
+  box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.8);
+}
+.host img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; display: block; }
+.host-tag {
+  position: absolute; left: 14px; right: 14px; bottom: 14px; background: rgb(15 22 38 / 0.86); backdrop-filter: blur(6px);
+  border-radius: 12px; padding: 12px 14px;
+}
+.host-tag b { display: block; font-size: 17px; }
+.host-tag span { font-size: 15px; color: #ffb37f; font-weight: 600; }
+.form-card {
+  background: #fff; color: var(--ink); border-radius: var(--radius-l); padding: 30px; box-shadow: var(--shadow-lift);
+}
+.form-card h3 { font-size: 24px; }
+.form-step-label { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; margin: 22px 0 12px; }
+.num-dot { width: 28px; height: 28px; border-radius: 50%; background: var(--navy); color: #fff; display: grid; place-items: center; font-size: 14px; font-weight: 700; flex: none; }
+.dates { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.date {
+  border: 2px solid var(--line); border-radius: 12px; padding: 10px 8px; text-align: center; cursor: pointer; background: #fff;
+  transition: border-color var(--duration-fast), background var(--duration-fast);
+}
+.date b { display: block; font-size: 16px; }
+.date span { font-size: 14px; color: var(--ink-2); }
+.date:hover { border-color: var(--line-2); }
+.date[aria-pressed="true"] { border-color: var(--orange); background: var(--orange-soft); }
+.fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.fields .full { grid-column: 1 / -1; }
+.fld { display: flex; flex-direction: column; gap: 6px; }
+.fld > span { font-size: 15px; font-weight: 600; color: var(--ink); }
+.fld > span i { color: var(--red); font-style: normal; }
+.input, .select {
+  width: 100%; min-height: 52px; border: 2px solid var(--line); border-radius: 10px; background: #fff;
+  padding: 0 14px; font-size: 17px; transition: border-color var(--duration-fast), box-shadow var(--duration-fast);
+}
+.select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--ink-2) 50%), linear-gradient(135deg, var(--ink-2) 50%, transparent 50%); background-position: calc(100% - 20px) 22px, calc(100% - 14px) 22px; background-size: 6px 6px; background-repeat: no-repeat; padding-right: 36px; }
+.input:hover, .select:hover { border-color: var(--line-2); }
+.input:focus, .select:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 4px rgb(243 111 32 / 0.16); }
+.input::placeholder { color: #9aa0ab; }
+.consent { display: flex; gap: 10px; margin-top: 16px; font-size: 15px; color: var(--ink-2); line-height: 1.5; }
+.consent input { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--orange); flex: none; }
+.form-card .btn { width: 100%; margin-top: 18px; }
+.form-alt { text-align: center; margin-top: 14px; font-size: 16px; }
+
+/* ---------- Why cards ---------- */
+.why-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.why {
+  position: relative; border-radius: var(--radius-l); padding: 34px 34px 32px; background: var(--paper); border: 1px solid var(--line);
+  transition: transform var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast);
+}
+.why:hover { transform: translateY(-3px); box-shadow: var(--shadow-card); }
+.why-big { font-size: 52px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; color: var(--navy); }
+.why h3 { margin-top: 16px; font-size: 24px; }
+.why p { margin-top: 10px; color: var(--ink-2); }
+.why.feature { background: var(--navy); color: #fff; border-color: var(--navy); }
+.why.feature .why-big { color: var(--orange); }
+.why.feature p { color: #c9d0dc; }
+.math {
+  margin-top: 18px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px;
+  font-size: 18px; font-weight: 600; background: rgb(255 255 255 / 0.07); border-radius: 12px; padding: 14px 16px;
+}
+.math b { color: #fff; font-size: 22px; }
+.math .eq { color: var(--orange); }
+.why small { display: block; margin-top: 12px; font-size: 15px; color: #a9b1c0; }
+.chips-row { margin-top: 36px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.chips-row > span { font-weight: 700; margin-right: 6px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 999px; border: 2px solid var(--line);
+  background: #fff; font-size: 16px; font-weight: 600; text-decoration: none; color: var(--navy);
+  transition: border-color var(--duration-fast), background var(--duration-fast);
+}
+.chip:hover { border-color: var(--orange); background: var(--orange-soft); }
+
+/* ---------- Platform ---------- */
+.platform { background: var(--paper); }
+.tools { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.tool {
+  display: flex; flex-direction: column; gap: 14px; padding: 24px; border-radius: var(--radius-m); background: #fff; border: 1px solid var(--line);
+  font-size: 19px; font-weight: 700; color: var(--navy); text-decoration: none;
+  transition: transform var(--duration-fast) var(--ease-out), border-color var(--duration-fast);
+}
+.tool:hover { transform: translateY(-2px); border-color: var(--orange); }
+.tool-ic { width: 52px; height: 52px; border-radius: 14px; background: var(--orange-soft); display: grid; place-items: center; color: var(--orange-ink); }
+.tool-ic svg { width: 26px; height: 26px; }
+.see-all { margin-top: 28px; font-size: 18px; }
+
+/* ---------- Join steps ---------- */
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; counter-reset: s; }
+.step { border-top: 4px solid var(--navy); padding-top: 22px; }
+.step:first-child { border-top-color: var(--orange); }
+.step-n { font-size: 15px; font-weight: 700; color: var(--orange-ink); letter-spacing: 0.06em; }
+.step h3 { margin-top: 8px; }
+.step p { margin-top: 8px; color: var(--ink-2); }
+.who {
+  margin-top: 40px; display: flex; gap: 14px; align-items: flex-start; padding: 20px 22px; border-radius: var(--radius-m);
+  background: var(--blue-soft); color: var(--blue-ink); font-weight: 600;
+}
+.join-ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; align-items: center; }
+.join-ctas .fee { color: var(--ink-2); font-size: 17px; }
+
+/* ---------- Videos ---------- */
+.videos { background: var(--navy); color: #fff; }
+.videos .kicker { color: #ffb37f; }
+.vrow { display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 64px) / 5); gap: 16px; overflow-x: auto; padding-bottom: 6px; scroll-snap-type: x mandatory; }
+.vcard { scroll-snap-align: start; text-decoration: none; color: #fff; }
+.vthumb {
+  position: relative; aspect-ratio: 9 / 12; border-radius: var(--radius-m); overflow: hidden;
+  background: linear-gradient(160deg, var(--navy-3), #0b101b 70%);
+  display: grid; place-items: center; border: 1px solid rgb(255 255 255 / 0.08);
+}
+.vthumb .initials { font-size: 40px; font-weight: 800; color: rgb(255 255 255 / 0.18); }
+.vthumb .play {
+  position: absolute; width: 54px; height: 54px; border-radius: 50%; background: var(--orange); display: grid; place-items: center;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+.vcard:hover .play { transform: scale(1.08); }
+.vcard b { display: block; margin-top: 12px; font-size: 17px; line-height: 1.3; }
+.vcard span { font-size: 15px; color: #aab2c2; }
+
+/* ---------- FAQ ---------- */
+.faq-list { border-top: 1px solid var(--line); max-width: 860px; }
+.faq-list details { border-bottom: 1px solid var(--line); }
+.faq-list summary {
+  list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 18px; padding: 24px 0;
+  font-size: 20px; font-weight: 700; color: var(--navy);
+}
+.faq-list summary::-webkit-details-marker { display: none; }
+.faq-list summary::after { content: "+"; font-size: 28px; line-height: 1; color: var(--orange); transition: transform var(--duration-fast); }
+.faq-list details[open] summary::after { transform: rotate(45deg); }
+.faq-list summary:hover { color: var(--orange-ink); }
+.faq-list .ans { padding: 0 0 24px; color: var(--ink-2); }
+
+/* ---------- Footer ---------- */
+.foot { background: #0b101b; color: #b8bfcc; padding: 48px 0; font-size: 15px; }
+.foot .wrap { display: grid; grid-template-columns: 1.4fr 1fr; gap: 32px; }
+.foot b { color: #fff; }
+.foot p + p { margin-top: 8px; }
+.foot-links { display: flex; flex-wrap: wrap; gap: 10px 22px; align-content: start; }
+.foot-links a { color: #dfe3ea; text-decoration: none; font-weight: 600; }
+.foot-links a:hover { color: #fff; text-decoration: underline; }
+
+/* ---------- NOW view (LO) ---------- */
+.now { background: #f4f1ec; padding: 40px 0 56px; }
+.now .wrap { max-width: 1040px; }
+.now-sum { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 32px; }
+.now-sum div { background: #fff; border-radius: var(--radius-m); padding: 18px 20px; border: 1px solid var(--line); }
+.now-sum b { display: block; font-size: 34px; font-weight: 800; letter-spacing: -0.02em; color: var(--navy); line-height: 1.1; }
+.now-sum span { font-size: 15px; color: var(--ink-2); }
+.now-sum .good b { color: var(--green); }
+.sketch { background: #fff; border-radius: var(--radius-m); border: 1px solid var(--line); overflow: hidden; }
+.sk-head { display: flex; align-items: center; gap: 10px; padding: 12px 18px; background: #fbfaf8; border-bottom: 1px solid var(--line); font-size: 13px; color: var(--ink-3); flex-wrap: wrap; }
+.sk-head .menu { display: flex; gap: 12px; flex-wrap: wrap; text-decoration: line-through; text-decoration-color: rgb(180 35 24 / 0.6); }
+.sk-row { display: grid; grid-template-columns: 34px minmax(0, 1fr) 200px 200px; gap: 14px; align-items: center; padding: 14px 18px; border-bottom: 1px solid #f0ece6; }
+.sk-row:last-child { border-bottom: 0; }
+.sk-i { font-size: 13px; color: var(--ink-3); font-weight: 700; }
+.sk-name { font-weight: 700; font-size: 16px; color: var(--navy); }
+.sk-sample { font-size: 13px; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sk-bar { height: 10px; border-radius: 6px; background: #efe9e1; position: relative; overflow: hidden; }
+.sk-bar i { position: absolute; inset: 0 auto 0 0; background: var(--navy-3); border-radius: 6px; }
+.sk-w { font-size: 13px; color: var(--ink-2); margin-top: 4px; }
+.fate { justify-self: start; font-size: 13px; font-weight: 700; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+.fate.keep { background: var(--green-soft); color: var(--green); }
+.fate.cut { background: var(--orange-soft); color: var(--orange-ink); }
+.fate.move { background: var(--blue-soft); color: var(--blue-ink); }
+.fate.gone { background: var(--red-soft); color: var(--red); }
+.sk-row.gone .sk-name, .sk-row.gone .sk-sample { text-decoration: line-through; text-decoration-color: rgb(180 35 24 / 0.5); }
+.now-legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 0; font-size: 14px; color: var(--ink-2); align-items: center; }
+
+/* ---------- Registration (shared) ---------- */
+.reg { background: var(--paper); padding-bottom: 80px; }
+.reg-top { text-align: center; padding: 64px 0 8px; }
+.eyebrow { font-size: 15px; font-weight: 800; letter-spacing: 0.16em; color: var(--orange-ink); }
+.reg-top h1 { margin-top: 12px; font-size: 52px; }
+.tracker {
+  max-width: 1040px; margin: 40px auto 0; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-l);
+  padding: 28px 28px 24px; box-shadow: var(--shadow-card);
+}
+.tracker h2 { font-size: 22px; text-align: center; letter-spacing: 0; }
+.track { list-style: none; margin: 26px 0 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr) auto; gap: 0; align-items: start; }
+.track li { position: relative; text-align: center; padding: 0 8px; }
+.track li::before {
+  content: ""; position: absolute; top: 19px; left: calc(50% + 24px); right: calc(-50% + 24px); height: 3px; background: var(--line);
+}
+.track li:nth-last-child(2)::before { right: -8px; }
+.track li.handoff::before { display: none; }
+.track .dot {
+  position: relative; z-index: 1; width: 40px; height: 40px; margin: 0 auto; border-radius: 50%; border: 3px solid var(--line-2); background: #fff;
+  display: grid; place-items: center; font-weight: 800; color: var(--ink-3); font-size: 16px;
+}
+.track li.here .dot { border-color: var(--orange); background: var(--orange); color: #fff; box-shadow: 0 0 0 6px rgb(243 111 32 / 0.18); }
+.track b { display: block; margin-top: 12px; font-size: 16px; line-height: 1.3; color: var(--navy); }
+.track em { display: inline-block; margin-top: 6px; font-style: normal; font-size: 13px; font-weight: 700; color: var(--orange-ink); }
+.track li.handoff { align-self: center; padding-left: 14px; }
+.handoff-pill {
+  display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; background: var(--navy); color: #fff;
+  font-weight: 700; font-size: 15px; white-space: nowrap;
+}
+
+/* ---------- Wizard ---------- */
+.wizard {
+  max-width: 820px; margin: 28px auto 0; background: #fff; border-radius: var(--radius-l); border: 1px solid var(--line);
+  box-shadow: var(--shadow-card); overflow: hidden;
+}
+.wz-progress { padding: 22px 32px 0; }
+.wz-meta { display: flex; justify-content: space-between; gap: 12px; font-size: 15px; color: var(--ink-2); font-weight: 600; }
+.wz-meta b { color: var(--navy); }
+.wz-bar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 12px; }
+.wz-bar button { height: 8px; border-radius: 6px; background: var(--line); border: 0; padding: 0; cursor: pointer; transition: background var(--duration-fast); }
+.wz-bar button.done { background: var(--navy-3); }
+.wz-bar button.cur { background: var(--orange); }
+.wz-body { padding: 30px 32px 8px; }
+.wz-panel { display: none; }
+.wz-panel.is-active { display: block; animation: wzIn 260ms var(--ease-out); }
+@keyframes wzIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.wz-panel h2 { font-size: 32px; }
+.wz-panel > p.sub { margin-top: 8px; color: var(--ink-2); }
+.wz-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 26px; }
+.wz-grid .full { grid-column: 1 / -1; }
+.wz-grid .fld > span { font-size: 16px; }
+.reqs { list-style: none; padding: 0; margin: 26px 0 0; display: grid; gap: 12px; }
+.reqs li { display: grid; grid-template-columns: 36px 1fr; gap: 14px; align-items: start; padding: 16px 18px; border-radius: var(--radius-m); background: var(--paper); }
+.check { width: 32px; height: 32px; border-radius: 50%; background: var(--green); display: grid; place-items: center; color: #fff; }
+.reqs b { display: block; font-size: 19px; color: var(--navy); }
+.reqs span { display: block; color: var(--ink-2); font-size: 17px; margin-top: 2px; }
+.cbox { display: flex; gap: 12px; align-items: flex-start; cursor: pointer; font-size: 17px; line-height: 1.45; }
+.cbox input { width: 22px; height: 22px; margin-top: 2px; accent-color: var(--orange); flex: none; cursor: pointer; }
+.cbox.strong { padding: 16px 18px; border: 2px solid var(--line); border-radius: var(--radius-m); font-weight: 600; transition: border-color var(--duration-fast), background var(--duration-fast); }
+.cbox.strong:hover { border-color: var(--line-2); }
+.cbox.strong:has(input:checked) { border-color: var(--orange); background: var(--orange-soft); }
+.ack { margin-top: 20px; }
+.text-btn { background: none; border: 0; padding: 0; color: var(--orange-ink); font-weight: 700; cursor: pointer; font-size: 16px; }
+.text-btn:hover { text-decoration: underline; }
+.group-title { display: flex; align-items: center; gap: 8px; margin-top: 30px; font-size: 20px; font-weight: 700; color: var(--navy); }
+.states { margin-top: 14px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px 16px; padding: 16px; border: 2px solid var(--line); border-radius: var(--radius-m); transition: opacity var(--duration-fast); }
+.states.is-off { opacity: 0.45; pointer-events: none; }
+.states .cbox, .langs .cbox { font-size: 17px; padding: 6px 0; }
+.langs { margin-top: 14px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px 16px; padding: 16px; border: 2px solid var(--line); border-radius: var(--radius-m); max-height: 320px; overflow-y: auto; }
+.all-note { margin-top: 8px; font-size: 15px; color: var(--green); font-weight: 600; min-height: 1em; }
+.paid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+.radio-card { position: relative; display: block; padding: 18px; border: 2px solid var(--line); border-radius: var(--radius-m); cursor: pointer; transition: border-color var(--duration-fast), background var(--duration-fast); }
+.radio-card:hover { border-color: var(--line-2); }
+.radio-card:has(input:checked) { border-color: var(--orange); background: var(--orange-soft); }
+.radio-card input { position: absolute; opacity: 0; }
+.radio-card b { display: block; font-size: 22px; color: var(--navy); }
+.radio-card span { font-size: 16px; color: var(--ink-2); }
+.radio-card:has(input:focus-visible) { outline: 3px solid var(--orange); outline-offset: 2px; }
+.info-wrap { position: relative; display: inline-flex; }
+.info-btn {
+  width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--line-2); background: #fff; color: var(--ink-2);
+  font-weight: 800; font-size: 14px; font-style: italic; font-family: Georgia, serif; cursor: pointer; display: grid; place-items: center;
+}
+.info-btn:hover, .info-btn[aria-expanded="true"] { border-color: var(--orange); color: var(--orange-ink); }
+.popover {
+  position: absolute; z-index: 5; top: calc(100% + 10px); left: -12px; width: min(340px, 78cqw); background: var(--navy); color: #fff;
+  border-radius: 12px; padding: 16px 18px; font-size: 16px; font-weight: 500; line-height: 1.5; box-shadow: var(--shadow-lift);
+}
+.popover[hidden] { display: none; }
+.popover p + p { margin-top: 8px; }
+.popover b { color: #ffb37f; }
+.wz-contact { margin: 28px 32px 0; padding: 14px 0 0; border-top: 1px solid var(--line); font-size: 16px; color: var(--ink-2); }
+.wz-actions { display: flex; justify-content: space-between; gap: 12px; padding: 20px 32px 28px; }
+.wz-actions .btn { min-width: 150px; }
+.wz-actions .btn[disabled] { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+.review { margin-top: 22px; display: grid; gap: 10px; }
+.review div { display: grid; grid-template-columns: 220px 1fr auto; gap: 14px; align-items: baseline; padding: 14px 16px; border-radius: 12px; background: var(--paper); }
+.review dt { font-weight: 700; color: var(--navy); font-size: 16px; }
+.review dd { margin: 0; color: var(--ink-2); font-size: 17px; word-break: break-word; }
+.more-fields { margin-top: 22px; border: 2px dashed var(--line); border-radius: var(--radius-m); padding: 14px 18px; }
+.more-fields summary { cursor: pointer; font-weight: 700; color: var(--navy); }
+.more-fields p { margin-top: 10px; color: var(--ink-2); font-size: 16px; }
+
+/* ---------- NOW view (registration) ---------- */
+.rnow { background: #f4f1ec; padding: 40px 0 56px; font-size: 14px; line-height: 1.5; }
+.rnow .wrap { max-width: 1040px; }
+.rnow-hero { background: #fff; border: 1px solid var(--line); border-radius: var(--radius-m); padding: 24px; position: relative; }
+.rnow-hero .eb { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--orange-ink); text-transform: uppercase; }
+.rnow-hero h2 { font-size: 26px; margin-top: 6px; letter-spacing: -0.01em; }
+.rnow-hero p { color: var(--ink-2); margin-top: 6px; }
+.pills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.pills span { font-size: 12px; padding: 3px 10px; border-radius: 999px; background: #f3efe9; font-weight: 600; }
+.rnow-split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+.rnow-split > div { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+.rnow-split b { font-size: 12px; }
+.rnow-split ol { margin: 6px 0 0; padding-left: 18px; font-size: 12px; color: var(--ink-2); }
+.rnow-track { display: flex; gap: 6px; margin-top: 14px; flex-wrap: wrap; }
+.rnow-track span { font-size: 11px; padding: 4px 8px; border-radius: 6px; background: #f3efe9; color: var(--ink-2); }
+.rnow-body { display: grid; grid-template-columns: 220px 1fr; gap: 14px; margin-top: 14px; }
+.rnow-rail { background: #fff; border: 1px solid var(--line); border-radius: var(--radius-m); padding: 14px; font-size: 12px; }
+.rnow-rail div { padding: 6px 8px; border-radius: 6px; color: var(--ink-2); }
+.rnow-rail div.on { background: var(--orange-soft); color: var(--orange-ink); font-weight: 700; }
+.rnow-form { background: #fff; border: 1px solid var(--line); border-radius: var(--radius-m); padding: 18px; }
+.rnow-form h3 { font-size: 20px; }
+.rnow-form p { color: var(--ink-2); font-size: 13px; margin-top: 6px; }
+.rnow-req { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin-top: 8px; font-size: 12px; color: var(--ink-2); }
+.rnow-req b { color: var(--ink); font-size: 13px; }
+.callout {
+  position: absolute; right: -8px; top: -12px; background: var(--red); color: #fff; font-size: 12px; font-weight: 700; padding: 4px 10px;
+  border-radius: 999px; box-shadow: 0 4px 10px -4px rgb(180 35 24 / 0.6);
+}
+.rel { position: relative; }
+.issues { margin-top: 24px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; font-size: 15px; }
+.issues div { display: flex; gap: 10px; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+.issues div::before { content: "\2192"; color: var(--orange); font-weight: 800; }
+
+/* ---------- Mobile (container) ---------- */
+@container page (max-width: 700px) {
+  .pg { font-size: 17px; }
+  .pg h1 { font-size: 38px; }
+  .pg h2 { font-size: 30px; }
+  .pg h3 { font-size: 21px; }
+  .wrap { padding: 0 16px; }
+  .sec { padding: 64px 0; }
+  .sec-head { margin-bottom: 30px; }
+  .rnav { display: none; }
+  .menu-btn { display: grid; place-items: center; }
+  .d-br { display: none; }
+  .rhead .wrap { height: 64px; }
+  .hero { padding: 56px 0 48px; }
+  .hero-line { font-size: 19px; }
+  .hero-ctas .btn { width: 100%; }
+  .stats { grid-template-columns: 1fr; margin-top: 44px; }
+  .stat, .stat + .stat { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--line); display: flex; align-items: baseline; gap: 14px; }
+  .stat b { font-size: 34px; min-width: 112px; }
+  .stat span { margin-top: 0; }
+  .web-grid { grid-template-columns: 1fr; gap: 28px; }
+  .host { width: 100%; max-width: 260px; margin-top: 24px; }
+  .form-card { padding: 22px 18px; }
+  .fields { grid-template-columns: 1fr; }
+  .dates { grid-template-columns: 1fr; }
+  .date { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; text-align: left; }
+  .why-grid { grid-template-columns: 1fr; }
+  .why { padding: 26px 22px; }
+  .why-big { font-size: 42px; }
+  .math { font-size: 16px; }
+  .math b { font-size: 19px; }
+  .tools { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tool { padding: 16px; font-size: 16px; gap: 10px; }
+  .tool-ic { width: 44px; height: 44px; }
+  .steps { grid-template-columns: 1fr; gap: 26px; }
+  .join-ctas .btn { width: 100%; }
+  .vrow { grid-auto-columns: 62%; }
+  .faq-list summary { font-size: 18px; padding: 20px 0; }
+  .foot .wrap { grid-template-columns: 1fr; }
+  .now-sum { grid-template-columns: 1fr; }
+  .sk-row { grid-template-columns: minmax(0, 1fr) auto; gap: 6px 12px; }
+  .sk-i { display: none; }
+  .sk-row > .sk-meta { grid-column: 1 / -1; }
+  .sk-row > .fate { grid-row: 1; grid-column: 2; }
+  .reg-top { padding-top: 40px; }
+  .reg-top h1 { font-size: 34px; }
+  .tracker { margin: 28px 16px 0; padding: 22px 18px; }
+  .track { grid-template-columns: 1fr; gap: 14px; text-align: left; }
+  .track li { display: grid; grid-template-columns: 40px 1fr; gap: 0 14px; text-align: left; padding: 0; align-items: center; }
+  .track li::before { top: 40px; bottom: -14px; left: 19px; right: auto; width: 3px; height: auto; }
+  .track li:nth-last-child(2)::before { display: none; }
+  .track .dot { margin: 0; }
+  .track b { margin-top: 0; }
+  .track em { grid-column: 2; margin-top: 0; }
+  .track li.handoff { display: block; padding-left: 54px; }
+  .wizard { margin: 20px 16px 0; }
+  .wz-progress { padding: 18px 18px 0; }
+  .wz-body { padding: 24px 18px 4px; }
+  .wz-panel h2 { font-size: 26px; }
+  .wz-grid { grid-template-columns: 1fr; }
+  .states, .langs { grid-template-columns: 1fr 1fr; padding: 10px; gap: 2px 8px; }
+  .states .cbox, .langs .cbox { gap: 8px; font-size: 16px; overflow-wrap: anywhere; }
+  .paid { grid-template-columns: 1fr; }
+  .group-title { position: relative; }
+  .info-wrap { position: static; }
+  .popover { left: 0; right: 0; width: auto; }
+  .wz-contact { margin: 22px 18px 0; }
+  .wz-actions { padding: 18px 18px 22px; }
+  .wz-actions .btn { min-width: 0; flex: 1; padding: 0 12px; }
+  .review div { grid-template-columns: 1fr auto; }
+  .review dd { grid-column: 1 / -1; grid-row: 2; }
+  .rnow-split, .rnow-body, .issues { grid-template-columns: 1fr; }
+  .callout { right: 8px; }
+}
+@media (max-width: 520px) {
+  .tool-brand { display: none; }
+  .toolbar-row { gap: 8px; padding: 8px 12px; justify-content: center; }
+  .seg button { padding: 7px 11px; font-size: 13px; }
+  .stage { padding: 16px 0 48px; }
+  .stage[data-device="mobile"] .frame { border-width: 0; border-radius: 0; }
+  .frame { border-radius: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+<header class="toolbar">
+  <div class="toolbar-row">
+    <div class="tool-brand">Loan Factory <span>·</span> recruiting pages mockup</div>
+    <nav class="seg" aria-label="Page">
+      <button type="button" data-tab="lo" aria-pressed="true">1 Loan Officer page</button>
+      <button type="button" data-tab="reg" aria-pressed="false">2 Registration</button>
+    </nav>
+    <div class="seg seg-accent" role="group" aria-label="Version">
+      <button type="button" data-ver="now" aria-pressed="false">Now</button>
+      <button type="button" data-ver="new" aria-pressed="true">Proposed</button>
+    </div>
+    <div class="seg" role="group" aria-label="Screen size">
+      <button type="button" data-dev="desktop" aria-pressed="true">Desktop</button>
+      <button type="button" data-dev="mobile" aria-pressed="false">Mobile 375</button>
+    </div>
+  </div>
+</header>
+<div class="tool-note"><div class="tool-note-inner" id="note" aria-live="polite"></div></div>
+
+<main class="stage" id="stage" data-device="desktop">
+  <div class="frame">
+
+    <!-- ================= 1 · NOW ================= -->
+    <section class="view pg" id="view-lo-now" aria-label="Loan Officer page today">
+      <div class="now">
+        <div class="wrap">
+          <div class="now-sum">
+            <div><b>14</b><span>sections on loanfactory.com/loan-officer today, plus the footer</span></div>
+            <div><b>~2,100</b><span>words (1,645 in sections + 453 in the footer)</span></div>
+            <div class="good"><b id="new-words">~</b><span>words in the proposed page (counted live from the mockup)</span></div>
+          </div>
+          <div class="sketch">
+            <div class="sk-head"><b style="color:var(--ink)">Header today:</b><span class="menu"><span>Rate Quote</span><span>Loan Products</span><span>Resources</span><span>Download App</span><span>Sign In</span><span>Start My Application</span></span><span class="fate move">Replaced by a recruiting header</span></div>
+            <div id="sk-rows"></div>
+          </div>
+          <div class="now-legend">
+            <span class="fate keep">Kept</span> as is or almost
+            <span class="fate cut">Shortened</span> to a title and one line
+            <span class="fate move">Moved</span> elsewhere
+            <span class="fate gone">Removed</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 1 · PROPOSED ================= -->
+    <div class="view is-active pg" id="view-lo-new" aria-label="Loan Officer page proposed">
+      <header class="rhead">
+        <div class="wrap">
+          <a class="logo" href="#" aria-label="Loan Factory home"><span class="logo-mark">LF</span>Loan Factory</a>
+          <nav class="rnav" aria-label="Recruiting">
+            <a href="#why">Comp</a>
+            <a href="#platform">Platform</a>
+            <a href="#join">Join</a>
+            <a href="#" class="signin">Sign In</a>
+          </nav>
+          <button class="menu-btn" type="button" aria-label="Open menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <section class="hero" aria-labelledby="hero-h">
+        <div class="wrap">
+          <h1 id="hero-h">Close faster with AI.<br class="d-br"> <span class="accent">Join Loan Factory.</span></h1>
+          <p class="hero-line">We build the platform. Our Loan Officers use it for free.</p>
+          <div class="hero-ctas">
+            <a class="btn btn-primary" href="#join">Join Loan Factory</a>
+            <a class="btn btn-ghost" href="#webinar">Save a webinar seat</a>
+          </div>
+          <p class="hero-sub"><a class="link" href="#">Not licensed yet? Start here</a></p>
+          <div class="stats">
+            <div class="stat"><b>2,643+</b><span>Loan Officers</span></div>
+            <div class="stat"><b>100%</b><span>commission, minus a flat fee</span></div>
+            <div class="stat"><b>7 days</b><span>a week of live support</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec webinar" id="webinar" aria-labelledby="web-h">
+        <div class="wrap web-grid">
+          <div class="web-left">
+            <p class="kicker">Free live webinar with Thuan Nguyen</p>
+            <h2 id="web-h">Meet our CEO, Thuan&nbsp;Nguyen, <span class="accent">live.</span></h2>
+            <p class="lead">Free and online. About 1–1.5 hours, with live Q&amp;A.</p>
+            <figure class="host" style="margin-bottom:0">
+              <img src="__THUAN__" alt="Thuan Nguyen, CEO of Loan Factory" width="300" height="375">
+              <figcaption class="host-tag"><b>Thuan Nguyen</b><span>#1 Loan Officer in the country</span></figcaption>
+            </figure>
+          </div>
+          <form class="form-card" aria-labelledby="seat-h" onsubmit="return false">
+            <h3 id="seat-h">Save your seat</h3>
+            <div class="form-step-label"><span class="num-dot">1</span>Pick a date</div>
+            <div class="dates" id="dates">
+              <button type="button" class="date" aria-pressed="true"><b>Fri, Oct 16</b><span>1:00 PM PT</span></button>
+              <button type="button" class="date" aria-pressed="false"><b>Wed, Oct 21</b><span>11:00 AM PT</span></button>
+              <button type="button" class="date" aria-pressed="false"><b>Fri, Oct 30</b><span>1:00 PM PT</span></button>
+            </div>
+            <div class="form-step-label"><span class="num-dot">2</span>Your details</div>
+            <div class="fields">
+              <label class="fld"><span>First name <i>*</i></span><input class="input" autocomplete="given-name"></label>
+              <label class="fld"><span>Last name <i>*</i></span><input class="input" autocomplete="family-name"></label>
+              <label class="fld full"><span>Email <i>*</i></span><input class="input" type="email" autocomplete="email"></label>
+              <label class="fld"><span>Phone <i>*</i></span><input class="input" type="tel" autocomplete="tel"></label>
+              <label class="fld"><span>NMLS (optional)</span><input class="input" inputmode="numeric"></label>
+              <label class="fld full"><span>How did you hear about us? <i>*</i></span><select class="select referred-src"></select></label>
+            </div>
+            <label class="consent"><input type="checkbox"><span>I agree to receive calls, text messages, and emails from Loan Factory about this webinar and career opportunities. <a class="link" href="#">Read the full terms</a></span></label>
+            <button class="btn btn-primary" type="submit">Save my seat</button>
+            <p class="form-alt"><a class="link" href="#join">Skip the webinar, register now</a></p>
+          </form>
+        </div>
+      </section>
+
+      <section class="sec" id="why" aria-labelledby="why-h">
+        <div class="wrap">
+          <div class="sec-head">
+            <p class="kicker">Why Loan Factory</p>
+            <h2 id="why-h">Keep more. Pay for less.</h2>
+          </div>
+          <div class="why-grid">
+            <article class="why feature">
+              <div class="why-big">100%</div>
+              <h3>Commission, minus a flat fee</h3>
+              <div class="math"><span>$400K loan × 2%</span><span class="eq">=</span><span>$8,000</span><span class="eq">−</span><span>$595 admin fee</span><span class="eq">=</span><b>$7,405 to you</b></div>
+              <small>1099 example. In-house processing is $500 per closed loan if you use it <span class="confirm">optional? to confirm</span></small>
+            </article>
+            <article class="why">
+              <div class="why-big">$963</div>
+              <h3>No software fees</h3>
+              <p>That's about $963 a month you no longer pay for outside software.</p>
+            </article>
+            <article class="why">
+              <div class="why-big">$0</div>
+              <h3>AI tools, free</h3>
+              <p>Our engineers built the platform. It's free for our Loan Officers.</p>
+            </article>
+            <article class="why">
+              <div class="why-big">7 days</div>
+              <h3>Live support</h3>
+              <p>Live help in the Marketplace, 7 days a week. <span class="confirm">to confirm for every Loan Officer</span></p>
+            </article>
+          </div>
+          <div class="chips-row" aria-label="More ways to earn">
+            <span>More ways to earn:</span>
+            <a class="chip" href="#">Ambassador Program</a>
+            <a class="chip" href="#">Recruiter Program</a>
+            <a class="chip" href="#">Executive &amp; Presidential Partner</a>
+            <a class="chip" href="#">Referral Bonus</a>
+            <a class="chip" href="#">Corporate Coach</a>
+            <a class="chip" href="#">Loan Coordinator</a>
+            <a class="chip" href="#">Teams</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec platform" id="platform" aria-labelledby="plat-h">
+        <div class="wrap">
+          <div class="sec-head">
+            <p class="kicker">AI mortgage platform</p>
+            <h2 id="plat-h">Everything you need to close loans, in one place.</h2>
+          </div>
+          <div class="tools" id="tools"></div>
+          <p class="see-all"><a class="link" href="#">See all tools →</a></p>
+        </div>
+      </section>
+
+      <section class="sec" id="join" aria-labelledby="join-h">
+        <div class="wrap">
+          <div class="sec-head">
+            <p class="kicker">How to join</p>
+            <h2 id="join-h">Join Loan Factory in three steps.</h2>
+          </div>
+          <ol class="steps" style="list-style:none;margin:0;padding:0">
+            <li class="step"><div class="step-n">STEP 1 · ABOUT 1–1.5 HOURS</div><h3>Attend a webinar</h3><p>"Why Loan Factory", live with our CEO.</p></li>
+            <li class="step"><div class="step-n">STEP 2 · ABOUT 20 MINUTES</div><h3>Talk with us</h3><p>A short call with our onboarding team.</p></li>
+            <li class="step"><div class="step-n">STEP 3 · 2 DAYS TO 1 WEEK</div><h3>We set you up</h3><p>NMLS sponsorship, HR paperwork, your accounts.</p></li>
+          </ol>
+          <p class="who">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
+            <span>Who can join: <span class="placeholder">[Recruiting to confirm wording]</span></span>
+          </p>
+          <div class="join-ctas">
+            <a class="btn btn-primary" href="#">Join Loan Factory</a>
+            <a class="btn btn-ghost" href="#webinar">Save a webinar seat</a>
+            <span class="fee">One-time $100 sign-up fee.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec videos" aria-labelledby="vid-h">
+        <div class="wrap">
+          <div class="sec-head">
+            <p class="kicker">Real conversations</p>
+            <h2 id="vid-h">Hear it from our Loan Officers.</h2>
+          </div>
+          <div class="vrow" id="vrow"></div>
+        </div>
+      </section>
+
+      <section class="sec" aria-labelledby="faq-h">
+        <div class="wrap">
+          <div class="sec-head">
+            <p class="kicker">FAQ</p>
+            <h2 id="faq-h">Questions Loan Officers ask us.</h2>
+          </div>
+          <div class="faq-list" id="faq"></div>
+        </div>
+      </section>
+
+      <footer class="foot">
+        <div class="wrap">
+          <div>
+            <p><b>Loan Factory, Inc.</b> · Company NMLS# 320841 · <a href="#" style="color:#dfe3ea">NMLS Consumer Access</a></p>
+            <p>CA DRE # 01771313</p>
+            <p>Recruiting: <a href="#" style="color:#ffb37f;font-weight:600">recruiting@loanfactory.com</a></p>
+            <p>© 2026 Loan Factory. All Rights Reserved.</p>
+          </div>
+          <nav class="foot-links" aria-label="Legal">
+            <a href="#">Company information</a>
+            <a href="#">State Licenses</a>
+            <a href="#">Mortgage Disclosures</a>
+            <a href="#">Texas Disclosures</a>
+            <a href="#">Privacy Policies</a>
+            <a href="#">Terms &amp; Conditions</a>
+            <a href="#">ADA Accessibility Statement</a>
+          </nav>
+        </div>
+      </footer>
+    </div>
+
+    <!-- ================= 2 · NOW ================= -->
+    <section class="view" id="view-reg-now" aria-label="Registration page today">
+      <div class="rnow">
+        <div class="wrap">
+          <div class="rnow-hero rel">
+            <span class="callout">98 words before the form</span>
+            <div class="eb">Register as a Loan Officer</div>
+            <h2>Join Loan Factory <span class="accent">in 5 easy steps.</span></h2>
+            <p>Fill out your information below. We will call you to talk about the details.</p>
+            <div class="pills"><span>About 10 minutes</span><span>$100 fee only after your call</span></div>
+            <div class="rnow-split">
+              <div><b>Who does what · 4 steps for you</b><ol><li>Fill out your information</li><li>Talk with us on a short call</li><li>Paying one-time fee</li><li>Review and Sign agreement</li></ol></div>
+              <div><b>4 steps for us</b><ol start="5"><li>Grant Access on NMLS</li><li>Loan Factory sponsors you</li><li>HR sets up your account</li><li>Start working at Loan Factory</li></ol></div>
+            </div>
+            <div class="rnow-track"><span>Onboarding process:</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
+          </div>
+          <div class="rnow-body">
+            <div class="rnow-rail rel">
+              <div class="on">Before You Begin</div>
+              <div>Part 1 · Personal information</div>
+              <div>Part 2 · License and states</div>
+              <div>Part 3 · Compensation and online presence</div>
+              <div>Part 4 · Referral and confirm</div>
+            </div>
+            <div class="rnow-form rel">
+              <span class="callout">325 words · text 14px</span>
+              <h3>Before You Begin</h3>
+              <p>Welcome to Loan Factory! Before we jump into the next step (filling out your basic information), we want to make sure we are a perfect match. Loan Factory is a fast-growing, tech-driven mortgage broker…</p>
+              <div class="rnow-req"><b>1 · Licensing &amp; NMLS Requirements</b><br>Active Status: You must hold a valid NMLS ID. The state(s) you wish us to sponsor must currently be Active or Approved-Inactive. Expired Licenses: … Pending Sponsorship: …</div>
+              <div class="rnow-req"><b>2 · Tech Literacy &amp; Computer Proficiency</b><br>We are a Tech-First Company: Loan Factory prides itself on proprietary, cutting-edge technology… The Expectation: …</div>
+              <div class="rnow-req"><b>3 · Minimum Production Expectations</b><br>Baseline Requirement: To maintain active sponsorship, Loan Officers are expected to close at least 1 loan every 6 months.</div>
+              <div class="rnow-req"><b>4 · Drive, Competitive Spirit, and Adaptability</b><br>Entrepreneurial Mindset: … Continuous Learning: …</div>
+            </div>
+          </div>
+          <div class="issues" aria-label="What changes">
+            <div>Two progress trackers (8-step strip and 4-part rail) compete for attention.</div>
+            <div>"Who does what" cards repeat the tracker.</div>
+            <div>Personal information is one long part; states are a dropdown.</div>
+            <div>Main and correspondent target compensation use two different field types.</div>
+            <div>Preferred languages is a search dropdown; Referral asks about Zelle.</div>
+            <div>Text is 10–16px in the form today.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 2 · PROPOSED ================= -->
+    <div class="view pg" id="view-reg-new" aria-label="Registration page proposed">
+      <header class="rhead">
+        <div class="wrap">
+          <a class="logo" href="#" aria-label="Loan Factory home"><span class="logo-mark">LF</span>Loan Factory</a>
+          <nav class="rnav" aria-label="Recruiting">
+            <a href="#">Comp</a><a href="#">Platform</a><a href="#">Join</a><a href="#" class="signin">Sign In</a>
+          </nav>
+          <button class="menu-btn" type="button" aria-label="Open menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </button>
+        </div>
+      </header>
+      <div class="reg">
+        <div class="reg-top wrap">
+          <div class="eyebrow">LOAN OFFICER REGISTRATION</div>
+          <h1>Join Loan Factory in <span class="accent">5 easy steps.</span></h1>
+        </div>
+
+        <section class="tracker" aria-labelledby="trk-h">
+          <h2 id="trk-h">Registration Tracker</h2>
+          <ol class="track">
+            <li class="here"><span class="dot">1</span><b>Complete registration form</b><em>You are here</em></li>
+            <li><span class="dot">2</span><b>Short call with our team</b></li>
+            <li><span class="dot">3</span><b>Pay the one-time fee</b></li>
+            <li><span class="dot">4</span><b>Review and sign</b></li>
+            <li><span class="dot">5</span><b>Grant NMLS company access</b></li>
+            <li class="handoff"><span class="handoff-pill">Then we take over →</span></li>
+          </ol>
+        </section>
+
+        <form class="wizard" id="wizard" aria-label="Registration form" onsubmit="return false" novalidate>
+          <div class="wz-progress">
+            <div class="wz-meta"><span>Step <b id="wz-cur">1</b> of 7</span><span id="wz-name">Before You Begin</span></div>
+            <div class="wz-bar" id="wz-bar"></div>
+          </div>
+          <div class="wz-body">
+
+            <section class="wz-panel is-active" data-name="Before You Begin" aria-labelledby="p0-h">
+              <h2 id="p0-h">Before You Begin</h2>
+              <p class="sub">Please make sure you meet these four requirements.</p>
+              <ul class="reqs">
+                <li><span class="check" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><div><b>An active NMLS license</b><span>States you want sponsored are Active or Approved-Inactive.</span></div></li>
+                <li><span class="check" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><div><b>Comfortable with technology</b><span>You can learn new software and work on your own.</span></div></li>
+                <li><span class="check" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><div><b>At least 1 loan every 6 months</b><span>Needed to keep your sponsorship active.</span></div></li>
+                <li><span class="check" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><div><b>Drive to grow</b><span>You find clients, build your brand and keep learning.</span></div></li>
+              </ul>
+              <label class="cbox strong ack"><input type="checkbox" id="ack"><span>I meet these requirements and I'm ready to succeed at Loan Factory.</span></label>
+            </section>
+
+            <section class="wz-panel" data-name="Name and contact" aria-labelledby="p1-h">
+              <h2 id="p1-h">Name and contact</h2>
+              <p class="sub">Use your legal name exactly as it appears on your NMLS record.</p>
+              <div class="wz-grid">
+                <label class="fld"><span>First name</span><input class="input" data-sum="First name" autocomplete="given-name"></label>
+                <label class="fld"><span>Last name</span><input class="input" data-sum="Last name" autocomplete="family-name"></label>
+                <div class="full"><button type="button" class="text-btn" id="alias-btn">+ I go by a different first name</button></div>
+                <label class="fld full" id="alias-fld" hidden><span>Alias first name</span><input class="input" data-sum="Alias first name"></label>
+                <label class="fld"><span>Email</span><input class="input" type="email" data-sum="Email" autocomplete="email"></label>
+                <label class="fld"><span>Phone</span><input class="input" type="tel" data-sum="Phone" autocomplete="tel"></label>
+              </div>
+            </section>
+
+            <section class="wz-panel" data-name="Home address" aria-labelledby="p2-h">
+              <h2 id="p2-h">Home address</h2>
+              <p class="sub">Where you live, so we can set up state income tax.</p>
+              <div class="wz-grid">
+                <label class="fld full"><span>Street address</span><input class="input" data-sum="Street address" autocomplete="address-line1"></label>
+                <label class="fld"><span>Apt / Unit</span><input class="input" autocomplete="address-line2"></label>
+                <label class="fld"><span>City</span><input class="input" data-sum="City" autocomplete="address-level2"></label>
+                <label class="fld"><span>State</span><select class="select state-select" data-sum="State"></select></label>
+                <label class="fld"><span>ZIP code</span><input class="input" inputmode="numeric" data-sum="ZIP code" autocomplete="postal-code"></label>
+                <label class="cbox full"><input type="checkbox" id="same-mail" checked><span><b>My mailing address is the same.</b> We mail your W-2 or W-9 here at the end of the year.</span></label>
+                <div class="full wz-grid" id="mail-fields" hidden style="margin-top:0">
+                  <label class="fld full"><span>Mailing street address</span><input class="input"></label>
+                  <label class="fld"><span>Mailing city</span><input class="input"></label>
+                  <label class="fld"><span>Mailing ZIP code</span><input class="input" inputmode="numeric"></label>
+                </div>
+              </div>
+            </section>
+
+            <section class="wz-panel" data-name="License and states" aria-labelledby="p3-h">
+              <h2 id="p3-h">License and states</h2>
+              <div class="wz-grid">
+                <label class="fld"><span>NMLS ID</span><input class="input" inputmode="numeric" data-sum="NMLS ID"></label>
+              </div>
+              <div class="group-title">States to sponsor</div>
+              <label class="cbox strong" style="margin-top:12px"><input type="checkbox" id="all-states"><span>Sponsor all states I'm licensed in</span></label>
+              <p class="all-note" id="all-note"></p>
+              <div class="states" id="states" role="group" aria-label="States to sponsor"></div>
+              <label class="cbox strong" style="margin-top:18px"><input type="checkbox" id="non-excl"><span>I will NOT be exclusively originating loans with Loan Factory.</span></label>
+              <div class="group-title">How you are paid
+                <span class="info-wrap">
+                  <button type="button" class="info-btn" aria-expanded="false" aria-controls="pay-pop" aria-label="About W-2 and 1099">i</button>
+                  <div class="popover" id="pay-pop" role="dialog" aria-label="W-2 and 1099" hidden>
+                    <p><b>W-2:</b> you are paid as an employee and get a W-2 at the end of the year. You get 90% of the commission after the admin and processing fees.</p>
+                    <p><b>1099:</b> you are paid as an independent contractor and get a 1099 at the end of the year. You keep 100% of the commission.</p>
+                  </div>
+                </span>
+              </div>
+              <div class="paid" role="radiogroup" aria-label="How you are paid">
+                <label class="radio-card"><input type="radio" name="paid" value="W-2"><b>W-2</b><span>Outside loan officer</span></label>
+                <label class="radio-card"><input type="radio" name="paid" value="1099"><b>1099</b><span>Independent loan officer</span></label>
+              </div>
+            </section>
+
+            <section class="wz-panel" data-name="Compensation" aria-labelledby="p4-h">
+              <h2 id="p4-h">Compensation</h2>
+              <p class="sub">These set the rates on your pricing engine. You can change each one only once every 3 months.</p>
+              <div class="wz-grid">
+                <label class="fld"><span>Main target compensation</span><select class="select comp-select" data-sum="Main target compensation"></select></label>
+                <label class="fld"><span>Correspondent target compensation</span><select class="select comp-select" data-sum="Correspondent target compensation"></select></label>
+              </div>
+              <div class="group-title">Preferred languages</div>
+              <div class="langs" id="langs" role="group" aria-label="Preferred languages"></div>
+              <details class="more-fields">
+                <summary>Website and social media (optional)</summary>
+                <p>Same fields as today: website or landing page URLs, and social media links.</p>
+              </details>
+            </section>
+
+            <section class="wz-panel" data-name="Referral" aria-labelledby="p5-h">
+              <h2 id="p5-h">Referral</h2>
+              <div class="wz-grid">
+                <label class="fld full"><span>How did you hear about Loan Factory?</span><select class="select referred-src" id="ref-src" data-sum="How you heard about us"></select></label>
+                <div class="full wz-grid" id="ref-fields" hidden style="margin-top:0">
+                  <label class="fld full"><span>Referrer's name</span><input class="input"></label>
+                  <label class="fld"><span>Referrer's email</span><input class="input" type="email"></label>
+                  <label class="fld"><span>Referrer's phone</span><input class="input" type="tel"></label>
+                </div>
+              </div>
+            </section>
+
+            <section class="wz-panel" data-name="Review and Submit" aria-labelledby="p6-h">
+              <h2 id="p6-h">Review and Submit</h2>
+              <p class="sub">Check your answers. Select Edit to change one.</p>
+              <dl class="review" id="review"></dl>
+              <label class="cbox strong ack"><input type="checkbox"><span>I confirm that all information provided is true, accurate, and complete.</span></label>
+            </section>
+          </div>
+          <p class="wz-contact">Questions? Email our Recruiting team at <a class="link" href="#">recruiting@loanfactory.com</a>.</p>
+          <div class="wz-actions">
+            <button type="button" class="btn btn-ghost" id="wz-back">Back</button>
+            <button type="button" class="btn btn-primary" id="wz-next">Next</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+(() => {
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  const el = (tag, props = {}, children = []) => {
+    const node = document.createElement(tag);
+    Object.entries(props).forEach(([k, v]) => {
+      if (k === 'class') node.className = v;
+      else if (k === 'text') node.textContent = v;
+      else node.setAttribute(k, v);
+    });
+    [].concat(children).forEach((c) => node.append(c));
+    return node;
+  };
+  const svgIcon = (paths) => {
+    const ns = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('fill', 'none');
+    svg.setAttribute('stroke', 'currentColor');
+    svg.setAttribute('stroke-width', '2');
+    svg.setAttribute('stroke-linecap', 'round');
+    svg.setAttribute('stroke-linejoin', 'round');
+    svg.setAttribute('aria-hidden', 'true');
+    paths.forEach((d) => {
+      const p = document.createElementNS(ns, 'path');
+      p.setAttribute('d', d);
+      svg.append(p);
+    });
+    return svg;
+  };
+
+  /* ---------- Data (from live page + en.json) ---------- */
+  const NOW_SECTIONS = [
+    ['Hero + 3 stats', 'Close faster with AI. Join Loan Factory.', 48, 'keep', 'Kept · new buttons'],
+    ['AI platform, 8 tools', 'Each tool: title, product name, purpose, 2–4 features', 227, 'cut', 'Icon + title only'],
+    ['No software fees table', 'Loan Sifter $79 · Arive $70 · … You save $963 / month', 74, 'cut', 'Into one card'],
+    ['Friday webinar + form', 'Meet our CEO, Thuan Nguyen, live.', 209, 'keep', 'Kept · moved up'],
+    ['Programs, 4 cards', 'Ambassador · Recruiter · Partner · Referral bonus', 114, 'move', 'Chips row'],
+    ['Support, 3 cards', 'Coach · Coordinator · Teams', 93, 'move', 'Chips + card'],
+    ['Compensation, 3 cards + fees', '1099 100% · W-2 90% · Admin fee $595 · Processing $500', 76, 'cut', 'Into card 1'],
+    ['CTA band', 'Wondering if it really works for you?', 29, 'gone', 'Repeat CTA'],
+    ['Trust numbers + 3 quotes', '48 states · 20+ years · $10B+ · 21,000+ reviews', 140, 'gone', 'Quotes → videos'],
+    ['Loan Officer videos', 'Small Talk, Big Ideas · 5 videos', 79, 'keep', 'One row'],
+    ['Summit recap', 'Our yearly Summit for top producers.', 22, 'gone', 'Removed'],
+    ['How to join, 3 steps', 'Attend a webinar · Talk with us · We set you up', 97, 'keep', 'Shorter'],
+    ['Becoming a Loan Officer', 'Realtors and CPA/Insurance agents, want more income?', 30, 'move', '"Not licensed yet?"'],
+    ['FAQ, 13 questions', 'Licensed in 50 states? · Slogan? · Headquarters? …', 407, 'cut', '6 Loan Officer FAQs'],
+    ['Footer', '20 branch addresses, phones and licensed states', 453, 'cut', 'Compact footer'],
+  ];
+  const TOOLS = [
+    ['Marketing', ['M3 11v2a1 1 0 001 1h2l5 4V6L6 10H4a1 1 0 00-1 1z', 'M15 9a3 3 0 010 6', 'M18 7a6 6 0 010 10']],
+    ['Leads and clients', ['M16 19v-1a4 4 0 00-4-4H7a4 4 0 00-4 4v1', 'M9.5 10a3 3 0 100-6 3 3 0 000 6z', 'M21 19v-1a4 4 0 00-3-3.9', 'M15.5 4.2a3 3 0 010 5.6']],
+    ['Loan processing and pricing', ['M7 3h7l5 5v13H7z', 'M14 3v5h5', 'M10 13h6M10 17h6']],
+    ['Lender help', ['M11 18a7 7 0 100-14 7 7 0 000 14z', 'M21 21l-5-5']],
+    ['Funding and closing', ['M3 7h18v10H3z', 'M12 14.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z', 'M6 10v.01M18 14v.01']],
+    ['Work from your phone', ['M8 3h8a1 1 0 011 1v16a1 1 0 01-1 1H8a1 1 0 01-1-1V4a1 1 0 011-1z', 'M11 18h2']],
+    ['Past clients', ['M3 12a9 9 0 109-9 9 9 0 00-6.4 2.6L3 8', 'M3 3v5h5', 'M12 7v5l3 2']],
+    ['Real estate deals', ['M3 11l9-7 9 7', 'M5 10v10h14V10', 'M10 20v-6h4v6']],
+  ];
+  const VIDEOS = [
+    ['AC', 'Why Antonio chose Loan Factory', 'Antonio Cordero · Top Loan Officer 2025'],
+    ['SD', 'Sobe on growing as a Loan Officer', 'Sobe Dhital · Top Loan Officer 2025'],
+    ['V', 'Vivian on what it takes to be a top producer', 'Vivian · Top Loan Officer 2025'],
+    ['SL', 'Sheilla’s story at Loan Factory', 'Sheilla Lavadia · Top Loan Officer 2025'],
+    ['AK', 'Andre King on building the business', 'Andre King · VP of Business Development'],
+  ];
+  const FAQ = [
+    'What happens to my loans in process when I move?',
+    'How long do NMLS sponsorship and license transfer take?',
+    'Who owns my leads and my database if I leave? Is there a non-compete?',
+    'Can I bring my processor or my team?',
+    'Which states can I originate in? Can I broker to lenders I already use?',
+    'I am newly licensed. Is a coach required?',
+  ];
+  const STATES = ['Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','Florida','Georgia','Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey','New Mexico','New York','North Carolina','North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia','Wisconsin','Wyoming'];
+  const LANGUAGES = ['Albanian','Arabic','Armenian','Bengali','Bosnian','Cambodian Khmer','Cantonese Chinese','Chinese Teochew','Chuukese','Croatian','Egyptian Arabic','English','French','German','Gujarati','Haitian Creole','Hebrew','Hindi','Hmong','Hungarian','Indonesian','Iranian Persian','Italian','Japanese','Javanese','Korean','Lao','Mandarin Chinese','Marathi','Nepali','Nigerian Pidgin','Polish','Portuguese','Punjabi','Romanian','Russian','Serbian','Sign Language','Sindhi','Spanish','Swahili','Tagalog','Tamil','Telugu','Thai','Turkish','Urdu','Vietnamese','Yeshivish','Yiddish'];
+  const REFERRED = ['Loan officer','Recruiter','Webinar','Social media','Job posting','Outside (Loan officer)','Mortgage trade show','Postcard','Email','Newsletter','Partner referral','Google','Facebook','Instagram','Linkedin','MMI','Returning Loan Officer','Other Referral'];
+  const REFERRER_SOURCES = new Set(['Loan officer', 'Outside (Loan officer)']);
+
+  /* ---------- Build: Now sketch ---------- */
+  const maxWords = Math.max(...NOW_SECTIONS.map((s) => s[2]));
+  const skRows = $('#sk-rows');
+  NOW_SECTIONS.forEach(([name, sample, words, fate, fateText], i) => {
+    const bar = el('div', { class: 'sk-bar' }, el('i', { style: `width:${Math.round((words / maxWords) * 100)}%` }));
+    skRows.append(el('div', { class: `sk-row ${fate === 'gone' ? 'gone' : ''}` }, [
+      el('span', { class: 'sk-i', text: String(i + 1).padStart(2, '0') }),
+      el('div', {}, [el('div', { class: 'sk-name', text: name }), el('div', { class: 'sk-sample', text: sample })]),
+      el('div', { class: 'sk-meta' }, [bar, el('div', { class: 'sk-w', text: `${words} words` })]),
+      el('span', { class: `fate ${fate}`, text: fateText }),
+    ]));
+  });
+
+  /* ---------- Build: Proposed LO page ---------- */
+  const tools = $('#tools');
+  TOOLS.forEach(([title, paths]) => {
+    tools.append(el('a', { class: 'tool', href: '#' }, [el('span', { class: 'tool-ic' }, svgIcon(paths)), document.createTextNode(title)]));
+  });
+  const vrow = $('#vrow');
+  VIDEOS.forEach(([ini, title, by]) => {
+    const play = el('span', { class: 'play' }, (() => { const s = svgIcon(['M9 7l8 5-8 5z']); s.setAttribute('fill', '#fff'); s.setAttribute('width', '22'); s.setAttribute('height', '22'); return s; })());
+    vrow.append(el('a', { class: 'vcard', href: '#' }, [
+      el('div', { class: 'vthumb' }, [el('span', { class: 'initials', text: ini }), play]),
+      el('b', { text: title }),
+      el('span', { text: by }),
+    ]));
+  });
+  const faq = $('#faq');
+  FAQ.forEach((q) => {
+    faq.append(el('details', {}, [el('summary', { text: q }), el('p', { class: 'ans' }, el('span', { class: 'placeholder', text: '[answer from Recruiting]' }))]));
+  });
+  $$('.referred-src').forEach((sel) => {
+    sel.append(el('option', { value: '', text: 'Select' }));
+    REFERRED.forEach((r) => sel.append(el('option', { value: r, text: r })));
+  });
+  $$('#dates .date').forEach((btn) => btn.addEventListener('click', () => {
+    $$('#dates .date').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+  }));
+
+  /* ---------- Build: Registration wizard ---------- */
+  const statesBox = $('#states');
+  STATES.forEach((s) => statesBox.append(el('label', { class: 'cbox' }, [el('input', { type: 'checkbox', value: s }), el('span', { text: s })])));
+  const stateSel = $('.state-select');
+  stateSel.append(el('option', { value: '', text: 'Select' }));
+  STATES.forEach((s) => stateSel.append(el('option', { value: s, text: s })));
+  const langs = $('#langs');
+  LANGUAGES.forEach((l) => langs.append(el('label', { class: 'cbox' }, [el('input', { type: 'checkbox', value: l }), el('span', { text: l })])));
+  $$('.comp-select').forEach((sel) => {
+    sel.append(el('option', { value: '', text: 'Select' }));
+    for (let v = 0.5; v <= 2.5001; v += 0.125) {
+      const label = `${Number(v.toFixed(3))}%`;
+      sel.append(el('option', { value: label, text: label }));
+    }
+  });
+
+  $('#alias-btn').addEventListener('click', (e) => { $('#alias-fld').hidden = false; e.currentTarget.hidden = true; });
+  $('#same-mail').addEventListener('change', (e) => { $('#mail-fields').hidden = e.currentTarget.checked; });
+  $('#all-states').addEventListener('change', (e) => {
+    const isAll = e.currentTarget.checked;
+    statesBox.classList.toggle('is-off', isAll);
+    $('#all-note').textContent = isAll ? "We'll sponsor every state on your NMLS record." : '';
+  });
+  $('#ref-src').addEventListener('change', (e) => { $('#ref-fields').hidden = !REFERRER_SOURCES.has(e.currentTarget.value); });
+
+  const infoBtn = $('.info-btn');
+  const pop = $('#pay-pop');
+  const setPop = (isOpen) => { pop.hidden = !isOpen; infoBtn.setAttribute('aria-expanded', String(isOpen)); };
+  infoBtn.addEventListener('click', (e) => { e.stopPropagation(); setPop(pop.hidden); });
+  document.addEventListener('click', (e) => { if (!pop.hidden && !pop.contains(e.target)) setPop(false); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setPop(false); });
+
+  const panels = $$('.wz-panel');
+  const bar = $('#wz-bar');
+  let step = 0;
+  panels.forEach((p, i) => {
+    const b = el('button', { type: 'button', 'aria-label': `Go to step ${i + 1}: ${p.dataset.name}` });
+    b.addEventListener('click', () => go(i));
+    bar.append(b);
+  });
+
+  const buildReview = () => {
+    const review = $('#review');
+    review.replaceChildren();
+    const rows = [];
+    $$('[data-sum]').forEach((input) => {
+      if (input.closest('[hidden]')) return;
+      rows.push([input.dataset.sum, input.value || '—', input.closest('.wz-panel')]);
+    });
+    const checked = (box) => $$('input:checked', box).map((c) => c.value);
+    const statesVal = $('#all-states').checked ? "All states I'm licensed in" : (checked(statesBox).join(', ') || '—');
+    rows.splice(7, 0, ['States to sponsor', statesVal, statesBox.closest('.wz-panel')]);
+    const paid = $('input[name="paid"]:checked');
+    rows.splice(8, 0, ['How you are paid', paid ? paid.value : '—', statesBox.closest('.wz-panel')]);
+    rows.push(['Preferred languages', checked(langs).join(', ') || '—', langs.closest('.wz-panel')]);
+    rows.forEach(([label, value, panel]) => {
+      const edit = el('button', { type: 'button', class: 'text-btn', text: 'Edit', 'aria-label': `Change ${label}` });
+      edit.addEventListener('click', () => go(panels.indexOf(panel)));
+      review.append(el('div', {}, [el('dt', { text: label }), el('dd', { text: value }), edit]));
+    });
+  };
+
+  const go = (i) => {
+    step = Math.max(0, Math.min(panels.length - 1, i));
+    panels.forEach((p, idx) => p.classList.toggle('is-active', idx === step));
+    $$('button', bar).forEach((b, idx) => {
+      b.className = idx < step ? 'done' : idx === step ? 'cur' : '';
+    });
+    $('#wz-cur').textContent = String(step + 1);
+    $('#wz-name').textContent = panels[step].dataset.name;
+    $('#wz-back').disabled = step === 0;
+    $('#wz-next').textContent = step === panels.length - 1 ? 'Submit' : step === panels.length - 2 ? 'Review' : 'Next';
+    if (step === panels.length - 1) buildReview();
+  };
+  $('#wz-back').addEventListener('click', () => go(step - 1));
+  $('#wz-next').addEventListener('click', () => {
+    if (step === panels.length - 1) {
+      $('#wz-next').textContent = 'Submitted (mockup)';
+      return;
+    }
+    go(step + 1);
+    $('#wizard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  go(0);
+
+  /* ---------- Toolbar ---------- */
+  const NOTES = {
+    'lo-now': '<b>Now:</b> loanfactory.com/loan-officer today, as a list of its 14 sections with word counts (counted from the live page on 13 Oct). The tag on each row shows what happens to it in the proposed page.',
+    'lo-new': '<b>Proposed:</b> a shorter /loan-officer for one goal: get Loan Officers to the webinar or to join. Body text 18px (17px on mobile), one title and one short line per card. Yellow tags = <b>to confirm</b> by Recruiting.'
+      + '<div class="removed"><span><b>Moved:</b> Programs detail → chips row</span><span><b>Moved:</b> Becoming a Loan Officer → separate page ("Not licensed yet?")</span><span><b>Removed:</b> Summit</span><span><b>Removed:</b> repeated CTA band</span><span><b>Removed:</b> trust quotes (videos stay)</span><span><b>Replaced:</b> 13 company FAQs → 6 Loan Officer FAQs</span><span><b>Replaced:</b> consumer menu → recruiting header</span></div>',
+    'reg-now': '<b>Now:</b> loanfactory.com/register-loan-officer-v1 today, compacted. Red tags show where the text piles up.',
+    'reg-new': '<b>Proposed:</b> /register-loan-officer-v1 with Matt\'s round-1 feedback, filtered by "less text". One 5-step tracker, then the form as an inline wizard (7 short steps). Click <b>Next</b>, or the progress bar, to walk through each step. Inputs 17px.',
+  };
+  const state = { tab: 'lo', ver: 'new', dev: 'desktop' };
+  const render = () => {
+    const key = `${state.tab}-${state.ver}`;
+    $$('.view').forEach((v) => v.classList.toggle('is-active', v.id === `view-${key}`));
+    $$('[data-tab]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.tab === state.tab)));
+    $$('[data-ver]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.ver === state.ver)));
+    $$('[data-dev]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.dev === state.dev)));
+    $('#stage').dataset.device = state.dev;
+    $('#note').innerHTML = NOTES[key]; // static strings defined above
+  };
+  $$('[data-tab]').forEach((b) => b.addEventListener('click', () => { state.tab = b.dataset.tab; render(); }));
+  $$('[data-ver]').forEach((b) => b.addEventListener('click', () => { state.ver = b.dataset.ver; render(); }));
+  $$('[data-dev]').forEach((b) => b.addEventListener('click', () => { state.dev = b.dataset.dev; render(); }));
+
+  render();
+  // Word count of the proposed page as a reader sees it: no dropdown options, no closed FAQ answers.
+  const clone = $('#view-lo-new').cloneNode(true);
+  $$('select, .ans, svg, img', clone).forEach((n) => n.remove());
+  const words = (clone.textContent.match(/[A-Za-z0-9$%#][^\s]*/g) || []).length;
+  $('#new-words').textContent = `~${(Math.round(words / 10) * 10).toLocaleString('en-US')}`;
+})();
+</script>

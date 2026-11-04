@@ -1,0 +1,19 @@
+feat(recruiting): credit approved LO Recruiter Program members as recruiter
+
+A sign-up through the own site of a Loan Officer who is an approved LO
+Recruiter Program member but has no HR recruiter flag was stored as
+referred_source=loan_officer + referred_lo. Accounting pays the program
+from MOSO, so store it exactly as an HR-flagged recruiter's lead:
+referred_source=recruiter, recruiter=<owner key name>, no referred_lo.
+
+Both proofs are required: the server-resolved slug stamp (SLUG_SERVER_RESOLVED
+naming the same Admin) and moso-aid's public GET /api/join-page?key=<websafe
+Admin key> returning data.recruiter_slug equal to the stamp slug. Anything
+short of a clear "member" (property unset, timeout, non-2xx, bad body, other
+slug) keeps today's loan_officer credit and logs. Evaluated only in
+LORecruiting.beforeCreated, so existing leads are never re-credited.
+
+New config: system property moso_aid_base_url (moso-aid /api root); unset
+means the feature is off.
+
+Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>

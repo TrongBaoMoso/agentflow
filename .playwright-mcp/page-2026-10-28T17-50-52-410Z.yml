@@ -1,0 +1,371 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e5]:
+        - link "LoanFactory" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - img "LoanFactory Logo" [ref=e8]
+          - generic [ref=e9]: WE DARE YOU TO COMPARE
+        - generic [ref=e10]:
+          - list [ref=e11] [cursor=pointer]:
+            - listitem [ref=e12]:
+              - link "Rate Quote" [ref=e13]:
+                - /url: https://www.loanfactory.com/quote
+          - list [ref=e14] [cursor=pointer]:
+            - menuitem [ref=e15]:
+              - listitem [ref=e17]: Loan Products
+          - list [ref=e21] [cursor=pointer]:
+            - menuitem [ref=e22]:
+              - listitem [ref=e24]: Resources
+          - list [ref=e28] [cursor=pointer]:
+            - listitem [ref=e29]:
+              - paragraph [ref=e33]: Download App
+        - generic [ref=e34]:
+          - link "Sign In" [ref=e35] [cursor=pointer]:
+            - /url: https://www.loanfactory.com/login
+          - link "Start My Application" [ref=e36] [cursor=pointer]:
+            - /url: https://www.loanfactory.com/apply
+          - button [ref=e39] [cursor=pointer]
+    - main [ref=e44]:
+      - generic [ref=e46]:
+        - heading "Loan Officer information" [level=2] [ref=e47]
+        - generic [ref=e51]:
+          - paragraph [ref=e52]: "Please fill out the information below so that Loan Factory can start onboarding you. Our team will call you to discuss all the details, send you an offer and the agreement to review. Here is the onboarding process Here is the onboarding process:"
+          - list [ref=e53]:
+            - listitem [ref=e54]: Filling out your information
+            - listitem [ref=e55]: Pay the $100 one-time startup fee
+            - listitem [ref=e56]: Give Loan Factory access to your NMLS record.
+            - listitem [ref=e57]:
+              - link "licensing@loanfactory.com" [ref=e58] [cursor=pointer]:
+                - /url: mailto:licensing@loanfactory.com
+              - text: will sponsor you
+            - listitem [ref=e59]: Review the LO Agreement
+            - listitem [ref=e60]: HR will onboard you by creating an account (and giving you an orientation)
+            - listitem [ref=e61]:
+              - text: You have full access to
+              - link "loanfactory.com" [ref=e62] [cursor=pointer]:
+                - /url: "${Server.baseUrl()}"
+              - text: and start growing your business
+      - generic [ref=e63]:
+        - generic [ref=e66]:
+          - heading "1 Before You Begin" [level=3] [ref=e67]:
+            - generic [ref=e68]: "1"
+            - generic [ref=e71]: Before You Begin
+          - heading "2 Fill Out Basic Information" [level=3] [ref=e73]:
+            - generic [ref=e74]: "2"
+            - generic [ref=e77]: Fill Out Basic Information
+          - heading "3 Paying one-time fee After your call" [level=3] [ref=e79]:
+            - generic [ref=e80]: "3"
+            - generic [ref=e85]:
+              - generic [ref=e86]: Paying one-time fee
+              - generic [ref=e87]: After your call
+          - heading "4 Review and Sign agreement" [level=3] [ref=e89]:
+            - generic [ref=e90]: "4"
+            - generic [ref=e93]: Review and Sign agreement
+          - heading "5 Grant Access on NMLS" [level=3] [ref=e95]:
+            - generic [ref=e96]: "5"
+            - generic [ref=e98]: Grant Access on NMLS
+        - separator [ref=e100]
+        - generic [ref=e101]:
+          - heading "Register Loan Officer" [level=1] [ref=e104]
+          - progressbar [ref=e107]
+          - generic [ref=e109]:
+            - heading "Before You Begin" [level=2] [ref=e110]
+            - paragraph [ref=e111]: Welcome to Loan Factory! Before we jump into the next step (filling out your basic information), we want to make sure we are a perfect match.
+            - paragraph [ref=e112]: Loan Factory is a fast-growing, tech-driven mortgage broker. To maintain our high standards and ensure your personal success, we require all our Loan Officers to meet the following foundational criteria. Please review these expectations carefully.
+            - generic [ref=e113]:
+              - generic [ref=e114]:
+                - generic [ref=e115]: "1"
+                - generic [ref=e116]:
+                  - heading "Licensing & NMLS Requirements" [level=3] [ref=e117]
+                  - list [ref=e118]:
+                    - listitem [ref=e119]: "Active Status: You must hold a valid NMLS ID. The state(s) you wish us to sponsor must currently be Active or Approved-Inactive."
+                    - listitem [ref=e121]: "Expired Licenses: If your license for a specific state has expired, you must renew it through the NMLS before we can submit a sponsorship request."
+                    - listitem [ref=e123]: "Pending Sponsorship: If you have recently applied for a new state license and are simply waiting for a sponsoring employer to activate it, we can sponsor you."
+              - generic [ref=e125]:
+                - generic [ref=e126]: "2"
+                - generic [ref=e127]:
+                  - heading "Tech Literacy & Computer Proficiency" [level=3] [ref=e128]
+                  - list [ref=e129]:
+                    - listitem [ref=e130]: "We are a Tech-First Company: Loan Factory prides itself on proprietary, cutting-edge technology. While we are always happy to guide you through our unique features and tools, we expect a baseline level of tech literacy."
+                    - listitem [ref=e132]: "The Expectation: You should be comfortable navigating modern software, basic computer tasks, and adapting to digital workflows independently to efficiently manage your pipeline."
+              - generic [ref=e134]:
+                - generic [ref=e135]: "3"
+                - generic [ref=e136]:
+                  - heading "Minimum Production Expectations" [level=3] [ref=e137]
+                  - list [ref=e138]:
+                    - listitem [ref=e139]: "Baseline Requirement: To maintain active sponsorship, Loan Officers are expected to close at least 1 loan every 6 months."
+              - generic [ref=e141]:
+                - generic [ref=e142]: "4"
+                - generic [ref=e143]:
+                  - heading "Drive, Competitive Spirit, and Adaptability" [level=3] [ref=e144]
+                  - list [ref=e145]:
+                    - listitem [ref=e146]: "Entrepreneurial Mindset: Success here requires an active approach. You should be hungry to compete in the market, hunt for new clients, and build your own brand using our tools."
+                    - listitem [ref=e148]: "Continuous Learning: The mortgage industry and our technology evolve rapidly. Successful Loan Officers are proactive, open to feedback, and eager to master new guidelines and features."
+            - paragraph [ref=e150]: Confirmation
+            - generic [ref=e152]:
+              - checkbox "I acknowledge the requirements listed above. I confirm that I meet the licensing, technology, and production expectations, and I have what it takes to succeed at Loan Factory." [ref=e154]
+              - generic [ref=e155]: I acknowledge the requirements listed above. I confirm that I meet the licensing, technology, and production expectations, and I have what it takes to succeed at Loan Factory.
+            - generic [ref=e157]:
+              - button "Next" [disabled] [ref=e158]
+              - paragraph [ref=e165]: Check the box above to unlock the next step.
+    - contentinfo [ref=e166]:
+      - generic [ref=e167]:
+        - generic [ref=e169]:
+          - heading "contact us" [level=3] [ref=e170]
+          - list [ref=e171]:
+            - listitem [ref=e172]:
+              - paragraph [ref=e173]: Thuan Nguyen
+            - listitem [ref=e174]:
+              - link "660-333-3333" [ref=e177] [cursor=pointer]:
+                - /url: tel:6603333333
+            - listitem [ref=e178]:
+              - link "customer@loanfactory.com" [ref=e182] [cursor=pointer]:
+                - /url: mailto:customer@loanfactory.com
+            - listitem [ref=e183]:
+              - link "Send us feedback" [ref=e189] [cursor=pointer]:
+                - /url: /contact-us
+            - listitem [ref=e190]:
+              - link "Facebook" [ref=e193] [cursor=pointer]:
+                - /url: https://www.facebook.com/LoanFactoryHQ
+            - listitem [ref=e194]:
+              - link "X (Twitter)" [ref=e198] [cursor=pointer]:
+                - /url: https://x.com/LoanFactoryUS
+            - listitem [ref=e199]:
+              - link "LinkedIn" [ref=e203] [cursor=pointer]:
+                - /url: https://www.linkedin.com/company/loan-factory-inc
+        - generic [ref=e205]:
+          - heading "Locations" [level=3] [ref=e206]
+          - generic [ref=e207]:
+            - button "View more »" [ref=e208] [cursor=pointer]
+            - region [ref=e209]:
+              - list [ref=e211]:
+                - listitem [ref=e212]:
+                  - paragraph [ref=e213]:
+                    - strong [ref=e214]: "AZ-Yuma:"
+                    - link "(928) 502-2782" [ref=e215] [cursor=pointer]:
+                      - /url: tel:9285022782
+                    - text: 1840 South 4th Avenue, Suite 3, Yuma, AZ 85364
+                  - paragraph [ref=e216]: Licensed in AZ
+                - listitem [ref=e217]:
+                  - paragraph [ref=e218]:
+                    - strong [ref=e219]: "CA-Redondo Beach:"
+                    - text: 116 South Catalina Avenue, Ste 111, Redondo Beach, CA 90277
+                  - paragraph [ref=e220]: Licensed in CA
+                - listitem [ref=e221]:
+                  - paragraph [ref=e222]:
+                    - strong [ref=e223]: "CA-Sacramento:"
+                    - link "(408) 550-4958" [ref=e224] [cursor=pointer]:
+                      - /url: tel:4085504958
+                    - text: "6840 65th Street, # 115, Sacramento, CA 95828"
+                  - paragraph [ref=e225]: Licensed in AR, CA
+                - listitem [ref=e226]:
+                  - paragraph [ref=e227]:
+                    - strong [ref=e228]: "CA-San Jose:"
+                    - link "(660) 333-3333" [ref=e229] [cursor=pointer]:
+                      - /url: tel:6603333333
+                    - text: 2195 Tully Road, San Jose, CA 95122
+                  - paragraph [ref=e230]: Licensed in CA, CO, DC, GA, IL, KS, LA, MA, MD, MN, NC, NH, NJ, OH, PA, SC, TN, TX, VA, WA
+                - listitem [ref=e231]:
+                  - paragraph [ref=e232]:
+                    - strong [ref=e233]: "CA-Westminster:"
+                    - link "(408) 646-6662" [ref=e234] [cursor=pointer]:
+                      - /url: tel:4086466662
+                    - text: 9523 Bolsa Avenue, Westminster, CA 92683
+                  - paragraph [ref=e235]: Licensed in CA, NE, NJ, SC, WI, WY
+                - listitem [ref=e236]:
+                  - paragraph [ref=e237]:
+                    - strong [ref=e238]: "FL-Orlando:"
+                    - link "(408) 877-8000" [ref=e239] [cursor=pointer]:
+                      - /url: tel:4088778000
+                    - text: 301 North Fern Creek Avenue, D, Orlando, FL 32803
+                  - paragraph [ref=e240]: Licensed in FL, NJ, SC, WI
+                - listitem [ref=e241]:
+                  - paragraph [ref=e242]:
+                    - strong [ref=e243]: "GA-Duluth:"
+                    - link "(678) 888-5000" [ref=e244] [cursor=pointer]:
+                      - /url: tel:6788885000
+                    - text: 3483 Satellite Boulevard, Suite 203 South, Duluth, GA 30096
+                  - paragraph [ref=e245]: Licensed in AL, GA
+                - listitem [ref=e246]:
+                  - paragraph [ref=e247]:
+                    - strong [ref=e248]: "GA-Norcross:"
+                    - link "(408) 933-3124" [ref=e249] [cursor=pointer]:
+                      - /url: tel:4089333124
+                    - text: 6055 Atlantic Boulevard, Suite A1, Norcross, GA 30071
+                  - paragraph [ref=e250]: Licensed in FL, GA, NC, TX
+                - listitem [ref=e251]:
+                  - paragraph [ref=e252]:
+                    - strong [ref=e253]: "HI-Honolulu:"
+                    - link "(808) 400-5000" [ref=e254] [cursor=pointer]:
+                      - /url: tel:8084005000
+                    - text: 1311 Kapiolani Boulevard, Suite 210, Honolulu, HI 96814
+                  - paragraph [ref=e255]: Licensed in HI
+                - listitem [ref=e256]:
+                  - paragraph [ref=e257]:
+                    - strong [ref=e258]: "MA-Quincy:"
+                    - link "(781) 367-3351" [ref=e259] [cursor=pointer]:
+                      - /url: tel:7813673351
+                    - text: 165 Washington St, Suite 214, Quincy, MA 02169
+                  - paragraph [ref=e260]: Licensed in MA, NH, RI
+                - listitem [ref=e261]:
+                  - paragraph [ref=e262]:
+                    - strong [ref=e263]: "MO-Gladstone:"
+                    - link "(816) 888-7000" [ref=e264] [cursor=pointer]:
+                      - /url: tel:8168887000
+                    - text: 5600 Northeast Antioch Road, Ste 105, Gladstone, MO 64119
+                  - paragraph [ref=e265]: Licensed in CA, KS, MO, TX
+                - listitem [ref=e266]:
+                  - paragraph [ref=e267]:
+                    - strong [ref=e268]: "NC-Charlotte:"
+                    - link "(408) 933-3124" [ref=e269] [cursor=pointer]:
+                      - /url: tel:4089333124
+                    - text: "1213 West Morehead Street, Ste 500, Unit #3, Charlotte, NC 28208"
+                  - paragraph [ref=e270]: Licensed in SC
+                - listitem [ref=e271]:
+                  - paragraph [ref=e272]:
+                    - strong [ref=e273]: "NE-Lincoln:"
+                    - link "(402) 450-1994" [ref=e274] [cursor=pointer]:
+                      - /url: tel:4024501994
+                    - text: 3333 Landmark Circle, Lincoln, NE 68504
+                  - paragraph [ref=e275]: Licensed in NE
+                - listitem [ref=e276]:
+                  - paragraph [ref=e277]:
+                    - strong [ref=e278]: "NJ-Medford:"
+                    - link "(660) 333-3333" [ref=e279] [cursor=pointer]:
+                      - /url: tel:6603333333
+                    - text: 180 Tuckerton Road, Suite 7, Medford, NJ 08055
+                  - paragraph [ref=e280]: Licensed in NJ, PA
+                - listitem [ref=e281]:
+                  - paragraph [ref=e282]:
+                    - strong [ref=e283]: "NV-Henderson:"
+                    - link "(702) 324-2224" [ref=e284] [cursor=pointer]:
+                      - /url: tel:7023242224
+                    - text: 10120 South Eastern Avenue, Suite 238, Henderson, NV 89052
+                  - paragraph [ref=e285]: Licensed in NJ, NV
+                - listitem [ref=e286]:
+                  - paragraph [ref=e287]:
+                    - strong [ref=e288]: "SC-Charleston:"
+                    - link "(843) 986-6500" [ref=e289] [cursor=pointer]:
+                      - /url: tel:8439866500
+                    - text: 4900 O'Hear Avenue, Suites 244, Charleston, SC 29405
+                  - paragraph [ref=e290]: Licensed in SC
+                - listitem [ref=e291]:
+                  - paragraph [ref=e292]:
+                    - strong [ref=e293]: "TX-Houston:"
+                    - link "(832) 762-7928" [ref=e294] [cursor=pointer]:
+                      - /url: tel:8327627928
+                    - text: 10008 Bellaire Boulevard, Ste 203, Houston, TX 77072
+                  - paragraph [ref=e295]: Licensed in NE, NJ, TX
+                - listitem [ref=e296]:
+                  - paragraph [ref=e297]:
+                    - strong [ref=e298]: "WA-Federal Way:"
+                    - link "(253) 670-3614" [ref=e299] [cursor=pointer]:
+                      - /url: tel:2536703614
+                    - text: 33434 8th Avenue South, Ste 203, Federal Way, WA 98003
+                  - paragraph [ref=e300]: Licensed in WA
+                - listitem [ref=e301]:
+                  - paragraph [ref=e302]:
+                    - strong [ref=e303]: "WA-Renton:"
+                    - link "(253) 223-3717" [ref=e304] [cursor=pointer]:
+                      - /url: tel:2532233717
+                    - text: 19201 108th Avenue Southeast, Suite 201, Renton, WA 98055
+                  - paragraph [ref=e305]: Licensed in WA
+                - listitem [ref=e306]:
+                  - paragraph [ref=e307]:
+                    - strong [ref=e308]: "WA-Richland:"
+                    - link "(509) 591-5517" [ref=e309] [cursor=pointer]:
+                      - /url: tel:5095915517
+                    - text: 603 Knight Street, Suite C-3, Richland, WA 99352
+                  - paragraph [ref=e310]: Licensed in WA
+                - listitem [ref=e311]:
+                  - paragraph [ref=e312]:
+                    - strong [ref=e313]: "WI-New Berlin:"
+                    - link "(408) 877-8000" [ref=e314] [cursor=pointer]:
+                      - /url: tel:4088778000
+                    - text: 15350 West National Avenue, Suite 112, New Berlin, WI 53151
+                  - paragraph [ref=e315]: Licensed in WI
+        - generic [ref=e317]:
+          - heading "About Us" [level=3] [ref=e318]
+          - list [ref=e319]:
+            - listitem [ref=e320]:
+              - 'link "Company NMLS#: 320841" [ref=e321] [cursor=pointer]':
+                - /url: http://www.nmlsconsumeraccess.org/EntityDetails.aspx/COMPANY/320841
+                - text: "Company NMLS#: 320841. Go here for the Loan Factory, Inc. NMLS consumer access page"
+            - listitem [ref=e322]:
+              - paragraph [ref=e323]: "For licensing information, go to:"
+              - link "www.nmlsconsumeraccess.org" [ref=e324] [cursor=pointer]:
+                - /url: http://www.nmlsconsumeraccess.org/EntityDetails.aspx/COMPANY/320841
+                - text: https://www.nmlsconsumeraccess.org
+            - listitem [ref=e325]:
+              - 'link "CA DRE #: 01771313" [ref=e328] [cursor=pointer]':
+                - /url: https://www2.dre.ca.gov/PublicASP/pplinfo.asp?License_id=01771313
+            - listitem [ref=e329]:
+              - link "Loan Officer? Join Us" [ref=e333] [cursor=pointer]:
+                - /url: /loan-officer
+            - listitem [ref=e334]:
+              - link "Branches" [ref=e338] [cursor=pointer]:
+                - /url: /branches
+            - listitem [ref=e339]:
+              - link "State Licenses" [ref=e343] [cursor=pointer]:
+                - /url: /state-licenses
+            - listitem [ref=e344]:
+              - link "Terms & Conditions" [ref=e348] [cursor=pointer]:
+                - /url: /terms-and-conditions
+            - listitem [ref=e349]:
+              - link "Privacy Policies" [ref=e353] [cursor=pointer]:
+                - /url: /privacy
+            - listitem [ref=e354]:
+              - link "Email/Text Policy" [ref=e357] [cursor=pointer]:
+                - /url: /email-communication
+            - listitem [ref=e358]:
+              - link "Terms of Service and Privacy Policy — Use of AI" [ref=e363] [cursor=pointer]:
+                - /url: /use-of-ai
+            - listitem [ref=e364]:
+              - link "ADA Accessibility Statement" [ref=e369] [cursor=pointer]:
+                - /url: /ada
+            - listitem [ref=e370]:
+              - link "Careers" [ref=e375] [cursor=pointer]:
+                - /url: /careers
+            - listitem [ref=e376]:
+              - link "Press Release" [ref=e379] [cursor=pointer]:
+                - /url: /press-release
+            - listitem [ref=e380]:
+              - link "Texas Disclosures" [ref=e384] [cursor=pointer]:
+                - /url: /texas-disclosures
+            - listitem [ref=e385]:
+              - link "Google Reviews" [ref=e386] [cursor=pointer]:
+                - /url: /testimonials
+                - paragraph [ref=e387]: 21,807+
+                - img "google-star" [ref=e388]
+        - generic [ref=e390]:
+          - heading "Mortgage" [level=3] [ref=e391]
+          - list [ref=e392]:
+            - listitem [ref=e393]:
+              - link "Mortgage Disclosures" [ref=e397] [cursor=pointer]:
+                - /url: /disclosure
+            - listitem [ref=e398]:
+              - link "Our Loan Process" [ref=e402] [cursor=pointer]:
+                - /url: /loan-process
+            - listitem [ref=e403]:
+              - link "Why Loan Factory" [ref=e407] [cursor=pointer]:
+                - /url: /why-us
+            - listitem [ref=e408]:
+              - link "Blogs" [ref=e412] [cursor=pointer]:
+                - /url: https://blog.loanfactory.com/
+            - listitem [ref=e413]:
+              - link "Testimonials" [ref=e417] [cursor=pointer]:
+                - /url: /testimonials
+            - listitem [ref=e418]:
+              - link "Acronyms & Abbreviations" [ref=e422] [cursor=pointer]:
+                - /url: /acronyms-abbreviations
+            - listitem [ref=e423]:
+              - img "ehl-w" [ref=e424]
+            - listitem [ref=e425]:
+              - img "ssl-secure-image" [ref=e426]
+      - generic [ref=e427]: Copyright © 2026 Loan Factory. All Rights Reserved.
+      - generic [ref=e428]:
+        - paragraph [ref=e429]: Powered by
+        - img "Tera Logo" [ref=e430]
+  - alert [ref=e431]
+  - generic [ref=e433] [cursor=pointer]

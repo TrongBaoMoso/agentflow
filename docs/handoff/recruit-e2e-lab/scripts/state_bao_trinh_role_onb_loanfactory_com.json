@@ -1,0 +1,79 @@
+{
+  "cookies": [
+    {
+      "name": "NEXT_LOCALE",
+      "value": "en",
+      "domain": "recruit.viet18.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "NEXT_LOCALE",
+      "value": "en",
+      "domain": "account.viet18.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "__Host-lf_account_refresh",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1MTNmMzIwNS1lYzlmLTQ2MDAtYjU1NC03ZmIyNjI4OGM2NGYiLCJpc3MiOiJodHRwczovL2FjY291bnQudmlldDE4LmNvbSIsImFjY291bnRfaWQiOiJkOWNkZmUxYy02ODJkLTRiNGQtOTAzNy1lNTdiNjdiODY5NDAiLCJ1c2VyX2lkIjoiNTEzZjMyMDUtZWM5Zi00NjAwLWI1NTQtN2ZiMjYyODhjNjRmIiwidGltZV96b25lIjoiWiIsImlhdCI6MTc5MzcwNzgzOSwiZXhwIjoxNzkzOTY3MDM5LCJhY2Nlc3NfdHlwZSI6IlJFRlJFU0hfVE9LRU4iLCJpZGVudGlmaWVycyI6WyJiYW8udHJpbmgrcm9sZS1vbmIrMUBsb2FuZmFjdG9yeS5jb20iLCJiYW8udHJpbmgrcm9sZS1vbmJAbG9hbmZhY3RvcnkuY29tIl0sInN0YXR1cyI6IkFDVElWRSIsInZlcmlmeSI6dHJ1ZSwiYXV0aG9yaXRpZXMiOlsiTUFSS0VUUExBQ0UjRU1QTE9ZRUUiLCJMT1MjRU1QTE9ZRUUiLCJSRUNSVUlUI09OQk9BUkRJTkciLCJIUiNFTVBMT1lFRSIsIkFDQ09VTlQjVVNFUiIsIkhSI09OQk9BUkRJTkdfU1BFQ0lBTElTVCIsIlJFQ1JVSVQjUkVDUlVJVEVSIl0sInByb2R1Y3QiOiJMT1MiLCJzaWQiOiI5MzBkMDI3MS03MTQyLTRhNGMtYWFmMC1lMGRiOTYxMzk5NzkifQ.Cshcy2a_JIw4r5eawOCQX3a_23c1WNP5Y-cmrtK-5NY",
+      "domain": "account.viet18.com",
+      "path": "/",
+      "expires": 1793967040.12724,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "lf_session",
+      "value": "1",
+      "domain": ".viet18.com",
+      "path": "/",
+      "expires": 1793967040.128697,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Strict"
+    },
+    {
+      "name": "lf_app",
+      "value": "1",
+      "domain": "recruit.viet18.com",
+      "path": "/",
+      "expires": 1794312641.903706,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "GCLB",
+      "value": "CMzgoIqawaacnAEQAw",
+      "domain": "msg.viet18.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://recruit.viet18.com",
+      "localStorage": [
+        {
+          "name": "recruit-fe-auth-storage",
+          "value": "{\"state\":{\"accessToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1MTNmMzIwNS1lYzlmLTQ2MDAtYjU1NC03ZmIyNjI4OGM2NGYiLCJpc3MiOiJodHRwczovL2FjY291bnQudmlldDE4LmNvbSIsImFjY291bnRfaWQiOiJkOWNkZmUxYy02ODJkLTRiNGQtOTAzNy1lNTdiNjdiODY5NDAiLCJ1c2VyX2lkIjoiNTEzZjMyMDUtZWM5Zi00NjAwLWI1NTQtN2ZiMjYyODhjNjRmIiwidGltZV96b25lIjoiWiIsImlhdCI6MTc5MzcwNzg0MSwiZXhwIjoxNzkzNzE1MDQxLCJhY2Nlc3NfdHlwZSI6IkFDQ0VTU19UT0tFTiIsImlkZW50aWZpZXJzIjpbImJhby50cmluaCtyb2xlLW9uYisxQGxvYW5mYWN0b3J5LmNvbSIsImJhby50cmluaCtyb2xlLW9uYkBsb2FuZmFjdG9yeS5jb20iXSwic3RhdHVzIjoiQUNUSVZFIiwidmVyaWZ5Ijp0cnVlLCJhdXRob3JpdGllcyI6WyJNQVJLRVRQTEFDRSNFTVBMT1lFRSIsIkxPUyNFTVBMT1lFRSIsIlJFQ1JVSVQjT05CT0FSRElORyIsIkhSI0VNUExPWUVFIiwiQUNDT1VOVCNVU0VSIiwiSFIjT05CT0FSRElOR19TUEVDSUFMSVNUIiwiUkVDUlVJVCNSRUNSVUlURVIiXSwicHJvZHVjdCI6IlJFQ1JVSVQiLCJzaWQiOiI5MzBkMDI3MS03MTQyLTRhNGMtYWFmMC1lMGRiOTYxMzk5NzkifQ.YkEGy-xqBwLJ1R07SDP-xlD4myi3slAab--RMhkw8Cs\",\"refreshToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1MTNmMzIwNS1lYzlmLTQ2MDAtYjU1NC03ZmIyNjI4OGM2NGYiLCJpc3MiOiJodHRwczovL2FjY291bnQudmlldDE4LmNvbSIsImFjY291bnRfaWQiOiJkOWNkZmUxYy02ODJkLTRiNGQtOTAzNy1lNTdiNjdiODY5NDAiLCJ1c2VyX2lkIjoiNTEzZjMyMDUtZWM5Zi00NjAwLWI1NTQtN2ZiMjYyODhjNjRmIiwidGltZV96b25lIjoiWiIsImlhdCI6MTc5MzcwNzg0MSwiZXhwIjoxNzkzOTY3MDM4LCJhY2Nlc3NfdHlwZSI6IlJFRlJFU0hfVE9LRU4iLCJpZGVudGlmaWVycyI6WyJiYW8udHJpbmgrcm9sZS1vbmIrMUBsb2FuZmFjdG9yeS5jb20iLCJiYW8udHJpbmgrcm9sZS1vbmJAbG9hbmZhY3RvcnkuY29tIl0sInN0YXR1cyI6IkFDVElWRSIsInZlcmlmeSI6dHJ1ZSwiYXV0aG9yaXRpZXMiOlsiTUFSS0VUUExBQ0UjRU1QTE9ZRUUiLCJMT1MjRU1QTE9ZRUUiLCJSRUNSVUlUI09OQk9BUkRJTkciLCJIUiNFTVBMT1lFRSIsIkFDQ09VTlQjVVNFUiIsIkhSI09OQk9BUkRJTkdfU1BFQ0lBTElTVCIsIlJFQ1JVSVQjUkVDUlVJVEVSIl0sInByb2R1Y3QiOiJSRUNSVUlUIiwic2lkIjoiOTMwZDAyNzEtNzE0Mi00YTRjLWFhZjAtZTBkYjk2MTM5OTc5In0.Bwm6fpL2VLaMksXhzpfc9UNUoyGd033gcbZAGkuqwyc\",\"user\":{\"id\":\"513f3205-ec9f-4600-b554-7fb26288c64f\",\"created_by\":\"super.admin@viet18.com\",\"created_date\":{\"timestamp\":1791624939,\"formatted\":\"2026-10-10T09:35:39.349138\",\"zone\":\"Z\"},\"last_modified_by\":\"super.admin@viet18.com\",\"last_modified_date\":{\"timestamp\":1792680257,\"formatted\":\"2026-10-22T14:44:17.822107\",\"zone\":\"Z\"},\"key\":\"ahNzfmxlbmRlcnJhdGUtbWFzdGVyci0LEgVBZG1pbiIiYmFvLnRyaW5oK3JvbGUtb25iQGxvYW5mYWN0b3J5LmNvbQyiARA1NzE2MTA0MDI2NTIxNjAw\",\"ref_keys\":[\"18db508a-edf0-4366-afea-4b406b082b63\",\"ahNzfmxlbmRlcnJhdGUtbWFzdGVyci0LEgVBZG1pbiIiYmFvLnRyaW5oK3JvbGUtb25iQGxvYW5mYWN0b3J5LmNvbQyiARA1NzE2MTA0MDI2NTIxNjAw\"],\"first_name\":\"QA\",\"middle_name\":null,\"last_name\":\"Onboarding Role\",\"email\":\"bao.trinh+role-onb@loanfactory.com\",\"phone\":null,\"avatar\":null,\"date_of_birth\":null,\"gender\":\"UNKNOWN\",\"status\":\"ACTIVE\",\"source\":\"HR\",\"mfa_enabled\":false,\"settings\":{\"language\":\"en\",\"time_zone\":null,\"preferred_languages\":[\"en\"],\"theme\":null,\"email_signature\":null},\"favorite_apps\":null,\"legal_first_name\":\"QA\",\"legal_last_name\":\"Onboarding Role\",\"marital_status\":null,\"citizenship\":null,\"company_email\":\"bao.trinh+role-onb+1@loanfactory.com\",\"company_phone\":null,\"social_links\":null,\"addresses\":[{\"type\":\"RESIDENTIAL\",\"label\":null,\"street\":\"1 Test St\",\"street2\":null,\"city\":null,\"state\":null,\"zip\":null,\"county_name\":null,\"country\":\"US\"}],\"nmls\":null,\"title\":\"QA Test\",\"office_address\":\"2195 Tully Road, San Jose, CA\",\"self_declared_states\":null,\"signature_logo\":null,\"websites\":null,\"licenses\":null,\"national_type\":null,\"national_number\":null,\"identify_type\":null,\"identify_number\":null,\"ssn\":null,\"authorities\":{\"MARKETPLACE\":[\"EMPLOYEE\"],\"LOS\":[\"EMPLOYEE\"],\"RECRUIT\":[\"ONBOARDING\",\"RECRUITER\"],\"HR\":[\"EMPLOYEE\",\"ONBOARDING_SPECIALIST\"],\"ACCOUNT\":[\"USER\"]},\"licensed_states\":[],\"full_name\":\"QA Onboarding Role\"}},\"version\":0}"
+        },
+        {
+          "name": "lf_recruit_nav_seen",
+          "value": "[\"leads\",\"manage\",\"setup\",\"handoffs\"]"
+        }
+      ]
+    }
+  ]
+}

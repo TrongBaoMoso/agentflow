@@ -1,0 +1,442 @@
+- generic [active] [ref=f7e1]:
+  - generic [ref=f7e7]:
+    - generic [ref=f7e8]:
+      - generic [ref=f7e9]:
+        - button "Sidebar collapse button" [ref=f7e10] [cursor=pointer]
+        - link [ref=f7e69] [cursor=pointer]:
+          - /url: "#"
+          - text: "SWAT:"
+          - link "Vinh Nguyen is SWAT officer. Please contact him for urgent problem" [ref=f7e70]:
+            - /url: "javascript:"
+          - text: "Parser:"
+          - link "Quyen Anh Vo is monitoring the parser today. Please contact him for problem with parser" [ref=f7e72]:
+            - /url: "javascript:"
+      - list [ref=f7e15]:
+        - listitem [ref=f7e16]:
+          - link "Search" [ref=f7e17] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=f7e74]: search
+        - listitem [ref=f7e18]:
+          - link "Builds" [ref=f7e19] [cursor=pointer]:
+            - /url: "##builds"
+        - listitem [ref=f7e20]:
+          - link "add" [ref=f7e75] [cursor=pointer]:
+            - /url: "##create_small_task"
+        - listitem [ref=f7e22]:
+          - link "Message" [ref=f7e23] [cursor=pointer]:
+            - /url: javascript:;
+            - generic [ref=f7e77]: notifications
+          - text: 
+        - listitem [ref=f7e24]:
+          - link [ref=f7e25] [cursor=pointer]:
+            - /url: javascript:;
+            - text: Bao Trinh
+            - img "Bao Trinh" [ref=f7e26]
+      - generic [ref=f7e27]:
+        - button "search" [ref=f7e28]
+        - generic [ref=f7e79]:
+          - searchbox "Search input" [ref=f7e80]
+          - searchbox "Search input" [ref=f7e81]
+        - link "close search" [ref=f7e30] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=f7e82]: close
+    - generic [ref=f7e32]:
+      - list [ref=f7e33]:
+        - listitem [ref=f7e34]:
+          - link "Bao Trinh  Bao Trinh Dev" [ref=f7e35] [cursor=pointer]:
+            - /url: javascript:;
+            - img "Bao Trinh" [ref=f7e38]
+            - generic [ref=f7e39]:
+              - generic [ref=f7e40]: 
+              - text: Bao Trinh
+              - generic [ref=f7e41]: Dev
+        - listitem: 
+      - list [ref=f7e42]:
+        - listitem [ref=f7e43]: X Moso
+        - listitem [ref=f7e44]:
+          - tab "group Company directory" [ref=f7e84] [cursor=pointer]:
+            - generic [ref=f7e85]: group
+            - text: Company directory
+        - listitem [ref=f7e46]:
+          - link " assignment_o Activities" [ref=f7e86] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f7e48]: 
+            - generic [ref=f7e87]: assignment_o
+            - text: Activities
+        - listitem [ref=f7e49]:
+          - link " check Reports" [ref=f7e88] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f7e51]: 
+            - generic [ref=f7e89]: check
+            - text: Reports
+        - listitem [ref=f7e52]:
+          - link " settings Builds" [ref=f7e90] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f7e54]: 
+            - generic [ref=f7e91]: settings
+            - text: Builds
+        - listitem [ref=f7e55]:
+          - link " bug_report Errors" [ref=f7e92] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f7e57]: 
+            - generic [ref=f7e93]: bug_report
+            - text: Errors
+        - listitem [ref=f7e58]:
+          - link " System" [ref=f7e59] [cursor=pointer]:
+            - /url: "javascript:"
+            - generic [ref=f7e60]: 
+            - text: System
+    - generic [ref=f7e94]:
+      - heading [level=1] [ref=f7e95]:
+        - text: Builds
+        - paragraph [ref=f7e96]:
+          - generic [ref=f7e98]:
+            - text: bao.trinh@moso.com broke build 8 hour(s) ago. Bao Trinh (TrongBaoMoso) is locking push
+            - strong [ref=f7e99]: because of test break
+      - generic [ref=f7e102]:
+        - tablist [ref=f7e103]:
+          - tab "builds" [ref=f7e104] [cursor=pointer]: Builds
+          - tab "status" [ref=f7e105] [cursor=pointer]:
+            - generic [ref=f7e106]: rss_feed
+            - text: Status
+          - tab "parsers" [ref=f7e107] [cursor=pointer]:
+            - generic [ref=f7e108]: insert_drive_file
+            - text: Parsers
+          - tab "tests" [ref=f7e109] [cursor=pointer]:
+            - generic [ref=f7e110]: insert_drive_file
+            - text: Tests
+          - tab "builders" [ref=f7e111] [cursor=pointer]:
+            - generic [ref=f7e112]: settings
+            - text: Builders
+          - tab "activities" [ref=f7e113] [cursor=pointer]:
+            - generic [ref=f7e114]: history
+            - text: Activities
+        - generic [ref=f7e117]:
+          - generic [ref=f7e118]:
+            - generic [ref=f7e119]:
+              - button "sync" [ref=f7e120] [cursor=pointer]
+              - link [ref=f7e123] [cursor=pointer]:
+                - /url: "javascript:"
+            - form [ref=f7e124]:
+              - generic "Repo" [ref=f7e125]:
+                - generic [ref=f7e126]:
+                  - text: Repo
+                  - generic [ref=f7e127]: (optional)
+                - combobox [aria-hidden] [ref=f7e128]
+                - combobox "× packs/pylon-apis" [ref=f7e131] [cursor=pointer]:
+                  - generic "packs/pylon-apis" [ref=f7e132]:
+                    - generic [ref=f7e133]: ×
+                    - text: packs/pylon-apis
+              - generic "Type" [ref=f7e134]:
+                - generic [ref=f7e135]:
+                  - text: Type
+                  - generic [ref=f7e136]: (optional)
+                - combobox [aria-hidden] [ref=f7e137]
+                - combobox "× test" [ref=f7e140] [cursor=pointer]:
+                  - generic "test" [ref=f7e141]:
+                    - generic [ref=f7e142]: ×
+                    - text: test
+              - generic "Status" [ref=f7e143]:
+                - generic [ref=f7e144]:
+                  - text: Status
+                  - generic [ref=f7e145]: (optional)
+                - combobox [aria-hidden] [ref=f7e146]
+                - combobox "Status" [ref=f7e149] [cursor=pointer]
+            - generic [ref=f7e151]:
+              - button "Reset filters" [ref=f7e152] [cursor=pointer]
+              - button "More" [ref=f7e153] [cursor=pointer]
+          - generic [ref=f7e154]:
+            - generic [ref=f7e156]:
+              - generic [ref=f7e157]: Type
+              - generic [ref=f7e158]: Status
+              - generic [ref=f7e159]: Note
+              - generic [ref=f7e160]: Server
+              - generic [ref=f7e161]: Time (m)
+            - generic [ref=f7e162]:
+              - generic [ref=f7e163]:
+                - generic [ref=f7e164]:
+                  - generic [ref=f7e165]:
+                    - group [ref=f7e167]:
+                      - button "test" [ref=f7e168] [cursor=pointer]
+                    - generic [ref=f7e169]: packs/pylon-apis
+                  - generic [ref=f7e170]: failed
+                  - 'generic "failed: mvn clean test -N -B -U -e -q -DCI=true >> /home/ato/logs/4932702942265344.txt 2>&1;: Error: Command failed: mvn clean test -N -B -U -e -q -DCI=true >> /home/ato/logs/4932702942265344.txt 2>&1;" [ref=f7e174]':
+                    - text: Bao (base)
+                    - link [ref=f7e175] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/58531d73fa3e02ae4496e97b90ff1bbc2b22ba77
+                      - text: "Keep SECURED values out of entity dumps and error messages (#770) An entity printed every property, SECURED ones included, and several error paths put the entity or a raw value into logs or exception messages. On production (lender-rate) Bean.toMap logged Configuration(1) whenever one of its fields could not be evaluated, writing the Mailgun and SendGrid API keys, the Mailgun webhook signing key, engagement_api_key and api_secret into the App Engine logs (4 entries between 2026-10-05 and 2026-10-08). - GCEntity and GCEntity2 toString print SECURED properties as \"***\", also under their localized names. IEntity resolves the kind's Type once per dump. If it cannot (unknown kind, failed lookup) the dump fails closed: every secret-like property name (secret, password, token, api key, ...) is redacted, and the kind is logged once. Bean.toString delegates to these, so every remaining dump of a Bean is redacted. - Bean.toMap and Bean.getOptional(InputConfig) name the entity by key only. - Bean.set (\"Could not copy field\") and Bean.put (\"Old raw value\") no longer print the value of a SECURED field. - SaveIndexOp, Tools, GCEntity2 projection error: key only. HasValues.demand and HtmlBuilder no longer print the values. Co-authored-by: TrongBaoMoso"
+                      - generic [ref=f7e176]: "Co-authored-by: Claude Opus 5.5 (1M context)"
+                  - generic [ref=f7e177] [cursor=pointer]: b6
+                  - generic [ref=f7e178]:
+                    - generic [ref=f7e179]: 74m 49s
+                    - generic [ref=f7e180]: 10/9/2026, 5:12:55 PM
+                - generic [ref=f7e181]:
+                  - generic [ref=f7e182]:
+                    - group [ref=f7e184]:
+                      - button "test" [ref=f7e185] [cursor=pointer]
+                    - generic [ref=f7e186]: packs/pylon-apis
+                  - generic [ref=f7e187]: succeeded
+                  - generic [ref=f7e191]:
+                    - text: Dao (base)
+                    - link "Keep lender logo inside its cell on narrow screens" [ref=f7e192] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/7f39defc21df77a06009284d1824adcdab9f6cde
+                  - generic [ref=f7e193] [cursor=pointer]: bmac
+                  - generic [ref=f7e194]:
+                    - generic [ref=f7e195]: 10s
+                    - generic [ref=f7e196]: 10/8/2026, 8:50:20 PM
+                - generic [ref=f7e197]:
+                  - generic [ref=f7e198]:
+                    - group [ref=f7e200]:
+                      - button "test" [ref=f7e201] [cursor=pointer]
+                    - generic [ref=f7e202]: packs/pylon-apis
+                  - generic [ref=f7e203]: succeeded
+                  - generic [ref=f7e207]:
+                    - text: Dao (base)
+                    - link "Center lender logo in its cell on quote result" [ref=f7e208] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/e8b6c6ba603df405298d787cdd75591a70932861
+                  - generic [ref=f7e209] [cursor=pointer]: b5
+                  - generic [ref=f7e210]:
+                    - generic [ref=f7e211]: 28s
+                    - generic [ref=f7e212]: 10/8/2026, 8:07:02 PM
+                - generic [ref=f7e213]:
+                  - generic [ref=f7e214]:
+                    - group [ref=f7e216]:
+                      - button "test" [ref=f7e217] [cursor=pointer]
+                    - generic [ref=f7e218]: packs/pylon-apis
+                  - generic [ref=f7e219]: succeeded
+                  - generic [ref=f7e223]:
+                    - text: Dao (base)
+                    - 'link "Fix lender logo size on quote result: fixed height, width follows aspect ratio" [ref=f7e224] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/853ba1501834f896688ebd4effb1d7f24556c220
+                  - generic [ref=f7e225] [cursor=pointer]: b1
+                  - generic [ref=f7e226]:
+                    - generic [ref=f7e227]: 29s
+                    - generic [ref=f7e228]: 10/8/2026, 7:05:23 PM
+                - generic [ref=f7e229]:
+                  - generic [ref=f7e230]:
+                    - group [ref=f7e232]:
+                      - button "test" [ref=f7e233] [cursor=pointer]
+                    - generic [ref=f7e234]: packs/pylon-apis
+                  - generic [ref=f7e235]: succeeded
+                  - generic [ref=f7e239]:
+                    - text: Khai RerunKhai RerunKhai (base)
+                    - link [ref=f7e240] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/cfafb31683a512ffb988044f0807619b631d69eb
+                    - text: Khai (base)
+                    - link "Let the SendGrid quota be set by hand tooSendGrid's /v3/user/credits reports a total of 15,000,000 for the LoanFactory account, but the portal shows the plan is Pro 1.5 Million(1,500,000 emails a month, 1,381,112 left on 2026-10-06). The API figure isexactly ten times the plan and comes with is_hard_limit=true, so it readslike an account hard cap rather than the plan; reporting it would have shownthe CEO about 14.9M remaining instead of 1.4M.sendgrid_monthly_quota now overrides the API total when set, the same waymailgun_monthly_quota already supplies Mailgun's. It is optional so the APItotal still applies if the field is cleared. PROD is set to 1500000." [ref=f7e241] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/20d269449b9a1c7b15b19ee3920422b1fa6759b0
+                    - text: Khai (base)
+                    - link "Restore .idea files swept into the SendGrid quota commitCommit 20d269449b staged everything tracked with git add -u, which picked uplocal IDE edits to .idea/compiler.xml, encodings.xml and vcs.xml; the vcs.xmlchange dropped the xmoso and xmoso-configuration mappings for everyone. Noneof it belongs to the quota feature, so the three files go back to their statebefore that commit." [ref=f7e242] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/f68af113a42d53e6418f98cb4cc03847e6f265f8
+                    - text: Khai (base)
+                    - 'link "Merge base#766: Add EmailAPIQuotaConfig for the monthly email quota reportSingleton config holding read-only SendGrid/Mailgun keys and hand-entered monthly quotas for the email quota report cron (moso#1757)." [ref=f7e243] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/29aa3c30dd3f789a89ff70b837fe85a763d98fea
+                  - generic [ref=f7e244] [cursor=pointer]: b2
+                  - generic [ref=f7e245]:
+                    - generic [ref=f7e246]: 26s
+                    - generic [ref=f7e247]: 10/7/2026, 12:57:37 PM
+                - generic [ref=f7e248]:
+                  - generic [ref=f7e249]:
+                    - group [ref=f7e251]:
+                      - button "test" [ref=f7e252] [cursor=pointer]
+                    - generic [ref=f7e253]: packs/pylon-apis
+                  - generic [ref=f7e254]: succeeded
+                  - generic [ref=f7e258]:
+                    - text: Tho (base)
+                    - 'link "fix(wallet): allow negative-balance recovery top-up on partially frozen wallet" [ref=f7e259] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/95278b01b1f41b634dd1521c6d204d892d0ea8d4
+                  - generic [ref=f7e260] [cursor=pointer]: b1
+                  - generic [ref=f7e261]:
+                    - generic [ref=f7e262]: 29s
+                    - generic [ref=f7e263]: 10/7/2026, 11:06:00 AM
+                - generic [ref=f7e264]:
+                  - generic [ref=f7e265]:
+                    - group [ref=f7e267]:
+                      - button "test" [ref=f7e268] [cursor=pointer]
+                    - generic [ref=f7e269]: packs/pylon-apis
+                  - generic [ref=f7e270]: succeeded
+                  - generic [ref=f7e274]:
+                    - text: Khai (base)
+                    - link [ref=f7e275] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/cfafb31683a512ffb988044f0807619b631d69eb
+                    - text: Khai (base)
+                    - link "Let the SendGrid quota be set by hand too SendGrid's /v3/user/credits reports a total of 15,000,000 for the Loan Factory account, but the portal shows the plan is Pro 1.5 Million (1,500,000 emails a month, 1,381,112 left on 2026-10-06). The API figure is exactly ten times the plan and comes with is_hard_limit=true, so it reads like an account hard cap rather than the plan; reporting it would have shown the CEO about 14.9M remaining instead of 1.4M. sendgrid_monthly_quota now overrides the API total when set, the same way mailgun_monthly_quota already supplies Mailgun's. It is optional so the API total still applies if the field is cleared. PROD is set to 1500000." [ref=f7e276] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/20d269449b9a1c7b15b19ee3920422b1fa6759b0
+                    - text: Khai (base)
+                    - link "Restore .idea files swept into the SendGrid quota commit Commit 20d269449b staged everything tracked with git add -u, which picked up local IDE edits to .idea/compiler.xml, encodings.xml and vcs.xml; the vcs.xml change dropped the xmoso and xmoso-configuration mappings for everyone. None of it belongs to the quota feature, so the three files go back to their state before that commit." [ref=f7e277] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/f68af113a42d53e6418f98cb4cc03847e6f265f8
+                    - text: Khai (base)
+                    - 'link "Merge base#766: Add EmailAPIQuotaConfig for the monthly email quota report Singleton config holding read-only SendGrid/Mailgun keys and hand-entered monthly quotas for the email quota report cron (moso#1757)." [ref=f7e278] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/29aa3c30dd3f789a89ff70b837fe85a763d98fea
+                  - generic [ref=f7e279] [cursor=pointer]: b6
+                  - generic [ref=f7e280]:
+                    - generic [ref=f7e281]: 32s
+                    - generic [ref=f7e282]: 10/6/2026, 12:39:42 PM
+                - generic [ref=f7e283]:
+                  - generic [ref=f7e284]:
+                    - group [ref=f7e286]:
+                      - button "test" [ref=f7e287] [cursor=pointer]
+                    - generic [ref=f7e288]: packs/pylon-apis
+                  - generic [ref=f7e289]: succeeded
+                  - generic [ref=f7e292]: Khai 3.65.0
+                  - generic [ref=f7e294] [cursor=pointer]: b1
+                  - generic [ref=f7e295]:
+                    - generic [ref=f7e296]: 29s
+                    - generic [ref=f7e297]: 10/5/2026, 1:43:53 PM
+                - generic [ref=f7e298]:
+                  - generic [ref=f7e299]:
+                    - group [ref=f7e301]:
+                      - button "test" [ref=f7e302] [cursor=pointer]
+                    - generic [ref=f7e303]: packs/pylon-apis
+                  - generic [ref=f7e304]: failed
+                  - 'generic "failed: mvn clean test -N -B -U -e -q -DCI=true >> /Users/ato/logs/5599550100733952.txt 2>&1;: Error: Command failed: mvn clean test -N -B -U -e -q -DCI=true >> /Users/ato/logs/5599550100733952.txt 2>&1;" [ref=f7e308]':
+                    - text: Khai (packs)
+                    - link "base version 3.65.0-SNAPSHOT" [ref=f7e309] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/4d09cc149a131dfc71ed84046b4dfac650883a79
+                    - text: Khai (packs)
+                    - link "packs version 3.65.0-SNAPSHOT" [ref=f7e310] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/4541b166b145cf66fa5a2b0f138abaa6c312a6ab
+                  - generic [ref=f7e311] [cursor=pointer]: bmac
+                  - generic [ref=f7e312]:
+                    - generic [ref=f7e313]: 11s
+                    - generic [ref=f7e314]: 10/5/2026, 1:33:02 PM
+                - generic [ref=f7e315]:
+                  - generic [ref=f7e316]:
+                    - group [ref=f7e318]:
+                      - button "test" [ref=f7e319] [cursor=pointer]
+                    - generic [ref=f7e320]: packs/pylon-apis
+                  - generic [ref=f7e321]: succeeded
+                  - generic [ref=f7e325]:
+                    - text: Khai RerunKhai (base)
+                    - link [ref=f7e326] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/8ddfa9abc2d5bcd88449989f13be3c4d3ed831e2
+                  - generic [ref=f7e327] [cursor=pointer]: bmac
+                  - generic [ref=f7e328]:
+                    - generic [ref=f7e329]: 40s
+                    - generic [ref=f7e330]: 10/5/2026, 10:06:41 AM
+                - generic [ref=f7e331]:
+                  - generic [ref=f7e332]:
+                    - group [ref=f7e334]:
+                      - button "test" [ref=f7e335] [cursor=pointer]
+                    - generic [ref=f7e336]: packs/pylon-apis
+                  - generic [ref=f7e337]: succeeded
+                  - generic [ref=f7e341]:
+                    - text: Tho (packs)
+                    - link "[HF] [Pylon] correct UW history timestamp" [ref=f7e342] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/c99ef4934cd849209a0cdb64e6275a4c316228ab
+                  - generic [ref=f7e343] [cursor=pointer]: b4
+                  - generic [ref=f7e344]:
+                    - generic [ref=f7e345]: 23s
+                    - generic [ref=f7e346]: 10/2/2026, 8:42:29 PM
+                - generic [ref=f7e347]:
+                  - generic [ref=f7e348]:
+                    - group [ref=f7e350]:
+                      - button "test" [ref=f7e351] [cursor=pointer]
+                    - generic [ref=f7e352]: packs/pylon-apis
+                  - generic [ref=f7e353]: succeeded
+                  - generic [ref=f7e357]:
+                    - text: Vinh (packs)
+                    - link "Revert \"[Pylon] correct UW history timestamp\" This reverts commit 9561748c0439a28a70b7ff8b3f0b2de9e7965603." [ref=f7e358] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/0dbadb0657cb4e3369aebd6ba2d6bbee66ab8d50
+                    - text: Vinh (packs)
+                    - link "Revert \"[Pylon] correct UW history timestamp\" This reverts commit f5318119dee03ebdc6e81f1e5f3e21f32a5d5dbb." [ref=f7e359] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/665388ea774ef210359c8a3bf0f0abaa792bc886
+                  - generic [ref=f7e360] [cursor=pointer]: b4
+                  - generic [ref=f7e361]:
+                    - generic [ref=f7e362]: 44s
+                    - generic [ref=f7e363]: 10/2/2026, 6:43:54 PM
+                - generic [ref=f7e364]:
+                  - generic [ref=f7e365]:
+                    - group [ref=f7e367]:
+                      - button "test" [ref=f7e368] [cursor=pointer]
+                    - generic [ref=f7e369]: packs/pylon-apis
+                  - generic [ref=f7e370]: succeeded
+                  - generic [ref=f7e374]:
+                    - text: Tho (packs)
+                    - link "[Pylon] correct UW history timestamp" [ref=f7e375] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/packs/commit/f5318119dee03ebdc6e81f1e5f3e21f32a5d5dbb
+                  - generic [ref=f7e376] [cursor=pointer]: b5
+                  - generic [ref=f7e377]:
+                    - generic [ref=f7e378]: 43s
+                    - generic [ref=f7e379]: 10/2/2026, 4:44:06 PM
+                - generic [ref=f7e380]:
+                  - generic [ref=f7e381]:
+                    - group [ref=f7e383]:
+                      - button "test" [ref=f7e384] [cursor=pointer]
+                    - generic [ref=f7e385]: packs/pylon-apis
+                  - generic [ref=f7e386]: succeeded
+                  - generic [ref=f7e390]:
+                    - text: Tho (base)
+                    - 'link "fix(wallet): allow negative-balance recovery top-up on partially frozen wallet" [ref=f7e391] [cursor=pointer]':
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/95278b01b1f41b634dd1521c6d204d892d0ea8d4
+                  - generic [ref=f7e392] [cursor=pointer]: b6
+                  - generic [ref=f7e393]:
+                    - generic [ref=f7e394]: 31s
+                    - generic [ref=f7e395]: 10/2/2026, 3:54:52 PM
+                - generic [ref=f7e396]:
+                  - generic [ref=f7e397]:
+                    - group [ref=f7e399]:
+                      - button "test" [ref=f7e400] [cursor=pointer]
+                    - generic [ref=f7e401]: packs/pylon-apis
+                  - generic [ref=f7e402]: succeeded
+                  - generic [ref=f7e406]:
+                    - text: Khai (base)
+                    - link [ref=f7e407] [cursor=pointer]:
+                      - /url: https://github.com/LoanFactory-Inc/base/commit/8ddfa9abc2d5bcd88449989f13be3c4d3ed831e2
+                  - generic [ref=f7e408] [cursor=pointer]: bmac
+                  - generic [ref=f7e409]:
+                    - generic [ref=f7e410]: 15s
+                    - generic [ref=f7e411]: 10/1/2026, 7:45:32 PM
+              - text: 
+          - generic "Page Navigation" [ref=f7e412]:
+            - list [ref=f7e414]:
+              - listitem [ref=f7e415] [cursor=pointer]:
+                - generic "Previous" [ref=f7e416]: «
+              - listitem [ref=f7e417] [cursor=pointer]:
+                - generic [ref=f7e418]: 1-15 of over 100
+              - listitem [ref=f7e419] [cursor=pointer]:
+                - generic "Next" [ref=f7e420]: »
+            - generic [ref=f7e421]:
+              - text: Showing
+              - combobox "Items per page" [ref=f7e422]:
+                - option "5"
+                - option "10" [selected]
+                - option "25"
+                - option "50"
+                - option "100"
+              - text: items per page
+    - link "Scroll to top" [ref=f7e64] [cursor=pointer]:
+      - /url: javascript:;
+      - generic [ref=f7e423]: keyboard_arrow_up
+  - iframe
+  - generic [ref=f7e65]:
+    - link "System Improvement?" [ref=f7e66] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f7e424]: send
+    - link "Help?" [ref=f7e67] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f7e425]: help
+    - link "Chat" [ref=f7e68] [cursor=pointer]:
+      - /url: "javascript:"
+      - generic [ref=f7e426]: chat
+  - log [ref=f7e427]
+  - log [ref=f7e428]
+  - log [ref=f7e429]
+  - log [ref=f7e430]
+  - log [ref=f7e431]
+  - log [ref=f7e432]
+  - log [ref=f7e433]
+  - log [ref=f7e434]
+  - log [ref=f7e435]
+  - log [ref=f7e436]
+  - log [ref=f7e437]
+  - log [ref=f7e438]
+  - log [ref=f7e439]
+  - log [ref=f7e440]
+  - log [ref=f7e441]
+  - log [ref=f7e442]
+  - log [ref=f7e443]
+  - log [ref=f7e444]
+  - log [ref=f7e445]
+  - log [ref=f7e446]
+  - log [ref=f7e447]
