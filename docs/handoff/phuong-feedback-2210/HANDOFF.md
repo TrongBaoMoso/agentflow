@@ -580,3 +580,11 @@ Open, in order:
    - the digest e-mail test (item 5 of the audit). NOT the +hh account: a Headhunter is no longer in the audience.
 5. Khải (Bao sends): hot fix moso prod for packs #3818 + #3816 (+ #3831). Draft message in the conversation.
    - The HR offboard re-ping is NOT needed: the subscription and IAM already exist (measured).
+- Checkpoint from agent referrals-visibility at the pause:
+  - fe #688 was promoted to staging; cd-staging run 41813172162 was still running, so check it finished.
+  - be #830 is at head 2b0360bda with auto-merge ON. After it merges: `gh workflow run promote-staging.yml -R LoanFactory-Inc/recruit-be -f sha=<sha>`.
+  - Only the SECURITY re-review approved the final #830 rule; the correctness re-review never replied. Get a fresh correctness review.
+  - Follow-up recruit-be #836 is a DRAFT (branch feat/referrals-lo-flag-from-moso), stacked on #830: rebase onto master, then 2 reviewers + CI.
+  - The temporary REFERRER on bao.trinh+role-nogrant is REMOVED.
+  - BEFORE shots are in shots-referrals-visibility/before-*.png. For AFTER, use docs/handoff/recruit-e2e-lab/scripts/refvis.js; the LO row needs a REFERRER or LO test account.
+  - Prod has 9 referrers with a staff role; they see My referrals only once #836 is merged and packs #3831 is deployed.
