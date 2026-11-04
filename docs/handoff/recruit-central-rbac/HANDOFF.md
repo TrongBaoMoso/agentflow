@@ -570,3 +570,11 @@ Note: the old draft MESSAGE-KHAI-3110.md is superseded by what Bao sent (secret 
 - `RbacMirrorTickCronRegistrar` requested `recruit-rbac-mirror-tick` every 5 min; first tick 12:55Z: `rbac mirror reconcile OK created=0 updated=0 deleted=0 unchanged=27`; referrer sweep OK `referrers=2 {already_assigned=1, has_staff_role=1}`.
 - Note: an earlier promote at 12:26Z ran without a sha (network blip) and promoted master head 9a19add; harmless (staging only).
 - Remaining: prod HR role sync (Bao has not chosen a/b); #838 key rides the next prod release, then check the same three log lines on prod; moso-notifier #350 waits for imkhai's go-ahead on notification-service#232 (request 6629570221); Zoom prod #844 vs #846 duplicate (other sessions) needs Bao's pick.
+
+### 05/11 01:50 VN (session e19da9e9): HR role sync ON in PRODUCTION
+
+- Bao chose (b) on 04/11 23:xx. recruit-be #852 (prod values: flag + 4 subscriptions), #856 (zoom-go keys out of the prod keys file until recruit-be-deploy@lender-rate can read them; #844 must add them back), #857 (D380 query fix + RbacCentralFlagsTest after #852). #854 closed as superseded.
+- Production fast-forwarded 88973c020 -> ead26bf7f (cd-production run 41888368638 success). Flyway V323/V325/V326, schema v326. All PR-owner sessions said no HOLD.
+- Prod logs: four `HrRoleSyncMessageHandler` adapters; 60 HR events applied, none granted or revoked anything (headship of a non-manager team: MANAGER left alone); catalog push `permissions_updated=1` (#839 text change); `recruit-rbac-mirror-tick` registered, first tick 18:45Z `reconcile OK unchanged=13`; REFERRER sweep `referrers=5 {already_assigned=5}`.
+- Leaver check (agentflow-y89cf.2): HR offboard logs since 28/10 carry 15 deactivated people (SHA-256 fingerprints, `HrOffboardMetrics.fingerprint`). Matched against the 498 central RECRUIT holders: **1 match, a RECRUITER** (granted 22/10; event 48784, deactivated before the new subscriptions existed, so the role sync never saw it). NOT removed: Bao decides. Identity in `~/.cache/claude-recruit/p6/leaver_detail_0511.txt` (chmod 600). No REFERRER holder is among the leavers.
+- Boot noise found: `PaypalCredentials` ERROR on prod (sandbox host, flag off) -> fixed by session 460363a7 in #858, rides the next release.
