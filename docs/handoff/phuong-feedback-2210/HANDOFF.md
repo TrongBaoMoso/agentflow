@@ -512,3 +512,9 @@ Open PRs (nothing merged to prod):
 - Production: draft recruit-be #829 (subscription + enable flag). Prod subscription `HR_ASSOCIATE_DEACTIVE_SUBSCRIBE_RECRUIT`
   exists (Khải); prod pod as recruit-be-runtime@ has consume+get on it and get on the topic; 15 messages waiting.
   Waits for Bao.
+- **E2E PASS 04/11 09:19 UTC:** Bao offboarded QA Anewc in staging HR. HR's "Offboard" button only opens the exit
+  (status `offboarding`, no termination date, no event); the event fires on **Finalize**. After Finalize: HR read-back
+  `offboarded`, termination 2026-11-04; HR event 21314, the only publish on the topic; pod "candidates -> APPLIED" 2 s
+  later; candidate af38421a `left_company_at` 09:19:50.77Z, `left_company_on` 2026-11-04, `left_company_event_id` 21314;
+  exactly 1 internal SYSTEM entry "Left Loan Factory (HR offboarding)"; stage S6/ACTIVE unchanged; backlog and DLQ 0.
+  Not tested: another live employment, and rehire ("Rejoined"), which waits for Bao.
