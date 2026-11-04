@@ -105,3 +105,26 @@ Recruiter overdue follow-ups are NOT urgent (later). "Offer approved but not sen
 - 26/10 night (Bao approved): rewrote link on the 11 OPEN staging call urgents in moso-notifier-sta notification_inbox (published 03:42Z, before #752). Changed /today?c=<id> to /today?ws=<id>&wsTab=result in one guarded transaction (count==11). notif_event history was left untouched. Verified in a browser: Open on the Megeh row opens the Call result popup. Prod is unaffected (flag off; every prod row will be raised with the new link).
 
 - 27/10 final close-out (measured): no open PRs; staging be 208eee13 contains #752; 11 open staging call urgents all carry the new link (0 open on the old one); prod flag absent (off); removed leftover recruit-be worktrees .worktrees/one-bell/recruit-be(+ -master) (clean, PR #514 merged; local branch kept). Only open item: agentflow-4m6jy (prod go-live).
+
+## AUDIT 05/11 (measured)
+
+- Prod code: recruit-be production cea1f014f contains #747 #749 #751 #752. recruit-fe production cf5fc1b2 contains #318 #587 #588 (SDK 0.4.86). Everything is shipped dark.
+- Prod IAM: not a blocker. Khai confirmed on 28/10 that recruit-be-runtime@lender-rate has project roles/pubsub.editor, and both topics exist in lender-rate. The prod notifier runs urgent v2 (#345).
+- Prod secret: recruit-svc-secret holds RECRUIT_URGENT_NOTIFIER_API_KEY and RECRUIT_PLATFORM_INBOX_INTERNAL_API_KEY.
+- **Correction: go-live is four env entries, not one.** Urgent rides the platform-inbox tick, and prod has the platform inbox off too. Add to `helm-chart/config/production/values.yaml`:
+  - `RECRUIT_PLATFORM_INBOX_ENABLED=true`
+  - `RECRUIT_PLATFORM_INBOX_LINK_BASE_URL=https://recruit.loanfactory.com`
+  - `RECRUIT_URGENT_NOTIFIER_BASE_URL=http://moso-notifier-service.moso-notifier-prod.svc.cluster.local:8080`
+  - `RECRUIT_URGENT_ENABLED=true`
+- The notifier prod default link hosts already include recruit.loanfactory.com.
+- After the deploy, verify:
+  - the pod boots;
+  - the cron job `recruit-platform-inbox-tick` is registered;
+  - the first sweep is logged;
+  - resolve answers 200.
+- Side effect: Recruit's own bell disappears on prod (one bell).
+- Staging is healthy:
+  - 83 urgent rows, 40 open, 0 open on the old `?c=` link.
+  - Last auto-resolve was 04/11.
+  - No stale call urgents.
+- Removed the leftover worktree tera-components/_wt/urgent-redesign (#749 merged).
