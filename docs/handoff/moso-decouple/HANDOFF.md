@@ -427,6 +427,60 @@ Bao 02/11 (option A): only the onboarding specialist contacts the loan officer. 
 - Correction recorded: Recruit's main path already matched "OB sends" (hand-off ON on prod); only the no-OB fallback mailed From the recruiter.
 - Gaps (D354 row): a later OB clear does not ring the assigners; a waiting invite counts as invite_trouble on Today.
 
+## RESUME POINT: PAUSED 04/11 17:20 VN (session 460363a7)
+
+**Done today, all on STAGING (production untouched; Bao GO'd the dark prod FF to agentflow-bc for #816 #820 #821 #822 #823 #824 #825 #826)**
+- **B3 real E2E PASS:**
+  - session 869362b2: crm4 ATTENDED, crm3 NO_SHOW;
+  - EMAIL_2H sent;
+  - SMS_2H reached omni but failed `sms_capable=false`, which is blocked on Connect Zoom (Khai).
+- **Webinar follow-ups:**
+  - #824 (D371): minutes now count from the scheduled start, with no cap at the end.
+  - fe #686 and BE #823: Registered at shows, chip date is the series zone. Before/after shots: https://claude.ai/artifact/QssVGgNV3C3JeNMm6dsJcX
+- **B4 day-after mail:** #822 (D369, V320). Bao approved the missed-version copy; `webinar.follow_up_mail.enabled=TRUE` on staging. First sends 05/11 05:00 VN: crm4 gets the attended version, crm3 the missed version.
+- **Approve toast:** be #820 + fe #682; Bao re-tested OK, bead 0gwad.10 closed.
+- **OB auto-pick:** #825 (D370) only picks OBs MOSO knows. Flag on staging only; switch off after P4.
+- **P4 S1 portal link + profile:** #821 (D368, V316) and #826 Bao's answers (D372, V319).
+- **Docs:**
+  - docs/handoff/moso-decouple/LEAD-SOURCES.md (6,275 new LO leads in 12 months, by source)
+  - docs/handoff/moso-decouple/P4-PLAN.md
+- **Bao decisions 04/11:**
+  - webinar rollout 4 steps (bd 0gwad.4 notes);
+  - consent reminder bd agentflow-4smup;
+  - P4 S7 write-back ALLOWED until P6;
+  - PayPal: drop the 60 s rule, check COMPLETED + amount + payee + unique id.
+
+**IN FLIGHT when paused (agents stopped; resume by hand)**
+1. **recruit-be #835, P4 S3 PayPal** (branch feature/p4-s3-paypal-fee, worktree recruit-be-worktrees/p4-s3-paypal, head a4040485b, D375, V321).
+   - Security review found no PAID bypass. TODO:
+     - (1) bind the order to the offer via purchase_units[0].custom_id; new terminal reason REFERENCE_MISMATCH; S2 requirement; expose the value in GET /fee-config;
+     - (2) document the refund/chargeback risk + follow-up bead;
+     - (3) alert on money captured with OFFER_NOT_PAYABLE / FEE_ALREADY_SETTLED;
+     - (4) cap rejected attempts per offer + dedupe non-terminal rows;
+     - (5) a prod profile with a non api-m.paypal.com host means not configured;
+     - (6) reuse HttpClient.
+   - Then rebase, CI, merge, promote, check for a 503 "not configured" on staging.
+   - It is unknown whether the stopped agent had started these edits. Its worktree was clean and equal to the remote at the pause.
+2. **recruit-be #834 + packs #3832, P4 S7** (D376/R82; recruit-be worktree recruit-be-worktrees/p4-s7-writeback head 211767626; packs worktree packs-worktrees/p4-s7-skip, WIP commit 6037079136e pushed, NOT re-tested).
+   - Review TODO:
+     - HIGH: packs portalState paid/signed only from the Recruit service actor/RECRUITING, and only when the marker is already true;
+     - HIGH: refuse the marker if the row has a live MOSO envelope/payment/signature (MOSO_FLOW_STARTED), add an admin unmark path, document a packs rollback;
+     - MEDIUM: enqueue race (`attempts = 0` dedupe);
+     - MEDIUM: ONBOARDING_MEETING keeps waiting while PORTAL_STATE is dead-lettered;
+     - MEDIUM: decide 404 retry vs terminal;
+     - LOW: RECRUIT_PORTAL_MANAGED 200 = success, fix the application.yml comment, recruit-fe label for WAIT_PORTAL_MARKER.
+   - Then merge #834 (staging flag stays "false"), do NOT merge packs (Khai), and draft the Slack message for Khai with 3 questions: the daily update mail for marked rows, other jobs sending /apply_loan_officer links, mirroring paypal_order_id.
+3. **Lead intake + Connect Zoom + moso-notifier #350:** Bao messaged Khai; waiting.
+4. **Next P4 slices:** S2 lf-homepage portal (PR only; needs a staging secret RECRUIT_ONBOARDING_PORTAL_API_KEYS, Khai) and S4 document-esign (Khai: is the Inkless account shared, is there a staging account?).
+
+**Scheduled check (the cron dies with the session; redo it)**
+- 05/11 ~05:23 VN:
+  - MOSO 2-month EmailHistory (bead agentflow-t9gsi);
+  - crm5 EMAIL_2D on session 7d30491c;
+  - B4 mails for session 869362b2.
+
+**Test data kept until Bao says "dọn lịch":** 4 test series (attendance test, SMS test, attendance test 2) + the 5 B2 calendar events; LO 07001ba1 is now owned by hh (2d21fc2c).
+
 ## RESUME POINT: PAUSED 04/11 07:35 VN (session 460363a7), webinar B3
 
 **State**
