@@ -317,3 +317,4 @@ Next steps on resume:
 - Later FE staging commits (#675 .. #692) were NOT pushed; they belong to other sessions.
 - recruit-be #839 (catalog description text) stays on staging; it goes with the next BE prod push (commits ahead of it, #834/#843, are not cleared for prod).
 - agentflow-rf9sm closed.
+- **READY FOR PROD, no need to ask:** recruit-be #839 (0257c6683). The next BE prod pusher includes it. A note is also on the PR, in memory and in `bd remember`.
