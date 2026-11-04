@@ -159,3 +159,12 @@ Session a8ef2df9. Spec: `SPEC.md` in this folder. Mockup: https://claude.ai/arti
   > 2. Cấp cho recruit-be API key zoom-go (giống los-be-zoomgo-api-key) + company id: em đã tạo sẵn 2 secret rỗng `recruit-be-recruit-zoomgo-api-key` và `recruit-be-recruit-zoomgo-company-id` trong lenderrate-master, anh thêm version (hoặc cho em quyền đọc los-be-zoomgo-*). Prod để sau khi staging test xong.
 - **04/11 ~01:40 VN, Connect Zoom on STAGING:** recruit-be c3f04bdbd (#815, D364) + recruit-fe ec04e91de (#677). Verified on staging: `RECRUIT_FEATURES_ZOOM_CONNECT=true` + zoom-go URLs set; `/me/zoom/status` → 503 `ZOOM_CONNECT_NOT_CONFIGURED` (no API key / company id yet) → the card falls back to the old link card (bao.trinh+recruiter: "Not linked", expected); `/api/zoom/callback?success=true&token=…` → 302 `/settings/connections?zoom=connected` (token not echoed); zoom-go authorize reachable (400 without params). Security review of both PRs: no CRITICAL/HIGH/MEDIUM.
   - **To turn it on:** Khải adds versions to `recruit-be-recruit-zoomgo-api-key` / `-company-id` (lenderrate-master) + the return URL to zoom-go `OAUTH_ALLOWED_RETURN_URLS`; then add the two lines back to recruit-be `helm-chart/config/staging/secret-keys.txt` (`RECRUIT_ZOOMGO_API_KEY=recruit-be-recruit-zoomgo-api-key`, `RECRUIT_ZOOMGO_COMPANY_ID=recruit-be-recruit-zoomgo-company-id`), promote, and Bao clicks Connect Zoom himself. Prod: not touched.
+
+## Re-check (measured, after the 04/11 pause)
+
+- recruit-be production = cea1f014f (Flyway 313; prod: 2 of 104,412 candidates have last_activity_at, recruiter_zoom_link still 1 row). staging = 8fd15b831 (has #815 c3f04bdbd).
+- recruit-fe production = cf5fc1b2 (Conversations), staging = 536fae6e (has #677 ec04e91d + other sessions' #676 #678 #679 #675 #671).
+- Secret Manager `recruit-be-recruit-zoomgo-api-key` / `-company-id` (lenderrate-master): still NO versions → Connect Zoom still waiting on Khải.
+- omni #663 (4a808af) and #665 (a7f0e89a) are now on omni STAGING, not production.
+- Live: staging `/api/zoom/callback` 302 → /settings/connections; prod 404 (FE #677 not on prod, expected).
+- Khải message now covers staging AND production (prod: recruit.loanfactory.com/api/zoom/callback on zoom-go prod allowlist; secrets in project lender-rate, which Bao cannot list).
