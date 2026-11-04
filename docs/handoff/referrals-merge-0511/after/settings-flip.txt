@@ -1,0 +1,12 @@
+PUT referral.program_snapshot_enabled true 200 {"payload":{"id":"365b494d-5240-4970-9c77-a9e20b685ce0","created_by":"e1987874-a6ea-46d7-82e3-b034440d0afd","created_date":{"timestamp":1793820253,"formatted":"2026-11-04T19:24:13.991810371","zone":"Z"},"last_modified_by":"e1987874-a6ea-46d7-82e3-b034440d0afd","last_modified_date":{"timestamp":17938
+PUT referral.program_qualification_enabled true 200 {"payload":{"id":"4cf99bf3-858d-4297-ac37-0fdc763710cb","created_by":"e1987874-a6ea-46d7-82e3-b034440d0afd","created_date":{"timestamp":1793820254,"formatted":"2026-11-04T19:24:14.473398432","zone":"Z"},"last_modified_by":"e1987874-a6ea-46d7-82e3-b034440d0afd","last_modified_date":{"timestamp":17938
+referral.program_snapshot_enabled = true
+referral.program_qualification_enabled = true
+referral.program_status_visible_to_referrer = false
+program_sync.mode = "DRY_RUN"
+admin rows (this year): 94
+{
+ "program=null entry=REFERRAL inferred=true q=null": 69,
+ "program=null entry=PROGRAM inferred=false q=null": 23,
+ "program=null entry=REFERRAL inferred=false q=null": 2
+}

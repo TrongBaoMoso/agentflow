@@ -1,0 +1,167 @@
+<title>Referrals One Page</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: one reading column; before/after pairs as two-up rows that stack on phones. */
+:root {
+  --bg: #f7f5f1; --surface: #ffffff; --fg: #24221f; --muted: #6b665e; --line: #e4dfd6;
+  --accent: #b9530c; --accent-soft: #fbeee3; --ok: #23784a; --ok-soft: #e4f3ea; --warn: #9a6a00; --warn-soft: #fbf1d9;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #1b1a18; --surface: #24221f; --fg: #ece8e1; --muted: #a49d92; --line: #3a3732;
+  --accent: #f08a43; --accent-soft: #3a2a1d; --ok: #6fcf97; --ok-soft: #1f3327; --warn: #e6b450; --warn-soft: #3a3020; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #1b1a18; --surface: #24221f; --fg: #ece8e1; --muted: #a49d92; --line: #3a3732;
+  --accent: #f08a43; --accent-soft: #3a2a1d; --ok: #6fcf97; --ok-soft: #1f3327; --warn: #e6b450; --warn-soft: #3a3020; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font: 15px/1.6 var(--font-body); }
+.wrap { max-width: 1180px; margin: 0 auto; padding-block: 32px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 40px; }
+h1, h2 { font-family: var(--font-display); font-weight: 500; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(1.9rem, 1.4rem + 2vw, 2.8rem); line-height: 1.1; }
+h2 { font-size: 1.45rem; }
+h3 { font-size: 1rem; margin: 0; font-weight: 600; }
+p { margin: 0; max-width: 72ch; }
+.eyebrow { font: 500 12px/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+section { display: grid; gap: 16px; }
+.summary { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 24px; display: grid; gap: 12px; }
+.summary ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font: 500 12px/1 var(--font-mono); padding: 6px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+.chip.ok { background: var(--ok-soft); color: var(--ok); }
+.chip.warn { background: var(--warn-soft); color: var(--warn); }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 760px) { .pair { grid-template-columns: 1fr; } }
+figure { margin: 0; display: grid; gap: 8px; min-width: 0; }
+figure img { width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+figcaption { font-size: 13px; color: var(--muted); }
+figcaption b { color: var(--fg); font-weight: 600; }
+.tag { font: 500 11px/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tag.after { color: var(--ok); }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-weight: 600; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
+tr:last-child td { border-bottom: 0; }
+code { font: 13px var(--font-mono); }
+a { color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500&family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@500&display=swap">
+
+<main class="wrap">
+  <header style="display:grid;gap:12px">
+    <span class="eyebrow">Recruit · agentflow-3mjma · STAGING · đêm 04→05/11</span>
+    <h1>Referrals: một trang, Program theo D269.1</h1>
+    <p>Gộp "Referrals by referrer" vào My referrals, thay "Entry page" bằng "Program", tách cột thưởng theo chương trình, và đưa D374 lên staging. Production không đụng.</p>
+    <div class="chips">
+      <span class="chip ok">recruit-be #830 · staging</span>
+      <span class="chip ok">recruit-be #863 · staging</span>
+      <span class="chip ok">recruit-fe #698 · staging</span>
+      <span class="chip warn">prod: chưa</span>
+    </div>
+  </header>
+
+  <section class="summary" aria-labelledby="tom-tat">
+    <h2 id="tom-tat">Tóm tắt cho anh Bao</h2>
+    <ul>
+      <li><b>Một trang duy nhất</b> ở <code>/my-referrals</code>. Loan Officer thấy "My referrals" (chỉ của mình). Manager/Admin thấy menu "Referrals", mặc định phạm vi <b>All Loan Officers</b>; nút chuyển Mine / All chỉ hiện khi người đó cũng là LO (D374). <code>/referrals</code> cũ tự chuyển sang <code>?scope=all</code>.</li>
+      <li><b>Scope All</b> có cột Referrer + lọc + sort theo người giới thiệu, thẻ tổng theo người giới thiệu (không còn dòng header xám), Export CSV (có thêm cột program, program_source, qualifying), cả Table và Cards, bấm cả dòng mở CandidateDrawer.</li>
+      <li><b>Program</b> thay "Entry page": lấy từ snapshot D269.1; hàng chưa có snapshot hiện chip xám "chưa xác nhận" lấy theo trang đăng ký (quyết định <b>D388</b>). Hàng Referral giữ cột thưởng $500; hàng LO Recruiter Program chỉ hiện chip Qualifying.</li>
+      <li><b>Setting staging</b>: bật <code>referral.program_snapshot_enabled</code> và <code>referral.program_qualification_enabled</code> (19:24Z). Cách tắt lại có trong HANDOFF.</li>
+      <li><b>Còn mở</b>: job catch-up báo "recorded 175" mỗi tick nhưng hàng cũ vẫn chưa có snapshot (bead <code>agentflow-2odq5</code>), nên gần như mọi hàng cũ đang hiện chip xám. Chưa có tài khoản test vừa là LO vừa là Manager để chụp nút chuyển Mine/All (đã có unit test).</li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="prs">
+    <h2 id="prs">PR và trạng thái</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Repo</th><th>PR</th><th>Nội dung</th><th>Merge</th><th>Staging</th></tr></thead>
+      <tbody>
+        <tr><td>recruit-be</td><td><a href="https://github.com/LoanFactory-Inc/recruit-be/pull/830">#830</a></td><td>D374: My referrals chỉ cho LO; Manager/Admin giữ trang Referrals</td><td><code>e1e54de82</code></td><td>cd-staging 41900391870 ✓</td></tr>
+        <tr><td>recruit-be</td><td><a href="https://github.com/LoanFactory-Inc/recruit-be/pull/863">#863</a></td><td>D388: scope All nhận đủ bộ lọc/sort, lọc qualifying, CSV thêm cột program</td><td><code>0b1b189b2</code></td><td>cd-staging 41906531014 ✓</td></tr>
+        <tr><td>recruit-fe</td><td><a href="https://github.com/LoanFactory-Inc/recruit-fe/pull/698">#698</a></td><td>Trang gộp, scope switch, Program/Qualifying, redirect, menu theo vai</td><td><code>595a2701</code></td><td>cd-staging 41908036775 ✓</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section aria-labelledby="ba">
+    <h2 id="ba">Trước / Sau</h2>
+
+    <h3>Manager (victoria.pham+stg) · 1440</h3>
+    <div class="pair">
+      <figure><span class="tag">Before · /referrals</span><img src="before/manager-referrals-1440.png" alt="Old Referrals by referrer page with grey referrer group rows and Entry page chips" loading="lazy"><figcaption>"Referrals by referrer": dòng nhóm xám, chip "Referral *" suy đoán, nút Open từng dòng.</figcaption></figure>
+      <figure><span class="tag after">After · /my-referrals (All)</span><img src="after/manager-my-referrals-1440.png" alt="New Referrals page in All scope with referrer summary cards and Program chips" loading="lazy"><figcaption>Menu "Referrals", scope All mặc định, thẻ tổng theo người giới thiệu, chip Program.</figcaption></figure>
+    </div>
+
+    <h3>Manager · 375</h3>
+    <div class="pair">
+      <figure><span class="tag">Before</span><img src="before/manager-referrals-375.png" alt="Old page at phone width" loading="lazy"></figure>
+      <figure><span class="tag after">After</span><img src="after/manager-my-referrals-375.png" alt="New page at phone width" loading="lazy"><figcaption>Không cuộn ngang (scrollWidth 375 = clientWidth 375).</figcaption></figure>
+    </div>
+
+    <h3>Loan Officer (bao.trinh+lo-referrer) · 1440</h3>
+    <div class="pair">
+      <figure><span class="tag">Before</span><img src="before/lo-my-referrals-1440.png" alt="My referrals before" loading="lazy"></figure>
+      <figure><span class="tag after">After</span><img src="after/lo-my-referrals-1440.png" alt="My referrals after with Program and Qualifying filters" loading="lazy"><figcaption>Vẫn "My referrals", chỉ của mình; thêm lọc Program, Qualifying; không có scope switch.</figcaption></figure>
+    </div>
+
+    <h3>Admin (bao.trinh+admin) · 1440</h3>
+    <div class="pair">
+      <figure><span class="tag">Before · /referrals</span><img src="before/admin-referrals-1440.png" alt="Admin old page" loading="lazy"></figure>
+      <figure><span class="tag after">After</span><img src="after/admin-my-referrals-1440.png" alt="Admin new page" loading="lazy"></figure>
+    </div>
+
+    <h3>Recruiter và Headhunter: không còn menu referral</h3>
+    <div class="pair">
+      <figure><span class="tag">Before · Headhunter</span><img src="before/headhunter-my-referrals-1440.png" alt="Headhunter saw My referrals before" loading="lazy"><figcaption>Trước: Headhunter thấy My referrals (17 hàng).</figcaption></figure>
+      <figure><span class="tag after">After · Headhunter</span><img src="after/headhunter-my-referrals-1440.png" alt="Headhunter has no referral menu after" loading="lazy"><figcaption>Sau: không có menu; API /mine 403, /referrals 403.</figcaption></figure>
+    </div>
+    <div class="pair">
+      <figure><span class="tag">Before · Recruiter</span><img src="before/recruiter-my-referrals-1440.png" alt="Recruiter before" loading="lazy"></figure>
+      <figure><span class="tag after">After · Recruiter</span><img src="after/recruiter-my-referrals-1440.png" alt="Recruiter after, no referral menu" loading="lazy"><figcaption>Không menu; /mine 403, /referrals 403.</figcaption></figure>
+    </div>
+  </section>
+
+  <section aria-labelledby="chi-tiet">
+    <h2 id="chi-tiet">Chi tiết màn mới</h2>
+    <div class="grid3">
+      <figure><img src="after/manager-my-referrals-scope-all-q-QA-20Merge-1440.png" alt="Two test rows: Referral grey chip and LO Recruiter Program blue chip" loading="lazy"><figcaption><b>Program:</b> QA Mergeprog = LO Recruiter Program (snapshot, xanh); QA Mergeref = Referral (chưa có snapshot, chip xám).</figcaption></figure>
+      <figure><img src="after/manager-bonus-columns-1440.png" alt="Bonus column scrolled into view" loading="lazy"><figcaption><b>Bonus theo chương trình:</b> hàng Referral "— when QA joins"; hàng Program chỉ chip "Not known yet" (Qualifying).</figcaption></figure>
+      <figure><img src="after/manager-cards-1440.png" alt="Cards view in All scope" loading="lazy"><figcaption><b>Cards view</b> (scope All).</figcaption></figure>
+      <figure><img src="after/lo-cards-1440.png" alt="Cards view for a Loan Officer" loading="lazy"><figcaption><b>Cards view</b> (LO, Mine).</figcaption></figure>
+      <figure><img src="after/manager-row-opens-drawer-1440.png" alt="Row click opens the candidate drawer" loading="lazy"><figcaption><b>Bấm cả dòng</b> mở CandidateDrawer (<code>?c=44841c96…</code>).</figcaption></figure>
+      <figure><img src="after/manager-referrals-1440.png" alt="Old URL redirected" loading="lazy"><figcaption><b>Redirect:</b> <code>/referrals</code> → <code>/my-referrals?scope=all</code>.</figcaption></figure>
+    </div>
+  </section>
+
+  <section aria-labelledby="e2e">
+    <h2 id="e2e">E2E trên staging</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Kiểm</th><th>Kết quả</th><th>Bằng chứng</th></tr></thead>
+      <tbody>
+        <tr><td>LO chỉ thấy của mình</td><td>✓ /mine 200 (3 hàng), /referrals 403, menu "My referrals"</td><td><code>after/d374-api-after-830.txt</code>, <code>api-e2e.txt</code></td></tr>
+        <tr><td>Manager mặc định All, CSV tải được</td><td>✓ All 96 hàng; CSV 200, header có program/program_source/qualifying</td><td><code>after/manager-export-sample.csv</code>, <code>extra-log.txt</code></td></tr>
+        <tr><td>Nút chuyển Mine / All</td><td>Chưa chụp được: không có tài khoản test vừa LO vừa Manager/Admin. Có unit test (FE).</td><td>PR #698</td></tr>
+        <tr><td>Recruiter / Headhunter / Team Lead / OB</td><td>✓ không menu; /mine 403, /referrals 403</td><td><code>after/d374-api-after-830.txt</code></td></tr>
+        <tr><td>Program / Qualifying</td><td>✓ 1 hàng Program (snapshot LO_RECRUITER_PROGRAM, qualifying UNKNOWN); 1 hàng Referral (PENDING → chip xám, cột $500)</td><td><code>api-e2e.txt</code></td></tr>
+        <tr><td>Lọc qualifying / program / status</td><td>✓ qualifying=UNKNOWN → 1; program → 24; onboarded → 2</td><td><code>api-e2e.txt</code></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section aria-labelledby="mo">
+    <h2 id="mo">Còn mở / cần anh quyết</h2>
+    <div class="summary">
+      <ul>
+        <li><b>Catch-up snapshot (agentflow-2odq5):</b> log ghi "recorded 175" mỗi 10 phút nhưng 94 hàng cũ vẫn chưa có snapshot. Cần người có quyền DB staging kiểm bảng <code>candidate_referral_program</code>. Tới lúc đó hàng cũ hiện chip xám "chưa xác nhận".</li>
+        <li><b>All time trên scope All</b> làm gateway trả 503 sau ~5 giây (đọc packs toàn bộ). Mặc định đã để "This year"; chọn All time thì trang hiện lỗi kèm nút quay về năm nay.</li>
+        <li><b>Prod:</b> chưa đẩy. Khi lên prod cần lên cùng lúc be #830 + #863 và fe #698; hai setting trên prod vẫn tắt.</li>
+        <li><b>Điện thoại:</b> thẻ tổng theo người giới thiệu khá dài ở 375px (6 thẻ + "Show all"). Có thể thu gọn còn 3 nếu anh muốn.</li>
+      </ul>
+    </div>
+  </section>
+</main>
