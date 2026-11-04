@@ -562,3 +562,11 @@ Done:
 4. Prod: after a release carries the keys file, Bao sets the value with `tera-docs/infrastructure/secrets/release-secret.sh recruit-be production RECRUIT_RBAC_RECONCILE_INTERNAL_API_KEY` (the value never passes through Claude), then register the prod tick.
 5. Then do y89cf.1 (alert) and the y89cf.2 one-time leaver check.
 Note: the old draft MESSAGE-KHAI-3110.md is superseded by what Bao sent (secret creation is Tan Thanh's job, per RELEASE_TEAM_SECRETS.md).
+
+### 04/11 ~20:00 (session e19da9e9): staging HR role sync + RBAC tick LIVE
+
+- recruit-be #837 squash-merged as ddfa4d207, promoted to staging (run 41832416782). Pod `recruit-be-579b6f5598-wpt4w` boot 12:52Z.
+- Boot log: four `HrRoleSyncMessageHandler` Pub/Sub adapters started (channels recruitHrRole{Onboard,Changed,Deactive,Headship}Channel, MANUAL ack); events 21490/21477/21491 processed (granted [] revoked [], since the HR codes CONTRACTOR/CORPORATE_COACH/EMPLOYEE/LOAN_OFFICER/MANAGER map to no Recruit role); ROLES announcement 21476 dropped as a repeat.
+- `RbacMirrorTickCronRegistrar` requested `recruit-rbac-mirror-tick` every 5 min; first tick 12:55Z: `rbac mirror reconcile OK created=0 updated=0 deleted=0 unchanged=27`; referrer sweep OK `referrers=2 {already_assigned=1, has_staff_role=1}`.
+- Note: an earlier promote at 12:26Z ran without a sha (network blip) and promoted master head 9a19add; harmless (staging only).
+- Remaining: prod HR role sync (Bao has not chosen a/b); #838 key rides the next prod release, then check the same three log lines on prod; moso-notifier #350 waits for imkhai's go-ahead on notification-service#232 (request 6629570221); Zoom prod #844 vs #846 duplicate (other sessions) needs Bao's pick.
