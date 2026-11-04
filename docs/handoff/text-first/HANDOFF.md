@@ -188,3 +188,9 @@ What it means for Recruit:
 - **recruit-be #818 (`4df3aaec`, D366):** on staging, ready. Safe to ship BEFORE omni: an event without `sender_match` (current omni prod) is handled exactly as before. Rides the next recruit-be FF of staging to production. #817 (docs only, other session) went to staging with it.
 - **omni #663, #665, #672, #674:** on omni staging, ready on our side. Only Khải promotes omni prod (release-omni-service). Before that he owes two answers, asked on omni #663 (issuecomment-6625090158): (1) `preview`/`subject` on the event at all (#177 rule); (2) on `RECENT_PAIR` rows. A "no" on (1) means a revert PR in omni; a "no" on (2) is one line in `replyContent` (`internal/inbound/replynotify.go`). Neither needs a recruit-be change.
 - Not done: a live text from an unknown number on staging (needs a second phone). Unit tests cover it.
+
+## PAUSED 04/11 ~10:00 VN (session a8ef2df9)
+
+- Bao sent Khải the Connect Zoom message for staging AND prod (Slack 9:07). Suggested correction (to send): omni #663/#665 must NOT go to prod before omni #672 is on staging and Khải answers yes/no on preview/subject.
+- GO given to agentflow-bc (9d6e7072) to carry #815 in its recruit-be prod FF: prod has no zoom-connect flag/secrets, so /me/zoom/* stays 404 there.
+- Resume: ask Bao whether Khải replied → if staging secrets have versions (`gcloud secrets versions list recruit-be-recruit-zoomgo-api-key --project lenderrate-master`), add the two secret-keys lines, promote staging, Bao clicks Connect Zoom.
