@@ -76,16 +76,36 @@ Screenshots (`p1a-shots/`, real staging screen, 1440x900, no full page):
 (`webinar_registration` is not among `DedupServiceImpl.CHILD_ENTITIES`), so the merged-away row keeps them. Same for
 linked and unlinked leads; predates P1a.
 
+## 3b. Follow-ups Q2 + Q4 (recruit-be D384), approved for staging 05/11
+
+- PRs:
+  - recruit-be #862, merged `5b5d6996c`, promoted (cd-staging run 41908336736; Flyway V327 from another PR, none here).
+  - recruit-fe #699, merged `653e5a577`, promoted.
+  - recruit-fe #700, merged `3bafde30b`, promoted. Its single `shrink-0` class keeps the "Open lead" button from being cut to "Open lea" on the real screen.
+- **Q2:** "Add lead" with the e-mail or phone of a lead that is not merged and not archived returns 409 `DUPLICATE_LEAD`. The id of the existing lead is included only when the caller may see that lead (D283). The check runs under the same per-person locks as the intake and the MOSO push.
+- **Q4:** a MOSO push links the one key-less ACTIVE or NURTURE Recruit-only lead. A NURTURE lead created by Recruit stays NURTURE on every push. The sign-up still counts as a hand-raise (HOT, owner's bell); this was accepted in the review.
+- **Staging E2E 05/11:**
+  - Lead A `99bd8a54` created (201).
+  - Same e-mail in upper case: 409 `{reason: DUPLICATE_LEAD, existing_candidate_id: 99bd8a54…}`.
+  - Another e-mail: 201 `a9ac77fd`.
+  - The UI on the real screen shows the notice and **Open lead**, which routes to the existing lead: `p1a-shots/after-q2-add-lead-duplicate.png`. The first version with the cut-off button is `q2-add-lead-duplicate-v1-truncated.png`. There is no BEFORE shot: the old FE showed only the generic "Could not add this lead." toast, and a second row was created.
+  - Q4 push to an ACTIVE lead `098621b7`, twice: linked, still one row.
+- **Q4 NURTURE case not reproducible on staging:**
+  - With D270 (`nurture-followup`) on, staging never parks a lead as NURTURE: a Neutral result is ACTIVE plus a Nurture-call follow-up.
+  - 0 key-less NURTURE rows exist there.
+  - The DB helper is read-only, so a NURTURE row could not be staged by hand.
+  - The behaviour is covered by `RecruitOwnedPushLinkIT#nurtureLinksAndKeepsItsStatus` (two pushes, status and wake date kept), green in CI.
+  - In practice Q4 only matters for legacy NURTURE rows.
+- All test leads are archived.
+
 ## 4. Open questions for Bao
 
 - **Q1** The invite of a Recruit-only lead stays refused until P4 S2 (Recruit portal page + its link in the invite
   mail). Safest option chosen: an honest refusal, MOSO-linked leads unchanged.
-- **Q2** Should "Add lead" refuse (or offer to open) an existing lead with the same e-mail/phone? Today it creates a
-  second row that only the duplicates screen shows.
+- **Q2** DONE 05/11 (D384, staging).
 - **Q3** A webinar picked in a call outcome still registers only through MOSO (packs session list). Recruit sessions
   take a Recruit-only lead through the admin registration endpoint. Moving the call-outcome pick to Recruit sessions
   belongs to the webinar rollout (P3b), not P1a.
-- **Q4** Linking by e-mail on a MOSO push only when exactly ONE active Recruit-only lead has it. Should a NURTURE lead
-  link too (keeping its own status)? Not done: it needs a change in the MOSO upsert's status copy.
+- **Q4** DONE 05/11 (D384, staging), see 3b.
 - **Q5** Should a merge carry the loser's Recruit webinar registrations to the survivor (see E2E note)? Belongs to the
   webinar owner (P3b).
