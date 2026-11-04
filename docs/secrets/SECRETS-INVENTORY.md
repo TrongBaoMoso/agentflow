@@ -74,6 +74,7 @@ Key names present in `recruit-svc-secret` on 23/10 — staging vs production:
 | RECRUIT_UNSUBSCRIBE_HMAC_SECRET | yes | **NO** | unsubscribe links — needed before any prod auto e-mail |
 | RECRUIT_MMI_PUSH_TOKEN | yes | yes | MMI push (D305) — LIVE on prod; secret v2 added 29/10 (v1 rotated out), Keychain `recruit-mmi-push-token-production`; first Loan Officer push verified 30/10 |
 | RECRUIT_REFERRALS_NOTIFY_INTERNAL_API_KEY | yes | **NO** | My referrals change e-mails (D317) — prod dark |
+| RECRUIT_ZOOMGO_API_KEY, RECRUIT_ZOOMGO_COMPANY_ID | **NO** (Secret Manager entries exist in lenderrate-master, no version, not in staging secret-keys.txt) | pending sync | Connect Zoom (D364). Production: Secret Manager `recruit-be-recruit-zoomgo-api-key` / `recruit-be-recruit-zoomgo-company-id` in **lender-rate**, created by Khai 04/11 (Bao cannot read/list them; never tried). Mapped in prod `secret-keys.txt` by recruit-be #846 together with the three prod addresses (in-cluster `http://zoom-go.zoom-prod.svc.cluster.local:8080`, public `https://zoom.loanfactory.com`, return `https://recruit.loanfactory.com/api/zoom/callback`); lands in recruit-svc-secret on the next prod release's secret sync. Prod flag `RECRUIT_FEATURES_ZOOM_CONNECT` NOT set (off). |
 
 Production "NO" rows are expected today (those features are dark on prod). Each must be created by
 hand before its go-live; add the row here when done.
