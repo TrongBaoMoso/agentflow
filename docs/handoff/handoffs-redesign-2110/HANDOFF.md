@@ -292,3 +292,7 @@ Next steps on resume:
   - Both on staging (cd-staging 41690650078, 41690792872 green). 2 reviewers per PR, local ITs green, negative controls red.
   - Staging data (read-only): no staff counted as a program member; 347 owed setup calls = 327 unowned + 20 staff-owned, so nothing changed hands.
 - Left for Bao: look on staging (profile of a Joined LO at the setup call shows "Waiting on <owner>"), then approve prod. Not done: catalog CANDIDATE_UPDATE description (needs a catalog push).
+
+## 05/11 self-test seed
+
+- Staging outbox 19faf534 (LO "QA Claudeadvisor") re-seeded as blocked so Bao can self-test; verified Manager TEAM + onb-test, 1440/390, en+vi. Undo after the test (SQL in bead agentflow-6wr0y notes).
