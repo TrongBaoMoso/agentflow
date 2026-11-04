@@ -536,3 +536,47 @@ Open PRs (nothing merged to prod):
     Covered by DefaultReferralLinksTest (6) + DefaultReferralLinksIT. Re-check after Khải deploys packs.
 - **READY FOR PROD:** recruit-be `84057c99` can go out with the next fast-forward of `production` (no flag; /join is live
   on prod). Until packs prod has #3735, prod behaves as today (program members get the join link, others none).
+
+## RESUME POINT — PAUSED 04/11 ~17:30 +07 (Bao shut the Mac down). Session da43ac56.
+Read this section first, then measure each item again; do not trust it blindly.
+
+Bao's decisions on 04/11, for the record (memory feedback_referrals_visibility_lo_manager_admin_0511):
+- Only Loan Officers (their own referrals), Manager and Admin (all LOs) see referral pages. Work roles do not.
+- An LO who also holds a work role (Seth) DOES see My referrals; this needs the MOSO is_loan_originator flag.
+- Non-LO staff get NO referral bonus.
+- A Headhunter gets no $500 referral bonus, but DOES get the lo-recruiter-program scale for qualified recruits; Accounting
+  pays it.
+- packs #3817/#3818 merge: OK. Approved the HR offboard prod items (3 points). Merging the packs is_loan_originator PRs
+  after review: OK.
+
+Done:
+- packs #3817 (a7c10361) / #3818 (9c706189) merged. #3735 (90b468e3) / #3816 (140da2db) merged. #3830 (c55912f8) / #3831
+  (2e59618a) merged.
+  - MOSO STAGING was redeployed via SWAT (Bao Rerun install packs/loan) at 09:57Z. It includes #3817 and #3735; #3830 is
+    NOT yet deployed.
+  - PROD needs Khải's hot fix (Bao's SWAT role Dev has only Report/Mark done on deploy_hot_fix).
+- recruit-be #827 (84057c99, D373): Copy link → `<domain_url>/join`, on staging. Packs staging returns domain_url (mama1
+  → https://www.viet18.com/mama1). End to end on /mine is not proven: no LO test login with a site.
+- recruit-be #828 (8132e619): staging offboard subscription wired. E2E PASS on 04/11: QA Anewc finalized in HR → candidate
+  af38421a left_company_* set and a timeline entry "Left Loan Factory (HR offboarding)".
+- recruit-fe #688 (5619e873) merged: My referrals audience rule.
+
+Open, in order:
+1. recruit-be #830 (D374 audience rule, BE gate + the digest only to the audience): auto-merge was on; check that it merged,
+   then promote to staging, verify per role, take AFTER screenshots.
+   - Then follow-up PR from branch feat/referrals-lo-flag-from-moso (read is_loan_originator; fallback when absent).
+   - Then remove the temporary REFERRER grant on staging bao.trinh+role-nogrant (agent referrals-visibility assigned it).
+2. recruit-be #829 (prod offboard env): CI green, merge, then staging; hand the SHA to session agentflow-bc, the single prod
+   pusher (cross-session).
+   - The recruit-be prod fast-forward is HELD until Bao approves #814 (D363, session agentflow-87).
+   - After the prod push: verify the offboard listener, that the 15 queued prod messages are processed, and backlog/DLQ 0.
+3. SWAT: rerun "install packs/loan" again so staging gets #3830.
+   - The SWAT Chrome needs Bao to log in again: --user-data-dir=~/.claude-swat-profile --remote-debugging-port=9477.
+   - Scripts: ~/.claude-swat/nav-install.mjs, then rerun2.mjs.
+4. Ask Bao: may we create a staging test account bao.trinh+lo-referrer@loanfactory.com (MOSO LO with a site plus a Recruit
+   login, referring 1–2 test people)? It is needed for:
+   - the <site>/join end-to-end check;
+   - the LO view of My referrals;
+   - the digest e-mail test (item 5 of the audit). NOT the +hh account: a Headhunter is no longer in the audience.
+5. Khải (Bao sends): hot fix moso prod for packs #3818 + #3816 (+ #3831). Draft message in the conversation.
+   - The HR offboard re-ping is NOT needed: the subscription and IAM already exist (measured).
