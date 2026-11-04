@@ -476,3 +476,20 @@ Open PRs (nothing merged to prod):
 - My referrals link switch: not started; waits for /join on prod (recruit-be DefaultReferralLinks: `/loan-officer` → `/join`).
 - Digest e-mail end-to-end check: not done. The staging browser login was denied twice by the RAM gate.
 - The 68 prod Loan Officer sites already broken (67 redirect to the home page + "tamera wilkins") are reported to Bao, unrelated.
+
+## AUDIT 05/11 (measured; Bao asked for the full close-out)
+- /join is LIVE on prod. Session bb6ab172 shipped it 02/11:
+  - moso-aid #208 (incl. #207 GetOp-per-key, #201–#203), lo #926, lf #2693.
+  - Bao accepted HIGH-1 ("bật luôn"); real auth is bead agentflow-ip7uw ("để sau").
+  - Measured: suongloanofficer.com/join and loanfactory.com/davidriedel/join answer 200, and join-page answers 200 for the
+    owner's Admin key.
+  - lf viet18 /join/testkhaine1222cscscsc → 307 /mama1/join.
+- Prod moso-aid still has NO MOSO_ADMINS_API_KEY: the log warns every 5 min, "getAdmins sent 2957 staff rows with no key".
+  #207 covers join-page; the long-term fix still needs Khải's staff key.
+- OPEN, mine:
+  - packs #3735/#3816: test rewrite is LOCAL and uncommitted in packs-worktrees/referrers-domain-url; never run.
+  - packs #3817/#3818: crm3 retry; approved, waiting on Bao.
+  - My referrals link switch to `<site>/join`: not done (DefaultReferralLinks still LO_PATH=/loan-officer). Now unblocked,
+    because /join is on prod.
+  - Digest e-mail: 0 ever sent on staging, no end-to-end check.
+  - HR offboard: RECRUIT_HR_OFFBOARD_SUBSCRIPTION still unset on staging (Khải IAM); prod has no offboard env.
