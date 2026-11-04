@@ -202,3 +202,9 @@ What it means for Recruit:
 - recruit-be **#844** (DRAFT): production flag + zoom-prod URLs + secret-keys + chart-lint line; ZoomConnectFlagTest 3/3. Merge only after Bao's staging click works (Bao's choice 04/11). recruit-fe #677 also needs to reach production.
 - recruit-be prod is 88973c020 (agentflow-47 release) and carries #815 with the flag off (verified).
 - moso-notifier #350 (not this session's): blocked by the required `wave-freeze` check, not by Khải's review. Khải must comment on notification-service#232 naming moso-notifier#350; then add `Wave freeze approved: <comment URL>` on its own line in #350's body.
+
+## 04/11 ~21:00 VN: waiting on Khai overnight (session a8ef2df9)
+- #846 (another session) already put the prod zoom-go addresses + secret names on master, flag off. #844 was rebased onto it and now only sets `RECRUIT_FEATURES_ZOOM_CONNECT=true` plus the test change (commit 65da5f51f, CI green, still draft).
+- Bao sent Khai (in the 09:07 Connect Zoom DM thread) the secretAccessor ask for recruit-be-deploy@ on both zoomgo secrets, for staging AND prod. If prod lacks it, the next recruit-be prod release stops at secret sync because #846 lists the names.
+- Measured 21:00: staging grant still missing; #840 is still draft.
+- moso-notifier #350 belongs to session 460363a7. Bao asked Khai whether to keep the existing prod RECRUIT mail_config row and close #350, or approve on notification-service#232.
