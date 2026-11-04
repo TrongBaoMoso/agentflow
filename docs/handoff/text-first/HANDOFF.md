@@ -208,3 +208,11 @@ What it means for Recruit:
 - Bao sent Khai (in the 09:07 Connect Zoom DM thread) the secretAccessor ask for recruit-be-deploy@ on both zoomgo secrets, for staging AND prod. If prod lacks it, the next recruit-be prod release stops at secret sync because #846 lists the names.
 - Measured 21:00: staging grant still missing; #840 is still draft.
 - moso-notifier #350 belongs to session 460363a7. Bao asked Khai whether to keep the existing prod RECRUIT mail_config row and close #350, or approve on notification-service#232.
+
+## Full audit 04/11 ~21:50 VN (measured, session a8ef2df9)
+- In PRODUCTION: recruit-be #698–#702 #707 #762–#764 #769 #773 #775 #792 #793 #796 #799 #800 #802 #804 #806–#808 #813 #815 #818; recruit-fe #550 #552 #554 #557 #607 #618 #619 #621 #630 #655 #657 #661 #662 #664 #667 #668 #672–#674; omni #659.
+- STAGING only: recruit-be #846 (other session), recruit-fe #677 (Connect Zoom page), omni #663 #665 #672 #674. Open drafts: recruit-be #840, #844.
+- Prod flags: text-first, scheduled-send-info, zoom-connect absent (off); zoom-link-autolink and MMI push on. Prod sms_enabled=false, allowlist []. Staging sms_enabled=true, allowlist [+14085381464] (left on for tests).
+- Prod DB: Flyway 320; recruiter_zoom_link 1 row; 1 MMI webhook ever (our 30/10 test, so Vic's team has not pushed since); scheduled sends 0.
+- Topic omni-question-events now exists in lender-rate and omni prod has #659: bead pgziz closed. ex16t closed (Conversations on prod).
+- Staging zoomgo secretAccessor grant still missing at 21:50.
