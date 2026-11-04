@@ -304,3 +304,9 @@ Next steps on resume:
 - On resume: `git -C recruit-be fetch && git -C recruit-be merge-base --is-ancestor bca432ca0 origin/production` -> if yes, check cd-production run + pods, then `bd close agentflow-rf9sm`.
 - Not done: catalog CANDIDATE_UPDATE description still says "(the owner, the specialist or an admin)"; it should name the manager (D362). Needs a catalog push.
 - Self-test guide given to Bao: QA Tenbbelow 2afc3b27 (owner bao.trinh+recruiter, OB bao.trinh@), manager bao.trinh+manager; QA Claudeflow 1acd5fd6 (owner bao.trinh@, OB onb-test) for the transfer-bell test; bao.trinh+hh for the Headhunter case. Never confirm Mark done.
+
+## 04/11 evening — D363 BE on PRODUCTION, catalog text on STAGING
+
+- recruit-be production 88973c020 (pushed by session 9d6e7072) contains #814 (D363); verified 2 pods Ready, 0 ERROR lines in 2h.
+- recruit-be #839 (CANDIDATE_UPDATE description: owner while still staff, specialist, manager, admin) merged 0257c6683, on staging; boot push answered permissions_updated=1. Goes to prod with the next recruit-be prod push.
+- Left: recruit-fe #676 rides the next shared recruit-fe prod push (Bao 04/11: do not push FE alone). Then close agentflow-rf9sm.
