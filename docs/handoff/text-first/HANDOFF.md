@@ -168,3 +168,14 @@ Session a8ef2df9. Spec: `SPEC.md` in this folder. Mockup: https://claude.ai/arti
 - omni #663 (4a808af) and #665 (a7f0e89a) are now on omni STAGING, not production.
 - Live: staging `/api/zoom/callback` 302 → /settings/connections; prod 404 (FE #677 not on prod, expected).
 - Khải message now covers staging AND production (prod: recruit.loanfactory.com/api/zoom/callback on zoom-go prod allowlist; secrets in project lender-rate, which Bao cannot list).
+
+## Khải's review of omni #663 + #665 (03/11 18:14 + 19:03) — follow-up PR owed by Bao
+
+Both PRs are merged and on omni STAGING; Khải wants ONE follow-up PR before omni goes to production. Bead `agentflow-tf2zb` (omni side), `agentflow-jmstt` (recruit-be side).
+
+What it means for Recruit:
+- **Bug that reaches Recruit (#663):** an off-file sender (unknown SMS number, unknown or DMARC-failed email to the LO's reply alias) is published as `author_side: EXTERNAL` with no author. recruit-be drops only `INTERNAL`, so a stranger's mail can count as "the LO replied" (stops cadence, Today/Hot "replied, unanswered", stores the stranger's preview). Omni fix: require `AuthorPartyID != nil` (+ ideally the subject's principal, `confiningEdge`). recruit-be defence: `agentflow-jmstt` (measure first that real LO replies carry `author_party_id`).
+- **call_result values differ:** event (#663) = `ANSWERED`/`MISSED`; `/comm/latest` (#665) = raw `CONNECTED`/`MISSED`/`VOICEMAIL`/`NOT_REPORTED`. recruit-be `ActivityServiceImpl.setInboundDetails` keeps ONLY `ANSWERED`/`MISSED`; recruit-fe `conversations/_utils/latestLine.ts` reads the raw values. So **do not rename either side** — document the mapping in omni README (CONNECTED→ANSWERED, MISSED/VOICEMAIL→MISSED, NOT_REPORTED→absent). If omni ever aligns, recruit-be must accept `CONNECTED` first.
+- **Duration (#665):** `call_duration_seconds` is ring time for missed calls. FE already shows "missed" first, but a `NOT_REPORTED` call with ring time would read "talked Ns". Omni fix: duration only for `CONNECTED`.
+- **Content decision (#177 rule):** Khải must say yes/no to `preview`/`subject` on the event before omni prod. If no: revert both; recruit-be fetches text by `omni_message_id` (Today quote + Conversations bubble lose text until then).
+- Omni-only items (no Recruit change): README wording on when `call_result` is present, move the confinement filter before the LATERAL, add a conformance fixture for `/comm/latest`.
