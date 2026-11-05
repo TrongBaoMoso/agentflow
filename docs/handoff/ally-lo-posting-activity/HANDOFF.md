@@ -59,3 +59,43 @@ Purpose: is each LO effective; avoid "spoon feeding" with auto posts. Columns 2�
 - 04/11 15:00 range picker (6o9sa.4): #2696 merged 042f4e8e, staging rev 01589; verified on staging.
 - 04/11 16:20 6o9sa.5: moso-aid #212 merged 7abdef7 rev 00201, staging measured sources.referrals=not_configured. lf #2697 (table fits 1090px, CSS only) PR open, reviewed, waiting Bao re-login on viet18 to preview before merge.
 - 04/11 16:35 6o9sa.5 done on staging: lf #2697 9bd2931b rev 01590 (table 1091px = box, no scroll at 1440), moso-aid #212 rev 00201 (referrals not_configured banner).
+
+## RESUME POINT (paused 04/11 ~16:45, session abfb7280)
+Resume: `cd ~/Projects/agentflow && claude --resume abfb7280-5783-4e50-91ec-d72fe22848ff`
+- STAGING done & measured: 6o9sa.1-.5 all closed. Before/after artifact: https://claude.ai/artifact/Rbpvz7LDZb2grArvD3YvC3
+- Nothing running; no open PRs/worktrees for this feature.
+- WAITING (not ours): Dat x-api-key + since/until (posts, budget) → then call real API: email vs company_email match, zero-post users omitted?, since/until semantics, shoot posts modal.
+- WAITING: Khải/Đạt grant secretAccessor on recruit-be-recruit-referrals-internal-api-key → recruit-be-deploy@; then add line to helm-chart/config/staging/secret-keys.txt, redeploy, verify gateway 200, referrals column fills.
+- PROD: not touched; needs Bao go + agentflow-048o (Cloud Run public ingress / forged x-moso-user-id, DevOps) + prod secret.
+- bd dolt push → 403 (account lacks write on TRONGBAO2104/agentflow).
+
+## 04/11 evening — Ally service route measured (staging)
+- Dat shipped `GET /v1/reports/service/posting-activity` (+ `/{user_id}/destinations`) with `x-api-key` + `since`/`until` (DATE only). Live prod spec: not yet.
+- Measured: since/until = whole UTC days (echo `T00:00:00Z` / `T23:59:59.999999Z`, until clamped to now if in future); date-times → 422; span > 366 days → 400 "at most 366 days"; zero-post users ARE listed (all 17 staging users); list has `user.email` only (no company_email); positive control chauchau.inc@gmail.com 89 auto_post in 365d (last 2026-08-31).
+- `/v1/admin/ambassador/spend` still Bearer-only → budget stays "unauthorized"; needs a service twin from Dat.
+- moso-aid branch agent/agentflow-6o9sa.6-ally-service-route: switch to service path + plain-date params + exactness for UTC echo/clamp.
+- PROD GATE: before moso-aid prod release, confirm prod Ally has /v1/reports/service/posting-activity (live prod spec 04/11: NOT yet).
+- 04/11 18:35 6o9sa.6 DONE on staging: moso-aid #213 (service route, plain dates, UTC exactness) + #214 (match by MOSO sign-in e-mail decoded from key; 3 passes). rev 00203. UI: Aug 2026 → Chau Chau 15/15 automatic, modal lists 15. Prod Ally now also serves the service route (spec 04/11 18:30); staging ALLY key → 401 on prod (prod needs its own key). Budget still Bearer-only. Modal shows live_at in UTC clock (7:37 AM = 00:37 LA) — minor.
+- 04/11 19:15 re-checked: secret IAM policy EMPTY; bao.trinh has no setIamPolicy (403). Can grant: owners (khai@loanfactory.com, khai@moso.com, thanh.t.tran@, info@moso.com), dat.vo@ (secretmanager.admin), hoa.truong@ (projectIamAdmin). Other recruit-be secrets all have accessor for recruit-be-deploy@ + versionAdder for bao.
+- CORRECTION: prod moso-aid (project lender-rate, rev 00125) ALREADY has a prod ALLY_API_KEY that returns 200 on prod /v1/reports/service/posting-activity (Oct 2026: 1607 users). Spend → 401 with prod key too. No new Ally key needed for posts on prod.
+- Prod checklist: (1) moso-aid master→prod release (rev 00125 has no /lo-programs/activity); (2) prod RECRUIT_API_URL + RECRUIT_REFERRALS_SERVICE_KEY on moso-aid prod + prod secret + IAM + secret-keys line in recruit-be prod; (3) lf-homepage: lift NOT_ON_PRODUCTION/activityTabAllowed only after agentflow-048o; (4) budget waits Dat.
+
+## RESUME POINT — PAUSED 05/11 morning (session abfb7280)
+
+State: unchanged since 04/11 evening. Staging posts live (moso-aid rev 00203); referrals wait on IAM grant
+(recruit-be-recruit-referrals-internal-api-key policy still EMPTY); budget waits on Dat's x-api-key spend route
+(none in staging spec at last check). Prod: nothing deployed; needs Bao go + agentflow-048o closed.
+
+Done 05/11: drafted English status message to Victoria (Bao sends it himself; artifact Rbpvz7LDZb2grArvD3YvC3 is
+private, Bao must Share). Replied "no HOLD" to session e19da9e9's recruit-be prod release (none of its commits are ours).
+
+NEXT (proposed to Bao, waiting for his OK — do in order, no stops once approved):
+1. Read-only prod measurement: match the 16 approved prod Ambassadors (MOSO prod Datastore) against prod Ally
+   service posting-activity (prod moso-aid ALLY_API_KEY works) -> how many will show numbers vs "—".
+2. Posts modal: show live_at in America/Los_Angeles instead of a UTC clock (lf-homepage, to staging).
+3. English share-friendly artifact for Victoria (screens + how to use; no internal names/IAM talk).
+4. Prepare prod PRs as DRAFTS only (moso-aid release, lf-homepage lift activityTabAllowed / NOT_ON_PRODUCTION
+   once 048o closes); do not merge.
+Also re-check both blockers first: `gcloud secrets get-iam-policy recruit-be-recruit-referrals-internal-api-key
+--project lenderrate-master` and the staging Ally spec for a service spend route.
+Open question for Victoria: is "From template" (self_template) self-posted or automatic?
