@@ -82,7 +82,7 @@ Field names are exactly the table above (no renames, no reuse: packs `ready_to_j
   normalised to UTC instants). `_ack_at` is server-stamped and a client value is dropped; once stamped an ack cannot be
   withdrawn (same as the mortgage-website ack). All 8 fields come back from `getRegisterLoanOfficer` for `?key=` resume.
   Not accepted on the webinar / refer-a-LO public paths. The FE may send `call_windows: []` to clear.
-- recruit-be mirrors them onto the candidate (Flyway V330; columns `call_windows`, `call_asap`, `call_time_zone`,
+- recruit-be mirrors them onto the candidate (Flyway V331; columns `call_windows`, `call_asap`, `call_time_zone`,
   `special_requests`, `special_requests_ack(_at)`, `tech_literacy_ack(_at)`, `sms_consent`) and returns them on
   `GET /api/v1/candidates/{id}` snake_case; ack times are `{timestamp, formatted, zone}` like every Instant there.
   `sms_consent` = packs `is_consent_checkbox`, recorded only. Missing keys never erase; an empty list clears.
