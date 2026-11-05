@@ -1,5 +1,23 @@
 # LO Registration v2 — HANDOFF
 
+## RESUME POINT — 06/11 ~07:00 (session 8658d500, Bao asleep overnight, all work pushed)
+
+**Done overnight (Bao approved: v2 to STAGING, URL swap, FE first + BE PRs, MS prod, cleanup, close old beads)**
+- MS 1099 on PRODUCTION: lf #2710, lo #933 (cherry-pick), verified live (MS editable, SC still W-2).
+- /join v2 on STAGING: lf #2711 + #2712 + #2713, lo #934 + #935 + #936; recruit-be #879 (V331, promote to staging is a manual "Promote to staging" workflow). 2 reviews on every PR.
+- URL swap: lf /join/<slug> → 308 /recruit/<slug>; lo /<site>/join = form, /<site>/recruit = landing.
+- wcwfu: execute/GetOp fallback removed on master (staging) in lf + lo; prod still has it until v2 ships.
+- Staging E2E: 5/5 scenarios PASS (leads bao.trinh+joinv2a…j0611 in Recruit staging Hot leads); 3 bugs fixed (captcha wait/inline error, ready_to_join resume).
+- Review page with before/after: https://claude.ai/artifact/UR6uhYg8mRTmDq2vAQ2vgP (private to Bao).
+- Closed beads tdqcv, zo816, tax65, lr5an, lm8sc (verified). New bead: remove the unknown-field retry before prod.
+
+**Open / waiting**
+1. packs #3840 DRAFT (Khải): stores the 6 new fields + server ack stamps, returns them and ready_to_join from getRegisterLoanOfficer. Until deployed, the form drops the 6 fields on save (temporary retry in joinSave.ts) and "ready to join" resume works only in the same browser (localStorage marker).
+2. recruit-fe display of call windows / special requests / acks on the lead (not built).
+3. Bao: review /join v2 on staging; real Compensation Policy URL (now /team-policies); old /<site>/join links now open the form; videos are constants; "Set by our team / This is wrong" on legal name not built.
+4. DO NOT promote lf/lo master → production until Bao approves /join v2 AND packs #3840 is on production.
+5. Known non-issues: POST <page> 405 on staging = cookie banner server action (site-wide); recruit-intake 400 in headless = reCAPTCHA score 0.
+
 ## RESUME POINT — PAUSED 05/11 ~02:00 (session 8658d500)
 
 Nothing running. All work below is pushed.
