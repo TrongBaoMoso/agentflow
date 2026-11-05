@@ -235,3 +235,15 @@ On resume:
 2. Run `bash docs/handoff/text-first/resume-0511/wait_grant.sh` in the background.
 3. Re-create the Mon-Fri cron (`17,47 8-20 * * 1-5`) that reads the DM.
 4. Once the staging grant exists: mark #840 ready, merge, check commits in staging...master, promote, check `/me/zoom/status`, then Bao clicks Connect Zoom.
+
+## 05/11 ~09:30 VN: Khải decided on omni #663 (read from Bao's mail; omni comment 04/11 17:50Z)
+
+- **Keep `preview`/`subject` on the inbound-reply event. No revert.** recruit-be already stores the text (V307), so a fetch by `omni_message_id` is not needed. #177 (audit archive content) is closed and does not apply here.
+- **RECENT_PAIR keeps its content** (as #674 shipped). recruit-be counts it as the LO replying (D366).
+- Bead `agentflow-tf2zb` closed. **Conditions before the omni PRODUCTION release (#663 #665 #672 #674)**, epic `agentflow-vk8qv`:
+  1. `.1` recruit-be: null `inbound_preview`/`inbound_subject` and the call fields when a candidate is erased. Measured 05/11: no erasure path in recruit-be touches `activities`. Khải also wants a recruit-be GitHub issue linked on omni #663 (ask Bao before posting).
+  2. `.4` No log sink and no BigQuery export on `omni-inbound-reply` and `omni-inbound-reply.dlq`.
+  3. `.2` No payload in logs: `OmniInboundMessageHandler.java:207` logs `poison.getMessage()`. With Jackson 2.19.2 the source snippet is off by default, but messages like `Unrecognized token 'xyz'` still quote payload text, so log the exception class only.
+  4. Scope stays as is: 140 runes, omitempty, LO_CANDIDATE only, never on outbound-sent or audit events. A new subject type needs its own decision.
+  5. `.3` RECENT_PAIR is not time-bounded (a recycled number can match): recruit-fe labels such a reply "from an unverified number"; recruit-be never saves that number onto the candidate from the event alone. Measured 05/11: the handler writes no phone today, and `sender_match` is not stored, so the FE cannot label it yet.
+- Effect: omni prod (and so Text first + the Conversations latest-message column on prod) now waits on these recruit-side items, not on a Khải answer.

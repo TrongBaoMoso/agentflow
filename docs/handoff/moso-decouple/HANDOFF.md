@@ -619,3 +619,10 @@ Bao shut the machine down to go home. Resume the session and continue from here.
 - MANAGER gets WEBINAR_SCHEDULE_MANAGE.
 - The status filter includes Denied by LO, as the ticket says.
 - All replies to Bao in VIETNAMESE (memory feedback_always_vietnamese_to_bao).
+
+## 05/11 ~09:30 VN: moso-notifier #350 is merged (read from Bao's mail; notification-service#232)
+
+- Khải merged #350 to notifier master as `03a42734` on 04/11 18:07Z, under wave-freeze go-ahead 6636450191, after a rebase on `a60ba123` (only the MARKETPLACE test line changed).
+- Promoted to notifier **staging** `4063bc2c` on 04/11 20:10Z, together with #411, #412 and #413.
+- **Not on production yet.** It rides the next Go-pin production promotion, earliest Fri 06/11 after the sweep, or Mon 09/11. It changes nothing that runs: Java is off in prod, Go has seeded RECRUIT from ENGAGEMENT since notification-service #363 (prod image `42066c99`), and a prod RECRUIT `mail_config` row already exists (found 26/10).
+- Left: the one-line `_contract/java-acks.txt` entry for `03a42734` on notification-service is not there yet (checked 05/11). It is a PR only, and the wave freeze is still on, so ask Khải on #232 first. Bead `agentflow-0gwad.2` notes updated.
