@@ -1,5 +1,24 @@
 # LO Registration v2 — HANDOFF
 
+## RESUME POINT — PAUSED 05/11 ~02:00 (session 8658d500)
+
+Nothing running. All work below is pushed.
+
+**Done 05/11**
+- Mockup v19 (https://claude.ai/artifact/92Yarua4tCB9TwhQontgn7): tech literacy = last section (7) of Step 4; waiver chips removed; hero style A locked. Brayan signed off ("everything seems good"). PLAN.md §9 has every decision.
+- CT/NY/VI dropped from the states-to-sponsor pickers: LIVE on PRODUCTION (lf #2700 -> `production`, lo #931 -> `produciton-v2`, cherry-pick only), verified on www.loanfactory.com + www.suongloanofficer.com (use www; apex lands on the home page in headless Chrome).
+- Mississippi may choose 1099 (Licenses "Both"): on STAGING (lf #2701, lo #932), verified on www.viet18.com (MS editable, SC control still W-2).
+- Bao skipped: NC/KY exclusivity question, RI supervisory-distance copy.
+
+**Waiting on Bao**
+1. MS 1099 to production? If yes: cherry-pick lf 73e8c48b onto `production`, lo 10894b343 onto `produciton-v2` (do NOT merge master: lf has ~37, lo ~120 unreleased commits), PR, merge, verify like the CT/NY/VI check (scratchpad scripts are temporary; re-create from this note).
+2. Start coding the /join v2 form? First deliver a plan + time estimate, no code before Bao says go.
+3. Still unanswered from 30/10: D268/D269 staging flags; close tdqcv/zo816/tax65/lr5an; wcwfu + lm8sc.
+
+**Notes**
+- gcloud auth expired on 05/11 night (Bao: `gcloud auth login` + `gcloud auth login --update-adc` if needed). Prod deploy was confirmed by the page buildId changing instead.
+- Worktrees: lf/lo-homepage-worktrees/{sponsor-prod,ms-1099} are merged and can be removed.
+
 ## RESUME POINT — PAUSED 04/11 evening (+07), session 8658d500
 
 **Done 04/11**
