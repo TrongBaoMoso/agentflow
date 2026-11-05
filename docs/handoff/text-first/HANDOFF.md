@@ -303,3 +303,15 @@ Work: recruit-be #864 items 1-2 (epic `agentflow-vk8qv`, P0), assigned to this s
 - Connect Zoom: Bao waived his staging click (05/11 23:45, "thôi ko cần làm, lên prod đi") and chose to ride the NEXT SHARED prod release (a solo FF would carry 15 other-session commits, including HOLD #841). #844 merged (809e9ffc3) and promoted to staging; it changes only `helm-chart/config/production/*`. The next prod FF carries it; afterwards check `/me/zoom/status` on prod (200, connected:false). See memory project_connect_zoom_ready_prod_0611.
 - #851 (prod SMS) is still DRAFT. Gate: #864 items 1+2 (PR #869, 20f99f3f7, on staging) on production. Handed to session agentflow-60 (989dd1c5) with the steps: rebase, merge, promote, next prod FF, then Bao's 3 admin settings.
 - The Slack follow-up cron ends with this session.
+
+## MORNING 06/11 (night work, session 989dd1c5 / agentflow-19, Bao asleep): #864 items 1-3 ON STAGING
+- Item 3 is on staging: recruit-be **#873** `e06efd71f` (V329 `activities.sender_match`; Today `reply_sender_match` and `lo_contact_today.sender_match`) and recruit-fe **#710** `c1a88781` (an amber "Unverified number" / "Số chưa xác minh" chip with a tooltip).
+  - Bao approved the look from the before/after artifact https://claude.ai/artifact/CL5y3fNxwGj3BdhMsK7vDb.
+  - Checked on staging: V329 applied on boot; pod 1/1 with 0 restarts; `/today` answers 200. No row carries `sender_match` yet, because only replies that arrive after V329 get it.
+  - The deployed FE, fed the demo rows, renders exactly 2 tags (the RECENT_PAIR rows). The PARTY rows render none.
+- Items 1-2 (#869) were already on staging.
+- **PROD: not pushed** (Bao: wait for a go-live round). The READY PROD memory `project_vk8qv_ready_prod_0611` lists #869, #873 and #710, plus what follows prod: tell Bao, unblock #851, and Bao sets the 3 admin SMS settings.
+- Item 4: project-level is clean. Posted on #864 (issuecomment-6666093168), asking Khai to check org-level sinks. Waiting on Khai.
+- java-acks.txt for notifier #350: dropped, not needed (`java-drift.sh` is a report, not a gate).
+- CI note: adding a migration needs `docs/SCHEMA.md` regenerated (`python3 scripts/gen-schema-doc.py` against a throwaway Postgres), or `SchemaDocFreshnessTest` fails.
+- Optional for Bao: a live check on staging needs a real SMS reply that omni matches only as RECENT_PAIR. Tests cover the logic.
