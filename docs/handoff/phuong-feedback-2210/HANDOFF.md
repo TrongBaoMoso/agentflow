@@ -657,3 +657,11 @@ Left to do on resume:
 3. #830 verify per role on the merged D388 page: LO sees own only; Manager/Admin see all LOs; HH/Recruiter/OB/TL/LO Support see none; a MOSO-LO-flag user sees it. AFTER shots → before/after artifact for Bao (before shots: shots-referrals-visibility/).
 4. Mark #830/#850 READY FOR PROD; ask Bao "ok lên prod".
 Still with Khai: packs prod hot fix (#3818, #3816, #3831); moso-notifier #350 wave-freeze OK on notification-service#232 + review (and a rebase by moso-decouple).
+
+## RESUMED 05/11 10:07 VN — STAGING DONE (session da43ac56)
+- Promoted cfef17df0 (#850 only; nothing else was waiting) → cd-staging success 03:15Z. Staging now has #830/#836/#850/#863 + fe #688/#698.
+- AFTER per role (refvis.js, 03:20Z): LO 200 own (3) + menu "My referrals"; Admin and Manager (victoria.pham+stg) menu "Referrals", /referrals 200 (96); Recruiter, HH, TL, LO Support 403 + no-access page. PASS. Seth case (staff + MOSO LO) not measured live (unit tests only; prod also needs packs #3830).
+- Note: bao.trinh+manager / +role-officer / +role-onb lost MANAGER/ONBOARDING on 05/11 (Victoria demo prep), so use victoria.pham+stg for Manager checks.
+- #850 PASS: QA Lorrefone column 2 Contacted = green check Nov 4 (was open dot).
+- Before/after artifact: https://claude.ai/artifact/8WYvh2TJnP52EXp1wURjvj
+- READY FOR PROD (waiting on Bao): be #830 + #850 (+ #863), fe #688 + #698; packs #3830 (Khai) for the Seth case.
