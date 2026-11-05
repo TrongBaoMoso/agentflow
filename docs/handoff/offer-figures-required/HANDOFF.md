@@ -54,3 +54,20 @@ Gaps found (not built yet, waiting for Bao):
 3. Recruiter-entered figures + volume are not written back to MOSO/packs (`PacksWritebackPayloadResolver` only writes units12mo when source = MODEX). Matters only if the specialist is assigned in MOSO — ask Phuong/Thuan.
 
 Waiting for Bao: (a) prod go-ahead, (b) do gap 1 now?, (c) ask Phuong about thresholds + where assignment happens, (d) Headhunter button label "Request approval" vs auto-send, (e) restore Manager role on bao.trinh+manager?
+
+## FOLLOW-UP 06/11 00:15 — manager review row shows volume (gap 1 above, Bao approved 05/11 18:40)
+
+| Repo | PR | Merged | Staging |
+|---|---|---|---|
+| recruit-be | #868 | `ac4beed9` | promote-staging run 42069051730, `cd-staging` 42069119031, helm rev 504 — promoted alone (nothing else unpromoted at the time) |
+| recruit-fe | #709 | `448c4cad` | promote-staging run 42071571963, `cd-staging` 42071611856, helm rev 496 — promoted alone (#708 was already on staging) |
+
+- BE: `PendingApprovalQueueResponse.Rule` gains `career_production` (BigDecimal, null when never filled, never 0) from `CandidateEntity.careerProduction`; `Rule.from(explanation, careerProduction)`. Display only — the rule does not judge volume. Not flagged (additive field). Tests: `PendingApprovalQueueRuleJsonTest` (new), `OfferServiceImplPendingApprovalTest#ruleCarriesVolume`, `PendingApprovalQueueIT` asserts the key (CI green).
+- FE: Today invites-to-review row + Focus card (same node, `useDecisionTasks.tsx`) add a third Production line "Volume (12 months)" / vi "Doanh số (12 tháng)" = `$` + next-intl number (grouped), uncoloured; muted "—" when null/absent (older BE). The value wraps under its label (column floor 112px) — checked at 1440 and 1920. No level badge, no thresholds (by design).
+- Other approval surfaces checked: Exceptions ApprovalQueueSection, /invites, bell/notification texts do NOT show the two loan figures → nothing added there. InviteModal (the request form) already had volume from #697.
+- Staging evidence (QA Test Admin = bao.trinh+admin): API `rule.career_production` = 900000 for Blake/Skyler Demo, null for others; UI shows "$900,000" / "—". No test data created or changed (8 pending invites already existed). Before/after in the artifact (Version 2): https://claude.ai/artifact/7zKyQTSzAQrihwZPTpFE38
+
+### Rides along in the next prod FF (origin/production..origin/staging, measured 06/11 00:15)
+recruit-be (17): #869 20f99f3f7 (vk8qv / recruit-be #864 items 1-2, agentflow-19) · #868 ac4beed9c (fzlut, this) · #867 1c761addc (d2uzb) · #865 877765ffd (ub7zs) · #866 3a93a3ae1 (6o9sa.1, staging-only values) · #840 7af1fbd65 (D364 Connect Zoom, staging values) · #850 cfef17df0 (D381) · #859 01f269a31 (D383) · #861 0b59ec877 (0gwad.4.9, V328) · #862 5b5d6996c (0gwad.2, D384) · #863 0b1b189b2 (3mjma, D388) · #860 ef8aeca54 (fzlut, D385, flag absent in prod) · #830 e1e54de82 (D374) · #841 2e8329ef7 (b4hpa.2, D379, V324 — HOLD, see memory: no own flag) · #842 5e591884a (b4hpa.5, D378) · #858 23543787a (0gwad.5.3) · #853 6c36668b8 (0gwad.2, D382).
+recruit-fe (32): #709 448c4cad (fzlut, this) · #708 df8f7656, #706 f65e583f, #705 601d0a34 (ub7zs) · #707 f61c5afd (wjutn) · #703 9777095b (xqqz6) · #702 9c807129 (ugh3x) · #701 ec2139b5 (mph70) · #700 3bafde30, #699 653e5a57, #695 f8cd6727 (0gwad.2) · #696 94dc5255 (D369) · #698 595a2701 (3mjma) · #697 0470f5b5 (fzlut) · #694 27d37c66 (b4hpa.2) · #693 55539ff4 (b4hpa.5) · #692 ba33e8fa (b4hpa.3) · #691 3e405a8a (4r8je) · #690 4a034b98 (7z536) · #689 7603f2e8 (0gwad.5.2) · #688 5619e873 (D374) · #686 dbbeabbb, #685 0ca22e44 (0gwad.4.6) · #687 d324fe9f, #684 12596b98, #681 48df1d8f, #678 8a9653e0 (bd9mc) · #683 25d6aa55 (t39dn) · #682 9fe927b0 (0gwad.10) · #680 8b6e3e07 (conversations) · #675 536fae6e (webinar B3) · #679 67145339 (z6f8l).
+Prod still waits for Bao. #868/#709 are safe to ship with or without the D385 flag (read-only display).
