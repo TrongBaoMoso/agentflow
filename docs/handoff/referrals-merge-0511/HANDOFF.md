@@ -59,3 +59,28 @@ Done as `bao.trinh+admin@loanfactory.com` (ADMIN, central id e1987874) through t
   FE unit tests.
 - Known limits: All scope with "All time" → gateway 503 after ~5 s (packs read of every owner); the All scope defaults to this
   year and shows a "show this year" error on 503. Program catch-up: `agentflow-2odq5`.
+
+## REDESIGN 06/11 (Bao approved mockup-0611: A1 + B2, B3 as a view; decision D394)
+
+**Resume point:** DONE to STAGING 06/11. Nothing in flight. Next: Bao reviews `redesign-0611/review.html` (parent publishes);
+prod = one batch with be #830 + #863 + #876 and fe #698 + #712 + #715 (FF of `production`, release team, Bao's go).
+
+| Repo | PR | What | Merge | Staging run |
+|---|---|---|---|---|
+| recruit-be | #876 | D394: All scope = Loan Officer referrals only (drop LRP snapshot, or undecided/PENDING snapshot + PROGRAM page; drop every HEADHUNTER referrer via `rbac_grants.email` or `referrer_identity`); `totals_by_referrer.last_referred_on`; /mine unchanged | `d906f1cd2` | cd-staging 42099469676 |
+| recruit-fe | #712 | KPI strip (replaces tabs on All), Top referrers, B2 Referrer column, Group by referrer (`group=referrer`, localStorage), no Program/Qualifying on All, em dash, sticky header, pinned Loan officer column | `ed20f5ca` | cd-staging 42099492959 |
+| recruit-fe | #715 | fix found on staging: count cells stacked (UnstyledButton), Top referrers at 375 | `bc60631a` | cd-staging 42104661442 |
+
+D-number: D392 was taken by open #874/#875 (now D393 on master), so this is **D394**.
+Reviews: correctness + security/UX reviewers, no CRITICAL/HIGH; MEDIUMs fixed before merge (single All read after the stored
+grouping, focus to the list after a Top referrers pick, Reset ignores Program/Qualifying on All, header re-sync), D394 names the
+intentionally unfiltered internal paths (Ambassador totals, notice digests).
+
+**E2E on staging (API, since 2026-01-01):** Manager + Admin 97 → 71 rows (24 program + 2 Headhunter REFERRAL rows gone; HH had 18),
+CSV 97 → 71, no HH key in totals_by_referrer / referrer_options, search "QA Tentrefer" 1 → 0, referrers 20 → 19,
+`last_referred_on` present; LO (lo-referrer) /mine 4 → 4; Recruiter and Headhunter on /referrals 403. Evidence:
+`redesign-0611/{before,after}/api-e2e-*.json`, screenshots `redesign-0611/{before,after}/*.png`, scripts `redesign-0611/scripts/`
+(run with `NODE_PATH=~/.mmi-research/node_modules`, behind `ram-gate acquire chrome`).
+
+Open for Bao: TEAM_LEAD not treated as Headhunter; a Headhunter with neither grant e-mail = key nor identity link would still show;
+"Paid this year" sums the paid bonus of people referred in the date range; Top referrers on 375 may scroll its Bonus pending column inside the card.

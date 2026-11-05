@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Referrals redesign review</title>
+<style>
+:root {
+  --bg: #f9f7f4; --surface: #ffffff; --text: #1a1919; --muted: #6e6a68; --border: #eceae6;
+  --accent: #b64200; --good: #256b4f; --good-tint: #e6f2ec; --warn: #92400e; --warn-tint: #fbf1e3;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161514; --surface: #1f1e1c; --text: #f1efec; --muted: #b0aaa4; --border: #34312e;
+    --accent: #f59a5c; --good: #7fd1a8; --good-tint: #1d3329; --warn: #f2c27a; --warn-tint: #3a2d17;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #161514; --surface: #1f1e1c; --text: #f1efec; --muted: #b0aaa4; --border: #34312e;
+  --accent: #f59a5c; --good: #7fd1a8; --good-tint: #1d3329; --warn: #f2c27a; --warn-tint: #3a2d17;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 400 15px/1.55 Inter, "Helvetica Neue", Arial, sans-serif; }
+main { max-width: 1240px; margin: 0 auto; padding: 32px 16px 80px; }
+h1 { font-size: 28px; font-weight: 500; letter-spacing: -0.02em; margin: 0 0 8px; }
+h2 { font-size: 20px; font-weight: 500; margin: 48px 0 8px; }
+h3 { font-size: 15px; font-weight: 500; margin: 0 0 6px; }
+p, li { max-width: 820px; }
+.muted { color: var(--muted); }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; margin: 16px 0; }
+.nums { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.num b { display: block; font-size: 24px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+.pair figure, .single figure { margin: 0; }
+figure img { display: block; width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px; background: #fff; }
+figcaption { font-size: 13px; color: var(--muted); margin-top: 6px; }
+.tag { display: inline-block; font-size: 12px; font-weight: 500; padding: 1px 8px; border-radius: 4px; margin-bottom: 6px; }
+.tag.before { background: var(--warn-tint); color: var(--warn); }
+.tag.after { background: var(--good-tint); color: var(--good); }
+.phones { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 300px)); gap: 16px; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 8px 10px; border-top: 1px solid var(--border); vertical-align: top; }
+th { font-weight: 500; color: var(--muted); }
+a { color: var(--accent); }
+code { font-size: 13px; background: var(--border); padding: 1px 4px; border-radius: 4px; }
+@media (max-width: 760px) { .pair { grid-template-columns: 1fr; } h1 { font-size: 24px; } }
+</style>
+</head>
+<body>
+<main>
+  <p class="muted">Recruit · Referrals · agentflow-3mjma · 06/11 · STAGING (prod chưa đụng)</p>
+  <h1>Trang Referrals đã làm lại theo mockup đã duyệt</h1>
+  <p>Anh ơi, bản A1 + B2 (+ B3 là chế độ xem phụ) đã lên <b>staging</b>. Trang Manager/Admin giờ chỉ còn referral của Loan Officer (chương trình $500): bỏ hết dòng LO Recruiter Program và mọi dòng của người giới thiệu có vai Headhunter (luật a), áp ở <b>BE</b> nên danh sách, số tổng, bảng Top referrers, ô lọc Referrer và file CSV đều khớp nhau. Trang "My referrals" của LO giữ nguyên như anh dặn.</p>
+
+  <div class="card nums">
+    <div class="num"><span class="muted">Dòng Manager/Admin (năm nay)</span><b>97 → 71</b></div>
+    <div class="num"><span class="muted">Dòng LO Recruiter Program</span><b>24 → 0</b></div>
+    <div class="num"><span class="muted">Dòng của HH Test Headhunter</span><b>18 → 0</b></div>
+    <div class="num"><span class="muted">CSV (dòng dữ liệu)</span><b>97 → 71</b></div>
+    <div class="num"><span class="muted">LO Mine (lo-referrer)</span><b>4 → 4</b></div>
+    <div class="num"><span class="muted">Recruiter / Headhunter vào trang All</span><b>403</b></div>
+  </div>
+  <p class="muted">97 − 24 dòng program − 2 dòng Headhunter loại REFERRAL (QA Tentrefer, QA W10Refer) = 71. Tìm "QA Tentrefer" giờ ra 0. Người giới thiệu: 20 → 19 (mất HH). Bằng chứng: <code>before/api-e2e-before.json</code>, <code>after/api-e2e-after.json</code>.</p>
+
+  <h2>Đã làm gì</h2>
+  <ul>
+    <li><b>Dải số (A1)</b> thay hàng tab: Referred / In progress / Joined / Stopped bấm để lọc (gạch dưới = đang chọn); Bonus pending ($ + số người) và Paid this year chỉ để đọc. 6 ô chia đều, không chừa khoảng trống; trên điện thoại 3×2.</li>
+    <li><b>Top referrers</b> thay khối "By referrer (20)": bảng gọn, sắp theo cột được, 5 người đầu, "Show all 19", bấm một dòng = lọc theo người đó (lưu trên URL). Đã lọc theo một người thì khối này ẩn.</li>
+    <li><b>B2 mặc định</b>: cột Referrer hẹp (avatar + tên, không còn chữ "Referrer" lặp). Nút <b>Group by referrer</b> cạnh Table/Cards (URL <code>group=referrer</code>, nhớ theo trình duyệt) chuyển sang <b>B3</b>: xếp theo người giới thiệu, mỗi người một dòng nhãn nhẹ (tên · số giới thiệu · đã gia nhập · thưởng chờ), ẩn cột Referrer.</li>
+    <li>Bỏ bộ lọc Program, Qualifying và nhãn Program khỏi trang Manager/Admin (Mine vẫn giữ).</li>
+    <li>Cả hai trang: bước xong mà không có ngày hiện cùng dấu tick, chỗ ngày ghi "—"; tiêu đề bảng dính dưới thanh trên khi cuộn; cột Loan officer ghim khi kéo ngang, có bóng nhẹ.</li>
+  </ul>
+
+  <h2>Trước / sau — Manager, 1440</h2>
+  <div class="pair">
+    <figure><span class="tag before">Trước</span><img src="before/manager-all-1440.png" width="1440" height="1000" alt="Referrals page before, Manager at 1440" loading="lazy"><figcaption>97 dòng, khối 20 thẻ, tab, bộ lọc Program/Qualifying</figcaption></figure>
+    <figure><span class="tag after">Sau</span><img src="after/manager-all-1440.png" width="1440" height="1000" alt="Referrals page after, Manager at 1440" loading="lazy"><figcaption>Dải số + Top referrers + cột Referrer hẹp, 71 dòng</figcaption></figure>
+  </div>
+
+  <h2>Kéo bảng sang phải (cột Loan officer ghim)</h2>
+  <div class="pair">
+    <figure><span class="tag before">Trước</span><img src="before/manager-all-1440-scrolled-right.png" width="1440" height="1000" alt="Table scrolled right before" loading="lazy"><figcaption>Kéo ngang là mất tên Loan officer</figcaption></figure>
+    <figure><span class="tag after">Sau</span><img src="after/manager-all-1440-scrolled-right.png" width="1440" height="1000" alt="Table scrolled right after, Loan officer column pinned" loading="lazy"><figcaption>Tên vẫn ở trái, bóng nhẹ ở mép cột</figcaption></figure>
+  </div>
+
+  <h2>Cuộn xuống giữa trang (tiêu đề dính)</h2>
+  <div class="pair">
+    <figure><span class="tag before">Trước</span><img src="before/manager-all-1440-mid-scroll.png" width="1440" height="1000" alt="Mid scroll before" loading="lazy"><figcaption>Tiêu đề 9 bước trôi mất</figcaption></figure>
+    <figure><span class="tag after">Sau</span><img src="after/manager-all-1440-mid-scroll.png" width="1440" height="1000" alt="Mid scroll after with sticky header" loading="lazy"><figcaption>Tiêu đề dính ngay dưới dải urgent; dòng Mary Test có "—" ở các bước xong không ngày</figcaption></figure>
+  </div>
+
+  <h2>Các trạng thái mới (sau)</h2>
+  <div class="single">
+    <figure><img src="after/manager-kpi-strip.png" alt="KPI strip close-up" loading="lazy"><figcaption>Dải số cận cảnh</figcaption></figure>
+    <figure style="margin-top:16px"><img src="after/manager-kpi-joined-selected-1440.png" width="1440" height="1000" alt="Joined selected in the KPI strip" loading="lazy"><figcaption>Bấm Joined = lọc như tab cũ</figcaption></figure>
+    <figure style="margin-top:16px"><img src="after/manager-grouped-b3-1440-rows.png" width="1440" height="1000" alt="Grouped by referrer view" loading="lazy"><figcaption>B3 Group by referrer: nhãn nhẹ, không thanh xám, ẩn cột Referrer</figcaption></figure>
+    <figure style="margin-top:16px"><img src="after/manager-filtered-one-referrer-1440.png" width="1440" height="1000" alt="Filtered to one referrer" loading="lazy"><figcaption>Lọc theo Chau Chau: khối Top referrers ẩn</figcaption></figure>
+    <figure style="margin-top:16px"><img src="after/manager-search-qa-tentrefer-none-1440.png" width="1440" height="1000" alt="Search QA Tentrefer returns nothing" loading="lazy"><figcaption>Tìm "QA Tentrefer" (dòng của Headhunter): không còn</figcaption></figure>
+    <figure style="margin-top:16px"><img src="after/manager-mary-test-dash-1440.png" width="1440" height="1000" alt="Mary Test row with em dash" loading="lazy"><figcaption>Mary Test: tick giống nhau, ngày "—"</figcaption></figure>
+  </div>
+
+  <h2>Điện thoại 375 và trang LO (Mine)</h2>
+  <div class="phones">
+    <figure><span class="tag before">Trước · Manager</span><img src="before/manager-all-375.png" width="375" height="1500" alt="Manager page at 375 before" loading="lazy"></figure>
+    <figure><span class="tag after">Sau · Manager</span><img src="after/manager-all-375.png" width="375" height="1500" alt="Manager page at 375 after" loading="lazy"><figcaption>Dải số 3×2, không cuộn ngang trang</figcaption></figure>
+    <figure><span class="tag before">Trước · LO</span><img src="before/lo-mine-375.png" width="375" height="1500" alt="LO page at 375 before" loading="lazy"></figure>
+    <figure><span class="tag after">Sau · LO</span><img src="after/lo-mine-375.png" width="375" height="1500" alt="LO page at 375 after" loading="lazy"></figure>
+  </div>
+  <div class="pair" style="margin-top:16px">
+    <figure><span class="tag before">Trước · LO 1440</span><img src="before/lo-mine-1440.png" width="1440" height="1000" alt="LO page before" loading="lazy"></figure>
+    <figure><span class="tag after">Sau · LO 1440</span><img src="after/lo-mine-1440.png" width="1440" height="1000" alt="LO page after" loading="lazy"><figcaption>Giữ nguyên (tiền, tab, Program/Qualifying); chỉ thêm tiêu đề dính, cột ghim, "—"</figcaption></figure>
+  </div>
+
+  <h2>PR và trạng thái</h2>
+  <table>
+    <tr><th>Repo</th><th>PR</th><th>Merge</th><th>Staging</th></tr>
+    <tr><td>recruit-be</td><td><a href="https://github.com/LoanFactory-Inc/recruit-be/pull/876">#876</a> D394</td><td><code>d906f1cd2</code></td><td>cd-staging 42099469676 ✓</td></tr>
+    <tr><td>recruit-fe</td><td><a href="https://github.com/LoanFactory-Inc/recruit-fe/pull/712">#712</a></td><td><code>ed20f5ca</code></td><td>cd-staging 42099492959 ✓</td></tr>
+    <tr><td>recruit-fe</td><td><a href="https://github.com/LoanFactory-Inc/recruit-fe/pull/715">#715</a> (sửa dải số + Top referrers trên 375)</td><td><code>bc60631a</code></td><td>cd-staging 42104661442 ✓</td></tr>
+  </table>
+
+  <h2>Còn mở / anh quyết</h2>
+  <ul>
+    <li><b>Prod:</b> chưa đẩy. Ba PR này phải đi cùng lô be #830 + #863 và fe #698 (trang gộp chưa lên prod).</li>
+    <li><b>Ô "Paid this year"</b> cộng tiền đã trả của những người <i>được giới thiệu</i> trong khoảng ngày đang chọn (không phải theo ngày trả). Chọn khoảng khác thì nhãn đổi thành "Paid".</li>
+    <li><b>Luật Headhunter</b> tìm người qua email trên quyền Recruit hoặc liên kết referral; Headhunter không có cả hai thì vẫn lọt (staging thì đủ). TEAM_LEAD chưa tính là Headhunter — anh muốn loại luôn không?</li>
+    <li>Dòng có chương trình "PENDING" (chưa chốt) mà vào bằng trang program cũng bị loại, theo đúng nhãn "LO Recruiter Program (not confirmed)" trang đang hiện.</li>
+    <li>Trên 375, bảng Top referrers chỉ còn 3 cột; cột "Bonus pending" có thể phải kéo ngang trong khung (không làm trang cuộn ngang).</li>
+    <li>B3 phân trang theo thứ tự tên người giới thiệu A→Z; một người dài qua 2 trang thì trang sau hiện lại nhãn của họ.</li>
+  </ul>
+</main>
+</body>
+</html>
