@@ -266,3 +266,15 @@ On resume:
 - Bao's staging Connect click with Zoom `manhadmin@viet18.com` failed (`?zoom=error`). zoom-go log: `duplicate key users_los_user_id_key`. That Zoom user is already bound to another los_user_id in zoom-go staging. The "re-point" UPDATE collides with the placeholder row that authorize created for Bao's Recruit id. Nothing was changed for the existing owner. Next: Bao retries with his OWN Zoom (Google/SSO bao.trinh@), in an incognito window if needed. Possible zoom-go follow-up for Khai: a clear "already linked to another user" error.
 - #844 ticked: prod grant (Khai 16:17) and zoom-go prod allowlist. Still open: Bao's staging click. fe #677 is on prod now.
 - #851 gained the condition "#864 items 1+2 on production" (omni prod 8e00e89c already carries #663/#665/#672/#674). Bao assigned #864 items 1+2 to agentflow-19. Prod SMS secrets ticked.
+
+## RESUME POINT: PAUSED 05/11 ~18:00 VN (Bao going home; session a8ef2df9)
+Measured just before the pause:
+- **Connect Zoom (D364).**
+  - Staging works end to end except the click: #840 merged + promoted, pod has flag + zoomgo env. fe #677 is on PRODUCTION (fe prod ec04e91de).
+  - #844 (DRAFT, prod flag + zoomgo secret names) has 3/4 conditions ticked. Remaining: Bao's own staging click.
+  - Bao's first click used Zoom `manhadmin@viet18.com` and failed: zoom-go `duplicate key users_los_user_id_key`, because that Zoom user is already bound to another los_user_id. Next: Bao retries with his OWN Zoom (Google/SSO bao.trinh@, incognito). Bao said "thôi kệ đi" about something, so ask him whether he still wants to test before assuming.
+  - After the click works: rebase #844, ready, merge, then a recruit-be prod FF. Ask other PR owners first: staging is ahead of prod with other sessions' commits, and HOLD #841 (memory project_meet_repeat_bell_prod_hold_0511) applies.
+- **#851** (DRAFT, prod SMS go-live): secrets ticked (Khai 15:54). Waits on #864 items 1+2 on production, assigned by Bao to session agentflow-19.
+- **d2uzb** (Bao said do it): recruit-be **#867** open, branch `fix/mmi-push-store-known-keys`, worktree `_worktrees/rbe-mmi-known-keys`. Local mmi unit 109/109, MmiPush ITs 17/17. CI had 2 checks pending at pause. Resume: when green, `gh pr merge 867 --squash`, check `staging...master` for other sessions' commits, `gh workflow run promote-staging.yml -f sha=<master sha>`, watch "Deploy staging (GKE)". The first build today hung for 40 min and was cancelled; a `--failed` re-run of the run worked. Then close bd agentflow-d2uzb.
+- **Slack follow-up** (Bao↔Khai DM, read only, Mon–Fri): stopped for the pause. State is in `resume-0511/khai_watch.json` (last_seen_ts 1793873591.691849). Re-create the cron `17,47 8-20 * * 1-5` on resume.
+- **gcloud:** Bao re-logged at ~17:10 (`gcloud auth login --update-adc`). If kubectl fails with reauth, ask him to run it again.
