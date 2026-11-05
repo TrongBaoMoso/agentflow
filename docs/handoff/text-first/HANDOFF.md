@@ -221,3 +221,17 @@ What it means for Recruit:
 - Checked origin/production: no autonomous sender opens. Text first and scheduled Send info start from a recruiter; nurture drip (flag absent) and webinar reminder texts (settings false) stay off by their own switches.
 - recruit-be **#851** (DRAFT): prod flags SCHEDULED_SEND_INFO + CALL_TEXT_FIRST + ALLOW_ANY_RECIPIENT + unsubscribe base URL, secret-keys drip key + unsubscribe HMAC. Prod recruit-svc-secret has neither key today (26 keys, names only), so: Khai creates both in lender-rate + secretAccessor for recruit-be-deploy@, then merge, release, then admin settings (delivery_mode SEND, recipient_policy ANY, sms_enabled true). Senders also need Connect Zoom on prod (#844 + fe #677).
 - Bao: keep staging SMS (1464 only). Deleted recruit-fe branch shots/scheduled-sms-autosend.
+
+## RESUME POINT: PAUSED 05/11 ~07:40 VN (Bao shut the Mac down; session a8ef2df9)
+State, measured just before the pause:
+- recruit-be **#856** (agentflow-4d) MERGED 01:24. It took the zoom-go secret names out of production `secret-keys.txt`.
+- recruit-be **#844** (DRAFT, branch `chore/zoom-connect-production`, worktree `_worktrees/rbe-zoom-prod`) is rebased on top of #856 (head 9ebd08b38). It now carries the prod flag AND puts both secret-name lines back; `ZoomConnectFlagTest` requires both on production (3/3 locally, CI green). The PR body lists 4 conditions to meet before merging: Bao's staging click; Khai confirms recruit-be-deploy@lender-rate can read both secrets; zoom-go #179 prod return URL; fe #677 on prod.
+- recruit-be **#840** (DRAFT, staging secret lines) waits on secretAccessor for recruit-be-deploy@lenderrate-master on both zoomgo secrets. Last check: still missing.
+- recruit-be **#851** (DRAFT, prod SMS go-live) waits on Khai: create the drip key + unsubscribe HMAC secrets in lender-rate and grant access.
+- Stopped before the pause: grant poller and Slack follow-up cron (both are session-only). Copies are in `docs/handoff/text-first/resume-0511/`: `wait_grant.sh`, and `khai_watch.json` (DM D08J9K3NVND last_seen_ts + threads).
+
+On resume:
+1. Re-read the Bao<->Khai DM (read only) after `last_seen_ts` and report any new Khai messages, with draft replies in Bao's style.
+2. Run `bash docs/handoff/text-first/resume-0511/wait_grant.sh` in the background.
+3. Re-create the Mon-Fri cron (`17,47 8-20 * * 1-5`) that reads the DM.
+4. Once the staging grant exists: mark #840 ready, merge, check commits in staging...master, promote, check `/me/zoom/status`, then Bao clicks Connect Zoom.
