@@ -73,3 +73,18 @@ All on the LORecruiting registration payload, snake_case, all optional (absent =
 | `tech_literacy_ack` | boolean | "I meet this expectation"; packs stamps `tech_literacy_ack_at` |
 If an existing packs field already means the same thing (check `LORecruiting` first, e.g. a ready-to-join flag),
 reuse it and note it here instead of adding a new one.
+
+### Backend status (06/11, agentflow-wcwfu) — contract implemented unchanged
+Field names are exactly the table above (no renames, no reuse: packs `ready_to_join` exists and is untouched).
+- packs draft PR LoanFactory-Inc/packs#3840 (Khai merges): fields on `LORecruiting`, validation in `JoinV2Preferences`
+  (HTTP 400 on bad input: >3 windows, non-ISO/inverted windows (end must be after start, max 12 h), non-IANA zone,
+  >10 requests or >500 chars; special requests are trimmed and empty rows dropped; duplicate windows dropped, windows
+  normalised to UTC instants). `_ack_at` is server-stamped and a client value is dropped; once stamped an ack cannot be
+  withdrawn (same as the mortgage-website ack). All 8 fields come back from `getRegisterLoanOfficer` for `?key=` resume.
+  Not accepted on the webinar / refer-a-LO public paths. The FE may send `call_windows: []` to clear.
+- recruit-be mirrors them onto the candidate (Flyway V330; columns `call_windows`, `call_asap`, `call_time_zone`,
+  `special_requests`, `special_requests_ack(_at)`, `tech_literacy_ack(_at)`, `sms_consent`) and returns them on
+  `GET /api/v1/candidates/{id}` snake_case; ack times are `{timestamp, formatted, zone}` like every Instant there.
+  `sms_consent` = packs `is_consent_checkbox`, recorded only. Missing keys never erase; an empty list clears.
+- Follow-up (not done): recruit-fe display of windows / ASAP / zone / requests / ack times.
+
