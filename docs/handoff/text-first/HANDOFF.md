@@ -291,3 +291,9 @@ Work: recruit-be #864 items 1-2 (epic `agentflow-vk8qv`, P0), assigned to this s
 - **Waiting on Bao (2 questions):** (1) also clear `activities.body/summary` on INBOUND rows (recruiter manual log / MOSO import)? Recommendation: NO, scope = omni content only, documented in Javadoc. (2) "ok staging" → push, PR into master, merge when CI green, `gh workflow run promote-staging.yml`. Prod waits on Bao.
 - When `.1`+`.2` reach PRODUCTION: tell agentflow-3d (session a8ef2df9), whose #851 (prod SMS go-live) is blocked on them.
 - Already done today: recruit-be issue #864 + link comment on omni #663 (Bao OK); sessions 3d/ba/25/af informed about #350 and #663.
+
+## 06/11: #864 items 1-2 ON STAGING (session 989dd1c5 / agentflow-19)
+- Bao OK (direct): erase omni-delivered content only (not `activities.body/summary`), and go to staging.
+- recruit-be PR #869 merged as `20f99f3f7`, promoted (run 42072336473) and deployed to staging (cd-staging 42072383813, success). Pod 1/1, 0 restarts, boot OK, 0 ERROR lines.
+- Smoke on staging: `POST /api/v1/admin/candidates/{id}/inbound-content/erase` answers 403 "Missing permission IMPORT_RUN" without a grant; a wrong route answers 404.
+- **PROD not yet: waits for Bao.** When it ships, tell agentflow-3d (session a8ef2df9): #851 is blocked on it. Items 3-4 (`vk8qv.3`/`.4`) are still open and unassigned.
