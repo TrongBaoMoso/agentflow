@@ -278,3 +278,16 @@ Measured just before the pause:
 - **d2uzb** (Bao said do it): recruit-be **#867** open, branch `fix/mmi-push-store-known-keys`, worktree `_worktrees/rbe-mmi-known-keys`. Local mmi unit 109/109, MmiPush ITs 17/17. CI had 2 checks pending at pause. Resume: when green, `gh pr merge 867 --squash`, check `staging...master` for other sessions' commits, `gh workflow run promote-staging.yml -f sha=<master sha>`, watch "Deploy staging (GKE)". The first build today hung for 40 min and was cancelled; a `--failed` re-run of the run worked. Then close bd agentflow-d2uzb.
 - **Slack follow-up** (Bao↔Khai DM, read only, Mon–Fri): stopped for the pause. State is in `resume-0511/khai_watch.json` (last_seen_ts 1793873591.691849). Re-create the cron `17,47 8-20 * * 1-5` on resume.
 - **gcloud:** Bao re-logged at ~17:10 (`gcloud auth login --update-adc`). If kubectl fails with reauth, ask him to run it again.
+
+## RESUME POINT: PAUSED 05/11 ~17:30 VN (session 989dd1c5 / agentflow-19, Bao shut the Mac down)
+
+Work: recruit-be #864 items 1-2 (epic `agentflow-vk8qv`, P0), assigned to this session by Bao via agentflow-3d.
+- Code DONE, LOCAL ONLY: worktree `recruit-be-worktrees/vk8qv-inbound-erasure`, branch `agent/agentflow-vk8qv-inbound-erasure`, commit `211aca0ed` (on origin/master 7af1fbd65). NOT pushed, no PR.
+  - `.1`: `InboundContentErasure` + `POST /api/v1/admin/candidates/{candidateId}/inbound-content/erase` (IMPORT_RUN; catalog updated) nulls inbound_preview/inbound_subject/call_result/call_duration_seconds for one candidate, keeps opt_out, writes an internal SYSTEM audit activity.
+  - `.2`: poison log = exception class + line/column (`poisonSummary`). RED shown (2/4 leaked with the old line).
+  - Shared test helper `testsupport/CapturedLog` (log4j2). docs/STATUS.md row added.
+  - Tests green: unit (PoisonLog 5, handler 26, controller 2, RbacCatalogCoverage 22) + `./gradlew integrationTest` (InboundContentErasureIT 3, RbacCatalogRoleParityIT 6). ITs run under `integrationTest`, not `test`.
+- java-reviewer done. Fixed: audit row, javadoc, catalog indent, test gaps. Merge-loser concern void (merge re-keys activities).
+- **Waiting on Bao (2 questions):** (1) also clear `activities.body/summary` on INBOUND rows (recruiter manual log / MOSO import)? Recommendation: NO, scope = omni content only, documented in Javadoc. (2) "ok staging" → push, PR into master, merge when CI green, `gh workflow run promote-staging.yml`. Prod waits on Bao.
+- When `.1`+`.2` reach PRODUCTION: tell agentflow-3d (session a8ef2df9), whose #851 (prod SMS go-live) is blocked on them.
+- Already done today: recruit-be issue #864 + link comment on omni #663 (Bao OK); sessions 3d/ba/25/af informed about #350 and #663.
