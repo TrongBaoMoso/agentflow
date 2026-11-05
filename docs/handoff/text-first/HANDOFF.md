@@ -253,3 +253,8 @@ On resume:
 - zoom-go #179 also changed `helm-chart/config/prod/values.yaml`. The `prod` branch allowlist contains https://recruit.loanfactory.com/api/zoom/callback, and the prod pipeline succeeded 04/11 10:58Z. #844 condition 3 is done. The live configmap could not be read (forbidden).
 - Bao re-pinged Khai in the Connect Zoom thread (14:21) and sent the #851 prod secrets ask as a new DM (14:24, ts 1793863466.508029). No Khai reply yet.
 - Still open: recruit-fe #677 must reach production (fe staging is 25 commits ahead of prod) before #844.
+
+## 05/11 ~15:30 VN: omni is on PRODUCTION; Khải's conditions are now due
+- omni-service production = `8e00e89c` (its owner released it 05/11 08:05Z, from notification-service#232). It carries #663, #665, #672 and #674. So preview/subject/call_result/sender_match now reach recruit prod.
+- recruit-be prod `ead26bf7f` already has #818 (it ack-drops UNVERIFIED senders, D366).
+- Bao approved directly, then this was posted: recruit-be issue **#864** (the 4 conditions) and a link comment on omni #663. Epic `agentflow-vk8qv` raised to P0. Recruit prod has no real users yet (Bao 03/11), so the exposure is small, but `.1` erasure and `.2` poison log should go first.
