@@ -427,6 +427,17 @@ Bao 02/11 (option A): only the onboarding specialist contacts the loan officer. 
 - Correction recorded: Recruit's main path already matched "OB sends" (hand-off ON on prod); only the no-OB fallback mailed From the recruiter.
 - Gaps (D354 row): a later OB clear does not ring the assigners; a waiting invite counts as invite_trouble on Today.
 
+## MORNING 05/11 07:50 VN (session 460363a7): night work done
+
+Measured, staging only (prod untouched except the other session's FF to ead26bf7f, which carried S3/S7 dark).
+
+- **P1a (own lead key):** recruit-be #853 (6c36668b8, D382) and #862 (5b5d6996c, D384); recruit-fe #695, #699 and #700. All are on staging. Flags: NATIVE_CANDIDATE_CREATE=true, MOSO_RECORD_REQUIRED=false. A no-MOSO lead's invite is refused until P4 S2 flips `MosoRecordRequiredFlag#recruitJoinLinkLive`. Details in P1A-OWN-KEY.md.
+- **P4 S3:** #835 (ed1b6d52a) on staging and prod, dark. #858 drops the prod boot ERROR when PayPal is unconfigured.
+- **Webinar B4:** 4.8 recording link (fe #696) is closed. 4.9 referrer mail (be #861, 0b59ec877, D386, V328) is on staging; delivery is not measured yet. The runbook is in webinar-b4-followups/NOTES.md.
+- **P4 S2:** lf-homepage #2702 is a DRAFT and waits for Bao's screenshot OK plus Khai's staging secret RECRUIT_ONBOARDING_PORTAL_API_KEYS. See P4-S2.md.
+- **05:00 measures:** MOSO 2-month drip sent 8 real mails (7 delivered, 1 opted-out skip). Staging EMAIL_2D for crm5 was delivered. B4 sent the attended and missed variants correctly.
+- **Review page:** https://claude.ai/artifact/6SFTk57YuyvyNjUhMRziSf
+
 ## RESUME POINT: PAUSED 04/11 17:20 VN (session 460363a7)
 
 **Done today, all on STAGING (production untouched; Bao GO'd the dark prod FF to agentflow-bc for #816 #820 #821 #822 #823 #824 #825 #826)**
