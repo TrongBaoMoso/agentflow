@@ -41,9 +41,24 @@ Bao chose variant B on 06/11 at about 01:40 VN. It is live on STAGING only. Prod
 | `after-4-duplicate-1440.png` | Same e-mail again: the D384 notice + Open lead under e-mail/phone |
 | `after-5-empty-375.png`, `after-6-duplicate-375.png` | Phone width |
 
+## Follow-up fixes (recruit-fe #714, merged as `11819419`)
+
+1. **Avatar.** With no name typed, the header avatar read "(N". It now uses `InitialsAvatar`'s own fallback "?", the same one the app shows for any missing name. The heading still says "(no name)".
+2. **Legal name right after a create.** A lead created from a first name alone showed "Legal last name: This field is required" in red at once.
+   - The block already stays quiet while pristine (no legal name yet). A lead this browser created through Add lead in the last 10 minutes now counts as pristine too. That memory is in-page only, per lead, and cleared on sign-out.
+   - The first touch brings the same error back. The rule is unchanged, and the Confirm button still refuses the incomplete name.
+
+BEFORE: `fix2-before-avatar-1440.png`, `fix2-before-avatar-375.png`, `fix2-before-legal-1440.png` (copies of the first run's AFTER shots, taken on the #711 build).
+AFTER: `fix2-after-avatar-1440.png`, `fix2-after-avatar-375.png`, `fix2-after-legal-quiet-1440.png`, `fix2-after-legal-touched-1440.png`.
+
+Measured on staging after promoting master tip `11819419` (it also carried webinar-auto-3's #713 D389, with the lead's OK). The staging deploy was green, and recruit-frontend was 2/2 ready on pods that rolled at 20:26Z.
+- The empty avatar reads "?" at both 1440 and 375.
+- Lead `c5affad8-f2f0-43e1-9503-023fef62db82` was created from a first name and an e-mail.
+  - Before the legal block was touched: 0 "This field is required".
+  - After typing in the legal first name box: 1.
+  - The lead is ARCHIVED afterwards.
+
 ## Open questions for Bao
 
-1. **The avatar reads "(N" when there is no name.** `InitialsAvatar` takes the initials of "(no name)". The fix could be a blank or person icon there; it is not done yet.
-2. **Right after creation, "Legal last name: This field is required" shows in red** when only a first name was typed. This is the existing legal-name block on any lead that has no last name. It is not new, but variant B now lands people on it straight away. Should it stay quiet until someone touches it?
-3. **Typed values below the minimum are lost if the popup is closed.** Nothing is saved yet, as the hint says. Should closing ask for confirmation when something was typed?
-4. **Retyping the exact same e-mail after a duplicate does not retry.** The value is unchanged, so nothing is sent. Changing the e-mail or phone, or any other field, retries.
+1. **Confirm on close?** Values typed below the minimum are lost if the popup is closed. Nothing is saved yet, as the hint says. Should closing ask for confirmation when something was typed? That would need new copy.
+2. **Retry on the same e-mail after a duplicate.** Retyping the exact same e-mail sends nothing, because the value did not change. Changing the e-mail or phone, or any other field, retries. Should the notice offer an explicit retry, or is this fine as is?
