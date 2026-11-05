@@ -99,3 +99,30 @@ NEXT (proposed to Bao, waiting for his OK — do in order, no stops once approve
 Also re-check both blockers first: `gcloud secrets get-iam-policy recruit-be-recruit-referrals-internal-api-key
 --project lenderrate-master` and the staging Ally spec for a service spend route.
 Open question for Victoria: is "From template" (self_template) self-posted or automatic?
+
+## RESUME POINT — PAUSED 05/11 ~17:55 (session abfb7280)
+
+Unblocked today and shipped to STAGING:
+- Khai granted secretAccessor (staging) + created the empty PROD secret recruit-be-recruit-referrals-internal-api-key
+  with accessor for recruit-be-deploy@lender-rate and versionAdder for bao (17:13, not verifiable from bao's account).
+- recruit-be #866 (3a93a3ae1): staging secret-keys line RECRUIT_REFERRALS_INTERNAL_API_KEY; promoted (workflow_dispatch
+  "Promote to staging") + Deploy staging OK. Measured: activity-totals no key 401, moso-aid key + owner_keys 200.
+  (Without owner_keys the gateway answers 503 "Backend service is temporarily unavailable" — not a config problem.)
+- Dat shipped GET /v1/admin/ambassador/service/spend (x-api-key, period=YYYY-MM, same shape; staging + prod spec).
+  Staging 200: 2026-11 1 row (Lien Pham), 2026-10 3 rows (budget 50000 cents), 2026-08 0 rows.
+- moso-aid #215 (bb4050d) readBudget -> service/spend; 61/61 tests; staging rev moso-aid-00204-nmv.
+- bead agentflow-6o9sa.7 (open) — close after the UI check below.
+
+NEXT on resume:
+1. Bao logs in on viet18.com (staging session expired) -> open /manage-lo-programs/ambassador-program, Activity:
+   check referral banner gone + Referred/Onboarding/Onboarded numbers, Budget column for Oct 2026 (Lien Pham / Chau Chau);
+   screenshots into artifact Rbpvz7LDZb2grArvD3YvC3; close 6o9sa.7.
+2. Then the 4 proposed items (prod read-only match of 16 Ambassadors, LA time in posts modal, English artifact for
+   Victoria, draft prod PRs). Prod secret VALUE: add it only at prod release, in the same step as moso-aid prod env
+   RECRUIT_REFERRALS_SERVICE_KEY (bao can add versions but not read them back).
+3. Prod still needs Bao go + agentflow-048o + recruit-be prod secret-keys line.
+
+INCIDENT 05/11 17:30: a mis-rooted `git commit -a` committed other sessions' dirty files into agentflow main and pushed
+(5b2e8d1, message wrongly says recruit-be secret line). Includes 3 staging login state JSONs with live refresh tokens;
+repo TrongBaoMoso/agentflow is PUBLIC. Not rewritten. Waiting on Bao: make repo private? revoke those staging
+sessions? gitignore docs/handoff/recruit-e2e-lab/scripts/state_*.json?
