@@ -38,3 +38,19 @@ Flag: `recruit.features.offer-figures-required` / `RECRUIT_FEATURES_OFFER_FIGURE
 - Observation (pre-existing, not changed): for a program member the form always predicts "Request approval", but D64 may auto-send (Headhunter test went SENT).
 - `tsc` on recruit-fe master has a pre-existing error in `InviteProgressCard.test.tsx:397` (not from this change).
 - recruit-be docs/list comments still say lists don't show volume (D31 wording on Pipeline/Cold/CSV); left as is per "don't rewrite list columns".
+
+## RESUME POINT — PAUSED 05/11 (session 29c4fa84)
+
+Re-measured 05/11 10:08: be #860 / fe #697 merged to master, NOT in `production`; staging config `offer_figures_required: true` (logged in as recruiter); prod values have no flag.
+
+Transcript `docs/transcripts/2026-11-04_production-loan-officer-in-recruiting-app.md` (Phuong, first ~16 min) adds:
+- Volume is needed for the Executive / Presidential levels: e.g. 15 loans OR $30M in the last 12 months.
+- Flow: Recruiter enters figures -> Victoria (Manager) reviews the table and qualifies -> Support Specialist (= Onboarding Specialist, being renamed; teams merging per Thuan) assigned by level.
+- Block at the Qualified click; null not allowed, 0 allowed (matches what shipped).
+
+Gaps found (not built yet, waiting for Bao):
+1. Manager review row (Today -> invites to review, `useDecisionTasks.tsx` ~L139) and BE `PendingApprovalQueueResponse.Rule` show only loans since / 12mo, no volume. Proposed: add volume, ship with the same prod release.
+2. No level badge / level-based Support Specialist assignment; needs exact thresholds from Phuong.
+3. Recruiter-entered figures + volume are not written back to MOSO/packs (`PacksWritebackPayloadResolver` only writes units12mo when source = MODEX). Matters only if the specialist is assigned in MOSO — ask Phuong/Thuan.
+
+Waiting for Bao: (a) prod go-ahead, (b) do gap 1 now?, (c) ask Phuong about thresholds + where assignment happens, (d) Headhunter button label "Request approval" vs auto-send, (e) restore Manager role on bao.trinh+manager?
