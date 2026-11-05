@@ -258,3 +258,11 @@ On resume:
 - omni-service production = `8e00e89c` (its owner released it 05/11 08:05Z, from notification-service#232). It carries #663, #665, #672 and #674. So preview/subject/call_result/sender_match now reach recruit prod.
 - recruit-be prod `ead26bf7f` already has #818 (it ack-drops UNVERIFIED senders, D366).
 - Bao approved directly, then this was posted: recruit-be issue **#864** (the 4 conditions) and a link comment on omni #663. Epic `agentflow-vk8qv` raised to P0. Recruit prod has no real users yet (Bao 03/11), so the exposure is small, but `.1` erasure and `.2` poison log should go first.
+
+## 05/11 ~17:30 VN (session a8ef2df9, measured)
+- Khai granted the zoomgo secretAccessor on staging (~16:00) and confirmed prod in Slack (16:17). He also created the prod SMS secrets (15:54).
+- #840 merged (7af1fbd65) and promoted. The staging deploy's first build hung and was cancelled; the re-run succeeded at 09:50Z. The staging pod has the flag true and both zoomgo env vars set (presence checked only).
+- recruit-fe production was fast-forwarded to ec04e91de: #677 ONLY, the first commit after the old prod, so no other session's PR was included. The prod deploy succeeded. With the BE flag off, /me/zoom answers 404 and the card shows the old link status.
+- Bao's staging Connect click with Zoom `manhadmin@viet18.com` failed (`?zoom=error`). zoom-go log: `duplicate key users_los_user_id_key`. That Zoom user is already bound to another los_user_id in zoom-go staging. The "re-point" UPDATE collides with the placeholder row that authorize created for Bao's Recruit id. Nothing was changed for the existing owner. Next: Bao retries with his OWN Zoom (Google/SSO bao.trinh@), in an incognito window if needed. Possible zoom-go follow-up for Khai: a clear "already linked to another user" error.
+- #844 ticked: prod grant (Khai 16:17) and zoom-go prod allowlist. Still open: Bao's staging click. fe #677 is on prod now.
+- #851 gained the condition "#864 items 1+2 on production" (omni prod 8e00e89c already carries #663/#665/#672/#674). Bao assigned #864 items 1+2 to agentflow-19. Prod SMS secrets ticked.
