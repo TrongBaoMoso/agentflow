@@ -139,3 +139,19 @@ sessions? gitignore docs/handoff/recruit-e2e-lab/scripts/state_*.json?
   shows $0 / $0. Decide: "spent / budget" (month_budget_cents, already in API) vs current.
 - Prod checklist add: moso-aid prod must carry #215 + #216; prod referral secret VALUE + moso-aid prod RECRUIT_API_URL /
   RECRUIT_REFERRALS_SERVICE_KEY in one step; recruit-be prod secret-keys line; Ally prod has service/spend (spec 05/11).
+
+## 06/11 02:40 — ON PRODUCTION (session abfb7280, Bao approved "ok lên prod" 06/11 ~01:00)
+- moso-aid: prod env set first (--update-env-vars only, 17 → 19 vars: RECRUIT_API_URL=https://gateway.loanfactory.com/recruit-svc,
+  RECRUIT_REFERRALS_SERVICE_KEY = same value as new prod secret recruit-be-recruit-referrals-internal-api-key v1); then
+  PR #217 master → pro (only #211–#216) → rev moso-aid-00127-lvd (fbba540). Prod Ally key: service posts + spend 200.
+- lf-homepage production: hotfix #2704 (cherry-picks #2695 #2696 #2697 #2703 + lift NOT_ON_PRODUCTION/activityTabAllowed for the
+  two Activity reads; team routes stay refused) → rev 00760; master mirror #2705 so the next promotion keeps it.
+  Loader: #2706 (LoaderLF) then #2708 (Mantine orange oval — LoaderLF gif is 1.1 MB, blank first frames); prod #2707 + #2709 → rev 00762.
+- Budget cell = spent / month budget, approved bills in tooltip (#2703, Bao OK).
+- Measured on PROD (IT Team login, Oct 2026): 16 Loan Officers; posts real (Matthew Fallon 145, Michael Hicks 100, Seth August 38);
+  budget Seth $0 / $1,000, LO Demo $0 / $500; referrals banner "not connected yet" (expected).
+- PENDING: recruit-be #872 (prod secret-keys line, merged to master 6773683f9) rides the NEXT recruit-be production FF (Bao: "để lô sau";
+  prod is 19 commits behind incl. HOLD #841). After it lands: activity-totals on gateway.loanfactory.com → 200, banner disappears.
+- PERF: prod Activity first load 13–14 s (Ally serves 17 pages × ~1.2 s; parallel does not help: 6 pages in 4.5 s). Cache 60 s.
+  Ask Dat for an emails/user_ids filter on service/posting-activity. Not changed.
+- agentflow-048o still open (accepted by Bao for this release).
