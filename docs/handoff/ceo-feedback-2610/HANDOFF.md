@@ -17,6 +17,14 @@ Bao's answers 05/11: Meet = repeat bell (no auto-Done); invite reminders = both 
 - Found and fixed on the way: recruit-be #857 0e35dff7f = D380 query cast bug (non-numeric dedupe key broke the LO reminder tick) + the RbacCentralFlagsTest fix master needed after #852 (#854 closed as duplicate). fe #694 needed a type fix (two `repeat` declarations).
 - Before/after shots for the two FE changes: `shots-0511-night/` (agent run 05/11 night).
 
+### Measured 05/11 10:20 (resume audit)
+- On production already: be #843 + #849 + #857 + #803 (code only; invite-reminder flags absent in prod values, 0 INVITE_REMINDER mails on prod), fe #666.
+- Staging only: be #842, #841 (V327; prod flyway max V326); fe #690 #691 #692 #693 #694.
+- Staging LO reminder mails: 6, all to bao.trinh+ (lo-mail allowlist), 4 test d0 + 2 real d5 (02:40, 03:00 VN).
+- Staging staff bells since 04/11 18:00 VN: INVITE_REMIND 5, ONBOARDING_1ON1_NOT_BOOKED 7, INVITE_WAITING_FOR_SPECIALIST 77 (5 invites, 19 recipients incl. 4 admins x9). Meet repeat bells 0 (no new PROPOSE_DONE).
+- GAP: RECRUIT_PLATFORM_INBOX_ENABLED=true on staging AND prod; catalog lacks INVITE_WAITING_FOR_SPECIALIST / HOT_AUTO_ASSIGNED / ONBOARDING_MEETING_ATTENDANCE -> generic "Update about {lo}" -> bead b4hpa.6 (P2).
+- Test accounts now: +recruiter/+onb-test/+manager = RECRUITER only, +admin = ADMIN, +hh = HEADHUNTER (Vic demo cleanup).
+
 ### PROD HOLD (for whoever fast-forwards production next)
 - recruit-be 2e8329ef7 (#841) has NO flag of its own: it rides `recruit.features.meet-attendance`, ON in production since 29/10. Stop at 5e591884a, or set prod `onboarding.meeting.attendance_repeat_after_business_hours=0` first, or get Bao's OK. Production was ead26bf7f at 02:35 05/11 (agentflow-4d confirmed).
 
