@@ -588,3 +588,46 @@ Open, in order:
   - The temporary REFERRER on bao.trinh+role-nogrant is REMOVED.
   - BEFORE shots are in shots-referrals-visibility/before-*.png. For AFTER, use docs/handoff/recruit-e2e-lab/scripts/refvis.js; the LO row needs a REFERRER or LO test account.
   - Prod has 9 referrers with a staff role; they see My referrals only once #836 is merged and packs #3831 is deployed.
+
+## LO referrer test account + E2E (04/11 evening, agent lo-referrer, session da43ac56). STAGING only.
+
+Bao approved the account on 04/11 (open item 4 above).
+
+**Account**
+- E-mail: `bao.trinh+lo-referrer@loanfactory.com`. The password is ONLY in `.worktrees/_designs/staging-test-accounts.local.md`.
+- MOSO staging: LO Admin "LO Referrertest", created 11:25Z by chauchau in the MOSO UI (*Associates > Create a new account*: Independent Contractor W-9, role Loan officer, LO type Independent (1099), NMLS 9931977).
+  - Fields: `is_loan_originator=true`, `brokerage=false`, `active=true`, company e-mail = the same address.
+  - Slug `loreferrertest` (auto-derived from the name), so the site is https://www.viet18.com/loreferrertest and /join.
+  - The site only answered after chauchau ran *Action > Unmark "Not 100% Onboarded"*. A new Admin is `is_pending_loan_officer=true`, and `AdminPages.findRoot` 302s every pending LO to `/`.
+- Central account: user-service created it automatically from MOSO (`97df650d-3120-46e1-85ae-e85d8bb63c91`, 11:26Z). The password was set through auth-service's internal `/api/v1/auth/password/reset`, called from inside the cluster.
+- Recruit role: REFERRER only, no rbac_grants row. It was assigned by `POST /admin/referrer-role/backfill?since=2026-11-04` as chauchau (`assigned=1`), because the automatic sweep did not run on staging at that time: the 11:37Z boot logged `RbacMirrorTickCronRegistrar` "Not registering cron job … reconcile.internal-api-key is unset". Session e19da9e9 reports the tick live later on 04/11 (#837); re-check it.
+
+**Test referrals** (registered on the LO's /join webinar form; MOSO `referred_by` = the LO)
+- QA Lorrefone, `bao.trinh+lor-ref1@…`, NMLS 9426814713, candidate d8bacc7e.
+- QA Lorreftwo, `bao.trinh+lor-ref2@…`, NMLS 5952882190, candidate cb3e8a39.
+
+**Checks**
+1. Copy link: PASS. `/referrals/mine` returns `referral_link=https://www.viet18.com/loreferrertest/join` (200).
+2. LO view: PASS. The menu shows only Referrals > My referrals, and the page lists 2 referrals. Screenshot: `shots-referrals-visibility/after-lo.png`, sent to agent referrals-visibility.
+3. Digest e-mail: PASS. The 14:20:08Z tick logged `sent=1`, digest key `referral-updates:97df650d…:fb82a017296664ca`. SendGrid reported DELIVERED at 14:20:13Z. Subject: "An update on a person you referred", sent to bao.trinh+lo-referrer@.
+   - The 12:20 tick only seeded the snapshot.
+   - The 13:20 tick was quiet, because a logged call did not move "Contacted" (the bug below).
+   - The change that was reported: QA Lorreftwo, Contacted → Agreement signed, after the manager clicked "Send to onboarding" at 13:50Z.
+
+**Bug found and fixed: D381, recruit-be #850.** A "Log result" writes only a SYSTEM row with `call_outcome`, never a CALL row. The referral view's `HUMAN_TOUCH` ignored that row, so "Contacted" stayed open. Bao decided on 04/11 that every logged result counts, NO_ANSWER included.
+- Staging impact, predicted: 10 of 64 referrals become Contacted, and 1 gets an earlier Contacted date.
+- The fix is on STAGING. It is **READY FOR PROD** with the next recruit-be prod push; it has no flag and no migration.
+
+- D378 interplay (#842, MISSED Zoom call auto-logs No answer): the auto row is written through `recordOutcome` with the DIALLER's actor, so it counts under D381. But the dial's own CALL/OUTBOUND row is earlier and already counted, so nothing changes. Team lead agreed: auto-logged results are NOT excluded. A row whose actor is literally `SYSTEM` never counts.
+
+**Side findings, not fixed**
+- The LO /join form POSTs `/webplus-api/recruit-intake` on www.viet18.com and gets 405. registerWebinar itself returns 200.
+- Staging's RBAC tick was unregistered at 11:37Z, so at that time new referrers got REFERRER only through the backfill. Re-check after #837.
+
+**PAUSED 05/11 (Bao shut the machine down).** recruit-be #850 (D381) had auto-merge ON at head 3d088047 (team lead resolved the DECISIONS conflict). It was NOT yet merged or promoted.
+Left to do:
+1. Confirm #850 merged; if it is BEHIND, run `gh pr update-branch 850`.
+2. `gh workflow run promote-staging.yml -R LoanFactory-Inc/recruit-be -f sha=<merge sha>`.
+3. As bao.trinh+lo-referrer, GET /referrals/mine: QA Lorrefone must show Contacted done (it has a logged result only).
+4. Count the staging referrals whose step changed (predicted: 10 of 64 newly Contacted, 1 with an earlier date).
+5. Mark it ready-for-prod.
