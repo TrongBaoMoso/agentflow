@@ -2,7 +2,7 @@
 // usage: node refvis.js <outDir> <before|after>
 const { chromium } = require('playwright'); const { login, api } = require('./auth');
 const OUT = process.argv[2]; const TAG = process.argv[3] || 'before';
-const ALL_ROLES = [['lo', 'bao.trinh+role-nogrant@loanfactory.com'], ['manager', 'bao.trinh+manager@loanfactory.com'],
+const ALL_ROLES = [['lo', 'bao.trinh+lo-referrer@loanfactory.com'], ['manager', 'bao.trinh+manager@loanfactory.com'],
   ['admin', 'bao.trinh+admin@loanfactory.com'], ['recruiter', 'bao.trinh+recruiter@loanfactory.com'],
   ['headhunter', 'bao.trinh+hh@loanfactory.com'], ['teamlead', 'bao.trinh+role-teamlead@loanfactory.com'],
   ['onboarding', 'bao.trinh+role-onb@loanfactory.com'], ['losupport', 'bao.trinh+role-losupport@loanfactory.com']];
@@ -17,14 +17,20 @@ const ROLES = process.env.ONLY ? ALL_ROLES.filter(([n]) => process.env.ONLY.spli
     const mine = await api(r.token, 'GET', '/referrals/mine?pageSize=1');
     const all = await api(r.token, 'GET', '/referrals?pageSize=1');
     const row = { name, roles: nav.body?.payload?.role_codes ?? nav.body?.role_codes ?? nav.status,
+      my_referrals: nav.body?.payload?.my_referrals,
       has_referrals: nav.body?.payload?.has_referrals ?? nav.body?.has_referrals,
-      mine: mine.status, mineTotal: mine.body?.payload?.total ?? mine.body?.total, all: all.status };
-    for (const [path, slug] of [['/my-referrals', 'my-referrals'], ['/referrals', 'referrals']]) {
+      mine: mine.status, mineTotal: mine.body?.payload?.total_items, all: all.status, allTotal: all.body?.payload?.total_items };
+    const PAGES = TAG === 'before' ? [['/my-referrals', 'my-referrals'], ['/referrals', 'referrals']]
+      : [['/my-referrals', 'my-referrals'], ['/my-referrals?scope=all', 'referrals']];
+    for (const [path, slug] of PAGES) {
       await r.p.goto(BASE + path, { waitUntil: 'domcontentloaded' });
       await r.p.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {}); await r.p.waitForTimeout(3500);
       const navText = await r.p.locator('nav').allInnerTexts().catch(() => []);
       row[slug + '_url'] = r.p.url().replace(BASE, '');
-      row.navMy = navText.join(' ').includes('My referrals'); row.navAll = /(^|\s)Referrals(\s|$)/m.test(navText.join('\n'));
+      row.navLinks = await r.p.locator('nav a[href*="referrals"]').allInnerTexts().catch(() => []);
+      row.navMy = row.navLinks.length > 0;
+      row[slug + '_denied'] = (await r.p.locator('[role=alert]').count()) > 0;
+      row[slug + '_rows'] = await r.p.locator('table tbody tr').count().catch(() => -1);
       await r.p.screenshot({ path: `${OUT}/${TAG}-${name}-${slug}.png` });
     }
     rows.push(row); await r.ctx.close();

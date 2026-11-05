@@ -631,3 +631,10 @@ Left to do:
 3. As bao.trinh+lo-referrer, GET /referrals/mine: QA Lorrefone must show Contacted done (it has a logged result only).
 4. Count the staging referrals whose step changed (predicted: 10 of 64 newly Contacted, 1 with an earlier date).
 5. Mark it ready-for-prod.
+
+## WHERE I STOPPED — 05/11 ~02:40 +07 (session da43ac56, agent referrals-visibility) — My referrals visibility (D374)
+- **Merged + on STAGING:** recruit-be #830 (e1e54de82, includes #836 MOSO `is_loan_originator` read), recruit-fe #688 (5619e873); packs #3830/#3831 merged, packs staging has #3830 (SWAT 11:20Z 04/11). Later D388 (#863 / fe #698) merged My referrals + Referrals into one page (`/my-referrals`, `?scope=all`). NOT on production; Bao: staging only.
+- **Verified:** BEFORE per role on staging (all roles got 200 on `/referrals/mine`; Headhunter saw My referrals). Unit/IT tests and 2 reviews per PR. NOT yet verified: AFTER per role on the current staging build (BE 5b5d6996c was still deploying at the pause).
+- **Shots:** BEFORE `docs/handoff/phuong-feedback-2210/shots-referrals-visibility/before-<role>-{my-referrals,referrals}.png`; AFTER LO from agent lo-referrer: `after-lo.png` (branch docs/lo-referrer-test-0411).
+- **Next:** run `CHROME_BIN=<chromium_headless_shell-1248 binary> NODE_PATH=/Users/apple/.npm/_npx/705bc6b22212b352/node_modules node docs/handoff/recruit-e2e-lab/scripts/refvis.js docs/handoff/phuong-feedback-2210/shots-referrals-visibility after` (via ram-gate chrome; LO row = bao.trinh+lo-referrer). Expect: LO 200 /mine + nav "My referrals"; Manager/Admin nav "Referrals", /referrals 200, /mine 403 unless MOSO LO; HH/Recruiter/OB/TL/LO Support no nav entry, /mine 403, URL shows no-access. Then build the artifact (scratchpad builder `build_artifact.py` + `refvis-template.html`, before.json) and publish; report URL + pass/fail per role to team-lead.
+- **Ready for prod (when Bao says):** be #830 + fe #688 (+ D388's #863/#698); packs #3830 must be deployed to prod for the LO-with-work-role (Seth) case, otherwise the role fallback applies.
