@@ -247,3 +247,9 @@ On resume:
   4. Scope stays as is: 140 runes, omitempty, LO_CANDIDATE only, never on outbound-sent or audit events. A new subject type needs its own decision.
   5. `.3` RECENT_PAIR is not time-bounded (a recycled number can match): recruit-fe labels such a reply "from an unverified number"; recruit-be never saves that number onto the candidate from the event alone. Measured 05/11: the handler writes no phone today, and `sender_match` is not stored, so the FE cannot label it yet.
 - Effect: omni prod (and so Text first + the Conversations latest-message column on prod) now waits on these recruit-side items, not on a Khải answer.
+
+## 05/11 ~14:30 VN (session a8ef2df9, measured)
+- #851 was in conflict with master after #856. Rebased: production secret-keys keeps only the drip key and the unsubscribe HMAC lines; the zoom-go lines stay in #844. Head 8e3d93e20, CI green, CLEAN, still DRAFT.
+- zoom-go #179 also changed `helm-chart/config/prod/values.yaml`. The `prod` branch allowlist contains https://recruit.loanfactory.com/api/zoom/callback, and the prod pipeline succeeded 04/11 10:58Z. #844 condition 3 is done. The live configmap could not be read (forbidden).
+- Bao re-pinged Khai in the Connect Zoom thread (14:21) and sent the #851 prod secrets ask as a new DM (14:24, ts 1793863466.508029). No Khai reply yet.
+- Still open: recruit-fe #677 must reach production (fe staging is 25 commits ahead of prod) before #844.
