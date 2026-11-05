@@ -22,10 +22,10 @@
     },
     {
       "name": "__Host-lf_account_refresh",
-      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlMTk4Nzg3NC1hNmVhLTQ2ZDctODJlMy1iMDM0NDQwZDBhZmQiLCJpc3MiOiJodHRwczovL2FjY291bnQudmlldDE4LmNvbSIsImFjY291bnRfaWQiOiI5NzIwYzc3Ny0zMDIzLTQyZWItYWFmOS0yZmVjZmY2YTA4MGIiLCJ1c2VyX2lkIjoiZTE5ODc4NzQtYTZlYS00NmQ3LTgyZTMtYjAzNDQ0MGQwYWZkIiwidGltZV96b25lIjoiWiIsImlhdCI6MTc5MzY5OTAxMiwiZXhwIjoxNzkzOTU4MjEyLCJhY2Nlc3NfdHlwZSI6IlJFRlJFU0hfVE9LRU4iLCJpZGVudGlmaWVycyI6WyJiYW8udHJpbmgrYWRtaW5AbG9hbmZhY3RvcnkuY29tIl0sInN0YXR1cyI6IkFDVElWRSIsInZlcmlmeSI6dHJ1ZSwiYXV0aG9yaXRpZXMiOlsiUkVDUlVJVCNBRE1JTiIsIkFDQ09VTlQjVVNFUiJdLCJwcm9kdWN0IjoiQUNDT1VOVCIsInNpZCI6IjE2NTQwYjY3LTQ3ZWYtNGU1NS1iZGY3LTUyMTU4NTgyNjRkOSJ9.lRpVTOV5J3Zb3P4i_ZtcIJ7mS9GQTlXsBZkyqhNIXYQ",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlMTk4Nzg3NC1hNmVhLTQ2ZDctODJlMy1iMDM0NDQwZDBhZmQiLCJpc3MiOiJodHRwczovL2FjY291bnQudmlldDE4LmNvbSIsImFjY291bnRfaWQiOiI5NzIwYzc3Ny0zMDIzLTQyZWItYWFmOS0yZmVjZmY2YTA4MGIiLCJ1c2VyX2lkIjoiZTE5ODc4NzQtYTZlYS00NmQ3LTgyZTMtYjAzNDQ0MGQwYWZkIiwidGltZV96b25lIjoiWiIsImlhdCI6MTc5Mzc5Mzc3MiwiZXhwIjoxNzk0MDUyOTcyLCJhY2Nlc3NfdHlwZSI6IlJFRlJFU0hfVE9LRU4iLCJpZGVudGlmaWVycyI6WyJiYW8udHJpbmgrYWRtaW5AbG9hbmZhY3RvcnkuY29tIl0sInN0YXR1cyI6IkFDVElWRSIsInZlcmlmeSI6dHJ1ZSwiYXV0aG9yaXRpZXMiOlsiUkVDUlVJVCNBRE1JTiIsIkFDQ09VTlQjVVNFUiJdLCJwcm9kdWN0IjoiQUNDT1VOVCIsInNpZCI6IjExZDE0ZTcxLWY5NTgtNDgwOC05YTIwLTAzNjJjMWQ5YmM1MiJ9.FqVhLJmkrWniULrL7alvvIciLpnHqysvx5jvKA-e-vY",
       "domain": "account.viet18.com",
       "path": "/",
-      "expires": 1793958212.343135,
+      "expires": 1794052973.281736,
       "httpOnly": true,
       "secure": true,
       "sameSite": "Lax"
@@ -35,7 +35,7 @@
       "value": "1",
       "domain": ".viet18.com",
       "path": "/",
-      "expires": 1793958212.343529,
+      "expires": 1794052973.282426,
       "httpOnly": false,
       "secure": true,
       "sameSite": "Strict"
@@ -45,19 +45,9 @@
       "value": "1",
       "domain": "recruit.viet18.com",
       "path": "/",
-      "expires": 1794303814.685839,
+      "expires": 1794398575.380537,
       "httpOnly": false,
       "secure": true,
-      "sameSite": "Lax"
-    },
-    {
-      "name": "GCLB",
-      "value": "CNq-6eXKvYCFuQEQAw",
-      "domain": "msg.viet18.com",
-      "path": "/",
-      "expires": -1,
-      "httpOnly": true,
-      "secure": false,
       "sameSite": "Lax"
     }
   ],
@@ -67,11 +57,11 @@
       "localStorage": [
         {
           "name": "recruit-fe-auth-storage",
-          "value": "{\"state\":{\"accessToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlMTk4Nzg3NC1hNmVhLTQ2ZDctODJlMy1iMDM0NDQwZDBhZmQiLCJpc3MiOiJodHRwczovL2FjY291bnQudmlldDE4LmNvbSIsImFjY291bnRfaWQiOiI5NzIwYzc3Ny0zMDIzLTQyZWItYWFmOS0yZmVjZmY2YTA4MGIiLCJ1c2VyX2lkIjoiZTE5ODc4NzQtYTZlYS00NmQ3LTgyZTMtYjAzNDQ0MGQwYWZkIiwidGltZV96b25lIjoiWiIsImlhdCI6MTc5MzY5OTAxNCwiZXhwIjoxNzkzNzA2MjE0LCJhY2Nlc3NfdHlwZSI6IkFDQ0VTU19UT0tFTiIsImlkZW50aWZpZXJzIjpbImJhby50cmluaCthZG1pbkBsb2FuZmFjdG9yeS5jb20iXSwic3RhdHVzIjoiQUNUSVZFIiwidmVyaWZ5Ijp0cnVlLCJhdXRob3JpdGllcyI6WyJSRUNSVUlUI0FETUlOIiwiQUNDT1VOVCNVU0VSIl0sInByb2R1Y3QiOiJSRUNSVUlUIiwic2lkIjoiMTY1NDBiNjctNDdlZi00ZTU1LWJkZjctNTIxNTg1ODI2NGQ5In0.5MEvHOFmef5s3DVNcymgx8ko-AH1j35YdA3EJnJN-DE\",\"refreshToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlMTk4Nzg3NC1hNmVhLTQ2ZDctODJlMy1iMDM0NDQwZDBhZmQiLCJpc3MiOiJodHRwczovL2FjY291bnQudmlldDE4LmNvbSIsImFjY291bnRfaWQiOiI5NzIwYzc3Ny0zMDIzLTQyZWItYWFmOS0yZmVjZmY2YTA4MGIiLCJ1c2VyX2lkIjoiZTE5ODc4NzQtYTZlYS00NmQ3LTgyZTMtYjAzNDQ0MGQwYWZkIiwidGltZV96b25lIjoiWiIsImlhdCI6MTc5MzY5OTAxNCwiZXhwIjoxNzkzOTU4MjExLCJhY2Nlc3NfdHlwZSI6IlJFRlJFU0hfVE9LRU4iLCJpZGVudGlmaWVycyI6WyJiYW8udHJpbmgrYWRtaW5AbG9hbmZhY3RvcnkuY29tIl0sInN0YXR1cyI6IkFDVElWRSIsInZlcmlmeSI6dHJ1ZSwiYXV0aG9yaXRpZXMiOlsiUkVDUlVJVCNBRE1JTiIsIkFDQ09VTlQjVVNFUiJdLCJwcm9kdWN0IjoiUkVDUlVJVCIsInNpZCI6IjE2NTQwYjY3LTQ3ZWYtNGU1NS1iZGY3LTUyMTU4NTgyNjRkOSJ9.VCaPjxexydi79iIZc3XSlCFsP9e_iolRuQ9YJavCXuQ\",\"user\":{\"id\":\"e1987874-a6ea-46d7-82e3-b034440d0afd\",\"created_by\":\"super.admin@viet18.com\",\"created_date\":{\"timestamp\":1793378324,\"formatted\":\"2026-10-30T16:38:44.666075\",\"zone\":\"Z\"},\"last_modified_by\":\"super.admin@viet18.com\",\"last_modified_date\":{\"timestamp\":1793378324,\"formatted\":\"2026-10-30T16:38:44.666075\",\"zone\":\"Z\"},\"key\":\"a4cbb2fe-41ad-4ec8-95f3-e9ac21f64280\",\"ref_keys\":[\"a4cbb2fe-41ad-4ec8-95f3-e9ac21f64280\"],\"first_name\":\"QA\",\"middle_name\":null,\"last_name\":\"Test Admin\",\"email\":\"bao.trinh+admin@loanfactory.com\",\"phone\":null,\"avatar\":null,\"date_of_birth\":null,\"gender\":\"UNKNOWN\",\"status\":\"ACTIVE\",\"source\":\"staging-qa-agentflow-v5enx\",\"mfa_enabled\":false,\"settings\":{\"language\":\"en\",\"time_zone\":null,\"preferred_languages\":null,\"theme\":null,\"email_signature\":null},\"favorite_apps\":null,\"legal_first_name\":null,\"legal_last_name\":null,\"marital_status\":null,\"citizenship\":null,\"company_email\":null,\"company_phone\":null,\"social_links\":null,\"addresses\":null,\"nmls\":null,\"title\":null,\"office_address\":null,\"self_declared_states\":null,\"signature_logo\":null,\"websites\":null,\"licenses\":null,\"national_type\":null,\"national_number\":null,\"identify_type\":null,\"identify_number\":null,\"ssn\":null,\"authorities\":{\"RECRUIT\":[\"ADMIN\"],\"ACCOUNT\":[\"USER\"]},\"licensed_states\":[],\"full_name\":\"QA Test Admin\"}},\"version\":0}"
+          "value": "{\"state\":{\"accessToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlMTk4Nzg3NC1hNmVhLTQ2ZDctODJlMy1iMDM0NDQwZDBhZmQiLCJpc3MiOiJodHRwczovL2FjY291bnQudmlldDE4LmNvbSIsImFjY291bnRfaWQiOiI5NzIwYzc3Ny0zMDIzLTQyZWItYWFmOS0yZmVjZmY2YTA4MGIiLCJ1c2VyX2lkIjoiZTE5ODc4NzQtYTZlYS00NmQ3LTgyZTMtYjAzNDQ0MGQwYWZkIiwidGltZV96b25lIjoiWiIsImlhdCI6MTc5Mzc5Mzc3NSwiZXhwIjoxNzkzODAwOTc1LCJhY2Nlc3NfdHlwZSI6IkFDQ0VTU19UT0tFTiIsImlkZW50aWZpZXJzIjpbImJhby50cmluaCthZG1pbkBsb2FuZmFjdG9yeS5jb20iXSwic3RhdHVzIjoiQUNUSVZFIiwidmVyaWZ5Ijp0cnVlLCJhdXRob3JpdGllcyI6WyJSRUNSVUlUI0FETUlOIiwiQUNDT1VOVCNVU0VSIl0sInByb2R1Y3QiOiJSRUNSVUlUIiwic2lkIjoiMTFkMTRlNzEtZjk1OC00ODA4LTlhMjAtMDM2MmMxZDliYzUyIn0.Tf3R6Ta8twD7S7qAmZsOq0stk-aMTFWl_iVs4G9U9wY\",\"refreshToken\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlMTk4Nzg3NC1hNmVhLTQ2ZDctODJlMy1iMDM0NDQwZDBhZmQiLCJpc3MiOiJodHRwczovL2FjY291bnQudmlldDE4LmNvbSIsImFjY291bnRfaWQiOiI5NzIwYzc3Ny0zMDIzLTQyZWItYWFmOS0yZmVjZmY2YTA4MGIiLCJ1c2VyX2lkIjoiZTE5ODc4NzQtYTZlYS00NmQ3LTgyZTMtYjAzNDQ0MGQwYWZkIiwidGltZV96b25lIjoiWiIsImlhdCI6MTc5Mzc5Mzc3NSwiZXhwIjoxNzk0MDUyOTcxLCJhY2Nlc3NfdHlwZSI6IlJFRlJFU0hfVE9LRU4iLCJpZGVudGlmaWVycyI6WyJiYW8udHJpbmgrYWRtaW5AbG9hbmZhY3RvcnkuY29tIl0sInN0YXR1cyI6IkFDVElWRSIsInZlcmlmeSI6dHJ1ZSwiYXV0aG9yaXRpZXMiOlsiUkVDUlVJVCNBRE1JTiIsIkFDQ09VTlQjVVNFUiJdLCJwcm9kdWN0IjoiUkVDUlVJVCIsInNpZCI6IjExZDE0ZTcxLWY5NTgtNDgwOC05YTIwLTAzNjJjMWQ5YmM1MiJ9.2cLXmrFJ52FNSOaRE9ekOBguO7Gs60z2xudbo33OIjU\",\"user\":{\"id\":\"e1987874-a6ea-46d7-82e3-b034440d0afd\",\"created_by\":\"super.admin@viet18.com\",\"created_date\":{\"timestamp\":1793378324,\"formatted\":\"2026-10-30T16:38:44.666075\",\"zone\":\"Z\"},\"last_modified_by\":\"e1987874-a6ea-46d7-82e3-b034440d0afd\",\"last_modified_date\":{\"timestamp\":1793793759,\"formatted\":\"2026-11-04T12:02:39.870479\",\"zone\":\"Z\"},\"key\":\"a4cbb2fe-41ad-4ec8-95f3-e9ac21f64280\",\"ref_keys\":[\"a4cbb2fe-41ad-4ec8-95f3-e9ac21f64280\"],\"first_name\":\"QA\",\"middle_name\":null,\"last_name\":\"Test Admin\",\"email\":\"bao.trinh+admin@loanfactory.com\",\"phone\":null,\"avatar\":null,\"date_of_birth\":null,\"gender\":\"UNKNOWN\",\"status\":\"ACTIVE\",\"source\":\"staging-qa-agentflow-v5enx\",\"mfa_enabled\":false,\"settings\":{\"language\":\"en\",\"time_zone\":null,\"preferred_languages\":null,\"theme\":null,\"email_signature\":null},\"favorite_apps\":null,\"legal_first_name\":null,\"legal_last_name\":null,\"marital_status\":null,\"citizenship\":null,\"company_email\":null,\"company_phone\":null,\"social_links\":null,\"addresses\":null,\"nmls\":null,\"title\":null,\"office_address\":null,\"self_declared_states\":null,\"signature_logo\":null,\"websites\":null,\"licenses\":null,\"national_type\":null,\"national_number\":null,\"identify_type\":null,\"identify_number\":null,\"ssn\":null,\"authorities\":{\"RECRUIT\":[\"ADMIN\"],\"ACCOUNT\":[\"USER\"]},\"licensed_states\":[],\"full_name\":\"QA Test Admin\"}},\"version\":0}"
         },
         {
           "name": "tera-assistant.arrival-day:RECRUIT:e1987874-a6ea-46d7-82e3-b034440d0afd",
-          "value": "{\"id\":\"day-2026-11-03\",\"at\":1793699016906,\"recheckAfterSeconds\":7200}"
+          "value": "{\"id\":\"day-2026-11-04\",\"at\":1793793777151,\"recheckAfterSeconds\":7200}"
         },
         {
           "name": "lf_recruit_nav_seen",
