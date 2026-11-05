@@ -126,3 +126,16 @@ INCIDENT 05/11 17:30: a mis-rooted `git commit -a` committed other sessions' dir
 (5b2e8d1, message wrongly says recruit-be secret line). Includes 3 staging login state JSONs with live refresh tokens;
 repo TrongBaoMoso/agentflow is PUBLIC. Not rewritten. Waiting on Bao: make repo private? revoke those staging
 sessions? gitignore docs/handoff/recruit-e2e-lab/scripts/state_*.json?
+
+## 06/11 00:10 — STAGING complete (session abfb7280)
+- UI checked on staging (Bao logged in): Oct 2026 → referral banner gone; Chau Chau Referred 3 / Onboarding 27 / Onboarded 0;
+  Budget "$0 / $0" for Chau Chau + Lien Pham, "—" for members not in Ally.
+- BUG found by positive control + fixed: recruit-be keys referral owners by MOSO Admin NAME (referrer_identity.moso_admin_key =
+  sign-in e-mail), moso-aid sent the websafe key → everyone 0. moso-aid #216 (3f323c9, rev moso-aid-00205-9hq) sends
+  mosoAdminNameOf(key) (case kept), falls back to the key. Measured: websafe key Oct 0/0/0 vs name 3/27/0; 12 months 21/27/8.
+  Full suite 1170/1170. Beads 6o9sa.7 + .8 closed.
+- Artifact Rbpvz7LDZb2grArvD3YvC3 v6: status table + new Oct screenshot.
+- OPEN for Bao: Budget column shows spent / APPROVED BILLS (bill_approved_cents); Lien Pham has month_budget $500 in Oct but
+  shows $0 / $0. Decide: "spent / budget" (month_budget_cents, already in API) vs current.
+- Prod checklist add: moso-aid prod must carry #215 + #216; prod referral secret VALUE + moso-aid prod RECRUIT_API_URL /
+  RECRUIT_REFERRALS_SERVICE_KEY in one step; recruit-be prod secret-keys line; Ally prod has service/spend (spec 05/11).
