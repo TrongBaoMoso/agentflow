@@ -342,7 +342,7 @@ Supersedes the matching items of §7–§8.
   Licenses "MLO compensation" W-2 = GA MA MT NC NJ NV RI SC VT → **MS differs**: Licenses says **Both**, and
   `/add-more-state-license` says MS 1099 Loan Officers must sign an Exclusive Agent Agreement. Code forces W-2 for MS.
   packs already builds a 1099 + Exclusive Agent Agreement for MS (`LICENSED_CONFIRMATION_STATES` = VA, MS), so MS allows 1099;
-  the form's W-2 lock for MS looks outdated. **Bao 05/11: follow Licenses → MS allows 1099. DONE on STAGING (lf #2701, lo #932), verified; production not yet.**
+  the form's W-2 lock for MS looks outdated. **Bao 05/11: follow Licenses → MS allows 1099. DONE on STAGING (lf #2701, lo #932) and PRODUCTION 06/11 (lf #2710, lo #933, cherry-pick), verified on both.**
 - **CA:** Licenses DFPI row = Both, DRE row = 1099; code + `/add-more-state-license` = CA-DFPI requires W-2, DRE 1099.
   **IN:** both Licenses rows = Both; code = no SOS → W-2, SOS → 1099; page = IN-DFI requires W-2. Code and public page
   agree; the Licenses "Both" values are per-license and may just mean the company holds both kinds. OPEN: confirm with Licensing.
