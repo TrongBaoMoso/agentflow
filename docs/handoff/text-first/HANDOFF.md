@@ -297,3 +297,9 @@ Work: recruit-be #864 items 1-2 (epic `agentflow-vk8qv`, P0), assigned to this s
 - recruit-be PR #869 merged as `20f99f3f7`, promoted (run 42072336473) and deployed to staging (cd-staging 42072383813, success). Pod 1/1, 0 restarts, boot OK, 0 ERROR lines.
 - Smoke on staging: `POST /api/v1/admin/candidates/{id}/inbound-content/erase` answers 403 "Missing permission IMPORT_RUN" without a grant; a wrong route answers 404.
 - **PROD not yet: waits for Bao.** When it ships, tell agentflow-3d (session a8ef2df9): #851 is blocked on it. Items 3-4 (`vk8qv.3`/`.4`) are still open and unassigned.
+
+## CLOSED 06/11 ~01:00 VN (session a8ef2df9)
+- d2uzb: recruit-be #867 (1c761addc) on staging, bead closed.
+- Connect Zoom: Bao waived his staging click (05/11 23:45, "thôi ko cần làm, lên prod đi") and chose to ride the NEXT SHARED prod release (a solo FF would carry 15 other-session commits, including HOLD #841). #844 merged (809e9ffc3) and promoted to staging; it changes only `helm-chart/config/production/*`. The next prod FF carries it; afterwards check `/me/zoom/status` on prod (200, connected:false). See memory project_connect_zoom_ready_prod_0611.
+- #851 (prod SMS) is still DRAFT. Gate: #864 items 1+2 (PR #869, 20f99f3f7, on staging) on production. Handed to session agentflow-60 (989dd1c5) with the steps: rebase, merge, promote, next prod FF, then Bao's 3 admin settings.
+- The Slack follow-up cron ends with this session.
