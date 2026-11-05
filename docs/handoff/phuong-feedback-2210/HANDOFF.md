@@ -638,3 +638,22 @@ Left to do:
 - **Shots:** BEFORE `docs/handoff/phuong-feedback-2210/shots-referrals-visibility/before-<role>-{my-referrals,referrals}.png`; AFTER LO from agent lo-referrer: `after-lo.png` (branch docs/lo-referrer-test-0411).
 - **Next:** run `CHROME_BIN=<chromium_headless_shell-1248 binary> NODE_PATH=/Users/apple/.npm/_npx/705bc6b22212b352/node_modules node docs/handoff/recruit-e2e-lab/scripts/refvis.js docs/handoff/phuong-feedback-2210/shots-referrals-visibility after` (via ram-gate chrome; LO row = bao.trinh+lo-referrer). Expect: LO 200 /mine + nav "My referrals"; Manager/Admin nav "Referrals", /referrals 200, /mine 403 unless MOSO LO; HH/Recruiter/OB/TL/LO Support no nav entry, /mine 403, URL shows no-access. Then build the artifact (scratchpad builder `build_artifact.py` + `refvis-template.html`, before.json) and publish; report URL + pass/fail per role to team-lead.
 - **Ready for prod (when Bao says):** be #830 + fe #688 (+ D388's #863/#698); packs #3830 must be deployed to prod for the LO-with-work-role (Seth) case, otherwise the role fallback applies.
+
+## RESUME POINT — PAUSED 05/11 07:55 VN (session da43ac56)
+
+Bao shut the machine down to go to the office. Bao's choice for #830/#850: **STAGING ONLY**, production stays off until he says "ok lên prod".
+
+Measured at 00:53Z 05/11:
+- recruit-be **#830** (D374 + #836 is_loan_originator) MERGED e1e54de82; it IS on staging (staging head 01f269a31). Not on production.
+- recruit-be **#850** (D381, a logged call result incl. NO_ANSWER counts as Contacted) MERGED cfef17df0 at 21:06Z; **NOT promoted to staging yet**.
+- Production = ead26bf7 (pushed by agentflow-4d, includes #857/#856); neither #830 nor #850 is in it.
+- #854 closed (superseded by #857). Master was red from #852 + #849 and was fixed by #857.
+- #863 (D388, one Referrals page; amends D374) and FE #688/#698 landed after #830, so the per-role check must run against the merged page.
+- D378 interplay (#842): an auto-logged No answer carries the dialling recruiter as actor, but the dial row already counted as first touch, so #850 changes nothing there. Keep as is.
+
+Left to do on resume:
+1. Promote master (>= cfef17df0) to staging: `gh workflow run promote-staging.yml -R LoanFactory-Inc/recruit-be -f sha=<master sha>`, then watch cd-staging.
+2. #850 verify: QA Lorrefone (bao.trinh+lo-referrer) shows Contacted done; count how many of the ~10 affected staging referrals changed.
+3. #830 verify per role on the merged D388 page: LO sees own only; Manager/Admin see all LOs; HH/Recruiter/OB/TL/LO Support see none; a MOSO-LO-flag user sees it. AFTER shots → before/after artifact for Bao (before shots: shots-referrals-visibility/).
+4. Mark #830/#850 READY FOR PROD; ask Bao "ok lên prod".
+Still with Khai: packs prod hot fix (#3818, #3816, #3831); moso-notifier #350 wave-freeze OK on notification-service#232 + review (and a rebase by moso-decouple).
