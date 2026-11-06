@@ -1,0 +1,161 @@
+{
+ "save": [
+  {
+   "portal": "page-texts",
+   "status": 200
+  },
+  {
+   "portal": "fee-config",
+   "status": 200
+  },
+  {
+   "portal": "profile",
+   "status": 200
+  },
+  {
+   "shot": "desktop-1-intro.png"
+  },
+  {
+   "step": "Fill Out Basic Information"
+  },
+  {
+   "shot": "desktop-2-basic-info.png"
+  },
+  {
+   "recaptcha": "s://www.google.com/recaptcha/api2/reload",
+   "status": 200
+  },
+  {
+   "recaptcha": "ttps://www.google.com/recaptcha/api2/clr",
+   "status": 200
+  },
+  {
+   "recaptcha": "s-central1.run.app/webplus-api/recaptcha",
+   "status": 200,
+   "success": true
+  },
+  {
+   "portal": "save",
+   "status": 200
+  },
+  {
+   "saved": 200
+  },
+  {
+   "recaptcha": "ttps://www.google.com/recaptcha/api2/bcn",
+   "status": 200
+  },
+  {
+   "step": "Grant Access on NMLS"
+  },
+  {
+   "shot": "desktop-3-after-save.png"
+  },
+  {
+   "payUnavailable": false,
+   "paypalButtons": 0
+  }
+ ],
+ "pay": [
+  {
+   "portal": "page-texts",
+   "status": 200
+  },
+  {
+   "portal": "profile",
+   "status": 200
+  },
+  {
+   "portal": "fee-config",
+   "status": 200
+  },
+  {
+   "shot": "desktop-pay-1-intro.png"
+  },
+  {
+   "recaptcha": "s://www.google.com/recaptcha/api2/reload",
+   "status": 200
+  },
+  {
+   "recaptcha": "ttps://www.google.com/recaptcha/api2/clr",
+   "status": 200
+  },
+  {
+   "recaptcha": "s-central1.run.app/webplus-api/recaptcha",
+   "status": 200,
+   "success": true
+  },
+  {
+   "portal": "save",
+   "status": 200
+  },
+  {
+   "saved": 200
+  },
+  {
+   "recaptcha": "ttps://www.google.com/recaptcha/api2/bcn",
+   "status": 200
+  },
+  {
+   "payMode": "desktop",
+   "feeHeading": true,
+   "unavailableNotice": true,
+   "noticeText": "Payment isn't available right now. Please refresh this page ",
+   "paypalIframes": 0
+  },
+  {
+   "shot": "desktop-pay-2-fee-step.png"
+  },
+  {
+   "portal": "profile",
+   "status": 200
+  },
+  {
+   "portal": "fee-config",
+   "status": 200
+  },
+  {
+   "portal": "page-texts",
+   "status": 200
+  },
+  {
+   "shot": "mobile-pay-1-intro.png"
+  },
+  {
+   "payMode": "mobile",
+   "feeHeading": true,
+   "unavailableNotice": true,
+   "noticeText": "Payment isn't available right now. Please refresh this page ",
+   "paypalIframes": 0
+  },
+  {
+   "shot": "mobile-pay-2-fee-step.png"
+  }
+ ],
+ "key": [
+  {
+   "packs": "getRegisterLoanOfficer",
+   "status": 200
+  },
+  {
+   "keyMode": "desktop",
+   "keyNotExist": false,
+   "emailFilled": "n/a"
+  },
+  {
+   "shot": "desktop-key-link.png"
+  },
+  {
+   "packs": "getRegisterLoanOfficer",
+   "status": 200
+  },
+  {
+   "keyMode": "mobile",
+   "keyNotExist": false,
+   "emailFilled": "n/a"
+  },
+  {
+   "shot": "mobile-key-link.png"
+  }
+ ]
+}
