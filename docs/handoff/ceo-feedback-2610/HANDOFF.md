@@ -17,6 +17,13 @@ Bao's answers 05/11: Meet = repeat bell (no auto-Done); invite reminders = both 
 - Found and fixed on the way: recruit-be #857 0e35dff7f = D380 query cast bug (non-numeric dedupe key broke the LO reminder tick) + the RbacCentralFlagsTest fix master needed after #852 (#854 closed as duplicate). fe #694 needed a type fix (two `repeat` declarations).
 - Before/after shots for the two FE changes: `shots-0511-night/` (agent run 05/11 night).
 
+### PAUSED 06/11 evening (session 1070c582) — nothing running
+- Feedback bubble: platform-react 0.4.90 (#719) moved it into the right rail under dialogs; fixed by recruit-fe #722 (cd389a24) on STAGING, Bao confirmed with a screenshot.
+- b4hpa.6 closed: recruit-be #887 (a75350152, 15 platform-inbox templates) + #889 (cbc815a12, D396: invite-waiting bell = Manager/ONBOARDING holders + owner, no admin-only) on STAGING, not prod.
+- Prod HOLD on #841 LIFTED: Tai pushed prod 057a260d2 at 06/11 17:07 VN incl. Meet repeat; Bao: "để chạy luôn". Prod flyway 330, setting repeat=2. Off switch = setting 0 via admin API (not in Settings UI).
+- Reply-To difference in LO mails = D274 by design (omni alias when the lead has a conversation, else recruiter).
+- Open: b4hpa.7 (3 more kinds still generic in platform inbox, P3); live E2E of auto No answer needs one real unanswered Zoom call on staging.
+
 ### Measured 05/11 10:20 (resume audit)
 - On production already: be #843 + #849 + #857 + #803 (code only; invite-reminder flags absent in prod values, 0 INVITE_REMINDER mails on prod), fe #666.
 - Staging only: be #842, #841 (V327; prod flyway max V326); fe #690 #691 #692 #693 #694.
