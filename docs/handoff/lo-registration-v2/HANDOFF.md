@@ -1,5 +1,17 @@
 # LO Registration v2 — HANDOFF
 
+## RESUME POINT — 06/11 ~17:15 (session 8658d500)
+
+**Done this afternoon (Bao: end to end, staging only)**
+- packs #3840 MERGED (squash 86d19d76e95) and live on staging (GAE b 16:45). Measured: call windows/ASAP/time zone, special requests + ack, tech literacy ack (+ server _at stamps) and ready_to_join are saved and read back; fresh-browser resume works.
+- /join UI matched to mockup v20 (website question in its own card): lf #2718 #2720 #2721, lo #938 #939 #940, 2 reviews each, live on staging. Legal copy kept (website approval tick, California notices). Diff list: FIDELITY-0611.md. Review page: https://claude.ai/artifact/DjT8A59nmUBPfQUaG4J3e3
+- Bao decisions 06/11: Quick check stays unstored (fit_check_ack PRs closed, packs revert); Compensation Policy link /team-policies OK; old /<site>/join links opening the form: keep.
+
+**Open**
+1. Production for /join v2 needs: Bao approval + packs on production (deploy_hot_fix by Khai / Tuan Vu / Tho Le) + remove the temporary unknown-field retry and the localStorage ready marker (bead) before promoting lf/lo.
+2. recruit-fe display of the new fields on the lead (not built).
+3. Contrast: mockup's white-on-orange small text and #999 greys fail WCAG AA 4.5:1 (kept because Bao asked for exact mockup) — ask Bao.
+
 ## RESUME POINT — 06/11 ~07:00 (session 8658d500, Bao asleep overnight, all work pushed)
 
 **Done overnight (Bao approved: v2 to STAGING, URL swap, FE first + BE PRs, MS prod, cleanup, close old beads)**
