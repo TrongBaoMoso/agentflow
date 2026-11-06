@@ -71,7 +71,6 @@ All on the LORecruiting registration payload, snake_case, all optional (absent =
 | `special_requests` | string[] | one request per row, trimmed, empty rows dropped, max 10 × 500 chars |
 | `special_requests_ack` | boolean | the regulations disclaimer tick; packs stamps `special_requests_ack_at` (server time) when it turns true |
 | `tech_literacy_ack` | boolean | "I meet this expectation"; packs stamps `tech_literacy_ack_at` |
-| `fit_check_ack` | boolean | Step 2 "Quick check before you continue" tick (NMLS ID, Active/Approved-Inactive, 1 loan every 6 months); packs stamps `fit_check_ack_at` when it turns true. Added 06/11 (Bao chose to store it). |
 If an existing packs field already means the same thing (check `LORecruiting` first, e.g. a ready-to-join flag),
 reuse it and note it here instead of adding a new one.
 
