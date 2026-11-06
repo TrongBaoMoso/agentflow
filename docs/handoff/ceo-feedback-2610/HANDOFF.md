@@ -31,7 +31,7 @@ Bao's answers 05/11: Meet = repeat bell (no auto-Done); invite reminders = both 
 ### Before prod ON (not now)
 - Own tick keys for auto-assign + invite reminders (both borrow the idle-release key; blocked on secretAccessor grant 0gwad.4.2).
 - Invite e-mail link still points at the MOSO register page until P4 moves it.
-- Prod e-mail needs moso-notifier #350 (wave-freeze: Khải comment on notification-service#232 naming #350) + 3 prod secrets (draft message for Khải given to Bao).
+- Prod e-mail needs moso-notifier #350 (wave-freeze: Khải comment on notification-service#232 naming #350) + 3 prod secrets (draft message for Khải given to Bao). **06/11:** the #350 part is done (Go notifier seeds RECRUIT in prod; #350 merged 03a42734, rides Go pin #415).
 
 ### Answers already given (do not re-ask)
 - Auto-assign: prod stays OFF (Bao 03/11). Staging trial only if needed.
