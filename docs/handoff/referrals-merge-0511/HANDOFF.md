@@ -84,3 +84,21 @@ CSV 97 → 71, no HH key in totals_by_referrer / referrer_options, search "QA Te
 
 Open for Bao: TEAM_LEAD not treated as Headhunter; a Headhunter with neither grant e-mail = key nor identity link would still show;
 "Paid this year" sums the paid bonus of people referred in the date range; Top referrers on 375 may scroll its Bonus pending column inside the card.
+
+## FOLLOW-UPS 06/11 (afternoon) — all on STAGING, none on production
+
+| Repo | PR | What | Merge |
+|---|---|---|---|
+| recruit-be | #880 | TEAM_LEAD referrers excluded like HEADHUNTER on the Manager/Admin view (`ReferrerRoles.EXCLUDED_ROLES`, D394 addendum). Staging has no Team Lead referrer, so only tests cover it. | `6e2752ade` |
+| recruit-fe | #718 | KPI money cell reads "Paid (these referrals)" for every range (the sum covers referrals in the selected range, not money paid in that period). | `bdadf48f` |
+| recruit-be | #882 | Fix `agentflow-2odq5`: program catch-up now runs in a transaction (tera-core sets Hikari auto-commit=false, so the bare JdbcTemplate INSERT was rolled back every tick). | `742ceed66` |
+
+Measured after #882 (06/11 08:46Z): `candidate_referral_program` 7 → 182 rows (BACKFILL PENDING 92, BACKFILL REFERRAL 83, RECRUIT_MIRROR 7); Manager view (71 rows) program=null 69 → 10. The 10 have no referral evidence in Recruit (8 packs FK only, 2 typed email, D54) — Bao: leave as is.
+
+Staging DB is readable read-only through a temporary `postgres:18-alpine` pod in ns `recruit-be` (context `gke_lenderrate-master_us-central1_moso-kube`, `envFrom` secret `recruit-svc-secret`; read output with `kubectl logs`, stdin attach hangs).
+
+## RESUME POINT — 06/11 afternoon
+
+Nothing in flight. Only remaining step: production, in the NEXT shared recruit batch (Bao: "gom theo lô"):
+recruit-be #830 #863 #876 #880 #882 and recruit-fe #698 #712 #715 #718, BE and FE together; `referral.program_snapshot_enabled` and `referral.program_qualification_enabled` stay OFF on prod. Close bead `agentflow-3mjma` after prod.
+Known limit: the All scope over "All time" can return a gateway 503 (packs read of every owner); the page defaults to this year.
