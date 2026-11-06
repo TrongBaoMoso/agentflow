@@ -17,6 +17,12 @@ Bao's answers 05/11: Meet = repeat bell (no auto-Done); invite reminders = both 
 - Found and fixed on the way: recruit-be #857 0e35dff7f = D380 query cast bug (non-numeric dedupe key broke the LO reminder tick) + the RbacCentralFlagsTest fix master needed after #852 (#854 closed as duplicate). fe #694 needed a type fix (two `repeat` declarations).
 - Before/after shots for the two FE changes: `shots-0511-night/` (agent run 05/11 night).
 
+### Night 07/11 (Bao asleep) — done, measured
+- b4hpa.7 closed: recruit-be #895 (3c95a73cb) on STAGING, not prod; platform catalog 78 templates (pod log). Still generic: MENTIONED, LEAD_RAISED_AGAIN, REGISTRATION_NAME_HELD, HR_HANDOFF_MISSING (bead b4hpa.8, P4).
+- 7z536 closed: lf-homepage has no platform feedback button, so the /join page is out of scope (Bao rule).
+- D378 auto No answer E2E on STAGING by simulated omni outbound-sent CALL events: MISSED -> NO_ANSWER logged automatically + prompt cleared + retry Mon 9/11 (lead QA NoAnswerMissed d75e7ed0); VOICEMAIL -> stored only, Log result pre-filled (QA NoAnswerVoicemail bc2fb26b). Shots: no-answer-e2e/.
+- Real-call test ready for Bao: lead "QA Zoom Noanswer" 186a115d-e050-428c-8092-79bde7a78835, owner manhadmin, phone empty. Staging Zoom lines: 1464 = manhadmin@viet18.com, 0586 = zoom_api@viet18.com (linked to recruit manhadmin). Steps: save own mobile on the lead -> Call now in Recruit as manhadmin -> Zoom as zoom_api -> don't answer, hang up ~15s -> timeline shows auto No answer.
+
 ### CLOSED 07/11 00:15 (session 1070c582) — measured
 - All session work on PROD (be d5c84a8a5, fe cd389a24): #690 #691 #692 #693 #694 #722 / #803 #841 #842 #843 #849 #857 #887 #889. Prod flags for invite reminders + auto No answer absent (off); hot.auto_assign_enabled=false.
 - Meet repeat (#841) prod setting = 0 since 2026-11-06 17:08Z: Bao chose OFF at 07/11 00:08 (after the release session had set it back to 2). Turn on = setting 2.
