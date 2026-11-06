@@ -46,3 +46,13 @@ Recordings are auto-attached from Meet (D389), but the Drive file belongs to the
 - Production organizer (usually Brayan): do once before the webinar cut-over (rollout plan step 2).
 - Caveat: if the Workspace admin blocks external link sharing, this needs IT/Khai; then fall back to a Drive scope (consent change).
 Steps: drive.google.com, My Drive, folder "Meet Recordings", Share, General access: "Anyone with the link", role Viewer, Done.
+
+## Decision 06/11 (Bao): prod webinar organizer = recruiting@loanfactory.com
+This is option 1: a dedicated organizer, so its "Google Meet" Drive folder holds only webinars and can be link-shared once. It replaces the earlier plan where Brayan was the organizer.
+
+Steps before the cut-over:
+1. recruiting@ connects Google in Recruit prod.
+2. The webinar series host is set to recruiting@.
+3. Its "Google Meet" folder is shared as "Anyone with the link: Viewer".
+
+Staging check (06/11): the auto-attached recording of session b12c3b56 opens anonymously after its folder was link-shared.
