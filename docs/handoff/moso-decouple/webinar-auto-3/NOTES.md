@@ -39,3 +39,10 @@ Parent bead: agentflow-0gwad.4. Ids are prefixes (8 chars).
 - **E2E (re-checked by id 06/11):** lead `1f111e30` (no MOSO record), session `6e642dbd`. Registration `1f3ca1dd` with source CALL (since cancelled). Confirmation `lo_mail_sends` `f8787a8d`, status SENT, kind WEBINAR_SESSION. No packs outbox row for the lead. Follow-ups dated Nov 12 and Nov 16 from the session.
 - Screenshots: `call-pick-before-1440.png`, `call-pick-before-375.png`, `call-pick-after-1440.png`, `call-pick-after-375.png`, `call-pick-after-selected-1440.png`.
 - Known gaps: Recruit's attendance read does not close the D253 feedback call. A mail that a later sender gate skips (for example the allowlist) gets no timeline note.
+
+## Decision 06/11 (Bao): recording access by folder link sharing, no code
+Recordings are auto-attached from Meet (D389), but the Drive file belongs to the organizer and is shared only inside loanfactory.com. Bao chose: the organizer shares the Drive folder "Meet Recordings" once, with "Anyone with the link can view". New recordings in that folder inherit the setting.
+- Staging organizer: bao.trinh@loanfactory.com (do once).
+- Production organizer (usually Brayan): do once before the webinar cut-over (rollout plan step 2).
+- Caveat: if the Workspace admin blocks external link sharing, this needs IT/Khai; then fall back to a Drive scope (consent change).
+Steps: drive.google.com, My Drive, folder "Meet Recordings", Share, General access: "Anyone with the link", role Viewer, Done.
