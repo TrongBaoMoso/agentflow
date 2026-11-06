@@ -427,6 +427,54 @@ Bao 02/11 (option A): only the onboarding specialist contacts the loan officer. 
 - Correction recorded: Recruit's main path already matched "OB sends" (hand-off ON on prod); only the no-OB fallback mailed From the recruiter.
 - Gaps (D354 row): a later OB clear does not ring the assigners; a waiting invite counts as invite_trouble on Today.
 
+## RESUME POINT: PAUSED 06/11 08:05 VN (session 460363a7)
+
+Measured, STAGING only. Prod is unchanged by this session since 05/11 (recruit-be ead26bf7f, V326).
+
+**Done on staging tonight**
+- **Add lead variant B (Bao chose it).**
+  - Clicking Add lead opens an empty popup Profile tab.
+  - The minimum to create a lead is a name plus an e-mail or phone (D393; be #874, b4f61e2ab).
+  - The old AddLeadModal is deleted (fe #711, 6168cd37).
+  - Fixes from review (fe #714, 11819419): the empty avatar shows "?", and the legal-name block stays quiet on a lead that was just created.
+  - Notes and shots: addlead-b-shots/NOTES.md.
+- **Webinar (webinar-auto-3/NOTES.md):**
+  - The recording link is attached from Meet automatically (D389, V330; be #878, 057a260d2; fe #713 "from Meet"). Proved on session b12c3b56. A link set by hand always wins.
+  - A lead merge carries the merged-away lead's webinar registrations (D390; be #870).
+  - The call-result webinar pick uses Recruit sessions when webinar-schedule is on (D392; be #875).
+- **Referrer mail (4.9):** live Meet test at 01:15 VN on 06/11 (session b12c3b56). The LO 18d097be was marked ATTENDED (16 min), and the mail was DELIVERED to bao.trinh+lo-referrer@. The bead is closed. See webinar-b4-followups/MEET-TEST-0611.md.
+- **SMS_1D for 7d30491c:** Recruit sent it at 04:00 VN (07001ba1, Bao's Zoom number). zoom-go rejected it with USER_NOT_FOUND because the sender has no linked Zoom. Bao must press Connect Zoom with his own Zoom on staging. The next chance is the SMS_2H at 02:00 VN on 07/11.
+
+**In flight**
+- recruit-be #877: an urgent bell to Admin and the OB when PayPal has captured the fee but Recruit did not record it.
+  - The agent paypal-bell was paused. Read bead agentflow-0gwad.5.3 for where it stands.
+  - Then review, merge and promote it to staging.
+
+**Waiting on Bao**
+1. Send Khai one message covering staging and prod. The draft is in the conversation; it covers:
+   - two empty secrets per env: onboarding-portal-api-keys and paypal-client-secret;
+   - PayPal REST apps: sandbox for staging, live for prod;
+   - merge and deploy packs #3832 in both envs.
+2. Press Connect Zoom (staging, his own Zoom).
+3. lf #2702 (P4 S2): approve the screenshots before merge.
+4. Drive sharing of Meet recordings. Proposal: share the organizer's "Meet Recordings" folder by link.
+5. Add lead:
+   - Should closing ask for confirmation when typed values are below the minimum?
+   - Should a duplicate offer a retry with the same email?
+
+**Not needed:** the notifier java-acks.txt line. It is internal bookkeeping.
+
+**Pending checks:** at 05:17 VN on 07/11, check:
+- the day-after mail for b12c3b56, which should carry the recording button;
+- the SMS_2H;
+- the MOSO 3-month drip.
+
+The crons were session-only, so re-create them on resume.
+
+Review pages:
+- 6SFTk57YuyvyNjUhMRziSf (05/11)
+- 8nRrvH7W1b1n9V6TkFo9Bh (Add lead mockup)
+
 ## MORNING 05/11 07:50 VN (session 460363a7): night work done
 
 Measured, staging only (prod untouched except the other session's FF to ead26bf7f, which carried S3/S7 dark).
