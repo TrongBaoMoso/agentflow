@@ -1,5 +1,7 @@
 # LO Registration v2 — HANDOFF
 
+## UPDATE 07/11 01:00 — Recruit shows the call request on STAGING: recruit-be #893 (call_request on /inbox/hot rows, instants as ApiInstant), recruit-fe #724 (Call request card on the lead profile) + #725 (Hot leads chip). Measured on recruit.viet18.com/inbox/hot?q=Joinv2. packs #3848 (cherry-pick of #3840) merged into 3.64.1; needs Deploy Hot Fix (Vinh/Khai) — MONDAY-0911.md 1a. Production of /join v2 waits for that + Bao.
+
 ## UPDATE 06/11 19:15 — type scale DONE on staging: lf #2723 (7ac1c8737) + lo #941 (7b73a2804) merged after 2 reviews; measured on viet18: h1 28px, labels 14px, inputs 16px/44px, no horizontal scroll at 390 and 1440 (the reviewer's 'no mobile collapse' finding was wrong: join-flow-responsive.css collapses at 860px).
 
 ## RESUME POINT — PAUSED 06/11 ~17:45 (session 8658d500, Bao went home)
