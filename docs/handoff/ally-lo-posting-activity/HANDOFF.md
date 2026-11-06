@@ -172,3 +172,20 @@ Round 2:
   change (auto-height via postMessage) — shared by every webPlus page; not done.
 - Dat agreed to add post URL (published posts only) + status filter to the destinations API → then add a link column.
 - Staging incident 06/11 ~16:30: postgres-0 rescheduled by GKE (volume attach) → recruit 503 for ~10 min; recovered.
+
+## RESUME POINT — PAUSED 06/11 ~18:50 (session abfb7280)
+DONE today: Activity fully on PROD (posts + budget + referrals; #872 rode the 06/11 recruit release #890, prod Oct: Seth August 1/17/1).
+Two review rounds on prod (moso-aid 00128; lf 00765). Victoria message drafted (Bao sends).
+
+IN FLIGHT — Bao's third review (06/11 18:40):
+1. Header radius on the 2nd header row (TOTAL cell rounded) → fixed: radius only on first row's first cell.
+2. No horizontal scroll at narrow widths (sticky header made the box non-scrolling) → useFitsBox(): ResizeObserver; table fits → sticky
+   header, box does not clip; too wide → class is-scrollx, box scrolls sideways (header not sticky then).
+3. Level as coloured chip → `badge badge--l{rank}` (same as Applications) with the level name.
+   These 3 are UNCOMMITTED in lf-homepage-worktrees/activity-polish3 (branch agent/agentflow-6o9sa.19-activity-polish3, from master).
+   Next: run LoPrograms jest, commit (pre-commit build via ram-gate 3000), PR → master, check staging, cherry-pick to production hotfix
+   (Bao approved prod for this polish), verify prod at a narrow window + chip colours.
+4. Slow Activity API (Bao measured 11.4 s) = Ally 17 pages. moso-aid #221 (cache TTL 60 s → 10 min) MERGED to master (staging).
+   Next: promote master → pro (PR like #220; check pro..master is only #221), verify prod.
+Waiting on Dat: post_url (published only) + status filter for destinations → add link column (bead 6o9sa.16); emails filter (6o9sa.13).
+Bao: leave the MOSO 88vh double scroll as is.
