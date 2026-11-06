@@ -446,9 +446,21 @@ Measured, STAGING only. Prod is unchanged by this session since 05/11 (recruit-b
 - **SMS_1D for 7d30491c:** Recruit sent it at 04:00 VN (07001ba1, Bao's Zoom number). zoom-go rejected it with USER_NOT_FOUND because the sender has no linked Zoom. Bao must press Connect Zoom with his own Zoom on staging. The next chance is the SMS_2H at 02:00 VN on 07/11.
 
 **In flight**
-- recruit-be #877: an urgent bell to Admin and the OB when PayPal has captured the fee but Recruit did not record it.
-  - The agent paypal-bell was paused. Read bead agentflow-0gwad.5.3 for where it stands.
-  - Then review, merge and promote it to staging.
+- recruit-be #877 (D395): an urgent bell to Admin and the OB when PayPal has captured the fee but Recruit did not record it.
+  - Review is done and its one HIGH is fixed (head c4e96b307). The unit tests and the ITs pass locally.
+  - Left:
+    1. CI.
+    2. Re-check that D395 is still free; rebase if master moved.
+    3. Squash merge.
+    4. Promote to staging.
+    5. kubectl check: flag RECRUIT_FEATURES_ONBOARDING_FEE_CAPTURED_BELL=true, no boot errors, template RECRUIT_URGENT_FEE_CAPTURED registered.
+    6. Write NOTES.md.
+  - Worktree: recruit-be-worktrees/paypal-captured-bell.
+  - Questions for Bao:
+    - The shared bell shows the amount, the PayPal order id and the reason, which is more than the "lead name only" rule allows.
+    - The bell auto-clears after 14 days.
+    - Recipients are fixed when the bell is raised.
+  - Cloud Monitoring: the fee alert policies are NOT applied on staging. The manual steps are in deploy/alerts/README.md in the PR.
 
 **Waiting on Bao**
 1. Send Khai one message covering staging and prod. The draft is in the conversation; it covers:
