@@ -1,5 +1,7 @@
 # LO Registration v2 — HANDOFF
 
+## UPDATE 06/11 19:15 — type scale DONE on staging: lf #2723 (7ac1c8737) + lo #941 (7b73a2804) merged after 2 reviews; measured on viet18: h1 28px, labels 14px, inputs 16px/44px, no horizontal scroll at 390 and 1440 (the reviewer's 'no mobile collapse' finding was wrong: join-flow-responsive.css collapses at 860px).
+
 ## RESUME POINT — PAUSED 06/11 ~17:45 (session 8658d500, Bao went home)
 
 **In progress (not finished):** type scale for /join per Bao 06/11 — mockup v21 (commit 2f24501): text sizes ONLY 14/16/28px (Brand Guidelines: Montserrat + Lato, max 3 sizes), page max-width 1200px, right column 280px, inputs 44px. DONE in code: PRs lf #2723 and lo #941 (fix/join-v2-type-scale, OPEN, not merged; only 14/16/28px text left, 1200px, 44px inputs; join jest + tsc green; shots in shots-0611/fidelity/scale/). To resume: 2 reviews, merge to master (staging), verify on www.viet18.com/join and /mama1/join, update the review artifact https://claude.ai/artifact/DjT8A59nmUBPfQUaG4J3e3.
