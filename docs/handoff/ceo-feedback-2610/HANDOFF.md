@@ -17,6 +17,14 @@ Bao's answers 05/11: Meet = repeat bell (no auto-Done); invite reminders = both 
 - Found and fixed on the way: recruit-be #857 0e35dff7f = D380 query cast bug (non-numeric dedupe key broke the LO reminder tick) + the RbacCentralFlagsTest fix master needed after #852 (#854 closed as duplicate). fe #694 needed a type fix (two `repeat` declarations).
 - Before/after shots for the two FE changes: `shots-0511-night/` (agent run 05/11 night).
 
+### CLOSED 07/11 00:15 (session 1070c582) — measured
+- All session work on PROD (be d5c84a8a5, fe cd389a24): #690 #691 #692 #693 #694 #722 / #803 #841 #842 #843 #849 #857 #887 #889. Prod flags for invite reminders + auto No answer absent (off); hot.auto_assign_enabled=false.
+- Meet repeat (#841) prod setting = 0 since 2026-11-06 17:08Z: Bao chose OFF at 07/11 00:08 (after the release session had set it back to 2). Turn on = setting 2.
+- Beads: b4hpa.1-.6 + 4r8je closed. Open, not this session's active work: 7z536 (/join page feedback button, lo-homepage), b4hpa.7 (3 rare bell kinds generic, P3), cy17o, dkcrc, v7rzy.
+- Before prod ON of invite reminders / auto-assign: own tick keys (both borrow the idle-release key); invite e-mail link still MOSO register page (P4).
+- Auto No answer: 0 outbound calls on staging since deploy, live path unseen (ITs cover it).
+- Session worktrees removed; no agents or background jobs running.
+
 ### PAUSED 06/11 evening (session 1070c582) — nothing running
 - Feedback bubble: platform-react 0.4.90 (#719) moved it into the right rail under dialogs; fixed by recruit-fe #722 (cd389a24) on STAGING, Bao confirmed with a screenshot.
 - b4hpa.6 closed: recruit-be #887 (a75350152, 15 platform-inbox templates) + #889 (cbc815a12, D396: invite-waiting bell = Manager/ONBOARDING holders + owner, no admin-only) on STAGING, not prod.
