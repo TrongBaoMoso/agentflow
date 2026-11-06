@@ -155,3 +155,20 @@ sessions? gitignore docs/handoff/recruit-e2e-lab/scripts/state_*.json?
 - PERF: prod Activity first load 13–14 s (Ally serves 17 pages × ~1.2 s; parallel does not help: 6 pages in 4.5 s). Cache 60 s.
   Ask Dat for an emails/user_ids filter on service/posting-activity. Not changed.
 - agentflow-048o still open (accepted by Bao for this release).
+
+## 06/11 afternoon — two review rounds, both to PROD (Bao: "lên prod luôn")
+Round 1 (Bao's PDF + modal review):
+- moso-aid #218 (rows carry avatar + nmls from the application snapshot), #219 (posts drill-down: platform filter + newest/oldest
+  over the WHOLE list moso-aid already reads, + per-platform counts; Ally API has no sort/filter — Dat 06/11). Prod via #220 → pro,
+  rev moso-aid-00128 (19 vars unchanged).
+- lf #2715: PersonCell in Activity rows, group tints + dividers, modal 1,100px with person header, in-modal date/type/platform/order,
+  numbered pages of 50, "Posted" date-over-time in PT, platform icons, Type only on All posts, "By admin" tag. Prod #2716 (00764).
+Round 2:
+- lf #2717 quick picks (this/last week, this/last month, last 7/30/90 days) inside the date popover (table + modal); platform as one
+  Select with counts; Platform column only for All; sticky table header (Activity tablebox no longer clips).
+- lf #2719: popover portaled — inside .lop, `.lop table {width:100%}` blew the month grid to 1,000,000px (one column visible);
+  trigger is a native <button>. Prod #2722.
+- Double scroll: MOSO frame is `height:88vh` from the MOSO page template (GetTemplateOp data, not packs code). Needs a template
+  change (auto-height via postMessage) — shared by every webPlus page; not done.
+- Dat agreed to add post URL (published posts only) + status filter to the destinations API → then add a link column.
+- Staging incident 06/11 ~16:30: postgres-0 rescheduled by GKE (volume attach) → recruit 503 for ~10 min; recovered.
