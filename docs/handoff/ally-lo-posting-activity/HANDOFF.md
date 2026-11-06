@@ -189,3 +189,12 @@ IN FLIGHT — Bao's third review (06/11 18:40):
    Next: promote master → pro (PR like #220; check pro..master is only #221), verify prod.
 Waiting on Dat: post_url (published only) + status filter for destinations → add link column (bead 6o9sa.16); emails filter (6o9sa.13).
 Bao: leave the MOSO 88vh double scroll as is.
+
+## CLOSED 06/11 ~23:30 (session abfb7280)
+All on PROD and measured: posts, referrals (#872 via release #890), budget (spent / month budget); 3 review rounds
+(person cell, group tints, sticky header + sideways scroll when narrow, level badges, posts modal with in-modal dates/type/
+platform/order, numbered pages, PT times, icons); post links via Ally /v1/posts/service/by-lo (moso-aid #223 → pro #224,
+lf #2726 → production) — prod Ashley Blanton Oct 47/47 linked; source cache 10 min (16.4 s cold → 1.5 s).
+Prod: moso-aid-00130-2wg, lf-homepage-00767-wrw. No open PRs, no dirty worktrees (removed).
+Only open item: agentflow-6o9sa.13 — Ally emails filter on posting-activity for a fast first load (Dat, not urgent).
+Victoria could not find the page (no LO role needed; RECRUITING permission); reply with direct link drafted for Bao.
