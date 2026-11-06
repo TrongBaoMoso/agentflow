@@ -427,6 +427,50 @@ Bao 02/11 (option A): only the onboarding specialist contacts the loan officer. 
 - Correction recorded: Recruit's main path already matched "OB sends" (hand-off ON on prod); only the no-OB fallback mailed From the recruiter.
 - Gaps (D354 row): a later OB clear does not ring the assigners; a waiting invite counts as invite_trouble on Today.
 
+## RESUME POINT: PAUSED 06/11 17:50 VN (session 460363a7)
+
+Measured state at the pause. STAGING only; recruit-be prod is unchanged at ead26bf7f.
+
+**Done today (06/11), all on staging**
+- **P4 S2 portal `?t=` works end to end.**
+  - #883: the staging secret-keys line.
+  - #885: blank yes/no answers are read as null.
+  - The lf staging env is set (`lf-homepage-master`, revision 01603).
+  - The secret `recruit-be-recruit-onboarding-portal-api-keys` was created by Tan Thanh in both envs.
+  - The prod key version is added. Draft #884 rides the next prod release; it needs a pod restart and the lf prod env set by DevOps.
+  - Evidence: p4-s2-staging/.
+- **Add lead variant B** (#874/#711/#714) plus the discard confirm (fe #721). Evidence: addlead-b-shots/.
+- **Webinar:**
+  - Recording auto-attach (#878). The test recording opens anonymously after the folder link-share.
+  - The prod organizer will be recruiting@ (decided by Bao); see the webinar-auto-3/NOTES.md decision.
+  - Merge keeps registrations (#870). Call-result pick (#875).
+- **Bao's decisions:**
+  - PayPal bell: all 3 points approved.
+  - Recording: option 1, recruiting@.
+  - Remote token: leave it.
+
+**In flight at the pause (agents paused; read the bead notes)**
+- **recruit-be #877, the PayPal captured-not-recorded bell (D395).**
+  - State is in bead agentflow-0gwad.5.3.
+  - To resume: rebase if BEHIND, CI green, squash merge, promote, then kubectl verify (flag RECRUIT_FEATURES_ONBOARDING_FEE_CAPTURED_BELL=true).
+  - Write paypal-bell/NOTES.md.
+- **packs #3832, the S7 marker.**
+  - Bao said merge and deploy STAGING, but SWAT is push-locked by su2@test.com (a pricing test break) and master packs/loan is red. Bao chose "wait for unlock".
+  - State is in bead agentflow-0gwad.5.2. The baseline shows the failures already exist on master, and the Repo Owner review is APPROVE.
+  - To resume:
+    1. Open the SWAT Chrome on 9477 (Bao logs in).
+    2. When the lock is gone and groups 0/37 on master are green: merge (`--merge`), then watch install, packaging and deploy.
+    3. Verify `gcloud app versions list --project lenderrate-master --service default`, and that `POST www.viet18.com/api/recruit/v1/candidate/portalState {}` returns 401 (it returns 404 before the deploy).
+  - Never touch 3.64.1, Deploy Prod or Hot Fix.
+- **SMS test.** Test lead 07001ba1 (Bao's Zoom number) is now owned by d82c234d, who holds manhadmin's Zoom link. SMS_2H for session 7d30491c is due at 02:00 VN on 07/11.
+  - The cron (05:17 on 07/11) is session-only. Re-create it if the session restarted. It also checks the b12c3b56 day-after mail recording button and the MOSO 3-month drip.
+
+**Monday 09/11: remind Bao to message Khai** (see memory project_remind_khai_portal_paypal_0911)
+- PayPal sandbox and live REST apps.
+- SWAT Deploy Hot Fix for packs #3832 to prod.
+- A Zoom account, only if the manhadmin route failed.
+- The secrets are DONE (Tan Thanh 06/11).
+
 ## RESUME POINT: PAUSED 06/11 08:05 VN (session 460363a7)
 
 Measured, STAGING only. Prod is unchanged by this session since 05/11 (recruit-be ead26bf7f, V326).
