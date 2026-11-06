@@ -1,5 +1,11 @@
 # LO Registration v2 — HANDOFF
 
+## RESUME POINT — PAUSED 06/11 ~17:45 (session 8658d500, Bao went home)
+
+**In progress (not finished):** type scale for /join per Bao 06/11 — mockup v21 (commit 2f24501): text sizes ONLY 14/16/28px (Brand Guidelines: Montserrat + Lato, max 3 sizes), page max-width 1200px, right column 280px, inputs 44px. Agent join-fidelity was applying it to lf + lo on branch fix/join-v2-type-scale (WIP pushed if it finished in time; check `git ls-remote` in both repos). To resume: finish the CSS (no 11/12/13px text left), screenshots 1440 + 390, 2 reviews, merge to master (staging), verify on www.viet18.com/join and /mama1/join, update the review artifact https://claude.ai/artifact/DjT8A59nmUBPfQUaG4J3e3.
+
+Everything else from the 17:15 point below stands (packs #3840 on staging, UI matches v20, prod needs Bao + packs hotfix + removing the temporary retry/marker).
+
 ## RESUME POINT — 06/11 ~17:15 (session 8658d500)
 
 **Done this afternoon (Bao: end to end, staging only)**
