@@ -9,13 +9,13 @@
   --orange:#F36F23; --orange-ink:#B84A0C; --tint:#FDEEE5; --tint-2:#FBDCC9;
   --black:#000000; --white:#FFFFFF;
   --gray-light:#EFEFEF; --gray-mid1:#DBDBDB; --gray-mid2:#999999; --gray-dark:#323232; --page:#F7F7F7;
-  --t-xl:24px; --t-md:14px; --t-sm:12px;
+  --t-xl:28px; --t-md:16px; --t-sm:14px;
   --head:"Montserrat","Helvetica Neue",Arial,sans-serif; --body:"Lato","Helvetica Neue",Arial,sans-serif;
   color-scheme:light;
 }
 body{background:var(--white);color:var(--black);font-family:var(--body);font-size:var(--t-md);line-height:1.5;margin:0}
 .pad{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.wrap{max-width:1120px;margin:0 auto}
+.wrap{max-width:1200px;margin:0 auto}
 .toc{padding-block:24px 4px;display:grid;gap:10px}
 .toc h1{font-size:var(--t-xl)}
 .toc nav{display:flex;flex-wrap:wrap;gap:6px}
@@ -50,12 +50,12 @@ body{background:var(--white);color:var(--black);font-family:var(--body);font-siz
 .step.done i,.step.cur i{background:var(--orange);color:var(--white)}
 .step.cur{color:var(--black);font-weight:700}
 h1,h2{font-family:var(--head);font-weight:700;font-size:var(--t-xl);line-height:1.25;margin:0;text-wrap:balance}
-.layout{display:grid;grid-template-columns:1fr 230px;gap:28px;align-items:start}
+.layout{display:grid;grid-template-columns:1fr 280px;gap:28px;align-items:start}
 .col{display:grid;gap:14px;min-width:0}
 .box{background:var(--white);border:1px solid var(--gray-mid1);border-radius:10px;padding:18px;display:grid;gap:14px;min-width:0}
 .group{background:var(--white);border:1px solid var(--gray-mid1);border-radius:10px}
 .ghead{display:flex;gap:10px;align-items:center;padding:12px 18px;background:var(--tint);border-bottom:1px solid var(--tint-2);border-radius:10px 10px 0 0}
-.ghead i{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-style:normal;background:var(--orange);color:var(--white);font-size:13px;flex:none}
+.ghead i{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-style:normal;background:var(--orange);color:var(--white);font-size:var(--t-sm);flex:none}
 .ghead b{font-family:var(--head);font-weight:700}
 .ghead small{margin-left:auto;color:var(--gray-dark);font-size:var(--t-sm)}
 .ghead a{margin-left:auto;font-size:var(--t-sm);font-weight:700;color:var(--orange-ink)}
@@ -65,9 +65,9 @@ h1,h2{font-family:var(--head);font-weight:700;font-size:var(--t-xl);line-height:
 .g3r{display:grid;grid-template-columns:1fr 2fr;gap:12px}
 .f{display:grid;gap:4px;min-width:0;align-content:start}
 .f > label,.lbl{font-size:var(--t-sm);font-weight:700;color:var(--gray-dark);display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.req{font-size:11px;font-weight:700;color:var(--orange-ink);background:var(--tint);border-radius:99px;padding:0 7px;line-height:1.6}
+.req{font-size:var(--t-sm);font-weight:700;color:var(--orange-ink);background:var(--tint);border-radius:99px;padding:0 7px;line-height:1.6}
 .sub .req{background:var(--white)}
-input.in,select.in{font:inherit;border:1px solid var(--gray-mid1);border-radius:6px;padding:7px 10px;color:var(--black);background:var(--white);min-width:0;height:36px;box-sizing:border-box;width:100%}
+input.in,select.in{font:inherit;border:1px solid var(--gray-mid1);border-radius:6px;padding:7px 10px;color:var(--black);background:var(--white);min-width:0;height:44px;box-sizing:border-box;width:100%}
 select.in{appearance:auto}
 .hint{font-size:var(--t-sm);color:var(--gray-dark)}
 .sub{background:var(--tint);border-radius:8px;padding:12px;display:grid;gap:12px}
@@ -75,7 +75,7 @@ select.in{appearance:auto}
 .seg{display:flex;gap:8px;flex-wrap:wrap}
 .seg button{font:inherit;font-weight:700;border:1.5px solid var(--gray-mid1);background:var(--white);color:var(--gray-dark);border-radius:99px;padding:6px 14px;cursor:pointer}
 .seg button[aria-pressed="true"]{border-color:var(--orange);background:var(--orange);color:var(--white)}
-.multi{display:flex;flex-wrap:wrap;gap:6px;align-items:center;border:1px solid var(--gray-mid1);border-radius:6px;padding:4px 6px;background:var(--white);min-height:36px;box-sizing:border-box}
+.multi{display:flex;flex-wrap:wrap;gap:6px;align-items:center;border:1px solid var(--gray-mid1);border-radius:6px;padding:4px 6px;background:var(--white);min-height:44px;box-sizing:border-box}
 .multi .tagx{background:var(--tint-2);color:var(--orange-ink);border-radius:99px;padding:2px 4px 2px 10px;font-weight:700;font-size:var(--t-sm);display:inline-flex;gap:4px;align-items:center}
 .multi .tagx button{font:inherit;border:0;background:none;color:inherit;cursor:pointer;padding:0 4px}
 .multi select{border:0;font:inherit;font-size:var(--t-sm);color:var(--gray-dark);background:transparent;flex:1;min-width:120px;height:26px}
@@ -159,7 +159,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 .dl dd{margin:0;font-weight:700;overflow-wrap:anywhere}
 .dl .wide{grid-column:1/-1}
 .meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:4px;font-weight:400}
-.team{font-size:11px;font-weight:700;color:var(--gray-dark);background:var(--gray-light);border-radius:99px;padding:1px 8px;white-space:nowrap}
+.team{font-size:var(--t-sm);font-weight:700;color:var(--gray-dark);background:var(--gray-light);border-radius:99px;padding:1px 8px;white-space:nowrap}
 .dl dd a{font-size:var(--t-sm);color:var(--orange-ink);font-weight:400;white-space:nowrap}
 .ul{margin:0;padding-left:18px}
 .hero{background:var(--white);border:1px solid var(--gray-mid1);border-radius:10px;padding:32px 28px;display:grid;gap:16px;justify-items:center;text-align:center}
@@ -261,7 +261,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
         <div class="f"><div class="lbl">Do you have a website or landing page that promotes mortgages? <span class="req">Required</span></div>
           <div class="seg" data-tog="web"><button type="button" data-v="yes" aria-pressed="true">Yes</button><button type="button" data-v="no">No</button></div></div>
         <div class="f" data-show="web:yes"><div class="lbl">Website URL <span class="req">Required</span></div><div class="rows" id="webrows"></div><button class="add" type="button" id="addweb">+ Add another website</button></div>
-        <label class="check"><input type="checkbox" id="ack"> I'll get Loan Factory's approval before launching or changing a mortgage website.</label>
+        <label class="check"><input type="checkbox" id="ack"> I agree to obtain Loan Factory's approval before creating any new website or landing page that promotes mortgages.</label>
         </div>
         <div class="actions"><button class="btn2" type="button">Back</button><button class="btn" type="button">Continue to book your call</button></div>
       </div>
