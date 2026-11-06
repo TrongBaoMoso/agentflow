@@ -62,3 +62,47 @@ Measured on staging after promoting master tip `11819419` (it also carried webin
 
 1. **Confirm on close?** Values typed below the minimum are lost if the popup is closed. Nothing is saved yet, as the hint says. Should closing ask for confirmation when something was typed? That would need new copy.
 2. **Retry on the same e-mail after a duplicate.** Retyping the exact same e-mail sends nothing, because the value did not change. Changing the e-mail or phone, or any other field, retries. Should the notice offer an explicit retry, or is this fine as is?
+
+## Confirm before discarding (recruit-fe #721, merged as `eadd869c`)
+
+This answers open question 1. Bao approved it on 06/11, for STAGING only.
+
+- **When it asks:** the popup is closed with ✕ or Esc while something is typed and the minimum (a name AND an e-mail or phone) is not met, so nothing has been saved yet.
+- **When it does not ask:**
+  - nothing was typed;
+  - the minimum is met: the lead is created and the popup moves to it, or D384 says the person already exists.
+- **What counts as typed:** held field values, plus text still in a box. That covers a box not left yet, and text its field refused, such as a bad e-mail, which is never held.
+- **Copy:** new, in en + vi. Nothing in `src/messages` fit: the only hits were "Unsaved changes" labels in Settings, with no dialog. It uses the shared `ConfirmDialog`:
+  - Title: "Discard this lead?"
+  - Body: "It isn't saved yet: it needs a name and an email or phone. What you typed will be lost."
+  - Buttons: **Discard** (red) and **Keep editing**.
+  - Vietnamese: "Bỏ lead này?", with the buttons "Bỏ" and "Tiếp tục nhập".
+- **How Esc is wired:** `NewLeadPane` registers a `closeGuard` on `useCallWorkspaceStore`, and `CallWorkspaceHost.closeByUser` asks it before any user close. Esc inside the confirm belongs to the confirm, and closing it that way acts as Keep editing.
+- **Unchanged:**
+  - Clicking outside never closed the popup (`closeOnClickOutside={false}`).
+  - Browser Back is not handled by the popup.
+- **Not covered (review note, MEDIUM, left as is):** at or above the minimum, a create that *failed* (a network or server error, already toasted) closes without asking.
+
+Staging: promoted master tip `eadd869c` (only #721 on top of staging). Deploy green; recruit-frontend 2/2 ready on new pods, rolled around 09:03Z.
+
+Measured on staging (admin, first name "Shot" only, so no lead was created):
+
+| Check | BEFORE | AFTER |
+|---|---|---|
+| Nothing typed, ✕, at 1440 and 375 | closes | closes (control) |
+| First name typed, ✕, at 1440 and 375 | closes, typing lost | asks |
+| Keep editing | n/a | popup stays, value "Shot" kept |
+| Esc (focus on ✕) | n/a | asks |
+| Discard | n/a | closes |
+
+Screenshots (viewport only):
+- **BEFORE:**
+  - `confirm-before-typed-{1440,375}.png`
+  - `confirm-before-close-pressed-{1440,375}.png`: the popup is gone
+  - `confirm-before-control-{empty,closed}-1440.png`
+- **AFTER:**
+  - `confirm-after-typed-{1440,375}.png`
+  - `confirm-after-close-pressed-{1440,375}.png`: the dialog. At 375, `RecModal` takes the full screen, as every recruit dialog does.
+  - `confirm-after-esc-1440.png`
+  - `confirm-after-discarded-1440.png`
+  - `confirm-after-control-{empty,closed}-1440.png`
