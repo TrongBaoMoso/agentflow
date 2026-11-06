@@ -36,7 +36,7 @@ and 390 wide; visible text diffed line by line; computed styles of key elements 
 2. Quick check bullets are back (`list-style` was reset).
 3. Employment cards: titles "Independent (1099)" / "Employee (W-2)", subtitles "Keep 100% of your commission. You handle your own taxes." / "90% of the commission. Payroll taxes are withheld."; radio dot removed; mockup card styling. New keys `type_1099_desc`, `type_w2_desc` (5 locales).
 4. Website block in the grey `.webcard` box (question, URL rows, approval tick). New copy: "Do you have a website or landing page that promotes mortgages?", "Website URL", "+ Add another website", "I'll get Loan Factory's approval before launching or changing a mortgage website."; `×` on every row.
-5. California: tinted block with "California license type" + DFPI MLO / DRE-endorsed MLO; DFPI / DRE notices not shown (the mockup has none); questions "Do you also have a California DRE real estate license?" / "Do you want to practice real estate with Loan Factory too?"; "DRE license number" + "DRE license type" as a Salesperson / Broker select.
+5. California: tinted block with "California license type" + DFPI MLO / DRE-endorsed MLO; the existing localized legal notices are kept (DFPI / DRE notices, the DRE-real-estate yes/no notices, the practise-real-estate notices with the Agent Licensing link, the salesperson-endorsement notice), as small text inside the block; questions "Do you also have a California DRE real estate license?" / "Do you want to practice real estate with Loan Factory too?"; "DRE license number" + "DRE license type" as a Salesperson / Broker select.
 6. Indiana: "Indiana license type", "SOS licensed" / "Not SOS licensed".
 7. South Carolina: title "South Carolina sponsorship" and "We sponsor South Carolina only under specific conditions. Do you confirm?" (names the states actually picked: SC, AR, NE).
 8. Forced employment line, hint under cards, Back / Continue as mockup.
@@ -67,6 +67,19 @@ and 390 wide; visible text diffed line by line; computed styles of key elements 
 ## Waiting `/join/waiting`
 
 1. Side list removed. 2. Stepper now on step 6 (Review done, Pay & sign current). 3. Tiles carry the envelope / question-mark circles; hourglass circle in tint colours.
+
+## Copy removed from the old Step 2 / Step 1 screens, and whether it was legal
+
+| Removed | Legal / compliance? |
+|---|---|
+| "Join Loan Factory" stats strip on Steps 2-3 | No (marketing) |
+| "California" / "Indiana" block headings | No (the tinted block and its label replace them) |
+| "California - Licensed type", "Indiana - Licensed type" label wording | No (replaced by the mockup's labels) |
+| "Do you confirm this sponsorship?" (SC) | No: replaced by the "<state> sponsorship" title; the "only under specific conditions. Do you confirm?" sentence and Confirm / Cancel stay |
+| Old website-approval wording "I agree to obtain Loan Factory's approval before creating any new website..." | Replaced by the mockup's approval tick (same Required tick, same stored value) |
+| Round check mark on the employment cards, up/down icons, envelope/phone/zip icons, street clear button, trash icon | No (UI only) |
+
+Nothing legal or compliance related remains removed: the California notices were restored (06/11, review follow-up).
 
 ## lo-homepage
 
