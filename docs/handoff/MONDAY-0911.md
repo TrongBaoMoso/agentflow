@@ -29,13 +29,25 @@ Source: memory `project_remind_khai_portal_paypal_0911`, `docs/handoff/moso-deco
 ### 1c. Khai: issue recruit-be #864, item 4
 Items 1-3 are on production (06/11). Item 4 is waiting on Khai's answer on the issue.
 
+### 1d. Victoria: where to find the Ambassador Activity tab (she asked 06/11 22:24, no LO role)
+Measured 06/11 23:30: Activity is fully on PROD (moso-aid-00130, lf-homepage-00767) — posts, referrals, budget, post links.
+Reply (EN, attach `.playwright-mcp/activity-shots/prod-r3-wide.png` + `prod-links.png`):
+> No LO role needed, chị. Sign in to Loan Factory (MOSO) with your usual account and open
+> https://www.loanfactory.com/manage-lo-programs/ambassador-program?tab=activity — then the "Activity" tab next to
+> "Applications". You can also click the ↗ icon on any post to open it on Facebook/Instagram. If it says you have
+> no access, tell me and I'll check your permission (the page needs MOSO RECRUITING).
+Before sending: check whether she already found it (Google Chat thread "Ambassador & Recruting").
+
+### 1e. Dat (optional, not urgent): emails filter on Ally posting-activity
+First Activity load on prod is ~16 s (Ally reads 17 pages); within 10 min it is 1.5 s. Ask Dat for
+`emails=a@x,b@y` on `/v1/reports/service/posting-activity` (bead agentflow-6o9sa.13). Re-check the Ally spec first.
+
 ## 2. Decisions only Bao can make
 
 | What | State | Where |
 |---|---|---|
 | Turn on real SMS on Recruit production | Code ON since 06/11 (recruit-be #851, e33bcd19b). Still closed by 3 Settings: `nurture.drip.delivery_mode` DRY_RUN→SEND, `nurture.drip.recipient_policy` ALLOWLIST→ANY, `scheduled_send_info.sms_enabled` false→true. Production has no users yet, so no rush. | memory `project_resume_sms_go_live_0611` |
 | /join v2 to production | On staging; production needs Bao's approval, a packs hotfix (Khai) and removal of temporary retry/marker code. lf #2723 + lo #941 (type scale) were open on 06/11. | `docs/handoff/lo-registration-v2/HANDOFF.md` |
-| Ambassador Activity round 3 | lf #2724 merged to master; not cherry-picked to production yet; moso-aid #222 waits for its prod deploy. | `docs/handoff/ally-lo-posting-activity/HANDOFF.md` |
 | Moso-decouple open asks | Connect Zoom on staging with Bao's own Zoom; approve lf #2702 screenshots; Meet recordings Drive sharing; two Add lead questions. | `docs/handoff/moso-decouple/HANDOFF.md` |
 
 ## 3. Calendar
@@ -43,6 +55,7 @@ Items 1-3 are on production (06/11). Item 4 is waiting on Khai's answer on the i
   `is_recruiter` in MOSO staging to the `+stg` recruiter accounts (needs Bao's OK). `docs/handoff/victoria-demo-video/HANDOFF.md`.
 
 ## 4. Done on 06/11 (no action, for reference)
+- Ambassador Activity: all 3 review rounds + post links ON PROD 06/11 (moso-aid-00130, lf-homepage-00767); `docs/handoff/ally-lo-posting-activity/HANDOFF.md` "CLOSED".
 - Recruiting production release #886: recruit-be d5c84a8a5 + recruit-fe cd389a24 (all READY PROD batches).
 - Offer "3 production figures required" ON in production (#890).
 - Meet repeat bell (#841) runs in production (setting back to 2, as Bao chose).
