@@ -71,6 +71,7 @@ input.in,select.in{font:inherit;border:1px solid var(--gray-mid1);border-radius:
 select.in{appearance:auto}
 .hint{font-size:var(--t-sm);color:var(--gray-dark)}
 .sub{background:var(--tint);border-radius:8px;padding:12px;display:grid;gap:12px}
+.webcard{background:var(--page);border:1px solid var(--gray-mid1);border-radius:8px;padding:14px;display:grid;gap:12px}
 .seg{display:flex;gap:8px;flex-wrap:wrap}
 .seg button{font:inherit;font-weight:700;border:1.5px solid var(--gray-mid1);background:var(--white);color:var(--gray-dark);border-radius:99px;padding:6px 14px;cursor:pointer}
 .seg button[aria-pressed="true"]{border-color:var(--orange);background:var(--orange);color:var(--white)}
@@ -256,10 +257,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
           <div class="typecards"><button class="tc" type="button" aria-pressed="true"><b>Independent (1099)</b><small>Keep 100% of your commission. You handle your own taxes.</small></button><button class="tc" type="button"><b>Employee (W-2)</b><small>90% of the commission. Payroll taxes are withheld.</small></button></div>
           <div class="hint">Prefilled from the states you want us to sponsor. You can change it. We'll confirm it with you on your call.</div></div>
         <div class="info" data-show="emp:forced"><span>Employment type: <b>Employee (W-2)</b></span><span class="tag" id="empwhy">Required in South Carolina</span></div>
+        <div class="webcard">
         <div class="f"><div class="lbl">Do you have a website or landing page that promotes mortgages? <span class="req">Required</span></div>
           <div class="seg" data-tog="web"><button type="button" data-v="yes" aria-pressed="true">Yes</button><button type="button" data-v="no">No</button></div></div>
         <div class="f" data-show="web:yes"><div class="lbl">Website URL <span class="req">Required</span></div><div class="rows" id="webrows"></div><button class="add" type="button" id="addweb">+ Add another website</button></div>
         <label class="check"><input type="checkbox" id="ack"> I'll get Loan Factory's approval before launching or changing a mortgage website.</label>
+        </div>
         <div class="actions"><button class="btn2" type="button">Back</button><button class="btn" type="button">Continue to book your call</button></div>
       </div>
     </div>
