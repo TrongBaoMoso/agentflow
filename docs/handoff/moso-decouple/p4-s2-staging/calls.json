@@ -1,10 +1,6 @@
 {
  "save": [
   {
-   "portal": "page-texts",
-   "status": 200
-  },
-  {
    "portal": "fee-config",
    "status": 200
   },
@@ -13,10 +9,60 @@
    "status": 200
   },
   {
+   "portal": "page-texts",
+   "status": 200
+  },
+  {
    "shot": "desktop-1-intro.png"
   },
   {
-   "step": "Fill Out Basic Information"
+   "recaptcha": "s://www.google.com/recaptcha/api2/reload",
+   "status": 200
+  },
+  {
+   "recaptcha": "ttps://www.google.com/recaptcha/api2/clr",
+   "status": 200
+  },
+  {
+   "recaptcha": "s-central1.run.app/webplus-api/recaptcha",
+   "status": 200,
+   "success": true
+  },
+  {
+   "portal": "save",
+   "status": 200
+  },
+  {
+   "recaptcha": "ttps://www.google.com/recaptcha/api2/bcn",
+   "status": 200
+  },
+  {
+   "step": "Grant Access on NMLS"
+  },
+  {
+   "recaptcha": "s://www.google.com/recaptcha/api2/reload",
+   "status": 200
+  },
+  {
+   "recaptcha": "ttps://www.google.com/recaptcha/api2/clr",
+   "status": 200
+  },
+  {
+   "recaptcha": "s-central1.run.app/webplus-api/recaptcha",
+   "status": 200,
+   "success": true
+  },
+  {
+   "portal": "save",
+   "status": 200
+  },
+  {
+   "recaptcha": "ttps://www.google.com/recaptcha/api2/bcn",
+   "status": 200
+  },
+  {
+   "step": "rail -> Fill Out Basic Information",
+   "aliasBefore": "E2E"
   },
   {
    "shot": "desktop-2-basic-info.png"
@@ -73,30 +119,6 @@
    "shot": "desktop-pay-1-intro.png"
   },
   {
-   "recaptcha": "s://www.google.com/recaptcha/api2/reload",
-   "status": 200
-  },
-  {
-   "recaptcha": "ttps://www.google.com/recaptcha/api2/clr",
-   "status": 200
-  },
-  {
-   "recaptcha": "s-central1.run.app/webplus-api/recaptcha",
-   "status": 200,
-   "success": true
-  },
-  {
-   "portal": "save",
-   "status": 200
-  },
-  {
-   "saved": 200
-  },
-  {
-   "recaptcha": "ttps://www.google.com/recaptcha/api2/bcn",
-   "status": 200
-  },
-  {
    "payMode": "desktop",
    "feeHeading": true,
    "unavailableNotice": true,
@@ -107,15 +129,15 @@
    "shot": "desktop-pay-2-fee-step.png"
   },
   {
-   "portal": "profile",
-   "status": 200
-  },
-  {
    "portal": "fee-config",
    "status": 200
   },
   {
    "portal": "page-texts",
+   "status": 200
+  },
+  {
+   "portal": "profile",
    "status": 200
   },
   {

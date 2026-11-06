@@ -37,7 +37,30 @@ The fix was `kubectl rollout restart deploy/recruit-be` on staging. Afterwards t
 - recruit-be's `OnboardingProfileInput.bool` accepted only true, false or null. It answered 400 `brokerage must be true or false`, which lf mapped to 400.
 - packs accepts `''`. The fix reads a blank text as null, the same rule `text`/`decimal` already follow. Test: `OnboardingProfileInputTest.blankBooleanIsNotAnswered`, RED before the fix and GREEN after.
 
-## E2E runs
+### Review of #885 (independent, after merge)
+
+The lead asked for a review before merge, but that message arrived after #885 was merged, so the review was done after the merge. A java-reviewer agent was given only the diff. It found 0 CRITICAL and 0 HIGH.
+- **MEDIUM:** a blank answer is applied as "clear the stored value", not "leave as is". This is the same as an explicit `null`, which behaved this way before the PR.
+  - Checked against lf: the page only sends `''` for a field whose stored value is null. Yes/no answers load as true/false, and only null becomes `''` (`registerFormValues.ts`). `give_nmls_access` is always true or false (`registerFormValues.ts:54`), and `completed_detail_form` is always `true` (`buildSavePayload.ts:21`).
+  - So no stored answer is lost. No follow-up fix.
+- **Guards:** traced and intact — the 1-1 lock on `is_corporate_loan_officer`, the `has_mortgage_website` keep-stored rule, and the approval-ack stamp.
+- **LOW, not done:** `bool` does not trim `"true "`, and a few extra test cases could be added.
+
+## E2E re-run after #885 (09:35-09:39Z, staging `b769bc108`)
+
+The lead asked for a full re-run after the promote.
+- **Staging outage:** shared Postgres (`postgres/postgresql-0`) was evicted and rescheduled around 09:30Z. For about 90 seconds the gateway answered 503 and the DB refused connections. It recovered on its own. It is unrelated to this work.
+- **New links:** both links were minted again, which rotated their tokens. The earlier links are dead.
+
+| Run | Result |
+|---|---|
+| Save, 1440 (`t08ch1`) | The profile reloaded from Recruit: the form showed alias `E2E`, `US Citizen` and `100 Test Street`, as written by the first run (`desktop-2-basic-info.png`). Alias changed to `E2E-RERUN`. `save` 200 (reCAPTCHA `success:true`), and the DB `alias_first_name` is now `E2E-RERUN` (`last_modified_date` 09:38:28Z) |
+| Pay, 1440 + 375 (`t10af1`) | Fee step shows "Payment isn't available right now…" and 0 PayPal frames at both widths |
+| `?key=`, 1440 + 375 | One packs `getRegisterLoanOfficer` 200 per width, 0 portal calls, no "Key is not exist" |
+
+The screenshots and `calls.json` in this folder are from this re-run.
+
+## E2E runs (first pass)
 
 - Browser: headless Chromium (Playwright), driven by a script that read the links from 0600 files, which were deleted afterwards.
 - Screenshots: viewport only, not full page.
