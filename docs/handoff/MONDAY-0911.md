@@ -10,10 +10,12 @@ Bead: see `bd list --status=open | grep MONDAY-0911`.
 ### 1a. Vinh or Khai: deploy the packs hotfix to MOSO production
 - packs #3832 (Recruit portal marker) is on **staging** (06/11 23:46). The hotfix copy #3847 is merged into the
   production branch `3.64.1`, but **production is not deployed**: Bao's SWAT role "Dev" has no Deploy Hot Fix button.
+- Same deploy also ships packs #3848 (cherry-pick of #3840, /join v2 registration fields), merged into `3.64.1` 07/11 (5b62809042c).
+  Check after deploy: `curl -s -X POST -H 'Content-Type: application/json' -d '{}' "https://www.loanfactory.com/api/webplus/v1/5716104026521600/getRegisterLoanOfficer?key=<a prod LORecruiting key>"` lists `ready_to_join`; then /join v2 can go to production (Bao approval + remove the temporary retry/marker in lf + lo).
 - Check first: `curl -s -o /dev/null -w "%{http_code}" -X POST -H 'Content-Type: application/json' -d '{}' https://www.loanfactory.com/api/recruit/v1/candidate/portalState`
   - 404 = not deployed yet, send the message. 401 = someone already deployed it, drop this item.
 - Draft (Vietnamese, Bao sends):
-  > Anh ơi, em đã merge packs #3832 vào master (staging đã deploy OK) và hotfix #3847 vào 3.64.1. Code chỉ đổi hành vi với hồ sơ có marker portal Recruit, prod Recruit chưa bật portal nên chưa ảnh hưởng gì. Nhờ anh bấm **Deploy Hot Fix v3.64.1** giúp em nhé. Thêm nữa, test packs/loan nhóm 0 trên master đang đỏ từ chiều 06/11 (test tính giá), anh xem giúp log trên SWAT.
+  > Anh ơi, em đã merge packs #3832 vào master (staging đã deploy OK) và hotfix #3847 + #3848 (field cho form đăng ký /join mới) vào 3.64.1. Code chỉ đổi hành vi với hồ sơ có marker portal Recruit, prod Recruit chưa bật portal nên chưa ảnh hưởng gì. Nhờ anh bấm **Deploy Hot Fix v3.64.1** giúp em nhé. Thêm nữa, test packs/loan nhóm 0 trên master đang đỏ từ chiều 06/11 (test tính giá), anh xem giúp log trên SWAT.
 
 ### 1b. Khai: Recruit onboarding portal + PayPal (Khai was off on 06/11)
 Source: memory `project_remind_khai_portal_paypal_0911`, `docs/handoff/moso-decouple/HANDOFF.md` ("PAUSED 06/11").
