@@ -43,28 +43,27 @@ The lead was `bao.trinh+t10af1@loanfactory.com`: candidate `283dabaf-…`, offer
 |---|---|
 | Fee step shows the PayPal button (1440 + 375) | **PASS**. Before this change it showed "Payment isn't available right now…". It now shows the **PayPal** and **Debit or Credit Card** buttons, with `#register-lo-paying-unavailable` count 0. `profile` / `fee-config` / `page-texts` all 200 |
 | Page creates a PayPal order against the shared app | **PASS**. Order `2LY07278L1178423J`, $100.00 USD, payee `8WTJ569XW3GMQ` |
-| Pay with sandbox money | **NOT DONE: no sandbox buyer login.** See "Blocker" |
+| Pay with sandbox money | **PASS** (17:53Z, second pass below). Order `1DG41783PY796531B`, capture `2Y9987550U380164B` |
 | Server-side check with the real sandbox creds | **PASS**. The page's uncaptured order `2LY07278L1178423J` was posted to `fee-paypal` (through lf-homepage staging → recruit-be). recruit-be authenticated with PayPal and read the order as `CREATED`, $100.00. It answered `REJECTED` / `NOT_COMPLETED`, `paid_startup_fee:false` |
 | Replay of the same order id | **PASS (idempotent)**. A second identical post gave the same answer. There is still **1** `fee_payments` row (`6be6eb28-150c-4f75-a9f0-8cd689627e55`, outcome `REJECTED`, `order_status=CREATED`, `attempts=2`). The offer stays `SENT` / fee `PENDING`, and no bell fired, which is correct because nothing was captured |
 
-### Blocker: a sandbox buyer (personal) account
+### Payment: guest card, no buyer login needed (second pass, 17:45–17:55Z)
 
-- PayPal's **guest card** path does not finish on this sandbox app. Tried with:
-  - country US;
-  - a generated Luhn-valid test Visa;
-  - a US billing address;
-  - an `example.com` email.
-- **Headless:** the "Debit or Credit Card" popup accepts the form. On "Pay Now", PayPal redirects to `/signin` ("Email or mobile number / Sign Up") and the order stays `CREATED`.
-- **Headed Chrome:** the card form opens inline instead of in a popup. It was not pursued.
-- PayPal has no public REST API that creates sandbox buyer accounts. They come from the developer dashboard.
+A PayPal sandbox buyer account is **not** needed. The guest "Debit or Credit Card" path works with PayPal's publicly documented sandbox test card **Visa 4012888888881881**, expiry 12/30, CVV 123, and a US billing address. No real card was used.
 
-**What is needed:** someone with access to the developer.paypal.com account that owns this sandbox app creates a **sandbox Personal account** (Testing Tools → Sandbox Accounts → Create account → Personal, US). That is presumably MOSO's (Khai), or Bao if the app is in Bao's dashboard.
-- Pass its email and password to the session over a private channel. Never commit them.
-- The run then takes about 5 minutes:
-  1. re-mint the t10af1 link;
-  2. on the fee step, PayPal → log in with the sandbox buyer → pay;
-  3. expect `fee_payments` outcome `RECORDED` with a capture id, offer fee PAID, and the page moving to step 4.
-  4. Then replay the order id: expect no second row and no double record.
+- **Headless Chromium:** the card button opens a `checkoutnow` popup. Both a generated card and the documented card got the same result: after "Pay Now", PayPal redirects to `/signin` and the order stays `CREATED` (`2LY07278L1178423J`, `1JY77774WS4140825`). Treat this as PayPal's bot/risk handling of headless popups, not a config problem.
+- **Headed Chrome:** the card form renders **inline** (`/smart/card-fields`). Filling it and pressing "Pay $100.00" worked:
+
+| Check | Result |
+|---|---|
+| PayPal capture (page side) | `POST /v2/checkout/orders/1DG41783PY796531B/capture` → 201 |
+| recruit-be check (`fee-paypal`) | 200 `{"status":"PAID","paid_startup_fee":true,"paypal_order_id":"1DG41783PY796531B"}` |
+| `fee_payments` | row `5a9dcb95-ec72-4e88-ac36-9e375aa082c8`: outcome `PAID`, capture `2Y9987550U380164B`, order/capture `COMPLETED`/`COMPLETED`, amount 100.00, attempts 1, verified 17:53:28Z |
+| offer `a97e4bf2-…` | `SENT`, fee **`PAID`** (was `PENDING`) |
+| Page | Re-opening the link (1440 + 375) shows the fee step with a green success check, and the PayPal buttons are gone (0 frames) |
+| Replay of `1DG41783PY796531B` through `fee-paypal` | same 200 `PAID` answer, still **1** row for that order (attempts 1): idempotent, no double record. It did not land in "captured, not recorded", so the D395 bell was not triggered (correct) |
+
+For a future rerun, use headed Chrome (`channel: 'chrome'`) and fill the inline `card-fields` frame by input `name`.
 
 ## Screenshots
 
@@ -73,10 +72,12 @@ The lead was `bao.trinh+t10af1@loanfactory.com`: candidate `283dabaf-…`, offer
 | `desktop-1-fee-step-paypal-button.png` | 1440: fee step with the PayPal + card buttons (was "Payment isn't available") |
 | `mobile-1-fee-step-paypal-button.png` | 375: the same |
 | `desktop-2-guest-card-form.png` | the sandbox guest card popup |
-| `desktop-3-guest-card-redirects-to-signin.png` | after "Pay Now": PayPal asks for a login, so the guest path is closed |
+| `desktop-3-guest-card-redirects-to-signin.png` | headless popup path: after "Pay Now", PayPal asks for a login |
+| `desktop-4-inline-test-card-filled.png` | headed inline card form, filled with the documented sandbox test Visa |
+| `desktop-5-after-pay-paid.png`, `mobile-5-after-pay-paid.png` | after payment: fee step shows the success check, at 1440 and 375 |
 
 ## Housekeeping
 
-- The t10af1 link used for this run was **re-minted afterwards** (its token rotated). The new link was stored nowhere, so mint again to test.
+- The t10af1 link used for each pass was **re-minted afterwards** (its token rotated). The new link was stored nowhere, so mint again to test.
 - Temp files holding the client id, secret, OAuth token and link were deleted.
-- Leftover uncaptured sandbox orders `08E809559P306272J` and `2LY07278L1178423J` expire on PayPal's side. They hold no money.
+- Leftover uncaptured sandbox orders `08E809559P306272J`, `2LY07278L1178423J` and `1JY77774WS4140825` expire on PayPal's side. They hold no money. The captured $100 is sandbox (fake) money.
