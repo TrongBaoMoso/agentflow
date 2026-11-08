@@ -118,6 +118,20 @@ switching on, from the staging pod as recruit-be@ (`testIamPermissions`): subscr
 20362, not a candidate) acked. NOT measured: the Pub/Sub service agent's publisher grant on the `_DLQ` topic (Bao's
 account cannot read IAM there); without it a message failing 5 times keeps retrying instead of going to the DLQ.
 
+**ESIGN_ENVELOPE_COMPLETED_TOPIC-recruit-sub** (+ DLQ topic `ESIGN_ENVELOPE_COMPLETED_TOPIC-recruit-sub.dlq` + `.dlq.monitor`):
+created 08/11/2026 by Claude (session 460363a7, Bao OK via the lead) on `lenderrate-master`, for recruit-be D409 (P4 S5,
+agreements through document-esign). Topic `ESIGN_ENVELOPE_COMPLETED_TOPIC` (document-esign's; LOS reads it on `-los-sub`).
+Settings like the other recruit subs: ack 60s, 7d retention, no expiry, retry 10s–600s, DLQ after 5. No message filter:
+document-esign publishes no attributes; recruit-be filters `source=ILO_AGREEMENT` + `service_type=RECRUIT` in code.
+recruit-be@ holds project-wide `roles/pubsub.editor`, so it can consume with no per-subscription grant. Staging values
+set `RECRUIT_ESIGN_DE_COMPLETED_SUBSCRIPTION` (recruit-be #916) while `RECRUIT_FEATURES_ESIGN_DE` stays false (no
+subscriber bean until both are set). **Needs DevOps (Bao cannot set IAM):** the Pub/Sub service agent's grants so a
+message failing 5 times reaches the DLQ instead of retrying forever:
+`gcloud pubsub topics add-iam-policy-binding ESIGN_ENVELOPE_COMPLETED_TOPIC-recruit-sub.dlq --project lenderrate-master --member serviceAccount:service-233682574497@gcp-sa-pubsub.iam.gserviceaccount.com --role roles/pubsub.publisher`
+and
+`gcloud pubsub subscriptions add-iam-policy-binding ESIGN_ENVELOPE_COMPLETED_TOPIC-recruit-sub --project lenderrate-master --member serviceAccount:service-233682574497@gcp-sa-pubsub.iam.gserviceaccount.com --role roles/pubsub.subscriber`.
+Until the flag is on, the subscription only accumulates LOS completions, which drop after 7 days.
+
 Production (`lender-rate`, NOT listable by Bao — known only from Khải):
 | Subscription | Status |
 |---|---|
