@@ -1,5 +1,8 @@
 # P4 S6 (first part) on staging: the invite and welcome link to the Recruit portal (07/11/2026)
 
+> **08/11/2026: the portal link is now `register-loan-officer?invite=<token>`** (Bao renamed it from `?t=`). Sections dated before that keep `?t=` as it was then; read it as `?invite=`. See "Rename `?t=` → `?invite=`" at the end.
+
+
 Bead `agentflow-0gwad.5.6` (under `agentflow-0gwad.5`). recruit-be decision **D399** (amends D382). STAGING only; production values untouched.
 **No token, secret or PII is in this folder or in any log.** Test addresses were `bao.trinh+…@loanfactory.com` only. No SMS was sent.
 
@@ -170,3 +173,49 @@ No token, secret or PII is in this folder or in any log. Test addresses were `ba
 - **A 410 at the payment step** keeps that step's own error, not the notice. This is on purpose, see the review notes above.
 - **An archive by a writer other than Recruit's two** (a MOSO push) revokes the link only at its first use. If the lead is revived before anyone uses the link, the link works again.
 - **The hero text above the notice** ("Please fill out your information below…") still shows. Bao asked only to replace the form.
+
+---
+
+# Rename `?t=` → `?invite=`, and the expired notice stands alone (08/11/2026)
+
+Bao renamed the Recruit portal link parameter: `register-loan-officer?invite=<token>`. MOSO's `?key=` links did not change.
+This is a **hard switch**: production never had a link, because the portal flags are absent there.
+- **Old staging links:** I did not keep `?t=` readable. It would be one line in lf (`readOnboardingToken` falling back to `t`), but the only `?t=` links ever sent are staging test e-mails, so there was nothing worth keeping. Any old staging `?t=` link now opens a fresh, empty page; re-send to get an `?invite=` link.
+- **Intro text:** Bao also asked that the expired notice stand alone. The intro above the form ("Please fill out your information below…" and the process list) is now hidden on an expired link. Only the page title stays.
+
+| Repo | PR | Commit | Staging |
+|---|---|---|---|
+| recruit-be | #901 | `91de2e8b5` (squash) | promoted; cd-staging run 42448222275 succeeded |
+| lf-homepage | #2729 | `9462d81c` (merge into master) | Cloud Run `lf-homepage-master` revision **`01614-tnq`** runs that image |
+
+**recruit-be.**
+- One constant, `PortalJoinLinkSwitch.LINK_PARAM = "invite"`, feeds both link builders: the e-mail late link (invite, welcome, D380 reminder) and the staff "copy link".
+- The stored markers follow: `?invite=REDACTED` and `?invite=DRY_RUN`.
+- Docs updated to `?invite=`: D399 and D368 notes, ONBOARDING-PORTAL.md, INTEGRATIONS, and comments in application.yml and the staging values. The comment in V326 stays, because that migration already ran.
+
+**lf-homepage.**
+- `ONBOARDING_TOKEN_PARAM = 'invite'`. `?t=` is no longer read.
+- The expired flag moved into a Recoil atom (`onboardingLinkExpiredState`), so `PostCallIntro` can hide itself.
+
+**Production.**
+- Draft PR #884 (the production secret line) needs no change for this; its description now carries a note.
+- lf-homepage `production` has no portal code yet (S2 is master-only), so the rename rides along when master goes to production.
+- I checked recruit-fe, packs and lo-homepage: none builds `?t=` portal links.
+
+**Review.** An independent code-reviewer, given both diffs only, found 0 CRITICAL and 0 HIGH issues.
+- Two MEDIUMs, both fixed: one doc comment said the rename backwards, and ONBOARDING-PORTAL.md and D368 still said `?t=`.
+- The LOW notes on test titles and comments are fixed too.
+
+**Tests.**
+- recruit-be CI is green. The ITs expect `?invite=`, and a new unit test pins the parameter as `invite`, never `t` or `key`.
+- lf-homepage jest: 23 suites, 215 tests green. The pre-commit hook (lint-staged and `next build`, Node heap capped at 1.5 GB) passed.
+
+## Staging E2E (08/11, ~05:40Z)
+
+| Step | Result |
+|---|---|
+| Setup | Lead `4b94c158-de0d-42a1-9b6c-065451969520` (`bao.trinh+s6n4v7p`, no MOSO record), offer `c4cb880d-b51d-4022-a1c6-f996795a469c` SENT. Two staff links were made: the first is rotated, the second is live. **Both URLs have the shape `https://www.viet18.com/register-loan-officer?invite=<43 chars>`, with no `?t=`** |
+| Portal via `?invite=`, 1440 and 375 | `profile`, `fee-config` and `page-texts` all answer 200. After "Before You Begin", the fields hold the lead's own name and e-mail. Shots: `invite-1-portal-desktop.png`, `invite-1-portal-mobile-intro.png`, `invite-1-portal-mobile-basic-info.png` (the site's video teaser covers part of the mobile form) |
+| Expired link via `?invite=`, 1440 and 375 | `profile` and `fee-config` answer 410. The notice shows, with **no intro text** (no "Please fill out…" and no process list), no form and no modal; only the page title stays above it. Shots: `invite-2-expired-notice-desktop.png`, `invite-2-expired-notice-mobile.png` |
+| Control: the live token sent as `?t=` | **No portal call at all.** The page is a fresh visit (the empty form with the CMS intro): the old parameter is no longer read. Shot: `invite-3-old-t-param-not-read-desktop.png` |
+| Cleanup | The lead is ARCHIVED, which revokes its links (D401). The link files and the admin token are deleted |
