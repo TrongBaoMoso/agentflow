@@ -12,7 +12,7 @@ This is the regression check for the one-go production switch: run it before and
 | # | Step | Asserted through |
 |---|---|---|
 | 0 | Preflight | `GET /config/candidate-view`: admin token valid, `invite_needs_moso_record=false` |
-| 1a/1b | reCAPTCHA min score 0, then back to 0.5 (only with `--lower-captcha`) | `gcloud run services update lf-homepage-master --update-env-vars` + read-back; times logged |
+| 1a/1b | (fallback only, `--lower-captcha`) reCAPTCHA min score 0, then back to 0.5 | `gcloud run services update lf-homepage-master --update-env-vars` + read-back; times logged. The default run uses the staging captcha bypass instead (below) |
 | 1 | Public REFER form on `www.viet18.com/refer/refer-a-loan-officer`, headed Chrome, lead e-mail `bao.trinh+p3only-s9<tag>@` (the lf staging canary `RECRUIT_INTAKE_RECRUIT_ONLY=bao.trinh+p3only*@loanfactory.com`) | network: `recruit-intake` **201**, `moso_post:false`, **0** packs `submitReferALoanOfficer` calls |
 | 2 | Lead exists with no MOSO record | DB: exactly 1 row for the e-mail, `legacy_key` null, `intake_client` set |
 | 3 | Claim | API: `owner_id` = the admin, stage `S1` |
@@ -20,7 +20,7 @@ This is the regression check for the one-go production switch: run it before and
 | 5 | Offer requested with `approve_now` | API: 201, offer `SENT`, fee `PENDING`, specialist assigned, lead `S5` (hand-off; no invite mail on staging, D207/D354) |
 | 6 | 1-1 scheduled on behalf (slot two hours ago, no meeting link, no colleagues) | API 200 |
 | 7 | 1-1 DONE (`INDEPENDENT`/`contract`, today in `America/Los_Angeles`, D402) | API 200; DB `lo_mail_sends` `WELCOME` **SENT** whose stored body carries `register-loan-officer?invite=REDACTED` |
-| 8 | Staff portal link | API `POST /offers/{id}/onboarding-link`: `?invite=` + 43 chars (rotates the welcome's link, by the S1 rule) |
+| 8 | Staff portal link | API `POST /offers/{id}/onboarding-link`: `?invite=` + 43 chars and `profile` answers 200 (it rotates the welcome's link by the S1 rule; minted again if a late mail rotated it) |
 | 9 | Portal profile save | lf proxy `POST <lf Cloud Run>/webplus-api/onboarding/save` 200, read back via `profile`; a desktop shot of the portal |
 | 10 | Start-up fee | headed Chrome on the portal link, PayPal guest card with PayPal's documented **sandbox** test Visa `4012 8888 8888 1881` (no real card): `fee-paypal` 200 `PAID`; DB `offers.fee_status=PAID`, a `fee_payments` row `PAID` with a capture id |
 | 11 | Paid mails (D404) | DB `lo_mail_sends` kind `FEE_PAID`: the LO's `tpl-lo-fee-paid` **SENT**; no staff copy SENT to a non-test address (the staging allowlist refuses real staff) |
@@ -39,7 +39,7 @@ cd docs/handoff/moso-decouple/p4-s9-e2e
 tok=$(~/.claude/bin/ram-gate acquire chrome s9-e2e --wait 900) && \
 ( cd ~/.cache/claude-recruit/preview && NODE_PATH=/Users/apple/.npm/_npx/e41f203b7505f1fb/node_modules \
     node alltokens.js /Users/apple/Projects/agentflow/docs/handoff/recruit-e2e-lab/scripts . | grep '^3370' ) && \
-NODE_PATH=/Users/apple/.npm/_npx/e41f203b7505f1fb/node_modules node s9-e2e.js --lower-captcha; \
+NODE_PATH=/Users/apple/.npm/_npx/e41f203b7505f1fb/node_modules node s9-e2e.js; \
 ~/.claude/bin/ram-gate release $tok
 ```
 
@@ -47,9 +47,19 @@ NODE_PATH=/Users/apple/.npm/_npx/e41f203b7505f1fb/node_modules node s9-e2e.js --
   read-only DB pod `~/.cache/claude-recruit/pgq_stg.sh`, and Cloud Run for `--lower-captcha`); the admin token file
   `~/.cache/claude-recruit/preview/stg_3370.token` (expires after about an hour: refresh first, as above); Google Chrome
   installed (PayPal refuses the headless card popup; the inline card form works only in headed Chrome).
-- **`--lower-captcha`:** automated Chrome scores 0 on reCAPTCHA v3, so the site route refuses the lead at the normal
-  0.5. The flag lowers `RECRUIT_INTAKE_MIN_SCORE` on `lf-homepage-master` to 0 for the form step only (about a minute,
-  one new revision each way) and restores 0.5 in a `finally`, reading both values back. Without it, step 1 fails.
+- **reCAPTCHA (staging test bypass, the default):** automated Chrome scores 0 on reCAPTCHA v3, so the site route
+  refuses a scripted lead at the normal 0.5. lf-homepage #2736 / lo-homepage #944 (merged into `master` 09/11) add
+  `RECRUIT_INTAKE_CAPTCHA_BYPASS_EMAILS`: for a matching e-mail the route accepts any score, but the token must still
+  verify. It works only in a staging build (`NEXT_PUBLIC_ENV=staging`); a production build ignores it (tested), and each
+  bypass logs a count only. **One-time setup after Bao's gcloud login** (the run's lead e-mail matches it):
+  ```bash
+  gcloud run services update lf-homepage-master --project lenderrate-master --region us-central1 \
+    --update-env-vars='RECRUIT_INTAKE_CAPTCHA_BYPASS_EMAILS=bao.trinh+p3only-s9*@loanfactory.com'
+  ```
+  (`--update-env-vars` only, never `--set-env-vars`, which wipes the other variables.) Check the log line
+  `recruit-intake captcha score bypass (staging test allowlist) count=N` after a run.
+- **`--lower-captcha` (fallback):** if the bypass is not deployed or set, this lowers `RECRUIT_INTAKE_MIN_SCORE` on
+  `lf-homepage-master` to 0 for the form step only and restores 0.5 in a `finally`, reading both values back.
 - **When esign-de is on (after S4/S5):** `node s9-e2e.js --lower-captcha --keep` runs to the signing page and keeps the
   lead; sign it in the opened Chrome window. If the wait runs out, continue later with
   `node s9-e2e.js --resume run-<tag>/state.json` (re-mints the portal link if it was deleted), then archive with a plain
@@ -116,13 +126,22 @@ start either.
 | 12-14 | BLOCKED | esign-de off |
 | 15 archive | PASS | ARCHIVED |
 
-**Together, A + C cover every step up to the signature on staging.** What is still owed:
-1. **One clean full-mode run** after Bao's `gcloud auth login` (form + DB + PayPal in one run, including step 11's
-   FEE_PAID rows). Command above; about 6 minutes.
+
+**Run D, partial, after switching to the bypass** (`--add-lead --no-db`, 09/11 ~00:14Z), tag `vnhdg`, candidate
+`83d5f4ae-2e10-4cfe-8292-498c6177fad4`, offer `725da115-436f-4e57-995b-7495f6dbc733`: **PASS 11, FAIL 0, BLOCKED 3,
+SKIP 2**, PayPal sandbox order `4P023019DN285910S` PAID (`10-after-pay.png`). Two more script fixes came out of the
+runs before it: a random phone outside the reused test range (an existing phone, even archived, is a 409), and a wait
+for the welcome mail before minting the staff link (the welcome rotates any older link, D368), with a re-mint if a
+late mail still rotates it.
+
+**Together, A + C/D cover every step up to the signature on staging.** What is still owed:
+1. **One clean full-mode run** after Bao's `gcloud auth login`: set the bypass variable (above), confirm the
+   lf staging revision runs `777ff9ad` or later, then the default command (form + DB + PayPal in one run, including
+   step 11's FEE_PAID rows). About 6 minutes.
 2. **Steps 12-14** after S4 (document-esign, Khai) and S5 (`esign-de` on in staging): `--keep`, sign in the opened
    window, then `--resume`.
 
-All four leads are ARCHIVED (`dyttv`, `xwety`, `gdpfw`; `zytdh` never became a lead). The portal link files were
+All leads are ARCHIVED (`dyttv`, `xwety`, `gdpfw`, `anyup`, `vnhdg`; `zytdh` and `gjyta` never became a lead). The portal link files were
 deleted by the runs.
 
 ## Shots
@@ -135,4 +154,5 @@ deleted by the runs.
 | `10-no-paypal.png` | why run A stopped: the website question in front of the fee step |
 | `10-fee-step.png` | the fee step with the PayPal and card buttons (run C) |
 | `10-card-filled.png` | PayPal's inline card form with the documented sandbox test Visa (run C) |
+| `10-after-pay.png` | after payment: the fee step shows the green check (run D) |
 

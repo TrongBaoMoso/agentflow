@@ -15,8 +15,11 @@
  *   NODE_PATH=/Users/apple/.npm/_npx/e41f203b7505f1fb/node_modules node s9-e2e.js [--lower-captcha] [--keep] \
  *     [--resume run-<tag>/state.json] [--sign-wait-min 20]; ~/.claude/bin/ram-gate release $tok
  *
- *   --lower-captcha   set lf-homepage-master RECRUIT_INTAKE_MIN_SCORE=0 for the form step and restore 0.5 right after
- *                     (automated Chrome scores 0 on reCAPTCHA v3). Times are logged in the results.
+ *   (default)         the form relies on the lf STAGING captcha bypass (lf-homepage #2736): the lead e-mail
+ *                     bao.trinh+p3only-s9<tag>@ must match RECRUIT_INTAKE_CAPTCHA_BYPASS_EMAILS on lf-homepage-master
+ *                     (set it to bao.trinh+p3only-s9*@loanfactory.com) as well as the Recruit-only canary.
+ *   --lower-captcha   fallback when the bypass is not deployed: set RECRUIT_INTAKE_MIN_SCORE=0 for the form step and
+ *                     restore 0.5 right after (automated Chrome scores 0 on reCAPTCHA v3). Times are logged.
  *   --keep            do not archive at the end (so --resume can continue once esign-de is on)
  *   --resume <file>   skip to the sign step for a lead kept by an earlier run
  *   --sign-wait-min   how long to wait for the agreement to be signed in the opened Inkless page (default 20)
@@ -60,7 +63,7 @@ const state = resumeFile ? JSON.parse(fs.readFileSync(resumeFile, 'utf8')) : (()
     email: `${CANARY_PREFIX}-s9${tag}@loanfactory.com`,
     first: 'Sierra',
     last: `Nine${tag[0].toUpperCase()}${tag.slice(1)}`, // letters only: HR refuses digits in a name
-    phone: `714555${String(Math.floor(1000 + Math.random() * 8999))}`,
+    phone: `469${String(Math.floor(2000000 + Math.random() * 7999999))}`, // random: a phone already in Recruit (even archived) is a 409
     nmls: String(9000000 + Math.floor(Math.random() * 999999)),
     startedAt: new Date().toISOString(),
   };
@@ -177,7 +180,7 @@ async function publicForm() {
     });
   }
   try {
-    await step('1. public REFER form (canary, Recruit-only): recruit-intake 201, moso_post false, no packs call', async () => {
+    await step(`1. public REFER form (canary, Recruit-only, ${flag('--lower-captcha') ? 'min score lowered' : 'staging captcha bypass'}): recruit-intake 201, moso_post false, no packs call`, async () => {
       const b = await browser();
       try {
         const page = await (await b.newContext({ viewport: { width: 1440, height: 900 }, locale: 'en-US' })).newPage();
@@ -205,6 +208,7 @@ async function publicForm() {
         await page.waitForTimeout(6000);
         await shot(page, '1-form-submitted.png');
         assert(intake, 'no recruit-intake call seen');
+        assert(intake.status !== 400 || flag('--lower-captcha'), 'recruit-intake 400: reCAPTCHA refused. Is the staging bypass deployed and RECRUIT_INTAKE_CAPTCHA_BYPASS_EMAILS set? (or use --lower-captcha)');
         assert(intake.status === 201, `recruit-intake ${intake.status}`);
         const mosoPost = intake.body && (intake.body.moso_post ?? (intake.body.payload || {}).moso_post);
         assert(mosoPost === false, `moso_post=${mosoPost}`);
@@ -283,8 +287,9 @@ async function oneOnOne() {
     assert(item, 'no ONB_PREMEETING item');
     const r = await api('PATCH', `/checklist-items/${item.id}`, { status: 'DONE', meeting_date: todayIn(BUSINESS_TZ), lo_type: 'INDEPENDENT', employment_type: 'contract' });
     assert(r.status === 200, `done ${r.status} ${JSON.stringify(r.body).slice(0, 200)}`);
-    if (NO_DB) return { status: 'PASS', detail: 'checklist DONE (welcome mail row not checked: --no-db)' };
+    // The welcome is sent after commit and mints its own link, rotating any older one: let it go out before step 8.
     await sleep(20000);
+    if (NO_DB) return { status: 'PASS', detail: 'checklist DONE (welcome mail row not checked: --no-db)' };
     const m = db(`select json_build_object('kinds',coalesce(json_agg(json_build_object('kind',kind,'status',status,'link',rendered_body ~ 'register-loan-officer\\?invite=REDACTED') order by created_date),'[]'::json)) from lo_mail_sends where candidate_id=${q(id)}`);
     const welcome = (m.kinds || []).find((k) => k.kind === 'WELCOME');
     assert(welcome, `no WELCOME row (rows: ${JSON.stringify(m.kinds)})`);
@@ -295,14 +300,21 @@ async function oneOnOne() {
 }
 
 async function portal() {
-  await step('8. staff portal link minted (?invite=, 43 chars)', async () => {
-    const r = await api('POST', `/offers/${state.offerId}/onboarding-link`);
-    assert(r.status === 201 || r.status === 200, `onboarding-link ${r.status}`);
-    const url = r.body.url;
-    const fd = fs.openSync(LINKF, 'w', 0o600); fs.writeSync(fd, url); fs.closeSync(fd);
+  await step('8. staff portal link minted (?invite=, 43 chars) and live', async () => {
+    let live = 0; let url = '';
+    // A late welcome or reminder mail rotates the link (newest e-mail wins, D368): mint again if ours was rotated.
+    for (let attempt = 1; attempt <= 3 && live !== 200; attempt++) {
+      if (attempt > 1) await sleep(15000);
+      const r = await api('POST', `/offers/${state.offerId}/onboarding-link`);
+      assert(r.status === 201 || r.status === 200, `onboarding-link ${r.status}`);
+      url = r.body.url;
+      const fd = fs.openSync(LINKF, 'w', 0o600); fs.writeSync(fd, url); fs.closeSync(fd);
+      live = (await proxy('profile', { token: portalToken() })).status;
+    }
     const t = new URL(url).searchParams.get('invite') || '';
     assert(t.length === 43, `token length ${t.length}`);
-    return `${url.split('?')[0]}?invite=<43 chars>`;
+    assert(live === 200, `the minted link answers ${live}`);
+    return `${url.split('?')[0]}?invite=<43 chars>, profile 200`;
   });
   return step('9. portal profile save via lf proxy, read back', async () => {
     const token = portalToken();
