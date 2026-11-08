@@ -192,7 +192,7 @@ Screens that work only on MOSO data:
 
 All are fed by the backend rows above, so each disappears or degrades with its backend row.
 
-## 3. The moso-off switch (D405, recruit-be #909)
+## 3. The moso-off switch (D414, recruit-be #909)
 
 **`recruit.features.moso-off`.** Default false. Staging entry `RECRUIT_FEATURES_MOSO_OFF: "false"`. Production has no entry.
 
