@@ -192,3 +192,21 @@ bd show agentflow-0gwad.6
   - Pushing them to omni as host-pushed blocks is decision K.
 - **Decision K for Bao:** should Recruit's SMS opt-outs be copied into omni, so omni also refuses those texts?
   - **Recommendation:** yes. omni supports host-pushed blocks that only the host can lift. It needs Khai to give Recruit's key that write.
+
+### 09/11 early morning
+
+- **Second opt-out REPORT run (after #919):** ai-donotcall still refused almost everyone (7,633 of 7,664 came back DNC_UNCHECKED).
+  - Cause: it accepts only US phones, and staging holds many non-US numbers.
+  - Fix #925: send only the identifiers ai-donotcall accepts. A positively non-US phone counts as CLEAN. A malformed US phone or NMLS stays unchecked.
+  - Re-run after the merge.
+- **#921 (D430) HR Loan Officer check:** merged 5c46e11a and promoted, running in SHADOW.
+  - First samples from staging test accounts: 11 checks. 7 agree, 4 where MOSO could not tell (HR said no), 0 disagree, 0 where HR failed.
+- **#920 / #926 (D429, V352) Recruit-sourced referral list,** built by p4-s4s5-esign, on staging in SHADOW.
+  - packs has 295 rows, Recruit 198. 120 match, 175 are only in packs, 78 only in Recruit.
+  - 89 of the 120 matches name a different referrer.
+  - Bonus fields agree on every match.
+  - Not ready to flip.
+  - Next steps need staging DB access, which needs gcloud re-login by Bao.
+- **New decisions for Bao:**
+  - **L. Who counts as the referrer when MOSO and Recruit disagree (89 on staging)?** Recommendation: the person recorded at sign-up.
+  - **M. Import MOSO's ~175 unrecorded referrals once before Recruit takes over the list?** Recommendation: yes.
