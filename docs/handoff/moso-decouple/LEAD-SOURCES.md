@@ -149,3 +149,8 @@ Recruit indirectly**, through the packs push to `/public/v1/webhook/moso/listene
 - **Q5.** Events: should the RSVP move into Recruit completely (Recruit owns the event list), or should moso-aid keep `LOEvent` and dual-post?
 - **Q6.** The April 2026 outbound file (1,162 rows): was it a one-off? Are those rows already in the Recruit Cold import (`agentflow-kzwcg`)?
 - **Q7.** Customer-service intake: is there a CS tool (call center / chat) that should post a lead itself instead of staff typing it?
+
+## Update 08/11/2026 (P3 "Recruit primary", D422 / D410)
+
+- **S1-S3:** on staging the lf/lo forms post to Recruit FIRST, then packs. A Refer-a-LO under the `RECRUIT_INTAKE_RECRUIT_ONLY` canary skips packs and stays a Recruit-only lead through the invite. See `p3-intake-staging/NOTES.md`.
+- **S5 / S6 / S7 / Calendly:** the EVENT intake kind is built (D410). The measured state of the others and the console steps for DevOps are in `p3-intake-staging/OTHER-SOURCES.md`.
