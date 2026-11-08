@@ -65,6 +65,22 @@ Blockers by the phase that owes them:
 | **No phase owns it yet:** the "next webinar" token and list dates still read the packs picker, even with Recruit webinars on | BE-45 |
 | P6 itself: bridges that only exist to keep MOSO in sync, deleted at the cut | BE-04, BE-05, BE-22, BE-26, BE-35, BE-36, BE-39, BE-40 |
 
+## 0c. Production-ON behaviours that rode the write-back flag (what the cut must not lose)
+
+Draft #923 (P6 cut) and the moso-off switch (D414) turn off everything gated on "packs write-back armed". Four of those
+gates carry behaviour that is ON in production today. Classified from the code (recruit-be `10f8d63b3`):
+
+| Behaviour (prod today) | Truly needs MOSO | Recruit logic that only rode the flag | Recruit-native now |
+|---|---|---|---|
+| **D207 hand-off** (`onboarding-v2-handoff`): the invite goes to the onboarding specialist, no invite e-mail | Telling MOSO the specialist on the INVITE (`send_invite:false`), and the bell waiting for packs to ACCEPT that specialist (D292) | Deciding "hand-off, no e-mail" (`InviteMail#handsOff`), the specialist's "handed to you" bell, the hand-off chip (`onboarding_v2_handoff` on candidate-view), resend wording | **Yes**, D432 (recruit-be #927, `recruit.features.onboarding-native`, staging on): the hand-off survives; with packs disarmed Recruit rings the bell itself at send (linked and D399 branches) and on a specialist change. D427 (#918) already rang it at send while packs is armed. |
+| **D354 wait for a specialist** (`invite-waits-for-specialist`): no specialist = no invite e-mail, the assigners are told | The packs INVITE row parked as `WAIT_SPECIALIST` and released by the specialist write | No invite e-mail while nobody holds the Loan Officer (`InviteMail#waitsForSpecialist`), the "waiting for a specialist" state, the bell to assigners, the specialist-wait reminders, Assign offered in My invites | **Yes**, D432: the wait shows with no packs row (`InviteDeliveryResolver`), My invites keeps Assign, reminders follow the native gate; the specialist assigned later gets the hand-off bell for the newest SENT offer. |
+| **1-1 Done captures the meeting date + W-2/1099** (`onboarding-writeback`, `onboarding-hire-classification`) | Sending the date and `is_corporate_loan_officer` to packs `onboardingMeeting` so MOSO builds its agreement | Requiring the date and the W-2/1099 pick at Done, storing the date on the checklist item and `lo_type` on the candidate (read by D406 `recruit.hired.v1` contract_type and by D409 e-sign document choice), the modal flags (`writeback_enabled`, `hire_classification_enabled`) | **Yes**, D432: capture and storage survive; only the packs write disappears. Changing the specialist is allowed under capture alone. |
+| **Agreement card** (MOSO Inkless status line + Send / Send updated) | **All of it**: it reads MOSO's envelope through packs `agreement/dryRun` and sends through packs `agreement/send` | none | **No (by design).** D409 (document-esign) is the replacement for Recruit-portal Loan Officers (flag `esign-de`, still off everywhere). A staff-facing status line for D409 envelopes is asked of the D409 owner (p4-s4s5-esign); if nobody owns it, it is the next build. Under moso-off the MOSO line already renders nothing (recruit-fe #731). |
+
+Also checked and left MOSO-only on purpose: `WelcomeMail` SENT_BY_MOSO (MOSO sends its own welcome only while it is told the 1-1 is done), `AgreementSendGate`, `OnboardingMeetingResendServiceImpl` (resend of the packs write), `HireClassificationWriter`'s lo_type enqueue, `PacksWritebackWaitReleaseService`, the packs payload resolver and tick.
+
+**For #923 (still a draft):** keep these four behaviours by keeping their own flags and `recruit.features.onboarding-native` (or folding them into always-on), instead of deleting `onboarding-writeback`, `onboarding-hire-classification`, `onboarding-v2-handoff` and `invite-waits-for-specialist` together with the packs write-back. Asked of the #923 author.
+
 ## 0b. Re-measure, 09/11 night
 
 | PR | Decision | Moves | Why |
