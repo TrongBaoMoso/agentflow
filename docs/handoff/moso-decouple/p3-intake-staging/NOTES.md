@@ -73,3 +73,78 @@ Shots: `after-1-lf-refer-recruit-only.png`, `after-2-lf-refer-primary.png`, `aft
 - Shot: `after-6-lf-returning-lead-primary.png`.
 
 **Cleanup.** `p3prim2` was archived too. `p3only1`, `p3prim1`, `p3only2`, `p3prim3`, `p3before1` and `p3before2` were archived with `POST /candidates/bulk-archive`. The archive also revokes the portal token.
+
+# Round 2 (08/11/2026 evening): webinar sign-ups on Recruit sessions (D425) and Recruit-only register / join (D426)
+
+Staging only. Production is untouched: every flag below is absent from production values.
+
+## What changed
+
+- **recruit-be #917, squash `74c2e06a`.** It was promoted, the staging deploy succeeded, Flyway reached V351, and the pod env shows `LEAD_INTAKE_WEBINAR=true` and `PORTAL_PRE_OFFER=true`.
+  - **D425:** `GET /public/api/v1/intake/webinar-sessions` lists the upcoming Recruit sessions. It is keyed and read server-side, and uses packs' time format.
+    - An intake post that carries `webinar_session_id` seats the lead in that session. The seat is taken AFTER the lead commits, in its own transaction, with source `FORM`.
+    - A refused seat never loses the lead.
+  - **D426:** a NEW `REGISTER` / `JOIN` lead whose post asked for it gets a pre-offer portal link (`portal_url`, `onboarding_tokens.offer_id` NULL).
+    - The link opens the profile read and save only.
+    - `fee/paypal` and `signing-link` answer 409. `fee-config` gives the public config with no PayPal binding.
+    - It lives at most 3 days.
+    - It stops for good at any open offer, a MOSO link, a later registration of the same person, or the invite's own link.
+    - Phone and NMLS are locked until the invite.
+- **Sites: lf-homepage #2734 (merge `dc953fe8`) and lo-homepage #943 (merge `9a3cb09b`).**
+  - **The webinar list:** `fetchNextWebinars` returns Recruit sessions as `recruit:<id>` options. It does so only when the server env `RECRUIT_WEBINAR_SESSIONS=true` AND the Recruit-first gate is on. Any failure, or an empty list, falls back to MOSO.
+  - **A `recruit:` pick:**
+    - Recruit seats the person.
+    - packs gets the person WITHOUT a webinar (`registerLoanOfficer`). Under the Recruit-only canary, packs gets nothing.
+    - The form's error shows when Recruit did not seat the person.
+  - **Register and /join:** under the canary, the route itself asks for the portal link, never the browser. The page then goes to `www.viet18.com/register-loan-officer?invite=` instead of packs' `?key=`. lo-homepage sends its visitors to the lf portal.
+    - Route and browser share one URL check: https, a portal host, the exact path, and an `invite` parameter.
+
+## Why a pre-offer link and not an offer at registration
+
+The portal's fee and signing hang on an offer. Creating one at registration would skip three things:
+
+- the recruiter's qualification;
+- the approval rules (D64);
+- the onboarding specialist hand-off.
+
+A profile-only link keeps all three. It matches the page's own hold: the fee step says "AFTER YOUR CALL", and the meeting status stays not reached for a lead nobody invited. One flag turns it off.
+
+The security review raised that an unverified e-mail could squat a record. Two guards answer it:
+
+- a link is only made for a NEWLY created lead;
+- it dies as soon as anyone else registers that e-mail, a MOSO record links, or an offer exists.
+
+## Staging env (Cloud Run, `--update-env-vars` / `--remove-env-vars` only)
+
+| Var | Value | When |
+|---|---|---|
+| `RECRUIT_INTAKE_MIN_SCORE` | 0 | 15:14Z to 15:22Z (E2E), then 0.5, read back |
+| `RECRUIT_WEBINAR_SESSIONS` | true | 15:14Z to 15:22Z only, then REMOVED (the sign-up forms show MOSO sessions again; see question 1) |
+| `RECRUIT_INTAKE_RECRUIT_ONLY` | `bao.trinh+p3only*@loanfactory.com` | unchanged (canary) |
+
+## E2E (15:14-15:22Z)
+
+| Case | Network | DB |
+|---|---|---|
+| BEFORE: `/recruit/bao-trinhhh` dropdown | MOSO sessions (Wed 18/11, 16/12 at 12:00 AM) | shot `d425-before-1-recruit-slug-moso-sessions.png` |
+| AFTER: same page | Recruit sessions: Fridays 1:00 PM, 13/11 to 18/12, with 27/11 (Thanksgiving) skipped | shot `d425-after-1-recruit-slug-recruit-sessions.png` |
+| `p3web1` picks a Recruit session (outside the canary) | `recruit-intake` 201, then packs **`registerLoanOfficer`** (not `registerWebinar`) | 1 row; seat `FORM` REGISTERED for 13/11 21:00Z; Recruit confirmation mail `WEBINAR_SESSION` SENT; the MOSO push linked the key afterwards |
+| `p3onlyweb1` picks a Recruit session (canary) | `recruit-intake` 201, **no packs call** | 1 row, no key; seat `FORM`; confirmation mail SENT |
+| BEFORE: `/join` with a canary e-mail (`p3onlyjoinb1`) | packs `registerLoanOfficer`, then `/join/license?key=<moso key>` | shot `d426-before-1-join-continues-on-moso-key.png` |
+| lf `/join` (`p3onlyjoin1`, `p3onlyjoin3`) | `recruit-intake` 201, **no packs call**, then **`register-loan-officer?invite=`**; the portal's profile, fee-config and page-texts answer 200 | 1 row, no key, 1 live pre-offer link, 0 packs rows; step 2 is prefilled with the lead's name and e-mail. Shots `d426-after-1-…`, `d426-after-3-portal-basic-info-prefilled.png` |
+| lo `/join` on `tainguyen.viet18.com` (`p3onlyjoin2`) | lo `recruit-intake` 201, no packs call, then `www.viet18.com/register-loan-officer?invite=` | as above, `intake_client` lo-homepage. Shot `d426-after-2-…` |
+| Invite of a portal-registered lead (`p3onlyjoin1`) | claim + figures + offer `approve_now` gave 201 SENT (hand-off); then a staff offer link | the pre-offer link is **ROTATED (revoked)**, and the offer link is the only live one |
+
+**Not covered here:** the lo `/loan-officer` webinar card. Its long form was not automated. It uses the same helper as lf, and jest covers it.
+
+**Cleanup:**
+- The two Recruit seats were cancelled.
+- All `p3*` round-2 leads were archived: `p3web1`, `p3onlyweb1`, `p3onlyjoin1`, `p3onlyjoin2`, `p3onlyjoin3` and `p3onlyjoinb1`.
+- The archive also revokes their portal links.
+
+## Known gaps / follow-ups
+
+- **MOSO's own 1/2/3-month webinar drips:** they do not start for a Recruit-session sign-up. That is P3b step 3.
+- **A Recruit-session sign-up that Recruit does not answer in 7 s shows the form error.** packs still holds the person. A retry is a duplicate that answers `webinar_registered: true` for the same session.
+- **The canary matches the e-mail the visitor typed.** Do not set `RECRUIT_INTAKE_RECRUIT_ONLY=all` in production before e-mail verification. The pre-offer link is the reason.
+- **lo-homepage has no portal page of its own.** Its visitors finish on www.viet18.com.
