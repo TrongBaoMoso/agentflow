@@ -192,7 +192,7 @@ Screens that work only on MOSO data:
 
 All are fed by the backend rows above, so each disappears or degrades with its backend row.
 
-## 3. The moso-off switch (D414, recruit-be #909)
+## 3. The moso-off switch (D414, recruit-be #909, squash `594ae3846`)
 
 **`recruit.features.moso-off`.** Default false. Staging entry `RECRUIT_FEATURES_MOSO_OFF: "false"`. Production has no entry.
 
@@ -225,6 +225,17 @@ When ON:
 **Known gaps in the switch:**
 - `enqueueIdentityWriteback`, `enqueueAgreementSend` and `enqueueMeetingReminder` have no guard of their own. They rely on their callers' gates, which all answer "off" under the switch (`IdentityWritebackFlags`, `isConfigured()`). A future caller must keep that.
 - The referrals 503 says "REFERRALS_UNAVAILABLE", not "MOSO is off". The frontend may match that exact text, so it was left alone.
+
+### 3.1 Shipped and measured (08/11/2026, ~17:50 VN)
+- recruit-be #909 was squash-merged as `594ae384643c7c7212689c814e40c8dba74de302`, then promoted (run 42472676872). The staging deploy (cd-staging run 42472696024) succeeded.
+- On staging (`gke_lenderrate-master_us-central1_moso-kube`, ns `recruit-be`):
+  - The deployment env has `RECRUIT_FEATURES_MOSO_OFF=false`.
+  - The new pod `recruit-be-687878bb4d-szzp8` is Running.
+  - It logged 0 ERROR lines in its first 3 minutes.
+- `GET /api/v1/admin/moso-off` returned 200 `{"moso_off":false,"skipped_since_pod_start":{}}`.
+- The MOSO push still lands: the newest `webhook_events` row with provider MOSO is 2026-11-08 10:33 UTC.
+- Production: no entry, so the switch is off by default there. Nothing was deployed to production.
+- Since this inventory was written, recruit-be #910 (D420) added a Recruit-computed referral bonus state that is shadow-compared with packs, with no payout. BE-11 and BE-21 are still blockers, because packs remains the source shown to users. The next inventory pass should count them as Replaced-dark.
 
 ## 4. Runbook: flip moso-off on STAGING (after the demo, from Wed 11/11 VN)
 
