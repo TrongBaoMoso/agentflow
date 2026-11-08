@@ -1,0 +1,24 @@
+{
+  "_note": "The 6 document mixes production signed in 90 days (P4-PLAN section 0). Leads are staging-only bao.trinh+ addresses with fictional names; no real person. Rule = RequiredAgreementDocs (recruit-be D409).",
+  "combos": [
+    {"id": "c1-1099", "email": "bao.trinh+esign-c1@loanfactory.com", "first": "Esign", "last": "Combo One",
+     "corporate": false, "licensed_states": ["TX"], "sponsor_states": ["TX"], "has_dre_endorsed": null,
+     "expect": ["1099_agreement_form_finalized"]},
+    {"id": "c2-w2", "email": "bao.trinh+esign-c2@loanfactory.com", "first": "Esign", "last": "Combo Two",
+     "corporate": true, "licensed_states": ["TX"], "sponsor_states": ["TX"], "has_dre_endorsed": null,
+     "expect": ["w2_agreement_form_finalized"]},
+    {"id": "c3-w2-ca", "email": "bao.trinh+esign-c3@loanfactory.com", "first": "Esign", "last": "Combo Three",
+     "corporate": true, "licensed_states": ["CA"], "sponsor_states": ["CA"], "has_dre_endorsed": false,
+     "expect": ["w2_agreement_form_finalized", "ca_compliance_statement"]},
+    {"id": "c4-1099-ea", "email": "bao.trinh+esign-c4@loanfactory.com", "first": "Esign", "last": "Combo Four",
+     "corporate": false, "licensed_states": ["VA", "TX"], "sponsor_states": ["TX"], "has_dre_endorsed": null,
+     "expect": ["1099_agreement_form_finalized", "exclusive_agent_agreement"]},
+    {"id": "c5-1099-ca", "email": "bao.trinh+esign-c5@loanfactory.com", "first": "Esign", "last": "Combo Five",
+     "corporate": false, "licensed_states": ["CA"], "sponsor_states": ["CA"], "has_dre_endorsed": false,
+     "expect": ["1099_agreement_form_finalized", "ca_compliance_statement"]},
+    {"id": "c6-1099-ca-ea", "email": "bao.trinh+esign-c6@loanfactory.com", "first": "Esign", "last": "Combo Six",
+     "corporate": false, "licensed_states": ["CA", "MS"], "sponsor_states": ["CA"], "has_dre_endorsed": false,
+     "expect": ["1099_agreement_form_finalized", "ca_compliance_statement", "exclusive_agent_agreement"]}
+  ],
+  "profile": {"nmls": "9900001", "street": "100 Test Way", "street2": "Suite 1", "city": "San Jose", "state": "CA", "zip": "95122"}
+}
