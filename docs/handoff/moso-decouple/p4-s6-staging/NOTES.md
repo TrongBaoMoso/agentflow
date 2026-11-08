@@ -113,3 +113,60 @@ The invite is handed to the onboarding specialist, so the Loan Officer's first R
 
 - recruit-be #897 (D399): https://github.com/LoanFactory-Inc/recruit-be/pull/897
 - recruit-be #898 (IT): https://github.com/LoanFactory-Inc/recruit-be/pull/898
+
+---
+
+# D401: the three follow-ups Bao answered (08/11/2026)
+
+Bead `agentflow-0gwad.5.6`. recruit-be decision **D401**. STAGING only, behind the same flags as D399; production untouched.
+No token, secret or PII is in this folder or in any log. Test addresses were `bao.trinh+…@loanfactory.com` only. No SMS.
+
+| # | Bao's answer | What was built |
+|---|---|---|
+| 1 | A dead or rotated `?t=` link shows an expired state, not the empty form. Copy: "This link has expired. Please use the link in your most recent email." | **recruit-be:** the public onboarding API answers ONE **410 "Link expired"** for a link Recruit made that no longer opens (rotated, expired, offer closed, candidate merged or archived). It keeps ONE **404 "Link not valid"** for anything it never made (malformed, unknown). Neither body carries data or says why. Only the holder of the exact 256-bit token can learn that it once existed (`OnboardingTokenService#wasIssued`). **lf-homepage:** the proxy passes 410 through, and the page shows the notice instead of the form (es, vi, zh and he translated). It shows it on load and when a profile save hits 410. A 404 keeps the existing "Key is not exist" modal |
+| 2 | The D380 invite reminder goes to Recruit-only leads too, with a fresh portal link | `InviteReminderLoMail` builds a late-link request for a lead with no MOSO record. It follows the D399 rules: the link is made only after the claim, the marker must be in the body, and the stored body says `REDACTED`. It rotates the earlier e-mails' links |
+| 3 | Archiving a lead revokes its portal links | Recruit's two archive writers (`CandidateServiceImpl#archive` and the NOT_INTERESTED call result) revoke the lead's links with reason `CANDIDATE_ARCHIVED`, **for good**: a revive does not bring them back. Any other writer (a MOSO push) is caught at the link's first use. V333 lets the reason check accept `CANDIDATE_ARCHIVED` |
+
+## PRs
+
+| Repo | PR | Commit | Status |
+|---|---|---|---|
+| recruit-be | #900 (D401) | `b5f406ce7` (squash) | CI green (ITs included). Promoted: cd-staging run 42435184806 succeeded. The pod runs it, and Flyway applied **V333** at 01:46Z |
+| lf-homepage | #2728 | `f6a7e5b0` (merge into master) | Cloud Build `93166ed3` succeeded. Staging Cloud Run `lf-homepage-master` revision **`01613-nql`** runs image `f6a7e5b0` |
+
+**Review, recruit-be.** An independent java-reviewer, given only the diff, found 0 CRITICAL and 0 HIGH issues.
+- One MEDIUM, fixed: no link is made for an archived lead.
+- The LOW note on the revive wording was made exact.
+
+**CI caught two real problems before merge.**
+- The DB reason check would have refused `CANDIDATE_ARCHIVED`, so every archive of a lead with a link would have failed. Fixed by V333.
+- `OnboardingFeePaypalIT` still expected 404 for a closed link.
+
+**SCHEMA.md.** Only the marker changed (`V333`). The doc lists no CHECK constraints, and the local Postgres 14 cannot run the migrations, which need 15 or later.
+
+**Review, lf-homepage.** An independent typescript-reviewer found 0 CRITICAL and 0 HIGH issues.
+- LOW, fixed: the notice is now `role="alert"` with a heading.
+- MEDIUM, kept on purpose: a 410 at the **payment** step keeps that step's own error. PayPal may already have captured the money, and the Loan Officer must see that the payment step failed. recruit-be's D395 bell tells staff about a captured fee it did not record.
+
+## Staging E2E (08/11, 01:55–02:15Z; recruit-be `b5f406ce7`)
+
+| Step | Result |
+|---|---|
+| Setup | Lead **Expired** `b43ba263-b6e2-4b41-961d-7394962de006` (`bao.trinh+s638qxm`, no MOSO record), offer `1ea1d66a-c561-4e1c-b15f-b063cbb9156a` SENT. Two staff links were made: A, then B, so A is rotated. Lead **Archive** `8f024e9b-d6b4-4464-8e84-2a3f8c592e8c` (`bao.trinh+s6ubqmm`), offer `9671c129-9520-46be-82e1-2aa6532f020a` SENT, with link C. The links were kept in 0600 files and deleted afterwards |
+| **BEFORE (#1)**, recruit-be already on 410, lf still the old build | Dead link A at 1440 and 375: `profile` and `fee-config` answer **502** (old lf turns the new 410 into 502), page-texts 200. The page shows the **empty form** at "Before You Begin" with no notice. Shots: `d401-before-1-expired-link-desktop.png`, `d401-before-1-expired-link-mobile.png` |
+| **#3 archive** | Before: C's row was live (`revoked_at` null). `POST /candidates/bulk-archive` gave 200. After: C's row was **revoked, `CANDIDATE_ARCHIVED`**, read from the staging DB |
+| **#2 reminder** | Only for this test, two staging settings were changed at **02:02:46Z** and restored at **02:11:21Z**, about 8.5 minutes: `invite.lo_reminder_days` [2,5,10] → [0,2,5,10] and `invite.lo_reminder_window_hours` 24 → 1. The cron tick at **02:10:01Z** mailed lead Expired **"S6, finish joining Loan Factory"**: `INVITE_REMINDER` **SENT**, key `invite-reminder:<offer>:d0`. The stored body matches `register-loan-officer?t=REDACTED` and holds **no** 43-character token. Link B was **ROTATED** at 02:10:01, and a new **live** link was made at 02:10:01 (the reminder's). The restored values were read back from `recruit_settings` |
+| Reminder side effect | Four older **MOSO-linked** test leads (`bao.trinh+t08e6g`, `+e2e22w5`, `+e2e22w4b`, `+lor-ref2`) had offers SENT in that hour by other sessions. Each got one day-0 reminder with the unchanged `?key=` link, to Bao's test aliases. No portal token changed for them. The real steps (2, 5 and 10 days) were not lost: their 24-hour window was back before any of them fell outside it |
+| **AFTER (#1)**, lf `f6a7e5b0` | Dead link A at 1440 and 375: `profile` and `fee-config` answer **410**. The page shows the **notice "This link has expired. Please use the link in your most recent email."** with no form and no modal. Shots: `d401-after-1-expired-link-desktop.png`, `d401-after-1-expired-link-mobile.png` (the site's own video teaser and cookie banner overlay the page) |
+| Control (#1) | A well-formed token Recruit never made gets `profile` **404**: no notice and the old form, unchanged. Shot: `d401-after-2-never-issued-control-desktop.png` |
+| Cleanup | Both leads ARCHIVED. Archiving lead Expired also revoked the reminder's live link: its tokens read `ROTATED, ROTATED, CANDIDATE_ARCHIVED`, a second check of #3. The link files and the admin token are deleted |
+
+**Local runs.**
+- lf-homepage: jest passes on the changed suites (48/48) and on the register-loan-officer folder (160/160). The pre-commit hook (lint-staged and `next build`) passed. RAM was short: the build ran with `NODE_OPTIONS=--max-old-space-size=1536` under a 2.2 GB ram-gate reservation, after the 3–3.5 GB reservations were denied for over 1.5 hours.
+- recruit-be: gradle could not get a RAM slot locally, so CI ran it.
+
+## Gaps and notes
+
+- **A 410 at the payment step** keeps that step's own error, not the notice. This is on purpose, see the review notes above.
+- **An archive by a writer other than Recruit's two** (a MOSO push) revokes the link only at its first use. If the lead is revived before anyone uses the link, the link works again.
+- **The hero text above the notice** ("Please fill out your information below…") still shows. Bao asked only to replace the form.
