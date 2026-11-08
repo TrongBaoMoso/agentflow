@@ -169,3 +169,26 @@ bash ~/.cache/claude-recruit/pgq_stg.sh recruit "select status, mode, scanned, a
 bash ~/.cache/claude-recruit/pgq_stg.sh recruit "select status, count(*) from referral_bonus_state group by 1;"
 bd show agentflow-0gwad.6
 ```
+
+## Progress log
+
+### 08/11 night
+
+- **#913 opt-out reconcile:** merged 5f3f929b (V349) and promoted.
+  - First REPORT on staging: 7,656 people in 2 minutes 37 seconds.
+  - omni works: 229 people are opted out of SMS in Recruit but not in omni, and none the other way round.
+  - ai-donotcall refused every batch with HTTP 400, because one unreadable record rejects the whole list of 200. So no blacklist answer came back.
+  - #919 fixes that: a refused batch is halved until the refused people are alone, capped at max(5, a tenth of the batch). It will be re-run once merged. APPLY has not been run: nothing was applicable.
+- **#914 runner STOP scan:** merged ca50c169.
+- **#910 referral bonus state:** merged (D420, V340) and live on staging.
+  - Rows by status: EARNED 1, MATURING 4, NOT_ELIGIBLE 11, PENDING_JOIN 7, UNDETERMINED 172. Packs disagrees on 5.
+  - Bao decided on 08/11: the 60 days start at joined, leaving early forfeits the bonus, and $500 is for REFERRAL only.
+- **#911 program applications mirror:** merged aabbd4f32 (D421, V350) and promoted.
+  - DRY_RUN on staging returns source_unavailable, because moso-aid #225 is not deployed yet.
+- **#921 (D430): "is this person a Loan Officer" from HR's LOAN_OFFICER role.** It runs in SHADOW on staging next to MOSO and counts agree / disagree / hr_unknown. This is part of BE-12.
+- **Handed to p4-s4s5-esign:** a Recruit-sourced referral list behind PACKS / SHADOW / RECRUIT (BE-11, BE-23, BE-29, BE-30; D429, V352).
+- **New observation, Recruit vs omni opt-outs:** Recruit holds 229 SMS opt-outs that omni does not.
+  - Today Recruit's own gate blocks those texts, but a text sent from omni's composer outside Recruit would not be blocked.
+  - Pushing them to omni as host-pushed blocks is decision K.
+- **Decision K for Bao:** should Recruit's SMS opt-outs be copied into omni, so omni also refuses those texts?
+  - **Recommendation:** yes. omni supports host-pushed blocks that only the host can lift. It needs Khai to give Recruit's key that write.
