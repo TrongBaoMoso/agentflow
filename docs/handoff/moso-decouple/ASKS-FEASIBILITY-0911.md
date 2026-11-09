@@ -217,3 +217,5 @@ During the few minutes of rollover, an intake post may get 401. That is safe by 
 - Bao can create the new secret, but **can't grant `recruit-be-deploy@` `secretAccessor`** on it.
 - That grant needs the one `roles/secretmanager.admin` user or a project owner (6 users). Per recruit-be `docs/secret-sync.md:19`, platform-admin also creates new source secrets.
 - So this is a second ask. Rotation avoids it.
+
+**Done 09/11 14:28-14:47Z (session 460363a7, agentflow-0gwad.4.14):** rotated as above. New versions lf v4, lo v4, moso-aid v2, recruit-be list v4; old ones disabled. lf, lo and an after-party RSVP all landed in Recruit (the RSVP as `EVENT_RSVP`, client `moso-aid`); unkeyed POST 401. Details: [`p3-intake-staging/OTHER-SOURCES.md`](p3-intake-staging/OTHER-SOURCES.md).
