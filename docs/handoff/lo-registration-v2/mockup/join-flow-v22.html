@@ -325,10 +325,12 @@ details.sum .dl{padding:4px 18px 16px}
     <div class="pad main"><div class="layout"><div class="col">
       <h1>Your license details</h1>
       <div class="box">
+        <div class="fit"><b>Quick check before you continue</b><ul><li>You have an NMLS ID</li><li>Your license in each state below is Active or Approved-Inactive (expired? renew on NMLS first)</li><li>You're committed to closing at least 1 loan every 6 months</li></ul>
+          <label class="check"><input type="checkbox" id="fit" checked> I meet these requirements</label></div>
         <div class="lookup"><div class="f"><label for="nmls">NMLS ID <span class="req">Required</span></label><input class="in" id="nmls" value="1234567"></div><button class="btn2" type="button" id="lookup" style="height:44px">Look up</button></div>
         <div class="hint" id="nmlsmsg" hidden></div>
         <div class="nmls" id="nmlscard">
-          <div class="src"><b>Found on NMLS Consumer Access</b><span>Updated just now</span></div>
+          <div class="src"><b>Found on NMLS Consumer Access</b><span>Concept only: data source not confirmed yet</span></div>
           <dl class="dl">
             <div><dt>Legal name</dt><dd>Jane Anne Smith</dd></div>
             <div><dt>Current sponsor</dt><dd data-show="spon:none">None</dd><dd data-show="spon:other">ABC Home Loans LLC</dd></div>
@@ -345,7 +347,7 @@ details.sum .dl{padding:4px 18px 16px}
         </div>
         <div class="f" data-show="emp:free"><div class="lbl">Employment type <span class="req">Required</span></div>
           <div class="typecards"><button class="tc" type="button" aria-pressed="true"><b>Independent (1099)</b><small>Keep 100% of your commission. You handle your own taxes.</small></button><button class="tc" type="button"><b>Employee (W-2)</b><small>90% of the commission. Payroll taxes are withheld.</small></button></div>
-          <div class="hint">Set from the states you picked. We confirm it with you on your call.</div></div>
+          <div class="hint">Prefilled from the states you want us to sponsor. You can change it. We'll confirm it with you on your call.</div></div>
         <div class="info" data-show="emp:forced"><span>Employment type: <b>Employee (W-2)</b></span><span class="tag">Required for a California DFPI license</span></div>
         <div class="webcard">
           <div class="f"><div class="lbl">Do you have an existing website or landing page that promotes mortgages? <span class="req">Required</span></div>
