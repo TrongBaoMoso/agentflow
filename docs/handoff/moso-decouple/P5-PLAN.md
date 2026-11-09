@@ -210,3 +210,8 @@ bd show agentflow-0gwad.6
 - **New decisions for Bao:**
   - **L. Who counts as the referrer when MOSO and Recruit disagree (89 on staging)?** Recommendation: the person recorded at sign-up.
   - **M. Import MOSO's ~175 unrecorded referrals once before Recruit takes over the list?** Recommendation: yes.
+- **Fourth opt-out REPORT run (after #925 and #929): the blacklist check works.**
+  - Cause of the earlier failures, reproduced locally: the JDK client's h2c upgrade made ai-donotcall's uvicorn/httptools drop the request body.
+  - Run 3b533ebb checked 7,668 people with 0 unchecked.
+  - 46 people are blocked in Recruit but absent from ai-donotcall's LO Recruiting list. 229 people opted out of SMS in Recruit but not in omni. Nobody is blocked outside Recruit without Recruit knowing.
+  - So APPLY has nothing to add, and the open items are decisions A, B and K.
