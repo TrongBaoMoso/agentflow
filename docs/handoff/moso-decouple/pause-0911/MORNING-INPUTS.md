@@ -38,3 +38,5 @@
 - P3 drips #924 (D431, V355) merged + staging; switch seeded false; 1-month step OFF (subject placeholder). After gcloud login: run verify_moso_drip_templates.sh, diff against V355, add the real 1-month subject in a new migration.
 - Q drips: turn webinar.drip_mail.enabled on together with RECRUIT_WEBINAR_SESSIONS (Wed earliest) [rec]; enable 1-month once subject verified [yes]; signature = sender's own (not Victoria's) [rec keep Recruit rule]
 - Q D429/BE-12: referrer key = sign-up record [rec]
+- Referral import #928/#931 (D433, V354) DRY_RUN on staging: 295 packs rows; would import 170 (as PENDING); 31 same referrer; 89 different referrer (84 from V300 backfill, 5 roster mirror: MOSO likely re-pointed after Recruit's first-touch snapshot); 5 unconfirmed (never imported). After gcloud: run docs/handoff/moso-decouple/referral-diagnose/diagnose.sh.
+- Q referral: 89 -> keep sign-up referrer if diagnosis confirms MOSO re-pointed [rec]; APPLY 170 on staging after diagnosis [rec yes, reversible]; leave out the 5 typed-email-only [rec]
