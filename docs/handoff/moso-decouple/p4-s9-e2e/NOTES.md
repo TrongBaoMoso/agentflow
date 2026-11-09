@@ -156,3 +156,25 @@ deleted by the runs.
 | `10-card-filled.png` | PayPal's inline card form with the documented sandbox test Visa (run C) |
 | `10-after-pay.png` | after payment: the fee step shows the green check (run D) |
 
+
+## Run E (09/11, esign-de ON)
+
+Full mode (form + DB + PayPal), `--keep --sign-wait-min 1`, tag `jnerz`, candidate
+`0e11ff83-a24c-4e71-bcd5-6c3d026aabfa`, offer `f65bfb4d-bff9-49a3-ac85-44eecea8caba`, 03:36-03:40Z, on document-esign
+`6782ea42` (#138, Flyway V52 applied) and recruit-be `ea078bc7` (#937, pod env `RECRUIT_FEATURES_ESIGN_DE=true`).
+**PASS 12, FAIL 1, BLOCKED 2, SKIP 1** (`results-run-e.txt`).
+
+- Steps 0-11 PASS in one run (the first clean full-mode run): form via the staging captcha bypass, `recruit-intake` 201,
+  0 packs calls, lead with no MOSO record, offer SENT, WELCOME SENT, PayPal sandbox order `4BP67509SU333561W` PAID,
+  `fee_payments` PAID, LO `FEE_PAID` mail SENT, staff copies SKIPPED.
+- **Step 12 FAIL: `signing-link` 503** ("Signing is not available right now"). The flag is on; the cause is document-esign
+  staging's global admin switch `esign_settings.use_inkless = false` (`GET /internal/api/v1/esign/availability` answers
+  `{"useInkless":false,"inklessConfigured":true}`), so `AgreementSigning.send` refuses before any envelope is made (Bao
+  23/10: Inkless only). The four agreement templates exist (ACTIVE) and carry `enable_inkless: true`. **0
+  `agreement_envelopes` rows** for the offer, nothing was sent to Inkless.
+- Steps 13-14 BLOCKED (need 12); 15 SKIP (`--keep`).
+- The lead is kept (ACTIVE, S5, fee PAID) for `node s9-e2e.js --resume run-jnerz/state.json` once the switch is on.
+  Turning it on is a global staging change for every document-esign caller (LOS disclosures then go through paid
+  Inkless), so it waits for the owner's decision.
+- Not seen in recruit-be's log: the refusal leaves only the controller's generic `BaseException` line; there is no
+  `esign_de.*` warning naming "Inkless is not available". Worth a log line before production.
