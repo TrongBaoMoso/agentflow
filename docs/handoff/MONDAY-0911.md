@@ -29,7 +29,7 @@ Source: memory `project_remind_khai_portal_paypal_0911`, `docs/handoff/moso-deco
 ### 1c. Khai: issue recruit-be #864, item 4
 Items 1-3 are on production (06/11). Item 4 is waiting on Khai's answer on the issue.
 
-### 1d. Victoria: where to find the Ambassador Activity tab (she asked 06/11 22:24, no LO role)
+### 1d. DONE (answered 06/11 23:39 in the chat, checked 09/11): Victoria: where to find the Ambassador Activity tab
 Measured 06/11 23:30: Activity is fully on PROD (moso-aid-00130, lf-homepage-00767) — posts, referrals, budget, post links.
 Reply (EN, attach `.playwright-mcp/activity-shots/prod-r3-wide.png` + `prod-links.png`):
 > No LO role needed, chị. Sign in to Loan Factory (MOSO) with your usual account and open
