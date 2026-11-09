@@ -1,3 +1,27 @@
+# RESUME POINT — PAUSED 09/11 ~18:00 (session 8658d500)
+
+**Where we are:** the CEO (Thuan) reviewed /join v2 on 09/11 (transcript `docs/transcripts/lf-homepage/2026-11-09_register-loan-officer-page-new-flow-feedback.md`). In response, mockup **v22** is being built:
+- Artifact: https://claude.ai/artifact/XXVsnzQyfew8P7Tnjmm6jG
+- File: `docs/handoff/lo-registration-v2/mockup/join-flow-v22.html`, last commit 19f7fef0.
+- The current mockup, v21, stays at https://claude.ai/artifact/92Yarua4tCB9TwhQontgn7.
+
+**Rules Bao set for v22 (strict):**
+- Keep the v21 look exactly: fonts, colors, backgrounds, sizes, weights. Ignore all of Khai's design comments; Tera+ is for admin apps.
+- Change ONLY what the CEO asked. Every row in the "What changed" table must have a source. Anything without a source stays as in v21.
+- About you and License details stay 2 separate steps. Bao chose option 1, so there are 6 steps:
+  - Before the call, the bar and the side list show 3 steps: About you, License details, Book your call.
+  - From Application on, they show 6: About you, License details, Intro call, Application, Pay & sign, NMLS access.
+- Victoria's gate stays: no payment before the onboarding specialist approves. PayPal + card stay as today.
+- The Quick check box stays, and so does the v21 employment hint.
+- The NMLS lookup is a concept only, labelled "data source not confirmed yet". Consumer Access has no public API, and scraping has not been checked yet.
+- Step 3: "Any time works for me" is kept as a top-level choice ("Pick times" / "Any time works for me"). Picking it hides the calendar and its title. The button is "Submit".
+- Special requests sit in Step 2, in a tinted card, with the legal tick inline. The "One request per row" hint was removed.
+
+**Next:**
+- Wait for Bao's review of v22.
+- Open questions: W-2/1099 rules from Jessica; NMLS data feasibility; driver's license OCR (Document AI) and its storage; copy review by Brayan, then Licensing.
+- No code changes yet. /join v2 prod is on HOLD until the redesign is agreed. The packs hotfix #3848 still needs Vinh or Khai to press Deploy Hot Fix.
+
 # LO Registration v2 — HANDOFF
 
 ## UPDATE 07/11 01:00 — Recruit shows the call request on STAGING: recruit-be #893 (call_request on /inbox/hot rows, instants as ApiInstant), recruit-fe #724 (Call request card on the lead profile) + #725 (Hot leads chip). Measured on recruit.viet18.com/inbox/hot?q=Joinv2. packs #3848 (cherry-pick of #3840) merged into 3.64.1; needs Deploy Hot Fix (Vinh/Khai) — MONDAY-0911.md 1a. Production of /join v2 waits for that + Bao.
