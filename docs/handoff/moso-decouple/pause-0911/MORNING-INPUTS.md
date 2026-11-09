@@ -33,3 +33,8 @@
 - P5 FINAL (P5-PLAN.md 3952e94): opt-out reconcile 7,668 checked: 46 blocked in Recruit not in ai-donotcall LO list; 229 SMS opt-outs omni doesn't know; 0 outside-only. HR LO check shadow 11/7 agree/0 disagree. NMLS blocked on HR.
 - P5 Qs: (1) ask blacklist owner to add the 46 [yes] (2) Recruit auto-adds blocks to company blacklist once given a key [yes] (3) Recruit pushes 229 SMS opt-outs to omni, Khai adds a route [yes] (4) referral payout = monthly list to Finance [rec] (7) moso-aid other parts (exams, events, locations, LOL) owner: Khai/Dat name one [rec] (9) HR NMLS company login for sponsorship: ask HR lead (10) older STOP wordings: ask MOSO SMS owner
 - #923 draft updated: keeps the 4 prod-ON behaviours (D432 via OnboardingGates). Merge preconditions: prod LO_MAIL_INVITE + LO_MAIL_WELCOME on BEFORE the cut (packs sends them today); integration tests never ran on the branch.
+## Added at pause
+- P6 done before pause: #927 (D432 keeps the 4 prod-ON behaviours natively), #930 + fe #732 (D434 staff agreement line, shown only when esign-de is on). BE-12 stays a blocker (site domain lives in moso-aid lo-setting; identity waits on the D429 referrer decision).
+- P3 drips #924 (D431, V355) merged + staging; switch seeded false; 1-month step OFF (subject placeholder). After gcloud login: run verify_moso_drip_templates.sh, diff against V355, add the real 1-month subject in a new migration.
+- Q drips: turn webinar.drip_mail.enabled on together with RECRUIT_WEBINAR_SESSIONS (Wed earliest) [rec]; enable 1-month once subject verified [yes]; signature = sender's own (not Victoria's) [rec keep Recruit rule]
+- Q D429/BE-12: referrer key = sign-up record [rec]
