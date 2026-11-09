@@ -270,7 +270,7 @@ details.sum .dl{padding:4px 18px 16px}
       <tr><td>9</td><td>"Existing website", default No</td><td>"Do you have a website…", Yes selected</td><td><span class="k new">Changed</span> "existing", No selected</td></tr>
       <tr><td>10</td><td>Special requests before the call, required, "I have no requests"</td><td>Step 4, optional</td><td><span class="k new">Moved</span> Step 2 License details, required Yes/No</td></tr>
       <tr><td>11</td><td>No Team name / Powered by suggestions</td><td>Two quick-add chips</td><td><span class="k cut">Removed</span></td></tr>
-      <tr><td>12</td><td>Step 3: one question, Yes → pick a time, No → move on</td><td>Two cards + "Any time works for me" + "Request my call"</td><td><span class="k new">Simplified</span> Yes / No, then Submit</td></tr>
+      <tr><td>12</td><td>Step 3: Yes → pick a time or "any time", No → move on</td><td>"Any time" button inside the calendar card, title stays, "Request my call"</td><td><span class="k new">Simplified</span> "Any time works for me" moved to the top as one of two choices; picking it hides the calendar and its title; "Request my call" is now "Submit"</td></tr>
       <tr><td>13</td><td>Upload driver's license, read name and address</td><td>Typed</td><td><span class="k new">Auto</span> Upload fills the address; legal name comes from NMLS</td></tr>
       <tr><td>14</td><td>Legal name: just show it and confirm</td><td>"Set by our team · This is wrong"</td><td><span class="k cut">Removed</span> Read-only + confirm tick</td></tr>
       <tr><td>15</td><td>W-2 may not originate with another company</td><td>Free checkbox</td><td><span class="k new">Enforced</span> W-2 shows the rule; 1099 keeps the checkbox</td></tr>
@@ -392,6 +392,7 @@ details.sum .dl{padding:4px 18px 16px}
         <button class="path" type="button" id="cq-no" aria-pressed="false"><span class="ic">✓</span><b>No, I'm ready to join</b><small>I already spoke with your team</small></button>
       </div>
       <div id="callblock" style="display:grid;gap:14px">
+        <div class="seg" id="when"><button type="button" id="w-pick" aria-pressed="true">Pick times</button><button type="button" id="w-any" aria-pressed="false">Any time works for me</button></div>
         <div class="card" id="card">
           <div class="cardhead"><b>Pick up to 3 times that work for you</b></div>
           <div class="cal"><div class="month"><button type="button" id="prev" aria-label="Previous month">‹</button><span id="mlabel">November 2026</span><button type="button" id="next" aria-label="Next month">›</button></div><div class="grid" id="grid"></div></div>
@@ -406,12 +407,14 @@ details.sum .dl{padding:4px 18px 16px}
 
 <div class="pad"><div class="wrap" id="s2b">
   <div class="flabel"><b>Call requested</b><span>/join/booked · Matt's confirmation layout</span></div>
+  <div class="scen" data-group="s3b"><span>Scenario:</span><button type="button" data-s="times" aria-pressed="true">Picked times</button><button type="button" data-s="any">Any time</button></div>
   <div class="frame" data-chrome="none">
     <div class="pad main"><div class="booked">
       <div class="big">✓</div>
       <h2>You're all set, Jane!</h2>
-      <p>An onboarding specialist will call <b>(714) 555-0142</b> in one of these times. We will contact you ASAP to confirm the time.</p>
-      <div class="when"><span class="chip">Wed, Nov 4 · 11 AM–1 PM</span><span class="chip">Thu, Nov 5 · 1–3 PM</span></div>
+      <p data-show="s3b:times">An onboarding specialist will call <b>(714) 555-0142</b> in one of these times. We will contact you ASAP to confirm the time.</p>
+      <div class="when" data-show="s3b:times"><span class="chip">Wed, Nov 4 · 11 AM–1 PM</span><span class="chip">Thu, Nov 5 · 1–3 PM</span></div>
+      <p data-show="s3b:any">An onboarding specialist will call <b>(714) 555-0142</b> soon.</p>
       <div class="vidwrap sep">
         <h3>See where you'll be working</h3>
         <div class="vid" style="font-size:40px">▶</div>
@@ -568,7 +571,7 @@ document.querySelectorAll(".frame").forEach(fr=>{
   const side=fr.querySelector("[data-side]");
   if(side)side.innerHTML=`<h4>What happens next</h4><ol>${list.map((n,i)=>{const s=i+1;return `<li class="${s<st?"done":s===st?"cur":""}"><i>${s<st?"✓":s}</i>${n}</li>`;}).join("")}</ol>`;
 });
-const state={heard:"lo",page:"company",spon:"none",s2:"tx",sp:["TX"],ca:"no",in:"no",sc:"no",catype:"dfpi",dreRe:"no",insos:"yes",emp:"free",web:"no",sr:"no",s3:"after",emp3:"1099",dl:"up",s4:"pay"};
+const state={s3b:"times",heard:"lo",page:"company",spon:"none",s2:"tx",sp:["TX"],ca:"no",in:"no",sc:"no",catype:"dfpi",dreRe:"no",insos:"yes",emp:"free",web:"no",sr:"no",s3:"after",emp3:"1099",dl:"up",s4:"pay"};
 const ALWAYS_W2={GA:"Georgia",MA:"Massachusetts",MT:"Montana",NC:"North Carolina",NJ:"New Jersey",NV:"Nevada",RI:"Rhode Island",SC:"South Carolina",VT:"Vermont"};
 function empRule(){
   const sp=state.sp,w=sp.find(k=>ALWAYS_W2[k]);let why="";
@@ -588,7 +591,7 @@ document.querySelectorAll(".scen").forEach(sc=>sc.querySelectorAll("button").for
   if(sc.dataset.group==="page")state.heard=state.page==="company"&&$("heard").value==="lo"?"lo":"x";apply();}));
 document.querySelectorAll("[data-tog]").forEach(sg=>sg.querySelectorAll("button").forEach(b=>b.onclick=()=>{
   state[sg.dataset.tog]=b.dataset.v;sg.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));apply();}));
-document.querySelectorAll(".seg:not([data-tog]):not(#callq) button,.typecards .tc").forEach(b=>b.addEventListener("click",()=>{
+document.querySelectorAll(".seg:not([data-tog]):not(#callq):not(#when) button,.typecards .tc").forEach(b=>b.addEventListener("click",()=>{
   [...b.parentElement.children].forEach(x=>x.setAttribute("aria-pressed",String(x===b)));}));
 function multi(el,opts,init,onChange){let sel=[...init];
   function draw(){el.innerHTML=sel.slice().sort((a,b)=>opts[a].localeCompare(opts[b])).map(k=>`<span class="tagx">${opts[k]}<button type="button" aria-label="Remove ${opts[k]}" data-k="${k}">×</button></span>`).join("")+
@@ -636,7 +639,7 @@ function addReq(v){const r=document.createElement("div");r.className="reqrow";r.
 addReq("");$("addreq").onclick=()=>addReq("").focus();
 lookup();
 const WINS=["9–11 AM","11 AM–1 PM","1–3 PM","3–5 PM"],MAX=3;
-let y=2026,m=10,cur=new Date(2026,10,4),wantCall=true;const sel=new Map();
+let y=2026,m=10,cur=new Date(2026,10,4),wantCall=true,any=false;const sel=new Map();
 const ymd=d=>`${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
 const today=new Date(2026,10,2),last=new Date(2026,11,31);
 function draw(){
@@ -657,11 +660,14 @@ function draw(){
   const p=$("picked");p.innerHTML="";
   sel.forEach((l,k)=>{const c=document.createElement("span");c.className="chip";c.innerHTML=`${l}<button type="button" aria-label="Remove">×</button>`;c.querySelector("button").onclick=()=>{sel.delete(k);draw();};p.appendChild(c);});
   $("callblock").style.display=wantCall?"grid":"none";
-  const s=$("send");s.disabled=wantCall&&!sel.size;s.textContent=wantCall?"Submit":"Continue";
+  $("card").style.display=any?"none":"";$("picked").style.display=any?"none":"";
+  $("w-pick").setAttribute("aria-pressed",String(!any));$("w-any").setAttribute("aria-pressed",String(any));
+  const s=$("send");s.disabled=wantCall&&!any&&!sel.size;s.textContent=wantCall?"Submit":"Continue";
   $("prev").disabled=(y===2026&&m===10);
 }
 $("prev").onclick=()=>{if(!(y===2026&&m===10)){m--;draw();}};
 $("next").onclick=()=>{if(m<11){m++;draw();}};
+$("w-pick").onclick=()=>{any=false;draw();};$("w-any").onclick=()=>{any=true;draw();};
 ["cq-yes","cq-no"].forEach(id=>$(id).onclick=()=>{wantCall=id==="cq-yes";$("cq-yes").setAttribute("aria-pressed",String(wantCall));$("cq-no").setAttribute("aria-pressed",String(!wantCall));draw();});
 sel.set("2026-11-4|11 AM–1 PM","Wed, Nov 4 · 11 AM–1 PM");sel.set("2026-11-5|1–3 PM","Thu, Nov 5 · 1–3 PM");
 draw();
