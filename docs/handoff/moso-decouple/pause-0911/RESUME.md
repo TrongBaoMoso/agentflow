@@ -30,3 +30,7 @@ Bao (08/11): "dồn hết nguồn lực" so that Recruit is fully independent of
 
 ## Number ledger
 NUMBER-LEDGER.txt. Reserve D/V numbers there first. The live copy was in the session scratchpad; this is a snapshot.
+
+## Late additions at pause
+- p5-lo-data: recruit-be #932 (monthly referral payout CSV, read-only) and #933 (dark blacklist push) were in CI with auto-merge armed. GitHub may merge them while the machine is off. On resume: promote to staging and verify. The omni API ask for Khai is in P5-PLAN.md.
+- p4-s4s5-esign: the referral import (#928/#931) DRY_RUN is done. The diagnosis script is docs/handoff/moso-decouple/referral-diagnose/diagnose.sh, and it needs gcloud.
