@@ -306,3 +306,51 @@ candidate `59a7769f-73fe-433e-a2b5-97deb745e291`, offer `5049c5d7-5051-4311-9e43
 - **Seen, not blocking:** DE logged `InklessAnchorPlacer: 8 of 8 signature/date tag(s) found no rule to snap to … placed
   at their text baseline`; on the page the signature box sat on the "By" line.
 - `use_inkless` is **false** on staging.
+
+## Run G (HR files the agreement, ai-hr-be #1343), 09/11 16:39-16:52Z
+
+**What changed in HR:** ai-hr-be #1343 was squash-merged as `b0c8bd6f` (merged 09/11 ~23:15 VN, Bao "merge di"). Promote
+run 42653165187, cd-staging run 42653231592, both green. The hr-dev image digest matches that run, and HR logged
+`goose: successfully migrated database to version: 529`. Review fixes went in before the merge:
+- The migration was renumbered 00527 -> **00529**, because master already had 00528.
+- The DMS read is capped at HR's 25 MiB document limit.
+- Only `%PDF-` bytes are filed, with a test.
+
+HR staging reaches DE through `DMS_INTERNAL_URL=http://document-esign.document-esign.svc.cluster.local:8092`,
+`HR_DOCS_BACKEND=dms` and the secret key `DMS_CALLER_KEY`. These were already set; nothing changed. DE #147 (caller
+HRIS may read RECRUIT files) is on DE staging. recruit-be staging sends `signed_agreements` and `experience_class`:
+see `HrHandoffPayloadResolver.putAgreementFields` and `RECRUIT_FEATURES_HR_HANDOFF_AGREEMENT_FIELDS=true`.
+
+Signing used the built-in path. `use_inkless` was **false** before and after (read back 16:53Z). The billing last name
+was fixed to `Tester`. A local copy of `s9-e2e.js` also automates tera-fe's built-in signing page (typed signature,
+"SIGN HERE" slots, "Finish and send"). Tag `rxhwk`, candidate `3a5c104d-a1cb-4818-a691-96d648875571`, offer
+`f89a8882-541b-4c38-b5c4-3efa8bbf987b`. Full results are in `results-run-g.txt`.
+
+| Step | Result | Detail |
+|---|---|---|
+| 0-11 | PASS | form via the captcha bypass, no MOSO record, offer SENT, WELCOME SENT, PayPal sandbox order `4KC4309913351222M` PAID, LO FEE_PAID SENT, staff copies SKIPPED |
+| 12 sign | FAIL, then PASS on resume | The first `signing-link` got 503: DE's send took 12.5 s and the lf proxy gave up, the same as Run F. recruit-be still recorded envelope `1a76dc93-…` at 16:44:01Z. `--resume` signed it on the built-in page; recruit-be saw `esign_de.offer_signed` at 16:44:56Z |
+| 13 Joined | PASS | S6 |
+| 14 HR hand-off | PASS | `hr_handoff_outbox` SENT; `HR handoff delivered: result=hired draft_id=0eef7250-… status=201` |
+| 15 archive | PASS | ARCHIVED, 0 live portal links |
+
+**HR side (read-only DB pod on hr-dev, `default_transaction_read_only=on`):**
+- The auto-hire made draft `0eef7250-7c54-4c1e-9967-196f24521d37`, which became employment
+  **`0c442d1f-192f-488f-a036-edb4eb9a7e53`** at 16:45:03Z. This HR test employee was left in place, not deleted.
+- That employment has exactly **1** `hr_document`, with label `1099_agreement_form_finalized` and requirement **"Loan
+  Originator Agreement and Exhibit C"** (`us_lo_agreement`).
+  - Category `contract`, source `hr`, review `accepted`, `visible_to_employee=true`, `issued_on=2026-11-09`.
+  - It is a `application/pdf` of 113,112 bytes, stored as HR's own DMS copy, uploaded by `system:recruit-intake` at 16:45:07Z.
+- The assignment's `experience_level` is `experienced`, from the hand-off's `experience_class`.
+- There are 0 `recruit_draft_agreement` rows for the draft (the immediate hire path, nothing held).
+- **0** `RECRUIT_AGREEMENT_FILE_FAILED` / `RECRUIT_AGREEMENT_HOLD_FAILED` lines in the HR log since the deploy.
+
+**Before PROD (bead `agentflow-4i55v`, also on the PR):**
+- Check the DMS file metadata before reading: service RECRUIT, and an owner/reference that matches the event. Keep
+  `VisibleToEmployee` only after that check.
+- Confirm that the internal intake route needs a real service credential.
+- Add a durable retry, or re-file on redelivery, when a filing fails. Alert on `RECRUIT_AGREEMENT_FILE_FAILED`.
+- Guard the hold-path delete.
+- Production DE has to grant caller HRIS read access to RECRUIT files.
+- Separately: the lf `signing-link` proxy times out before DE's first send finishes (now seen twice). Recruit records
+  the envelope anyway, but the LO sees an error on the first click.

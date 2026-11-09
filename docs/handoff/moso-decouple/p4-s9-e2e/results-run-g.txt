@@ -1,0 +1,45 @@
+# Run G (HR files the agreement, ai-hr-be #1343), 09/11 16:39-16:52Z
+
+## part 1 (form -> fee; sign step hit the lf proxy timeout)
+P4 S9 E2E  tag=rxhwk  candidate=3a5c104d-a1cb-4818-a691-96d648875571  offer=f89a8882-541b-4c38-b5c4-3efa8bbf987b
+
+PASS    0. preflight: admin token + Recruit-only invite is live                                                                  moso_record_required=false, invite_needs_moso_record=false
+PASS    1. public REFER form (canary, Recruit-only, staging captcha bypass): recruit-intake 201, moso_post false, no packs call  recruit-intake 201, moso_post=false, packs calls 0
+PASS    2. lead created with NO MOSO record (DB)                                                                                 candidate 3a5c104d-a1cb-4818-a691-96d648875571, intake_client=lf-homepage, legacy_key null, S0
+PASS    3. claim: owner = admin, stage S1                                                                                        owner a0aa8a66-dedc-4dc5-8954-80522c632fd9, S1
+PASS    4. production figures + NMLS (offer-figures-required)                                                                    loans_since_anchor 8, units12mo 6, career_production 12M, nmls set
+PASS    5. offer requested + approved (approve_now): SENT, specialist assigned, hand-off                                         offer f89a8882-541b-4c38-b5c4-3efa8bbf987b SENT, fee PENDING, specialist assigned, lead S5
+PASS    6. 1-1 scheduled (on behalf, no Google invite to real staff)                                                             slot 2026-11-09T14:40:44.264Z stored on e8157d82-4043-40f7-a861-4c59f031e1d8
+PASS    7. 1-1 DONE (1099, today in business tz): welcome mail with the portal link                                              checklist DONE; WELCOME SENT with ?invite=REDACTED
+PASS    8. staff portal link minted (?invite=, 43 chars) and live                                                                https://www.viet18.com/register-loan-officer?invite=<43 chars>, profile 200
+PASS    9. portal profile save via lf proxy, read back                                                                           save 200; city/zip read back; complete_percentage 0.25
+PASS    10. PayPal sandbox fee (headed Chrome, test Visa): fee-paypal PAID, offer fee PAID                                       order 4KC4309913351222M: fee-paypal PAID, offers.fee_status PAID, fee_payments PAID with capture
+PASS    11. paid mails (D404): LO FEE_PAID sent; staff copies only to allowed test aliases                                       LO SENT; staff: SKIPPED(staff, not sent), SKIPPED(staff, not sent)
+FAIL    12. sign step (signing-link)                                                                                             signing-link 503
+BLOCKED 13. Joined (S6, auto-stage after signed + paid)                                                                          needs the signed agreement (step 12)
+BLOCKED 14. automatic Send to HR delivered, HR hired                                                                             needs Joined (step 13)
+SKIP    15. archive                                                                                                              --keep: lead kept for --resume /private/tmp/claude-501/-Users-apple-Projects-agentflow/0fcb4e66-c551-44c6-9732-0ea45be8fd69/scratchpad/s9g/run-rxhwk/state.json
+
+PASS 12  FAIL 1  BLOCKED 2  SKIP 1
+
+## part 2 (--resume --keep: built-in signing, S6, HR hand-off)
+P4 S9 E2E  tag=rxhwk  candidate=3a5c104d-a1cb-4818-a691-96d648875571  offer=f89a8882-541b-4c38-b5c4-3efa8bbf987b
+
+PASS    0. preflight: admin token + Recruit-only invite is live  moso_record_required=false, invite_needs_moso_record=false
+PASS    12. sign step (signing-link)                             SIGNED via document-esign
+PASS    13. Joined (S6, auto-stage after signed + paid)          S6
+PASS    14. automatic Send to HR delivered, HR hired             hr_handoff_outbox SENT (attempts 0); HR answer is in the recruit-be log line "HR handoff delivered: result=..."
+SKIP    15. archive                                              --keep: lead kept for --resume /private/tmp/claude-501/-Users-apple-Projects-agentflow/0fcb4e66-c551-44c6-9732-0ea45be8fd69/scratchpad/s9g/run-rxhwk/state.json
+
+PASS 4  FAIL 0  BLOCKED 0  SKIP 1
+
+## part 3 (--resume: archive)
+P4 S9 E2E  tag=rxhwk  candidate=3a5c104d-a1cb-4818-a691-96d648875571  offer=f89a8882-541b-4c38-b5c4-3efa8bbf987b
+
+PASS    0. preflight: admin token + Recruit-only invite is live  moso_record_required=false, invite_needs_moso_record=false
+PASS    12. sign step (signing-link)                             already SIGNED
+PASS    13. Joined (S6, auto-stage after signed + paid)          S6
+PASS    14. automatic Send to HR delivered, HR hired             hr_handoff_outbox SENT (attempts 0); HR answer is in the recruit-be log line "HR handoff delivered: result=..."
+PASS    15. archive (bulk-archive) revokes the portal links      ARCHIVED, 0 live portal links
+
+PASS 5  FAIL 0  BLOCKED 0  SKIP 0
