@@ -221,6 +221,33 @@ bd show agentflow-0gwad.6
   - 46 people are blocked in Recruit but absent from ai-donotcall's LO Recruiting list. 229 people opted out of SMS in Recruit but not in omni. Nobody is blocked outside Recruit without Recruit knowing.
   - So APPLY has nothing to add, and the open items are decisions A, B and K.
 
+### 09/11 afternoon (p5-roster agent): Recruiter Program roster owned by Recruit, in SHADOW (D439, recruit-be #945)
+
+- **Why only 3 of 60 matched:** the D421 DRY_RUN looked only at Recruit's own tables: bound roster members (2), `rbac_grants` e-mails (3) and candidate e-mails (0). Program members are existing Loan Factory people, and most of them have no Recruit grant.
+  - Measured in user-service (counts only): every one of the 53 keyed people has exactly one account.
+    - 41 match by MOSO key and e-mail, and both point to the same account.
+    - 8 match by key only (the roster has no MOSO work e-mail for them).
+    - 4 match by e-mail only (the account carries other keys).
+    - 0 conflicts and 0 ambiguous.
+  - user-service `ref_keys` holds the websafe MOSO Admin key.
+  - The other 7 of the 60 rows are keyless outside applicants: 6 applications and 1 upgrade, with statuses 1 approved, 2 pending, 1 withdrawn and 3 revoked. By design they have no account.
+- **`program_import.mode` set to APPLY on staging** (the mirror-first stage Bao approved; it writes only Recruit's own table). 60 rows mirrored. A re-run left all 60 unchanged.
+- **Merged #945** (squash `ec85e4a6`, V359) and promoted (cd-staging success).
+  - `POST /api/v1/admin/program-roster/resolve` mapped 53 of 53 keys: KEY_AND_EMAIL 41, KEY 8, EMAIL 4.
+  - The import report now shows `mapped_central`: 53 of 60 applications mapped, 7 keyless.
+- **Roster SHADOW** (after each tick; first tick run at 08:00Z):
+  - 53 keys and 53 approved on both sides.
+  - 0 status, level or team-lead differences.
+  - 43 identical.
+  - 10 e-mail differences: in 8, moso-aid has no work e-mail but the account has a company e-mail; in 1, the account has none; in 1, both have one and they differ.
+  - Gauge `recruit_program_roster_shadow{outcome}`.
+- **BE-14:** the link check runs in SHADOW on staging (MOSO decides). No /link attempt has happened yet, so the shadow counter has 0 samples.
+  - Recruit's answer: the account is ACTIVE and carries the member's websafe key in user-service.
+  - 41 of the 45 members with an e-mail would confirm by key.
+- **Next:** a week of tick comparisons, then approvals in Recruit (decision H).
+- **New decision N for Bao:** which company e-mail wins when they differ, MOSO's work e-mail or the user-service account's company e-mail?
+  - **Recommendation:** user-service. It fills 8 members that MOSO leaves blank, and it is what stays once MOSO goes.
+
 ## API ask for Khai (omni-service): let Recruit push its SMS opt-outs (decision K)
 
 **Why.** Recruit holds 229 SMS opt-outs on staging that omni does not know about. They came from MOSO imports, recruiters, bounces and unsubscribes. omni's `comm_suppression` table already supports `provenance = HOST_PUSHED` (V02). omni's gate also refuses a text for a HOST_PUSHED row, and `optstatushttp` reports it as not liftable. But no route lets a host write such a row: every writer goes through `internal/suppression/recorder.go` and stamps `OMNI_LEARNED`. So Recruit's blocks can't reach omni, and a text sent from omni's composer outside Recruit's own gate would still go out.
