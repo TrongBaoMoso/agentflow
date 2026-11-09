@@ -259,7 +259,7 @@ details.sum .dl{padding:4px 18px 16px}
     <tbody>
       <tr><td>1</td><td>No hero; people on this page already decided to join</td><td>Orange hero with 240+ / 2,600+ / $1,000+</td><td><span class="k cut">Removed</span> Page opens on the form</td></tr>
       <tr><td>2</td><td>Too many steps, steps repeat each other</td><td>7 steps: About you, License, Call, Application, Review, Pay &amp; sign, NMLS</td><td><span class="k new">6 steps</span> About you, License details, Quick call?, Application (Review merged in), Pay &amp; sign, NMLS access</td></tr>
-      <tr><td>3</td><td>Top bar says 7 steps, side list says 5</td><td>Two different step lists</td><td><span class="k new">One bar</span> Same 6 steps in the top bar and the side list</td></tr>
+      <tr><td>3</td><td>Top bar says 7 steps, side list says 5</td><td>Two different step lists</td><td><span class="k new">One list</span> The top bar and the side list always match: 3 steps before the call (as in v21), all 6 from Application on</td></tr>
       <tr><td>4</td><td>Required = asterisk, same as every app</td><td>Orange "Required" chips</td><td><span class="k new">Asterisk</span> Same style as today otherwise</td></tr>
       <tr><td>5</td><td>Pull licenses from NMLS Consumer Access</td><td>Typed by the Loan Officer</td><td><span class="k new">Auto</span> NMLS ID → legal name + licensed states (read-only) + current sponsor</td></tr>
       <tr><td>6</td><td>Licensed states first, then states to sponsor (only from those)</td><td>Sponsor states in step 2, licensed states in step 4</td><td><span class="k new">Reordered</span> Sponsor states picked from the licensed list</td></tr>
@@ -558,10 +558,12 @@ document.querySelectorAll(".frame").forEach(fr=>{
   fr.insertAdjacentHTML("afterbegin",`<div class="gh">Site header (global)</div>${band}`);
   fr.insertAdjacentHTML("beforeend",`<div class="gh" style="border-top:1px dashed var(--gray-mid1);border-bottom:0">Site footer (global)</div>`);
   if(!st)return;
-  const bar=STEPS.map((n,i)=>{const s=i+1,c=s<st?"done":s===st?"cur":"";return `<div class="step ${c}"><i>${s<st?"✓":s}</i><span>${n}</span></div>`;}).join("");
+  // Before the call only the first 3 steps show; from Application on, all 6 (same list in the bar and the side).
+  const list=st<=3?STEPS.slice(0,3):STEPS;
+  const bar=list.map((n,i)=>{const s=i+1,c=s<st?"done":s===st?"cur":"";return `<div class="step ${c}"><i>${s<st?"✓":s}</i><span>${n}</span></div>`;}).join("");
   fr.querySelector(".main").insertAdjacentHTML("afterbegin",`<div class="steps">${bar}</div>`);
   const side=fr.querySelector("[data-side]");
-  if(side)side.innerHTML=`<h4>Your steps</h4><ol>${STEPS.map((n,i)=>{const s=i+1;return `<li class="${s<st?"done":s===st?"cur":""}"><i>${s<st?"✓":s}</i>${n}</li>`;}).join("")}</ol>`;
+  if(side)side.innerHTML=`<h4>Your steps</h4><ol>${list.map((n,i)=>{const s=i+1;return `<li class="${s<st?"done":s===st?"cur":""}"><i>${s<st?"✓":s}</i>${n}</li>`;}).join("")}</ol>`;
 });
 const state={s4b:"ready",heard:"lo",page:"company",spon:"none",ca:"yes",catype:"dre",emp:"free",web:"no",sr:"no",s3:"after",emp3:"1099",dl:"up",s4:"pay"};
 function apply(){
