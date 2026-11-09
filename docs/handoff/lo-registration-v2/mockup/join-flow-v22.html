@@ -1,293 +1,238 @@
 <title>Join Flow v22</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Lato:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap">
 <style>
-/* Layout: every screen of the /join flow inside the site's global header/footer (not drawn), Matt's layout
-   (hero/strip, step bar, cards, side list) in 2022 brand colors/fonts. Single light theme on purpose.
-   Brand colors + tints of brand orange; 3 type sizes (24 / 14 / 12). */
+/* Layout: every /join screen inside the site's header/footer placeholders, in the Tera+ design language
+   (tera-docs design-system APP-RULES 5, 6, 10): warm page, one white card per section, Inter 400/500,
+   28/36 page title, 20/28 section title, 14/20 body, 12/16 helper, 40px controls, one filled action per screen.
+   Light only on purpose: the public site has no dark mode yet. */
 :root{
-  --orange:#F36F23; --orange-ink:#B84A0C; --tint:#FDEEE5; --tint-2:#FBDCC9;
-  --black:#000000; --white:#FFFFFF;
-  --gray-light:#EFEFEF; --gray-mid1:#DBDBDB; --gray-mid2:#999999; --gray-dark:#323232; --page:#F7F7F7;
-  --t-xl:28px; --t-md:16px; --t-sm:14px;
-  --head:"Montserrat","Helvetica Neue",Arial,sans-serif; --body:"Lato","Helvetica Neue",Arial,sans-serif;
+  --bg:#f9f7f4; --surface:#ffffff; --line:#d2cecb; --hair:#ebe7e4; --surface-2:#f1efec; --surface-muted:#f4f2ef;
+  --ink:#1a1919; --muted:#6e6a68; --fill:#c44f06; --accent:#b64200; --tint:#fbeae0; --focus:#7d2b00;
+  --warn-tint:#fdf4e3; --warn-ink:#8a4b00; --ok-tint:#eef7f0; --ok-ink:#1e6b3a;
+  --font:"Inter","Helvetica Neue",Arial,sans-serif;
   color-scheme:light;
 }
-body{background:var(--white);color:var(--black);font-family:var(--body);font-size:var(--t-md);line-height:1.5;margin:0}
+*{box-sizing:border-box}
+body{background:var(--surface);color:var(--ink);font-family:var(--font);font-size:14px;line-height:20px;margin:0}
 .pad{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .wrap{max-width:1200px;margin:0 auto}
-.toc{padding-block:24px 4px;display:grid;gap:10px}
-.toc h1{font-size:var(--t-xl)}
-.toc nav{display:flex;flex-wrap:wrap;gap:6px}
-.toc nav a{font-size:var(--t-sm);font-weight:700;color:var(--orange-ink);background:var(--tint);border-radius:99px;padding:3px 10px;text-decoration:none}
-.toc p{margin:0;font-size:var(--t-sm);color:var(--gray-dark)}
-.flabel{margin:32px 0 0;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
-.flabel b{font-family:var(--head);font-size:var(--t-md)}
-.flabel span{font-size:var(--t-sm);color:var(--gray-mid2)}
-.scen{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center;font-size:var(--t-sm);color:var(--gray-dark);border:1px dashed var(--gray-mid2);border-radius:8px;padding:6px 10px;background:repeating-linear-gradient(-45deg,var(--white) 0 8px,var(--gray-light) 8px 9px)}
-.scen::before{content:"Preview only, not on the real page";font-weight:700;color:var(--gray-mid2);text-transform:uppercase;letter-spacing:.06em;font-size:11px;margin-right:6px}
-.scen button{font:inherit;font-size:var(--t-sm);font-weight:700;border:1px solid var(--gray-mid1);background:var(--white);color:var(--gray-dark);border-radius:99px;padding:3px 10px;cursor:pointer}
-.scen button[aria-pressed="true"]{background:var(--black);border-color:var(--black);color:var(--white)}
-.frame{margin:10px 0 0;border:1px solid var(--gray-mid1);border-radius:12px;overflow:hidden;background:var(--page)}
-.gh{background:var(--white);border-bottom:1px dashed var(--gray-mid1);text-align:center;font-size:var(--t-sm);color:var(--gray-mid2);padding:6px}
-.strip{background:var(--orange);color:var(--white);display:flex;gap:20px;flex-wrap:wrap;align-items:center;padding-block:12px;font-size:var(--t-sm)}
-.strip b{font-family:var(--head);font-weight:700}
-.strip .stats{display:flex;gap:8px;flex-wrap:wrap}
-.strip .stats > span{background:var(--white);color:var(--gray-dark);border-radius:99px;padding:2px 10px}
-.strip em{font-style:normal;color:var(--orange-ink);font-weight:700;font-family:var(--head)}
-.herobig{background:var(--orange);color:var(--white);padding-block:32px;display:grid;gap:14px}
-.herobig .eyebrow{font-family:var(--head);font-weight:700;font-size:var(--t-sm);letter-spacing:.12em;color:var(--white)}
-.herobig h2{color:var(--white)}
-.herobig p{margin:0;color:var(--white);max-width:60ch}
-.herostats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.herostats div{background:var(--white);border-radius:10px;padding:12px 14px;color:var(--gray-dark);font-size:var(--t-sm)}
-.herostats b{display:block;color:var(--orange-ink);font-family:var(--head);font-size:var(--t-xl)}
-.main{padding-block:24px 28px;display:grid;gap:18px}
-.steps{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:10px}
-.step{display:flex;gap:6px;align-items:center;padding-bottom:8px;border-bottom:3px solid var(--gray-mid1);font-size:var(--t-sm);color:var(--gray-dark);min-width:0;white-space:nowrap;overflow:hidden}
-.step i{flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:700;background:var(--gray-light)}
-.step.done,.step.cur{border-color:var(--orange)}
-.step.done i,.step.cur i{background:var(--orange);color:var(--white)}
-.step.cur{color:var(--black);font-weight:700}
-h1,h2{font-family:var(--head);font-weight:700;font-size:var(--t-xl);line-height:1.25;margin:0;text-wrap:balance}
-.layout{display:grid;grid-template-columns:1fr 280px;gap:28px;align-items:start}
-.col{display:grid;gap:14px;min-width:0}
-.box{background:var(--white);border:1px solid var(--gray-mid1);border-radius:10px;padding:18px;display:grid;gap:14px;min-width:0}
-.group{background:var(--white);border:1px solid var(--gray-mid1);border-radius:10px}
-.ghead{display:flex;gap:10px;align-items:center;padding:12px 18px;background:var(--tint);border-bottom:1px solid var(--tint-2);border-radius:10px 10px 0 0}
-.ghead i{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-style:normal;background:var(--orange);color:var(--white);font-size:var(--t-sm);flex:none}
-.ghead b{font-family:var(--head);font-weight:700}
-.ghead small{margin-left:auto;color:var(--gray-dark);font-size:var(--t-sm)}
-.ghead a{margin-left:auto;font-size:var(--t-sm);font-weight:700;color:var(--orange-ink)}
-.gbody{padding:16px 18px;display:grid;gap:14px}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.g3{display:grid;grid-template-columns:2fr 1fr;gap:12px}
-.g3r{display:grid;grid-template-columns:1fr 2fr;gap:12px}
-.f{display:grid;gap:4px;min-width:0;align-content:start}
-.f > label,.lbl{font-size:var(--t-sm);font-weight:700;color:var(--gray-dark);display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.req{font-size:var(--t-sm);font-weight:700;color:var(--orange-ink);background:var(--tint);border-radius:99px;padding:0 7px;line-height:1.6}
-.sub .req{background:var(--white)}
-input.in,select.in{font:inherit;border:1px solid var(--gray-mid1);border-radius:6px;padding:7px 10px;color:var(--black);background:var(--white);min-width:0;height:44px;box-sizing:border-box;width:100%}
-select.in{appearance:auto}
-.hint{font-size:var(--t-sm);color:var(--gray-dark)}
-.sub{background:var(--tint);border-radius:8px;padding:12px;display:grid;gap:12px}
-.webcard{background:var(--page);border:1px solid var(--gray-mid1);border-radius:8px;padding:14px;display:grid;gap:12px}
-.seg{display:flex;gap:8px;flex-wrap:wrap}
-.seg button{font:inherit;font-weight:700;border:1.5px solid var(--gray-mid1);background:var(--white);color:var(--gray-dark);border-radius:99px;padding:6px 14px;cursor:pointer}
-.seg button[aria-pressed="true"]{border-color:var(--orange);background:var(--orange);color:var(--white)}
-.multi{display:flex;flex-wrap:wrap;gap:6px;align-items:center;border:1px solid var(--gray-mid1);border-radius:6px;padding:4px 6px;background:var(--white);min-height:44px;box-sizing:border-box}
-.multi .tagx{background:var(--tint-2);color:var(--orange-ink);border-radius:99px;padding:2px 4px 2px 10px;font-weight:700;font-size:var(--t-sm);display:inline-flex;gap:4px;align-items:center}
-.multi .tagx button{font:inherit;border:0;background:none;color:inherit;cursor:pointer;padding:0 4px}
-.multi select{border:0;font:inherit;font-size:var(--t-sm);color:var(--gray-dark);background:transparent;flex:1;min-width:120px;height:26px}
-.check{display:flex;gap:8px;align-items:flex-start;font-size:var(--t-sm);color:var(--gray-dark)}
-.check input{accent-color:var(--orange);width:16px;height:16px;margin-top:1px;flex:none}
-.fit{background:var(--gray-light);border-radius:8px;padding:12px 14px;display:grid;gap:6px;font-size:var(--t-sm)}
-.fit ul{margin:0;padding-left:18px}
-.person{display:flex;gap:10px;align-items:center;border:1.5px solid var(--orange);border-radius:8px;padding:8px 10px;background:var(--white)}
-.av{width:32px;height:32px;border-radius:50%;background:var(--tint-2);display:grid;place-items:center;font-weight:700;color:var(--orange-ink);font-size:var(--t-sm);flex:none}
-.person small,.opt small{display:block;color:var(--gray-dark);font-size:var(--t-sm)}
-.combo{position:relative}
-.combo .list{position:absolute;left:0;right:0;top:40px;background:var(--white);border:1px solid var(--gray-mid1);border-radius:8px;box-shadow:0 10px 24px -12px rgba(0,0,0,.35);z-index:5;max-height:240px;overflow:auto}
-.opt{display:flex;gap:10px;align-items:center;padding:8px 10px;cursor:pointer;width:100%;border:0;background:var(--white);font:inherit;text-align:left}
-.opt:hover,.opt:focus-visible{background:var(--tint)}
-.none{padding:10px;font-size:var(--t-sm);color:var(--gray-dark)}
-.rowx{display:grid;grid-template-columns:1fr 36px;gap:8px;align-items:center}
-.rows{display:grid;gap:8px}
-.x{font:inherit;height:36px;width:36px;border:1px solid var(--gray-mid1);background:var(--white);border-radius:6px;cursor:pointer;color:var(--gray-dark)}
-.soc{display:grid;grid-template-columns:160px 1fr 36px;gap:8px;align-items:center}
-.actions{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.btn{font-family:var(--head);font-weight:700;font-size:var(--t-md);border:0;border-radius:8px;padding:11px 24px;background:var(--orange);color:var(--black);cursor:pointer}
-.btn:disabled{background:var(--gray-mid1);color:var(--gray-mid2);cursor:not-allowed}
-.btn2{font-family:var(--head);font-weight:600;font-size:var(--t-md);border:1.5px solid var(--gray-mid1);border-radius:8px;padding:10px 20px;background:var(--white);color:var(--gray-dark);cursor:pointer}
-.add{font:inherit;font-weight:700;border:1.5px dashed var(--orange);background:var(--white);color:var(--orange-ink);border-radius:8px;padding:6px 12px;cursor:pointer;justify-self:start}
-.ex{font:inherit;font-size:var(--t-sm);border:0;background:var(--gray-light);border-radius:99px;padding:4px 10px;cursor:pointer;color:var(--gray-dark)}
-.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.sep{border-top:1px solid var(--gray-light);padding-top:12px}
-button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--black);outline-offset:2px}
-.side{position:sticky;top:16px;background:var(--white);border:1px solid var(--gray-mid1);border-radius:10px;padding:16px}
-.side h4{font-family:var(--head);font-size:var(--t-sm);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gray-dark);margin:0 0 12px}
-.side ol{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-.side li{display:flex;gap:10px;align-items:center;font-weight:700}
-.side li i{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-style:normal;background:var(--gray-light);font-size:var(--t-sm);flex:none}
-.side li.cur i{background:var(--orange);color:var(--white)}
-.side li.done{color:var(--gray-mid2)}
-.side li.done i{background:var(--tint);color:var(--orange-ink)}
-.paths{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.path{font:inherit;text-align:left;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:center;padding:14px 16px;border-radius:10px;border:2px solid var(--gray-mid1);background:var(--white);color:var(--black);cursor:pointer}
-.path .ic{grid-row:span 2;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--gray-light);font-size:18px}
-.path b{font-family:var(--head)}
-.path small{font-size:var(--t-sm);color:var(--gray-dark)}
-.path[aria-pressed="true"]{border-color:var(--orange);background:var(--tint)}
-.path[aria-pressed="true"] .ic{background:var(--orange);color:var(--white)}
-.card{background:var(--white);border:1px solid var(--gray-mid1);border-radius:10px;display:grid;grid-template-columns:1fr 260px;min-width:0}
-.card > *{padding:20px 22px;min-width:0}
-.cardhead{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--gray-light);padding-block:14px}
-.cardhead b{font-family:var(--head)}
-.anytime{font:inherit;font-weight:700;border:1.5px solid var(--orange);color:var(--orange-ink);background:var(--white);border-radius:99px;padding:6px 14px;cursor:pointer}
-.anytime[aria-pressed="true"]{background:var(--orange);color:var(--white)}
-.month{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-family:var(--head);font-weight:700}
-.month button{font:inherit;width:30px;height:30px;border-radius:50%;border:0;background:var(--tint);color:var(--orange-ink);cursor:pointer}
-.month button:disabled{background:var(--gray-light);color:var(--gray-mid2);cursor:not-allowed}
-.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center;font-variant-numeric:tabular-nums}
-.grid .wd{font-size:var(--t-sm);color:var(--gray-mid2);font-weight:700}
-.grid .off{font-size:var(--t-sm);color:var(--gray-mid2);padding:8px 0}
-.d{font:inherit;font-weight:700;aspect-ratio:1;max-width:38px;width:100%;margin:0 auto;border-radius:50%;border:0;background:var(--tint);color:var(--orange-ink);cursor:pointer;position:relative}
-.d[aria-current="true"]{background:var(--orange);color:var(--white)}
-.d.has::after{content:"";position:absolute;bottom:3px;left:50%;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--black)}
-.times{border-left:1px solid var(--gray-light);display:grid;gap:8px;align-content:start}
-.times .dayname{font-family:var(--head);font-weight:700}
-.w{font:inherit;font-weight:700;padding:10px;border-radius:8px;border:1.5px solid var(--orange);background:var(--white);color:var(--orange-ink);cursor:pointer;font-variant-numeric:tabular-nums}
-.w[aria-pressed="true"]{background:var(--orange);color:var(--white)}
-.w:disabled{border-color:var(--gray-mid1);color:var(--gray-mid2);cursor:not-allowed}
-.card.dim .cal,.card.dim .times{display:none}
-.picked{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:var(--t-sm);min-height:28px}
-.chip{display:inline-flex;align-items:center;gap:6px;background:var(--tint-2);color:var(--orange-ink);border-radius:99px;padding:4px 10px;font-weight:700}
-.chip button{font:inherit;border:0;background:none;cursor:pointer;color:inherit;padding:0}
-.reqrow{display:grid;grid-template-columns:24px 1fr 36px;gap:8px;align-items:center}
-.reqrow .n{font-weight:700;color:var(--orange-ink);text-align:center}
-.info{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;font-size:var(--t-sm);color:var(--gray-dark);background:var(--gray-light);border-radius:8px;padding:10px 12px}
-.info b{font-family:var(--head);color:var(--black)}
-.tag{font-weight:700;color:var(--orange-ink);background:var(--tint);border-radius:99px;padding:2px 10px;font-size:var(--t-sm)}
-.typecards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.tc{font:inherit;text-align:left;border:2px solid var(--gray-mid1);border-radius:10px;padding:12px;background:var(--white);cursor:pointer;display:grid;gap:2px;color:var(--black)}
-.tc b{font-family:var(--head)}
-.tc small{color:var(--gray-dark);font-size:var(--t-sm)}
-.tc[aria-pressed="true"]{border-color:var(--orange);background:var(--tint)}
-.dl{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px 20px;margin:0}
-.dl div{display:grid;gap:2px;min-width:0}
-.dl dt{color:var(--gray-mid2);font-size:var(--t-sm);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-.dl dd{margin:0;font-weight:700;overflow-wrap:anywhere}
-.dl .wide{grid-column:1/-1}
-.meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:4px;font-weight:400}
-.team{font-size:var(--t-sm);font-weight:700;color:var(--gray-dark);background:var(--gray-light);border-radius:99px;padding:1px 8px;white-space:nowrap}
-.dl dd a{font-size:var(--t-sm);color:var(--orange-ink);font-weight:400;white-space:nowrap}
-.ul{margin:0;padding-left:18px}
-.hero{background:var(--white);border:1px solid var(--gray-mid1);border-radius:10px;padding:32px 28px;display:grid;gap:16px;justify-items:center;text-align:center}
-.big{width:52px;height:52px;border-radius:50%;background:var(--orange);color:var(--white);display:grid;place-items:center;font-size:24px;font-weight:700}
-.big.wait{background:var(--tint-2);color:var(--orange-ink)}
-.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,240px));gap:12px;justify-content:center;width:100%}
-.tile{border:1px solid var(--gray-mid1);border-radius:10px;padding:14px;display:grid;gap:4px;justify-items:center;background:var(--page)}
-.tile .ico{width:32px;height:32px;border-radius:50%;background:var(--tint);color:var(--orange-ink);display:grid;place-items:center;font-weight:700}
-.tile small{font-size:var(--t-sm);color:var(--gray-dark)}
-.tile b{overflow-wrap:anywhere}
-.booked{max-width:720px;margin:0 auto;display:grid;gap:16px;justify-items:center;text-align:center}
-.booked p{margin:0;color:var(--gray-dark);max-width:52ch}
-.when{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
-.vidwrap{width:100%;display:grid;gap:10px;text-align:left}
-.vidwrap h3{font-family:var(--head);font-size:var(--t-md);margin:0}
-.vid{background:var(--black);border-radius:8px;aspect-ratio:16/9;display:grid;place-items:center;color:var(--white);font-size:24px;max-width:100%}
-.thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.thumbs small{font-weight:700;font-size:var(--t-sm)}
-.pay{display:grid;gap:10px;width:100%;max-width:420px}
-.paybtn{height:44px;border-radius:8px;display:grid;place-items:center;font-weight:700}
-.paybtn.pp{background:#FFC439;color:#111}
-.paybtn.card2{background:var(--black);color:var(--white)}
-.doc{width:100%;max-width:520px;border:1px solid var(--gray-mid1);border-radius:8px;background:var(--white);padding:16px;display:grid;gap:6px;font-size:var(--t-sm);color:var(--gray-dark);text-align:left}
-.doc b{color:var(--black);font-family:var(--head)}
-.line{height:8px;border-radius:4px;background:var(--gray-light)}
-[data-show]:not(.on){display:none!important}
-@media (max-width:860px){.card,.layout{grid-template-columns:1fr}.times{border-left:0;border-top:1px solid var(--gray-light)}.side{position:static}.step span{display:none}}
-@media (max-width:600px){.g2,.g3,.g3r,.paths,.typecards,.thumbs,.tiles,.herostats{grid-template-columns:1fr}.soc{grid-template-columns:1fr 36px}.soc select{grid-column:1/-1}}
+a{color:var(--accent)}
+button{font-family:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 
-/* v22 additions: required = asterisk, NMLS card, upload, compare table, collapsible summary */
-.req{background:none;padding:0;font-size:0;line-height:1}
-.req::before{content:"*";font-size:var(--t-md);color:var(--orange-ink);font-weight:700}
-.stars{font-size:var(--t-sm);color:var(--gray-dark)}
-.stars b{color:var(--orange-ink)}
-.cmp{width:100%;border-collapse:collapse;font-size:var(--t-sm);background:var(--white)}
-.cmpwrap{overflow-x:auto;border:1px solid var(--gray-mid1);border-radius:10px}
-.cmp th,.cmp td{padding:8px 12px;border-bottom:1px solid var(--gray-light);text-align:left;vertical-align:top}
-.cmp th{font-family:var(--head);background:var(--tint);white-space:nowrap}
-.cmp td:first-child{color:var(--gray-mid2);font-variant-numeric:tabular-nums;width:28px}
-.cmp tr:last-child td{border-bottom:0}
-.k{font-weight:700;border-radius:99px;padding:1px 8px;white-space:nowrap}
-.k.cut{background:var(--gray-light);color:var(--gray-dark)}
-.k.new{background:var(--tint-2);color:var(--orange-ink)}
-.k.keep{background:var(--white);border:1px solid var(--gray-mid1);color:var(--gray-dark)}
-.k.ask{background:var(--black);color:var(--white)}
-.open{background:var(--white);border:1px solid var(--gray-mid1);border-left:4px solid var(--black);border-radius:8px;padding:12px 14px;font-size:var(--t-sm);display:grid;gap:4px}
-.open ul{margin:0;padding-left:18px}
+/* Mockup chrome: not part of the form */
+.toc{padding-block:24px 4px;display:grid;gap:10px}
+.toc h1{font-size:28px;line-height:36px;font-weight:400;letter-spacing:-.02em;margin:0}
+.toc p{margin:0;color:var(--muted);max-width:90ch}
+.toc nav{display:flex;flex-wrap:wrap;gap:6px}
+.toc nav a{font-weight:500;color:var(--ink);background:var(--surface-2);border-radius:4px;padding:4px 10px;text-decoration:none}
+.flabel{margin:40px 0 0;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.flabel b{font-size:20px;line-height:28px;font-weight:500}
+.flabel span{color:var(--muted)}
+.scen{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center;color:var(--muted);border:1px dashed var(--line);border-radius:8px;padding:6px 10px;background:repeating-linear-gradient(-45deg,var(--surface) 0 8px,var(--surface-muted) 8px 9px)}
+.scen::before{content:"Preview only, not on the real page";font-size:12px;color:var(--muted);margin-right:6px}
+.scen button{font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:4px;padding:3px 10px;cursor:pointer}
+.scen button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.frame{margin:10px 0 0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--bg)}
+.gh{background:var(--surface);border-bottom:1px dashed var(--line);text-align:center;font-size:12px;line-height:16px;color:var(--muted);padding:8px}
+.gh.foot{border-top:1px dashed var(--line);border-bottom:0}
+
+/* Page */
+.main{padding-block:24px 32px;display:grid;gap:20px}
+.steps{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:8px}
+.step{display:flex;gap:8px;align-items:center;padding-bottom:8px;border-bottom:3px solid var(--line);color:var(--muted);min-width:0;white-space:nowrap;overflow:hidden}
+.step i{flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:12px;font-weight:500;background:var(--surface-2);color:var(--muted)}
+.step.done,.step.cur{border-color:var(--fill)}
+.step.done i,.step.cur i{background:var(--fill);color:var(--surface)}
+.step.cur{color:var(--ink);font-weight:500}
+.step svg,.side svg{width:12px;height:12px}
+.pagehead{display:grid;gap:4px}
+.pagehead small{color:var(--muted)}
+h1{font-size:28px;line-height:36px;font-weight:400;letter-spacing:-.02em;margin:0;text-wrap:balance}
+h2{font-size:20px;line-height:28px;font-weight:400;letter-spacing:-.01em;margin:0;text-wrap:balance}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:20px;align-items:start}
+.col{display:grid;gap:20px;min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:24px;display:grid;gap:16px;min-width:0}
+.card > .lead{margin:-8px 0 0;color:var(--muted)}
+.side{position:sticky;top:16px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:grid;gap:12px}
+.side h3{font-size:14px;line-height:20px;font-weight:500;margin:0}
+.side ol{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.side li{display:flex;gap:10px;align-items:center;color:var(--muted)}
+.side li i{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:12px;font-weight:500;background:var(--surface-2);flex:none}
+.side li.cur{color:var(--ink);font-weight:500}
+.side li.cur i,.side li.done i{background:var(--fill);color:var(--surface)}
+.side p{margin:0;font-size:12px;line-height:16px;color:var(--muted);border-top:1px solid var(--hair);padding-top:12px}
+
+/* Fields */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+.g3r{display:grid;grid-template-columns:1fr 2fr;gap:16px}
+.f{display:grid;gap:8px;min-width:0;align-content:start}
+.lbl,.f > label{font-weight:500;display:flex;gap:4px;align-items:baseline;flex-wrap:wrap}
+.req{color:var(--accent);font-weight:500}
+.hint{font-size:12px;line-height:16px;color:var(--muted)}
+.note{color:var(--muted)}
+input.in,select.in{font:inherit;border:1px solid var(--line);border-radius:8px;padding:9px 11px;color:var(--ink);background:var(--surface);min-width:0;height:40px;width:100%}
+input.in::placeholder{color:var(--muted)}
+.indent{display:grid;gap:16px;border-left:2px solid var(--hair);padding-left:16px}
+.hr{border-top:1px solid var(--hair)}
+.seg{display:flex;gap:8px;flex-wrap:wrap}
+.seg button,.choice{font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:4px;min-height:40px;padding:0 14px;cursor:pointer}
+.seg button[aria-pressed="true"],.choice[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink);background:var(--tint);font-weight:500}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.choice{text-align:left;border-radius:8px;padding:12px 14px;display:grid;gap:2px;align-content:start}
+.choice b{font-weight:500}
+.choice small{font-size:12px;line-height:16px;color:var(--muted);font-weight:400}
+.multi{display:flex;flex-wrap:wrap;gap:6px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:4px 6px;background:var(--surface);min-height:40px}
+.tagx{background:var(--surface-2);border-radius:4px;padding:2px 2px 2px 8px;display:inline-flex;gap:2px;align-items:center}
+.tagx button{border:0;background:none;color:var(--muted);cursor:pointer;width:22px;height:22px;border-radius:4px;font-size:14px}
+.multi select{border:0;font:inherit;color:var(--muted);background:transparent;flex:1;min-width:120px;height:28px}
+.check{display:flex;gap:9px;align-items:flex-start}
+.check input{accent-color:#bd4e15;width:16px;height:16px;margin:2px 0 0;flex:none}
+.rows{display:grid;gap:8px}
+.rowx{display:grid;grid-template-columns:1fr 40px;gap:8px;align-items:center}
+.soc{display:grid;grid-template-columns:170px 1fr 40px;gap:8px;align-items:center}
+.reqrow{display:grid;grid-template-columns:20px 1fr 40px;gap:8px;align-items:center}
+.reqrow .n{color:var(--muted);text-align:center;font-variant-numeric:tabular-nums}
+.x{height:40px;width:40px;border:1px solid var(--line);background:var(--surface);border-radius:4px;cursor:pointer;color:var(--muted);font-size:16px}
+.add{border:0;background:none;color:var(--accent);font-weight:500;cursor:pointer;padding:0;justify-self:start;min-height:24px}
 .lookup{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}
-.nmls{border:1px solid var(--gray-mid1);border-radius:10px;background:var(--page);padding:14px;display:grid;gap:12px}
-.nmls .src{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:var(--t-sm);color:var(--gray-dark)}
-.nmls .src b{color:var(--black);font-family:var(--head)}
-.dl .ro{display:flex;gap:6px;flex-wrap:wrap}
-.ro span{background:var(--white);border:1px solid var(--gray-mid1);border-radius:99px;padding:2px 10px;font-weight:700;font-size:var(--t-sm)}
-.warn{background:var(--tint);border:1px solid var(--tint-2);border-radius:8px;padding:10px 12px;font-size:var(--t-sm);display:grid;gap:4px}
-.warn b{font-family:var(--head)}
-.pick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.pk{font:inherit;text-align:left;border:2px solid var(--gray-mid1);border-radius:10px;padding:10px 12px;background:var(--white);cursor:pointer;display:flex;gap:8px;align-items:center;font-weight:700;color:var(--black)}
-.pk::before{content:"";width:16px;height:16px;border-radius:4px;border:1.5px solid var(--gray-mid2);flex:none}
-.pk[aria-pressed="true"]{border-color:var(--orange);background:var(--tint)}
-.pk[aria-pressed="true"]::before{background:var(--orange);border-color:var(--orange)}
-.pk:disabled{opacity:.5;cursor:not-allowed}
-.pk small{display:block;font-weight:400;font-size:var(--t-sm);color:var(--gray-dark)}
-.drop{border:2px dashed var(--gray-mid1);border-radius:10px;padding:16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;background:var(--white)}
-.drop .ico{width:40px;height:40px;border-radius:8px;background:var(--tint);color:var(--orange-ink);display:grid;place-items:center;font-weight:700;flex:none}
-.drop.done{border-style:solid;border-color:var(--orange);background:var(--tint)}
-.auto{font-size:var(--t-sm);font-weight:700;color:var(--orange-ink)}
-details.sum{background:var(--white);border:1px solid var(--gray-mid1);border-radius:10px}
-details.sum summary{cursor:pointer;padding:12px 18px;font-family:var(--head);font-weight:700;display:flex;justify-content:space-between;gap:8px}
-details.sum summary span{font-family:var(--body);font-weight:400;font-size:var(--t-sm);color:var(--gray-dark)}
-details.sum .dl{padding:4px 18px 16px}
-.strong{background:var(--black);color:var(--white);border-radius:8px;padding:12px 14px;font-size:var(--t-sm)}
-.strong b{font-family:var(--head)}
-.paycard{display:grid;gap:10px;width:100%;max-width:420px;text-align:left}
-.covers{width:100%;max-width:520px;text-align:left;display:grid;gap:6px;font-size:var(--t-sm);color:var(--gray-dark)}
-.covers li{margin-left:18px}
-.cmpto{display:inline-block;margin-top:2px;font-size:var(--t-sm);font-weight:700;color:var(--orange-ink)}
-@media (max-width:600px){.pick{grid-template-columns:1fr}.lookup{grid-template-columns:1fr}}
-.sub .req,.warn .req{background:none}
-.dl .ro span{white-space:nowrap}
+.facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px 20px;margin:0}
+.facts > div{display:grid;gap:2px;min-width:0}
+.facts dt{font-size:12px;line-height:16px;color:var(--muted)}
+.facts dd{margin:0;overflow-wrap:anywhere}
+.facts .wide{grid-column:1/-1}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tags span{background:var(--surface-2);border-radius:4px;padding:2px 8px;white-space:nowrap}
+.src{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:12px;line-height:16px;color:var(--muted)}
+.alert{border-radius:8px;padding:12px 14px;display:grid;gap:4px;background:var(--warn-tint);color:var(--warn-ink)}
+.alert b{font-weight:500}
+.alert.ok{background:var(--ok-tint);color:var(--ok-ink)}
+.person{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--surface)}
+.av{width:32px;height:32px;border-radius:50%;background:var(--tint);display:grid;place-items:center;font-weight:500;color:var(--accent);font-size:12px;flex:none}
+.person small,.opt small{display:block;color:var(--muted);font-size:12px;line-height:16px}
+.combo{position:relative}
+.combo .list{position:absolute;left:0;right:0;top:44px;background:var(--surface);border:1px solid var(--line);border-radius:8px;box-shadow:0 10px 24px -12px rgba(26,25,25,.35);z-index:5;max-height:240px;overflow:auto}
+.opt{display:flex;gap:10px;align-items:center;padding:8px 10px;cursor:pointer;width:100%;border:0;background:var(--surface);font:inherit;text-align:left;color:var(--ink)}
+.opt:hover,.opt:focus-visible{background:var(--surface-muted)}
+.none{padding:10px;color:var(--muted)}
+.actions{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.btn{font-size:14px;font-weight:500;border:0;border-radius:4px;min-height:40px;padding:0 20px;background:var(--fill);color:var(--surface);cursor:pointer}
+.btn:disabled{background:var(--surface-2);color:var(--muted);cursor:not-allowed}
+.btn2{font-size:14px;font-weight:500;border:1px solid var(--line);border-radius:4px;min-height:40px;padding:0 18px;background:var(--surface);color:var(--ink);cursor:pointer}
+
+/* Call */
+.cal-wrap{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:20px;border-top:1px solid var(--hair);padding-top:16px}
+.month{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-weight:500}
+.month button{width:32px;height:32px;border-radius:4px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.month button:disabled{color:var(--line);cursor:not-allowed}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center;font-variant-numeric:tabular-nums}
+.grid .wd{font-size:12px;line-height:16px;color:var(--muted)}
+.grid .off{color:var(--line);padding:8px 0}
+.d{font:inherit;aspect-ratio:1;max-width:38px;width:100%;margin:0 auto;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;position:relative}
+.d[aria-current="true"]{background:var(--fill);border-color:var(--fill);color:var(--surface)}
+.d.has::after{content:"";position:absolute;bottom:3px;left:50%;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:currentColor}
+.times{display:grid;gap:8px;align-content:start}
+.times .dayname{font-weight:500}
+.w{font:inherit;min-height:40px;border-radius:4px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;font-variant-numeric:tabular-nums}
+.w[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink);background:var(--tint);font-weight:500}
+.w:disabled{color:var(--line);cursor:not-allowed}
+.picked{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:28px}
+.chip{display:inline-flex;align-items:center;gap:4px;background:var(--surface-2);border-radius:4px;padding:3px 4px 3px 8px}
+.chip button{border:0;background:none;cursor:pointer;color:var(--muted);width:22px;height:22px}
+.chip.plain{padding:3px 8px}
+
+/* Application, pay, sign */
+.drop{border:1px dashed var(--line);border-radius:8px;padding:16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;background:var(--surface-muted)}
+.drop.done{border-style:solid;background:var(--surface)}
+.drop .meta{flex:1;min-width:0;display:grid;gap:2px}
+.auto{font-size:12px;line-height:16px;color:var(--ok-ink)}
+details.sum summary{cursor:pointer;display:flex;justify-content:space-between;gap:12px;align-items:center;list-style:none}
+details.sum summary::-webkit-details-marker{display:none}
+details.sum summary .tog{color:var(--accent);font-weight:500;white-space:nowrap}
+details.sum[open] summary{margin-bottom:16px}
+.money{font-size:28px;line-height:36px;font-weight:400;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.list{margin:0;padding-left:18px;display:grid;gap:6px}
+.paypal{display:grid;gap:10px;max-width:420px}
+.ppbtn{height:44px;border-radius:4px;display:grid;place-items:center;font-weight:500}
+.ppbtn.y{background:#ffc439;color:#111111}
+.ppbtn.k{background:#2c2e2f;color:#ffffff}
+.small{font-size:12px;line-height:16px;color:var(--muted)}
+.vid{background:var(--ink);border-radius:8px;aspect-ratio:16/9;display:grid;place-items:center;color:var(--surface);max-width:100%}
+.vid svg{width:40px;height:40px}
+.thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.thumbs small{font-size:12px;line-height:16px}
+.thumbs .vid svg{width:24px;height:24px}
+
+/* What changed table */
+.cmpwrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px;margin-top:10px}
+.cmp{width:100%;border-collapse:collapse;background:var(--surface)}
+.cmp th{background:var(--surface-muted);font-size:12px;line-height:16px;font-weight:500;color:var(--muted);text-align:left;padding:8px 12px;white-space:nowrap}
+.cmp td{padding:8px 12px;border-top:1px solid var(--hair);vertical-align:top}
+.cmp td:first-child{color:var(--muted);width:28px;font-variant-numeric:tabular-nums}
+.k{font-size:12px;line-height:16px;font-weight:500;border-radius:4px;padding:1px 6px;white-space:nowrap;margin-right:4px}
+.k.cut{background:var(--surface-2);color:var(--muted)}
+.k.new{background:var(--tint);color:var(--accent)}
+.k.keep{background:var(--ok-tint);color:var(--ok-ink)}
+.open{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px;display:grid;gap:6px;margin-top:12px}
+.open ul{margin:0;padding-left:18px;display:grid;gap:4px}
+
+[data-show]:not(.on){display:none!important}
+@media (max-width:860px){.layout,.cal-wrap{grid-template-columns:minmax(0,1fr)}.side{position:static}.step span{display:none}}
+@media (max-width:600px){.card{padding:16px}.g2,.g3,.g3r,.choices,.thumbs{grid-template-columns:minmax(0,1fr)}.soc{grid-template-columns:1fr 40px}.soc select{grid-column:1/-1}.lookup{grid-template-columns:1fr}}
 </style>
 
 <div class="pad"><div class="wrap toc">
-  <h1>/join v22 · after the CEO review (09/11)</h1>
-  <p>Proposal built from the CEO's feedback on v21. Compare with the current mockup: <a class="cmpto" href="https://claude.ai/artifact/92Yarua4tCB9TwhQontgn7" target="_blank" rel="noopener">v21 (current) ↗</a>. Pay and sign still open only after the onboarding specialist approves (kept on purpose).</p>
+  <h1>/join v22</h1>
+  <p>Proposal after the CEO review on 09/11, drawn in the Tera+ design language (Khai). Compare with the current mockup: <a href="https://claude.ai/artifact/92Yarua4tCB9TwhQontgn7" target="_blank" rel="noopener">v21</a>. Pay and sign still open only after the onboarding specialist approves. Payment stays on MOSO's PayPal for now.</p>
   <nav aria-label="Screens">
-    <a href="#chg">What changed</a><a href="#s1">1 About you</a><a href="#s2">2 Quick call?</a><a href="#s2b">Call requested</a>
-    <a href="#s3">3 Application</a><a href="#s3b">Waiting for approval</a><a href="#s4">4 Pay &amp; sign</a><a href="#s5">5 NMLS access</a><a href="#s6">Done</a>
+    <a href="#chg">What changed</a><a href="#s1">1 About you</a><a href="#s2">2 Quick call</a><a href="#s2b">Call requested</a>
+    <a href="#s3">3 Application</a><a href="#s3b">Waiting for approval</a><a href="#s4">4 Pay</a><a href="#s4b">4 Sign</a><a href="#s5">5 NMLS access</a><a href="#s6">Done</a>
   </nav>
 </div></div>
 
 <div class="pad"><div class="wrap" id="chg">
-  <div class="flabel"><b>What changed from v21</b><span>one row per point in the CEO review</span></div>
-  <div class="cmpwrap" style="margin-top:10px"><table class="cmp">
-    <thead><tr><th>#</th><th>CEO feedback</th><th>v21</th><th>v22</th></tr></thead>
+  <div class="flabel"><b>What changed from v21</b><span>one row per point from the CEO review, Khai and Victoria</span></div>
+  <div class="cmpwrap"><table class="cmp">
+    <thead><tr><th>#</th><th>Feedback</th><th>v21</th><th>v22</th></tr></thead>
     <tbody>
-      <tr><td>1</td><td>No hero; people on this page already decided to join</td><td>Orange hero with 240+ / 2,600+ / $1,000+</td><td><span class="k cut">Removed</span> Page opens on the form</td></tr>
-      <tr><td>2</td><td>Too many steps, steps repeat each other</td><td>7 steps: About you, License, Call, Application, Review, Pay &amp; sign, NMLS</td><td><span class="k new">5 steps</span> About you (with license), Quick call?, Application, Pay &amp; sign, NMLS access</td></tr>
-      <tr><td>3</td><td>Top bar says 7 steps, side list says 5</td><td>Two different step lists</td><td><span class="k new">One bar</span> Same 5 steps in the top bar and the side list</td></tr>
-      <tr><td>4</td><td>Required = asterisk, same as every app</td><td>Orange "Required" chips</td><td><span class="k new">Asterisk</span> Look and feel to align with Tài Phạm</td></tr>
-      <tr><td>5</td><td>Pull licenses from NMLS Consumer Access</td><td>Typed by the Loan Officer</td><td><span class="k new">Auto</span> NMLS ID → legal name + licensed states (read-only) + current sponsor</td></tr>
-      <tr><td>6</td><td>Licensed states first, then states to sponsor (only from those)</td><td>Sponsor states in step 2, licensed states in step 4</td><td><span class="k new">Reordered</span> Sponsor states picked from the licensed list</td></tr>
-      <tr><td>7</td><td>Sponsored by another company → exclusive-state rules</td><td>Not checked</td><td><span class="k new">Checked</span> Warning from NMLS sponsor data + add-more-state-license rules</td></tr>
-      <tr><td>8</td><td>DRE-endorsed → DRE license number required</td><td>Optional</td><td><span class="k new">Required</span></td></tr>
-      <tr><td>9</td><td>"Existing website", default No</td><td>"Do you have a website…", Yes selected</td><td><span class="k new">Changed</span> "existing", No selected</td></tr>
-      <tr><td>10</td><td>Special requests before the call, required, "I have no requests"</td><td>Step 4, optional</td><td><span class="k new">Moved</span> Step 1, required Yes/No</td></tr>
-      <tr><td>11</td><td>No Team name / Powered by suggestions</td><td>Two quick-add chips</td><td><span class="k cut">Removed</span></td></tr>
-      <tr><td>12</td><td>Step 3: one question, Yes → pick a time, No → move on</td><td>Two cards + "Any time works for me" + "Request my call"</td><td><span class="k new">Simplified</span> Yes / No, then Submit</td></tr>
-      <tr><td>13</td><td>Upload driver's license, read name and address</td><td>Typed</td><td><span class="k new">Auto</span> Upload fills the address; legal name comes from NMLS</td></tr>
-      <tr><td>14</td><td>Legal name: just show it and confirm</td><td>"Set by our team · This is wrong"</td><td><span class="k cut">Removed</span> Read-only + confirm tick</td></tr>
-      <tr><td>15</td><td>W-2 may not originate with another company</td><td>Free checkbox</td><td><span class="k new">Enforced</span> W-2 shows the rule; 1099 keeps the checkbox</td></tr>
-      <tr><td>16</td><td>Social media: say clearly "list everything", confirm it</td><td>"Add at least one profile"</td><td><span class="k new">Stronger</span> Black notice + required confirm tick</td></tr>
-      <tr><td>17</td><td>Remove tech literacy</td><td>Section 7 + tick</td><td><span class="k cut">Removed</span></td></tr>
-      <tr><td>18</td><td>Merge Application and Review</td><td>Separate Review screen</td><td><span class="k new">Merged</span> Collapsed summary + "true and correct" tick at the bottom</td></tr>
-      <tr><td>19</td><td>Pay right on the page; link only if they stop</td><td>Pay after the team's email</td><td><span class="k keep">Kept</span> Approval gate stays (Victoria). Approved applicants pay right after the application, no email in between</td></tr>
-      <tr><td>20</td><td>Explain what the $100 covers (up to 3 states)</td><td>One line</td><td><span class="k new">Added</span></td></tr>
-      <tr><td>21</td><td>PayPal may go away</td><td>PayPal + card</td><td><span class="k ask">Open</span> Card form; processor to confirm with Khải</td></tr>
+      <tr><td>1</td><td>No hero; people on this page already decided to join</td><td>Orange hero with 240+, 2,600+, $1,000+</td><td><span class="k cut">Removed</span>The page opens on the form</td></tr>
+      <tr><td>2</td><td>Too many steps that repeat each other</td><td>7 steps</td><td><span class="k new">5 steps</span>About you (with license), Quick call, Application, Pay and sign, NMLS access</td></tr>
+      <tr><td>3</td><td>Top bar said 7 steps, side list said 5</td><td>Two different lists</td><td><span class="k new">One list</span>The same 5 steps in the top bar and the side list</td></tr>
+      <tr><td>4</td><td>Same look as every app; required = asterisk</td><td>Brand fonts, orange "Required" chips</td><td><span class="k new">Tera+</span>Inter, warm page, one white card per section, asterisk, one filled button per screen</td></tr>
+      <tr><td>5</td><td>Pull licenses from NMLS Consumer Access</td><td>Typed by the Loan Officer</td><td><span class="k new">Auto</span>NMLS ID gives the legal name, licensed states (read only) and current sponsor</td></tr>
+      <tr><td>6</td><td>Licensed states first, then states to sponsor from that list</td><td>Sponsor states in step 2, licensed states in step 4</td><td><span class="k new">Reordered</span></td></tr>
+      <tr><td>7</td><td>Sponsored by another company: apply the exclusive state rules</td><td>Not checked</td><td><span class="k new">Checked</span>Warning from the NMLS sponsor data</td></tr>
+      <tr><td>8</td><td>DRE endorsed: DRE license number required</td><td>Optional</td><td><span class="k new">Required</span></td></tr>
+      <tr><td>9</td><td>"Existing website", default No</td><td>Yes selected</td><td><span class="k new">Changed</span></td></tr>
+      <tr><td>10</td><td>Special requests before the call, required, with "I have no requests"</td><td>Step 4, optional</td><td><span class="k new">Moved</span>Step 1</td></tr>
+      <tr><td>11</td><td>No Team name or Powered by suggestions</td><td>Two quick add chips</td><td><span class="k cut">Removed</span></td></tr>
+      <tr><td>12</td><td>Step 3: Yes picks a time, No moves on</td><td>"Any time works for me", "Request my call"</td><td><span class="k new">Simplified</span></td></tr>
+      <tr><td>13</td><td>Upload the driver's license and read the address</td><td>Typed</td><td><span class="k new">Auto</span></td></tr>
+      <tr><td>14</td><td>Legal name: show it and confirm</td><td>"Set by our team", "This is wrong"</td><td><span class="k cut">Removed</span>Read only, from NMLS</td></tr>
+      <tr><td>15</td><td>W-2 may not originate with another company</td><td>Free checkbox</td><td><span class="k new">Enforced</span></td></tr>
+      <tr><td>16</td><td>Social media: say "list everything" and confirm it</td><td>"Add at least one profile"</td><td><span class="k new">Stronger</span>Notice and a required tick</td></tr>
+      <tr><td>17</td><td>Remove tech literacy</td><td>Section 7</td><td><span class="k cut">Removed</span></td></tr>
+      <tr><td>18</td><td>Merge Application and Review</td><td>Separate Review screen</td><td><span class="k new">Merged</span>Collapsed summary and the "true and correct" tick at the end</td></tr>
+      <tr><td>19</td><td>Pay right on the page; a link only if they stop</td><td>Pay after the team's email</td><td><span class="k keep">Kept gate</span>Victoria's rule stays: approved applicants pay right after the application</td></tr>
+      <tr><td>20</td><td>Explain what the $100 covers</td><td>One line</td><td><span class="k new">Added</span></td></tr>
+      <tr><td>21</td><td>Payment provider</td><td>PayPal</td><td><span class="k keep">Kept</span>MOSO's PayPal for now (Khai, 09/11)</td></tr>
+      <tr><td>22</td><td>Pay, sign and NMLS access screens</td><td>Old form inside the new page</td><td><span class="k new">Redrawn</span>Same frame, steps and cards as steps 1 to 3, real copy from the current form</td></tr>
     </tbody>
   </table></div>
-  <div class="open" style="margin-top:12px"><b>Still open before code</b><ul>
-    <li>W-2 / 1099 rules: Jessica sends them; the rule shown here is today's always-W-2 list.</li>
-    <li>NMLS data: Consumer Access has no public API, so we need a feasibility check (existing data in MOSO, a paid source, or lookup with a manual fallback).</li>
-    <li>Driver's license reading: GCP Document AI ID parser; needs a storage and access decision because it is personal data.</li>
-    <li>Payment processor (Khải). Copy review by Brayan, then Licensing.</li>
+  <div class="open"><b>Open before code</b><ul>
+    <li>W-2 and 1099 rules: Jessica sends them. This mockup uses today's rules.</li>
+    <li>NMLS data: Consumer Access has no public API. Needs a feasibility check (data in MOSO, a paid source, or a lookup with manual fallback).</li>
+    <li>Driver's license reading: GCP Document AI ID parser. Needs a storage and access decision because it is personal data.</li>
+    <li>Quick check box (NMLS ID, license status, 1 loan every 6 months) is left out because NMLS shows the license status. Bao to confirm.</li>
+    <li>Copy review by Brayan, then Licensing.</li>
   </ul></div>
 </div></div>
 
+<!-- Step 1 -->
 <div class="pad"><div class="wrap" id="s1">
-  <div class="flabel"><b>Step 1 · About you</b><span>/join · about you and your license on one screen</span></div>
+  <div class="flabel"><b>Step 1 · About you</b><span>/join</span></div>
   <div class="scen" data-group="page"><span>Page:</span>
     <button type="button" data-s="company" aria-pressed="true">Company page</button>
     <button type="button" data-s="lopage">A Loan Officer's own page</button>
@@ -299,148 +244,155 @@ details.sum .dl{padding:4px 18px 16px}
   <div class="frame" data-step="1">
     <div class="pad main"><div class="layout"><div class="col">
       <h1>First, tell us a bit about yourself</h1>
-      <div class="box">
-        <div class="g2"><div class="f"><label for="fn">First name <span class="req">Required</span></label><input class="in" id="fn" value="Jane"></div><div class="f"><label for="ln">Last name <span class="req">Required</span></label><input class="in" id="ln" value="Smith"></div></div>
-        <div class="g2"><div class="f"><label for="em">Email <span class="req">Required</span></label><input class="in" id="em" value="jane@email.com"></div><div class="f"><label for="mo">Mobile phone <span class="req">Required</span></label><input class="in" id="mo" value="(714) 555-0142"></div></div>
-        <div class="f" data-show="page:company"><label for="heard">How did you hear about Loan Factory? <span class="req">Required</span></label>
-          <select class="in" id="heard"><option value="">Select</option><option value="lo" selected>A Loan Factory Loan Officer referred me</option><option>Social media</option><option>Google search</option><option>Job posting</option><option>Webinar or event</option><option>Other</option></select></div>
-        <div class="sub" data-show="heard:lo"><div class="lbl">Which Loan Factory Loan Officer referred you? <span class="req">Required</span></div>
-          <div class="combo" id="combo"></div></div>
-        <div class="f" data-show="page:lopage"><div class="lbl">Referred by</div>
-          <div class="person"><div class="av">MM</div><div><b>Matt Moghaddam</b><small>NMLS 1234567 · matt@loanfactory.com</small></div></div></div>
-      </div>
 
-      <div class="box">
-        <div class="lookup"><div class="f"><label for="nmls">NMLS ID <span class="req">Required</span></label><input class="in" id="nmls" value="1234567"></div><button class="btn2" type="button" id="lookup" style="height:44px">Look up</button></div>
+      <section class="card" aria-labelledby="h-you">
+        <h2 id="h-you">Your contact details</h2>
+        <div class="g2"><div class="f"><label for="fn">First name <span class="req">*</span></label><input class="in" id="fn" value="Jane"></div><div class="f"><label for="ln">Last name <span class="req">*</span></label><input class="in" id="ln" value="Smith"></div></div>
+        <div class="g2"><div class="f"><label for="em">Email <span class="req">*</span></label><input class="in" id="em" value="jane@email.com"></div><div class="f"><label for="mo">Mobile phone <span class="req">*</span></label><input class="in" id="mo" value="(714) 555-0142"></div></div>
+        <div class="f" data-show="page:company"><label for="heard">How did you hear about Loan Factory? <span class="req">*</span></label>
+          <select class="in" id="heard"><option value="">Select</option><option value="lo" selected>A Loan Factory Loan Officer referred me</option><option>Social media</option><option>Google search</option><option>Job posting</option><option>Webinar or event</option><option>Other</option></select></div>
+        <div class="f indent" data-show="heard:lo"><div class="lbl">Which Loan Factory Loan Officer referred you? <span class="req">*</span></div><div class="combo" id="combo"></div></div>
+        <div class="f" data-show="page:lopage"><div class="lbl">Referred by</div>
+          <div class="person"><div class="av">MM</div><div><b style="font-weight:500">Matt Moghaddam</b><small>NMLS 1234567 · matt@loanfactory.com</small></div></div></div>
+      </section>
+
+      <section class="card" aria-labelledby="h-lic">
+        <h2 id="h-lic">Your license</h2>
+        <div class="lookup"><div class="f"><label for="nmls">NMLS ID <span class="req">*</span></label><input class="in" id="nmls" value="1234567"></div><button class="btn2" type="button" id="lookup">Look up</button></div>
         <div class="hint" id="nmlsmsg" hidden></div>
-        <div class="nmls" id="nmlscard">
-          <div class="src"><b>Found on NMLS Consumer Access</b><span>Updated just now</span></div>
-          <dl class="dl">
-            <div><dt>Legal name</dt><dd>Jane Anne Smith</dd></div>
+        <div id="nmlscard" class="f">
+          <div class="src"><span>From NMLS Consumer Access</span><span>Updated just now</span></div>
+          <dl class="facts">
+            <div><dt>Legal name</dt><dd id="legal">Jane Anne Smith</dd></div>
             <div><dt>Current sponsor</dt><dd data-show="spon:none">None</dd><dd data-show="spon:other">ABC Home Loans LLC</dd></div>
-            <div class="wide"><dt>Licensed states (3)</dt><dd><div class="ro" id="licro"></div></dd></div>
+            <div class="wide"><dt id="licdt">Licensed states (3)</dt><dd><div class="tags" id="licro"></div></dd></div>
           </dl>
-          <div class="warn" data-show="spon:other"><b>You're sponsored by ABC Home Loans LLC</b>Some states don't allow you to work for two companies at once. Washington is one of them: we can sponsor you there only after ABC Home Loans releases your sponsorship. <a href="#" style="color:var(--orange-ink)">See state rules</a></div>
+          <div class="alert" data-show="spon:other"><b>You're sponsored by ABC Home Loans LLC</b><span>Some states don't let you work for two companies at once. We check each state you pick against our state rules and tell you what to do before your call. <a href="#">See state rules</a></span></div>
         </div>
-        <div class="f"><div class="lbl">States you want us to sponsor <span class="req">Required</span></div>
+        <div class="hr"></div>
+        <div class="f"><div class="lbl">States you want us to sponsor <span class="req">*</span></div>
           <div class="multi" id="sponsor"></div>
           <div class="hint">Only the states you're licensed in.</div></div>
-        <div class="sub" data-show="ca:yes"><div class="lbl">California license type <span class="req">Required</span></div>
-          <div class="seg" data-tog="catype"><button type="button" data-v="dfpi">DFPI MLO</button><button type="button" data-v="dre" aria-pressed="true">DRE-endorsed MLO</button></div>
-          <div class="g2" data-show="catype:dre"><div class="f"><label for="dren">DRE license number <span class="req">Required</span></label><input class="in" id="dren" placeholder="01234567"></div><div class="f"><label for="dret">DRE license type <span class="req">Required</span></label><select class="in" id="dret"><option>Select</option><option>Salesperson</option><option>Broker</option></select></div></div>
+        <div class="indent" data-show="ca:yes">
+          <div class="f"><div class="lbl">California license type <span class="req">*</span></div>
+            <div class="seg" data-tog="catype"><button type="button" data-v="dfpi">DFPI MLO</button><button type="button" data-v="dre" aria-pressed="true">DRE endorsed MLO</button></div></div>
+          <div class="g2" data-show="catype:dre"><div class="f"><label for="dren">DRE license number <span class="req">*</span></label><input class="in" id="dren" placeholder="01234567"></div><div class="f"><label for="dret">DRE license type <span class="req">*</span></label><select class="in" id="dret"><option>Select</option><option>Salesperson</option><option>Broker</option></select></div></div>
         </div>
-        <div class="f" data-show="emp:free"><div class="lbl">Employment type <span class="req">Required</span></div>
-          <div class="typecards"><button class="tc" type="button" aria-pressed="true"><b>Independent (1099)</b><small>Keep 100% of your commission. You handle your own taxes.</small></button><button class="tc" type="button"><b>Employee (W-2)</b><small>90% of the commission. Payroll taxes are withheld.</small></button></div>
+        <div class="f" data-show="emp:free"><div class="lbl">Employment type <span class="req">*</span></div>
+          <div class="choices" data-pick><button class="choice" type="button" aria-pressed="true"><b>Independent (1099)</b><small>Keep 100% of your commission. You handle your own taxes.</small></button><button class="choice" type="button" aria-pressed="false"><b>Employee (W-2)</b><small>90% of the commission. Payroll taxes are withheld.</small></button></div>
           <div class="hint">Set from the states you picked. We confirm it with you on your call.</div></div>
-        <div class="info" data-show="emp:forced"><span>Employment type: <b>Employee (W-2)</b></span><span class="tag">Required for a California DFPI license</span></div>
-        <div class="webcard">
-          <div class="f"><div class="lbl">Do you have an existing website or landing page that promotes mortgages? <span class="req">Required</span></div>
-            <div class="seg" data-tog="web"><button type="button" data-v="yes">Yes</button><button type="button" data-v="no" aria-pressed="true">No</button></div></div>
-          <div class="f" data-show="web:yes"><div class="lbl">Website URL <span class="req">Required</span></div><div class="rows" id="webrows"></div><button class="add" type="button" id="addweb">+ Add another website</button></div>
-          <label class="check"><input type="checkbox" id="ack"> I agree to obtain Loan Factory's approval before creating any new website or landing page that promotes mortgages. <span class="req">Required</span></label>
-        </div>
-        <div class="webcard">
-          <div class="f"><div class="lbl">Do you have any special requests? <span class="req">Required</span></div>
-            <div class="hint">Tell us now, before your call, so we can confirm whether we can meet them. Requests raised after you sign may not be possible.</div>
-            <div class="seg" data-tog="sr"><button type="button" data-v="no" aria-pressed="true">No, I have no special requests</button><button type="button" data-v="yes">Yes</button></div></div>
-          <div class="f" data-show="sr:yes"><div class="lbl">Your requests <span class="req">Required</span></div><div class="rows" id="reqs"></div><button class="add" type="button" id="addreq">+ Add a request</button></div>
-        </div>
-        <label class="check"><input type="checkbox" id="sms1"> Text me about my application. Msg and data rates may apply. Reply STOP to opt out. Privacy · Terms</label>
-        <div class="actions"><span></span><button class="btn" type="button">Continue</button></div>
-      </div>
+        <div class="f" data-show="emp:forced"><div class="lbl">Employment type</div><div>Employee (W-2) <span class="note">· Required for a California DFPI license</span></div></div>
+      </section>
+
+      <section class="card" aria-labelledby="h-web">
+        <h2 id="h-web">Website</h2>
+        <div class="f"><div class="lbl">Do you have an existing website or landing page that promotes mortgages? <span class="req">*</span></div>
+          <div class="seg" data-tog="web"><button type="button" data-v="yes">Yes</button><button type="button" data-v="no" aria-pressed="true">No</button></div></div>
+        <div class="f" data-show="web:yes"><div class="lbl">Website URL <span class="req">*</span></div><div class="rows" id="webrows"></div><button class="add" type="button" id="addweb">+ Add another website</button></div>
+        <label class="check"><input type="checkbox" id="ack"><span>I agree to obtain Loan Factory's approval before creating any new website or landing page that promotes mortgages. <span class="req">*</span></span></label>
+      </section>
+
+      <section class="card" aria-labelledby="h-req">
+        <h2 id="h-req">Special requests</h2>
+        <p class="lead">Tell us now, before your call, so we can confirm whether we can meet them. Requests raised after you sign may not be possible.</p>
+        <div class="f"><div class="lbl">Do you have any special requests? <span class="req">*</span></div>
+          <div class="seg" data-tog="sr"><button type="button" data-v="no" aria-pressed="true">No, I have no special requests</button><button type="button" data-v="yes">Yes</button></div></div>
+        <div class="f" data-show="sr:yes"><div class="lbl">Your requests <span class="req">*</span></div><div class="rows" id="reqs"></div><button class="add" type="button" id="addreq">+ Add a request</button></div>
+      </section>
+
+      <label class="check"><input type="checkbox" id="sms1"><span>Text me about my application. Msg and data rates may apply. Reply STOP to opt out. <a href="#">Privacy</a> · <a href="#">Terms</a></span></label>
+      <div class="actions"><span></span><button class="btn" type="button">Continue</button></div>
     </div>
     <aside class="side" data-side="1"></aside></div></div>
   </div>
 </div></div>
 
+<!-- Step 2 -->
 <div class="pad"><div class="wrap" id="s2">
-  <div class="flabel"><b>Step 2 · Quick call?</b><span>/join/call · one question</span></div>
+  <div class="flabel"><b>Step 2 · Quick call</b><span>/join/call</span></div>
   <div class="frame" data-step="2">
-    <div class="pad main">
+    <div class="pad main"><div class="layout"><div class="col">
       <h1>Would you like a quick call first?</h1>
-      <div class="paths">
-        <button class="path" type="button" id="cq-yes" aria-pressed="true"><span class="ic">☎</span><b>Yes, call me</b><small>Pick up to 3 times. We'll go over comp, our platform and your questions</small></button>
-        <button class="path" type="button" id="cq-no" aria-pressed="false"><span class="ic">✓</span><b>No, I'm ready to apply</b><small>I already spoke with your team</small></button>
-      </div>
-      <div id="callblock" style="display:grid;gap:14px">
-        <div class="card" id="card">
-          <div class="cardhead"><b>Pick up to 3 times that work for you</b><span class="hint">30 minutes · Pacific Time</span></div>
-          <div class="cal"><div class="month"><button type="button" id="prev" aria-label="Previous month">‹</button><span id="mlabel">November 2026</span><button type="button" id="next" aria-label="Next month">›</button></div><div class="grid" id="grid"></div></div>
+      <section class="card" aria-label="Quick call">
+        <div class="choices"><button class="choice" type="button" id="cq-yes" aria-pressed="true"><b>Yes, call me</b><small>Pick up to 3 times. We go over comp, our platform and your questions.</small></button><button class="choice" type="button" id="cq-no" aria-pressed="false"><b>No, I'm ready to apply</b><small>I already spoke with your team.</small></button></div>
+        <div id="callblock" class="cal-wrap">
+          <div><div class="month"><button type="button" id="prev" aria-label="Previous month">‹</button><span id="mlabel">November 2026</span><button type="button" id="next" aria-label="Next month">›</button></div><div class="grid" id="grid"></div></div>
           <div class="times" id="times"></div>
         </div>
-        <div class="picked" id="picked"></div>
-      </div>
-      <div class="hint" id="nocall" hidden>Our onboarding specialist will still give you a short call to verify your details before you pay and sign.</div>
+        <div class="f" id="pickedwrap"><div class="hint">Your times · 30 minutes · Pacific Time</div><div class="picked" id="picked"></div></div>
+        <div class="note" id="nocall" hidden>Your onboarding specialist still gives you a short call to verify your details before you pay and sign.</div>
+      </section>
       <div class="actions"><button class="btn2" type="button">Back</button><button class="btn" type="button" id="send">Submit</button></div>
     </div>
+    <aside class="side" data-side="2"></aside></div></div>
   </div>
 </div></div>
 
 <div class="pad"><div class="wrap" id="s2b">
   <div class="flabel"><b>Call requested</b><span>after "Yes, call me"</span></div>
   <div class="frame" data-step="2">
-    <div class="pad main"><div class="booked">
-      <div class="big">✓</div>
-      <h2>Thanks, Jane. We'll call you.</h2>
-      <p>An onboarding specialist will call <b>(714) 555-0142</b> in one of these times.</p>
-      <div class="when"><span class="chip">Wed, Nov 11 · 11 AM–1 PM</span><span class="chip">Thu, Nov 12 · 1–3 PM</span></div>
-      <div class="vidwrap sep">
-        <h3>See where you'll be working</h3>
-        <div class="vid" style="font-size:40px">▶</div>
-        <div class="thumbs"><div><div class="vid">▶</div><small>What is it like to join Loan Factory</small></div><div><div class="vid">▶</div><small>Video 2</small></div><div><div class="vid">▶</div><small>Video 3</small></div></div>
-      </div>
-    </div></div>
+    <div class="pad main"><div class="layout"><div class="col">
+      <h1>Thanks, Jane. We'll call you.</h1>
+      <section class="card">
+        <div>An onboarding specialist will call <b style="font-weight:500">(714) 555-0142</b> in one of these times.</div>
+        <div class="picked"><span class="chip plain">Wed, Nov 11 · 11 AM to 1 PM</span><span class="chip plain">Thu, Nov 12 · 1 PM to 3 PM</span></div>
+      </section>
+      <section class="card">
+        <h2>See where you'll be working</h2>
+        <div class="vid"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="thumbs"><div><div class="vid"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></div><small>What is it like to join Loan Factory</small></div><div><div class="vid"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></div><small>Video 2</small></div><div><div class="vid"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></div><small>Video 3</small></div></div>
+        <a href="#">Watch more on our YouTube channel</a>
+      </section>
+    </div>
+    <aside class="side" data-side="2"></aside></div></div>
   </div>
 </div></div>
 
+<!-- Step 3 -->
 <div class="pad"><div class="wrap" id="s3">
-  <div class="flabel"><b>Step 3 · Application</b><span>after "No, I'm ready to apply", or from the link after the call · Review is merged in</span></div>
-  <div class="scen" data-group="s3"><span>Path:</span>
-    <button type="button" data-s="after" aria-pressed="true">After the call (approved)</button>
-    <button type="button" data-s="ready">No call yet</button>
-  </div>
-  <div class="scen" data-group="emp3"><span>Employment type:</span>
-    <button type="button" data-s="1099" aria-pressed="true">1099</button>
-    <button type="button" data-s="w2">W-2</button>
-  </div>
-  <div class="scen" data-group="dl"><span>Driver's license:</span>
-    <button type="button" data-s="up" aria-pressed="true">Uploaded</button>
-    <button type="button" data-s="empty">Not yet</button>
-  </div>
-  <div class="frame" data-chrome="welcome" data-step="3">
+  <div class="flabel"><b>Step 3 · Application</b><span>after "No, I'm ready to apply", or from the link after the call. Review is merged in.</span></div>
+  <div class="scen" data-group="s3"><span>Path:</span><button type="button" data-s="after" aria-pressed="true">After the call (approved)</button><button type="button" data-s="ready">No call yet</button></div>
+  <div class="scen" data-group="emp3"><span>Employment type:</span><button type="button" data-s="1099" aria-pressed="true">1099</button><button type="button" data-s="w2">W-2</button></div>
+  <div class="scen" data-group="dl"><span>Driver's license:</span><button type="button" data-s="up" aria-pressed="true">Uploaded</button><button type="button" data-s="empty">Not yet</button></div>
+  <div class="frame" data-step="3">
     <div class="pad main"><div class="layout"><div class="col">
-      <h1>Your application</h1>
-      <div class="strong"><b>Fill in everything.</b> We review every application before we sponsor you. Missing or left-out information, including any social media account, can stop your sponsorship.</div>
-      <details class="sum"><summary>About you and your license <span>Jane Smith · NMLS 1234567 · CA, TX · Edit</span></summary>
-        <dl class="dl"><div><dt>Email</dt><dd>jane@email.com</dd></div><div><dt>Mobile</dt><dd>(714) 555-0142</dd></div><div><dt>Referred by</dt><dd>Matt Moghaddam</dd></div><div><dt>States to sponsor</dt><dd>California (DRE-endorsed), Texas</dd></div><div><dt>Website</dt><dd>No existing website</dd></div><div><dt>Special requests</dt><dd>None</dd></div></dl></details>
+      <div class="pagehead"><small>Welcome back, Jane</small><h1>Your application</h1></div>
+      <div class="alert"><b>Fill in everything.</b><span>We review every application before we sponsor you. Missing information, including any social media profile you leave out, can stop your sponsorship.</span></div>
 
-      <section class="group"><div class="ghead"><i>1</i><b>Identity and address</b></div><div class="gbody">
-        <div class="drop done" data-show="dl:up"><div class="ico">ID</div><div style="flex:1;min-width:0"><b>drivers-license.jpg</b><div class="hint">We read your address from it.</div></div><button class="btn2" type="button">Replace</button></div>
-        <div class="drop" data-show="dl:empty"><div class="ico">ID</div><div style="flex:1;min-width:0"><b>Upload your driver's license <span class="req">Required</span></b><div class="hint">Photo or PDF. We read your address from it.</div></div><button class="btn" type="button">Upload</button></div>
-        <div class="info"><span>Legal name: <b>Jane Anne Smith</b></span><span class="tag">From NMLS</span></div>
-        <div class="g3"><div class="f"><label for="st">Street address <span class="req">Required</span></label><input class="in" id="st" value="1200 Main St"></div><div class="f"><label for="apt">Apt / Unit</label><input class="in" id="apt"></div></div>
-        <div class="g3r"><div class="f"><label for="zip">ZIP <span class="req">Required</span></label><input class="in" id="zip" value="92614"></div><div class="f"><label for="city">City <span class="req">Required</span></label><input class="in" id="city" value="Irvine"></div></div>
+      <section class="card"><details class="sum"><summary><h2>About you and your license</h2><span class="tog">Show</span></summary>
+        <dl class="facts"><div><dt>Name</dt><dd>Jane Smith</dd></div><div><dt>Email</dt><dd>jane@email.com</dd></div><div><dt>Mobile</dt><dd>(714) 555-0142</dd></div><div><dt>Referred by</dt><dd>Matt Moghaddam</dd></div><div><dt>NMLS ID</dt><dd>1234567</dd></div><div><dt>States to sponsor</dt><dd>California (DRE endorsed), Texas</dd></div><div><dt>Website</dt><dd>No existing website</dd></div><div><dt>Special requests</dt><dd>None</dd></div></dl>
+        <a href="#s1" style="display:inline-block;margin-top:12px">Edit</a></details></section>
+
+      <section class="card" aria-labelledby="h-id">
+        <h2 id="h-id">Identity and address</h2>
+        <div class="drop done" data-show="dl:up"><div class="meta"><b style="font-weight:500">drivers-license.jpg</b><span class="hint">We read your address from it.</span></div><button class="btn2" type="button">Replace</button></div>
+        <div class="drop" data-show="dl:empty"><div class="meta"><span class="lbl">Upload your driver's license <span class="req">*</span></span><span class="hint">Photo or PDF. We read your address from it.</span></div><button class="btn2" type="button">Upload</button></div>
+        <dl class="facts"><div><dt>Legal name, from NMLS</dt><dd>Jane Anne Smith</dd></div></dl>
+        <div class="g3"><div class="f"><label for="st">Street address <span class="req">*</span></label><input class="in" id="st" value="1200 Main St"></div><div class="f"><label for="apt">Apt or unit</label><input class="in" id="apt"></div></div>
+        <div class="g3r"><div class="f"><label for="zip">ZIP <span class="req">*</span></label><input class="in" id="zip" value="92614"></div><div class="f"><label for="city">City <span class="req">*</span></label><input class="in" id="city" value="Irvine"></div></div>
         <div class="auto" data-show="dl:up">Filled from your driver's license. Check it.</div>
-        <div class="g2"><div class="f"><label for="ci">Citizenship <span class="req">Required</span></label><select class="in" id="ci"><option>Select</option><option selected>US Citizen</option><option>Permanent resident</option><option>Work visa</option><option>Other</option></select></div><div class="f"><div class="lbl">Preferred languages</div><div class="multi" id="langs"></div></div></div>
-      </div></section>
+        <div class="g2"><div class="f"><label for="ci">Citizenship <span class="req">*</span></label><select class="in" id="ci"><option>Select</option><option selected>US Citizen</option><option>Permanent resident</option><option>Work visa</option><option>Other</option></select></div><div class="f"><div class="lbl">Preferred languages</div><div class="multi" id="langs"></div></div></div>
+      </section>
 
-      <section class="group"><div class="ghead"><i>2</i><b>Compensation</b></div><div class="gbody">
-        <div class="g2"><div class="f"><label for="mc">Target compensation <span class="req">Required</span></label><select class="in comp" id="mc"></select></div><div></div></div>
-        <div class="hint">This value controls the rates/pricing on your pricing engine (on your website) when displaying based on borrower-paid comp (BPC). It is also sent to Rocket as your Correspondent Target Comp and sets your Pylon LPC environment (≤1.00% maps to 1% LPC; &gt;1.00% maps to 2% LPC). Changes take effect on the first day of the next quarter. Anti-steering rules require you to offer pricing consistently based on this compensation across all channels. <a href="#" style="color:var(--orange-ink)">Compensation Policy</a></div>
-        <div class="info"><span>Employment type: <b data-show="emp3:1099">Independent (1099)</b><b data-show="emp3:w2">Employee (W-2)</b></span><span class="tag" data-show="s3:after">Confirmed on your call</span><span class="tag" data-show="s3:ready">We confirm it on your call</span></div>
-        <label class="check" data-show="emp3:1099"><input type="checkbox" id="nonex"> I also originate loans with another company</label>
-        <div class="warn" data-show="emp3:w2"><b>W-2 employees work only for Loan Factory</b>You may not originate loans with another company while you're a W-2 employee.
-          <label class="check"><input type="checkbox" id="w2only"> I understand <span class="req">Required</span></label></div>
-      </div></section>
+      <section class="card" aria-labelledby="h-comp">
+        <h2 id="h-comp">Compensation</h2>
+        <div class="g2"><div class="f"><label for="mc">Target compensation <span class="req">*</span></label><select class="in comp" id="mc"></select></div><div></div></div>
+        <div class="hint">This value controls the rates and pricing on your pricing engine (on your website) when displaying based on borrower paid comp (BPC). It is also sent to Rocket as your Correspondent Target Comp and sets your Pylon LPC environment (1.00% or less maps to 1% LPC; above 1.00% maps to 2% LPC). Changes take effect on the first day of the next quarter. Anti steering rules require you to offer pricing consistently based on this compensation across all channels. <a href="#">Compensation Policy</a></div>
+        <dl class="facts"><div><dt>Employment type</dt><dd><span data-show="emp3:1099">Independent (1099)</span><span data-show="emp3:w2">Employee (W-2)</span> <span class="note" data-show="s3:after">· Confirmed on your call</span><span class="note" data-show="s3:ready">· We confirm it on your call</span></dd></div></dl>
+        <label class="check" data-show="emp3:1099"><input type="checkbox" id="nonex"><span>I also originate loans with another company</span></label>
+        <div class="alert" data-show="emp3:w2"><b>W-2 employees work only for Loan Factory</b><span>You may not originate loans with another company while you're a W-2 employee.</span></div>
+        <label class="check" data-show="emp3:w2"><input type="checkbox" id="w2only"><span>I understand <span class="req">*</span></span></label>
+      </section>
 
-      <section class="group"><div class="ghead"><i>3</i><b>Social media</b></div><div class="gbody">
-        <div class="hint"><b>List every social media profile you use for your mortgage business.</b> We check each one for compliance. A profile you leave out can stop your sponsorship.</div>
+      <section class="card" aria-labelledby="h-soc">
+        <h2 id="h-soc">Social media</h2>
+        <p class="lead">List every social media profile you use for your mortgage business. We check each one for compliance. A profile you leave out can stop your sponsorship.</p>
         <div class="rows" id="socrows"></div>
         <button class="add" type="button" id="addsoc">+ Add another profile</button>
-        <label class="check sep"><input type="checkbox" id="allsoc"> I listed every social media profile I use for my mortgage business. <span class="req">Required</span></label>
-      </div></section>
+        <label class="check"><input type="checkbox" id="allsoc"><span>I listed every social media profile I use for my mortgage business. <span class="req">*</span></span></label>
+      </section>
 
-      <label class="check"><input type="checkbox" id="true1"> I confirm all information I provided is true and correct. <span class="req">Required</span></label>
+      <label class="check"><input type="checkbox" id="true1"><span>I confirm all information I provided is true and correct. <span class="req">*</span></span></label>
       <div class="actions"><button class="btn2" type="button">Back</button><button class="btn" type="button" data-show="s3:after">Continue to payment</button><button class="btn" type="button" data-show="s3:ready">Submit application</button></div>
     </div>
     <aside class="side" data-side="3"></aside></div></div>
@@ -449,87 +401,124 @@ details.sum .dl{padding:4px 18px 16px}
 
 <div class="pad"><div class="wrap" id="s3b">
   <div class="flabel"><b>Waiting for approval</b><span>only on "No call yet", until the onboarding specialist approves (Victoria's rule)</span></div>
-  <div class="frame" data-chrome="welcome" data-step="3">
-    <div class="pad main"><div class="hero">
-      <div class="big wait">⏳</div>
-      <h2>Thanks, Jane. We're reviewing your application.</h2>
-      <div class="hint">Your onboarding specialist will call you to verify your details. After that you'll get a link to pay and sign, usually within 1 business day.</div>
-      <div class="tiles">
-        <div class="tile"><div class="ico">✉</div><small>We'll email</small><b>jane@email.com</b></div>
-        <div class="tile"><div class="ico">?</div><small>Questions</small><b>recruiting@loanfactory.com</b></div>
-      </div>
-    </div></div>
+  <div class="frame" data-step="3">
+    <div class="pad main"><div class="layout"><div class="col">
+      <div class="pagehead"><small>Welcome back, Jane</small><h1>Thanks, we're reviewing your application</h1></div>
+      <section class="card">
+        <div>Your onboarding specialist will call you to verify your details. After that you get an email with a link to pay and sign, usually within 1 business day.</div>
+        <dl class="facts"><div><dt>We'll email</dt><dd>jane@email.com</dd></div><div><dt>Questions</dt><dd>recruiting@loanfactory.com</dd></div></dl>
+      </section>
+    </div>
+    <aside class="side" data-side="3"></aside></div></div>
   </div>
 </div></div>
 
+<!-- Step 4 -->
 <div class="pad"><div class="wrap" id="s4">
-  <div class="flabel"><b>Step 4 · Pay &amp; sign</b><span>right after the application when approved; the link is only for people who stopped</span></div>
-  <div class="scen" data-group="s4"><span>Scenario:</span><button type="button" data-s="pay" aria-pressed="true">Pays the fee</button><button type="button" data-s="waived">Fee waived</button><button type="button" data-s="sign">Paid, now sign</button></div>
-  <div class="frame" data-chrome="welcome" data-step="4">
-    <div class="pad main"><div class="hero">
-      <h2 data-show="s4:pay">One-time $100 onboarding fee</h2>
-      <h2 data-show="s4:waived">Your $100 fee is waived</h2>
-      <h2 data-show="s4:sign">Sign your Loan Officer agreement</h2>
-      <ul class="covers" data-show="s4:pay s4:waived">
-        <li>NMLS sponsorship in up to 3 states (you picked California and Texas)</li>
-        <li>Your Loan Factory accounts and pricing engine set up by our team</li>
-        <li>Onboarding with your specialist in your first weeks</li>
-      </ul>
-      <div class="paycard" data-show="s4:pay">
-        <div class="f"><label for="cc">Card number <span class="req">Required</span></label><input class="in" id="cc" placeholder="1234 1234 1234 1234"></div>
-        <div class="g2"><div class="f"><label for="exp">Expiry <span class="req">Required</span></label><input class="in" id="exp" placeholder="MM / YY"></div><div class="f"><label for="cvc">CVC <span class="req">Required</span></label><input class="in" id="cvc" placeholder="123"></div></div>
-        <button class="btn" type="button">Pay $100</button>
-        <div class="hint">Payment processor to be confirmed (Khải).</div>
-      </div>
-      <button class="btn" type="button" data-show="s4:waived">Continue to sign</button>
-      <div class="doc" data-show="s4:sign"><b>Independent Loan Officer Agreement</b><div>Jane Anne Smith · NMLS 1234567</div><div>1200 Main St, Irvine, CA 92614</div><div class="line"></div><div class="line" style="width:80%"></div><div class="line" style="width:90%"></div></div>
-      <button class="btn" type="button" data-show="s4:sign">Open agreement to sign</button>
-    </div></div>
+  <div class="flabel"><b>Step 4 · Pay</b><span>right after the application when approved. MOSO's PayPal.</span></div>
+  <div class="scen" data-group="s4"><span>Scenario:</span><button type="button" data-s="pay" aria-pressed="true">Pays the fee</button><button type="button" data-s="waived">Fee waived</button><button type="button" data-s="paid">Payment received</button></div>
+  <div class="frame" data-step="4">
+    <div class="pad main"><div class="layout"><div class="col">
+      <div class="pagehead"><small>Welcome back, Jane</small><h1>Pay your one time startup fee</h1></div>
+      <section class="card" aria-labelledby="h-fee">
+        <div class="actions"><h2 id="h-fee">Startup fee</h2><div class="money" data-show="s4:pay s4:paid">$100</div><div class="money" data-show="s4:waived">$0</div></div>
+        <div class="f"><div class="lbl">What it covers</div>
+          <ul class="list"><li>NMLS sponsorship in up to 3 states. You picked California and Texas.</li><li>Your Loan Factory accounts and pricing engine, set up by our team</li><li>Your onboarding with your specialist</li></ul></div>
+        <div class="hr"></div>
+        <div class="paypal" data-show="s4:pay">
+          <div class="ppbtn y">PayPal</div><div class="ppbtn k">Debit or Credit Card</div>
+          <div class="small">Buttons drawn by PayPal. You can pay with a card without a PayPal account.</div>
+        </div>
+        <div class="alert ok" data-show="s4:waived"><b>Your fee is waived</b><span>Our team approved a fee waiver for you. Continue to sign your agreement.</span></div>
+        <div class="alert ok" data-show="s4:paid"><b>Payment successful</b><span>We have received your payment. Next, sign your agreement.</span></div>
+      </section>
+      <div class="actions"><button class="btn2" type="button">Back</button><button class="btn" type="button" data-show="s4:waived s4:paid">Continue to sign</button></div>
+    </div>
+    <aside class="side" data-side="4"></aside></div></div>
   </div>
 </div></div>
 
+<div class="pad"><div class="wrap" id="s4b">
+  <div class="flabel"><b>Step 4 · Sign</b><span>opens Inkless</span></div>
+  <div class="scen" data-group="s4b"><span>Scenario:</span><button type="button" data-s="ready" aria-pressed="true">Ready to sign</button><button type="button" data-s="signed">Signed</button></div>
+  <div class="frame" data-step="4">
+    <div class="pad main"><div class="layout"><div class="col">
+      <div class="pagehead"><small>Welcome back, Jane</small><h1>Sign your agreement</h1></div>
+      <section class="card" aria-labelledby="h-agr" data-show="s4b:ready">
+        <h2 id="h-agr">Independent Loan Officer Agreement</h2>
+        <p class="lead">Loan Factory is required to provide notices, disclosures, authorizations, acknowledgments and other documents to you. Review and sign the agreement to continue.</p>
+        <dl class="facts">
+          <div><dt>Legal name</dt><dd>Jane Anne Smith</dd></div><div><dt>NMLS ID</dt><dd>1234567</dd></div>
+          <div><dt>Employment type</dt><dd>Independent (1099)</dd></div><div><dt>Target compensation</dt><dd>1.75%</dd></div>
+          <div><dt>States to sponsor</dt><dd>California, Texas</dd></div><div><dt>Address</dt><dd>1200 Main St, Irvine, CA 92614</dd></div>
+        </dl>
+        <div class="small">The agreement uses these details. Something wrong? Go back to your application before you sign.</div>
+        <div class="hr"></div>
+        <div class="small">Quick and secure electronic signature. Keep this page open until all documents are signed.</div>
+      </section>
+      <section class="card" data-show="s4b:signed">
+        <div class="alert ok"><b>Agreement signed</b><span>We have received your signed agreement. Next, give Loan Factory access on NMLS.</span></div>
+      </section>
+      <div class="actions"><button class="btn2" type="button">Back</button><button class="btn" type="button" data-show="s4b:ready">Open the agreement to sign</button><button class="btn" type="button" data-show="s4b:signed">Continue to NMLS access</button></div>
+    </div>
+    <aside class="side" data-side="4"></aside></div></div>
+  </div>
+</div></div>
+
+<!-- Step 5 -->
 <div class="pad"><div class="wrap" id="s5">
   <div class="flabel"><b>Step 5 · NMLS access</b></div>
-  <div class="frame" data-chrome="welcome" data-step="5">
-    <div class="pad main"><div class="hero">
-      <h2>Give Loan Factory access to your NMLS record</h2>
-      <div class="hint">We need it to file your sponsorship. You can also do it later with your onboarding specialist.</div>
-      <div class="seg" style="justify-content:center"><button type="button" aria-pressed="true">Yes, give access</button><button type="button">Not now</button></div>
-      <button class="btn" type="button">Finish</button>
-    </div></div>
+  <div class="frame" data-step="5">
+    <div class="pad main"><div class="layout"><div class="col">
+      <div class="pagehead"><small>Welcome back, Jane</small><h1>Give Loan Factory access on NMLS</h1></div>
+      <section class="card" aria-labelledby="h-nm">
+        <h2 id="h-nm">Last step for you</h2>
+        <p class="lead">To complete your sponsorship, give Loan Factory the access right to your NMLS record.</p>
+        <ol class="list"><li>Sign in to NMLS.</li><li>Follow the steps in <a href="#">this guide</a> to grant the access right to Loan Factory.</li><li>Come back and tick the box below.</li></ol>
+        <dl class="facts"><div><dt>Company to grant access to</dt><dd>Loan Factory, Inc.</dd></div><div><dt>Questions</dt><dd>licensing@loanfactory.com</dd></div></dl>
+        <label class="check"><input type="checkbox" id="gave"><span>I gave Loan Factory access on NMLS <span class="req">*</span></span></label>
+      </section>
+      <div class="actions"><button class="btn2" type="button">Back</button><button class="btn" type="button">Finish</button></div>
+    </div>
+    <aside class="side" data-side="5"></aside></div></div>
   </div>
 </div></div>
 
 <div class="pad"><div class="wrap" id="s6" style="margin-bottom:48px">
   <div class="flabel"><b>Done</b></div>
-  <div class="frame" data-chrome="welcome" data-step="6">
-    <div class="pad main"><div class="hero">
-      <div class="big">✓</div>
-      <h2>You're all set</h2>
-      <div class="hint">We'll file your sponsorship in NMLS and set up your accounts.</div>
-      <div class="tiles">
-        <div class="tile"><div class="ico">✉</div><small>Receipt sent to</small><b>jane@email.com</b></div>
-        <div class="tile"><div class="ico">?</div><small>Questions</small><b>recruiting@loanfactory.com</b></div>
-      </div>
-    </div></div>
+  <div class="frame" data-step="6">
+    <div class="pad main"><div class="layout"><div class="col">
+      <div class="pagehead"><small>Welcome to Loan Factory, Jane</small><h1>You're all set</h1></div>
+      <section class="card">
+        <h2>What happens next</h2>
+        <ol class="list">
+          <li>licensing@loanfactory.com starts sponsoring you. After NMLS and the state approve it, which takes a few days, you are officially part of Loan Factory.</li>
+          <li>hr@loanfactory.com reaches out to onboard you and give you an orientation. You get access to our platform.</li>
+          <li>support@loanfactory.com is there for any question.</li>
+        </ol>
+        <dl class="facts"><div><dt>Receipt sent to</dt><dd>jane@email.com</dd></div></dl>
+      </section>
+    </div>
+    <aside class="side" data-side="6"></aside></div></div>
   </div>
 </div></div>
 
 <script>
 const $=id=>document.getElementById(id);
-const STEPS=["About you","Quick call","Application","Pay & sign","NMLS access"];
+const CHECK='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5"/></svg>';
+const STEPS=["About you","Quick call","Application","Pay and sign","NMLS access"];
+const mark=(s,st)=>s<st?CHECK:s;
 document.querySelectorAll(".frame").forEach(fr=>{
   const st=+fr.dataset.step||0;
-  const band=fr.dataset.chrome==="welcome"?`<div class="pad strip"><b>Welcome back, Jane</b></div>`:"";
-  fr.insertAdjacentHTML("afterbegin",`<div class="gh">Site header (global)</div>${band}`);
-  fr.insertAdjacentHTML("beforeend",`<div class="gh" style="border-top:1px dashed var(--gray-mid1);border-bottom:0">Site footer (global)</div>`);
+  fr.insertAdjacentHTML("afterbegin",`<div class="gh">Site header (global)</div>`);
+  fr.insertAdjacentHTML("beforeend",`<div class="gh foot">Site footer (global)</div>`);
   if(!st)return;
-  const bar=STEPS.map((n,i)=>{const s=i+1,c=s<st?"done":s===st?"cur":"";return `<div class="step ${c}"><i>${s<st?"✓":s}</i><span>${n}</span></div>`;}).join("");
-  fr.querySelector(".main").insertAdjacentHTML("afterbegin",`<div class="steps">${bar}</div>`);
+  const bar=STEPS.map((n,i)=>{const s=i+1,c=s<st?"done":s===st?"cur":"";return `<div class="step ${c}"><i>${mark(s,st)}</i><span>${n}</span></div>`;}).join("");
+  fr.querySelector(".main").insertAdjacentHTML("afterbegin",`<div class="steps" aria-label="Steps">${bar}</div>`);
   const side=fr.querySelector("[data-side]");
-  if(side)side.innerHTML=`<h4>Your steps</h4><ol>${STEPS.map((n,i)=>{const s=i+1;return `<li class="${s<st?"done":s===st?"cur":""}"><i>${s<st?"✓":s}</i>${n}</li>`;}).join("")}</ol>`;
+  if(side)side.innerHTML=`<h3>Your steps</h3><ol>${STEPS.map((n,i)=>{const s=i+1;return `<li class="${s<st?"done":s===st?"cur":""}"><i>${mark(s,st)}</i>${n}</li>`;}).join("")}</ol><p>Questions? recruiting@loanfactory.com</p>`;
 });
-const state={heard:"lo",page:"company",spon:"none",ca:"yes",catype:"dre",emp:"free",web:"no",sr:"no",s3:"after",emp3:"1099",dl:"up",s4:"pay"};
+const state={heard:"lo",page:"company",spon:"none",ca:"yes",catype:"dre",emp:"free",web:"no",sr:"no",s3:"after",emp3:"1099",dl:"up",s4:"pay",s4b:"ready"};
 function apply(){
   state.emp=state.ca==="yes"&&state.catype==="dfpi"?"forced":"free";
   document.querySelectorAll("[data-show]").forEach(el=>el.classList.toggle("on",el.dataset.show.split(" ").some(t=>{const [g,v]=t.split(":");return state[g]===v;})));
@@ -539,54 +528,55 @@ document.querySelectorAll(".scen").forEach(sc=>sc.querySelectorAll("button").for
   if(sc.dataset.group==="page")state.heard=state.page==="company"&&$("heard").value==="lo"?"lo":"x";apply();}));
 document.querySelectorAll("[data-tog]").forEach(sg=>sg.querySelectorAll("button").forEach(b=>b.onclick=()=>{
   state[sg.dataset.tog]=b.dataset.v;sg.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));apply();}));
-document.querySelectorAll(".seg:not([data-tog]):not(#callq) button,.typecards .tc").forEach(b=>b.addEventListener("click",()=>{
+document.querySelectorAll("[data-pick] .choice").forEach(b=>b.addEventListener("click",()=>{
   [...b.parentElement.children].forEach(x=>x.setAttribute("aria-pressed",String(x===b)));}));
 function multi(el,opts,init,onChange){let sel=[...init];
   function draw(){el.innerHTML=sel.map(k=>`<span class="tagx">${opts[k]}<button type="button" aria-label="Remove ${opts[k]}" data-k="${k}">×</button></span>`).join("")+
-    `<select aria-label="Add"><option value="">${sel.length?"":"Add"}</option>${Object.keys(opts).filter(k=>!sel.includes(k)).map(k=>`<option value="${k}">${opts[k]}</option>`).join("")}</select>`;
+    `<select aria-label="Add"><option value="">${sel.length?"Add":"Select"}</option>${Object.keys(opts).filter(k=>!sel.includes(k)).map(k=>`<option value="${k}">${opts[k]}</option>`).join("")}</select>`;
     el.querySelectorAll("button").forEach(b=>b.onclick=()=>{sel=sel.filter(x=>x!==b.dataset.k);draw();onChange&&onChange(sel);});
     el.querySelector("select").onchange=e=>{if(e.target.value){sel.push(e.target.value);draw();onChange&&onChange(sel);}};}
-  draw();return v=>{sel=[...v];draw();onChange&&onChange(sel);};}
+  draw();}
 const NMLS={"1234567":{name:"Jane Anne Smith",states:{CA:"California",TX:"Texas",WA:"Washington"}},"7654321":{name:"Jane Smith",states:{FL:"Florida",GA:"Georgia"}}};
-let setSponsor=null;
 function lookup(){const v=$("nmls").value.trim(),r=NMLS[v];
   $("nmlscard").hidden=!r;$("nmlsmsg").hidden=!!r;
-  if(!r){$("nmlsmsg").textContent="We couldn't find this NMLS ID. Check the number (try 1234567 or 7654321 in this mockup).";return;}
-  $("nmlscard").querySelector(".dl dd").textContent=r.name;
+  if(!r){$("nmlsmsg").textContent="We couldn't find this NMLS ID. Check the number. In this mockup try 1234567 or 7654321.";return;}
+  $("legal").textContent=r.name;
   $("licro").innerHTML=Object.values(r.states).map(n=>`<span>${n}</span>`).join("");
-  $("licro").closest(".wide").querySelector("dt").textContent=`Licensed states (${Object.keys(r.states).length})`;
-  const init=Object.keys(r.states).filter(k=>k!=="WA").slice(0,2);
-  setSponsor=multi($("sponsor"),r.states,init,s=>{state.ca=s.includes("CA")?"yes":"no";apply();});
+  $("licdt").textContent=`Licensed states (${Object.keys(r.states).length})`;
+  const init=Object.keys(r.states).slice(0,2);
+  multi($("sponsor"),r.states,init,s=>{state.ca=s.includes("CA")?"yes":"no";apply();});
   state.ca=init.includes("CA")?"yes":"no";apply();}
 $("lookup").onclick=lookup;$("nmls").addEventListener("keydown",e=>{if(e.key==="Enter")lookup();});
 $("heard").onchange=e=>{state.heard=e.target.value==="lo"?"lo":"x";apply();};
 const ROSTER=[["Matt Moghaddam","1234567","matt@loanfactory.com","MM"],["Alex Carter","2034511","alex.carter@loanfactory.com","AC"],["Linh Pham","1500321","linh.pham@loanfactory.com","LP"],["Maria Gomez","1777210","maria.gomez@loanfactory.com","MG"],["Kevin Brooks","1650099","kevin.brooks@loanfactory.com","KB"]];
 let pickedLo=ROSTER[0];
 function drawCombo(){const c=$("combo");
-  if(pickedLo){c.innerHTML=`<div class="person"><div class="av">${pickedLo[3]}</div><div style="flex:1"><b>${pickedLo[0]}</b><small>NMLS ${pickedLo[1]} · ${pickedLo[2]}</small></div><button class="x" type="button" aria-label="Clear" style="width:32px;height:32px">×</button></div>`;
+  if(pickedLo){c.innerHTML=`<div class="person"><div class="av">${pickedLo[3]}</div><div style="flex:1;min-width:0"><b style="font-weight:500">${pickedLo[0]}</b><small>NMLS ${pickedLo[1]} · ${pickedLo[2]}</small></div><button class="x" type="button" aria-label="Clear">×</button></div>`;
     c.querySelector("button").onclick=()=>{pickedLo=null;drawCombo();c.querySelector("input").focus();};return;}
   c.innerHTML=`<input class="in" placeholder="Search by first name, last name, email or NMLS" autocomplete="off" aria-label="Search Loan Officers"><div class="list" hidden></div>`;
   const inp=c.querySelector("input"),list=c.querySelector(".list");
   const show=()=>{const w=inp.value.toLowerCase().split(/\s+/).filter(Boolean);const hits=ROSTER.filter(r=>w.every(x=>(r[0]+" "+r[1]+" "+r[2]).toLowerCase().includes(x)));
-    list.hidden=false;list.innerHTML=hits.length?hits.map(r=>`<button type="button" class="opt" data-i="${ROSTER.indexOf(r)}"><div class="av">${r[3]}</div><div><b>${r[0]}</b><small>NMLS ${r[1]} · ${r[2]}</small></div></button>`).join(""):`<div class="none">No Loan Officer matches that search.</div>`;
+    list.hidden=false;list.innerHTML=hits.length?hits.map(r=>`<button type="button" class="opt" data-i="${ROSTER.indexOf(r)}"><div class="av">${r[3]}</div><div><b style="font-weight:500">${r[0]}</b><small>NMLS ${r[1]} · ${r[2]}</small></div></button>`).join(""):`<div class="none">No Loan Officer matches that search.</div>`;
     list.querySelectorAll(".opt").forEach(o=>o.onmousedown=e=>{e.preventDefault();pickedLo=ROSTER[+o.dataset.i];drawCombo();});};
   inp.addEventListener("focus",show);inp.addEventListener("input",show);inp.addEventListener("blur",()=>setTimeout(()=>{list.hidden=true;},150));}
 drawCombo();
-function addWeb(v){const r=document.createElement("div");r.className="rowx";r.innerHTML=`<input class="in" placeholder="https://" value="${v||""}" aria-label="Website URL"><button class="x" type="button" aria-label="Remove">×</button>`;r.querySelector("button").onclick=()=>r.remove();$("webrows").appendChild(r);return r;}
+function addRow(box,cls,html){const r=document.createElement("div");r.className=cls;r.innerHTML=html;box.appendChild(r);return r;}
+function addWeb(v){const r=addRow($("webrows"),"rowx",`<input class="in" placeholder="https://" value="${v||""}" aria-label="Website URL"><button class="x" type="button" aria-label="Remove">×</button>`);r.querySelector("button").onclick=()=>r.remove();return r;}
 addWeb("");$("addweb").onclick=()=>addWeb("").querySelector("input").focus();
+const reqs=$("reqs");
+function renum(){[...reqs.children].forEach((r,i)=>r.querySelector(".n").textContent=i+1);}
+function addReq(v){const r=addRow(reqs,"reqrow",`<span class="n"></span><input class="in" aria-label="Request" placeholder="Describe one request" value="${v||""}"><button class="x" type="button" aria-label="Remove request">×</button>`);
+  r.querySelector("button").onclick=()=>{r.remove();renum();};renum();return r.querySelector("input");}
+addReq("");$("addreq").onclick=()=>addReq("").focus();
 multi($("langs"),{en:"English",es:"Spanish",vi:"Vietnamese",zh:"Chinese",ko:"Korean",tl:"Tagalog"},["en","vi"]);
 document.querySelectorAll("select.comp").forEach(s=>{s.innerHTML=`<option value="">Select</option>`+Array.from({length:17},(_,i)=>`<option${i===10?" selected":""}>${+(0.5+i*0.125).toFixed(3)}%</option>`).join("");});
 const PLAT=["Facebook","Instagram","LinkedIn","TikTok","YouTube","Google Business","Zillow","Yelp","X","Other"];
-function addSoc([p,u]){const r=document.createElement("div");r.className="soc";r.innerHTML=`<select class="in" aria-label="Platform"><option value="">Platform</option>${PLAT.map(x=>`<option${x===p?" selected":""}>${x}</option>`).join("")}</select><input class="in" placeholder="Profile URL" value="${u}" aria-label="Profile URL"><button class="x" type="button" aria-label="Remove">×</button>`;r.querySelector("button").onclick=()=>r.remove();$("socrows").appendChild(r);return r;}
+function addSoc([p,u]){const r=addRow($("socrows"),"soc",`<select class="in" aria-label="Platform"><option value="">Platform</option>${PLAT.map(x=>`<option${x===p?" selected":""}>${x}</option>`).join("")}</select><input class="in" placeholder="Profile URL" value="${u}" aria-label="Profile URL"><button class="x" type="button" aria-label="Remove">×</button>`);r.querySelector("button").onclick=()=>r.remove();return r;}
 addSoc(["LinkedIn","https://linkedin.com/in/janesmith"]);addSoc(["Facebook","https://facebook.com/janesmithloans"]);
 $("addsoc").onclick=()=>addSoc(["",""]).querySelector("select").focus();
-const reqs=$("reqs");
-function renum(){[...reqs.children].forEach((r,i)=>r.querySelector(".n").textContent=i+1);}
-function addReq(v){const r=document.createElement("div");r.className="reqrow";r.innerHTML=`<span class="n"></span><input class="in" aria-label="Request" placeholder="Describe one request" value="${v||""}"><button class="x" type="button" aria-label="Remove request">×</button>`;
-  r.querySelector("button").onclick=()=>{r.remove();renum();};reqs.appendChild(r);renum();return r.querySelector("input");}
-addReq("");$("addreq").onclick=()=>addReq("").focus();
+document.querySelectorAll("details.sum").forEach(d=>d.addEventListener("toggle",()=>{d.querySelector(".tog").textContent=d.open?"Hide":"Show";}));
 lookup();
-const WINS=["9–11 AM","11 AM–1 PM","1–3 PM","3–5 PM"],MAX=3;
+const WINS=["9 to 11 AM","11 AM to 1 PM","1 PM to 3 PM","3 PM to 5 PM"],MAX=3;
 let y=2026,m=10,cur=new Date(2026,10,11),wantCall=true;const sel=new Map();
 const ymd=d=>`${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
 const today=new Date(2026,10,9),last=new Date(2026,11,31);
@@ -607,13 +597,13 @@ function draw(){
     b.onclick=()=>{sel.has(k)?sel.delete(k):sel.set(k,cur.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"})+" · "+w);draw();};t.appendChild(b);});
   const p=$("picked");p.innerHTML="";
   sel.forEach((l,k)=>{const c=document.createElement("span");c.className="chip";c.innerHTML=`${l}<button type="button" aria-label="Remove">×</button>`;c.querySelector("button").onclick=()=>{sel.delete(k);draw();};p.appendChild(c);});
-  $("callblock").style.display=wantCall?"grid":"none";$("nocall").hidden=wantCall;
+  $("callblock").hidden=!wantCall;$("pickedwrap").hidden=!wantCall;$("nocall").hidden=wantCall;
   const s=$("send");s.disabled=wantCall&&!sel.size;s.textContent=wantCall?"Submit":"Continue to application";
   $("prev").disabled=(y===2026&&m===10);
 }
 $("prev").onclick=()=>{if(!(y===2026&&m===10)){m--;draw();}};
 $("next").onclick=()=>{if(m<11){m++;draw();}};
 ["cq-yes","cq-no"].forEach(id=>$(id).onclick=()=>{wantCall=id==="cq-yes";$("cq-yes").setAttribute("aria-pressed",String(wantCall));$("cq-no").setAttribute("aria-pressed",String(!wantCall));draw();});
-sel.set("2026-11-11|11 AM–1 PM","Wed, Nov 11 · 11 AM–1 PM");sel.set("2026-11-12|1–3 PM","Thu, Nov 12 · 1–3 PM");
+sel.set("2026-11-11|11 AM to 1 PM","Wed, Nov 11 · 11 AM to 1 PM");sel.set("2026-11-12|1 PM to 3 PM","Thu, Nov 12 · 1 PM to 3 PM");
 draw();
 </script>
