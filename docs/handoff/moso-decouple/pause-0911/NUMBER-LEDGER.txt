@@ -59,3 +59,4 @@ PR? D433  V354  p5-referral-source (p4-s4s5-esign): one-time import of packs-onl
 -    D440   -     omni-optout-push agent: Recruit pushes its SMS opt-outs to omni (HOST_PUSHED, omni-service#688 V45), lift on delete, one-time backfill; flag staging only
 -    D441   V360  bonus-tiers agent: referral bonus amount = MOSO tiers over closed loans in the 12 months before joining (frozen at JOINED) + MOSO's 120-day / spouse / brokerage / referrer-on-HR-books gates; staging only (agentflow-0gwad.6.3)
 #952 MERGED 09/11 (e6666b2452b66861755d6cb9d939434caeaab114): D440 (no V) omni opt-out push; omni-service#688 MERGED (c6896cc01d0ebaad876d60fd02506152293b89db) omni V45 host_ref; both on STAGING. Backfill 488 SMS stops: 434 created, 54 refused (impossible NANP area code). Reconcile REPORT 5e312680: LEDGER_ONLY_STOP 229 -> 0, STOP_AGREE 229.
+#951 MERGED 10/11 (9997d3f411670a47bd5d7d4e040e178ae25d8b0b): D441 + V360 (bonus tiers)

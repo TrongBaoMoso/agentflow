@@ -106,3 +106,37 @@ shadow will flag every n<2 and n>=12 row as an AMOUNT disagreement.
    spouse/brokerage are staff-set reasons -> read them, do not re-derive).
 4. Outside-LO referrers: keep NOT_ELIGIBLE for automatic payout (MOSO never auto-pays them); if Bao wants them
    paid, the MOSO tier is n=0 $0, 1-4 $200, 5+ $500.
+
+## 7. Built: Recruit now prices the bonus like MOSO (D441, staging only, 10/11/2026)
+
+Bao 09/11 chose "keep MOSO's current rule". recruit-be #951 (squash `9997d3f41`, V360) is promoted to staging behind
+`recruit.features.referral-bonus-tiers` (production absent = D420's flat $500). No payout, no UI change; `referrals.source` stays SHADOW.
+
+- **Amount:** n<2 → $0 (NOT_ELIGIBLE `LOW_PRODUCTION`), 2-11 → $500, 12+ → $1000 × floor(n/12). Numbers are settings
+  `referral.bonus_state.tier.*` (min_loans 2, base 500, block_loans 12, block_amount 1000).
+- **n (source chosen):** `candidates.units_12mo` as it stood on the joined day (read back from `candidate_change_log`, else
+  today's value), frozen on the row after the joined day. Why: it is the one Recruit-owned figure on every row; the offer figures
+  (D385) are this same field, required at invite; Modex/MMI also write it (source recorded). MOSO's
+  `closed_loan_past_12_months_before_join` is not in Recruit and packs `referrals/byOwner` does not send it, so MOSO stays the
+  shadow through its amount (`packs_amount` vs Recruit's `tier_amount`). Unknown n → UNDETERMINED `CLOSED_LOANS_UNKNOWN`.
+- **MOSO gates added:** outside referrer (never auto-paid), 120-day lead→join window, same phone as the referrer (user-service
+  `phone`), brokerage (onboarding portal answer), referrer still on HR's books from day 60 (D438 `ReferrerActiveCheck`; sticky once EARNED).
+
+### Staging shadow, before vs after (368 referral rows, sweep 10/11 02:00 VN)
+
+| | Before (D420 flat) | After (D441 tiers) |
+|---|---|---|
+| Rows with an amount | 18 (all $500: 7 PENDING_JOIN, 4 MATURING, 1 EARNED, +6 pending-join elsewhere) | 0 (no row has a closed-loan count yet after joining; 7 PENDING_JOIN have no count) |
+| Disagreements with packs | 6: PACKS_NO_BONUS 5 (Recruit $500, packs none), RECRUIT_NO_BONUS 1 | 1: RECRUIT_NO_BONUS 1 (packs $500 requested, Recruit PENDING_JOIN, no join date) |
+| The 5 former PACKS_NO_BONUS rows | MATURING/EARNED $500 | 4 UNDETERMINED `CLOSED_LOANS_UNKNOWN`, 1 NOT_ELIGIBLE `JOINED_AFTER_LEAD_WINDOW` (lead 2025-03-29, joined 2026-08-25) |
+| Rows where packs sent an amount (2) | $500 vs packs $500 (no join date); packs $3000 vs Recruit nothing | NO_COUNT 1; DIFFER 1: units_12mo 19 → tier $1000, MOSO staging paid on its own n (≥36) → $3000 |
+| New reasons | - | OUTSIDE_REFERRER 33, CLOSED_LOANS_UNKNOWN 4, JOINED_AFTER_LEAD_WINDOW 1 |
+
+Reading: staging has almost no referred LO with both a join date and a 12-month count, so no row can match MOSO's amount yet;
+the one row with both amounts differs because Recruit's 12-month figure (19) is not MOSO's typed number. The 5 rows Recruit used to
+pay $500 that MOSO did not now agree with packs (no bonus). Referrer facts work: HR on-books and the phone check were read for the
+one matured row.
+
+### Open
+- MOSO's n in the shadow needs a packs field (`closed_loan_past_12_months_before_join` on `referrals/byOwner`), packs PR for Khai.
+- MOSO push writes `units_12mo` without a change-log row: for already-joined rows the count is "today's value" (basis CURRENT).

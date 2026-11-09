@@ -285,3 +285,14 @@ bd show agentflow-0gwad.6
 - **#932 (D435):** monthly referral payout list CSV for Finance. Read only, staging only. `GET /api/v1/referral-bonus-state/payout-list.csv?month=YYYY-MM[&through=true]`.
 - **#933 (D436):** a recruiter's blacklist is copied to ai-donotcall. Built dark. It needs the platform team to issue a write key (`BLACKLIST_CLIENTS`, consumer `lo_recruiting`, scope `write`) and Bao's yes (decision B).
 - **omni push:** no contract exists, so nothing is built. The ask above is ready to send to Khai.
+
+### 10/11 (night)
+
+- **#951 (D441, V360) referral bonus priced on MOSO's current rule:** merged 9997d3f41, promoted, Flyway V360 OK, flag
+  `referral-bonus-tiers` on in staging values only (production absent).
+  - Amount = tier over closed loans in the 12 months before joining (n<2 $0, 2-11 $500, 12+ $1000 x floor(n/12), settings);
+    n = `units_12mo` on the joined day, frozen; MOSO's outside-referrer, 120-day, spouse-phone, brokerage and referrer-on-HR-books gates.
+  - Staging after the first sweep (368 rows): disagreements with packs 6 -> 1; the 5 rows Recruit paid $500 and packs did not are now
+    4 CLOSED_LOANS_UNKNOWN + 1 JOINED_AFTER_LEAD_WINDOW; 33 OUTSIDE_REFERRER. The only row with both amounts differs ($1000 vs MOSO $3000:
+    Recruit's 19 loans vs MOSO's typed number). Details: `referral-diagnose/BONUS-AMOUNT.md` section 7.
+
