@@ -354,3 +354,47 @@ was fixed to `Tester`. A local copy of `s9-e2e.js` also automates tera-fe's buil
 - Production DE has to grant caller HRIS read access to RECRUIT files.
 - Separately: the lf `signing-link` proxy times out before DE's first send finishes (now seen twice). Recruit records
   the envelope anyway, but the LO sees an error on the first click.
+
+## Run H (HR hardening, ai-hr-be #1369 + recruit-be #954), 09/11 18:08-18:20Z
+
+**What changed (bead `agentflow-4i55v`):**
+
+recruit-be **#954** (`9a158e85`) adds `agreement_offer_id` to `recruit.hired.v1`. It is sent with `signed_agreements`, under the same D406 switch. It is on recruit staging: promote run 42667058476, deploy run 42667106328. The pod digest is `0665d8de…`, which matches the run.
+
+ai-hr-be **#1369** was squash-merged as `56c17e02`: promote run 42669387257, cd-staging run 42669448986, both green.
+1. Before reading any file, HR asks DMS for the file's metadata. It files the agreement only when DMS reports `serviceType RECRUIT` and `entityId =` the offer recruit named. document-esign keeps one RECRUIT tree per offer and stamps no external key on signed copies.
+2. `VisibleToEmployee` is set only on that path.
+3. A file the hire still owes HR is a durable row (`recruit_agreement_filing`, migration 00534). It is filed after commit and then retried by a new job: 1 minute doubling to 1 hour, 10 attempts, claimed with a lease.
+4. The alerts feed gains `recruitAgreementFailures`.
+5. The hold CTE's delete is guarded by the same open-draft check.
+6. `POST /internal/v1/recruit/hires` carries no credential. It is network-only (see the PR body), and that is unchanged.
+
+**Run:** signing used the built-in path ("signing on the built-in page"), and DE `use_inkless` was not touched. The billing last name was `Tester`.
+
+The gcloud credentials on the Mac had expired (re-auth needs a person), so this run used `--no-db --add-lead`. The lead was made with the admin Add lead instead of the public form, and the DB-only checks are SKIP. Tag `tgpcr`, candidate `e9cb8864-7815-4476-9b01-c46eeae18955`, offer `7210b251-8c07-440a-9b7d-43a0023f2c02`. Full results are in `results-run-h.txt`.
+
+| Step | Result | Detail |
+|---|---|---|
+| 0, 2-10 | PASS | Add lead, offer SENT, 1-1 DONE, portal link live, PayPal sandbox order `8CL32013N3755850A` PAID |
+| 1, 11 | SKIP | `--add-lead`, `--no-db` |
+| 12 sign | PASS | first try (no proxy 503 this time) |
+| 13 Joined | PASS | S6 |
+| 14 HR hand-off | PASS | `hr-handoff` delivery=delivered |
+| 15 archive | PASS | on `--resume` |
+
+**HR side.** No kube access, so these reads went through the HR staging API as a staging HR admin session, read-only:
+- **Positive control: PASS.** Employment `b89540bb-c098-4d44-ad30-9636d3bac150` has exactly **1** document: `1099_agreement_form_finalized` against **"Loan Originator Agreement and Exhibit C"** (`us_lo_agreement`).
+  - Details: source `hr`, review `accepted`, `visibleToEmployee=true`, a PDF of 111,775 bytes.
+  - The new code only files after DMS vouches that the file sits under offer `7210b251-…`, so recruit's new key reached HR and the check matched.
+- `GET /alerts` answers with `recruitAgreementFailures: []`. That key exists only from #1369 on, so the new image is the one serving. The query reads `recruit_agreement_filing`, so migration 00534 is applied.
+- `GET /internal/v1/associates/x` through the gateway with a user bearer returns **403 `INTERNAL_ROUTE_HAS_CALLER`**. From outside the cluster the internal routes stay closed.
+
+**Negative control on staging: NOT RUN.** It needs an in-cluster POST to the intake, and kubectl is blocked by the expired gcloud auth. The probe is ready at `scratchpad/runh/neg-probe.sh`. It sends a crafted hire that names Run G's RECRUIT file under a fresh offer id, plus an HR-service file. Expected result: both refused (`RECRUIT_AGREEMENT_FILE_REFUSED`), 0 `hr_document`, two refused entries on the alerts feed.
+
+The negative cases are covered by the PR's DB tests: other offer, HR-service file, no offer and deleted are all refused unread. With the check stubbed out, those tests go red. They ran at both HR_NOW clocks on pgvector pg16 with REQUIRE_DB=1. The goose version and the HR log lines could not be read either, for the same reason.
+
+**Left for prod (owner Hung Cao):**
+- DE prod must grant caller HRIS reads of RECRUIT files: metadata `GET /files/{id}` and content.
+- recruit-be prod must carry #954, with the D406 switch on, before any file can be filed.
+- MCP `hr_todo` does not map `recruitAgreementFailures` yet.
+- A crash between filing and settling can re-file one file once.

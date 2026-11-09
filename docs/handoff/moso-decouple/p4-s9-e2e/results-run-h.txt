@@ -1,0 +1,41 @@
+# Run H (HR hardening, ai-hr-be #1369 + recruit-be #954), 09/11 18:08-18:20Z
+
+## part 1 (--no-db --add-lead --keep: gcloud credentials had expired, so no DB reads)
+P4 S9 E2E  tag=tgpcr  candidate=e9cb8864-7815-4476-9b01-c46eeae18955  offer=7210b251-8c07-440a-9b7d-43a0023f2c02
+
+PASS    0. preflight: admin token + Recruit-only invite is live                             moso_record_required=false, invite_needs_moso_record=false
+SKIP    1. public REFER form                                                                --add-lead: lead made with the admin Add lead instead
+PASS    2. lead created with NO MOSO record (admin Add lead)                                candidate e9cb8864-7815-4476-9b01-c46eeae18955, legacy_key null, S0
+PASS    3. claim: owner = admin, stage S1                                                   owner a0aa8a66-dedc-4dc5-8954-80522c632fd9, S1
+PASS    4. production figures + NMLS (offer-figures-required)                               loans_since_anchor 8, units12mo 6, career_production 12M, nmls set
+PASS    5. offer requested + approved (approve_now): SENT, specialist assigned, hand-off    offer 7210b251-8c07-440a-9b7d-43a0023f2c02 SENT, fee PENDING, specialist assigned, lead S5
+PASS    6. 1-1 scheduled (on behalf, no Google invite to real staff)                        slot 2026-11-09T16:10:18.977Z stored on 59127a59-3da9-4db4-a995-473ed57209d3
+PASS    7. 1-1 DONE (1099, today in business tz): welcome mail with the portal link         checklist DONE (welcome mail row not checked: --no-db)
+PASS    8. staff portal link minted (?invite=, 43 chars) and live                           https://www.viet18.com/register-loan-officer?invite=<43 chars>, profile 200
+PASS    9. portal profile save via lf proxy, read back                                      save 200; city/zip read back; complete_percentage 0.25
+PASS    10. PayPal sandbox fee (headed Chrome, test Visa): fee-paypal PAID, offer fee PAID  order 8CL32013N3755850A: fee-paypal PAID, offer fee_status PAID (fee_payments not checked: --no-db)
+SKIP    11. paid mails (D404): LO FEE_PAID sent; staff copies only to allowed test aliases  lo_mail_sends not readable: --no-db
+PASS    12. sign step (signing-link)                                                        SIGNED via document-esign
+PASS    13. Joined (S6, auto-stage after signed + paid)                                     S6
+PASS    14. automatic Send to HR delivered, HR hired                                        hr-handoff delivery=delivered (outbox not checked: --no-db)
+SKIP    15. archive                                                                         --keep: lead kept for --resume /private/tmp/claude-501/-Users-apple-Projects-agentflow/0fcb4e66-c551-44c6-9732-0ea45be8fd69/scratchpad/runh/run-tgpcr/state.json
+
+PASS 13  FAIL 0  BLOCKED 0  SKIP 3
+
+
+## part 2 (--resume --no-db: archive)
+P4 S9 E2E  tag=tgpcr  candidate=e9cb8864-7815-4476-9b01-c46eeae18955  offer=7210b251-8c07-440a-9b7d-43a0023f2c02
+PASS    0. preflight: admin token + Recruit-only invite is live  moso_record_required=false, invite_needs_moso_record=false
+PASS    12. sign step (signing-link)                             already SIGNED
+PASS    13. Joined (S6, auto-stage after signed + paid)          S6
+PASS    14. automatic Send to HR delivered, HR hired             hr-handoff delivery=delivered (outbox not checked: --no-db)
+PASS    15. archive (bulk-archive) revokes the portal links      ARCHIVED (portal link revocation not checked: --no-db)
+PASS 5  FAIL 0  BLOCKED 0  SKIP 0
+
+## HR side (HR staging API, a staging HR admin session, read-only)
+GET /hr-svc/api/v1/search?q=<tag>  -> employment b89540bb-c098-4d44-ad30-9636d3bac150 (Loan Officer)
+GET /hr-svc/employees/b89540bb-.../documents -> 200, 1 document:
+  label 1099_agreement_form_finalized, category contract, requirement 'Loan Originator Agreement and Exhibit C' (us_lo_agreement),
+  source hr, reviewStatus accepted, visibleToEmployee true, issuedOn 2026-11-09, application/pdf 111,775 bytes
+GET /hr-svc/alerts -> 200, recruitAgreementFailures: [] (the key exists only from #1369 on: the new image is serving)
+GET /hr-svc/internal/v1/associates/x with a user bearer -> 403 INTERNAL_ROUTE_HAS_CALLER
