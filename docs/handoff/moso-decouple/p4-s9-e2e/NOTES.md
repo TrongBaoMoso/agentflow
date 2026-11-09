@@ -389,7 +389,7 @@ The gcloud credentials on the Mac had expired (re-auth needs a person), so this 
 - `GET /alerts` answers with `recruitAgreementFailures: []`. That key exists only from #1369 on, so the new image is the one serving. The query reads `recruit_agreement_filing`, so migration 00534 is applied.
 - `GET /internal/v1/associates/x` through the gateway with a user bearer returns **403 `INTERNAL_ROUTE_HAS_CALLER`**. From outside the cluster the internal routes stay closed.
 
-**Negative control on staging: NOT RUN.** It needs an in-cluster POST to the intake, and kubectl is blocked by the expired gcloud auth. The probe is ready at `scratchpad/runh/neg-probe.sh`. It sends a crafted hire that names Run G's RECRUIT file under a fresh offer id, plus an HR-service file. Expected result: both refused (`RECRUIT_AGREEMENT_FILE_REFUSED`), 0 `hr_document`, two refused entries on the alerts feed.
+**Negative control on staging: NOT RUN.** It needs an in-cluster POST to the intake, and kubectl is blocked by the expired gcloud auth. The probe is in the morning checklist below. It sends a crafted hire that names Run G's RECRUIT file under a fresh offer id, plus an HR-service file. Expected result: both refused (`RECRUIT_AGREEMENT_FILE_REFUSED`), 0 `hr_document`, two refused entries on the alerts feed.
 
 The negative cases are covered by the PR's DB tests: other offer, HR-service file, no offer and deleted are all refused unread. With the check stubbed out, those tests go red. They ran at both HR_NOW clocks on pgvector pg16 with REQUIRE_DB=1. The goose version and the HR log lines could not be read either, for the same reason.
 
@@ -398,3 +398,87 @@ The negative cases are covered by the PR's DB tests: other offer, HR-service fil
 - recruit-be prod must carry #954, with the D406 switch on, before any file can be filed.
 - MCP `hr_todo` does not map `recruitAgreementFailures` yet.
 - A crash between filing and settling can re-file one file once.
+
+**Prod flags (Tài pushes the recruit-be staging tip to prod several times a day):**
+- recruit-be: `agreement_offer_id` is written only inside `if (agreementFieldsEnabled)` in `HrHandoffPayloadResolver`. That is `recruit.features.hr-handoff-agreement-fields`, which is `${RECRUIT_FEATURES_HR_HANDOFF_AGREEMENT_FIELDS:false}`. `helm-chart/config/staging/values.yaml` sets it to `"true"`. `helm-chart/config/production/values.yaml` does not set it (read on origin/master), and `secret-keys.txt` has no such key. So in prod the key is never sent: inert.
+  - This is checked in the repo values only. The live prod pod env was not read, because there was no GKE access.
+- ai-hr-be: #1369 has no flag. It is on staging only, and prod gets it only through `cd-production`. If it does reach prod it is inert there:
+  - Migration 00534 is expand-only.
+  - The new job finds no rows.
+  - A send without `signed_agreements` queues nothing.
+
+**Morning checklist (after Bao runs `gcloud auth login` and `gcloud auth login --update-adc`):**
+
+```bash
+K='kubectl --context gke_lenderrate-master_us-central1_moso-kube'
+# 1. HR staging image = the cd-staging run of 56c17e02
+$K -n hr-dev get deploy ai-hr-backend -o jsonpath='{.spec.template.spec.containers[0].image}'; echo
+gh run view 42669448986 -R LoanFactory-Inc/ai-hr-be --log | grep -o 'sha256:[0-9a-f]\{64\}' | sort -u
+# 2. goose at 534
+$K -n hr-dev logs deploy/ai-hr-backend --since=24h | grep -E 'goose|migrated database to version' | tail -3
+# 3. DB (read-only pod, the pgq_hr.sh below): Run H's row is filed, nothing refused or failing
+pgq_hr.sh "SELECT max(version_id) FROM goose_db_version"
+pgq_hr.sh "SELECT doc_type, attempts, filed_at IS NOT NULL AS filed, refused_at IS NOT NULL AS refused, last_error
+           FROM recruit_agreement_filing WHERE employment_id='b89540bb-c098-4d44-ad30-9636d3bac150'"
+# expect: 1099_agreement_form_finalized | 0 | t | f | (empty)
+pgq_hr.sh "SELECT count(*) FILTER (WHERE filed_at IS NULL AND refused_at IS NULL), count(*) FILTER (WHERE refused_at IS NOT NULL)
+           FROM recruit_agreement_filing"
+# 4. HR logs since the deploy: Run H filed, no failures
+$K -n hr-dev logs deploy/ai-hr-backend --since=24h | grep -E 'RECRUIT_AGREEMENT_(FILE_FAILED|FILE_REFUSED|HOLD_FAILED|CLAIM_LOST)|recruit agreements:' | tail
+# 5. recruit-be sent the new key for Run H's candidate (key names only)
+$K -n recruit-be logs deploy/recruit-be --since=24h | grep 'HR handoff payload for candidate e9cb8864' | grep -o 'keys=.*'
+# 6. negative probe (script below): expect HTTP 201 + result=hired, then within ~1 min
+bash neg-probe.sh negh1            # prints source_key + agreement_offer_id; the receipt names the employment id
+pgq_hr.sh "SELECT doc_type, attempts, refused_at IS NOT NULL AS refused, last_error FROM recruit_agreement_filing
+           WHERE employment_id='<employment id from the receipt>'"
+# expect 2 rows, refused=t: 'another Recruit offer' and 'service "HUMAN_RESOURCE"'
+pgq_hr.sh "SELECT count(*) FROM hr_document WHERE employment_id='<employment id>'"   # expect 0
+$K -n hr-dev logs deploy/ai-hr-backend --since=10m | grep RECRUIT_AGREEMENT_FILE_REFUSED   # 2 lines
+# The HR /alerts feed (HR app SSO, a staging HR admin session) lists both entries with refused=true.
+# The probe hire is an HR test employee "QA Refuse<tag>": leave it in place, do not delete it.
+```
+
+`pgq_hr.sh` (read-only SQL on hr-dev in a temp pod):
+
+```bash
+#!/bin/bash
+k(){ kubectl --context gke_lenderrate-master_us-central1_moso-kube "$@"; }
+N="hrq-$(date +%s)-$RANDOM"; Q=$1
+J=$(jq -n --arg n "$N" --arg q "$Q" '{spec:{containers:[{name:$n,image:"postgres:18-alpine",env:[{name:"Q",value:$q}],envFrom:[{secretRef:{name:"ai-hr-backend-secret"}}],command:["sh","-c","PGPASSWORD=$DB_PASSWORD PGSSLMODE=${DB_SSLMODE:-prefer} PGOPTIONS=\"-c default_transaction_read_only=on\" psql -At -h $DB_HOST -p $DB_PORT -U $DB_USER_NAME -d $DB_NAME -c \"$Q\""]}]}}')
+k -n hr-dev run "$N" --restart=Never --image=postgres:18-alpine --overrides="$J" >/dev/null 2>&1
+for i in $(seq 1 60); do ph=$(k -n hr-dev get pod "$N" -o jsonpath='{.status.phase}'); [ "$ph" = Succeeded -o "$ph" = Failed ] && break; sleep 5; done
+k -n hr-dev logs "$N"; k -n hr-dev delete pod "$N" --wait=false >/dev/null
+```
+
+`neg-probe.sh <tag>` (one crafted recruit.hired.v1 to hr-dev from inside the cluster).
+- It names Run G's RECRUIT file `ffdeec07-…` (offer `f89a8882-…`) and Run G's HR-service copy `22ca431d-…`.
+- Both are named under a fresh `agreement_offer_id`.
+
+```bash
+#!/bin/bash
+set -euo pipefail
+TAG=$1
+k(){ kubectl --context gke_lenderrate-master_us-central1_moso-kube "$@"; }
+KEY=$(uuidgen | tr A-Z a-z); OFFER=$(uuidgen | tr A-Z a-z); NOW=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+BODY=$(jq -cn --arg key "$KEY" --arg offer "$OFFER" --arg now "$NOW" --arg tag "$TAG" '{
+  event:"recruit.hired", event_id:("neg-"+$tag), occurred_at:$now, source_system:"recruit-be", source_kind:"candidate",
+  source_key:$key, contract_version:"recruit.hired.v1", first_name:"QA", last_name:("Refuse" + $tag),
+  email:("bao.trinh+hrneg"+$tag+"@loanfactory.com"), lo_type:"INDEPENDENT", employment_type:"contract",
+  contract_type:"1099", experience_class:"experienced", experience_level:"EXPERIENCED",
+  signed_agreements:[
+    {doc_type:"1099_agreement_form_finalized", dms_file_id:"ffdeec07-0223-447f-8572-6e42705d4182", signed_at:$now},
+    {doc_type:"exclusive_agent_agreement", dms_file_id:"22ca431d-3dbf-4d93-b86b-28978ca14629", signed_at:$now}],
+  agreement_offer_id:$offer}')
+echo "source_key=$KEY agreement_offer_id=$OFFER"
+N="hrneg-$(date +%s)"
+J=$(jq -n --arg n "$N" --arg b "$BODY" '{spec:{containers:[{name:$n,image:"curlimages/curl:8.10.1",env:[{name:"B",value:$b}],
+  command:["sh","-c","curl -sS -m 120 -w \"\\nHTTP %{http_code}\\n\" -H \"Content-Type: application/json\" --data \"$B\" http://ai-hr-backend.hr-dev.svc.cluster.local:8312/internal/v1/recruit/hires"]}]}}')
+k -n hr-dev run "$N" --restart=Never --image=curlimages/curl:8.10.1 --overrides="$J" >/dev/null
+for i in $(seq 1 40); do ph=$(k -n hr-dev get pod "$N" -o jsonpath='{.status.phase}'); [ "$ph" = Succeeded -o "$ph" = Failed ] && break; sleep 5; done
+k -n hr-dev logs "$N"; k -n hr-dev delete pod "$N" --wait=false >/dev/null
+```
+
+The negative case is covered locally and in CI meanwhile (ai-hr-be #1369, CI run 42668344099 green at both HR_NOW clocks):
+- `TestARecruitAgreementOutsideItsOfferIsRefusedUnread`: four files are refused with 0 content reads (HR-service, another offer, no offer, deleted), plus a positive control.
+- `TestAnAgreementThatKeepsFailingOrIsRefusedIsOnTheAlertsFeed`.
+- With the check stubbed out, both go red.
