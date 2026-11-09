@@ -1,0 +1,47 @@
+recruit-be NUMBER LEDGER (team lead, 08/11). Reserved, unique. Use these; don't pick your own.
+Master today: highest V334; D up to D411 taken (#908) + D404/D410 merged.
+PR   D      V
+906  D408   V341
+907  D406   -
+909  D414   -
+910  D420   V340
+911  D421   V342
+912  D422   V335
+913  D416   V338
+New PRs: reserve the next free from D423 / V343 by appending a line here (echo "PR? Dxxx Vxxx agent" >> this file) BEFORE using it.
+Flyway rule: prod has out-of-order OFF, so at merge time your V must be > master's highest. If master already has a higher V than yours, take a new number from this ledger and rebase. Merge order by V is preferred: 335 (912), 338 (913), 340 (910), 341 (906), 342 (911).
+911  D421   V344  p5-roster (V342 was taken off-ledger by #912; #906 is on V343)
+913  D416   V345  p5-optout (V338 is below master's V340 after #910 merged)
+--- UPDATE (team lead, 08/11 ~17:45 VN) ACTUAL STATE:
+912 merged V342 (D422). 910 merged V340 (D420). 911 -> V344. 906 -> V343. 913 -> V345.
+RULE: before ANY renumber, append a line here FIRST ("PR Dxxx Vxxx agent"), then push. Next free: V346 / D423.
+-    D423   - p6-moso-off agent: nurture next-webinar token from Recruit schedule (Q2)
+-    D424   - p6-moso-off agent: Zoom texting identity from zoom-go connection (Q1)
+#906 MERGED 08/11 (6f2754e1): D409 + V343 (agreement_envelopes). D408 NOT used by #906 (free unless #907 holds it).
+912  D422   V346  p3-own-intake (#912 was NOT merged yet; V342 now below master's V343 after #906) 
+--- CORRECTION (team lead): 912 NOT merged earlier; 912 = D422 V346 (p3). 906 merged V343. Next free: V347 / D423.
+#912 MERGED 08/11 (5604058794af0d8a60a565bb1a38a603d5e13d8f): D422 + V346
+915  D423,D424  -  p6-moso-off agent (nurture next-webinar + zoom-go identity + moso-off guards)
+911  D421   V347  p5-roster (V344 now below master V346)
+-    D425   -     p3-own-intake: webinar sign-up forms read Recruit sessions + intake registers (P3b step 2)
+-    D426   V348  p3-own-intake: pre-offer portal link for a NEW self-registered lead (Register/join Recruit-only)
+917  D425   -     p3-own-intake (webinar sessions via intake)
+913  D416   V349  p5-optout (V345 now below master V346)
+-    D427   -     p6-moso-off agent: hand-off bell rung by Recruit at send for MOSO-linked leads (BE-02)
+911  D421   V350  p5-roster (V347 now below master V349)
+-    D426   V351  p3-own-intake: pre-offer portal (V348 now below master V349)
+917  D425,D426  V351  p3-own-intake (D426 folded into #917)
+918  D427   -     p6-moso-off agent (hand-off bell at send, BE-02)
+923  D428 - p6-cut-draft agent (P6 cut: remove the 8 MOSO write-back bridges, draft, DO NOT MERGE)
+#920 MERGED 270fdfc6 (#926 d29e366d): D429  V352  p5-referral-source (p4-s4s5-esign agent): referrals.source PACKS|SHADOW|RECRUIT switch (BE-11/23/29/30)
+-    D430   -     p5-lo-data: Loan Officer check from HR (LOAN_OFFICER role) behind MOSO/HR/SHADOW switch (BE-12 part)
+#917 MERGED 08/11 (74c2e06a759e8f69c29de8fcb27d6d26e9d0c998): D425 + D426 + V351
+924  D431   V353  p3-own-intake: webinar drips 1/2/3 months for Recruit-session sign-ups (P3b step 3)
+-    D432   -     p6-moso-off agent: Recruit-native onboarding (hand-off, invite-waits, 1-1 date + W-2/1099 capture) off the packs write-back flag
+PR? D433  V354  p5-referral-source (p4-s4s5-esign): one-time import of packs-only referrals into candidate_referral_program (DRY_RUN first) + mismatch diagnosis
+927  D432   -     p6-moso-off agent (Recruit-native onboarding gates)
+924  D431   V355  p3-own-intake (V353 now below master V354 after #928)
+-    D434   -     p6-moso-off agent (D433 was taken): staff agreement status line from Recruit's own envelopes (D409), replaces the MOSO Inkless card
+#924 MERGED 09/11 (14abd611a6382722f3fd56c84f11ba5924a34161): D431 + V355
+-    D435   -     p5-lo-data: monthly referral payout list CSV (read-only, EARNED bonuses), flag staging only
+-    D436   -     p5-lo-data: dark outbound clients - omni SMS suppression push + ai-donotcall blacklist add (if contracts exist)

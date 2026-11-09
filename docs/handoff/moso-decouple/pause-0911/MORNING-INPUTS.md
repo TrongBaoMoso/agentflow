@@ -1,0 +1,35 @@
+# Morning 09/11 report inputs
+## Khai / others
+- document-esign #138 review+merge+promote DE staging; Inkless account same as packs? staging non-billable? bucket DMS_RECRUIT_BUCKET?; DMS: can HR read files DE stored for Recruit?
+- ai-hr-be #1343 (HR owner) merge+promote
+- moso-aid #225 #226 merge; set RECRUIT_LEAD_INTAKE_API_KEY + RECRUIT_EVENT_INTAKE_ENABLED on staging; DevOps add moso-aid:<key> to recruit-be-recruit-lead-intake-api-keys
+- packs: Meta app secret hardcoded LoanOps.java:3781 + no signature check -> rotate (bead 0gwad.4.17)
+- packs #3847 Deploy Hot Fix; PayPal LIVE app for prod; packs #3830 on staging? (is_loan_originator, referral UNDETERMINED 68)
+- Later at P6: ai-hr-be PACKS_PUSH_ENABLED off
+## Questions (with rec; take rec if no answer)
+- S8: manual HR hire -> agreements not auto-attached, ok for now [yes]; High producer/Team lead = experienced [yes]; keep contract_type field [keep]
+- D424: Connect Zoom positive control needs one recruiting staging account w/o link doing Connect Zoom
+- Facebook gap Jun–Oct: check Ads Manager, download leads from Lead Center (90 days)
+- Calendly/Ally retire [yes]
+- DevOps (optional, DLQ): 2 gcloud IAM bindings for ESIGN_ENVELOPE_COMPLETED_TOPIC-recruit-sub(.dlq) to pubsub SA service-233682574497 — commands in P4-S4S5.md "Pre-set on staging"
+- e-sign staging preset done (#916, lf #2732 signed=1 page). After DE #138 on staging: flip RECRUIT_FEATURES_ESIGN_DE=true staging + E2E + PDF compare (we do it)
+- MOSO staging staff 'Generate Doc' for the 4 reference PDFs (PDF compare) needs a MOSO staging staff login. Check whether a test account can do it; otherwise ask Bao.
+- moso-aid #225 (applications read route) merge+deploy staging -> then re-run Recruit DRY_RUN import (#911 merged aabbd4f32, V350)
+- Q P5.4: Recruit takes LO Recruiter Program functions in stages (mirror -> Recruit-native decisions behind flag -> moso-aid read-only) [rec yes]; move lf program admin console after ~1 week of matching mirror counts [rec]; carry outside applicants' typed email into restricted column once Recruit owns intake [rec yes]; APPLY mode needs Bao OK
+- P3 round 2 merged (#917 D425/D426, lf #2734, lo #943): webinar forms -> Recruit sessions; Register//join canary -> pre-offer portal link
+- Q P3: turn RECRUIT_WEBINAR_SESSIONS back on for staging lf/lo Wed 11/11 after demo [rec, schedule]; never RECRUIT_INTAKE_RECRUIT_ONLY=all on prod for Register//join until email verification [rec]; keep creating MOSO person for Recruit-session signups until drips ported (P3b step 3) [rec yes]
+- P6 cut DRAFT PR #923 (DO NOT MERGE until prod runs on Recruit): -34.6k lines, removes all write-back bridges. Finding: the cut turns off behaviour ON in prod today (D207 hand-off, D354 invite waits for specialist, W-2/1099 + meeting-date capture at 1-1 Done, agreement card). Need Recruit-native versions before the cut -> new work item. Leftovers: delete cron job recruit-packs-writeback-tick, secret packs-writeback key, recruit-fe moso-field-sync call.
+- gcloud expired ~01:30 VN again (login at ~21:15 -> ~4h). Bao: `! gcloud auth login --update-adc` in the morning; then S9 full run (6 min) + DB checks.
+- S9 E2E: run A 13 PASS to portal save; run C (no DB) PASS 11 FAIL 0 BLOCKED 3 (sign/joined/HR wait esign-de); PayPal sandbox PAID. Script docs/handoff/moso-decouple/p4-s9-e2e/
+- Decided myself: staging-only reCAPTCHA test bypass for allowlisted test emails (instead of lowering min score each run)
+- After gcloud login: (1) gcloud run services update lf-homepage-master --project lenderrate-master --region us-central1 --update-env-vars='RECRUIT_INTAKE_CAPTCHA_BYPASS_EMAILS=bao.trinh+p3only-s9*@loanfactory.com' (staging only; captcha bypass lf #2736 / lo #944 merged) (2) verify lf staging revision >= 777ff9ad (3) S9 full run (NOTES p4-s9-e2e)
+- MEASURED 09/11 02:xx (P6-INVENTORY 516f2e1): staging 19/44 = 43% live; 32/44 = 73% incl dark; prod ~0%. 12 blockers: BE-12 (referrer identity, HR half shadow D430), moso-aid BE-14/28/41, 8 bridges (draft #923).
+- P6 overnight: #918 hand-off bell at send (D427), #922+fe #731 FE hides MOSO copy when moso_off (shots artifact https://claude.ai/artifact/FeNsw4wwe9msD5e23sF9pa), draft #923.
+- Q: #923's 3 behaviour changes (specialist change always allowed; auto-pick independent of writeback flag; approve offer w/o requester email) [rec accept]
+- D424 Connect Zoom positive control needs a Zoom Phone account (Bao or a staff with seat)
+- Referral list (D429, #920/#926) SHADOW on staging: packs 295 vs Recruit 198; matched 120 (bonus fields all agree), only-packs 175, only-Recruit 78, 89 matched with different referrer. Needs DB diagnosis after gcloud login.
+- Q referral: who counts as referrer when Recruit/MOSO disagree [rec: referrer recorded at sign-up, after checking the 89]; one-time import of ~175 MOSO-only referrals before Recruit serves the list [rec yes, stay SHADOW until near zero]
+- #924 webinar drips (D431, V355): copy not re-checked vs MOSO prod templates (gcloud expired) -> verify after login before relying on it
+- P5 FINAL (P5-PLAN.md 3952e94): opt-out reconcile 7,668 checked: 46 blocked in Recruit not in ai-donotcall LO list; 229 SMS opt-outs omni doesn't know; 0 outside-only. HR LO check shadow 11/7 agree/0 disagree. NMLS blocked on HR.
+- P5 Qs: (1) ask blacklist owner to add the 46 [yes] (2) Recruit auto-adds blocks to company blacklist once given a key [yes] (3) Recruit pushes 229 SMS opt-outs to omni, Khai adds a route [yes] (4) referral payout = monthly list to Finance [rec] (7) moso-aid other parts (exams, events, locations, LOL) owner: Khai/Dat name one [rec] (9) HR NMLS company login for sponsorship: ask HR lead (10) older STOP wordings: ask MOSO SMS owner
+- #923 draft updated: keeps the 4 prod-ON behaviours (D432 via OnboardingGates). Merge preconditions: prod LO_MAIL_INVITE + LO_MAIL_WELCOME on BEFORE the cut (packs sends them today); integration tests never ran on the branch.
