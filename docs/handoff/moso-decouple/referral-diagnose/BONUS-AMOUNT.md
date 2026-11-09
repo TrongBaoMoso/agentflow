@@ -140,3 +140,10 @@ one matured row.
 ### Open
 - MOSO's n in the shadow needs a packs field (`closed_loan_past_12_months_before_join` on `referrals/byOwner`), packs PR for Khai.
 - MOSO push writes `units_12mo` without a change-log row: for already-joined rows the count is "today's value" (basis CURRENT).
+
+### D441 addendum (10/11): MOSO's own count in the shadow
+- packs #3866 (merged c2ebd60d29): `referrals/byOwner` sends `closed_loans_before_join` on the referrer's bonus rows.
+- recruit-be #955 (squash `eb697f2f3`, V361) promoted to staging: the sweep keeps `packs_closed_loans` and `packs_tier_amount`;
+  the summary adds `closed_loans_vs_moso` (SAME_COUNT / SAME_TIER / TIER_DIFFERS / NO_RECRUIT_COUNT / NO_TIER).
+- Staging after deploy: 0 of 368 rows carry MOSO's count yet, because MOSO staging still runs the old packs build.
+  **Needs a SWAT install/deploy of packs master on MOSO staging**; the next packs refresh (60 min) then fills the column.
