@@ -36,13 +36,40 @@ The day-after mail (`after_1_day`) and the 2-day, 1-day and 2-hour reminders wer
 ## The text
 
 - **2- and 3-month mails:** body and subject verbatim from the HTML pasted into MOSO prod on 03/11 (`~/Downloads/moso-webinar-templates`) and from the subjects recorded in bead agentflow-t9gsi. Only the tokens are mapped.
-- **1-month mail:** the body comes from MOSO's current preview.
-  - **The subject is a placeholder.** No copy of it was readable tonight, because Bao's gcloud login had expired, so Datastore was refused.
-  - **The 1-month step is therefore seeded OFF everywhere.**
-- **Before switching the 1-month step on:**
-  1. Run `bash verify_moso_drip_templates.sh <dir>` (read-only, needs `gcloud auth login --update-adc`).
-  2. Diff the 3 bodies and subjects against V355.
-  3. Put MOSO's 1-month subject into a new migration.
+- **1-month mail:** body and subject both match MOSO prod now (see "Copy check" below). The 1-month step is still seeded OFF, but it is **ready to turn on**.
+
+## Copy check against MOSO prod, and the 1-month subject (09/11, V356)
+
+recruit-be #935, squash `e0b7930d`, migration V356. Promoted to staging, and the staging deploy succeeded.
+
+**Where MOSO keeps the templates.** They are Datastore kind `Template` in the Loan Factory namespace, keyed by NAME: `KEY(Template, 'webinar_registration_after_1_month')`. The subject is the property `title`. The first version of `verify_moso_drip_templates.sh` filtered on the property `name` and got 0 rows. A positive control on `name` matched other templates, so the query worked: these three templates simply carry no `name`. The script now reads by key.
+
+**Result of the read-only dump, compared with V355 after the token map:**
+
+| Step | Subject | Body |
+|---|---|---|
+| 1 month | MOSO: "We Built Loan Factory So You Can Build Wealth - Ready to Join Us?". V355 had a placeholder. **Fixed in V356** | identical, word for word |
+| 2 months | identical | identical. Only HTML entities vs literal emoji differ, and they render the same |
+| 3 months | identical | identical. Same emoji-only difference |
+
+So the subject was the only copy fix. V356 updates that one row, only while it still holds V355's placeholder, so a later admin edit is never overwritten. It changes no setting.
+
+**Measured on staging after the deploy (read-only DB):**
+
+- Flyway 355 and 356 both succeeded.
+- `tpl-lo-webinar-drip-1m` has MOSO's subject.
+- Effective settings: `enabled` false, `after_1_month` "OFF", `after_2_months` "P2M", `after_3_months` "P3M", `local_time` "14:00".
+
+**Not changed by MOSO's copy:** the sender. MOSO's 1-month template still sends from Victoria's own address, while its 2- and 3-month templates send from recruiting@. Recruit sends all three through lo-mail with the usual sender block.
+
+## Turning the drips on (planned: Wednesday, after the demo, together with the Recruit webinar sessions, D425)
+
+On staging, through the settings API:
+
+1. Set `webinar.drip_mail.after_1_month` to `"P1M"`.
+2. Set `webinar.drip_mail.enabled` to `true`.
+
+Do this together with `RECRUIT_WEBINAR_SESSIONS`, never before (the `MOSO_DRIPS` guard is only as fresh as the MOSO push). Nothing is on yet.
 
 ## Time-shifted staging test (08/11, 20:40Z → 01:05Z; settings API only, no DB write)
 
