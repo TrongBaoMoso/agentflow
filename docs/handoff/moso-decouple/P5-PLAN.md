@@ -215,3 +215,41 @@ bd show agentflow-0gwad.6
   - Run 3b533ebb checked 7,668 people with 0 unchecked.
   - 46 people are blocked in Recruit but absent from ai-donotcall's LO Recruiting list. 229 people opted out of SMS in Recruit but not in omni. Nobody is blocked outside Recruit without Recruit knowing.
   - So APPLY has nothing to add, and the open items are decisions A, B and K.
+
+## API ask for Khai (omni-service): let Recruit push its SMS opt-outs (decision K)
+
+**Why.** Recruit holds 229 SMS opt-outs on staging that omni does not know about. They came from MOSO imports, recruiters, bounces and unsubscribes. omni's `comm_suppression` table already supports `provenance = HOST_PUSHED` (V02). omni's gate also refuses a text for a HOST_PUSHED row, and `optstatushttp` reports it as not liftable. But no route lets a host write such a row: every writer goes through `internal/suppression/recorder.go` and stamps `OMNI_LEARNED`. So Recruit's blocks can't reach omni, and a text sent from omni's composer outside Recruit's own gate would still go out.
+
+**Measured on 09/11, omni origin/master.**
+- `db/query/comm_suppression.sql` has only two read queries (`PhoneSmsSuppressed`, `ActiveSmsStops`).
+- `recorder.go` writes only OMNI_LEARNED STOP_SMS rows.
+- There is no HTTP route for writing a suppression.
+
+**The ask: three internal routes.** They sit behind `auth.RequireInternalKeySet`, with a key-resolved owner service (recruit-be's existing scoped key), the same gate as `GET /api/v1/internal/sms-opt-status`.
+
+1. `PUT /api/v1/internal/suppressions` upserts one host-pushed block.
+   - Body: `{ "identifier_type": "PHONE" | "EMAIL" | "NMLS", "identifier_value": "+15555550100", "suppression_type": "STOP_SMS" | "BLACKLIST", "channel": "SMS" | "CALL" | "EMAIL" | null, "reason": "...", "rehire_after": "2027-01-01T00:00:00Z" | null, "host_ref": "<recruit suppression id>" }`.
+   - It writes `provenance = HOST_PUSHED` and the caller's tenant, keyed by the existing `uq_comm_suppression`.
+   - Idempotent: the same body twice is one row.
+   - It never overwrites an OMNI_LEARNED row's provenance. If omni already learned the STOP itself, it answers `200 {"outcome": "already_learned"}`.
+   - Answer: `200 {"id": "...", "outcome": "created" | "updated" | "already_learned"}`.
+2. `DELETE /api/v1/internal/suppressions/{host_ref}` lifts a block the same host pushed.
+   - It stamps `lifted_at`, `lifted_by = <service>` and `lift_reason`. It does not delete the row, which matches V39.
+   - A host can lift only what it pushed. An OMNI_LEARNED STOP stays lifted only by the person (START), as today.
+3. `GET /api/v1/internal/suppressions?provenance=HOST_PUSHED&cursor=&limit=` lists a host's own active pushed rows, so Recruit's reconcile (D416) can compare both sides.
+
+**What Recruit does once the routes exist.** This is built dark, like D436.
+- After a Recruit SMS opt-out or blacklist row commits, Recruit calls route 1.
+- Removing a Recruit row calls route 2.
+- The D416 reconcile gains a third mode that pushes the `LEDGER_ONLY_STOP` rows, once and after Bao says yes. Today that is 229 on staging.
+
+**Questions for Khai.**
+- Should BLACKLIST rows also go to omni? We recommend yes: one table, one gate.
+- Which tenant should Recruit's key resolve to?
+- Should host-pushed rows carry the Recruit candidate id, for display in omni's composer?
+
+## Built 09/11 (after the final report)
+
+- **#932 (D435):** monthly referral payout list CSV for Finance. Read only, staging only. `GET /api/v1/referral-bonus-state/payout-list.csv?month=YYYY-MM[&through=true]`.
+- **#933 (D436):** a recruiter's blacklist is copied to ai-donotcall. Built dark. It needs the platform team to issue a write key (`BLACKLIST_CLIENTS`, consumer `lo_recruiting`, scope `write`) and Bao's yes (decision B).
+- **omni push:** no contract exists, so nothing is built. The ask above is ready to send to Khai.
