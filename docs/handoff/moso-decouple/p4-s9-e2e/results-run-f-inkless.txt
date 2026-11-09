@@ -1,0 +1,9 @@
+P4 S9 E2E  tag=qqmxr  candidate=59a7769f-73fe-433e-a2b5-97deb745e291  offer=5049c5d7-5051-4311-9e43-1b6835e7c0e7
+
+PASS    0. preflight: admin token + Recruit-only invite is live  moso_record_required=false, invite_needs_moso_record=false
+PASS    12. sign step (signing-link)                             already SIGNED
+PASS    13. Joined (S6, auto-stage after signed + paid)          S6
+PASS    14. automatic Send to HR delivered, HR hired             hr_handoff_outbox SENT (attempts 0); HR answer is in the recruit-be log line "HR handoff delivered: result=..."
+PASS    15. archive (bulk-archive) revokes the portal links      ARCHIVED, 0 live portal links
+
+PASS 5  FAIL 0  BLOCKED 0  SKIP 0

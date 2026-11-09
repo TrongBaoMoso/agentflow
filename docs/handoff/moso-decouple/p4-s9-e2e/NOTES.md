@@ -296,7 +296,7 @@ candidate `59a7769f-73fe-433e-a2b5-97deb745e291`, offer `5049c5d7-5051-4311-9e43
 - **Completion:** Inkless webhook 07:43Z → DE `SENT → COMPLETED`, **audit certificate downloaded** (701,226 bytes,
   3 pages), master + certificate + signed-with-certificate + per-document files filed, COMPLETED published;
   recruit-be's subscriber recorded it 07:43:26Z (`esign_de.offer_signed`), armed the HR hand-off.
-- **Resume** (`results-run-f.txt`): **PASS 5, FAIL 0**: 12 `SIGNED`; 13 `S6`; 14 HR `delivered`,
+- **Resume** (`results-run-f-inkless.txt`; `results-run-f.txt` is the earlier Run F above): **PASS 5, FAIL 0**: 12 `SIGNED`; 13 `S6`; 14 HR `delivered`,
   `hr_handoff_outbox` SENT, log `HR handoff delivered: result=hired`; 15 ARCHIVED, 0 live portal links.
 - **DB:** 1 `agreement_envelopes` row, `COMPLETED`, `doc_set ["1099_agreement_form_finalized"]`, `signed_files` 1
   (`bbfa4c06-…`); offer `SIGNED`.
