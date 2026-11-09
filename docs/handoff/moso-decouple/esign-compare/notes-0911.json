@@ -1,35 +1,55 @@
 {
  "date": "09/11/2026",
- "summary": "Each of the 6 document mixes was sent through Recruit's real staging path (document-esign, built-in signing) and its unsigned PDFs were compared with MOSO's render of the same template and the same values. The wording matches in all 11 documents. Five differences need a decision before production: one in Recruit's address format, two in document-esign's Exclusive Agent template, the heading styles, and a slow first request for the signing link.",
+ "summary": "Each of the 6 document mixes was sent through Recruit's real staging path (document-esign, built-in signing) and its unsigned PDFs were compared with MOSO's render of the same template and the same values. The wording matches in all 11 documents. Update 09/11 afternoon: the address format is fixed on staging (re-run below), the visible signature placeholders have a document-esign PR waiting for its owners, the company Date line turned out to match MOSO's signed PDF, and the slow first request is a gateway limit the portal already retries past.",
  "findings": [
-  {"severity": "medium", "title": "Exclusive Agent Agreement: the address is joined differently",
-   "detail": "Recruit prints <code>100 Test Way Suite 1, San Jose, CA 95122</code>. MOSO prints <code>100 Test Way, Suite 1, San Jose, CA 95122</code>, with the unit as its own comma part. Measured on 171 production MOSO exclusive-agent fills on 09/11: 7 of the 8 addresses with a unit put it after its own comma. Only addresses with a second street line differ. Fix in recruit-be <code>AgreementFillData.fullAddress</code>: join street and street2 with a comma."},
-  {"severity": "medium", "title": "Exclusive Agent Agreement: the company's Date line is filled in",
-   "detail": "Under \"Title: Chief Executive Officer\", document-esign prints today's date next to the company's signature. MOSO leaves that Date blank, and its signature line carries the CEO's signature image. With the signature image gone (accepted), the date now sits beside an empty signature line. Fix in the document-esign template: leave the company Date blank, as MOSO does."},
-  {"severity": "medium", "title": "Exclusive Agent Agreement: the signature placeholders are visible",
-   "detail": "The unsigned PDF shows <code>\\s1\\</code> on the Agent signature line and <code>\\d1\\</code> on its Date line in plain text. The other three templates carry the same placeholders invisibly. The Loan Officer sees this PDF before signing. Fix in the document-esign template: hide them the way the 1099, W-2 and CA templates do."},
-  {"severity": "low", "title": "Headings lose their bold and small caps",
-   "detail": "The wording is the same, but document-esign prints in regular weight what MOSO prints in bold or small caps: the agreement titles, RECITALS, the Article headings, NOTICE:, \"THE SUBMISSION OF A LOAN APPLICATION ... IS A CRIME!!!\", and every heading of the Exclusive Agent Agreement, which also uses a different font. The text is unchanged, so this is about how the document looks."},
-  {"severity": "medium", "title": "The first signing-link request of the run took more than 10 seconds",
-   "detail": "The very first signing-link request (combination 1) took longer than lf-homepage's 10 second proxy limit: recruit-be needed about 7 seconds just to create the envelope, so the portal got 503 and would show \"Signing is not available right now\". The envelope was made anyway, and the next request answered READY in about 0.5 seconds. The other five combinations answered READY on their first request, so this looks like a cold start, but a Loan Officer who hits it has to click again. Fix: raise the proxy limit for <code>signing-link</code>, or have the portal retry once."}
+  {
+   "severity": "info",
+   "title": "Fixed on staging: the Exclusive Agent address now matches MOSO",
+   "detail": "Recruit printed <code>100 Test Way Suite 1, \u2026</code>; MOSO prints <code>100 Test Way, Suite 1, \u2026</code> (7 of the 8 addresses with a unit, in 171 production MOSO fills). recruit-be #946 (squash <code>5e72cdd0</code>) joins the second street line with a comma. It is live on staging. Re-run with fresh leads for the c4 and c6 mixes: both Exclusive Agent PDFs now print <code>100 Test Way, Suite 1, San Jose, CA 95122</code>, and the address no longer shows up as a difference (the two documents below come from that re-run)."
+  },
+  {
+   "severity": "medium",
+   "title": "Open: the Exclusive Agent signature placeholders are visible",
+   "detail": "The unsigned PDF shows <code>\\s1\\</code> on the Agent signature line and <code>\\d1\\</code> on its Date line. The 1099, W-2 and CA templates hide the same placeholders. Fix proposed in <a href=\"https://github.com/LoanFactory-Inc/document-esign/pull/143\">document-esign #143</a> (wraps them like the other templates; adds a test). Not merged: the document-esign owners review it. Still visible in the re-run."
+  },
+  {
+   "severity": "low",
+   "title": "Open: headings lose their bold and small caps",
+   "detail": "document-esign prints the agreement titles, RECITALS, the Article headings, NOTICE: and the Exclusive Agent headings in regular weight. The templates already ask for bold, so this is in the renderer's fonts, not the templates. Raised in #143 for the owners; not fixed there. The wording is unchanged."
+  },
+  {
+   "severity": "low",
+   "title": "Corrected: the slow first signing-link request is the gateway's 5 second limit",
+   "detail": "The 503 on the very first request (c1) came from the API gateway in front of recruit-be: its <code>recruit-svc</code> route has a 5 second timeout (lf-homepage logged <code>upstream answered 503</code> 4.9 seconds into the request; recruit-be finished the envelope 2 seconds later). It was not lf-homepage's 10 second limit, so raising that limit would change nothing, and it was not raised. The portal already retries a 503 after 5 seconds (up to 3 tries), so a Loan Officer sees the sign button turn on a few seconds later, with no error message. In the re-run the first request took 2.6 seconds. If it needs fixing, the place is the gateway's timeout for that route."
+  }
  ],
  "accepted": [
-  "<b>The CEO signature image.</b> MOSO's templates carry Thuan Nguyen's signature image on the company lines. document-esign leaves the line blank, with the caption. Pages: 1099 and W-2 company signature blocks, Exclusive Agent page 3.",
-  "<b>1099 <code>fill_date</code>, <code>text_1</code>, <code>text_2</code>.</b> Blank on both sides (effective date in §1.01 and the notice address). The text comparison finds no difference there.",
-  "<b>\"LOAN FRAUD - ZERO TOLERANCE\" on 1099 and W-2 page 16.</b> The tool lists it as a text difference, but it is not one: MOSO has the heading as an image (no text to extract) and document-esign has it as text. The pages show the same heading.",
-  "<b>Signature placeholders</b> (<code>\\s1\\</code>, <code>\\d1\\</code>) in the 1099, W-2 and CA renders. They are document-esign's anchors for the signing step and are invisible on those pages.",
-  "<b>Initials, names and \"Print Name\" placed in a different order</b> in the extracted text. This is the two renderers laying out the same fields. These moves are counted on each document, not listed."
+  "<b>The CEO signature image.</b> MOSO's templates carry Thuan Nguyen's signature image on the company lines. document-esign leaves the line blank, with the caption.",
+  "<b>The company Date line on the Exclusive Agent Agreement.</b> document-esign prints the agreement date there. MOSO's unsigned PDF leaves it blank, but its form puts the Loan Officer's signing date on that line as well, so MOSO's signed PDF shows a date there too. document-esign chose the agreement date on purpose (documented in the template), so the Inkless date tag is not printed twice. Reclassified: not a finding.",
+  "<b>1099 <code>fill_date</code>, <code>text_1</code>, <code>text_2</code>.</b> Blank on both sides (effective date in \u00a71.01 and the notice address). The text comparison finds no difference there.",
+  "<b>\"LOAN FRAUD - ZERO TOLERANCE\" on 1099 and W-2 page 16.</b> The tool lists it as a text difference, but it is not one: MOSO has the heading as an image and document-esign has it as text. The pages show the same heading.",
+  "<b>Signature placeholders</b> in the 1099, W-2 and CA renders: invisible on the page, present in the text for the signing step.",
+  "<b>Initials, names and \"Print Name\" placed in a different order</b> in the extracted text: the two renderers lay out the same fields differently. Counted, not listed."
  ],
  "method": [
   "<b>Recruit side.</b> 6 staging leads <code>bao.trinh+esign-c1..c6@loanfactory.com</code> (fictional names \"Esign Combo One..Six\", no MOSO record), each claimed, offer approved with the fee waived, 1-1 marked done, and the combo's portal answers saved (W-2/1099, licensed and sponsor states, DRE, NMLS 9900001, 100 Test Way Suite 1, San Jose CA 95122). One signing-link request each created an envelope on document-esign's built-in path; each envelope held exactly the expected documents. The unsigned renders were downloaded from document-esign (<code>generatedFileId</code>), then the 6 envelopes were cancelled unsigned and the leads archived.",
+  "<b>Re-run (09/11 afternoon).</b> After recruit-be #946 reached staging, two fresh leads (<code>bao.trinh+esign-c4b</code>, <code>bao.trinh+esign-c6b</code>, same fictional names and answers) went through the same steps. Their envelopes (b3330dec, eef4d6b4) were collected, cancelled unsigned, and the leads archived. Their Exclusive Agent PDFs replace the first run's on this page; the other 9 documents are from the first run.",
   "<b>MOSO side.</b> MOSO's own HR-agreement path (packs <code>FillPdfFormOp</code> + <code>PdfUtils.fill</code>) downloads the public template PDF and fills its form fields. It was rebuilt offline with PDFBox, using the MOSO values for the same person: legal name, initials, the date document-esign printed (11/08/2026, Pacific), NMLS, and MOSO's address format. MOSO staging's Generate Doc was not used: it fills a loan's context, not a Loan Officer's, and stores the file in that loan's Drive folder. No MOSO, Inkless or e-mail call was made.",
   "<b>Comparison.</b> Text by <code>pdftotext</code>, spacing removed (the two renderers wrap and justify differently), compared character by character; a deletion and an insertion with the same characters count as a move. Pages are shown once per template (the other combinations differ only by the name). Tool: <code>docs/handoff/moso-decouple/esign-compare/compare.py</code> (<code>collect</code>, <code>cancel</code>, <code>moso-fill</code>, <code>compare</code>).",
   "Staging only. Production was not read or written, except read-only counts of the address shape and date shape in MOSO production fills. No value was printed."
  ],
  "doc_findings": {
-  "exclusive_agent_agreement": ["Visual: the CEO Date line is filled in, and <code>\\s1\\</code>/<code>\\d1\\</code> are visible on the Agent lines (page 3). Headings are not bold."],
-  "1099_agreement_form_finalized": ["The one listed text change (LOAN FRAUD - ZERO TOLERANCE) is an image in MOSO, so it is not a real difference. Visual: headings are not bold; no CEO signature image (accepted)."],
-  "w2_agreement_form_finalized": ["The one listed text change (LOAN FRAUD - ZERO TOLERANCE) is an image in MOSO, so it is not a real difference. Visual: headings and NOTICE: are not bold; no CEO signature image (accepted)."],
-  "ca_compliance_statement": ["Same text and layout; placeholders invisible."]
+  "exclusive_agent_agreement": [
+   "Re-run after the address fix: the address matches MOSO. Still open: <code>\\s1\\</code>/<code>\\d1\\</code> visible on the Agent lines (document-esign #143). The company Date line is listed as a text difference but is accepted (see above). Headings are not bold."
+  ],
+  "1099_agreement_form_finalized": [
+   "The one listed text change (LOAN FRAUD - ZERO TOLERANCE) is an image in MOSO, so it is not a real difference. Visual: headings are not bold; no CEO signature image (accepted)."
+  ],
+  "w2_agreement_form_finalized": [
+   "The one listed text change (LOAN FRAUD - ZERO TOLERANCE) is an image in MOSO, so it is not a real difference. Visual: headings and NOTICE: are not bold; no CEO signature image (accepted)."
+  ],
+  "ca_compliance_statement": [
+   "Same text and layout; placeholders invisible."
+  ]
  }
 }
