@@ -12,7 +12,7 @@ Hard rules that apply to everything below: staging only, new flags ON in the sta
 |---|---|---|---|
 | 1. Opt-outs | No runtime read. MOSO opt-outs arrive only through the one-off import (runner + `POST /admin/import/moso`). The MOSO push carries `__stop_detected`. The live STOP path is omni `omni-inbound-reply`, not MOSO | **.6.1** a reconcile run: ledger vs ai-donotcall vs omni, APPLY fills only what Recruit lacks (recruit-be #913, D416, V349). **.6.2** the runner's STOP note scan reads every page (recruit-be #914) | Which list is authoritative for the 53 vs ~120 blacklist gap. Whether Recruit pushes its blacklist into ai-donotcall |
 | 2. Referral bonus | **Runtime read of packs** `referrals/byOwner` + MOSO Check (`RecruitApiReferralOwnershipClient`), plus `referrers/resolve` (MOSO Admin key). Bonus figures shown on My referrals come only from MOSO | **.6.3** Recruit computes its own bonus state per referred candidate and shadow-compares it with packs (recruit-be #910, D420, V340) | Payout channel (accounting-be route vs CSV to Finance). Q13 (60 days from joined or signed). When the UI switches to Recruit's state |
-| 3. LO Recruiter Program | **Runtime read of moso-aid** `GET /lo-programs/recruit/members` (program-sync tick, roster key, MOSO Admin keys; 53 members mirrored on staging). Applications, approvals, teams, the program console (lf-homepage) and Ally standings live only in moso-aid Mongo | **.6.4** moso-aid read route for applications (moso-aid #225, PR only) + Recruit read-only mirror with OFF / DRY_RUN / APPLY (recruit-be #911, D421, V342) | Who takes over moso-aid's writes (approvals). When lf-homepage's console and Ally repoint to Recruit. Who owns moso-aid's other functions |
+| 3. LO Recruiter Program | **Runtime read of moso-aid** `GET /lo-programs/recruit/members` (program-sync tick, roster key, MOSO Admin keys; 53 members mirrored on staging). Applications, approvals, teams, the program console (lf-homepage) and Ally standings live only in moso-aid Mongo | **.6.4** moso-aid read route for applications (moso-aid #225, on staging 09/11) + Recruit read-only mirror with OFF / DRY_RUN / APPLY (recruit-be #911, D421, V342) | Who takes over moso-aid's writes (approvals). When lf-homepage's console and Ally repoint to Recruit. Who owns moso-aid's other functions |
 | 4. NMLS / licences / sponsorship | **Push-only**: `nmls_status`, `sponsor_states`, `active_license_items`, sponsor dates, `applied_for_sponsorship` come from the MOSO row in the push (`MosoRowMapper`). Post-hire licences already come from HR / user-service (prod) | Nothing to build without HR: ai-hr-be's NMLS puller allows only the renewals report | HR's consent to use the NMLS company session for a sponsorship report, and who builds it |
 
 ## 1. Opt-outs and the blacklist
@@ -107,9 +107,14 @@ Hard rules that apply to everything below: staging only, new flags ON in the sta
 
 ### Built (decision-free)
 
-- **.6.4:** moso-aid PR #225 adds a read-only `GET /lo-programs/recruit/applications` behind the existing Recruit key. It is not merged; it is moso-aid's team's call.
+- **.6.4:** moso-aid PR #225 adds a read-only `GET /lo-programs/recruit/applications` behind the existing Recruit key. **Merged 09/11** (squash `c60e01ed`, on staging in rev `moso-aid-00212-kjl`); an unkeyed call answers 401.
   - recruit-be #911 adds a client and a `program_application_mirror` with OFF / DRY_RUN / APPLY.
-  - Until moso-aid deploys, a run answers `source_unavailable` and writes nothing.
+  - **DRY_RUN on staging, 09/11 03:31Z** (run `fb10c011`, 1 page, nothing written, `mirrored_before` 0): 60 applications fetched.
+    - By status: 54 approved, 2 pending, 3 revoked, 1 withdrawn. By level: 56 associate_recruiter, 3 senior_recruiter, 1 team_lead.
+    - By activation source: 50 grandfathered, 9 application, 1 upgrade.
+    - 53 distinct applicant keys, 7 keyless rows, 45 with a company email.
+    - Mapped to Recruit: 3 of 60 (2 users by MOSO key, 3 users by company email, 0 candidates); 57 unmapped.
+    - Not APPLIED; that is Bao's call.
 
 ### Target design
 
@@ -128,7 +133,7 @@ Hard rules that apply to everything below: staging only, new flags ON in the sta
   - **Recommendation:** Recruit takes only the LO programs. Ask Khai/Dat who keeps the rest.
 - **H. When does the program console in lf-homepage move to Recruit?**
   - **Recommendation:** after the read mirror has run on staging for a week with zero mismatches. Then build approvals in Recruit behind a flag and repoint the console in one lf PR.
-- **I. moso-aid PR #225:** ask moso-aid's owner to merge and deploy it to staging, so the DRY_RUN can read real data.
+- **I. moso-aid PR #225:** done 09/11, merged and on staging; the DRY_RUN reads real data (counts in .6.4 above).
 
 ## 4. NMLS status, licences, sponsorship
 
@@ -158,7 +163,7 @@ Hard rules that apply to everything below: staging only, new flags ON in the sta
 
 1. `.6.1` opt-out reconcile and `.6.2` the STOP scan. Independent, TCPA value, built.
 2. `.6.3` referral bonus state (shadow). Independent, built; payout waits on D.
-3. `.6.4` program applications mirror. Read path built; data waits on moso-aid #225.
+3. `.6.4` program applications mirror. Read path built; moso-aid #225 on staging 09/11, DRY_RUN reads 60 applications (3 map to Recruit).
 4. `.6.5` NMLS. Waits on HR (J).
 
 ## Self-checks
@@ -184,7 +189,7 @@ bd show agentflow-0gwad.6
   - Rows by status: EARNED 1, MATURING 4, NOT_ELIGIBLE 11, PENDING_JOIN 7, UNDETERMINED 172. Packs disagrees on 5.
   - Bao decided on 08/11: the 60 days start at joined, leaving early forfeits the bonus, and $500 is for REFERRAL only.
 - **#911 program applications mirror:** merged aabbd4f32 (D421, V350) and promoted.
-  - DRY_RUN on staging returns source_unavailable, because moso-aid #225 is not deployed yet.
+  - DRY_RUN on staging (09/11, after moso-aid #225 deployed): 60 fetched, 3 mapped, nothing written.
 - **#921 (D430): "is this person a Loan Officer" from HR's LOAN_OFFICER role.** It runs in SHADOW on staging next to MOSO and counts agree / disagree / hr_unknown. This is part of BE-12.
 - **Handed to p4-s4s5-esign:** a Recruit-sourced referral list behind PACKS / SHADOW / RECRUIT (BE-11, BE-23, BE-29, BE-30; D429, V352).
 - **New observation, Recruit vs omni opt-outs:** Recruit holds 229 SMS opt-outs that omni does not.
