@@ -126,7 +126,7 @@ Bao 09/11 chose "keep MOSO's current rule". recruit-be #951 (squash `9997d3f41`,
 
 | | Before (D420 flat) | After (D441 tiers) |
 |---|---|---|
-| Rows with an amount | 18 (all $500: 7 PENDING_JOIN, 4 MATURING, 1 EARNED, +6 pending-join elsewhere) | 0 (no row has a closed-loan count yet after joining; 7 PENDING_JOIN have no count) |
+| Rows with an amount | 13 (all $500: 8 PENDING_JOIN, 4 MATURING, 1 EARNED) | 0 (no row has a closed-loan count yet after joining; 7 PENDING_JOIN have no count) |
 | Disagreements with packs | 6: PACKS_NO_BONUS 5 (Recruit $500, packs none), RECRUIT_NO_BONUS 1 | 1: RECRUIT_NO_BONUS 1 (packs $500 requested, Recruit PENDING_JOIN, no join date) |
 | The 5 former PACKS_NO_BONUS rows | MATURING/EARNED $500 | 4 UNDETERMINED `CLOSED_LOANS_UNKNOWN`, 1 NOT_ELIGIBLE `JOINED_AFTER_LEAD_WINDOW` (lead 2025-03-29, joined 2026-08-25) |
 | Rows where packs sent an amount (2) | $500 vs packs $500 (no join date); packs $3000 vs Recruit nothing | NO_COUNT 1; DIFFER 1: units_12mo 19 → tier $1000, MOSO staging paid on its own n (≥36) → $3000 |
