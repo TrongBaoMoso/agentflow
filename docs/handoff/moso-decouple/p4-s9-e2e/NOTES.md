@@ -482,3 +482,16 @@ The negative case is covered locally and in CI meanwhile (ai-hr-be #1369, CI run
 - `TestARecruitAgreementOutsideItsOfferIsRefusedUnread`: four files are refused with 0 content reads (HR-service, another offer, no offer, deleted), plus a positive control.
 - `TestAnAgreementThatKeepsFailingOrIsRefusedIsOnTheAlertsFeed`.
 - With the check stubbed out, both go red.
+
+### Run H morning checklist, done 10/11 ~01:40 VN (after Bao's gcloud login)
+
+All PASS.
+- **Image:** the hr-dev image `fe768d83…` appears in cd-staging run 42669448986.
+- **Migrations:** goose is at 534.
+- **Run H row:** the 1099 is filed with 0 attempts. Before the probe the table held 0 pending and 0 refused rows.
+- **Negative probe, tag `negha`:**
+  - The hire was answered 201 `hired` (employment `520ff85f-…`).
+  - Both files were refused unread: one is filed under "another Recruit offer", the other under service "HUMAN_RESOURCE".
+  - 0 `hr_document` rows, and 2 `RECRUIT_AGREEMENT_FILE_REFUSED` log lines.
+- **First probe, tag `negh1`:** it had a digit in the last name, so HR held the draft (`dd7096fa-…`) for an invalid name. The draft kept 2 rows in `recruit_draft_agreement`, so the held path works too.
+- **Test records:** both are left in place.
