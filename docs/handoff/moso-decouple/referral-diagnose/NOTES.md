@@ -45,3 +45,64 @@ Counts only, no PII. Production untouched.
 - 78 only_recruit: not yet diagnosed. Next step is to check whether packs drops them because its only evidence is `referrer` (the field packs ignores).
 - 89 owner_differs: a rule difference. They remain until Recruit serves the list (referrals.source=RECRUIT).
 - The view's admin call with since=2000-01-01 outlasts the gateway (503). Measure from the pod log.
+
+## 4. New referrer rule D437, built and applied on STAGING (09/11) [agentflow-0gwad.6.7]
+
+Bao approved the rule on 09/11, after REFERRER-FIELDS.md showed that `referred_lo` is the sign-up referrer and the field the money follows:
+
+1. `referred_lo` when it is set;
+2. else the page owner the server resolved (slug);
+3. else `referrer`.
+
+When `referrer` names someone else, Recruit keeps it only as the **claimed referrer** (`claimed_referrer_key`). It is shown, never paid, and the row goes on the review list.
+
+- Shipped in recruit-be #938, squash `2e480eca3`, promoted to staging (cd-staging success; Flyway V357 applied).
+  - Flag `recruit.features.referrer-referred-lo-first`: ON in staging values, absent in production.
+  - Live recorder: uses the new rule on every new snapshot.
+  - V357 adds 4 nullable columns: `claimed_referrer_key`, `referrer_review`, `referrer_rederived_from`, `referrer_rederived_at`.
+  - The freeze trigger lets `referrer_key` move only inside the re-derive's own transaction.
+  - Setting `referral.referrer_rederive.apply_enabled` is seeded false.
+- New routes:
+  - `POST /api/v1/admin/referral-program/referrer-rederive?mode=DRY_RUN|APPLY` and `GET .../referrer-rederive/last` (ADMIN);
+  - `GET /api/v1/admin/referral-program/referrer-review` (REFERRAL_ADMIN_VIEW).
+- Independent review: 2 HIGH, both fixed before merge.
+  - The RBAC catalog entries were missing.
+  - Not fixed in code, documented in D437 instead: a PENDING row written under the old rule stays stuck until the re-derive runs, and the V300 catch-up still writes `referrer` first. Re-run the re-derive after either.
+  - Added: the re-point UPDATE is now also guarded by program + member.
+
+### Steps on staging (UTC)
+
+- DRY_RUN at ~03:58 (packs rows 295): REPOINT 81, KEEP_FLAG 8, SAME_REFERRER 201, NO_SNAPSHOT 5.
+  - REPOINT 81: REFERRED_LO_FK 69 (57 PENDING, 12 REFERRAL) and SLUG_SERVER_RESOLVED 12 (8 PENDING, 4 LO_RECRUITER_PROGRAM).
+  - KEEP_FLAG 8: all REFERRED_BY_EMAIL.
+  - NO_SNAPSHOT 5: the 5 unconfirmed rows left out by D433.
+- Apply:
+  - `referral.referrer_rederive.apply_enabled` set to true at 04:04:53.
+  - APPLY at 04:04:54. The gateway answered 503, but `/last` shows APPLY with **repointed 81, flagged 8**.
+  - The setting was set back to **false** at 04:05:11 and read back as false.
+- DRY_RUN again: SAME_REFERRER 282, KEEP_FLAG 8, REPOINT 0. It is idempotent. The 8 KEEP_FLAG rows all carry `PACKS_OWNER_DIFFERS`.
+- Review list: **89 rows**.
+  - REFERRER_DIFFERS_FROM_REFERRED_LO 69;
+  - REFERRER_DIFFERS_FROM_ORIGIN_OWNER 12;
+  - PACKS_OWNER_DIFFERS 8.
+  - Every moved row keeps its old key as the claim and in `referrer_rederived_from`.
+- Program and decided columns are unchanged.
+  - Side effect: the 4 LO Recruiter Program rows now have referrer = member. LRP rows where member equals referrer went from 4/8 to 7/8. Before, the mirror's member and the stored `referrer` had been two different people.
+
+### SHADOW (admin Referrals view, owners=ALL, pod log)
+
+| since | packs | recruit | only_packs | only_recruit | owner_differs |
+|---|---|---|---|---|---|
+| 2000-01-01, before (03:5x) | 295 | 368 | 5 | 78 | **89** |
+| 2000-01-01, after (04:07) | 295 | 368 | 5 | 78 | **8** |
+| 2026-01-01, before | 111 | 151 | 3 | 43 | **70** |
+| 2026-01-01, after | 111 | 151 | 3 | 43 | **7** |
+
+- The money fields (entry, eligible, amount, eligible_on) still agree on every matched row.
+- The 8 that remain are the REFERRED_BY_EMAIL rows. packs owns them by the typed e-mail, Recruit by `referrer` (stale against the current `referred_by`), and there is no `referred_lo`. All 8 are on the review list as `PACKS_OWNER_DIFFERS`.
+
+### Left
+
+- The review list has no screen yet (API only). A front-end card under Referrals (admin) is the next step if Bao wants one.
+- 78 only_recruit: still not diagnosed (section "Left" above).
+- Production: code only, flag absent, V357 runs dark. Before Bao turns it on in prod, run the re-derive DRY_RUN there. Measured on PROD, about 75 rows differ.
