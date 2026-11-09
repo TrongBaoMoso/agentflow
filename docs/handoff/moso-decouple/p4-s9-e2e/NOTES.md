@@ -204,3 +204,43 @@ Full mode (form + DB + PayPal), `--keep --sign-wait-min 1`, tag `jnerz`, candida
   envelope, then a plain `--resume` for steps 13-15. The lead `jnerz` is kept (ACTIVE, S5, fee PAID).
 - **recruit-be #939** (merged `b5f381c0`, on staging 04:25Z): `WARN esign_de.inkless_unavailable offer=<id>
   use_inkless=<b> inkless_configured=<b>` before the Inkless refusal, with `AgreementSigningInklessTest`.
+
+### Run E, part 3 (09/11 05:12-05:16Z): signed on document-esign's built-in path, steps 12-15 PASS
+
+New scope (Bao + Vinh, Slack 09/11 11:08 VN): Recruit **staging** signs on document-esign's free **built-in** path;
+staging DE keeps `use_inkless=false` (Inkless there bills the production account; it is turned on only for a deliberate
+test, then off). Production stays Inkless-only. `use_inkless` was set back to `false` at ~04:10Z and stayed false
+(read back 05:11Z).
+
+- **recruit-be #940** (merged `c80b1889`, on staging 05:09Z): `recruit.esign-de.allow-built-in`
+  (`RECRUIT_ESIGN_DE_ALLOW_BUILT_IN`), default false, `"true"` in the staging values only (`EsignDeAllowBuiltInFlagTest`
+  keeps it out of production). With DE's Inkless off it sends `useInklessSend=false` and hands out DE's built-in link;
+  a link read back is minted through DE's credentials route and reused for an hour (DE keeps 5 live links per signer).
+  Flag off = the `esign_de.inkless_unavailable` refusal (#939), unchanged.
+- **document-esign #140** (open, for Tuấn/Vinh, NOT merged): `SIGNER_ANCHOR` accepts the inert `|d1|` form; without it
+  every Inkless send of 116 templates fails (Run E part 2).
+- **One envelope** `19cf13dd-a032-4ae2-9442-699fd3d777af` (built-in, sent 05:12:11Z). Signed by automating tera-fe's
+  signing page (`https://tera.viet18.com/esign/sign/<participant>?password=…`, no login): 4 "SIGN HERE" slots, typed
+  signature, consent, "Finish and send". DE: built-in completion 05:13:43Z, signed PDF filed, COMPLETED published on
+  `ESIGN_ENVELOPE_COMPLETED_TOPIC`; recruit-be's subscriber recorded it 05:13:44Z (`esign_de.offer_signed`).
+- **Resume** (`--resume run-jnerz/state.json`, `results-run-e-resume.txt`): **PASS 5, FAIL 0** —
+  12 signing-link `SIGNED`; 13 stage `S6`; 14 HR hand-off `delivered`, `hr_handoff_outbox` SENT, recruit-be log
+  `HR handoff delivered: result=hired … status=201`; 15 ARCHIVED, 0 live portal links.
+- **DB:** exactly 1 `agreement_envelopes` row, `COMPLETED`, `doc_set ["1099_agreement_form_finalized"]`,
+  `signed_files [{template_code: 1099_agreement_form_finalized, signed_file_id: ebfef595-…}]`; offer `SIGNED`.
+- **Signed documents** (expected for this combo: 1099, TX, no CA DRE, no VA/MS): `1099_agreement_form_finalized`,
+  title "1099 Agreement Form", **22 pages** (the template's 22 printed pages). No CA statement, no exclusive agent
+  agreement. Plus DE's master PDF of the envelope.
+
+Run E, steps 0-15, has now passed on staging (0-11 in part 1, 12-15 here).
+
+**What differs from production (built-in path, staging only):**
+- The Loan Officer **does not return to `?signed=1`**: DE's built-in path ignores the per-signer `redirectUrl`; the
+  page ends on tera-fe with "Thank you, your signature is recorded … Your loan officer can give you a copy … You can
+  close this page." The tab title is "LOS" and the closing copy is borrower wording.
+- No Inkless audit certificate (`certificate_file_id` / `inkless_signing_id` null).
+- DE announces the send on `ESIGN_ENVELOPE_SENT_TOPIC` with the signing URL; tera-be's mailer handles only
+  `service_type=LOAN`, so no LOS e-mail went to the Loan Officer.
+
+**Before production:** production DE needs `use_inkless` on with its credentials, document-esign #140 (or every
+Recruit agreement send fails the same way), and `RECRUIT_ESIGN_DE_ALLOW_BUILT_IN` must stay absent from production.
