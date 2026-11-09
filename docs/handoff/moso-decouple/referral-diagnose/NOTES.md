@@ -106,3 +106,12 @@ When `referrer` names someone else, Recruit keeps it only as the **claimed refer
 - The review list has no screen yet (API only). A front-end card under Referrals (admin) is the next step if Bao wants one.
 - 78 only_recruit: still not diagnosed (section "Left" above).
 - Production: code only, flag absent, V357 runs dark. Before Bao turns it on in prod, run the re-derive DRY_RUN there. Measured on PROD, about 75 rows differ.
+
+## 5. Referrer review card on Referrals (admin), STAGING (09/11) [agentflow-0gwad.6.7]
+
+- recruit-be #943, squash `fc2e2e9a9`, on staging: the review list also returns `referrerName`, `claimedReferrerName` and `registeredAt`. Names follow the Referrals list rule: the matching candidate's name, otherwise a name derived from the key. Checked on staging: 89 rows, all of them named and dated, and 81 carry a claimed name (the 8 PACKS_OWNER_DIFFERS rows have no stored claim).
+- recruit-fe #733, squash `134de7f07`, on staging: a "Referrer review" card under Top referrers on the All Loan Officers scope. Columns: referred Loan Officer, referrer (gets the bonus), claimed referrer, reason, date. It shows five rows, then "Show all". A row click opens the candidate. Text is in en and vi.
+- The card shows only when all of these hold: the build switch `NEXT_PUBLIC_REFERRER_REVIEW_ENABLED=true`, the user has REFERRAL_ADMIN_VIEW, the page is on the All scope, and the API answers 200 with rows.
+- The switch is **false** in recruit-fe `cd-staging.yml` until Wed 11/11, because Vic (Manager) would see the card in the Tuesday demo. `cd-production.yml` does not pass the switch, and the Dockerfile default is false. After the deploy, the staging admin page was checked: it shows no card.
+- To turn it on: set the build argument to `true` in `cd-staging.yml`, merge, and let staging redeploy.
+- Before/after screenshots (1440 and 375): private artifact https://claude.ai/artifact/9j8mM8ZHfcRNVTqzy6ezJA. Script: `docs/handoff/recruit-e2e-lab/scripts/rrshots.js` (local, not committed).
