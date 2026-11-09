@@ -11,16 +11,20 @@ TOKEN_FILE=${TOKEN_FILE:-$HOME/.cache/claude-recruit/preview/stg_3370.token}
 q() { bash "$HOME/.cache/claude-recruit/pgq_stg.sh" recruit "$1"; }
 
 echo "== 1. The import DRY_RUN (D433): packs rows classified against Recruit (no write)"
-curl -sf -X POST -H "Authorization: Bearer $(cat "$TOKEN_FILE")" "$G/admin/referral-program/packs-import?mode=DRY_RUN&id_limit=500" \
-  -o "$OUT/dry_run.json"
+# The POST outlasts the gateway timeout (503 after ~5 s) while the run finishes in the app; read the result from /last.
+curl -s -o /dev/null -X POST -H "Authorization: Bearer $(cat "$TOKEN_FILE")" "$G/admin/referral-program/packs-import?mode=DRY_RUN&id_limit=500" || true
+for _ in $(seq 1 40); do
+  code=$(curl -s -o "$OUT/dry_run.json" -w '%{http_code}' -H "Authorization: Bearer $(cat "$TOKEN_FILE")" "$G/admin/referral-program/packs-import/last")
+  [ "$code" = 200 ] && break; sleep 15
+done
 python3 - "$OUT/dry_run.json" "$OUT" <<'PY'
 import json, sys
 d = json.load(open(sys.argv[1])); d = d.get("payload", d)
-print("packs rows:", d["packs_rows"] if "packs_rows" in d else d.get("packsRows"))
-for k in ("outcomes", "planned_programs", "other_referrer_breakdown"):
-    v = d.get(k) or d.get(''.join(w.capitalize() if i else w for i, w in enumerate(k.split('_'))))
+print("packs rows:", d.get("packsRows", d.get("packs_rows")))
+for k in ("outcomes", "plannedPrograms", "otherReferrerBreakdown"):
+    v = d.get(k)
     print(k, json.dumps(v, indent=1))
-samples = d.get("sample_candidate_ids") or d.get("sampleCandidateIds") or {}
+samples = d.get("sampleCandidateIds") or {}
 for outcome, ids in samples.items():
     open(f"{sys.argv[2]}/ids_{outcome}.txt", "w").write("\n".join(ids))
     print(outcome, len(ids), "sample ids ->", f"{sys.argv[2]}/ids_{outcome}.txt")
@@ -51,6 +55,15 @@ q "SELECT p.decision_source, p.referrer_basis, p.program,
           count(*) OVER () AS total
      FROM candidate_referral_program p WHERE p.candidate_id IN ($(ids_sql HAS_SNAPSHOT_OTHER_REFERRER))
     ORDER BY 1,2,3 LIMIT 200"
+echo "   4b. Snapshot referrer vs the referrer MOSO pushes NOW (legacy_ref.referrer): equal = Recruit is stale only if packs"
+echo "       owns by another rule; different = MOSO re-pointed the referral after Recruit froze the first-touch snapshot (D269.1)."
+q "SELECT p.decision_source,
+          CASE WHEN nullif(btrim(c.legacy_ref->>'referrer'),'') IS NULL THEN 'no_current_referrer'
+               WHEN lower(btrim(c.legacy_ref->>'referrer')) = p.referrer_key THEN 'snapshot_equals_current'
+               ELSE 'snapshot_differs_from_current' END AS vs_current,
+          count(*)
+     FROM candidate_referral_program p JOIN candidates c ON c.id=p.candidate_id
+    WHERE p.candidate_id IN ($(ids_sql HAS_SNAPSHOT_OTHER_REFERRER)) GROUP BY 1,2 ORDER BY 3 DESC"
 echo "   Same referrer hash on many rows = one referrer Recruit credits where packs credits someone else (likely a"
 echo "   default/seed owner or a bulk test-data artifact); spread-out hashes = a real first-touch vs current-owner split."
 
