@@ -178,3 +178,29 @@ Full mode (form + DB + PayPal), `--keep --sign-wait-min 1`, tag `jnerz`, candida
   Inkless), so it waits for the owner's decision.
 - Not seen in recruit-be's log: the refusal leaves only the controller's generic `BaseException` line; there is no
   `esign_de.*` warning naming "Inkless is not available". Worth a log line before production.
+
+### Run E, part 2 (09/11 03:54-04:25Z): Inkless on, second blocker in document-esign
+
+- **`use_inkless` on staging DE**, approved by the document-esign owner (Hoàng Tuấn, Slack 09/11 10:53 VN): before
+  `false` (last changed 2026-10-02T17:59:59Z), after `true` at 2026-11-09T03:54:19Z; `/availability` now answers
+  `{"useInkless":true,"inklessConfigured":true}`. Call: port-forward `svc/document-esign` 18092:8092, then
+  `PUT /internal/api/v1/esign/settings` with `X-Service-Source: LOS`, `X-Acting-User: system:recruit-s9-e2e-bao`, body
+  `{"useInkless":true}` (camelCase: snake_case is `400 INVALID_BODY`). **Revert** = the same call with
+  `{"useInkless":false}`. Left ON pending Tuấn.
+- **Resume, signing-link 503 again** (03:54:28Z). document-esign: `Generate-and-send: source=ILO_AGREEMENT RECRUIT
+  <offer> (1 docs)`, the RECRUIT folders were created, then `Send failed (TemplateRenderException) — released idempotency
+  key`, `400 BAD_REQUEST`. **No envelope was created** (still 0 `agreement_envelopes` rows; Inkless was not called).
+- **Root cause (document-esign):** for an Inkless send, `withSignatureTags(inert=true)` fills `signer_N_date` with the
+  inert tag `|d1|`. `validateVariables` then checks DATE variables against `TemplateDateValue.SIGNER_ANCHOR`
+  (`\\[sd]\d+\\`), which accepts only the backslash form. `1099_agreement_form_finalized` declares `signer_1_date` as a
+  required DATE with no `signerNumber`. Reproduced on the internal render route (PREVIEW, test name only):
+  `signer_1_date="|d1|"` gives `400 Invalid date (expected MM/DD/YYYY): signer_1_date`; `"\d1\"` gives 200. The built-in
+  path (use_inkless off) prints the backslash form, which is why nobody had hit this before.
+- **Wider effect:** 116 templates on DE master combine `enable_inkless: true` with a DATE `signer_N_date` that has no
+  signer number (e.g. `w2_agreement_form_finalized`, `privacy_notice`, `usa_patriot_act_disclosure`, `vorm`). While
+  `use_inkless` is on, every staging Inkless send of these should fail the same way.
+- **Fix needed in document-esign** (owner Tuấn): `SIGNER_ANCHOR` also accepts the inert form `\|[sd]\d+\|`, with a
+  test. After it is on staging, resume with `node s9-e2e.js --resume run-jnerz/state.json --keep`, sign the one
+  envelope, then a plain `--resume` for steps 13-15. The lead `jnerz` is kept (ACTIVE, S5, fee PAID).
+- **recruit-be #939** (merged `b5f381c0`, on staging 04:25Z): `WARN esign_de.inkless_unavailable offer=<id>
+  use_inkless=<b> inkless_configured=<b>` before the Inkless refusal, with `AgreementSigningInklessTest`.
