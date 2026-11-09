@@ -106,4 +106,12 @@ Only the drips use the team sender. The day-after, referrer and link-updated mai
 
 **Staging after deploy (read-only):** the effective `webinar.drip_mail.enabled` is still `false`. No new `WEBINAR_DRIP` ledger rows since the 08/11 test. Recruit has no admin preview for drips, so the From is proven by unit tests: `WebinarDripMailTest` (owner, no owner, blank owner), `TeamSenderTest`, and `LoanOfficerMailSenderTest` (team From, unconfigured).
 
-**Open question for Bao:** if the owner has left and user-service no longer knows them, the drip is skipped `SENDER_NO_PROFILE`, as before. The other option is to fall back to recruiting@.
+**Owner who left or is unknown (decided 09/11, recruit-be #942, squash `c00fb3a6`, promoted, staging deploy succeeded):** these leads now get the drip From recruiting@ too, instead of a `SENDER_NO_PROFILE` skip:
+- an owner user-service does not know (NO_PROFILE);
+- an owner whose account is closed (user-service `status` DEACTIVATED, SUSPENDED or DELETED).
+
+If user-service is down, the drip keeps the owner: it skips `SENDER_UNAVAILABLE` and is retried while the day lasts.
+
+Known narrow race: if user-service fails on the first lookup and then succeeds with a closed account on the sender's own lookup, the mail is signed by the departed owner. That was the old behaviour.
+
+Staging after the deploy: `enabled` is still false, and there are no new `WEBINAR_DRIP` rows.
