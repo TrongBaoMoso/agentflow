@@ -1,0 +1,20 @@
+P4 S9 E2E  tag=jmpyh  candidate=43c696e2-741a-4dc1-91f5-884600ed2d20  offer=2e625132-3cb5-4e52-84b3-14a84d11dce9
+
+PASS    0. preflight: admin token + Recruit-only invite is live                                                                  moso_record_required=false, invite_needs_moso_record=false
+PASS    1. public REFER form (canary, Recruit-only, staging captcha bypass): recruit-intake 201, moso_post false, no packs call  recruit-intake 201, moso_post=false, packs calls 0
+PASS    2. lead created with NO MOSO record (DB)                                                                                 candidate 43c696e2-741a-4dc1-91f5-884600ed2d20, intake_client=lf-homepage, legacy_key null, S0
+PASS    3. claim: owner = admin, stage S1                                                                                        owner a0aa8a66-dedc-4dc5-8954-80522c632fd9, S1
+PASS    4. production figures + NMLS (offer-figures-required)                                                                    loans_since_anchor 8, units12mo 6, career_production 12M, nmls set
+PASS    5. offer requested + approved (approve_now): SENT, specialist assigned, hand-off                                         offer 2e625132-3cb5-4e52-84b3-14a84d11dce9 SENT, fee PENDING, specialist assigned, lead S5
+PASS    6. 1-1 scheduled (on behalf, no Google invite to real staff)                                                             slot 2026-11-09T00:40:53.033Z stored on 85c6a0f5-3f4d-4aee-b28a-f2ee28283743
+PASS    7. 1-1 DONE (1099, today in business tz): welcome mail with the portal link                                              checklist DONE; WELCOME SENT with ?invite=REDACTED
+PASS    8. staff portal link minted (?invite=, 43 chars) and live                                                                https://www.viet18.com/register-loan-officer?invite=<43 chars>, profile 200
+PASS    9. portal profile save via lf proxy, read back                                                                           save 200; city/zip read back; complete_percentage 0.25
+PASS    10. PayPal sandbox fee (headed Chrome, test Visa): fee-paypal PAID, offer fee PAID                                       order 17W314786K8996507: fee-paypal PAID, offers.fee_status PAID, fee_payments PAID with capture
+PASS    11. paid mails (D404): LO FEE_PAID sent; staff copies only to allowed test aliases                                       LO SENT; staff: SKIPPED(staff, not sent), SKIPPED(staff, not sent)
+BLOCKED 12. sign step (signing-link)                                                                                             signing-link 404: dark until recruit.features.esign-de is on (expected). Re-run with --keep, then --resume.
+BLOCKED 13. Joined (S6, auto-stage after signed + paid)                                                                          needs the signed agreement (step 12)
+BLOCKED 14. automatic Send to HR delivered, HR hired                                                                             needs Joined (step 13)
+PASS    15. archive (bulk-archive) revokes the portal links                                                                      ARCHIVED, 0 live portal links
+
+PASS 13  FAIL 0  BLOCKED 3  SKIP 0

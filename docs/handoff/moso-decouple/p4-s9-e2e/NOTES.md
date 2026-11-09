@@ -135,13 +135,13 @@ for the welcome mail before minting the staff link (the welcome rotates any olde
 late mail still rotates it.
 
 **Together, A + C/D cover every step up to the signature on staging.** What is still owed:
-1. **One clean full-mode run** after Bao's `gcloud auth login`: set the bypass variable (above), confirm the
+1. **DONE 09/11** (run F 02:40Z, then run E 03:36Z). One clean full-mode run after Bao's `gcloud auth login`: set the bypass variable (above), confirm the
    lf staging revision runs `777ff9ad` or later, then the default command (form + DB + PayPal in one run, including
    step 11's FEE_PAID rows). About 6 minutes.
 2. **Steps 12-14** after S4 (document-esign, Khai) and S5 (`esign-de` on in staging): `--keep`, sign in the opened
    window, then `--resume`.
 
-All leads are ARCHIVED (`dyttv`, `xwety`, `gdpfw`, `anyup`, `vnhdg`; `zytdh` and `gjyta` never became a lead). The portal link files were
+All leads are ARCHIVED (`dyttv`, `xwety`, `gdpfw`, `anyup`, `vnhdg`, `jmpyh`; `zytdh` and `gjyta` never became a lead). The portal link files were
 deleted by the runs.
 
 ## Shots
@@ -244,3 +244,30 @@ Run E, steps 0-15, has now passed on staging (0-11 in part 1, 12-15 here).
 
 **Before production:** production DE needs `use_inkless` on with its credentials, document-esign #140 (or every
 Recruit agreement send fails the same way), and `RECRUIT_ESIGN_DE_ALLOW_BUILT_IN` must stay absent from production.
+
+## Run F (09/11 02:40-02:44Z, esign-de still OFF, ran before run E)
+
+Default command (form + DB + PayPal, no flags), tag `jmpyh`, candidate `43c696e2-741a-4dc1-91f5-884600ed2d20`, offer
+`2e625132-3cb5-4e52-84b3-14a84d11dce9`. Setup right before it: `RECRUIT_INTAKE_CAPTCHA_BYPASS_EMAILS=bao.trinh+p3only-s9*@loanfactory.com`
+set on `lf-homepage-master` with `--update-env-vars` (revision `01627-7ck`, image `777ff9ad`, the other 11 variables
+kept, `RECRUIT_INTAKE_MIN_SCORE` still 0.5). lf log 02:40:22Z: `captcha score=0 ... ok=true`, then `captcha score bypass
+(staging test allowlist) count=1`. **PASS 13, FAIL 0, BLOCKED 3, SKIP 0** (`results-run-f.txt`):
+
+| Step | Result | Detail |
+|---|---|---|
+| 0 preflight | PASS | `invite_needs_moso_record=false` |
+| 1 public REFER form (canary, bypass) | PASS | `recruit-intake` 201, `moso_post=false`, 0 packs calls |
+| 2 lead, no MOSO record (DB) | PASS | `intake_client=lf-homepage`, `legacy_key` null, S0 |
+| 3 claim | PASS | owner = admin, S1 |
+| 4 figures + NMLS | PASS | |
+| 5 offer approve | PASS | SENT, fee PENDING, specialist assigned, lead S5 |
+| 6 1-1 scheduled | PASS | no meeting link |
+| 7 1-1 DONE + welcome | PASS | `WELCOME` SENT, body `?invite=REDACTED` |
+| 8 portal link | PASS | `?invite=<43 chars>`, profile 200 |
+| 9 portal profile save | PASS | save 200, read back, `complete_percentage` 0.25 |
+| 10 PayPal sandbox fee | PASS | order `17W314786K8996507`: `fee-paypal` PAID, `offers.fee_status` PAID, `fee_payments` PAID with capture |
+| 11 paid mails (D404) | PASS | LO `FEE_PAID` SENT; both staff copies SKIPPED (not sent) |
+| 12 sign | BLOCKED | `signing-link` 404, esign-de was still off |
+| 13 Joined | BLOCKED | needs 12 |
+| 14 Send to HR | BLOCKED | needs 13 |
+| 15 archive | PASS | ARCHIVED, 0 live portal links |
