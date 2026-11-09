@@ -89,3 +89,21 @@ Do this together with `RECRUIT_WEBINAR_SESSIONS`, never before (the `MOSO_DRIPS`
 | `bao.trinh+crm3`, `+crm4` (03/11, ACTIVE, not invited), 2-month day | `NOT_IN_AUDIENCE` | no mail |
 
 **Not proven on staging:** the 2- and 3-month sends to an invited or DORMANT person. Setting one up would have meant sending an offer, which hands the lead to an onboarding specialist and writes a packs INVITE for these MOSO-linked test leads. Those sends are proven in `WebinarDripIT` instead (real Postgres, real sender, DRY_RUN): subjects, bodies, audience, the `MOSO_DRIPS` skip, latest registration only, once, timing, step OFF, switch off and kind flag off.
+
+## Who the drips are From (D431 addendum, 09/11, recruit-be #941)
+
+recruit-be #941, squash `5c91281e`. No migration. Promoted, and the staging deploy succeeded.
+
+**Bao's rule (09/11):** the lead's owning recruiter sends the drip, with their own signature. A lead with NO owner gets it From `recruiting@loanfactory.com`, never the session host. Before this change it was "owner, else host".
+
+**How:** lo-mail had no team sender, so a small config-driven one was added, `TeamSender`.
+- Sender id `team:recruiting`, signed as `recruit.lo-mail.team-sender.name` / `.email`. The defaults are "Loan Factory Recruiting" and `recruiting@loanfactory.com`. The signature has only those two lines, and there is no user-service read.
+- The notifier actor gets the address and no user id. loanfactory.com is an allowed From domain.
+- The ledger's `sender_user_id` = `team:recruiting`. Reply-To = the omni alias, else recruiting@.
+- A blank name or a bad address means the mail is skipped `SENDER_NO_PROFILE`.
+
+Only the drips use the team sender. The day-after, referrer and link-updated mails still use "owner, else host".
+
+**Staging after deploy (read-only):** the effective `webinar.drip_mail.enabled` is still `false`. No new `WEBINAR_DRIP` ledger rows since the 08/11 test. Recruit has no admin preview for drips, so the From is proven by unit tests: `WebinarDripMailTest` (owner, no owner, blank owner), `TeamSenderTest`, and `LoanOfficerMailSenderTest` (team From, unconfigured).
+
+**Open question for Bao:** if the owner has left and user-service no longer knows them, the drip is skipped `SENDER_NO_PROFILE`, as before. The other option is to fall back to recruiting@.
