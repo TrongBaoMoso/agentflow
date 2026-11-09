@@ -28,7 +28,7 @@ Out of scope: omni, notifier, cron-service-go, tera-core, gateway, auth-service 
 | Frontend message keys that name MOSO | **124** (122 distinct texts), in 10 groups |
 | Frontend links that open a MOSO page | **0** |
 
-**Independence on staging (re-measured 09/11 ~02:30 VN, recruit-be master `4dc3aa661`): 19 / 44 = 43%; counting code that exists but is still dark (shadow or flag off), 32 / 44 = 73%.** History: 34% (08/11 morning), 41% (08/11 evening). See §0b.
+**Independence on staging (re-measured 09/11 ~12:30 VN, recruit-be master `5c91281e8`, which is what staging runs): 25 / 44 = 57%; counting code that exists but is still dark (shadow or flag off), 32 / 44 = 73%.** History: 34% (08/11 morning), 41% (08/11 evening), 43% (09/11 night). See §0d.
 
 Formula: **Replaced-on ÷ (Replaced-on + Replaced-dark + Blocker)**, over the backend rows in §1.
 - Each row is one place where recruit-be talks to, waits on or relies on old MOSO.
@@ -64,6 +64,66 @@ Blockers by the phase that owes them:
 | **No phase owns it yet:** a recruiter's Zoom texting identity is their MOSO Admin key | BE-13, BE-42 |
 | **No phase owns it yet:** the "next webinar" token and list dates still read the packs picker, even with Recruit webinars on | BE-45 |
 | P6 itself: bridges that only exist to keep MOSO in sync, deleted at the cut | BE-04, BE-05, BE-22, BE-26, BE-35, BE-36, BE-39, BE-40 |
+
+## 0d. Re-measure, 09/11 midday (~12:30 VN)
+
+**What was read:**
+- Code: recruit-be `origin/master` `5c91281e8`. Staging runs that same sha: "Deploy staging (GKE)" succeeded at 05:17 UTC.
+- Flags: `helm-chart/config/{staging,production}/values.yaml` at that sha.
+- DB settings: the staging `recruit_settings` table, read-only, latest row per key.
+- One row count on staging: `agreement_envelopes`.
+
+**The finding that moves the number:** D409 is no longer dark on staging.
+- recruit-be #937 set `RECRUIT_FEATURES_ESIGN_DE: "true"` on staging. document-esign #138 (the RECRUIT caller) is merged and on DE staging.
+- DE staging keeps Inkless off, because Inkless would bill the production account. #940 added the staging-only `RECRUIT_ESIGN_DE_ALLOW_BUILT_IN: "true"`, so Recruit signs on DE's free built-in signing page instead. #939 logs a WARN when DE reports Inkless off.
+- Positive control: staging `agreement_envelopes` holds 1 row in status COMPLETED. It was created at 05:12:11 UTC, completed at 05:13:44 UTC, and has signed files. So the send, the signature and the COMPLETED event all ran end to end through document-esign, with no packs involved.
+- So "esign-de stays off" is out of date for staging. It is still absent (off) in production. Inkless itself (the paid signing service) is still off on DE staging, which affects only which signing page the Loan Officer sees.
+
+| PR | Decision | Moves | Evidence |
+|---|---|---|---|
+| #937, #940 (+ DE #138) | D409 live | BE-03, BE-06, BE-15, BE-18, BE-27, BE-34: Replaced-dark → **Replaced-on** | `ESIGN_DE` and `ESIGN_DE_ALLOW_BUILT_IN` are both "true" on staging; 1 COMPLETED envelope (above). Same scope as before: Recruit-only portal Loan Officers. MOSO-linked Loan Officers finish in MOSO. |
+| #930 | D434 | none (supports BE-15) | The staff agreement status reads `agreement_envelopes`. It is visible now that esign-de is on. |
+| #927 | D432 | none (moso-off survival, see §0c) | `ONBOARDING_NATIVE` "true", inert while the packs write-back is armed on staging. |
+| #928, #931 | D433 | none (BE-11 prep) | A one-time import of packs-only referrals into Recruit, to fill the data before `referrals.source` = RECRUIT. `referral.packs_import.apply_enabled` is false on staging now (it was set true from 02:39:17 to 02:40:02 UTC). |
+| #938 | D437 | none (BE-12 in part) | Settles WHICH person a snapshot names as the referrer: MOSO `referred_lo`, else the page owner the server resolved, else MOSO `referrer`. Rows are still keyed by the MOSO Admin key. `ReferrerIdentityServiceImpl` and `DefaultReferralLinks` are unchanged since `4dc3aa661`. |
+| #932, #934 | D435 | none | Payout list parked (`REFERRAL_PAYOUT_LIST` "false"); Bao chose the accounting route. |
+| #933 | D436 | none (not a MOSO read) | Recruiter blacklist copied to ai-donotcall, built dark. |
+| #935, #941 | D431 follow-ups | none (BE-16/45 already Replaced-on) | MOSO's 1-month drip subject; no-owner drips are sent From recruiting@. |
+| moso-aid #225 | D421 | none | A read-only applications feed that Recruit reads (DRY_RUN, 60 rows). It is still a moso-aid read, so BE-14/28/41 stay blockers. |
+| moso-aid #226 | D410 | none (BE-17 already Replaced-on) | After-party RSVPs dual-posted to Recruit's lead intake. Off by default; waiting on a DevOps secret. |
+
+**Each blocker, checked:**
+
+| Row | Moved? | Code path | Flag or setting on staging | Still waits on |
+|---|---|---|---|---|
+| BE-12 | No | `ReferrerIdentityServiceImpl:55` and `DefaultReferralLinks:80` still call packs `referrers/resolve` (unchanged). `MosoLoanOfficerCheck` runs with HR in shadow. | `RECRUIT_REFERRALS_LOAN_OFFICER_SOURCE` "SHADOW" | D437 decided which person is the referrer. What is left is the key: rows stay keyed by the MOSO Admin key until Recruit picks its own referrer key (central user id). The LO-site domain stays in moso-aid's lo-setting until P5 moves it; until then the `/join` slug is the fallback. |
+| BE-14 | No | `ProgramMemberLinkService:306` (unchanged) | n/a (system actor) | P5: a Program member's identity check that does not need the MOSO Admin key. |
+| BE-28 | No | `ProgramSyncService` → `MosoAidRosterClient:88` (unchanged) | `program_sync.mode` "DRY_RUN" (since 03/10) | P5: the Recruiter Program roster owned by Recruit, not read from moso-aid. moso-aid #225 adds a second moso-aid read (applications, `program_import.mode` "DRY_RUN"); it does not remove one. |
+| BE-41 | No | moso-aid URL and keys in `recruit-svc-secret` and values | `PROGRAM_SYNC_MOSO_APP_ID/NAMESPACE` set | Goes away with BE-28 and BE-23 (P5). |
+| BE-04, 05, 22, 26, 35, 36, 39, 40 | No | Unchanged. The removal PR #923 is still OPEN and draft ("DO NOT MERGE until production runs on Recruit") | `PACKS_WRITEBACK` / `IDENTITY_WRITEBACK*` true; `MOSO_OFF` "false" | Production running on Recruit. They are deleted at the P6 cut, never replaced. |
+
+The dark rows that are left, and why they are still dark: BE-08 and BE-10 (`PORTAL_MOSO_MIRROR` "false"). BE-11, BE-23, BE-29 and BE-30 (`referrals.source` "SHADOW" since 08/11 18:40 UTC). BE-21 (D420 bonus state runs in shadow, with no payout).
+
+| Group | Rows | Replaced-on | Replaced-dark | Blocker | n/a |
+|---|---|---|---|---|---|
+| Outbound write | 10 | 6 | 2 | 2 | 0 |
+| Outbound read | 6 | 3 | 1 | 2 | 0 |
+| Inbound push / MOSO-sourced data | 9 | 5 | 2 | 1 | 1 |
+| Cron | 5 | 1 | 2 | 2 | 0 |
+| Gate or rule | 5 | 4 | 0 | 1 | 0 |
+| Secret / config | 7 | 3 | 0 | 4 | 0 |
+| Data shown | 5 | 3 | 0 | 0 | 2 |
+| **Total** | **47** | **25** | **7** | **12** | **3** |
+
+**Staging: 25 / 44 = 57% live. Including dark code: 32 / 44 = 73%** (unchanged, because these rows only went from dark to on). **Production: still about 0%.**
+- `origin/production` is at `c80b18894`, so the D409 code is deployed there.
+- But production's values carry none of the replacement flags (`ESIGN_DE`, `ONBOARDING_NATIVE`, `HANDOFF_BELL_RECRUIT`, `ZOOM_IDENTITY_FROM_ZOOMGO`, `WEBINAR_SCHEDULE`, `REFERRAL_BONUS_STATE`, `MOSO_OFF` are all absent).
+- Production also still creates leads from the MOSO push. On staging the push is still live as well: 454 MOSO `webhook_events` in the last 24 hours, the newest at 05:05 UTC.
+
+**What would move the next number:**
+- Choosing `referrals.source` = RECRUIT on staging moves 4 rows from dark to on: BE-11, 23, 29, 30. It needs the D433 APPLY first.
+- Switching on the portal mirror, or dropping it, settles BE-08 and BE-10.
+- Nothing short of P5 (moso-aid roster, member link, referrer key) and the P6 cut moves the 12 blockers.
 
 ## 0c. Production-ON behaviours that rode the write-back flag (what the cut must not lose)
 
@@ -160,10 +220,10 @@ Paths are under `src/main/java/com/loanfactory/recruit/`. Columns:
 |---|---|---|---|---|---|---|
 | BE-01 | `recruitapi/RecruitApiClient.java` invite (POST `/candidate/invite`). Called from the relay tick, from `PacksWritebackEnqueuer#enqueueInvite`, and from `OfferServiceImpl` (send) / `InviteResendServiceImpl` | Tells MOSO the Loan Officer is invited. MOSO mails the invite unless Recruit does (D331 record-only) | `packs-writeback` (false); `lo-mail-invite` (false) | true / true; lo-mail-invite true / absent | D331 Recruit invite mail (P2); D399 portal link | Replaced-on |
 | BE-02 | invite, specialist kind. Called from `OnboardingSpecialistAssignmentServiceImpl:596` | Tells MOSO the onboarding specialist. The D292 "handed to you" bell rings only when MOSO accepts | packs-writeback + onboarding-writeback | true,true / true,true | Not needed for no-MOSO leads (D399 rings at send). MOSO-linked leads: owed by P4 | Blocker → **Replaced-on** (D427 Recruit rings the hand-off bell at send (staging on, recruit-be #918); re-measured 09/11 night) |
-| BE-03 | onboardingMeeting. Called from `ChecklistItemServiceImpl:641` (1-1 Done) | MOSO builds and sends the agreement (W-2/1099, legal name) plus `pre_onboarding_done` | onboarding-writeback, -hire-classification, -legal-name, -v2-handoff | all true / all true | P4 S4/S5 e-sign | ~~Blocker~~ **Replaced-dark** (D409 document-esign signing for Recruit-only leads (flag `esign-de` off on staging until document-esign #138); re-measured 08/11 evening) |
+| BE-03 | onboardingMeeting. Called from `ChecklistItemServiceImpl:641` (1-1 Done) | MOSO builds and sends the agreement (W-2/1099, legal name) plus `pre_onboarding_done` | onboarding-writeback, -hire-classification, -legal-name, -v2-handoff | all true / all true | P4 S4/S5 e-sign | ~~Blocker~~ **Replaced-dark** (D409 document-esign signing for Recruit-only leads (flag `esign-de` off on staging until document-esign #138); re-measured 08/11 evening) → **Replaced-on** (D409 live on staging, 1 COMPLETED envelope; re-measured 09/11 midday, §0d) |
 | BE-04 | sync. Called from `CandidateServiceImpl:281`, `HireClassificationWriter:97`, `ChecklistItemServiceImpl:645`, `ExperienceBackfillService:152` | Pushes company, sponsor states, lo_type and experience level to MOSO | packs-writeback; hire-classification; setting `packs.writeback.experience_enabled` | true / true; setting not measured | Bridge, delete in P6 | Blocker |
 | BE-05 | sync (identity) and emailAvailable, from `packswriteback/identity/MosoFieldSync` | D303: name, phone, NMLS and e-mail fixes go to MOSO; e-mail checked for "taken" first | identity-writeback, identity-writeback-email | true,true / true,true | Bridge, delete in P6 | Blocker |
-| BE-06 | agreementSend. Called from `AgreementSendServiceImpl:189` | A Recruit click sends MOSO's e-sign agreement | `agreement-send` AND hire-classification | true / absent | P4 S4/S5 | ~~Blocker~~ **Replaced-dark** (D409; re-measured 08/11 evening) |
+| BE-06 | agreementSend. Called from `AgreementSendServiceImpl:189` | A Recruit click sends MOSO's e-sign agreement | `agreement-send` AND hire-classification | true / absent | P4 S4/S5 | ~~Blocker~~ **Replaced-dark** (D409; re-measured 08/11 evening) → **Replaced-on** (D409 live on staging, 1 COMPLETED envelope; re-measured 09/11 midday, §0d) |
 | BE-07 | meetingReminder. Called from `JdbcOnboardingReminderLedger:116` and `OnboardingReminderTickServiceImpl` | 1-1 reminder mail sent by packs | onboarding-reminders; `lo-mail-reminders`; setting delivery_mode (not measured) | true,true / true,absent | D329 Recruit sends the reminder | Replaced-on |
 | BE-08 | portalState. Called from `OfferServiceImpl:862/887` and `OnboardingTokenService:101` | D376: marks the row as Recruit-portal and mirrors paid/signed | `portal-moso-mirror` | "false" / absent | Bridge, delete in P6 | Replaced-dark |
 | BE-09 | registerWebinar (plus GET `/webinars`). Called from `FollowUpServiceImpl:800` (only when webinar-schedule is off) | Registers the Loan Officer for a MOSO webinar; MOSO mails the confirmation | packs-writeback; `webinar-schedule` off | Recruit sessions on staging / MOSO path in prod | D359–D361, D392 own webinars; D330 mail | Replaced-on |
@@ -177,7 +237,7 @@ Paths are under `src/main/java/com/loanfactory/recruit/`. Columns:
 | BE-12 | `read /referrers/resolve`, from `ReferrerIdentityServiceImpl:55`, `MosoLoanOfficerCheck` (D374), `DefaultReferralLinks:80` | Maps a person to their MOSO Admin key; "is a Loan Officer"; site domain | same | 503; the Loan Officer check falls back to roles; the link falls back to the /join slug | P5 | Blocker |
 | BE-13 | `read /referrers/resolve`, from `zoomlink/ZoomLinkAutoLinkService:146/239` | D358: a recruiter's Zoom texting identity is their MOSO Admin key | `zoom-link-autolink` | caught, retried; new staff get no SMS identity | **No phase owns it.** zoom-go `los_user_id` is the old-LOS key | ~~Blocker~~ **Replaced-on** (D424 zoom-go identity (staging on); re-measured 08/11 evening) |
 | BE-14 | `read resolve`, from `ProgramMemberLinkService:306` | D202: checks that a Program member's e-mail is that MOSO Admin | system actor | 503 "MOSO is unavailable" | P5 moso-aid | Blocker |
-| BE-15 | agreementDryRun, from `AgreementStatusServiceImpl:112`, `AgreementSendServiceImpl:229`, `MosoSignedReconcileTickService:319` | Agreement status card; pre-send check | agreement-send | status carries a reason, no throw | P4 S4/S5 | ~~Blocker~~ **Replaced-dark** (D409 (signing-link state replaces the dry run for Recruit-only leads); re-measured 08/11 evening) |
+| BE-15 | agreementDryRun, from `AgreementStatusServiceImpl:112`, `AgreementSendServiceImpl:229`, `MosoSignedReconcileTickService:319` | Agreement status card; pre-send check | agreement-send | status carries a reason, no throw | P4 S4/S5 | ~~Blocker~~ **Replaced-dark** (D409 (signing-link state replaces the dry run for Recruit-only leads); re-measured 08/11 evening) → **Replaced-on** (D409 live on staging, 1 COMPLETED envelope; re-measured 09/11 midday, §0d) |
 | BE-16 | `webinar/WebinarClient:152-171` (packs webplus getNextWebinars), from the picker, `SourceDetailDecorator`, `WebinarFollowUps`, `NurtureTemplateVariables`, `WebinarConfirmationMail` | MOSO webinar picker, list dates, session dating | `RECRUIT_WEBINAR_BASE_URL` | UNAVAILABLE, never throws | Picker replaced by D392 `CallWebinarPick` (webinar-schedule) | Replaced-on |
 
 ### 1c. Inbound push and MOSO-sourced data
@@ -185,7 +245,7 @@ Paths are under `src/main/java/com/loanfactory/recruit/`. Columns:
 | id | Site | Business effect | Gate | stg / prod | Replacement | Status |
 |---|---|---|---|---|---|---|
 | BE-17 | `moso/controller/PublicWebhookController:92`, then `MosoWebhookHandler` and `MosoRowUpsertServiceImpl` | **Creates and updates every production lead** | `MOSO_WEBHOOK_API_KEY` | secret / secret | D356 lead intake (stg true / prod absent); D382/D393 Add lead. P3 forms, FB ads and Calendly still owed | Replaced-on |
-| BE-18 | `MosoRowUpsertServiceImpl:745-751,1567`; `ExceptionsController:70-109` (D287) | Fee paid / agreement signed in MOSO moves the Recruit offer | — | — | Fee: D375 PayPal (stg on / prod absent). Signature: P4 S5 | ~~Blocker~~ **Replaced-dark** (fee D375 on; signature D409 dark; re-measured 08/11 evening) |
+| BE-18 | `MosoRowUpsertServiceImpl:745-751,1567`; `ExceptionsController:70-109` (D287) | Fee paid / agreement signed in MOSO moves the Recruit offer | — | — | Fee: D375 PayPal (stg on / prod absent). Signature: P4 S5 | ~~Blocker~~ **Replaced-dark** (fee D375 on; signature D409 dark; re-measured 08/11 evening) → **Replaced-on** (D409 live on staging, 1 COMPLETED envelope; re-measured 09/11 midday, §0d) |
 | BE-19 | `MosoRowUpsertServiceImpl:556`, then `WebinarSignalCloser` | D277: a MOSO webinar registration or attendance closes follow-ups | `webinar-signals` | true / true | D359–D365 own sessions + Meet attendance | Replaced-on |
 | BE-20 | `MosoOwnerSync:135/170` | D310: the S5–S7 owner follows MOSO's recruiter | `moso-owner-sync` | true / true | Native claim/transfer, D338 auto-assign | Replaced-on |
 | BE-21 | `MosoRowUpsertServiceImpl:362/500/1497` | Referrer and program credit taken from MOSO fields | — | — | Intake carries referredBy (D339); bonus state owed by P5 | ~~Blocker~~ **Replaced-dark** (D420 Recruit computes the bonus state (staging on, shadow vs packs, no payout); re-measured 08/11 evening) |
@@ -199,7 +259,7 @@ Paths are under `src/main/java/com/loanfactory/recruit/`. Columns:
 | id | Registrar / tick | Effect | Gate | stg / prod | Replacement | Status |
 |---|---|---|---|---|---|---|
 | BE-26 | `PacksWritebackTickCronRegistrar:53`, `PacksWritebackTickServiceImpl#tickOnce` | Delivers BE-01..BE-09 | `PACKS_WRITEBACK_INTERNAL_API_KEY` | secret / secret | Carries the blockers above | Blocker |
-| BE-27 | `MosoSignedReconcileTickCronRegistrar:47`, `MosoSignedReconcileTickService` | D246: polls MOSO for signed agreements every 20 min | `moso-signed-reconcile` (true) | true / true | P4 S5 (DE COMPLETED event); keep for in-flight Loan Officers | ~~Blocker~~ **Replaced-dark** (D409 ESIGN_ENVELOPE_COMPLETED subscription (#916 pre-set on staging, flag off); re-measured 08/11 evening) |
+| BE-27 | `MosoSignedReconcileTickCronRegistrar:47`, `MosoSignedReconcileTickService` | D246: polls MOSO for signed agreements every 20 min | `moso-signed-reconcile` (true) | true / true | P4 S5 (DE COMPLETED event); keep for in-flight Loan Officers | ~~Blocker~~ **Replaced-dark** (D409 ESIGN_ENVELOPE_COMPLETED subscription (#916 pre-set on staging, flag off); re-measured 08/11 evening) → **Replaced-on** (D409 live on staging, 1 COMPLETED envelope; re-measured 09/11 midday, §0d) |
 | BE-28 | `ProgramSyncTickCronRegistrar:36`, `ProgramSyncService`, then `MosoAidRosterClient:88` | D202: Recruiter Program roster from moso-aid | setting `program_sync.mode` (not measured) | — | P5 moso-aid | Blocker |
 | BE-29 | `ReferralNoticeCronRegistrar:44`, `ReferralNoticeTickServiceImpl` | D317: referrer digest mail (reads packs referrals) | `referrals-notify` | true / absent | P5 | Blocker → **Replaced-dark** (D429 (clears once RECRUIT); re-measured 09/11 night) |
 | BE-30 | `ReferrerRoleSweep:79-109` on the RBAC reconcile tick | D326: grants REFERRER from packs referrals | `referrer-role` | true / true | P5 | Blocker → **Replaced-dark** (D429 (clears once RECRUIT); re-measured 09/11 night) |
@@ -211,7 +271,7 @@ Paths are under `src/main/java/com/loanfactory/recruit/`. Columns:
 | BE-31 | `candidate/MosoRecordRequiredFlag` (`OfferServiceImpl:172/745`, `InviteResendServiceImpl:134`, `FollowUpServiceImpl:568`) | A lead with no MOSO record cannot be invited | `moso-record-required` (true); `portal-join-link` | "false",true / absent,absent | D382 + D399 | Replaced-on |
 | BE-32 | `MosoLink.isLinked` in offer, resend, delivery, dedup | `legacy_key` picks the packs path or the portal path | — | — | D399 / D382 | Replaced-on |
 | BE-33 | `OnboardingSpecialistAssignmentServiceImpl:119/133` | D370: auto-pick only specialists MOSO knows | `ob-auto-pick-moso-known` | "false" / absent | D397 | Replaced-on |
-| BE-34 | `onboarding/mail/WelcomeMail:76-80` | Welcome is skipped as SENT_BY_MOSO when the 1-1 write-back is on and the Loan Officer has a MOSO record | write-back flags | on / on | Tied to BE-03 / P4 | ~~Blocker~~ **Replaced-dark** (D409: Recruit welcome + DE envelope for Recruit-only leads; re-measured 08/11 evening) |
+| BE-34 | `onboarding/mail/WelcomeMail:76-80` | Welcome is skipped as SENT_BY_MOSO when the 1-1 write-back is on and the Loan Officer has a MOSO record | write-back flags | on / on | Tied to BE-03 / P4 | ~~Blocker~~ **Replaced-dark** (D409: Recruit welcome + DE envelope for Recruit-only leads; re-measured 08/11 evening) → **Replaced-on** (D409 live on staging, 1 COMPLETED envelope; re-measured 09/11 midday, §0d) |
 | BE-35 | `RecruitApiClient` actor header | Every call acts as a MOSO Admin holding RECRUITING (A-019) | — | — | Goes away in P6 | Blocker |
 
 ### 1f. Secrets and config (key names only)
