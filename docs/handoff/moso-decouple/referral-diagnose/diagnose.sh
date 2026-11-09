@@ -49,7 +49,7 @@ q "SELECT c.source, c.referred_source IS NOT NULL AS has_referred_source, c.lega
 echo "== 4. The referrer disagreements (HAS_SNAPSHOT_OTHER_REFERRER sample): what Recruit stored and from where"
 q "SELECT p.decision_source, p.referrer_basis, p.program,
           date_trunc('month', p.registered_at)::date AS registered_month,
-          left(md5(lower(p.referrer_key)), 10) AS recruit_referrer_hash,
+          left(encode(sha256(convert_to(lower(p.referrer_key),'UTF8')),'hex'), 10) AS recruit_referrer_hash,
           (SELECT count(*) FROM referral_attribution_events e WHERE e.candidate_id=p.candidate_id) AS attribution_events,
           (SELECT e.reason FROM referral_attribution_events e WHERE e.candidate_id=p.candidate_id ORDER BY occurred_at DESC LIMIT 1) AS last_attribution_reason,
           count(*) OVER () AS total
