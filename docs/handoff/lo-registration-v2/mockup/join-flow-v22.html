@@ -211,7 +211,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 .nmls{border:1px solid var(--gray-mid1);border-radius:10px;background:var(--page);padding:14px;display:grid;gap:12px}
 .nmls .src{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:var(--t-sm);color:var(--gray-dark)}
 .nmls .src b{color:var(--black);font-family:var(--head)}
-.ro{display:flex;gap:6px;flex-wrap:wrap}
+.dl .ro{display:flex;gap:6px;flex-wrap:wrap}
 .ro span{background:var(--white);border:1px solid var(--gray-mid1);border-radius:99px;padding:2px 10px;font-weight:700;font-size:var(--t-sm)}
 .warn{background:var(--tint);border:1px solid var(--tint-2);border-radius:8px;padding:10px 12px;font-size:var(--t-sm);display:grid;gap:4px}
 .warn b{font-family:var(--head)}
@@ -237,6 +237,8 @@ details.sum .dl{padding:4px 18px 16px}
 .covers li{margin-left:18px}
 .cmpto{display:inline-block;margin-top:2px;font-size:var(--t-sm);font-weight:700;color:var(--orange-ink)}
 @media (max-width:600px){.pick{grid-template-columns:1fr}.lookup{grid-template-columns:1fr}}
+.sub .req,.warn .req{background:none}
+.dl .ro span{white-space:nowrap}
 </style>
 
 <div class="pad"><div class="wrap toc">
@@ -255,7 +257,7 @@ details.sum .dl{padding:4px 18px 16px}
     <tbody>
       <tr><td>1</td><td>No hero; people on this page already decided to join</td><td>Orange hero with 240+ / 2,600+ / $1,000+</td><td><span class="k cut">Removed</span> Page opens on the form</td></tr>
       <tr><td>2</td><td>Too many steps, steps repeat each other</td><td>7 steps: About you, License, Call, Application, Review, Pay &amp; sign, NMLS</td><td><span class="k new">5 steps</span> About you (with license), Quick call?, Application, Pay &amp; sign, NMLS access</td></tr>
-      <tr><td>3</td><td>Top bar says 7 steps, side list says 5</td><td>Two different step lists</td><td><span class="k new">One bar</span> Same 5 steps on every screen; side list removed</td></tr>
+      <tr><td>3</td><td>Top bar says 7 steps, side list says 5</td><td>Two different step lists</td><td><span class="k new">One bar</span> Same 5 steps in the top bar and the side list</td></tr>
       <tr><td>4</td><td>Required = asterisk, same as every app</td><td>Orange "Required" chips</td><td><span class="k new">Asterisk</span> Look and feel to align with Tài Phạm</td></tr>
       <tr><td>5</td><td>Pull licenses from NMLS Consumer Access</td><td>Typed by the Loan Officer</td><td><span class="k new">Auto</span> NMLS ID → legal name + licensed states (read-only) + current sponsor</td></tr>
       <tr><td>6</td><td>Licensed states first, then states to sponsor (only from those)</td><td>Sponsor states in step 2, licensed states in step 4</td><td><span class="k new">Reordered</span> Sponsor states picked from the licensed list</td></tr>
@@ -295,37 +297,34 @@ details.sum .dl{padding:4px 18px 16px}
     <button type="button" data-s="other">Sponsored by another company</button>
   </div>
   <div class="frame" data-step="1">
-    <div class="pad main"><div class="col">
-      <h1>Join Loan Factory</h1>
-      <div class="stars">Fields with <b>*</b> are required.</div>
+    <div class="pad main"><div class="layout"><div class="col">
+      <h1>First, tell us a bit about yourself</h1>
       <div class="box">
         <div class="g2"><div class="f"><label for="fn">First name <span class="req">Required</span></label><input class="in" id="fn" value="Jane"></div><div class="f"><label for="ln">Last name <span class="req">Required</span></label><input class="in" id="ln" value="Smith"></div></div>
         <div class="g2"><div class="f"><label for="em">Email <span class="req">Required</span></label><input class="in" id="em" value="jane@email.com"></div><div class="f"><label for="mo">Mobile phone <span class="req">Required</span></label><input class="in" id="mo" value="(714) 555-0142"></div></div>
         <div class="f" data-show="page:company"><label for="heard">How did you hear about Loan Factory? <span class="req">Required</span></label>
-          <select class="in" id="heard"><option value="">Select</option><option selected>A Loan Factory Loan Officer referred me</option><option>Social media</option><option>Google search</option><option>Job posting</option><option>Webinar or event</option><option>Other</option></select></div>
-        <div class="f" data-show="page:company"><div class="person"><div class="av">MM</div><div><b>Matt Moghaddam</b><small>NMLS 1234567 · matt@loanfactory.com</small></div></div></div>
+          <select class="in" id="heard"><option value="">Select</option><option value="lo" selected>A Loan Factory Loan Officer referred me</option><option>Social media</option><option>Google search</option><option>Job posting</option><option>Webinar or event</option><option>Other</option></select></div>
+        <div class="sub" data-show="heard:lo"><div class="lbl">Which Loan Factory Loan Officer referred you? <span class="req">Required</span></div>
+          <div class="combo" id="combo"></div></div>
         <div class="f" data-show="page:lopage"><div class="lbl">Referred by</div>
           <div class="person"><div class="av">MM</div><div><b>Matt Moghaddam</b><small>NMLS 1234567 · matt@loanfactory.com</small></div></div></div>
       </div>
 
       <div class="box">
-        <div class="lookup"><div class="f"><label for="nmls">NMLS ID <span class="req">Required</span></label><input class="in" id="nmls" value="1234567"></div><button class="btn2" type="button" style="height:44px">Look up</button></div>
-        <div class="nmls">
+        <div class="lookup"><div class="f"><label for="nmls">NMLS ID <span class="req">Required</span></label><input class="in" id="nmls" value="1234567"></div><button class="btn2" type="button" id="lookup" style="height:44px">Look up</button></div>
+        <div class="hint" id="nmlsmsg" hidden></div>
+        <div class="nmls" id="nmlscard">
           <div class="src"><b>Found on NMLS Consumer Access</b><span>Updated just now</span></div>
           <dl class="dl">
             <div><dt>Legal name</dt><dd>Jane Anne Smith</dd></div>
             <div><dt>Current sponsor</dt><dd data-show="spon:none">None</dd><dd data-show="spon:other">ABC Home Loans LLC</dd></div>
-            <div class="wide"><dt>Licensed states (3)</dt><dd><div class="ro"><span>California</span><span>Texas</span><span>Washington</span></div></dd></div>
+            <div class="wide"><dt>Licensed states (3)</dt><dd><div class="ro" id="licro"></div></dd></div>
           </dl>
           <div class="warn" data-show="spon:other"><b>You're sponsored by ABC Home Loans LLC</b>Some states don't allow you to work for two companies at once. Washington is one of them: we can sponsor you there only after ABC Home Loans releases your sponsorship. <a href="#" style="color:var(--orange-ink)">See state rules</a></div>
         </div>
         <div class="f"><div class="lbl">States you want us to sponsor <span class="req">Required</span></div>
-          <div class="hint">Pick from the states you're licensed in. We sponsor up to 3.</div>
-          <div class="pick" id="pick">
-            <button class="pk" type="button" data-st="CA" aria-pressed="true"><span>California</span></button>
-            <button class="pk" type="button" data-st="TX" aria-pressed="true"><span>Texas</span></button>
-            <button class="pk" type="button" data-st="WA" aria-pressed="false"><span>Washington</span></button>
-          </div></div>
+          <div class="multi" id="sponsor"></div>
+          <div class="hint">Only the states you're licensed in.</div></div>
         <div class="sub" data-show="ca:yes"><div class="lbl">California license type <span class="req">Required</span></div>
           <div class="seg" data-tog="catype"><button type="button" data-v="dfpi">DFPI MLO</button><button type="button" data-v="dre" aria-pressed="true">DRE-endorsed MLO</button></div>
           <div class="g2" data-show="catype:dre"><div class="f"><label for="dren">DRE license number <span class="req">Required</span></label><input class="in" id="dren" placeholder="01234567"></div><div class="f"><label for="dret">DRE license type <span class="req">Required</span></label><select class="in" id="dret"><option>Select</option><option>Salesperson</option><option>Broker</option></select></div></div>
@@ -337,7 +336,7 @@ details.sum .dl{padding:4px 18px 16px}
         <div class="webcard">
           <div class="f"><div class="lbl">Do you have an existing website or landing page that promotes mortgages? <span class="req">Required</span></div>
             <div class="seg" data-tog="web"><button type="button" data-v="yes">Yes</button><button type="button" data-v="no" aria-pressed="true">No</button></div></div>
-          <div class="f" data-show="web:yes"><div class="lbl">Website URL <span class="req">Required</span></div><input class="in" id="web1" placeholder="https://"><button class="add" type="button">+ Add another website</button></div>
+          <div class="f" data-show="web:yes"><div class="lbl">Website URL <span class="req">Required</span></div><div class="rows" id="webrows"></div><button class="add" type="button" id="addweb">+ Add another website</button></div>
           <label class="check"><input type="checkbox" id="ack"> I agree to obtain Loan Factory's approval before creating any new website or landing page that promotes mortgages. <span class="req">Required</span></label>
         </div>
         <div class="webcard">
@@ -349,7 +348,8 @@ details.sum .dl{padding:4px 18px 16px}
         <label class="check"><input type="checkbox" id="sms1"> Text me about my application. Msg and data rates may apply. Reply STOP to opt out. Privacy · Terms</label>
         <div class="actions"><span></span><button class="btn" type="button">Continue</button></div>
       </div>
-    </div></div>
+    </div>
+    <aside class="side" data-side="1"></aside></div></div>
   </div>
 </div></div>
 
@@ -358,7 +358,10 @@ details.sum .dl{padding:4px 18px 16px}
   <div class="frame" data-step="2">
     <div class="pad main">
       <h1>Would you like a quick call first?</h1>
-      <div class="seg" id="callq"><button type="button" id="cq-yes" aria-pressed="true">Yes, call me</button><button type="button" id="cq-no" aria-pressed="false">No, I'm ready to apply</button></div>
+      <div class="paths">
+        <button class="path" type="button" id="cq-yes" aria-pressed="true"><span class="ic">☎</span><b>Yes, call me</b><small>Pick up to 3 times. We'll go over comp, our platform and your questions</small></button>
+        <button class="path" type="button" id="cq-no" aria-pressed="false"><span class="ic">✓</span><b>No, I'm ready to apply</b><small>I already spoke with your team</small></button>
+      </div>
       <div id="callblock" style="display:grid;gap:14px">
         <div class="card" id="card">
           <div class="cardhead"><b>Pick up to 3 times that work for you</b><span class="hint">30 minutes · Pacific Time</span></div>
@@ -404,8 +407,8 @@ details.sum .dl{padding:4px 18px 16px}
     <button type="button" data-s="up" aria-pressed="true">Uploaded</button>
     <button type="button" data-s="empty">Not yet</button>
   </div>
-  <div class="frame" data-step="3">
-    <div class="pad main"><div class="col">
+  <div class="frame" data-chrome="welcome" data-step="3">
+    <div class="pad main"><div class="layout"><div class="col">
       <h1>Your application</h1>
       <div class="strong"><b>Fill in everything.</b> We review every application before we sponsor you. Missing or left-out information, including any social media account, can stop your sponsorship.</div>
       <details class="sum"><summary>About you and your license <span>Jane Smith · NMLS 1234567 · CA, TX · Edit</span></summary>
@@ -439,13 +442,14 @@ details.sum .dl{padding:4px 18px 16px}
 
       <label class="check"><input type="checkbox" id="true1"> I confirm all information I provided is true and correct. <span class="req">Required</span></label>
       <div class="actions"><button class="btn2" type="button">Back</button><button class="btn" type="button" data-show="s3:after">Continue to payment</button><button class="btn" type="button" data-show="s3:ready">Submit application</button></div>
-    </div></div>
+    </div>
+    <aside class="side" data-side="3"></aside></div></div>
   </div>
 </div></div>
 
 <div class="pad"><div class="wrap" id="s3b">
   <div class="flabel"><b>Waiting for approval</b><span>only on "No call yet", until the onboarding specialist approves (Victoria's rule)</span></div>
-  <div class="frame" data-step="3">
+  <div class="frame" data-chrome="welcome" data-step="3">
     <div class="pad main"><div class="hero">
       <div class="big wait">⏳</div>
       <h2>Thanks, Jane. We're reviewing your application.</h2>
@@ -461,7 +465,7 @@ details.sum .dl{padding:4px 18px 16px}
 <div class="pad"><div class="wrap" id="s4">
   <div class="flabel"><b>Step 4 · Pay &amp; sign</b><span>right after the application when approved; the link is only for people who stopped</span></div>
   <div class="scen" data-group="s4"><span>Scenario:</span><button type="button" data-s="pay" aria-pressed="true">Pays the fee</button><button type="button" data-s="waived">Fee waived</button><button type="button" data-s="sign">Paid, now sign</button></div>
-  <div class="frame" data-step="4">
+  <div class="frame" data-chrome="welcome" data-step="4">
     <div class="pad main"><div class="hero">
       <h2 data-show="s4:pay">One-time $100 onboarding fee</h2>
       <h2 data-show="s4:waived">Your $100 fee is waived</h2>
@@ -486,7 +490,7 @@ details.sum .dl{padding:4px 18px 16px}
 
 <div class="pad"><div class="wrap" id="s5">
   <div class="flabel"><b>Step 5 · NMLS access</b></div>
-  <div class="frame" data-step="5">
+  <div class="frame" data-chrome="welcome" data-step="5">
     <div class="pad main"><div class="hero">
       <h2>Give Loan Factory access to your NMLS record</h2>
       <div class="hint">We need it to file your sponsorship. You can also do it later with your onboarding specialist.</div>
@@ -498,7 +502,7 @@ details.sum .dl{padding:4px 18px 16px}
 
 <div class="pad"><div class="wrap" id="s6" style="margin-bottom:48px">
   <div class="flabel"><b>Done</b></div>
-  <div class="frame" data-step="6">
+  <div class="frame" data-chrome="welcome" data-step="6">
     <div class="pad main"><div class="hero">
       <div class="big">✓</div>
       <h2>You're all set</h2>
@@ -516,31 +520,60 @@ const $=id=>document.getElementById(id);
 const STEPS=["About you","Quick call","Application","Pay & sign","NMLS access"];
 document.querySelectorAll(".frame").forEach(fr=>{
   const st=+fr.dataset.step||0;
-  fr.insertAdjacentHTML("afterbegin",`<div class="gh">Site header (global)</div>`);
+  const band=fr.dataset.chrome==="welcome"?`<div class="pad strip"><b>Welcome back, Jane</b></div>`:"";
+  fr.insertAdjacentHTML("afterbegin",`<div class="gh">Site header (global)</div>${band}`);
   fr.insertAdjacentHTML("beforeend",`<div class="gh" style="border-top:1px dashed var(--gray-mid1);border-bottom:0">Site footer (global)</div>`);
   if(!st)return;
   const bar=STEPS.map((n,i)=>{const s=i+1,c=s<st?"done":s===st?"cur":"";return `<div class="step ${c}"><i>${s<st?"✓":s}</i><span>${n}</span></div>`;}).join("");
   fr.querySelector(".main").insertAdjacentHTML("afterbegin",`<div class="steps">${bar}</div>`);
+  const side=fr.querySelector("[data-side]");
+  if(side)side.innerHTML=`<h4>Your steps</h4><ol>${STEPS.map((n,i)=>{const s=i+1;return `<li class="${s<st?"done":s===st?"cur":""}"><i>${s<st?"✓":s}</i>${n}</li>`;}).join("")}</ol>`;
 });
-const state={page:"company",spon:"none",ca:"yes",catype:"dre",emp:"free",web:"no",sr:"no",s3:"after",emp3:"1099",dl:"up",s4:"pay"};
+const state={heard:"lo",page:"company",spon:"none",ca:"yes",catype:"dre",emp:"free",web:"no",sr:"no",s3:"after",emp3:"1099",dl:"up",s4:"pay"};
 function apply(){
   state.emp=state.ca==="yes"&&state.catype==="dfpi"?"forced":"free";
   document.querySelectorAll("[data-show]").forEach(el=>el.classList.toggle("on",el.dataset.show.split(" ").some(t=>{const [g,v]=t.split(":");return state[g]===v;})));
 }
 document.querySelectorAll(".scen").forEach(sc=>sc.querySelectorAll("button").forEach(b=>b.onclick=()=>{
-  state[sc.dataset.group]=b.dataset.s;sc.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));apply();}));
+  state[sc.dataset.group]=b.dataset.s;sc.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
+  if(sc.dataset.group==="page")state.heard=state.page==="company"&&$("heard").value==="lo"?"lo":"x";apply();}));
 document.querySelectorAll("[data-tog]").forEach(sg=>sg.querySelectorAll("button").forEach(b=>b.onclick=()=>{
   state[sg.dataset.tog]=b.dataset.v;sg.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));apply();}));
 document.querySelectorAll(".seg:not([data-tog]):not(#callq) button,.typecards .tc").forEach(b=>b.addEventListener("click",()=>{
   [...b.parentElement.children].forEach(x=>x.setAttribute("aria-pressed",String(x===b)));}));
-document.querySelectorAll("#pick .pk").forEach(b=>b.onclick=()=>{b.setAttribute("aria-pressed",String(b.getAttribute("aria-pressed")!=="true"));
-  state.ca=$("pick").querySelector('[data-st="CA"]').getAttribute("aria-pressed")==="true"?"yes":"no";apply();});
-function multi(el,opts,init){let sel=[...init];
+function multi(el,opts,init,onChange){let sel=[...init];
   function draw(){el.innerHTML=sel.map(k=>`<span class="tagx">${opts[k]}<button type="button" aria-label="Remove ${opts[k]}" data-k="${k}">×</button></span>`).join("")+
     `<select aria-label="Add"><option value="">${sel.length?"":"Add"}</option>${Object.keys(opts).filter(k=>!sel.includes(k)).map(k=>`<option value="${k}">${opts[k]}</option>`).join("")}</select>`;
-    el.querySelectorAll("button").forEach(b=>b.onclick=()=>{sel=sel.filter(x=>x!==b.dataset.k);draw();});
-    el.querySelector("select").onchange=e=>{if(e.target.value){sel.push(e.target.value);draw();}};}
-  draw();}
+    el.querySelectorAll("button").forEach(b=>b.onclick=()=>{sel=sel.filter(x=>x!==b.dataset.k);draw();onChange&&onChange(sel);});
+    el.querySelector("select").onchange=e=>{if(e.target.value){sel.push(e.target.value);draw();onChange&&onChange(sel);}};}
+  draw();return v=>{sel=[...v];draw();onChange&&onChange(sel);};}
+const NMLS={"1234567":{name:"Jane Anne Smith",states:{CA:"California",TX:"Texas",WA:"Washington"}},"7654321":{name:"Jane Smith",states:{FL:"Florida",GA:"Georgia"}}};
+let setSponsor=null;
+function lookup(){const v=$("nmls").value.trim(),r=NMLS[v];
+  $("nmlscard").hidden=!r;$("nmlsmsg").hidden=!!r;
+  if(!r){$("nmlsmsg").textContent="We couldn't find this NMLS ID. Check the number (try 1234567 or 7654321 in this mockup).";return;}
+  $("nmlscard").querySelector(".dl dd").textContent=r.name;
+  $("licro").innerHTML=Object.values(r.states).map(n=>`<span>${n}</span>`).join("");
+  $("licro").closest(".wide").querySelector("dt").textContent=`Licensed states (${Object.keys(r.states).length})`;
+  const init=Object.keys(r.states).filter(k=>k!=="WA").slice(0,2);
+  setSponsor=multi($("sponsor"),r.states,init,s=>{state.ca=s.includes("CA")?"yes":"no";apply();});
+  state.ca=init.includes("CA")?"yes":"no";apply();}
+$("lookup").onclick=lookup;$("nmls").addEventListener("keydown",e=>{if(e.key==="Enter")lookup();});
+$("heard").onchange=e=>{state.heard=e.target.value==="lo"?"lo":"x";apply();};
+const ROSTER=[["Matt Moghaddam","1234567","matt@loanfactory.com","MM"],["Alex Carter","2034511","alex.carter@loanfactory.com","AC"],["Linh Pham","1500321","linh.pham@loanfactory.com","LP"],["Maria Gomez","1777210","maria.gomez@loanfactory.com","MG"],["Kevin Brooks","1650099","kevin.brooks@loanfactory.com","KB"]];
+let pickedLo=ROSTER[0];
+function drawCombo(){const c=$("combo");
+  if(pickedLo){c.innerHTML=`<div class="person"><div class="av">${pickedLo[3]}</div><div style="flex:1"><b>${pickedLo[0]}</b><small>NMLS ${pickedLo[1]} · ${pickedLo[2]}</small></div><button class="x" type="button" aria-label="Clear" style="width:32px;height:32px">×</button></div>`;
+    c.querySelector("button").onclick=()=>{pickedLo=null;drawCombo();c.querySelector("input").focus();};return;}
+  c.innerHTML=`<input class="in" placeholder="Search by first name, last name, email or NMLS" autocomplete="off" aria-label="Search Loan Officers"><div class="list" hidden></div>`;
+  const inp=c.querySelector("input"),list=c.querySelector(".list");
+  const show=()=>{const w=inp.value.toLowerCase().split(/\s+/).filter(Boolean);const hits=ROSTER.filter(r=>w.every(x=>(r[0]+" "+r[1]+" "+r[2]).toLowerCase().includes(x)));
+    list.hidden=false;list.innerHTML=hits.length?hits.map(r=>`<button type="button" class="opt" data-i="${ROSTER.indexOf(r)}"><div class="av">${r[3]}</div><div><b>${r[0]}</b><small>NMLS ${r[1]} · ${r[2]}</small></div></button>`).join(""):`<div class="none">No Loan Officer matches that search.</div>`;
+    list.querySelectorAll(".opt").forEach(o=>o.onmousedown=e=>{e.preventDefault();pickedLo=ROSTER[+o.dataset.i];drawCombo();});};
+  inp.addEventListener("focus",show);inp.addEventListener("input",show);inp.addEventListener("blur",()=>setTimeout(()=>{list.hidden=true;},150));}
+drawCombo();
+function addWeb(v){const r=document.createElement("div");r.className="rowx";r.innerHTML=`<input class="in" placeholder="https://" value="${v||""}" aria-label="Website URL"><button class="x" type="button" aria-label="Remove">×</button>`;r.querySelector("button").onclick=()=>r.remove();$("webrows").appendChild(r);return r;}
+addWeb("");$("addweb").onclick=()=>addWeb("").querySelector("input").focus();
 multi($("langs"),{en:"English",es:"Spanish",vi:"Vietnamese",zh:"Chinese",ko:"Korean",tl:"Tagalog"},["en","vi"]);
 document.querySelectorAll("select.comp").forEach(s=>{s.innerHTML=`<option value="">Select</option>`+Array.from({length:17},(_,i)=>`<option${i===10?" selected":""}>${+(0.5+i*0.125).toFixed(3)}%</option>`).join("");});
 const PLAT=["Facebook","Instagram","LinkedIn","TikTok","YouTube","Google Business","Zillow","Yelp","X","Other"];
@@ -552,7 +585,7 @@ function renum(){[...reqs.children].forEach((r,i)=>r.querySelector(".n").textCon
 function addReq(v){const r=document.createElement("div");r.className="reqrow";r.innerHTML=`<span class="n"></span><input class="in" aria-label="Request" placeholder="Describe one request" value="${v||""}"><button class="x" type="button" aria-label="Remove request">×</button>`;
   r.querySelector("button").onclick=()=>{r.remove();renum();};reqs.appendChild(r);renum();return r.querySelector("input");}
 addReq("");$("addreq").onclick=()=>addReq("").focus();
-apply();
+lookup();
 const WINS=["9–11 AM","11 AM–1 PM","1–3 PM","3–5 PM"],MAX=3;
 let y=2026,m=10,cur=new Date(2026,10,11),wantCall=true;const sel=new Map();
 const ymd=d=>`${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
