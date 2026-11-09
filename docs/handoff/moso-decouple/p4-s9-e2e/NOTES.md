@@ -271,3 +271,38 @@ kept, `RECRUIT_INTAKE_MIN_SCORE` still 0.5). lf log 02:40:22Z: `captcha score=0 
 | 13 Joined | BLOCKED | needs 12 |
 | 14 Send to HR | BLOCKED | needs 13 |
 | 15 archive | PASS | ARCHIVED, 0 live portal links |
+
+## Run F (Inkless after #140), 09/11 07:14-07:45Z
+
+Approved by Bao (09/11 ~14:10 VN): one Inkless re-test now that document-esign #140 (inert `|d1|` anchor) is merged
+(`e558dd48`, DE staging deploy run 42577044373 green, pod `document-esign-6c48f9f746-tltpt` Ready 07:20Z). Tag `qqmxr`,
+candidate `59a7769f-73fe-433e-a2b5-97deb745e291`, offer `5049c5d7-5051-4311-9e43-1b6835e7c0e7`.
+
+- **Steps 0-11 PASS** in full mode, stopped before the sign step (a local copy of the script with
+  `--stop-before-sign`, so `signing-link` was never asked while `use_inkless` was false, which would have taken the
+  built-in path). Step 10 first failed twice: PayPal's card form refused the billing last name
+  ("This last name uses unsupported characters", the random tag `NineQqmxr`); the retry used the billing last name
+  `Tester` and paid (sandbox order `1NN34500PV980401N`). **Script fix owed:** fill the card's billing last name with a
+  fixed plain word, not the tag.
+- **Inkless window, about 6 s:** `use_inkless` ON at **07:31:54.6Z**, `signing-link` asked once, OFF at
+  **07:32:00.4Z** and read back `false` (again at 07:46:22Z). DE reads the global switch only at send time; Inkless
+  completion comes by webhook and needs no switch. The proxy answered 503 at 07:32:00Z because the DE send took 9.5 s
+  (render + Inkless upload) and the lf proxy gave up first; recruit-be still recorded the envelope at 07:32:04Z.
+  **Exactly one Inkless envelope**, `bf629712-7c69-416a-8e48-f94ac46f4168` (Inkless id `a961bda7-…`); the next
+  `signing-link` reused it (no availability check, no send).
+- **Signed on Inkless** by automating `secure.inklesshub.com`: I Accept, START, the remembered typed signature
+  ("Set Signature" once), 4 of 4 places (the dates auto-filled), "Complete Signing". Inkless redirected to
+  **`www.viet18.com/register-loan-officer?signed=1`**: "Thank you for signing. We are recording your signature now…".
+- **Completion:** Inkless webhook 07:43Z → DE `SENT → COMPLETED`, **audit certificate downloaded** (701,226 bytes,
+  3 pages), master + certificate + signed-with-certificate + per-document files filed, COMPLETED published;
+  recruit-be's subscriber recorded it 07:43:26Z (`esign_de.offer_signed`), armed the HR hand-off.
+- **Resume** (`results-run-f.txt`): **PASS 5, FAIL 0**: 12 `SIGNED`; 13 `S6`; 14 HR `delivered`,
+  `hr_handoff_outbox` SENT, log `HR handoff delivered: result=hired`; 15 ARCHIVED, 0 live portal links.
+- **DB:** 1 `agreement_envelopes` row, `COMPLETED`, `doc_set ["1099_agreement_form_finalized"]`, `signed_files` 1
+  (`bbfa4c06-…`); offer `SIGNED`.
+- **Signed documents:** `1099_agreement_form_finalized`: **25 pages** = the 22 agreement pages (title and the
+  initials footer on each) + 3 Inkless pages at the end, the same count as the separate 3-page certificate. (The
+  built-in file in Run E part 3 was 22 pages.) No CA statement, no exclusive agent agreement (1099 + TX).
+- **Seen, not blocking:** DE logged `InklessAnchorPlacer: 8 of 8 signature/date tag(s) found no rule to snap to … placed
+  at their text baseline`; on the page the signature box sat on the "By" line.
+- `use_inkless` is **false** on staging.
