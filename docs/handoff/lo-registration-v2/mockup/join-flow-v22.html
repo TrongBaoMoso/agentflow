@@ -241,6 +241,8 @@ details.sum .dl{padding:4px 18px 16px}
 .dl .ro span{white-space:nowrap}
 .fee{font-family:var(--head);font-size:var(--t-xl)}
 .doc{box-sizing:border-box}
+.reqcard{background:var(--tint);border-color:var(--tint-2)}
+.reqcard .sep{border-top-color:var(--tint-2)}
 </style>
 
 <div class="pad"><div class="wrap toc">
@@ -366,12 +368,12 @@ details.sum .dl{padding:4px 18px 16px}
           <div class="f" data-show="web:yes"><div class="lbl">Website URL <span class="req">Required</span></div><div class="rows" id="webrows"></div><button class="add" type="button" id="addweb">+ Add another website</button></div>
           <label class="check"><input type="checkbox" id="ack"> I agree to obtain Loan Factory's approval before creating any new website or landing page that promotes mortgages.</label>
         </div>
-        <div class="webcard">
+        <div class="webcard reqcard">
           <div class="f"><div class="lbl">Do you have any special requests? <span class="req">Required</span></div>
             <div class="hint">Tell us now, before your call, so we can confirm whether we can meet them. Requests raised after you sign may not be possible.</div>
             <div class="seg" data-tog="sr"><button type="button" data-v="no" aria-pressed="true">No, I have no special requests</button><button type="button" data-v="yes">Yes</button></div></div>
-          <div class="f" data-show="sr:yes"><div class="lbl">Your requests <span class="req">Required</span> <span class="hint">One request per row</span></div><div class="rows" id="reqs"></div><button class="add" type="button" id="addreq">+ Add a request</button>
-            <label class="check sep"><input type="checkbox" id="disc"> All approved requests/terms remain subject to state/federal lending regulations and company policy updates required to maintain legal compliance.</label></div>
+          <div class="f" data-show="sr:yes"><div class="lbl">Your requests <span class="req">Required</span></div><div class="rows" id="reqs"></div><button class="add" type="button" id="addreq">+ Add a request</button></div>
+          <label class="check sep" data-show="sr:yes"><input type="checkbox" id="disc"> All approved requests/terms remain subject to state/federal lending regulations and company policy updates required to maintain legal compliance.</label>
         </div>
         <div class="actions"><button class="btn2" type="button">Back</button><button class="btn" type="button">Continue to book your call</button></div>
       </div>
