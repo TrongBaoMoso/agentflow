@@ -28,7 +28,7 @@ Out of scope: omni, notifier, cron-service-go, tera-core, gateway, auth-service 
 | Frontend message keys that name MOSO | **124** (122 distinct texts), in 10 groups |
 | Frontend links that open a MOSO page | **0** |
 
-**Independence on staging (re-measured 09/11 ~12:30 VN, recruit-be master `5c91281e8`, which is what staging runs): 25 / 44 = 57%; counting code that exists but is still dark (shadow or flag off), 32 / 44 = 73%.** History: 34% (08/11 morning), 41% (08/11 evening), 43% (09/11 night). See §0d.
+**09/11 ~21:00 VN (§0e): 25 / 44 = 57% live, 33 / 44 = 75% including dark (BE-12 recounted as dark); 59% / 77% once recruit-be #950 (BE-14 RECRUIT) is on staging.** Earlier: Independence on staging (re-measured 09/11 ~12:30 VN, recruit-be master `5c91281e8`, which is what staging runs): 25 / 44 = 57%; counting code that exists but is still dark (shadow or flag off), 32 / 44 = 73%. History: 34% (08/11 morning), 41% (08/11 evening), 43% (09/11 night). See §0d.
 
 Formula: **Replaced-on ÷ (Replaced-on + Replaced-dark + Blocker)**, over the backend rows in §1.
 - Each row is one place where recruit-be talks to, waits on or relies on old MOSO.
@@ -64,6 +64,30 @@ Blockers by the phase that owes them:
 | **No phase owns it yet:** a recruiter's Zoom texting identity is their MOSO Admin key | BE-13, BE-42 |
 | **No phase owns it yet:** the "next webinar" token and list dates still read the packs picker, even with Recruit webinars on | BE-45 |
 | P6 itself: bridges that only exist to keep MOSO in sync, deleted at the cut | BE-04, BE-05, BE-22, BE-26, BE-35, BE-36, BE-39, BE-40 |
+
+## 0e. Background-only switches, 09/11 evening (~21:00 VN)
+
+Bao approved at ~19:10 VN on 09/11: on STAGING, turn on the Recruit replacements that change NO screen or user-visible data, before the Victoria demo (Tue 10/11 22:00 VN). Each dark row and each shadow-built blocker was checked for anything a staging user could see (page, list, count, mail, bell). Code: recruit-be `origin/master` `5b84e7474` (what staging runs). Production values were not touched.
+
+| Row | Switch | Decision | Why |
+|---|---|---|---|
+| BE-14 | `RECRUIT_PROGRAM_MEMBER_LINK_CHECK` SHADOW → RECRUIT (staging values) | **Flip**: recruit-be #950, waiting on CI (the self-hosted runners queued its jobs for over 80 minutes on 09/11, re-run queued too) | Read only on an admin `/link` (`ProgramMemberLinkService#verifyIdentity`); no tick, page, list, mail or bell. RECRUIT only widens acceptance: Recruit confirms (account ACTIVE + carries the member's websafe key), else packs decides as before. The user-service owner still confirms `ref_keys` cannot be self-set before production (D439). Revert: value back to "SHADOW". |
+| BE-12 | `RECRUIT_REFERRALS_REFERRER_IDENTITY_SOURCE` SHADOW → RECRUIT | **Skipped: visible** | Not "first link only". Under RECRUIT `ownerKeysOf` returns all of a person's keys (D438 addendum 3b), and My referrals reads them all. Staging 09/11: 3 people hold two directory keys. 1 of them is already linked, and their second key carries 5 referral snapshots, so their My referrals would change at once. Also, the 35 people MOSO calls inactive but HR has on the books would be linked at first login, which also runs the headhunter catch-up. Needs Bao to accept those effects. |
+| BE-28 | none exists | **Skipped: no switch** | `ProgramRosterShadowService` only compares. The program sync still grants from `MosoAidRosterClient`; nothing reads Recruit's roster to act. |
+| BE-21 | `referral.bonus_state.*` | **Skipped: nothing to flip** | Readers of `referral_bonus_state` are the admin summary, `RecruitReferralRows` (only under `referrals.source` = RECRUIT, out of scope) and the payout list (parked by Bao, D435). |
+| BE-08, BE-10 | `RECRUIT_FEATURES_PORTAL_MOSO_MIRROR` | **Skipped: visible** | Writes paid/signed into MOSO staging and changes MOSO's flow. A refused mark adds a Recruit timeline line, and the 1-1 write-back waits on the PORTAL_STATE row. |
+| BE-11, 23, 29, 30 | `referrals.source` | Not touched (instruction) | Changes the Referrals pages. |
+
+**Count fix:** §0d counted BE-12 as a Blocker while its §1 row says Replaced-dark (D438 is built and runs in SHADOW). It is counted as Replaced-dark from here on.
+
+| | Replaced-on | Replaced-dark | Blocker | Live | Incl. dark |
+|---|---|---|---|---|---|
+| Now (09/11 ~21:00 VN, #950 not merged) | 25 | 8 | 11 | 25 / 44 = **57%** | 33 / 44 = **75%** |
+| Once #950 is on staging | 26 | 8 | 10 | 26 / 44 = **59%** | 34 / 44 = **77%** |
+
+Outbound read group once #950 lands: 6 rows, 4 on (BE-13, 14, 15, 16), 2 dark (BE-11, 12), 0 blockers. The 10 blockers left are BE-28, BE-41 and the 8 P6 bridges.
+
+**To finish #950:** squash-merge on green, `gh workflow run promote-staging.yml -R LoanFactory-Inc/recruit-be -f sha=<squash sha>`, check the pod env and the startup line `Program member link check: RECRUIT`, and watch ERROR lines for 15 min (baseline 09/11, 3 h: 6 ERRORs, all `BaseExceptionHandler` "No referrer identity shadow run has finished on this pod yet"). Then move BE-14 to Replaced-on in §1.
 
 ## 0d. Re-measure, 09/11 midday (~12:30 VN)
 
@@ -236,7 +260,7 @@ Paths are under `src/main/java/com/loanfactory/recruit/`. Columns:
 | BE-11 | `read /referrals/byOwner`, via `referralview/client/RecruitApiReferralOwnershipClient:137`, for My referrals, admin Referrals and CSV export | MOSO is the source of referrals and bonus state | setting `referrals.enabled` (not measured) | 503 `REFERRALS_UNAVAILABLE` | P5 referral bonus | Blocker → **Replaced-dark** (D429 referral list from Recruit data, `referrals.source` SHADOW on staging; re-measured 09/11 night) |
 | BE-12 | `read /referrers/resolve`, from `ReferrerIdentityServiceImpl:55`, `MosoLoanOfficerCheck` (D374), `DefaultReferralLinks:80` | Maps a person to their MOSO Admin key; "is a Loan Officer"; site domain | same | 503; the Loan Officer check falls back to roles; the link falls back to the /join slug | P5 | ~~Blocker~~ **Replaced-dark** (identity: D438 directory + RECRUIT-first resolve, staging SHADOW, 95% agreement where both answer, 09/11; after #949 0 ambiguous, 0 other-user links; site domain waits for P5, `/join` fallback) |
 | BE-13 | `read /referrers/resolve`, from `zoomlink/ZoomLinkAutoLinkService:146/239` | D358: a recruiter's Zoom texting identity is their MOSO Admin key | `zoom-link-autolink` | caught, retried; new staff get no SMS identity | **No phase owns it.** zoom-go `los_user_id` is the old-LOS key | ~~Blocker~~ **Replaced-on** (D424 zoom-go identity (staging on); re-measured 08/11 evening) |
-| BE-14 | `read resolve`, from `ProgramMemberLinkService:306` | D202: checks that a Program member's e-mail is that MOSO Admin | system actor | 503 "MOSO is unavailable" | P5 moso-aid | Blocker |
+| BE-14 | `read resolve`, from `ProgramMemberLinkService:306` | D202: checks that a Program member's e-mail is that MOSO Admin | system actor | 503 "MOSO is unavailable" | P5 moso-aid | Blocker→ Replaced-on once recruit-be #950 is on staging (D439 RECRUIT: Recruit first, packs fallback; §0e) |
 | BE-15 | agreementDryRun, from `AgreementStatusServiceImpl:112`, `AgreementSendServiceImpl:229`, `MosoSignedReconcileTickService:319` | Agreement status card; pre-send check | agreement-send | status carries a reason, no throw | P4 S4/S5 | ~~Blocker~~ **Replaced-dark** (D409 (signing-link state replaces the dry run for Recruit-only leads); re-measured 08/11 evening) → **Replaced-on** (D409 live on staging, 1 COMPLETED envelope; re-measured 09/11 midday, §0d) |
 | BE-16 | `webinar/WebinarClient:152-171` (packs webplus getNextWebinars), from the picker, `SourceDetailDecorator`, `WebinarFollowUps`, `NurtureTemplateVariables`, `WebinarConfirmationMail` | MOSO webinar picker, list dates, session dating | `RECRUIT_WEBINAR_BASE_URL` | UNAVAILABLE, never throws | Picker replaced by D392 `CallWebinarPick` (webinar-schedule) | Replaced-on |
 
