@@ -36,3 +36,14 @@ Bao shut the machine down. On resume: read this, re-check each line against GitH
   application data still comes from moso-aid (by design: moso-aid owns applications).
 - Worktrees to clean: `$HOME/.cache/claude-recruit/wt-flipall`, `wt-flipall-be{,2,3,4}`, `recruit-be-worktrees/last-failure` (after #964 merges).
 - #964: after it merges, promote the origin/master tip and check a failed run shows `last_failure` on `/last`.
+
+## Update 11/11 01:15 VN — moso-off ON on staging, smoke green
+- #969 merged + live 10/11 23:38 (tip 45dfb7033): RECRUIT_FEATURES_MOSO_OFF=true, startup WARN "moso-off is ON".
+- Smoke (MOSO-OFF-SMOKE.md, results in P6-INVENTORY §0i): all main flows pass; outbox frozen at 309, no MOSO push since flip.
+- Gap fixed: D447 #982 (606afc75f) REFERRER role sweep reads Recruit's referrer directory under moso-off.
+- Pre-flip fixes: D446 #979 (MOSO-linked lead signs via Recruit e-sign under moso-off), #975 docs, #964 lastFailure.
+- role-onb has ONBOARDING again (+RECRUITER); D404 staff fee-paid mail SENT+DELIVERED to it.
+- Full S9 E2E green incl. sign → S6 Joined → HR hand-off (lead perfa, archived).
+- Signing-link 503 = api-gateway-v2 5s timeout; fixed STAGING only in api-gateway-v2 #187 (54af3a4; also bumps golang.org/x/net to 0.62.0 for a new CVE). services.prod.yaml untouched. lf-homepage proxy has its own 10s limit.
+- Bao's demo lead "Bao Demo Qxzja" (WELCOME 22:02 10/11, live link) — do not archive/touch.
+- Next: 09:17 Wed report; 23:47 Wed 24h re-check (MOSO-OFF-SMOKE §3).
