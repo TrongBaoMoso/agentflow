@@ -35,7 +35,8 @@ Reason these waited: the Victoria team demo ran on staging Tue 10/11 22:00-23:00
 - Referral payout via accounting: the accounting-be team (truongdoan / travis) adds an internal payout route.
 - user-service company_email fix (our PR): Tài confirms or deploys prod; 2 questions in the PR.
 - packs Facebook fix (+ moso web.xml): staging only; prod via Vinh/Khải Hot Fix. Bao 09/11: do NOT rotate the Meta secret ("kệ đi, ko cần đổi").
-- ai-hr-be #1343: handled by session 0fcb4e66 (document-esign-pr-140-review).
+- ai-hr-be #1343 + #1369 (HR files the Recruit-signed agreement): DONE on staging 10/11, morning checklist all pass (session 0fcb4e66 closed). Before prod (owners, not urgent): DE #147 HRIS read grant in prod config, use_inkless on prod DE, recruit prod flag `RECRUIT_FEATURES_HR_HANDOFF_AGREEMENT_FIELDS`. Bao 10/11: no FYI to Hùng/Tuấn/Vinh needed. recruit-be #864 item 4 (org log sink) stays open for Khải, does not block anything.
+- Known issue for the portal redesign session (`design/lo-portal-tera`): the first "Ký" on the Recruit portal can show 503 because the DE send takes 9.5-12.5 s, longer than the lf-homepage proxy waits. Fix the proxy timeout in that pass.
 - Stripe for the LO fee: Khải announces it. Until then payment stays in MOSO and Recruit PayPal stays staging-only.
 
 ## Pointers
