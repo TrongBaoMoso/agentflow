@@ -28,7 +28,7 @@ Out of scope: omni, notifier, cron-service-go, tera-core, gateway, auth-service 
 | Frontend message keys that name MOSO | **124** (122 distinct texts), in 10 groups |
 | Frontend links that open a MOSO page | **0** |
 
-**10/11 ~09:20 VN (§0g): 31 / 44 = 70% live, 34 / 44 = 77% including dark, after `referrals.source` = RECRUIT on staging.** Before that, **09/11 ~21:00 VN (§0e): 25 / 44 = 57% live, 33 / 44 = 75% including dark (BE-12 recounted as dark); 59% / 77% once recruit-be #950 (BE-14 RECRUIT) is on staging.** Earlier: Independence on staging (re-measured 09/11 ~12:30 VN, recruit-be master `5c91281e8`, which is what staging runs): 25 / 44 = 57%; counting code that exists but is still dark (shadow or flag off), 32 / 44 = 73%. History: 34% (08/11 morning), 41% (08/11 evening), 43% (09/11 night). See §0d.
+**10/11 ~11:40 VN (§0f): 31 / 44 = 70% live, 36 / 44 = 82% including dark (BE-28 and BE-41 now Replaced-dark, on top of §0g).** Before that, **10/11 ~09:20 VN (§0g): 31 / 44 = 70% live, 34 / 44 = 77% including dark, after `referrals.source` = RECRUIT on staging.** Before that, **09/11 ~21:00 VN (§0e): 25 / 44 = 57% live, 33 / 44 = 75% including dark (BE-12 recounted as dark); 59% / 77% once recruit-be #950 (BE-14 RECRUIT) is on staging.** Earlier: Independence on staging (re-measured 09/11 ~12:30 VN, recruit-be master `5c91281e8`, which is what staging runs): 25 / 44 = 57%; counting code that exists but is still dark (shadow or flag off), 32 / 44 = 73%. History: 34% (08/11 morning), 41% (08/11 evening), 43% (09/11 night). See §0d.
 
 Formula: **Replaced-on ÷ (Replaced-on + Replaced-dark + Blocker)**, over the backend rows in §1.
 - Each row is one place where recruit-be talks to, waits on or relies on old MOSO.
@@ -60,10 +60,44 @@ Blockers by the phase that owes them:
 | P4 S4/S5: e-sign through document-esign, signed state (the MOSO agreement, its dry run, its reconcile, its welcome) | BE-03, BE-06, BE-15, BE-18 (signature half), BE-27, BE-34 |
 | P4: D292 hand-off bell for MOSO-linked Loan Officers | BE-02 |
 | P5: referral bonus state, referrer identity, Ambassador totals, referrer role, digest | BE-11, BE-12, BE-21, BE-23, BE-29, BE-30 |
-| P5: moso-aid (LO Recruiter Program roster and member link) | BE-14, BE-28, BE-41 |
+| P5: moso-aid (LO Recruiter Program roster and member link) | none since 10/11 (§0f): BE-14 on, BE-28 and BE-41 dark (D442) |
 | **No phase owns it yet:** a recruiter's Zoom texting identity is their MOSO Admin key | BE-13, BE-42 |
 | **No phase owns it yet:** the "next webinar" token and list dates still read the packs picker, even with Recruit webinars on | BE-45 |
 | P6 itself: bridges that only exist to keep MOSO in sync, deleted at the cut | BE-04, BE-05, BE-22, BE-26, BE-35, BE-36, BE-39, BE-40 |
+
+## 0f. Program roster source switch built dark, 10/11 (~11:40 VN)
+
+recruit-be #956 (D442, squash `e7d2bcb70`) is on staging. It was promoted by itself, and #957 deployed on top of it at 03:25Z.
+
+- **The switch:** `recruit.features.program-roster-source` picks the roster the LO Recruiter Program sync acts on.
+  - `MOSO_AID` is the default: `MosoAidRosterClient`, unchanged.
+  - `RECRUIT` uses `RecruitRosterReader`. It reads the roster Recruit computes from `program_application_mirror` and `program_applicant_identity`, the same data as D439's `ProgramRosterShadowService`.
+- **No moso-aid on `RECRUIT`:** the sync makes no moso-aid call and needs no moso-aid URL, roster key, app id or namespace. Pins that are set still pin the keys.
+- **Dry-run compare:** with `program-roster-shadow` on, each tick also runs the other source through the same guards and decisions, read only and before any write. It logs `program roster source dry-run` with hashed ids.
+- **Values:** staging `RECRUIT_FEATURES_PROGRAM_ROSTER_SOURCE=MOSO_AID`; production has no key (= `MOSO_AID`). `ProgramRosterSourceValuesTest` guards both.
+- **When to flip:** at Bao's stage 3. The plan is mirror, then a week of matching from 09/11, then approvals in Recruit.
+
+**Staging proof (10/11):**
+
+| Check | Result |
+|---|---|
+| Pod env | `RECRUIT_FEATURES_PROGRAM_ROSTER_SOURCE=MOSO_AID`, `RECRUIT_FEATURES_PROGRAM_ROSTER_SHADOW=true` |
+| Startup line | `Program roster source: MOSO_AID (dry-run comparison on)` |
+| Every tick since 02:10Z (10-minute cron, 7 ticks on the current pod by 04:40Z) | `acting=MOSO_AID other=RECRUIT same=1 differing=1 MOSO_AID{grants=0 revokes=0 suspensions=0} RECRUIT{grants=0 revokes=0 suspensions=1} members=[f50acae235a9:MOSO_AID=[]/RECRUIT=[](COMPANY_EMAIL_MISSING)]` |
+| Tick itself | `program sync tick dry_run: members=53 approved=53 linked=2 grants=0 revokes=0 suspensions=0` (`program_sync.mode` DRY_RUN) |
+| Grants unchanged | `program_role_provisions` 0 rows and `rbac_grant_history` PROGRAM_SYNC 0 rows, both before the deploy and at 04:40Z |
+| ERRORs | 5 on the new pod, none from the program sync (SSE converter, unknown `/me` and `/settings` routes, duplicate-lead refusal) |
+
+**Before flipping to `RECRUIT`, resolve the one difference.** The compare covers the 2 linked members. One of them (`f50acae235a9`) would be **suspended `COMPANY_EMAIL_MISSING`** on `RECRUIT`, because their resolved user-service account has no company e-mail. This is the D439 shadow's "1 the account has none" case. Give that account a company e-mail, or accept the suspension, first.
+
+**BE-41, what it means here:** the program sync no longer *needs* the moso-aid secrets once the source is `RECRUIT`. They stay in `recruit-svc-secret` and values for now. Staging still runs `MOSO_AID`, and the D421 applications import (`ProgramApplicationImportConfiguration`) and the referrals key also read them. They are deleted at the P6 cut.
+
+| | Replaced-on | Replaced-dark | Blocker | Live | Incl. dark |
+|---|---|---|---|---|---|
+| Baseline §0g (10/11 ~09:20 VN) | 31 | 3 | 10 | 31 / 44 = 70% | 34 / 44 = 77% |
+| 10/11 ~11:40 VN (+ BE-28, BE-41 dark) | 31 | 5 (BE-08, BE-10, BE-12, BE-28, BE-41) | 8 | 31 / 44 = **70%** | 36 / 44 = **82%** |
+
+The 8 blockers left are the P6 bridges deleted at the cut: BE-04, 05, 22, 26, 35, 36, 39, 40.
 
 ## 0g. Re-measure after `referrals.source` = RECRUIT, 10/11 (~09:20 VN)
 
@@ -287,7 +321,7 @@ Paths are under `src/main/java/com/loanfactory/recruit/`. Columns:
 | BE-11 | `read /referrals/byOwner`, via `referralview/client/RecruitApiReferralOwnershipClient:137`, for My referrals, admin Referrals and CSV export | MOSO is the source of referrals and bonus state | setting `referrals.enabled` (not measured) | 503 `REFERRALS_UNAVAILABLE` | P5 referral bonus | Blocker → **Replaced-dark** (D429 referral list from Recruit data, `referrals.source` SHADOW on staging; re-measured 09/11 night) |
 | BE-12 | `read /referrers/resolve`, from `ReferrerIdentityServiceImpl:55`, `MosoLoanOfficerCheck` (D374), `DefaultReferralLinks:80` | Maps a person to their MOSO Admin key; "is a Loan Officer"; site domain | same | 503; the Loan Officer check falls back to roles; the link falls back to the /join slug | P5 | ~~Blocker~~ **Replaced-dark** (identity: D438 directory + RECRUIT-first resolve, staging SHADOW, 95% agreement where both answer, 09/11; after #949 0 ambiguous, 0 other-user links; site domain waits for P5, `/join` fallback) |
 | BE-13 | `read /referrers/resolve`, from `zoomlink/ZoomLinkAutoLinkService:146/239` | D358: a recruiter's Zoom texting identity is their MOSO Admin key | `zoom-link-autolink` | caught, retried; new staff get no SMS identity | **No phase owns it.** zoom-go `los_user_id` is the old-LOS key | ~~Blocker~~ **Replaced-on** (D424 zoom-go identity (staging on); re-measured 08/11 evening) |
-| BE-14 | `read resolve`, from `ProgramMemberLinkService:306` | D202: checks that a Program member's e-mail is that MOSO Admin | system actor | 503 "MOSO is unavailable" | P5 moso-aid | Blocker→ Replaced-on once recruit-be #950 is on staging (D439 RECRUIT: Recruit first, packs fallback; §0e) |
+| BE-14 | `read resolve`, from `ProgramMemberLinkService:306` | D202: checks that a Program member's e-mail is that MOSO Admin | system actor | 503 "MOSO is unavailable" | P5 moso-aid | Replaced-on (recruit-be #950 `3dc55a679` on staging: pod env RECRUIT, startup line `Program member link check: RECRUIT`, re-checked 10/11; §0f) |
 | BE-15 | agreementDryRun, from `AgreementStatusServiceImpl:112`, `AgreementSendServiceImpl:229`, `MosoSignedReconcileTickService:319` | Agreement status card; pre-send check | agreement-send | status carries a reason, no throw | P4 S4/S5 | ~~Blocker~~ **Replaced-dark** (D409 (signing-link state replaces the dry run for Recruit-only leads); re-measured 08/11 evening) → **Replaced-on** (D409 live on staging, 1 COMPLETED envelope; re-measured 09/11 midday, §0d) |
 | BE-16 | `webinar/WebinarClient:152-171` (packs webplus getNextWebinars), from the picker, `SourceDetailDecorator`, `WebinarFollowUps`, `NurtureTemplateVariables`, `WebinarConfirmationMail` | MOSO webinar picker, list dates, session dating | `RECRUIT_WEBINAR_BASE_URL` | UNAVAILABLE, never throws | Picker replaced by D392 `CallWebinarPick` (webinar-schedule) | Replaced-on |
 
@@ -311,7 +345,7 @@ Paths are under `src/main/java/com/loanfactory/recruit/`. Columns:
 |---|---|---|---|---|---|---|
 | BE-26 | `PacksWritebackTickCronRegistrar:53`, `PacksWritebackTickServiceImpl#tickOnce` | Delivers BE-01..BE-09 | `PACKS_WRITEBACK_INTERNAL_API_KEY` | secret / secret | Carries the blockers above | Blocker |
 | BE-27 | `MosoSignedReconcileTickCronRegistrar:47`, `MosoSignedReconcileTickService` | D246: polls MOSO for signed agreements every 20 min | `moso-signed-reconcile` (true) | true / true | P4 S5 (DE COMPLETED event); keep for in-flight Loan Officers | ~~Blocker~~ **Replaced-dark** (D409 ESIGN_ENVELOPE_COMPLETED subscription (#916 pre-set on staging, flag off); re-measured 08/11 evening) → **Replaced-on** (D409 live on staging, 1 COMPLETED envelope; re-measured 09/11 midday, §0d) |
-| BE-28 | `ProgramSyncTickCronRegistrar:36`, `ProgramSyncService`, then `MosoAidRosterClient:88` | D202: Recruiter Program roster from moso-aid | setting `program_sync.mode` (not measured) | — | P5 moso-aid | Blocker |
+| BE-28 | `ProgramSyncTickCronRegistrar:36`, `ProgramSyncService`, then `MosoAidRosterClient:88` | D202: Recruiter Program roster from moso-aid | setting `program_sync.mode` (staging DRY_RUN, 10/11) | — | P5 moso-aid | Replaced-dark (D442, recruit-be #956 `e7d2bcb70`: `recruit.features.program-roster-source` RECRUIT reads Recruit's own roster, staging MOSO_AID, production absent; per-tick dry-run compare; §0f) |
 | BE-29 | `ReferralNoticeCronRegistrar:44`, `ReferralNoticeTickServiceImpl` | D317: referrer digest mail (reads packs referrals) | `referrals-notify` | true / absent | P5 | Blocker → **Replaced-dark** (D429 (clears once RECRUIT); re-measured 09/11 night) |
 | BE-30 | `ReferrerRoleSweep:79-109` on the RBAC reconcile tick | D326: grants REFERRER from packs referrals | `referrer-role` | true / true | P5 | Blocker → **Replaced-dark** (D429 (clears once RECRUIT); re-measured 09/11 night) |
 
@@ -334,7 +368,7 @@ Paths are under `src/main/java/com/loanfactory/recruit/`. Columns:
 | BE-38 | `MOSO_WEBHOOK_API_KEY` | both | BE-17 | Replaced-on |
 | BE-39 | `RECRUIT_API_FALLBACK_ACTOR_EMAIL`, `RECRUIT_API_REFERRALS_SYSTEM_ACTOR_EMAIL`, `RECRUIT_MOSO_SIGNED_RECONCILE_ACTOR_EMAIL`, `RECRUIT_PACKS_WRITEBACK_RETRY_UNKNOWN_ACTOR_AS_SYSTEM` | set / partly set | BE-35 | Blocker |
 | BE-40 | `PACKS_WRITEBACK_INTERNAL_API_KEY`, `RECRUIT_MOSO_SIGNED_RECONCILE_INTERNAL_API_KEY`, `RECRUIT_REFERRALS_NOTIFY_INTERNAL_API_KEY` | all three / first two | BE-26/27/29 | Blocker |
-| BE-41 | `RECRUIT_MOSO_AID_BASE_URL`, `RECRUIT_MOSO_AID_ROSTER_KEY`, `RECRUIT_PROGRAM_SYNC_INTERNAL_API_KEY`, `RECRUIT_PROGRAM_SYNC_MOSO_APP_ID/NAMESPACE`, `RECRUIT_REFERRALS_INTERNAL_API_KEY` | both | BE-28 / BE-23 | Blocker |
+| BE-41 | `RECRUIT_MOSO_AID_BASE_URL`, `RECRUIT_MOSO_AID_ROSTER_KEY`, `RECRUIT_PROGRAM_SYNC_INTERNAL_API_KEY`, `RECRUIT_PROGRAM_SYNC_MOSO_APP_ID/NAMESPACE`, `RECRUIT_REFERRALS_INTERNAL_API_KEY` | both | BE-28 / BE-23 | Replaced-dark (D442: on source RECRUIT the program sync needs no moso-aid URL, roster key, app id or namespace; still set while staging runs MOSO_AID, and the D421 applications import and BE-23 still use them; §0f) |
 | BE-42 | `RECRUIT_ZOOM_LINK_AUTOLINK_MOSO_APP_ID/NAMESPACE` | both | BE-13 | ~~Blocker~~ **Replaced-on** (D424: MOSO app id / namespace no longer needed; re-measured 08/11 evening) |
 
 ### 1g. Data shown
