@@ -32,6 +32,22 @@ ai-hr-be, ai-donotcall, document-esign, PayPal, Google, follow-up service.
 … delivered` line, a new outbox row, a new MOSO `webhook_events` row, a user-facing 409 `MOSO_OFF` on a main flow,
 or a new ERROR logger. Record each with file:line under "Staging flip 10/11" in P6-INVENTORY.md.
 
+## 0a. Baseline before the flip (10/11 ~18:52 VN = 11:52Z, MOSO_OFF=false, counts only)
+
+| What | Value |
+|---|---|
+| Pod | 1 pod, started ~11:35Z (a promote landed then); env `RECRUIT_FEATURES_MOSO_OFF=false` |
+| `/admin/moso-off` | `{"moso_off":false,"skipped_since_pod_start":{}}` |
+| Outbox total | 301 rows, newest `created_date` 2026-11-08 14:15Z |
+| Outbox by kind/status | AGREEMENT_SEND SENT 2; INVITE DEAD_LETTER 17 / PENDING 4 / SENT 109 / SKIPPED 1; MEETING_REMINDER SENT 6 / SKIPPED 1; ONBOARDING_MEETING DEAD_LETTER 4 / SENT 54; ONBOARDING_SPECIALIST DEAD_LETTER 10 / SENT 29; PROFILE_WRITEBACK DEAD_LETTER 13 / SENT 27 / SKIPPED 14; WEBINAR_REGISTRATION DEAD_LETTER 3 / SENT 7 |
+| Newest `webhook_events` | MOSO 2026-11-09 14:36:20Z; MMI 2026-10-21 09:29Z |
+| ERROR lines, 24 h to 11:55Z (Spring ` ERROR `, container recruit-be) | 78: `BaseExceptionHandler` 76, `ConcurrentTransactionServiceImpl` 2 |
+| Roster tick (11:50Z) | `program roster source dry-run: acting=RECRUIT other=MOSO_AID same=2 differing=0 RECRUIT{grants=0 revokes=0 suspensions=0} MOSO_AID{…0…}`; `program sync tick dry_run: members=53 approved=53 linked=2 grants=0 revokes=0 suspensions=0 releases=0` |
+| Bonus sweep | 11:41Z `checked=368 written=368 compared=368 failed=0` (first after start); 11:50Z `checked=368 written=0 compared=0 failed=0` (steady: refresh interval not due, so `compared=0` alone is NOT proof of a moso-off skip; look for the `referrals/byOwner` skip line) |
+| Referrer role sweep | `NOT_DUE` every 5 min |
+
+ERROR count query: `gcloud logging read 'resource.type="k8s_container" AND resource.labels.namespace_name="recruit-be" AND resource.labels.container_name="recruit-be" AND textPayload:" ERROR " AND timestamp>="<from>"' --project lenderrate-master --limit 5000 --format='value(textPayload)'`, then count by logger.
+
 ## 1. Flip checks (5 min)
 
 1. `K get deploy recruit-be -o jsonpath='{..env[?(@.name=="RECRUIT_FEATURES_MOSO_OFF")].value}'` → `true`.
@@ -91,7 +107,7 @@ Use one fresh test lead per flow, e-mail `bao.trinh+mosooff<n>@loanfactory.com`.
 ## 3. After 2 h and after 24 h
 1. `curl …/admin/moso-off`: skip map; any op beyond relay tick, signed reconcile tick, moso-push listener, webplus,
    moso-aid roster, resolve/byOwner, enqueue <KIND> → find who called it.
-2. ERROR count by logger vs baseline (56 / 24 h: 54 `BaseExceptionHandler`, 2 `ConcurrentTransactionServiceImpl`).
+2. ERROR count by logger vs baseline §0a (78 / 24 h: 76 `BaseExceptionHandler`, 2 `ConcurrentTransactionServiceImpl`).
 3. Outbox counts unchanged; MOSO webhook max unchanged.
 4. Write the result under "Staging flip 10/11" in P6-INVENTORY.md and update the % in §0i.
 
