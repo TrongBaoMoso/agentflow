@@ -110,15 +110,42 @@ BE-41: the program sync no longer needs the moso-aid secrets. They stay set for 
 
 Smoke checklist and pre-flip baseline: `pause-0911/MOSO-OFF-SMOKE.md`. §0a baseline: outbox 301 rows, newest MOSO push 09/11 14:36Z, 78 ERROR lines in 24 h.
 
-**After the flip (placeholder, filled in from the smoke run):**
-- #969 squash sha / staging deploy run: _TBD_
-- Pod env `RECRUIT_FEATURES_MOSO_OFF=true`, startup line `recruit.features.moso-off is ON`: _TBD_
-- `/admin/moso-off` skip map after 2 h: _TBD_
-- Outbox count and newest MOSO `webhook_events`, unchanged?: _TBD_
-- New ERROR loggers vs the baseline: _TBD_
-- Main flows (lead → invite → onboarding, including linked-lead signing; referrals + My referrals; webinar + drips; roster tick; bonus sweep; portal): _TBD_
-- Gaps found (file:line): _TBD_
-- Count after 24 h: _TBD_
+**After the flip (post-flip smoke, mosooff-prep agent, 10/11 23:38 → 11/11 00:36 VN):**
+
+The flip went live at 16:37Z with #969 (staging tip `45dfb7033`). D447 / #982 (`606afc75f`) was promoted at 17:21Z.
+
+- **Switch:** the pod env has `RECRUIT_FEATURES_MOSO_OFF=true`, the startup WARN reads `recruit.features.moso-off is ON`, and `/admin/moso-off` answers `moso_off:true`.
+- **Skip map** on the 606afc75f pod at 17:35Z, i.e. the moso_off_skip lines counted on that pod:
+  - `packs relay tick` 3, `packs enqueue PROFILE_WRITEBACK` 4, `packs POST /referrals/byOwner` 3 (the D420 bonus compare);
+  - `moso-aid GET /api/recruit/cs-tickets` 3: D448's CS-ticket reader, guarded, so the feature is dark under moso-off.
+
+  On the first pod (16:37–17:21Z) the log also showed:
+  - `packs signed reconcile tick`, `packs POST /referrers/resolve` (site-domain link and sweep, before D447);
+  - `packs enqueue INVITE / ONBOARDING_MEETING / PORTAL_STATE`.
+- **No MOSO traffic.**
+  - Outbox: 309 rows, newest 15:48:36Z, unchanged since the flip.
+  - Newest MOSO `webhook_events` row: 15:48:28Z, unchanged.
+  - No `moso_off dropped a MOSO push` line yet: MOSO staging did not push in the window.
+- **ERRORs since the flip:** 17 lines, all `BaseExceptionHandler`. They are 4xx answers: role-gated pages, an expired portal link, and the smoke's own bad requests. There is no new logger; baseline §0a was 76 `BaseExceptionHandler` + 2 `ConcurrentTransactionServiceImpl` per 24 h.
+
+**Main flows:**
+
+| Flow | Result |
+|---|---|
+| Recruit-only lead | **PASS.** Add lead → invite: SENT, the specialist is auto-assigned, D427 hand-off bell, `handed to the onboarding specialist (D207), no e-mail`. 1-1 DONE: portal link issued, Recruit `WELCOME` mail sent. |
+| MOSO-linked lead (old test lead) | **PASS.** Same as above, plus a `moso_off_skip enqueue INVITE` line. The Recruit WELCOME mail carries the portal link. The portal opens on www.viet18.com with "Thanks for meeting with us" and profile `pre_onboarding_done`, which shows D446 "1-1 reached" working. The signature itself was not driven, because the fee is unpaid (PayPal belongs to another agent). |
+| Referrals | **PASS.** Admin list 123 rows / 46 referrers (same as §0g), My referrals 200, CSV 200. The site-domain variant of the referral link falls back to `/join` (WARN `domain_url link source failed`, expected). |
+| Webinar | **PASS.** `/api/v1/webinars` sessions 5, source LIVE. The 17:00Z `webinar schedule tick` ran (series=6, no errors). |
+| Program roster | **PASS.** `program roster source dry-run: acting=RECRUIT other=MOSO_AID unavailable (moso-aid not configured)` and `program sync tick dry_run: members=53 approved=53 linked=2 grants=0 revokes=0 suspensions=0`. |
+| Bonus sweep | **PASS.** `D420: bonus state sweep checked=368 written=0 compared=0 failed=0`; the packs compare is skipped. |
+| REFERRER role sweep | **GAP, FIXED (D447).** Before the fix: `FAILED: every lookup failed {packs_unavailable=3}`, retried every tick. The owner-key → e-mail step always asked packs. #982 reads Recruit's `referrer_directory` first when the identity source is RECRUIT or moso-off is on; a miss under moso-off counts as `not_in_directory`, which is not stored and not a failure. 17:25Z: `OK processed=3 referrers=3 {has_staff_role=1, not_in_directory=2}`. |
+
+**Gaps:**
+- **One gap, fixed:** `rbac/referrer/ReferrerRoleService.java` (decide → `packs.currentCompanyEmail`), D447, #982.
+- **Open, low:** the 2 `not_in_directory` referrers get REFERRER only once a referrer-directory backfill files their key.
+- **Not a gap:** the D448 CS-ticket reader (moso-aid) is guarded and simply dark under moso-off.
+
+**Count:** 36 / 44 = **82% replaced-on**, unchanged. The 8 P6 bridges are still counted as blockers until #923 deletes them. **With moso-off ON they are disarmed**, so on staging recruit-be now makes no packs or MOSO call and stores no MOSO push. The one remaining moso-aid read, the D421 applications import, is intended. **Count after 24 h:** _TBD_ (re-run §3 of MOSO-OFF-SMOKE.md on 11/11 ~23:40 VN).
 
 ## 0f. Program roster source switch built dark, 10/11 (~11:40 VN)
 
