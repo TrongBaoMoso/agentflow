@@ -1,6 +1,6 @@
 # moso-off smoke checklist (STAGING, after #969 is promoted)
 
-Written 10/11 ~19:00 VN against recruit-be `origin/master` `ff029ade8`, before the flip. Staging only; prod has no
+Written 10/11 ~19:00 VN against recruit-be `origin/master` `ff029ade8`, before the flip. Staging runs `d7dcffb77` since 13:56Z (includes #979 D446, #975, #964). Staging only; prod has no
 `RECRUIT_FEATURES_MOSO_OFF` entry. Mail goes only to the existing allowlist (`bao.trinh+*@loanfactory.com`); no SMS.
 Do not use +stg demo leads. Do not call internal-key endpoints.
 
@@ -70,7 +70,7 @@ Use one fresh test lead per flow, e-mail `bao.trinh+mosooff<n>@loanfactory.com`.
 | Specialist | assign an onboarding specialist | "handed to you" bell for the specialist (D432 native) | `op=enqueue ONBOARDING_SPECIALIST` skip, no outbox row |
 | Portal | open the `?invite=` link | portal steps, PayPal sandbox fee if shown (do not pay unless already allowed) | no `portalState` delivery; `op=enqueue PORTAL_STATE` skip is fine |
 | 1-1 Done | Today / Onboarding → Done with date + W-2/1099 | item done, no "Sync pending" | `op=enqueue ONBOARDING_MEETING` skip; `welcome mail …` NOT "MOSO is told the 1-1 is done"; Recruit welcome `Loan Officer mail sent: kind=WELCOME` |
-| Agreement | Signed step | Recruit e-sign (D409/D434) "Agreement sent for e-signature" for Recruit-only leads | `agreement_envelopes` new row; no packs `agreement/send` |
+| Agreement | Signed step | Recruit e-sign (D409/D434) "Agreement sent for e-signature"; since D446 (#979) also for a MOSO-linked lead (portal signing link after fee + Recruit 1-1 DONE; staff MOSO card shows unavailable = BE-15, expected). Run it once on a MOSO-linked +mosooff lead | `agreement_envelopes` new row; no packs `agreement/send` |
 | Reminders | wait for the 1-1 reminder tick (or check next morning) | — | reminders via Recruit; no `MEETING_REMINDER` outbox row |
 
 ### 2.2 Referrals + My referrals
