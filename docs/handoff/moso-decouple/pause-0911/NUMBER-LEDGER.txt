@@ -73,3 +73,6 @@ PR? D433  V354  p5-referral-source (p4-s4s5-esign): one-time import of packs-onl
 #961 MERGED 10/11 (2053ab70e5a931769e9b3474ea738a72917090df): D444 addendum, NMLS link chained after backfill; on STAGING
 #962 MERGED 10/11 (d857880304f907819c40cf967c770624b0ae36f1): D444 addendum 2 (no D/V), referrer-directory POSTs answer 202 + background run, 409 while busy; on STAGING
 -    D446   -     mosooff-prep agent: under moso-off a MOSO-linked Loan Officer signs through Recruit e-sign (D409) and Recruit's 1-1 DONE item counts as "1-1 reached" for them too (no dead end at the agreement); inert while MOSO_OFF=false; no flag, no V
+#979 MERGED 10/11 (06f88e5bbeac7dbb41058c1d6a64d7729ee39dd0): D446 (no V), moso-off linked-lead e-sign + 1-1 reached; inert while MOSO_OFF=false; on STAGING (deploy d7dcffb77, 13:56Z)
+#975 MERGED 10/11 (d2b0f9d99c761db87fb821a2a44206f3d53bbe7b): no D/V, javadoc: moso-aid applications import ungated on purpose; on STAGING
+#964 MERGED 10/11 (d7dcffb77f02baedf8c5eb0126638c6ab07e69b2): D444 addendum 3 (no V), referrer-directory /last shows last_failure; on STAGING
