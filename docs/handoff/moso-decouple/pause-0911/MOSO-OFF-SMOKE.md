@@ -2,7 +2,7 @@
 
 Written 10/11 ~19:00 VN against recruit-be `origin/master` `ff029ade8`, before the flip. Staging runs `d7dcffb77` since 13:56Z (includes #979 D446, #975, #964). Staging only; prod has no
 `RECRUIT_FEATURES_MOSO_OFF` entry. Mail goes only to the existing allowlist (`bao.trinh+*@loanfactory.com`); no SMS.
-Do not use +stg demo leads. Do not call internal-key endpoints.
+Do not use +stg demo leads, and **never touch the "vicdemo" Loan Officers** (no edit, invite, mail or stage change; Bao 10/11): pick other test leads. No promote/deploy of recruit-be or recruit-fe staging 21:50-23:15 VN 10/11; the #969 flip is ~23:19. Do not call internal-key endpoints.
 
 Shortcuts used below:
 - `K` = `kubectl --context gke_lenderrate-master_us-central1_moso-kube -n recruit-be`
