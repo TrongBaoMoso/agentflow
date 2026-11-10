@@ -77,3 +77,4 @@ PR? D433  V354  p5-referral-source (p4-s4s5-esign): one-time import of packs-onl
 #975 MERGED 10/11 (d2b0f9d99c761db87fb821a2a44206f3d53bbe7b): no D/V, javadoc: moso-aid applications import ungated on purpose; on STAGING
 #964 MERGED 10/11 (d7dcffb77f02baedf8c5eb0126638c6ab07e69b2): D444 addendum 3 (no V), referrer-directory /last shows last_failure; on STAGING
 -    D447   -     mosooff-prep agent: the REFERRER role sweep maps a referrer's MOSO key to the account through Recruit's referrer_directory (instead of packs currentCompanyEmail) when the identity source is RECRUIT or moso-off is on; post-flip gap "every lookup failed {packs_unavailable=3}"; no flag, no V (D448-D470 are used by the ewc4e sessions in recruit-be DECISIONS.md)
+#982 MERGED 11/11 (606afc75f8361153643d40ab68ff3d687e59ba4f): D447 (no V), REFERRER sweep via referrer_directory under moso-off / RECRUIT; on STAGING 17:21Z; sweep OK processed=3 {has_staff_role=1, not_in_directory=2}
