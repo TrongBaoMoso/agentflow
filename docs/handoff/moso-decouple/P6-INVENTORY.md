@@ -65,6 +65,61 @@ Blockers by the phase that owes them:
 | **No phase owns it yet:** the "next webinar" token and list dates still read the packs picker, even with Recruit webinars on | BE-45 |
 | P6 itself: bridges that only exist to keep MOSO in sync, deleted at the cut | BE-04, BE-05, BE-22, BE-26, BE-35, BE-36, BE-39, BE-40 |
 
+## 0i. State at 21:00 VN 10/11, before the moso-off flip
+
+Staging runs recruit-be `d7dcffb77` (cd-staging 13:56Z). `RECRUIT_FEATURES_MOSO_OFF` is still `false`; #969 flips it after the Victoria demo (~23:07 VN). Production values were not touched: every new switch is absent or off there.
+
+**Rows moved to Replaced-on today (staging values PRs, each read back on the pod):**
+
+| PR (squash) | Switch | Rows | Was |
+|---|---|---|---|
+| #963 (`726f5288b`) | `RECRUIT_FEATURES_PROGRAM_ROSTER_SOURCE` MOSO_AID → RECRUIT (D442) | BE-28, BE-41 | dark (§0f) |
+| #967 (`c46de5185`) | `RECRUIT_REFERRALS_REFERRER_IDENTITY_SOURCE` RECRUIT (D438) + Loan Officer check from HR (D430) | BE-12 | dark (§0e, §0h) |
+| #968 (`b7e7e8b6d`) | `RECRUIT_FEATURES_PORTAL_MOSO_MIRROR` true (D376) | BE-08, BE-10 | dark |
+
+Roster proof (pod log 11:50Z): `program roster source dry-run: acting=RECRUIT other=MOSO_AID same=2 differing=0`, and `program sync tick dry_run: members=53 approved=53 linked=2 grants=0 revokes=0 suspensions=0`.
+
+BE-41: the program sync no longer needs the moso-aid secrets. They stay set for now, because the D421 applications import still uses them (see below). They are deleted at the P6 cut.
+
+| | Replaced-on | Replaced-dark | Blocker | Live | Incl. dark |
+|---|---|---|---|---|---|
+| §0f (10/11 ~11:40 VN) | 31 | 5 | 8 | 31 / 44 = 70% | 36 / 44 = 82% |
+| **10/11 21:00 VN** | **36** | 0 | 8 | **36 / 44 = 82%** | 36 / 44 = 82% |
+
+**The 8 blockers left are the P6 bridges: BE-04, 05, 22, 26, 35, 36, 39, 40.**
+- They only exist to keep MOSO in sync: sync, identity write-back, MOSO echoes, the packs relay tick, the MOSO actor header, the packs URL and key, the actor e-mails, the internal keys. There is no Recruit replacement to build.
+- **#969 (moso-off ON) disarms them.** No packs call leaves recruit-be; the enqueuer is disarmed; the relay and signed-reconcile ticks idle; MOSO pushes are dropped. Each skip is logged `moso_off_skip` (§3).
+- **#923 (the P6 cut) deletes them.**
+- Until #969 is on, they still run on staging.
+
+**Pre-flip scan of outbound calls** (mosooff-prep agent, recruit-be `ff029ade8`):
+- Every packs, MOSO GAE and moso-aid call honours moso-off:
+  - `RecruitApiClient` (guard in the shared `send()`), the relay tick, the signed reconcile;
+  - `PacksWritebackEnqueuer`, `WebinarClient`, `MosoAidRosterClient`;
+  - `PublicWebhookController`, `MosoApplyLinks`.
+- recruit-be has no MOSO Datastore client.
+- **Intended exception:** `MosoAidApplicationsClient#fetchPage` (D421 applications import, admin route only) is NOT gated.
+  - moso-aid stays the owner of the LO Recruiter Program (Ambassador) applications (Bao, 10/11).
+  - The import feeds `program_application_mirror`, which the RECRUIT roster reads.
+  - recruit-be #975 (`d2b0f9d99`) documents this in the code.
+- **One dead end, fixed: D446, recruit-be #979 (`06f88e5bb`).**
+  - The problem: under moso-off a MOSO-linked Loan Officer gets the portal link, but Recruit e-sign answered NOT_AVAILABLE for anyone with a `legacy_key`. "1-1 reached" also ignored Recruit's DONE item for them. So they could never sign.
+  - The fix, only while moso-off is ON: they sign through Recruit e-sign (D409), and Recruit's DONE item counts. With moso-off off, nothing changes.
+  - Accepted staging risk: a linked Loan Officer whose MOSO envelope went out before the flip can get a second, Recruit envelope. Staging mail is allowlist-only.
+- Other refusals checked for a linked lead under moso-off, none a dead end: invite, resend, welcome, 1-1 reminders, and the three 409 enqueues. The staff MOSO agreement card shows "unavailable" (BE-15), which is expected.
+
+Smoke checklist and pre-flip baseline: `pause-0911/MOSO-OFF-SMOKE.md`. §0a baseline: outbox 301 rows, newest MOSO push 09/11 14:36Z, 78 ERROR lines in 24 h.
+
+**After the flip (placeholder, filled in from the smoke run):**
+- #969 squash sha / staging deploy run: _TBD_
+- Pod env `RECRUIT_FEATURES_MOSO_OFF=true`, startup line `recruit.features.moso-off is ON`: _TBD_
+- `/admin/moso-off` skip map after 2 h: _TBD_
+- Outbox count and newest MOSO `webhook_events`, unchanged?: _TBD_
+- New ERROR loggers vs the baseline: _TBD_
+- Main flows (lead → invite → onboarding, including linked-lead signing; referrals + My referrals; webinar + drips; roster tick; bonus sweep; portal): _TBD_
+- Gaps found (file:line): _TBD_
+- Count after 24 h: _TBD_
+
 ## 0f. Program roster source switch built dark, 10/11 (~11:40 VN)
 
 recruit-be #956 (D442, squash `e7d2bcb70`) is on staging. It was promoted by itself, and #957 deployed on top of it at 03:25Z.
