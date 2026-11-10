@@ -22,7 +22,7 @@ Reason these waited: the Victoria team demo ran on staging Tue 10/11 22:00-23:00
    - Check `user_service_other_user=0` first.
    - Visible effect: one person gains 5 referrals from a second key, and people MOSO calls inactive but HR keeps get linked at first login.
    - The 2 people HR says have left (packs still links them): show Bao their names before or right after.
-6. **Portal redesign (tera-docs/design-system).** Merge lf-homepage branch `design/lo-portal-tera` / its PR if it was held for the demo. Before/after shots are in its artifact.
+6. ~~Portal redesign~~ CANCELLED 10/11 by Bao: lf-homepage and lo-homepage landing pages (incl. /register-loan-officer) keep their current UI. lf #2739 closed.
 
 ## B. Follow-ups / checks
 - Tue night (or Wed morning if missed): give `bao.trinh+role-onb` its ONBOARDING role back, then check that a delivered staff "Startup Fee Payment Confirmation" mail (D404) arrives (S9 script `docs/handoff/moso-decouple/p4-s9-e2e/s9-e2e.js`).
