@@ -27,3 +27,12 @@ Bao shut the machine down. On resume: read this, re-check each line against GitH
 - All decouple switches ON on staging now, test through Wed/Thu; prod stays off until Bao says.
 - Ambassador applications stay owned by moso-aid; only the "still at LF + company e-mail" check moved to Recruit (user-service).
 - Khải omni #688 questions: skip, they don't block Recruit.
+
+## Agent hand-off notes (17:51)
+- flip-all: moso-off baselines (outbox by kind/status, newest MOSO webhook time, 24h ERROR count, /admin/moso-off) are in the
+  #969 PR body "Baseline" section; re-take the raw 24h ERROR dump on resume (scratch may be gone).
+- Gap already found for §0i: D421 program-applications import (`MosoAidApplicationsClient.java:68` fetchPage) has no moso-off
+  guard; admin-route only, no tick; it feeds `program_application_mirror`, which the RECRUIT roster reads — so the roster's
+  application data still comes from moso-aid (by design: moso-aid owns applications).
+- Worktrees to clean: `$HOME/.cache/claude-recruit/wt-flipall`, `wt-flipall-be{,2,3,4}`, `recruit-be-worktrees/last-failure` (after #964 merges).
+- #964: after it merges, promote the origin/master tip and check a failed run shows `last_failure` on `/last`.
