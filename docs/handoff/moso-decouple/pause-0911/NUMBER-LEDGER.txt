@@ -67,3 +67,4 @@ PR? D433  V354  p5-referral-source (p4-s4s5-esign): one-time import of packs-onl
 -    D444   V362  nmls-same-person agent: referrer_directory links a second MOSO Admin key of the same person by NMLS (+ name or phone), source NMLS_MATCH; two ACTIVE keys go to a review list, never linked; flag staging only
 #956 MERGED 10/11 (e7d2bcb70c20da04cef4fbd13876827e3eabc6ad): D442 (no V) program roster source; on STAGING with MOSO_AID, dry-run compare every tick (same=1 differing=1: RECRUIT would suspend 1 linked member COMPANY_EMAIL_MISSING)
 -    D445   -     roster-email-fix agent: RECRUIT roster source takes the account's sign-in address as company e-mail when user-service has none and it equals the applicant's company e-mail (fixes dry-run COMPANY_EMAIL_MISSING f50acae235a9); no flag, no V
+#959 MERGED 10/11 (9804cdd80b6c2dcf5d5557e3ca139dcae458a977): D444 + V362 (NMLS same-person referrer link); on STAGING, APPLY: 0 linked, 7 both-active pairs to review
