@@ -142,3 +142,20 @@ The `History` kind has **no rows** under any of the 75 ILOs, and `AuditLog` has 
 - On PROD the same rule would move the 75 diverging rows. 49 of them have converted, and 39 already carry the matching `Admin.referred_lo`, so Recruit would agree with what MOSO paid.
 
 Before shipping, this needs Bao's confirmation, because it reverses the 09/11 "keep `referrer`-first" choice. That choice rested on `referrer` being the sign-up value, and it is not.
+
+## 6. Re-check, 10/11: both fields exist (a contrary report was wrong)
+
+On 10/11 another agent reported that `LORecruiting` rows carry only `referred_by` and no `referrer` / `referred_lo`. Re-checked with full entities (`SELECT *`, not a projection). Counts only:
+
+| Sample: 300 rows with `referred_by` set | MOSO PROD | MOSO staging |
+|---|---|---|
+| `referrer` present | 228 | 196 |
+| `referred_lo` present | 206 | 157 |
+
+- **Sections 1 to 5 above stand.** `referred_lo` is a string property (an Admin keyName). `referrer` is an unindexed string.
+- **Why the other read missed them:** Datastore stores no property for an unset field, and most `LORecruiting` rows have no referral (3,079 of 131,436 carry `referred_lo`). An unfiltered sample, or a projection, which cannot return the unindexed `referrer`, shows neither field.
+- **PROD sample of 300:**
+  - `referred_by` is a `@loanfactory.com` address in 267.
+  - `referrer` equals `referred_by` in 206 of the 228 rows that have it.
+  - `referred_lo` never equals `referred_by`, because it is the referrer's Admin key, usually a personal e-mail.
+- So "referrals use `referred_by`, mostly the company e-mail" is true of the typed box, and `referred_lo` is still the field the money follows.

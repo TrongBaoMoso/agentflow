@@ -99,6 +99,51 @@ recruit-be #956 (D442, squash `e7d2bcb70`) is on staging. It was promoted by its
 
 The 8 blockers left are the P6 bridges deleted at the cut: BE-04, 05, 22, 26, 35, 36, 39, 40.
 
+## 0h. BE-12 follow-up: one LO, two MOSO Admin keys (D444, 10/11)
+
+recruit-be #959, squash `9804cdd80`, V362, on STAGING. Flag `RECRUIT_REFERRALS_REFERRER_NMLS_LINK` is "true" on staging and absent on production.
+
+**What it does.** `referrer_directory` can now file a person's second MOSO Admin key under their active account, with source `NMLS_MATCH`. Under RECRUIT, `ownerKeysOf`, and therefore My referrals, then reads the referrals of both keys.
+
+**How it matches.**
+- Data source: user-service accounts, with their MOSO keys from `key` / `ref_keys`. On staging, user-service holds 2,065 of MOSO's 2,110 Admins, including the inactive ones. No MOSO or packs read is added.
+- Two accounts are the same person when they share the NMLS and also the name or the phone.
+- Two ACTIVE accounts are never linked. They go to `referrer_same_person_review` instead.
+- An NMLS_MATCH key is never a person's primary key.
+- Admin route: `POST /api/v1/admin/referral-program/referrer-directory/nmls-link?mode=DRY_RUN|APPLY`, plus `/last` and `/review`.
+
+**STAGING APPLY, 10/11 ~15:40 VN (counts only).** These are the run's own counts.
+
+| Count | Value |
+|---|---|
+| user-service accounts read | 24,170 |
+| accounts carrying a MOSO key | 2,059 |
+| directory keys | 136 |
+| strong pairs (10 groups) | 10 |
+| weak same-NMLS pairs | 120 |
+| both-active pairs sent to review | 7 |
+| groups with no survivor | 2 |
+| people linked | 0 |
+| keys linked | 0 |
+
+No group on staging touches a key that holds referrals, so My referrals is unchanged on staging. Staging's same-NMLS accounts are mostly test copies; 7 of the 10 groups are both active.
+
+**What it would do on PROD.** This is a prediction from MOSO PROD Datastore, read-only, counting referrals by `referred_lo`:
+
+| Count | Value |
+|---|---|
+| strong pairs | 126 |
+| pairs with one side active (old key carries referrals) | 5 |
+| referrals on those old keys | 319 |
+| pairs with no side active but with referrals | 3 |
+| pairs with referrals on both keys | 1 |
+
+The largest example: My referrals for one person would go from 1 to 291.
+
+The prediction is unverified on two points. Whether prod user-service carries those old accounts is unknown, because there is no prod user-service read. RECRUIT is also still off.
+
+**BE-12 status.** BE-12 stays "Replaced-dark". The two-key case is now handled Recruit-side.
+
 ## 0g. Re-measure after `referrals.source` = RECRUIT, 10/11 (~09:20 VN)
 
 Bao approved WEDNESDAY-1111 items A2, A3 and A4 for STAGING. Production values were not touched.
