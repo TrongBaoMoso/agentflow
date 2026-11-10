@@ -65,3 +65,4 @@ PR? D433  V354  p5-referral-source (p4-s4s5-esign): one-time import of packs-onl
 -    D442   -     be28-roster-source agent: recruit.features.program-roster-source MOSO_AID|RECRUIT for the program sync (BE-28), moso-aid pins optional on RECRUIT (BE-41), dry-run compare of both sources per tick; staging MOSO_AID, prod absent
 -    D443   -     mail-allowlist-globs agent: agreement-send + 1-1 reminder allowlists also accept local-part globs (name+*@domain, NurtureDripGate matcher); staging only values
 -    D444   V362  nmls-same-person agent: referrer_directory links a second MOSO Admin key of the same person by NMLS (+ name or phone), source NMLS_MATCH; two ACTIVE keys go to a review list, never linked; flag staging only
+#956 MERGED 10/11 (e7d2bcb70c20da04cef4fbd13876827e3eabc6ad): D442 (no V) program roster source; on STAGING with MOSO_AID, dry-run compare every tick (same=1 differing=1: RECRUIT would suspend 1 linked member COMPANY_EMAIL_MISSING)
