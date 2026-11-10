@@ -1,0 +1,21 @@
+PUT templates.approver_publish_enabled -> 200 {"payload":{"id":"795e6c37-4778-4a07-98dd-bbafc8480227","created_by":"e1987874-a6ea-46d7-82e3-b034440d0afd","created_dat
+PUT templates.review_comments_enabled -> 200 {"payload":{"id":"1e1e9efe-d661-423a-9303-6d29526a6f11","created_by":"e1987874-a6ea-46d7-82e3-b034440d0afd","created_dat
+PUT templates.archive_restore_enabled -> 200 {"payload":{"id":"6c21a085-43c3-4ff4-b420-8be5633c1448","created_by":"e1987874-a6ea-46d7-82e3-b034440d0afd","created_dat
+PUT templates.send_history_enabled -> 200 {"payload":{"id":"8d591fb4-52e9-4ac1-8e2e-28b505f6ba4d","created_by":"e1987874-a6ea-46d7-82e3-b034440d0afd","created_dat
+GET capabilities -> 200 {"payload":{"approver_publish":true,"review_comments":true,"archive_restore":true,"kit_v2":false,"test_send":false,"send_history":true,"ai_write":false},"response_date":{"timestamp":1794346263,"formatted":"2026-11-10T21:31:03.238179298","zone":"Z"}}
+GET manage -> 200 rows=46 pageTexts=0 callScripts=8 retired=8 hasFields=true sig="Loan Officer e-mail signature" suffixLeft=0 top=tpl-lo-invite-reminder:53
+GET sends tpl-lo-invite-reminder -> 200 {"payload":{"total":53,"rows":[{"candidate_id":"5db58ec9-2ce1-4c46-9546-a3c7541b2fdf","candidate_name":"Riley Demo","sent_at":{"timestamp":1794307201,"formatted":"2026-11-10T10:40:01.219205","zone":"Z"},"delivery_status":"DELIVERED","opened_at":null,"channel":"EMAIL"},{"candidate_id":"c435f579-c92f-
+POST publish:true (manager) -> 200 status=ACTIVE
+POST draft (recruiter) -> 200 status=DRAFT
+submit (recruiter) -> 200 status=IN_REVIEW submitted_by=d8186688-77d4-454d-a649-a1bdf8842bb6
+reject no comments -> 400 {"error":{"path":"/api/v1/templates/b3062c18-b795-418f-b6ab-dd45053dce67/reject","type":"BAD_REQUEST","context":"Bad Request","messages":["Returning a template 
+reject with comment -> 200 status=DRAFT
+GET comments (writer) -> 200 [{"id":"f22f630c-fd46-4c61-b51f-4a2d36ec941d","template_id":"b3062c18-b795-418f-b6ab-dd45053dce67","field":"SUBJECT","quote":"Agent check","note":"Use the loan officer first name","author_id":"24ca68b0-8769-4518-a2c1-048c20012797","created_at":{"time
+PATCH resolve (writer) -> 200 resolved_at=[object Object]
+GET notifications (writer) -> 200 {"payload":{"unread_count":138,"poll_after_seconds":60,"items":[{"id":"400879a5-a8ae-4d07-912e-1838d566cbd5","kind":"TEMPLATE_RETURNED","candidate_id":null,"candidate_name":null,"actor_id":"24ca68b0-8769-4518-a2c1-048c20012797","payload":{"note":"Use the loan officer first name","field":"SUBJECT","quote":"Agent check","template_id":"b3062c18-b795-418f-b6ab-dd45053dce67","comment_count":1,"template
+re-submit -> 200 status=IN_REVIEW
+approve -> 200 status=ACTIVE
+retire 5af795e2-6893-4ef7-82ed-be7f3b82584a -> 200 status=RETIRED
+retire b3062c18-b795-418f-b6ab-dd45053dce67 -> 200 status=RETIRED
+restore -> 200 status=ACTIVE
+retire again (cleanup) -> 200 status=RETIRED
