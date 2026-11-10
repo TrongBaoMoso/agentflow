@@ -28,7 +28,7 @@ Out of scope: omni, notifier, cron-service-go, tera-core, gateway, auth-service 
 | Frontend message keys that name MOSO | **124** (122 distinct texts), in 10 groups |
 | Frontend links that open a MOSO page | **0** |
 
-**09/11 ~21:00 VN (§0e): 25 / 44 = 57% live, 33 / 44 = 75% including dark (BE-12 recounted as dark); 59% / 77% once recruit-be #950 (BE-14 RECRUIT) is on staging.** Earlier: Independence on staging (re-measured 09/11 ~12:30 VN, recruit-be master `5c91281e8`, which is what staging runs): 25 / 44 = 57%; counting code that exists but is still dark (shadow or flag off), 32 / 44 = 73%. History: 34% (08/11 morning), 41% (08/11 evening), 43% (09/11 night). See §0d.
+**10/11 ~09:20 VN (§0g): 31 / 44 = 70% live, 34 / 44 = 77% including dark, after `referrals.source` = RECRUIT on staging.** Before that, **09/11 ~21:00 VN (§0e): 25 / 44 = 57% live, 33 / 44 = 75% including dark (BE-12 recounted as dark); 59% / 77% once recruit-be #950 (BE-14 RECRUIT) is on staging.** Earlier: Independence on staging (re-measured 09/11 ~12:30 VN, recruit-be master `5c91281e8`, which is what staging runs): 25 / 44 = 57%; counting code that exists but is still dark (shadow or flag off), 32 / 44 = 73%. History: 34% (08/11 morning), 41% (08/11 evening), 43% (09/11 night). See §0d.
 
 Formula: **Replaced-on ÷ (Replaced-on + Replaced-dark + Blocker)**, over the backend rows in §1.
 - Each row is one place where recruit-be talks to, waits on or relies on old MOSO.
@@ -64,6 +64,33 @@ Blockers by the phase that owes them:
 | **No phase owns it yet:** a recruiter's Zoom texting identity is their MOSO Admin key | BE-13, BE-42 |
 | **No phase owns it yet:** the "next webinar" token and list dates still read the packs picker, even with Recruit webinars on | BE-45 |
 | P6 itself: bridges that only exist to keep MOSO in sync, deleted at the cut | BE-04, BE-05, BE-22, BE-26, BE-35, BE-36, BE-39, BE-40 |
+
+## 0g. Re-measure after `referrals.source` = RECRUIT, 10/11 (~09:20 VN)
+
+Bao approved WEDNESDAY-1111 items A2, A3 and A4 for STAGING. Production values were not touched.
+
+**Switched on staging (settings API, read back):** `referrals.source` SHADOW → RECRUIT. Also, outside this inventory's rows: `webinar.drip_mail.after_1_month` P1M and `webinar.drip_mail.enabled` true (A2), `RECRUIT_WEBINAR_SESSIONS=true` on Cloud Run `lf-homepage-master` / `lo-homepage-master` (A2), and recruit-fe #738 (referrer review card, A3).
+
+**Shadow just before the switch** (admin Referrals, all owners, since 2026-01-01; log `referral_source.shadow purpose=VIEW`): packs 111, recruit 151, only_packs 3, only_recruit 43, owner_differs 7, joined_differs 1, recruit_unknown 7, entry/eligible/amount differs 0.
+
+**After:** SHADOW stops logging under RECRUIT. The admin list reads Recruit: 79 → 123 rows, 19 → 46 referrers. Most of the extra rows are Recruit-only staging test leads (Oct/Nov). My referrals answers 200. No new ERROR lines in the pod log.
+
+**Pod check:** `RECRUIT_PROGRAM_MEMBER_LINK_CHECK` is RECRUIT on staging, so #950 (BE-14) is live. That makes the §0e "once #950" row the baseline: 26 on, 8 dark, 10 blockers.
+
+| Row | Move | Why |
+|---|---|---|
+| BE-11, BE-23, BE-29, BE-30 | dark → **on** | D429: the list, totals, digest and REFERRER sweep reads follow `referrals.source` |
+| BE-21 | dark → **on** | `RecruitReferralRows` joins `referral_bonus_state`, so the bonus shown now comes from Recruit |
+
+| | Replaced-on | Replaced-dark | Blocker | Live | Incl. dark |
+|---|---|---|---|---|---|
+| 10/11 ~09:20 VN | 31 | 3 (BE-08, BE-10, BE-12) | 10 | 31 / 44 = **70%** | 34 / 44 = **77%** |
+
+Production: still about 0%. Side effects to watch on staging:
+- The REFERRER role sweep (BE-30) can now grant REFERRER to people who appear only in Recruit's referral rows.
+- The digest (BE-29) still mails only `bao.trinh+*@loanfactory.com`, because of `RECRUIT_REFERRALS_NOTIFY_ALLOWED_EMAIL_PATTERNS`.
+
+Revert: set `referrals.source` back to `"SHADOW"`.
 
 ## 0e. Background-only switches, 09/11 evening (~21:00 VN)
 
