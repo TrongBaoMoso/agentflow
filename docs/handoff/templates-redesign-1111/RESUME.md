@@ -86,3 +86,29 @@ After a reboot, Chrome CDP 9345 (Gmail plus the recruit.loanfactory.com prod log
 Bao was told at 17:42: about 60% done, ETA 21–22h. He has no decisions pending. The only possible ask: which staging account with a real avatar to use.
 
 **18:05 update:** all agents stopped before shutdown. #1014 MERGED 7f319b3d (18:00) and promote-staging triggered 18:05 (run 43008375788): on resume confirm "Deploy staging (GKE)" succeeded, then do the #1014 Gmail check (step 3 Next). #1012 #1013 fe #781 still OPEN.
+
+## 12/11 ~01:00 VN state (session 0d517c34)
+ON STAGING + verified:
+- #1012: pay before sign; no Lisbeth/Victoria (30/30 clean).
+- #1014 + #1016: signature v2 (shots/sig-v2-avatar-*, sig-v2-logo-*).
+- #1019: 1-1 reminders come from OB → owner → team (flag onb-reminder-sender, staging only; prod still uses packs MEETING_REMINDER).
+- #1013 + fe#781: Send info history (real UI E2E PASS).
+- #1020 + fe#786: new-template preview uses the real renderer.
+- #1023: new preview uses the sample sender. Merged 84887534; deploy was pending at 01:00.
+
+Gallery v7 is BUILT locally (tools/gallery/index.html, 121 images, 20 live staging buttons, 21 landing shots, emails/CLICKS.json) but NOT PUBLISHED. The Artifact publish to XPP1VKcmuLTucuaY2vSDpo failed 4 times (ECONNRESET/timeout, network).
+- On resume: list scope files, then publish the html + files in 2 batches (click/real first, then tpl/ui).
+
+DO NOT COMMIT (public repo, live staging links): emails/CLICKS.json, tools/gallery/index.html, tools/land/*.json, tools/gmail/real/*-links.json.
+
+Staging leftovers:
+- "Gallery test (ignore)" webinar series on Bao's Google. Cancel it when the links are no longer needed.
+- Gallery* test leads.
+- 3 sandbox fees paid.
+- Live links expire around 13/11 14:30 UTC, when the day-2 reminders regenerate them.
+
+Bugs found by the gallery agent (not fixed; tell Bao):
+- The agreement-updated email lands on step 5 (NMLS), not the agreement step.
+- Agreement emails go to Gmail Spam.
+- The sign-only reminder opens step 3.
+- The Meet link needs a Google sign-in.

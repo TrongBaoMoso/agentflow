@@ -19,7 +19,13 @@ sent = {s['id']: s for s in json.load(open(os.path.join(HERE, 'sent.json')))}
 flows = {f['id']: f for f in json.load(open(os.path.join(DOCS, 'emails', 'FLOWS.json')))}
 plain = json.load(open(os.path.join(DOCS, 'emails', 'PLAIN.json')))
 JOURNEY = plain.pop('_journey', [])
-REMOVED = {'tpl-lo-agreement-link'}  # never sent by any code; removed from Templates on 11/11
+REMOVED = {'tpl-lo-agreement-link'}
+_CL = os.path.join(DOCS, 'emails', 'CLICKS.json')
+CLICKS = json.load(open(_CL)) if os.path.exists(_CL) else {'cases': []}
+CASES = {}
+for _c in CLICKS.get('cases', []):
+    CASES.setdefault(_c['template_id'], []).append(_c)
+REAL = os.path.join(HERE, 'gmail', 'real')  # never sent by any code; removed from Templates on 11/11
 
 
 # ---------- bilingual helpers ----------
@@ -125,29 +131,118 @@ def fact(label_en: str, label_vi: str, v) -> str:
     return f'<li><span class="k">{bil(label_en, label_vi)}</span><span class="v">{bi(v)}</span></li>'
 
 
+def norm(t: str) -> str:
+    return re.sub(r'[^a-z0-9]+', ' ', (t or '').lower()).strip()
+
+
+def lead_name(e: dict) -> str:
+    return html.escape(e['lead']['name'])
+
+
+def landing(e: dict, ln: dict) -> str:
+    """The page a click on this button opened, for one test lead: live link + desktop/phone shots + plain caption."""
+    var = e.get('variant')
+    head = (f'<p class="lv">{bi(var)}</p>' if var else '')
+    shows = bi(ln.get('shows') or {'en': '', 'vi': ''})
+    tok = ln.get('token') or {}
+    pics = ''
+    for sfx, cen, cvi, cls in (('d', 'Computer', 'Máy tính', ''), ('m', 'Phone', 'Điện thoại', ' ph')):
+        f = ln.get('shot_' + sfx)
+        if f and os.path.exists(os.path.join(OUT, 'img', f)):
+            pics += (f'<figure class="lp{cls}"><figcaption>{bil(cen, cvi)}</figcaption><button type="button" class="zoom" data-src="img/{f}" '
+                     f'aria-label="Enlarge"><img loading="lazy" src="img/{f}" alt="{html.escape(norm(ln["label"]))} landing page"></button></figure>')
+    src = ln.get('from')
+    if src == 'staff-link':
+        note_en = (f'Live staging link for test lead {lead_name(e)}, made with the staff "copy link" because staging never mails this email. '
+                   'If it has expired or the step is already done, the screenshot shows what it opened.')
+        note_vi = (f'Link staging thật của lead thử {lead_name(e)}, tạo bằng nút "copy link" của nhân viên vì staging không bao giờ gửi email này. '
+                   'Nếu link đã hết hạn hoặc bước đó đã làm xong, ảnh chụp cho thấy trang nó đã mở.')
+    elif src == 'same-session':
+        note_en = (f'This test copy has a sample link, so the button above opens the real Meet link of the same Friday session, from the real confirmation sent to test lead {lead_name(e)}.')
+        note_vi = (f'Bản thử này chỉ có link mẫu, nên nút ở trên mở link Meet thật của cùng buổi thứ Sáu, lấy từ email xác nhận thật gửi cho lead thử {lead_name(e)}.')
+    elif src == 'test-copy':
+        note_en = 'This link is the same in every copy of the email, including the "Send test to me" copy shown here.'
+        note_vi = 'Link này giống nhau ở mọi bản của email, kể cả bản "Send test to me" trong ảnh.'
+    else:
+        note_en = (f'Live staging link for test lead {lead_name(e)}. If it has expired or the step is already done, the screenshot shows what it opened.')
+        note_vi = (f'Link staging thật của lead thử {lead_name(e)}. Nếu link đã hết hạn hoặc bước đó đã làm xong, ảnh chụp cho thấy trang nó đã mở.')
+    tok_html = f'<p class="ln-tok">{bi(tok)}</p>' if tok else ''
+    return (f'<div class="land">{head}<h5>{bil("This is the page that opens", "Đây là trang mở ra")}</h5><p class="lcap">{shows}</p>'
+            f'<div class="lpics">{pics}</div><p class="ln-note">{bil(note_en, note_vi)}</p>{tok_html}</div>')
+
+
 def chain(tid: str, clicks: list) -> str:
     who_en, who_vi = CLICKER.get(tid, ('Jordan', 'Jordan'))
     head = f'<h4>{bil(f"What happens when {who_en} clicks", f"Khi {who_vi} bấm nút thì sao")}</h4>'
     if not clicks:
-        return head + f'<p class="none">{bil("The buttons in this email are not mapped yet. See the picture for what it shows.", "Nút trong email này chưa được ghi lại. Xem ảnh để biết email có gì.")}</p>'
+        return head + f'<p class="none">{bil("This email has no button. Its only links are email addresses, the office address and, where there is one, Unsubscribe.", "Email này không có nút. Link duy nhất là địa chỉ email, địa chỉ văn phòng và, nếu có, Unsubscribe.")}</p>'
+    entries = CASES.get(tid, [])
     rows = []
     for c in clicks:
+        want = norm(L(c['button'])[0])
+        matches = [(e, ln) for e in entries for ln in e.get('links', []) if norm(ln.get('label')) == want and ln.get('url')]
         nxt = c.get('next_email_id')
+        if matches:
+            url = matches[0][1]['url']
+            btn = (f'<a class="btn" href="{html.escape(url, quote=True)}" target="_blank" rel="noopener noreferrer">{bi(c["button"])}'
+                   f'<span class="ext" aria-hidden="true">↗</span></a>')
+        else:
+            btn = f'<span class="btn">{bi(c["button"])}</span>'
         steps = [
-            f'<li class="st st-btn"><span class="btn">{bi(c["button"])}</span></li>',
+            f'<li class="st st-btn">{btn}</li>',
             f'<li class="st">{ARROW}<span><span class="sk">{bil("opens", "mở ra")}</span> {bi(c["opens"])}</span></li>',
             f'<li class="st">{ARROW}<span><span class="sk">{bil("there:", "ở đó:")}</span> {bi(c["does_there"])}</span></li>',
         ]
         if nxt:
             steps.append(f'<li class="st st-next">{ARROW}<span><span class="sk">{bil("next email", "email tiếp theo")}</span> {link_to(nxt)}</span></li>')
-        rows.append(f'<ol class="steps">{"".join(steps)}</ol>')
+        rows.append(f'<ol class="steps">{"".join(steps)}</ol>' + ''.join(landing(e, ln) for e, ln in matches))
     return head + ''.join(rows)
+
+
+def real_note(tid: str) -> str:
+    """Whether the pictures are the real email; why not, when it could not be sent for real on staging."""
+    entries = CASES.get(tid, [])
+    real = [e for e in entries if e.get('real')]
+    out = []
+    for e in entries:
+        if not e.get('real') and e.get('why_not_real'):
+            lab = f'{bi(e["variant"])}: ' if e.get('variant') else ''
+            out.append(f'<li>{lab}{bi(e["why_not_real"])}</li>')
+    if real:
+        names = ', '.join(lead_name(e) for e in real)
+        top = bil(f'Real email: sent by the app on staging to test lead {names}, not with "Send test to me".',
+                  f'Email thật: app gửi trên staging tới lead thử {names}, không phải nút "Send test to me".', 'p')
+        pre = [e for e in real if e.get('predates')]
+        if pre:
+            top += ''.join(f'<p class="pre">{bi(e["predates"])}</p>' for e in pre)
+    else:
+        top = ''
+    lst = f'<ul class="ns">{"".join(out)}</ul>' if out else ''
+    return f'<section class="real"><h4>{bil("Real email or test copy", "Email thật hay bản thử")}</h4>{top}{lst}</section>' if (top or lst) else ''
 
 
 def bullet_list(v: list) -> str:
     en = ''.join(f'<li>{html.escape(L(x)[0])}</li>' for x in v)
     vi = ''.join(f'<li>{html.escape(L(x)[1])}</li>' for x in v)
     return bil(f'<ul class="ns">{en}</ul>', f'<ul class="ns">{vi}</ul>', 'div')
+
+
+def shots_html(tid: str, en_name: str) -> str:
+    """Real-flow Gmail shots per test lead when there are any (one pair per variant), else the Send-test copy."""
+    reals = [e for e in CASES.get(tid, []) if e.get('real') and e.get('img_d')]
+    if not reals:
+        return (f'<figure><figcaption>{bil("Gmail on a computer (test copy)", "Gmail trên máy tính (bản thử)") if CASES.get(tid) else bil("Gmail on a computer", "Gmail trên máy tính")}</figcaption>'
+                f'<button type="button" class="zoom" data-src="img/{tid}-d.jpg" aria-label="Enlarge"><img loading="lazy" width="828" height="1100" src="img/{tid}-d.jpg" alt="{html.escape(en_name)}, computer"></button></figure>'
+                f'<figure class="ph"><figcaption>{bil("Gmail on a phone", "Gmail trên điện thoại")}</figcaption>'
+                f'<button type="button" class="zoom" data-src="img/{tid}-m.jpg" aria-label="Enlarge"><img loading="lazy" src="img/{tid}-m.jpg" alt="{html.escape(en_name)}, phone"></button></figure>')
+    out = ''
+    for e in reals:
+        lab = bi(e['variant']) + ' · ' if e.get('variant') else ''
+        out += (f'<figure><figcaption>{lab}{bil("Gmail on a computer, real email", "Gmail trên máy tính, email thật")}</figcaption>'
+                f'<button type="button" class="zoom" data-src="img/{e["img_d"]}" aria-label="Enlarge"><img loading="lazy" src="img/{e["img_d"]}" alt="{html.escape(en_name)}, computer"></button></figure>'
+                f'<figure class="ph"><figcaption>{bil("On a phone", "Trên điện thoại")}</figcaption>'
+                f'<button type="button" class="zoom" data-src="img/{e["img_m"]}" aria-label="Enlarge"><img loading="lazy" src="img/{e["img_m"]}" alt="{html.escape(en_name)}, phone"></button></figure>')
+    return out
 
 
 def card(tid: str) -> str:
@@ -167,12 +262,9 @@ def card(tid: str) -> str:
   <section class="chain">{chain(tid, p.get('click') or [])}</section>
   {f'<section class="not"><h4>{bil("Not sent when", "Không gửi khi")}</h4>{bullet_list(not_sent)}</section>' if not_sent else ''}
   {f'<p class="also"><span class="sk">{bil("Also", "Thêm")}</span> {bi(also)}{(" " + bil("See:", "Xem:") + also_links) if also_links else ""}</p>' if also else ''}
+  {real_note(tid)}
  </div>
- <div class="shots">
-  <figure><figcaption>{bil('Gmail on a computer', 'Gmail trên máy tính')}</figcaption>
-   <button type="button" class="zoom" data-src="img/{tid}-d.jpg" aria-label="Enlarge"><img loading="lazy" width="828" height="1100" src="img/{tid}-d.jpg" alt="{html.escape(en_name)}, computer"></button></figure>
-  <figure class="ph"><figcaption>{bil('Gmail on a phone', 'Gmail trên điện thoại')}</figcaption>
-   <button type="button" class="zoom" data-src="img/{tid}-m.jpg" aria-label="Enlarge"><img loading="lazy" src="img/{tid}-m.jpg" alt="{html.escape(en_name)}, phone"></button></figure>
+ <div class="shots">{shots_html(tid, en_name)}
   <p class="hint">{bil('Click a picture to see it full size.', 'Bấm vào ảnh để xem cỡ lớn.')}</p>
  </div>
 </article>'''
@@ -187,6 +279,12 @@ for (gen, gvi), ids in GROUPS:
             continue
         jpg(d, os.path.join(OUT, 'img', f'{tid}-d.jpg'), 1100)
         jpg(m, os.path.join(OUT, 'img', f'{tid}-m.jpg'), 2400)
+        for e in CASES.get(tid, []):
+            rd, rm = os.path.join(REAL, f'{e["case"]}-desktop.png'), os.path.join(REAL, f'{e["case"]}-mobile.png')
+            if e.get('real') and os.path.exists(rd) and os.path.exists(rm):
+                e['img_d'], e['img_m'] = f'real-{e["case"]}-d.jpg', f'real-{e["case"]}-m.jpg'
+                jpg(rd, os.path.join(OUT, 'img', e['img_d']), 1100)
+                jpg(rm, os.path.join(OUT, 'img', e['img_m']), 2400)
         arts.append(card(tid)); shown.append(tid)
     if arts:
         gid = 'g-' + re.sub(r'[^a-z0-9]+', '-', gen.lower()).strip('-')
@@ -242,9 +340,13 @@ def journey_md(lang: str) -> str:
 
 
 DEV_NOTE_EN = ('Removed: tpl-lo-agreement-link ("agreement link") was never sent by any code, so it was taken out of Templates on 11/11 and is not shown above. '
-               'Per-email facts below are copied from emails/FLOWS.json (read from recruit-be origin/master fc218308d); the readable text above is emails/PLAIN.json.')
+               'Per-email facts below are copied from emails/FLOWS.json (read from recruit-be origin/master fc218308d); the readable text above is emails/PLAIN.json. '
+               'Live links, test leads and landing pages: emails/CLICKS.json (every href of each real email, resolved through the SendGrid click redirect). '
+               'Real-email pictures: the body exactly as Gmail delivered it (div.a3s), laid out under a Gmail-style header at 964 px and 390 px, because Gmail web threads real emails under older [Test] sends. Captures: tools/gmailreal.js (real mails, by recipient), tools/landshot.js (landing pages), tools/gmailshot.js (test copies).')
 DEV_NOTE_VI = ('Đã bỏ: tpl-lo-agreement-link ("link hợp đồng") chưa từng được code nào gửi, nên đã gỡ khỏi Templates ngày 11/11 và không hiện ở trên. '
-               'Chi tiết từng email bên dưới chép từ emails/FLOWS.json (đọc từ recruit-be origin/master fc218308d); phần chữ dễ đọc phía trên lấy từ emails/PLAIN.json.')
+               'Chi tiết từng email bên dưới chép từ emails/FLOWS.json (đọc từ recruit-be origin/master fc218308d); phần chữ dễ đọc phía trên lấy từ emails/PLAIN.json. '
+               'Link thật, lead thử và trang đích: emails/CLICKS.json (mọi href của từng email thật, đã đi qua bước chuyển hướng click của SendGrid). '
+               'Ảnh email thật: phần thân đúng như Gmail nhận (div.a3s), đặt dưới phần đầu kiểu Gmail ở 964 px và 390 px, vì Gmail web gộp email thật vào luồng các bản [Test] cũ. Công cụ chụp: tools/gmailreal.js (email thật, theo người nhận), tools/landshot.js (trang đích), tools/gmailshot.js (bản thử).')
 dev = (f'<details class="dev" id="dev"><summary>{bil("Notes for developers", "Ghi chú cho developer")}</summary>'
        f'<p>{bil(html.escape(DEV_NOTE_EN), html.escape(DEV_NOTE_VI))}</p>'
        f'<h3>{bil("Technical journey, settings and open gaps", "Hành trình kỹ thuật, setting và chỗ còn chưa rõ")}</h3>'
@@ -271,15 +373,24 @@ for (ten, tvi), b, a in UI:
     ui.append(f'<article class="ui-card"><h3>{bil(html.escape(ten), html.escape(tvi))}</h3><div class="ba">{"".join(cells)}</div></article>')
 
 
-LEDE_EN = ('Every email below was really sent from the test site with "Send test to me" and photographed in Gmail on Nov 11, using a made-up Loan Officer, Jordan Example. '
-           'The "[Test]" in the inbox and the plain signature are only because these are tests. The live site still sends the old emails until Bao approves.')
-LEDE_VI = ('Mỗi email dưới đây được gửi thật từ trang thử (staging) bằng nút "Send test to me" và chụp trong Gmail ngày 11/11, dùng một Loan Officer mẫu tên Jordan Example. '
-           'Chữ "[Test]" trong hộp thư và chữ ký đơn giản chỉ vì đây là thư thử. Trang thật vẫn gửi email cũ cho tới khi anh Bảo duyệt.')
+LEDE_EN = ('Where an email could be triggered on the test site (staging), the app sent it for real, on Nov 11 in the evening, to its own made-up test Loan Officer '
+           '("Gallery Welcome Two", "Gallery Fee Two", ...), and we photographed it in Gmail. Its buttons are live links: click one to open the real staging page, '
+           'and under it is a picture of the page it opened. The other emails are the "Send test to me" copy with a made-up Loan Officer, Jordan Example; '
+           'each of those cards says why. The live site still sends the old emails until Bao approves.')
+LEDE_VI = ('Email nào kích hoạt được trên trang thử (staging) thì app đã gửi thật, tối 11/11, tới một Loan Officer thử riêng ("Gallery Welcome Two", "Gallery Fee Two", ...) '
+           'và đã chụp lại trong Gmail. Nút trong email là link thật: bấm vào là mở đúng trang staging, bên dưới có ảnh trang mà nút đã mở. '
+           'Các email còn lại là bản "Send test to me" với Loan Officer mẫu Jordan Example; thẻ của các email đó ghi rõ vì sao. Trang thật vẫn gửi email cũ cho tới khi anh Bảo duyệt.')
 RULES = [
     ('Each email goes to a person at most once for the same event.',
      'Mỗi email chỉ gửi tới một người tối đa một lần cho cùng một việc.'),
     ('An email is skipped if the person unsubscribed, their address bounced, or they are no longer active.',
      'Email bị bỏ qua nếu người nhận đã huỷ đăng ký, địa chỉ bị trả về, hoặc người đó không còn hoạt động.'),
+    ('Every email ends with the sender\'s signature: their photo (or the orange Loan Factory mark when they have none), phone and email, plus their CA DRE number and office address when their profile has them. No website or social links.',
+     'Email nào cũng kết thúc bằng chữ ký của người gửi: ảnh của họ (hoặc logo Loan Factory màu cam nếu chưa có ảnh), số điện thoại và email, thêm số CA DRE và địa chỉ văn phòng nếu hồ sơ của họ có. Không có website hay mạng xã hội.'),
+    ('For questions, the emails say "reply to this email or write to recruiting@loanfactory.com". No staff name or personal phone line is printed any more.',
+     'Khi có câu hỏi, email ghi "trả lời email này hoặc viết tới recruiting@loanfactory.com". Không còn in tên hay số điện thoại riêng của nhân viên nào.'),
+    ('Webinar emails for a Loan Officer who has no recruiter yet come from the Loan Factory Recruiting Team.',
+     'Email webinar gửi cho Loan Officer chưa có recruiter thì người gửi là Đội Recruiting của Loan Factory.'),
     ('On the live site, nothing goes to real Loan Officers until Recruit sending is switched on. Today MOSO still sends its own emails.',
      'Trên trang thật, chưa email nào tới Loan Officer thật cho tới khi bật gửi từ Recruit. Hiện MOSO vẫn tự gửi email của nó.'),
 ]
@@ -341,6 +452,18 @@ h2{font-size:21px;margin:40px 0 14px;font-weight:600} h2 small{color:var(--mut);
 .st.st-btn>.btn{display:inline-block;border:0;background:var(--acc);color:#fff;font-weight:600;border-radius:999px;padding:5px 13px;font-size:13.5px}
 :root[data-theme="dark"] .st.st-btn>.btn{color:#1b1a18}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .st.st-btn>.btn{color:#1b1a18}}
+.st.st-btn>a.btn{display:inline-flex;gap:6px;align-items:center;background:var(--acc);color:#fff;font-weight:600;border-radius:999px;padding:5px 13px;font-size:13.5px;text-decoration:none;box-shadow:0 1px 0 rgba(0,0,0,.12);transition:transform var(--dur,150ms) ease,box-shadow var(--dur,150ms) ease}
+.st.st-btn>a.btn:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(194,76,2,.28)} .st.st-btn>a.btn:active{transform:none}
+.ext{font-size:12px;opacity:.85}
+:root[data-theme="dark"] .st.st-btn>a.btn{color:#1b1a18}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .st.st-btn>a.btn{color:#1b1a18}}
+.land{border:1px solid var(--line);border-radius:var(--r-md);background:var(--soft);padding:12px 14px;margin:2px 0 14px}
+.land h5{margin:0 0 4px;font-size:13px;font-weight:600} .lv{margin:0 0 6px;font-size:12px;font-weight:600;color:var(--acc);text-transform:uppercase;letter-spacing:.04em}
+.lcap{margin:0 0 10px;font-size:14px} .lpics{display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1fr);gap:10px;align-items:start}
+.lpics img{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:var(--r-sm);background:#fff}
+.lp.ph img{border-radius:14px;border:4px solid #2b2927}
+.ln-note{margin:8px 0 0;font-size:12px;color:var(--mut)} .ln-tok{margin:4px 0 0;font-size:12px;color:var(--mut)}
+.real{margin:0 0 12px;font-size:14px} .real p{margin:0 0 6px} .real .pre{color:var(--mut);font-size:13px}
 .st-next>span:last-child{background:transparent;border-color:var(--acc-line)}
 .sk{color:var(--mut);font-size:12px;margin-right:2px}
 .arr{color:var(--acc);font-weight:600}

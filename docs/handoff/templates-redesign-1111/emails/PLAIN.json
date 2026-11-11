@@ -153,6 +153,21 @@
      "vi": "điền thông tin, trả phí khởi đầu $100 (trừ khi được miễn), cấp quyền NMLS và ký hợp đồng"
     },
     "next_email_id": "tpl-lo-fee-paid"
+   },
+   {
+    "button": {
+     "en": "Sign up for the Friday webinar",
+     "vi": "Sign up for the Friday webinar"
+    },
+    "opens": {
+     "en": "Loan Factory's page for Loan Officers, with the Friday webinar sign-up form",
+     "vi": "trang dành cho Loan Officer của Loan Factory, có form đăng ký webinar thứ Sáu"
+    },
+    "does_there": {
+     "en": "picks a Friday session and registers",
+     "vi": "chọn một buổi thứ Sáu và đăng ký"
+    },
+    "next_email_id": "tpl-lo-webinar-session-confirmed"
    }
   ],
   "not_sent": [
@@ -180,8 +195,8 @@
    "vi": "Email nhắc hoàn tất đăng ký"
   },
   "one_line": {
-   "en": "Nudges Jordan when he got the invite but hasn't signed or paid yet, and says which step is left.",
-   "vi": "Nhắc Jordan khi đã nhận lời mời mà chưa ký hoặc chưa trả phí, và nói rõ còn bước nào."
+   "en": "Nudges Jordan when he got the invite but hasn't paid or signed yet, and says which step is left.",
+   "vi": "Nhắc Jordan khi đã nhận lời mời mà chưa trả phí hoặc chưa ký, và nói rõ còn bước nào."
   },
   "story": {
    "en": "Jordan got the invite on Monday at 10:20 AM and did nothing. On Wednesday (day 2) he gets this email from Alex saying two steps are left. Jordan pays on Thursday, so Saturday's email (day 5) only says 'sign your agreement'. Once he has signed and paid, the reminders stop.",
@@ -302,8 +317,8 @@
    "vi": "Báo Jordan rằng nội dung hợp đồng đã thay đổi và mời Jordan xem lại, ký bản mới."
   },
   "story": {
-   "en": "Friday 9:00 AM the manager changes Jordan's split from 80 to 85 in Recruit and saves, then saves again at 9:05. Recruit waits 15 minutes after the last save. At 9:20 AM Jordan gets one email with the new version.",
-   "vi": "Thứ Sáu 9:00 manager đổi tỉ lệ chia của Jordan từ 80 lên 85 trong Recruit và lưu, 9:05 lưu thêm lần nữa. Recruit chờ 15 phút sau lần lưu cuối. 9:20 Jordan nhận đúng một email có bản hợp đồng mới."
+   "en": "Jordan has opened the signing screen but not signed yet. Friday 9:00 AM Sam corrects Jordan's NMLS number in Recruit and saves, then fixes his address at 9:05. Recruit waits 15 minutes after the last save. At 9:20 AM Jordan gets one email with the new version.",
+   "vi": "Jordan đã mở màn hình ký nhưng chưa ký. Thứ Sáu 9:00 Sam sửa số NMLS của Jordan trong Recruit và lưu, 9:05 sửa thêm địa chỉ. Recruit chờ 15 phút sau lần lưu cuối. 9:20 Jordan nhận đúng một email có bản hợp đồng mới."
   },
   "who_gets": {
    "en": "Jordan, while his agreement is not signed yet (or when staff send a new version)",
@@ -336,12 +351,16 @@
   ],
   "not_sent": [
    {
-    "en": "The change doesn't affect what the agreement says",
-    "vi": "Thay đổi không ảnh hưởng tới nội dung hợp đồng"
+    "en": "The change doesn't affect what the agreement prints (name, NMLS, address, email, legal name, states). A change to the split alone does not send it.",
+    "vi": "Thay đổi không ảnh hưởng tới nội dung in trên hợp đồng (tên, NMLS, địa chỉ, email, tên pháp lý, các bang). Chỉ đổi tỉ lệ chia thì không gửi."
    },
    {
     "en": "Jordan was already told about these same details",
     "vi": "Jordan đã được báo đúng những thay đổi này rồi"
+   },
+   {
+    "en": "Jordan has not opened the signing screen yet: there is no unsigned version to replace",
+    "vi": "Jordan chưa mở màn hình ký: chưa có bản chưa ký nào để thay"
    }
   ],
   "also_happens": {
@@ -468,8 +487,8 @@
    "vi": "Jordan"
   },
   "from_name": {
-   "en": "The recruiter who registered him (Alex)",
-   "vi": "Recruiter đã đăng ký cho Jordan (Alex)"
+   "en": "The recruiter who registered him (Alex); if Jordan has no recruiter, the Loan Factory Recruiting Team",
+   "vi": "Recruiter đã đăng ký cho Jordan (Alex); nếu Jordan chưa có recruiter thì là Đội Recruiting của Loan Factory"
   },
   "when": {
    "en": "Within a minute or so, once MOSO confirms",
@@ -521,8 +540,8 @@
    "vi": "Jordan"
   },
   "from_name": {
-   "en": "Jordan's recruiter (Alex); if he has none, the recruiting team or the session host",
-   "vi": "Recruiter của Jordan (Alex); nếu chưa có thì nhóm tuyển dụng hoặc người chủ trì buổi"
+   "en": "Jordan's recruiter (Alex); if he has none, the Loan Factory Recruiting Team",
+   "vi": "Recruiter của Jordan (Alex); nếu Jordan chưa có recruiter thì là Đội Recruiting của Loan Factory"
   },
   "when": {
    "en": "Right away, when he is registered",
@@ -546,8 +565,8 @@
    },
    {
     "button": {
-     "en": "Add to calendar",
-     "vi": "Add to calendar"
+     "en": "Add it to your calendar",
+     "vi": "Add it to your calendar"
     },
     "opens": {
      "en": "his calendar",
@@ -597,8 +616,8 @@
    "vi": "Mọi người đã đăng ký trước khi link được tạo hoặc thay đổi"
   },
   "from_name": {
-   "en": "Jordan's recruiter (Alex); if he has none, the recruiting team or the session host",
-   "vi": "Recruiter của Jordan (Alex); nếu chưa có thì nhóm tuyển dụng hoặc người chủ trì buổi"
+   "en": "Jordan's recruiter (Alex); if he has none, the Loan Factory Recruiting Team",
+   "vi": "Recruiter của Jordan (Alex); nếu Jordan chưa có recruiter thì là Đội Recruiting của Loan Factory"
   },
   "when": {
    "en": "Within the hour after the link is created or changes",
@@ -661,8 +680,8 @@
    "vi": "Mọi người đã đăng ký buổi bị bỏ hoặc bị huỷ"
   },
   "from_name": {
-   "en": "Jordan's recruiter (Alex); if he has none, the recruiting team or the session host",
-   "vi": "Recruiter của Jordan (Alex); nếu chưa có thì nhóm tuyển dụng hoặc người chủ trì buổi"
+   "en": "Jordan's recruiter (Alex); if he has none, the Loan Factory Recruiting Team",
+   "vi": "Recruiter của Jordan (Alex); nếu Jordan chưa có recruiter thì là Đội Recruiting của Loan Factory"
   },
   "when": {
    "en": "Right away, when the admin skips or cancels the session",
@@ -733,8 +752,8 @@
    "vi": "Mọi người đã đăng ký buổi webinar của Recruit"
   },
   "from_name": {
-   "en": "Jordan's recruiter (Alex); if he has none, the session host",
-   "vi": "Recruiter của Jordan (Alex); nếu chưa có thì người chủ trì buổi"
+   "en": "Jordan's recruiter (Alex); if he has none, the Loan Factory Recruiting Team",
+   "vi": "Recruiter của Jordan (Alex); nếu Jordan chưa có recruiter thì là Đội Recruiting của Loan Factory"
   },
   "when": {
    "en": "2 days before it starts (checked every hour)",
@@ -755,6 +774,20 @@
      "vi": "vào dự trực tiếp"
     },
     "next_email_id": null
+   },
+   {
+    "button": {
+     "en": "Add it to your calendar",
+     "vi": "Add it to your calendar"
+    },
+    "opens": {
+     "en": "his calendar (a calendar file download)",
+     "vi": "lịch của Jordan (tải về một file lịch)"
+    },
+    "does_there": {
+     "en": "the session is added to his calendar with the join link",
+     "vi": "buổi webinar được thêm vào lịch kèm link vào phòng"
+    }
    }
   ],
   "not_sent": [],
@@ -781,8 +814,8 @@
    "vi": "Mọi người đã đăng ký buổi webinar của Recruit"
   },
   "from_name": {
-   "en": "Jordan's recruiter (Alex); if he has none, the session host",
-   "vi": "Recruiter của Jordan (Alex); nếu chưa có thì người chủ trì buổi"
+   "en": "Jordan's recruiter (Alex); if he has none, the Loan Factory Recruiting Team",
+   "vi": "Recruiter của Jordan (Alex); nếu Jordan chưa có recruiter thì là Đội Recruiting của Loan Factory"
   },
   "when": {
    "en": "1 day before it starts (checked every hour)",
@@ -803,6 +836,20 @@
      "vi": "vào dự trực tiếp"
     },
     "next_email_id": null
+   },
+   {
+    "button": {
+     "en": "Add it to your calendar",
+     "vi": "Add it to your calendar"
+    },
+    "opens": {
+     "en": "his calendar (a calendar file download)",
+     "vi": "lịch của Jordan (tải về một file lịch)"
+    },
+    "does_there": {
+     "en": "the session is added to his calendar with the join link",
+     "vi": "buổi webinar được thêm vào lịch kèm link vào phòng"
+    }
    }
   ],
   "not_sent": [],
@@ -829,8 +876,8 @@
    "vi": "Mọi người đã đăng ký buổi webinar của Recruit"
   },
   "from_name": {
-   "en": "Jordan's recruiter (Alex); if he has none, the session host",
-   "vi": "Recruiter của Jordan (Alex); nếu chưa có thì người chủ trì buổi"
+   "en": "Jordan's recruiter (Alex); if he has none, the Loan Factory Recruiting Team",
+   "vi": "Recruiter của Jordan (Alex); nếu Jordan chưa có recruiter thì là Đội Recruiting của Loan Factory"
   },
   "when": {
    "en": "2 hours before it starts (checked every hour)",
@@ -851,6 +898,20 @@
      "vi": "vào dự trực tiếp"
     },
     "next_email_id": "tpl-lo-webinar-follow-up-attended"
+   },
+   {
+    "button": {
+     "en": "Add it to your calendar",
+     "vi": "Add it to your calendar"
+    },
+    "opens": {
+     "en": "his calendar (a calendar file download)",
+     "vi": "lịch của Jordan (tải về một file lịch)"
+    },
+    "does_there": {
+     "en": "the session is added to his calendar with the join link",
+     "vi": "buổi webinar được thêm vào lịch kèm link vào phòng"
+    }
    }
   ],
   "not_sent": [],
@@ -877,8 +938,8 @@
    "vi": "Người đã đăng ký buổi mà không rõ có dự hay không"
   },
   "from_name": {
-   "en": "Jordan's recruiter (Alex); if he has none, the session host",
-   "vi": "Recruiter của Jordan (Alex); nếu chưa có thì người chủ trì buổi"
+   "en": "Jordan's recruiter (Alex); if he has none, the Loan Factory Recruiting Team",
+   "vi": "Recruiter của Jordan (Alex); nếu Jordan chưa có recruiter thì là Đội Recruiting của Loan Factory"
   },
   "when": {
    "en": "The day after the session, at 2:00 PM",
@@ -930,8 +991,8 @@
    "vi": "Người đã vào dự buổi"
   },
   "from_name": {
-   "en": "Jordan's recruiter (Alex); if he has none, the session host",
-   "vi": "Recruiter của Jordan (Alex); nếu chưa có thì người chủ trì buổi"
+   "en": "Jordan's recruiter (Alex); if he has none, the Loan Factory Recruiting Team",
+   "vi": "Recruiter của Jordan (Alex); nếu Jordan chưa có recruiter thì là Đội Recruiting của Loan Factory"
   },
   "when": {
    "en": "The day after the session, at 2:00 PM",
@@ -986,8 +1047,8 @@
    "vi": "Người đã đăng ký nhưng không vào dự"
   },
   "from_name": {
-   "en": "Jordan's recruiter (Alex); if he has none, the session host",
-   "vi": "Recruiter của Jordan (Alex); nếu chưa có thì người chủ trì buổi"
+   "en": "Jordan's recruiter (Alex); if he has none, the Loan Factory Recruiting Team",
+   "vi": "Recruiter của Jordan (Alex); nếu Jordan chưa có recruiter thì là Đội Recruiting của Loan Factory"
   },
   "when": {
    "en": "The day after the session, at 2:00 PM",
@@ -1054,8 +1115,8 @@
    "vi": "Riley, người đã giới thiệu Jordan"
   },
   "from_name": {
-   "en": "Sam (the onboarding specialist); if there is none, Alex, else the session host",
-   "vi": "Sam (onboarding specialist); nếu chưa có thì Alex, rồi tới người chủ trì buổi"
+   "en": "Sam (the onboarding specialist); if there is none, Alex; if Jordan has no one yet, the Loan Factory Recruiting Team",
+   "vi": "Sam (onboarding specialist); nếu chưa có thì Alex; nếu Jordan chưa có ai thì là Đội Recruiting của Loan Factory"
   },
   "when": {
    "en": "About 30 minutes after the session ends; never more than 3 days later",
@@ -1204,8 +1265,8 @@
    "vi": "Jordan, khi đã được đặt lịch 1-1"
   },
   "from_name": {
-   "en": "Not confirmed yet (it is sent through MOSO)",
-   "vi": "Chưa xác định (email đi qua MOSO)"
+   "en": "Sam, the onboarding specialist who holds the 1-1",
+   "vi": "Sam, onboarding specialist phụ trách buổi 1-1"
   },
   "when": {
    "en": "2 days before the call; at most 30 minutes late, never after the call starts",
@@ -1257,8 +1318,8 @@
    "vi": "Jordan, khi đã được đặt lịch 1-1"
   },
   "from_name": {
-   "en": "Not confirmed yet (it is sent through MOSO)",
-   "vi": "Chưa xác định (email đi qua MOSO)"
+   "en": "Sam, the onboarding specialist who holds the 1-1",
+   "vi": "Sam, onboarding specialist phụ trách buổi 1-1"
   },
   "when": {
    "en": "1 day before the call; at most 30 minutes late, never after the call starts",
@@ -1310,8 +1371,8 @@
    "vi": "Jordan, khi đã được đặt lịch 1-1"
   },
   "from_name": {
-   "en": "Not confirmed yet (it is sent through MOSO)",
-   "vi": "Chưa xác định (email đi qua MOSO)"
+   "en": "Sam, the onboarding specialist who holds the 1-1",
+   "vi": "Sam, onboarding specialist phụ trách buổi 1-1"
   },
   "when": {
    "en": "2 hours before the call; at most 30 minutes late, never after the call starts",
@@ -1370,7 +1431,22 @@
    "en": "4 weeks after the call result, in business hours",
    "vi": "4 tuần sau khi ghi kết quả cuộc gọi, trong giờ làm việc"
   },
-  "click": [],
+  "click": [
+   {
+    "button": {
+     "en": "https://www.loanfactory.com/lo",
+     "vi": "https://www.loanfactory.com/lo"
+    },
+    "opens": {
+     "en": "Loan Factory's page for Loan Officers",
+     "vi": "trang dành cho Loan Officer của Loan Factory"
+    },
+    "does_there": {
+     "en": "reads how Loan Factory works and can sign up for the Friday webinar",
+     "vi": "đọc Loan Factory hoạt động thế nào và có thể đăng ký webinar thứ Sáu"
+    }
+   }
+  ],
   "not_sent": [
    {
     "en": "Jordan replied, or someone really called, texted or emailed him: the emails stop for good",
@@ -1466,7 +1542,22 @@
    "en": "4 weeks after the previous one, in business hours",
    "vi": "4 tuần sau email trước, trong giờ làm việc"
   },
-  "click": [],
+  "click": [
+   {
+    "button": {
+     "en": "https://www.loanfactory.com/lo",
+     "vi": "https://www.loanfactory.com/lo"
+    },
+    "opens": {
+     "en": "Loan Factory's page for Loan Officers",
+     "vi": "trang dành cho Loan Officer của Loan Factory"
+    },
+    "does_there": {
+     "en": "reads how Loan Factory works and can sign up for the Friday webinar",
+     "vi": "đọc Loan Factory hoạt động thế nào và có thể đăng ký webinar thứ Sáu"
+    }
+   }
+  ],
   "not_sent": [
    {
     "en": "Jordan replied, or someone really called, texted or emailed him: the emails stop for good",
@@ -1514,7 +1605,22 @@
    "en": "4 weeks after the previous one, in business hours",
    "vi": "4 tuần sau email trước, trong giờ làm việc"
   },
-  "click": [],
+  "click": [
+   {
+    "button": {
+     "en": "https://www.loanfactory.com/lo",
+     "vi": "https://www.loanfactory.com/lo"
+    },
+    "opens": {
+     "en": "Loan Factory's page for Loan Officers",
+     "vi": "trang dành cho Loan Officer của Loan Factory"
+    },
+    "does_there": {
+     "en": "reads how Loan Factory works and can sign up for the Friday webinar",
+     "vi": "đọc Loan Factory hoạt động thế nào và có thể đăng ký webinar thứ Sáu"
+    }
+   }
+  ],
   "not_sent": [
    {
     "en": "Jordan replied, or someone really called, texted or emailed him: the emails stop for good",

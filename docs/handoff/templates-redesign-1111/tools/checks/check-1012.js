@@ -1,9 +1,9 @@
 const S='/Users/apple/Projects/agentflow/docs/handoff/recruit-e2e-lab/scripts/';
-const { chromium } = require('/Users/apple/.npm/_npx/fd3bca3c548369c0/node_modules/playwright');
+const { chromium } = require('/Users/apple/.npm/_npx/9833c18b2d85bc59/node_modules/playwright');
 const { login } = require(S+'auth');
 const BASE='https://gateway.viet18.com/recruit-svc/api/v1';
 const BAD=/Lisbeth|Giraldo|Victoria|591-8143|306-6244/;
-(async () => { const b = await chromium.launch({ headless: true, executablePath: '/Users/apple/Library/Caches/ms-playwright/chromium-1223/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing' });
+(async () => { const b = await chromium.launch({ headless: true, executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' });
  const m = await login(b, 'bao.trinh+manager@loanfactory.com');
  const H={ 'content-type':'application/json', authorization:'Bearer '+m.token };
  const post=async(p)=>{const r=await fetch(BASE+p,{method:'POST',headers:H,body:'{}'});let j=null;try{j=await r.json()}catch(e){};return [r.status,j];};
