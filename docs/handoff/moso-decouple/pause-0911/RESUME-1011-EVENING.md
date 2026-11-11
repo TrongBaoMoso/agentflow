@@ -47,3 +47,40 @@ Bao shut the machine down. On resume: read this, re-check each line against GitH
 - Signing-link 503 = api-gateway-v2 5s timeout; fixed STAGING only in api-gateway-v2 #187 (54af3a4; also bumps golang.org/x/net to 0.62.0 for a new CVE). services.prod.yaml untouched. lf-homepage proxy has its own 10s limit.
 - Bao's demo lead "Bao Demo Qxzja" (WELCOME 22:02 10/11, live link) — do not archive/touch.
 - Next: 09:17 Wed report; 23:47 Wed 24h re-check (MOSO-OFF-SMOKE §3).
+
+## Update 11/11 13:50 VN — paused again (Bao shut down); audits + fix wave
+Evidence copied OUT of the scratchpad (it is wiped on shutdown): `~/.cache/claude-recruit/audit-1111/`
+(`audit/code-audit.md`, `audit/data-audit.md`, `audit/role-matrix.md`, `fix/COMMON-RULES.md`, `fix/shots/*`, `s9run/*` E2E scripts).
+
+### Audits (11/11 02:00–03:30, read-only, independent)
+- Code: 65 MOSO touch points — A cut 23, B goes dark 10, C still depends 26, D intended 6. recruit-be itself clean; gaps were
+  lf-homepage portal, lo-homepage /join /recruit, referrer identity keyed by MOSO key, bonus verdict from packs, FE wording.
+- Runtime/DB: recruit-be → MOSO calls 1,048 (12:00–16:38Z 10/11) then 0 after the flip (MOSO-side request logs); moso-aid 105 → 0.
+  Frozen data: 272 PENDING NO_PACKS_VERDICT, 272 UNDETERMINED, 43 REFERRER_KIND_UNKNOWN, 4 CLOSED_LOANS_UNKNOWN.
+- Roles: 8 roles, ~135 page loads, ~290 API calls, 0 5xx; failures F1 share link null, F2 bonus, F3 W-2/1099 mismatch (HIGH), F4–F9 low.
+
+### Fix wave (Bao 11/11 answers: OB decides W-2/1099; referrer identity = central account id; Recruit decides bonus; fix both sites on staging)
+Merged + on staging (recruit-be staging tip 32dc5afe8 at 13:47; fc218308d carried #994 #995 #997 #999):
+- recruit-be #994 D492 (Recruit program/bonus verdict, V388), #995 D491 (one W-2/1099 source), #997 D493 (referrer by central id,
+  MOSO key alias, typed referrer confirm, lo_site origin, V389), #999 D494 (webinar date, 403 log level).
+- recruit-fe #771 (moso-off wording, no forbidden calls). lf-homepage #2743 (W-2/1099 locked), #2744 + #2745 (portal ?invite=
+  0 browser MOSO calls, fallbacks, ZIP table, referrer e-mail field). lo-homepage #946–#949 (LO_SITE_MOSO_OFF, QR lazy,
+  lo_site origin + HMAC; LO_SITE_ORIGIN_STAMP=true on staging). moso-aid #230 (LO profile snapshot, RSVP → Recruit).
+  api-gateway-v2 #187 (staging-only signing-link 30s timeout + x/net bump).
+Proven on staging: lo-homepage /join /recruit with MOSO 502 everywhere (flag on 200, off 500); plain-LO-site lead → REFERRAL,
+referrer = site owner via central id; portal HAR 0 MOSO calls through fee PAID + signing link READY; fix-small before/after 403s → 0.
+Open PRs at pause: recruit-be #1003 (backfill follows intake rule; BEHIND), #1001 (portal LO referrer list from HR — check owner).
+Not yet proven at pause (agents' WIP replies below / ask them): bonus after-counts + plain-LO E2E "Fix Rid One" (S6 Joined, waiting
+PENDING_JOIN → MATURING), new-LO REFERRER role + share link (Sierra NinePerfa), W-2/1099 E2E after shots.
+Test accounts: onb-test + role-officer back to RECRUITER only (Bao 05/11 rule); role-onb keeps ONBOARDING (Bao 08/11).
+
+### Open items needing others / Bao
+1. LO-site routing goes through MOSO GAE (MyPages proxy sets internalLoKey) → DevOps ingress/domain change before prod MOSO-off.
+2. New LO hired after MOSO-off has no LO site (no snapshot, no routing) → needs central-id LO registry in moso-aid + routing.
+3. Active-LO list for the portal referrer picker → service credential for user-service (Khải/DevOps), or HR list (#1001?).
+4. Central login page + auth-service logout still call MOSO (auth team).
+5. Prod fee still via MOSO until Stripe (Khải). lf-homepage production has no ?invite= code — whole portal set ships together.
+6. Bead: archiving a lead leaves its webinar registration REGISTERED.
+7. Optional (Bao to decide): "Referred by" field when a recruiter adds a lead (never existed).
+### Crons to recreate on resume
+- 23:47 VN 11/11: 24h moso-off re-check (MOSO-OFF-SMOKE.md §3).
