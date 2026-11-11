@@ -84,3 +84,5 @@ After a reboot, Chrome CDP 9345 (Gmail plus the recruit.loanfactory.com prod log
 `open -na "Google Chrome" --args --user-data-dir=$HOME/.claude-gmail-profile --remote-debugging-port=9345`
 
 Bao was told at 17:42: about 60% done, ETA 21–22h. He has no decisions pending. The only possible ask: which staging account with a real avatar to use.
+
+**18:05 update:** all agents stopped before shutdown. #1014 MERGED 7f319b3d (18:00) and promote-staging triggered 18:05 (run 43008375788): on resume confirm "Deploy staging (GKE)" succeeded, then do the #1014 Gmail check (step 3 Next). #1012 #1013 fe #781 still OPEN.
