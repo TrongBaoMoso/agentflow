@@ -145,7 +145,28 @@ The flip went live at 16:37Z with #969 (staging tip `45dfb7033`). D447 / #982 (`
 - **Open, low:** the 2 `not_in_directory` referrers get REFERRER only once a referrer-directory backfill files their key.
 - **Not a gap:** the D448 CS-ticket reader (moso-aid) is guarded and simply dark under moso-off.
 
-**Count:** 36 / 44 = **82% replaced-on**, unchanged. The 8 P6 bridges are still counted as blockers until #923 deletes them. **With moso-off ON they are disarmed**, so on staging recruit-be now makes no packs or MOSO call and stores no MOSO push. The one remaining moso-aid read, the D421 applications import, is intended. **Count after 24 h:** _TBD_ (re-run §3 of MOSO-OFF-SMOKE.md on 11/11 ~23:40 VN).
+**Count:** 36 / 44 = **82% replaced-on**, unchanged. The 8 P6 bridges are still counted as blockers until #923 deletes them. **With moso-off ON they are disarmed**, so on staging recruit-be now makes no packs or MOSO call and stores no MOSO push. The one remaining moso-aid read, the D421 applications import, is intended. **Count after 24 h:** 36 / 44 = **82%**, unchanged. See the 24 h re-check below.
+
+**24 h re-check (11/11 ~23:50 VN → 12/11 00:10 VN, window 10/11 17:00Z → 11/11 17:00Z, read only):**
+
+| Check | Result |
+|---|---|
+| Outbox | **PASS.** 309 rows, newest `created_date` 10/11 15:48:36Z, newest `last_modified_date` 15:50:02Z, 0 rows created or modified since the flip. 4 INVITE PENDING untouched. |
+| MOSO `webhook_events` | **PASS.** 0 new since the flip; MOSO max still 10/11 15:48:28Z. MOSO staging did push: 650 × `moso_off dropped a MOSO push`, nothing stored. |
+| recruit-be → MOSO calls (receiving side) | **PASS, 0.** MOSO GAE: 0 requests to `/api/recruit/*` (any client); the only Java client calls are 97 × `/internal/sso/logout` (auth-service, out of scope). moso-aid Cloud Run: 0 Java client calls since the flip (control: 105 in the 8 h before it). |
+| Skip lines (log-summed, all pods; the per-pod `/admin/moso-off` map resets on each restart) | **PASS.** moso-push listener 650, moso-aid `GET /api/recruit/cs-tickets` 288, packs relay tick 286, `POST /referrals/byOwner` 228, signed reconcile tick 73, enqueue PORTAL_STATE 69 / PROFILE_WRITEBACK 65 / ONBOARDING_MEETING 19 / ONBOARDING_SPECIALIST 17, `POST /referrers/resolve` 23 (15 in the sweep before D447 at 17:21Z, then 8 user requests). Every op is on the expected list. |
+| Program roster tick | **PASS.** 145 ticks (every 10 min, no gap): `program sync tick dry_run: members=53 approved=53 linked=2 grants=0 revokes=0 suspensions=0 releases=0`; dry-run compare `acting=RECRUIT other=MOSO_AID unavailable` each time. |
+| Bonus sweep | **PASS.** 145 runs, all `failed=0`, `compared=0`; `checked` 368 → 372 (new rows from tonight's tests). |
+| Webinar schedule tick | **PASS.** 24 hourly runs, no error. `series` went 6 → 1 → 2 during the day (staging test data from other agents, not MOSO). |
+| REFERRER role sweep | **PASS.** 10 `FAILED {packs_unavailable}` lines all at 17:00–17:20Z, before D447 (#982) landed; every run after is `OK` (`not_in_directory=2` stays, the known low item). |
+| ERROR lines, 24 h | **WARN on volume, no MOSO cause.** 823 vs baseline 78. `BaseExceptionHandler` 637 (4xx: role-gated pages 238, `Candidate not found` 52 from agent tests, wrong method 49, missing permission ~90, other bad requests); the rest below. |
+
+New ERROR loggers vs §0a, none MOSO-related:
+- **DB outages, known class.** 11/11 15:40–15:42Z (22:40 VN, `postgresql-0` recreated 15:41Z) and an earlier one 08:12–08:16Z (15:12 VN): `SqlExceptionHelper` 111, `MailStatusMessageHandler` 16, `HrRoleSyncMessageHandler` 12, `HrAssociateOnboardedMessageHandler` 8, `EsignCompletedMessageHandler` 1, `SpringApplication` 1, plus 9 `BaseExceptionHandler` "Could not open JPA EntityManager". Handlers nack for redelivery.
+- **Failed Flyway V398 ("template mail kit signature v2"), 11:07–11:48Z:** `DbMigrate` 14 + `SpringApplication` 14, new pods failed to start during the templates deploys. Fixed: V398 recorded `success=true` at 12:23Z; V401–V405 applied after.
+- One-offs: `SearchServiceImpl` 1 (Hibernate Search not initialised, 14:27Z, pod start), `RoleRefusalLogLevelAdvice` 4 ("Invalid api key"), `RequestBodyDecodeExceptionAdvice` 2 (bad template review body), `ConcurrentTransactionServiceImpl` 2 (in baseline).
+
+33 pod starts in the window (deploys plus the V398 crash loop); every one logged `Program roster source: RECRUIT`. The current pod has `RECRUIT_FEATURES_MOSO_OFF=true`. **Verdict: after 24 h recruit-be makes no MOSO call and stores no MOSO data on staging; no gap found.**
 
 ## 0f. Program roster source switch built dark, 10/11 (~11:40 VN)
 
