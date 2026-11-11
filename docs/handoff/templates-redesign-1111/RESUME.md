@@ -28,3 +28,59 @@ Prod flags stay OFF until Bao says. RAM gate before every browser/build. Reply t
 - agreement-link: REMOVE (never sent). Agent retire-agreement-link: BE PR archives row via migration + drops enum → staging.
 - Webinar 1-month drip: already ON on staging since 10/11 (enabled=true, after_1_month=P1M). Request came from Victoria's team (MOSO ticket 16/07), not Brayan.
 - test_send_per_hour reset to 20.
+
+## PAUSE 11/11 17:58 VN (session 0d517c34) — READ THIS FIRST ON RESUME
+Background agents die on shutdown. All in-flight jobs are PRs on GitHub. To resume, check each PR, then do merge → staging → check.
+
+Done since 14:00:
+- Prod: the 6 template flags are ON since 15:11, with Bao's OK. Prod lo_mail is DRY_RUN, so no real LO mail goes out.
+- #1004: the agreement-link template is archived, checked on staging.
+- Gallery v6 (plain language) is published at XPP1VKcmuLTucuaY2vSDpo.
+- Webinar drip-1m is already ON on staging.
+
+In flight (all staging only, Bao approved):
+
+1. **recruit-be #1012 (V395)**
+   - Change: the invite reminder lists PAY before SIGN. The contact lines with Lisbeth / (669) 306-6244 (fee-paid) and Victoria / (714) 591-8143 (10 webinar mails) are removed. They become "Questions? Reply to this email or write to recruiting@loanfactory.com."
+   - State: rebased to a2ff1fbbc. Local tests pass; CI is re-running.
+   - Next:
+     - Squash-merge. If it is behind, rebase and regenerate docs/SCHEMA.md on PG16.
+     - Run promote-staging.
+     - Run `node tools/checks/check-1012.js`. It previews the order, scans the ACTIVE templates for the banned strings, and test-sends 3 mails to bao.trinh+manager@.
+
+2. **recruit-be #1013 + recruit-fe #781**
+   - Change: Send info records template_id, and it shows in the Templates send history.
+   - State: FE CI is green. BE auto-merge was armed.
+   - Next:
+     - Merge FE, then promote both to staging.
+     - Do a real Send info (send now, email) with template 698b9cc2-323d-434e-80e2-244f2c5363dc to a bao.trinh+ lead.
+     - Check GET /templates/698b9cc2-323d-434e-80e2-244f2c5363dc/sends.
+     - Take shots: shots/sendinfo-history-{before,after}-1440.png.
+
+3. **recruit-be #1014 (V398), kit signature v2**
+   - Change:
+     - A real avatar (round, 48px), else the ORANGE LF mark. recruit-fe #782 is merged and lf-mark-orange-144.png is live.
+     - Adds CalDRE and the office address.
+     - Shows NO website and NO social links.
+     - The webinar registered and referrer mails come from the recruiting team when there is no owner. The flag RECRUIT_FEATURES_WEBINAR_TEAM_SENDER is already true in the staging values.
+   - Next:
+     - Merge and promote.
+     - Test-send tpl-lo-invite from an account WITH an avatar, and from +manager (logo). If no account has an avatar, ask Bao; do not upload a photo.
+     - Run gmailshot → shots/sig-v2-{avatar,logo}-{d,m}.png.
+     - Watch the signature-order assertion in LoanOfficerMailTemplatesIT:309.
+
+4. **Gallery v7 (clickable real flows)**
+   - State: just started. Nothing is committed; check emails/CLICKS.json and tools/ for partial work.
+   - Brief:
+     - For each email with a CTA, create a staging test LO named `Gallery <Case>` with address bao.trinh+gal-<case>@. Drive the REAL flow, not a test-send.
+     - Take the real hrefs from Gmail (CDP 9345).
+     - Shoot each landing page at 1440 and 390, with a plain caption naming the form and step.
+     - In build_gallery2.py, make each CTA clickable (target=_blank). Add the landing shot and a "live staging link" note.
+     - Capture only after jobs 1–3 are on staging, then publish to XPP1VKcmuLTucuaY2vSDpo.
+
+Migration numbers held by other open PRs: V393, V396, V397, V399. Re-check before merging.
+
+After a reboot, Chrome CDP 9345 (Gmail plus the recruit.loanfactory.com prod login) may need relaunching:
+`open -na "Google Chrome" --args --user-data-dir=$HOME/.claude-gmail-profile --remote-debugging-port=9345`
+
+Bao was told at 17:42: about 60% done, ETA 21–22h. He has no decisions pending. The only possible ask: which staging account with a real avatar to use.
