@@ -65,6 +65,11 @@ Blockers by the phase that owes them:
 | **No phase owns it yet:** the "next webinar" token and list dates still read the packs picker, even with Recruit webinars on | BE-45 |
 | P6 itself: bridges that only exist to keep MOSO in sync, deleted at the cut | BE-04, BE-05, BE-22, BE-26, BE-35, BE-36, BE-39, BE-40 |
 
+## 0j. Production go-live steps added 11/11 night (finish-1011-1015)
+
+- **Before enabling recruit-be #1011 (D498 referrer review decisions, flag `RECRUIT_FEATURES_REFERRER_REVIEW_DECIDE`) in production, grant `REFERRER_REVIEW_DECIDE` to the central RECRUIT `MANAGER` role (Account IAM).** Reason: with `RECRUIT_RBAC_SOURCE=central`, the V402 seed only writes Recruit's local `rbac_roles`, and the boot catalog push adds the permission but never adds permissions to EXISTING roles (`reconcile=false`). ADMIN is covered by `*`. Check: `GET /api/v1/admin/rbac/me` as a Manager lists `REFERRER_REVIEW_DECIDE`; the decision route stops answering 403 "Missing permission REFERRER_REVIEW_DECIDE".
+- Staging has the same gap as of 11/11 ~17:45Z: the Recruit admin test login gets 403 on auth-service `/admin/rbac/roles/*` (it is not an Account IAM admin), so the staging grant needs someone with Account IAM admin rights.
+
 ## 0i. State at 21:00 VN 10/11, before the moso-off flip
 
 Staging runs recruit-be `d7dcffb77` (cd-staging 13:56Z). `RECRUIT_FEATURES_MOSO_OFF` is still `false`; #969 flips it after the Victoria demo (~23:07 VN). Production values were not touched: every new switch is absent or off there.
