@@ -127,3 +127,8 @@ Afternoon (resumed 14:27): all on STAGING, prod flags absent (checked helm produ
 - Bao still to answer: Q63 grandfathered 14/09 rule; /join hero numbers 240+/2,600+; recruiter "Referred by" field (suggest no);
   role-onb keep OB?; message to Khải/Đạt about LO-site routing + auth login via MOSO.
 - Cron to recreate: 23:47 VN 11/11 24h moso-off re-check (if past, run now).
+- B26 not yet working on staff-created leads: #1009 calls confirmOne after a portal save, but leads created via POST /candidates
+  have no referral_attribution_events (≈71/179 in 7 days) → effectiveAttribution throws, program row rolled back.
+  Fix recruit-be #1015 (skip ledger credit when empty, keep FK_CONFIRMED row) in CI, auto-merge. On resume: promote, re-pick on
+  lead ba06ae6f-2f7c-4a59-9ade-68c4711286f1 ("Fix PortalBkehs"), check program row + My referrals; then follow-up: write a
+  genesis REFERRED event when a portal pick is CONFIRMED on a lead with no ledger (lead decided yes).
