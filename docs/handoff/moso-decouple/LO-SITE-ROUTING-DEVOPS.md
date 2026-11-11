@@ -1,5 +1,13 @@
 # LO site routing without MOSO: DevOps hand-off (audit row H15)
 
+> **OUT OF SCOPE / NOT REQUESTED (Bao 11/11).** "Recruit independent of MOSO" covers only Recruit's own calls to MOSO
+> (recruit-be, recruit-fe, the onboarding portal, the /join and /recruit funnel forms). LO marketing-site routing is not
+> Recruit's. The code this page describes was reverted on staging on 11/11: lo-homepage #957 (reverts #951, #952),
+> moso-aid #237 (reverts #233-#235), recruit-be #1022 (reverts #1018, D500). The staging env vars
+> `LO_SITE_SELF_ROUTING` (lo-homepage) and `LO_SITE_MOSO_OFF` (moso-aid) were removed. Kept only as a record; DevOps has
+> nothing to do here.
+
+
 Status 11/11/2026: **document only, no infrastructure has been changed.** Owner of the infra change: DevOps. Code side: us.
 
 Loan Officer (LO) websites are served by the Next.js app **lo-homepage**, but every LO site visit still passes through
