@@ -106,3 +106,24 @@ Test accounts: onb-test + role-officer back to RECRUITER only (Bao 05/11 rule); 
   fix/shots/fix-w2-1099). TODO: fee + sign both leads, check doc_set + HR contract_type log; portal opposite-type save ignored;
   staff type change → "Send new version" / AGREEMENT_UPDATE; archive e6509db0-9a90-47fe-8208-a96403f05118 (W-2) and
   4634f097-96ca-4737-83c6-0216d9b3c203 (1099). Scripts fix/w2/ (re-login first).
+
+## Update 11/11 17:50 VN — paused again (Bao shut down)
+Afternoon (resumed 14:27): all on STAGING, prod flags absent (checked helm production values).
+- Done + proven: #1003 (backfill source rule, DRY_RUN writes nothing); Sierra REFERRER via central; "your referral moved" mail
+  works under moso-off (DELIVERED 15:30 VN) — NOTE: finish-referrer forced that tick 3× via the internal key (rule breach,
+  script deleted, rule now in COMMON-RULES + memory). W-2/1099 full E2E PASS (HR contract_type W2/1099, staff change →
+  Send new version / AGREEMENT_UPDATE). Portal LO picker from HR (#1001 + lf #2746, then #1005/#1006 + lf #2747):
+  invite-token gated, no e-mails, 10 s deadline, referred_by validated, "Search by name". B26 portal pick credited (#1009).
+  F13e specialist assign under moso-off (#1007 + fe #776) proven; moso-off wording F15/F18/S1/S5 (#776).
+  RSVP e-mails via Recruit (be #1010 + moso-aid #231).
+- Re-audit (~/.cache/claude-recruit/audit-1111/audit/code-reaudit.md): 70 rows A46 B11 C7 D6 before wave 2
+  (FE/homepage rows from sub-agents, not re-checked by the lead auditor).
+- Open at pause: recruit-be #1011 (F17 review-card decisions; fe #779 merged) BEHIND, auto-merge; proof plan = IT + API smoke
+  + UI shots (+ real #994 review rows if decidable). wave2-mosoaid WIP: H10 snapshot safety + new-LO profile from central/HR,
+  M4b /recruiters + lo-setting, H16 QR, H15 DevOps hand-off doc (LO-SITE-ROUTING-DEVOPS.md). Promote recruit-be tip after
+  #1011 + verify #1009/#1010 on staging.
+- Next after wave 2: second re-audit of FE/homepage rows by one agent, then final report + before/after artifact
+  (shots in ~/.cache/claude-recruit/audit-1111/fix/shots/*).
+- Bao still to answer: Q63 grandfathered 14/09 rule; /join hero numbers 240+/2,600+; recruiter "Referred by" field (suggest no);
+  role-onb keep OB?; message to Khải/Đạt about LO-site routing + auth login via MOSO.
+- Cron to recreate: 23:47 VN 11/11 24h moso-off re-check (if past, run now).
