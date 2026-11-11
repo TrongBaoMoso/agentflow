@@ -84,3 +84,16 @@ Test accounts: onb-test + role-officer back to RECRUITER only (Bao 05/11 rule); 
 7. Optional (Bao to decide): "Referred by" field when a recruiter adds a lead (never existed).
 ### Crons to recreate on resume
 - 23:47 VN 11/11: 24h moso-off re-check (MOSO-OFF-SMOKE.md §3).
+
+### Agent WIP at 13:55 (copies of scratchpad files in ~/.cache/claude-recruit/audit-1111/{fix,s9bonus,s9run})
+- fix-bonus-verdict DONE: staging before→after — program PENDING 272→0 (REFERRAL 244, LO_RECRUITER_PROGRAM 28); bonus
+  PROGRAM_PENDING 272→0; REFERRER_KIND_UNKNOWN 43→46 (referrers with no central account, on review list); PENDING_JOIN 7→75;
+  MATURING 0→1; NOT_ELIGIBLE 42→239 (archived 112, >120-day 38, program member 36, outside referrer 34, not LO per HR 19).
+  Plain-LO E2E "Fix Rid One" 370ffe1b PASS 14/14: referrer Sierra NinePerfa → S6 → bonus PENDING_JOIN → MATURING $500
+  (eligible 2027-01-09), archived. Left: swap ReferrerAccountLookup → ReferrerByCentralId#byKey; manual review decision writer
+  (bead agentflow-rken6); Bao judgement: 50 grandfathered members' approval time 2026-09-14 → earlier referrals = REFERRAL (D269.1, Q63 open).
+- fix-portal-lf WIP: recruit-be #1001 (feat/portal-loan-officers, D495) LO list from ai-hr-be /internal/v1/employees?role_code=LOAN_OFFICER,
+  invite-token gated, no e-mails; auto-merge OFF; CI red, fix (a) @Autowired on the public ctor of OnboardingLoanOfficers,
+  (b) add route to RbacCatalogCoverageTest public list, (c) BusinessClockGuardTest allow-list/inject Clock; then merge + promote.
+  lf-homepage UNCOMMITTED in lf-homepage-worktrees/portal-off-moso branch feat/portal-lo-list (picker from list, value = central id);
+  commit + PR after #1001 is on staging; rerun fix/portal-lf/{setup-lead,prefill,flow,sign}.js.
