@@ -1,0 +1,38 @@
+# RESUME — Conversations: lọc theo kênh (Channel) ra 0 dòng (session 1e475fb7, pause 11/11 ~16:00 VN)
+
+## Trạng thái: CHƯA CODE GÌ. Đang chờ Bao "OK" đề xuất bên dưới. Không có agent/cron/worktree nào đang chạy.
+
+## Bao hỏi
+Trang recruit.viet18.com/conversations (staging), acc Victoria (VP, Manager), tab All: chọn Channel Email/SMS -> 0 dòng.
+"Tối qua demo cho Victoria vẫn được, sáng nay không?"
+
+## Đã chứng minh (đo 11/11 trên staging)
+- FE (recruit-fe `conversations/_components/ConversationsClient/index.tsx`): Channel + Unread lọc TRÊN MÁY, chỉ 50 dòng của
+  trang đang xem, dựa vào omni `GET /api/v1/comm/latest` (`src/shared/omni/useLatestMessages.ts`). Logic có từ #661 (03/11), không đổi.
+- omni `internal/messages/store_latest.go`: chỉ trả tin cho người ĐANG CÓ MẶT trong hội thoại (callerCTE). Không đổi từ 09/11.
+- Acc Victoria / admin: `/comm/latest` trả `{"payload":{}}` -> cột Latest message trống, lọc kênh nào cũng 0.
+- Acc Chau Chau (recruiter trong hội thoại): trả đủ dữ liệu.
+- Tối qua Bao demo bằng acc **QA Test Recruiter** (avatar QR, 22:09): 93 hội thoại, SMS 1/50, Email 6/50 -> chạy được vì acc đó có mặt trong hội thoại.
+  => Không hỏng qua đêm; khác người xem. moso-off (#969 23:31) không liên quan.
+- Transcript `docs/transcripts/2026-11-10_recruit-app-q-and-a-session-feedback.md`:
+  5:55 Bao nói "chị Vi xem được toàn bộ"; 6:30–8:04 Victoria xin filter call/email/text trên nhiều LO (7:58 "Ý chị là cái này á hả?");
+  7:29 muốn biết "đã trả lời chưa / ai chưa trả lời"; 1:01:32–1:06:36 Miley cần xem hội thoại của LO người khác khi cover.
+- Đây chính là mục **.20** (bead agentflow-ewc4e.20) trong `docs/handoff/team-feedback-1011/QA-1011-ITEMS.md` (omni change allowed, STAGING only).
+
+## Đề xuất đã gửi Bao (chờ OK)
+1. recruit-be tự lưu theo từng LO: has_sms / has_email / has_call, kênh + người gửi + thời điểm tin mới nhất (mọi người gửi);
+   backfill 1 lần từ omni; lọc Channel ở SERVER -> đếm & phân trang đúng trên toàn danh sách (bỏ "x of 50 on this page").
+2. Cột Latest message cho manager lấy từ dữ liệu đó (chỉ "Ryan texted · Oct 13"; nội dung chỉ khi mở hội thoại).
+3. Filter mới "Awaiting reply" = tin mới nhất từ LO, team chưa trả lời.
+- 2 câu chờ chốt (đề xuất): "Text" = có SMS bất kỳ trong hội thoại; recruiter cover người khác: xem hết, trả lời CHỈ email (làm sau).
+- Unread giữ nguyên (chỉ chủ LO). Lên STAGING, prod cờ TẮT. Đo bằng acc Victoria + QA Test Recruiter.
+- Bước đầu khi code: kiểm recruit-be đã nhận event tin nhắn từ omni chưa; chưa thì sửa omni trên staging.
+
+## Ghi chú kỹ thuật
+- Script đo: scratchpad session cũ `vic3.js` (login Victoria, bấm "Not now" passkey, lưu state), playwright `~/.npm/_npx/e41f203b7505f1fb/node_modules/playwright` (chromium 1248).
+- State Victoria đã lưu lại: `docs/handoff/recruit-e2e-lab/scripts/state_victoria_pham_stg_loanfactory_com.json` (không commit — repo public).
+- Luôn `ram-gate acquire chrome` trước khi mở browser.
+
+## Liên quan
+- Plan đầy đủ 3 phần của .20 (lọc server-side, xem email đầy đủ, vai COVER cho recruiter trả lời thay) nằm trong NOTES của bead
+  `agentflow-ewc4e.20` (viết 13:12 bởi session fa8844b5). Đề xuất ở trên = phần (1) + thêm "Awaiting reply". Đọc `bd show agentflow-ewc4e.20`.
