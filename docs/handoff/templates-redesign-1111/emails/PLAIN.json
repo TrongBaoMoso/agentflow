@@ -1,0 +1,1577 @@
+{
+ "_journey": [
+  {
+   "title": {
+    "en": "1. Alex invites Jordan",
+    "vi": "1. Alex mời Jordan"
+   },
+   "text": {
+    "en": "Alex calls Jordan. If Jordan says yes, Alex sends him an offer from Recruit and Jordan gets the invitation right away. If Jordan doesn't finish signing up, reminders follow on day 2, 5 and 10.",
+    "vi": "Alex gọi Jordan. Nếu Jordan đồng ý, Alex gửi offer từ Recruit và Jordan nhận email mời ngay. Nếu Jordan chưa đăng ký xong, email nhắc sẽ tới vào ngày 2, 5 và 10."
+   },
+   "emails": [
+    "tpl-lo-invite",
+    "tpl-lo-invite-reminder"
+   ]
+  },
+  {
+   "title": {
+    "en": "2. The Friday webinar (optional)",
+    "vi": "2. Webinar thứ Sáu (không bắt buộc)"
+   },
+   "text": {
+    "en": "Jordan can join the 'Why Loan Factory' webinar. If it is a MOSO session, Recruit sends only the confirmation and MOSO does the rest. If it is a session Recruit runs itself, Recruit sends the confirmation, the join link, a notice if the date moves, and reminders 2 days, 1 day and 2 hours before.",
+    "vi": "Jordan có thể dự webinar 'Why Loan Factory'. Nếu là buổi của MOSO, Recruit chỉ gửi email xác nhận, phần còn lại MOSO lo. Nếu là buổi Recruit tự tổ chức, Recruit gửi xác nhận, link vào buổi, báo đổi ngày nếu có, và nhắc trước 2 ngày, 1 ngày, 2 giờ."
+   },
+   "emails": [
+    "tpl-lo-webinar-registered",
+    "tpl-lo-webinar-session-confirmed",
+    "tpl-lo-webinar-session-link",
+    "tpl-lo-webinar-session-moved",
+    "tpl-lo-webinar-reminder-2d",
+    "tpl-lo-webinar-reminder-1d",
+    "tpl-lo-webinar-reminder-2h"
+   ]
+  },
+  {
+   "title": {
+    "en": "3. After the webinar",
+    "vi": "3. Sau webinar"
+   },
+   "text": {
+    "en": "The next day at 2:00 PM Jordan gets one thank-you email: the 'attended', 'missed' or general version. If Riley referred Jordan and Jordan attended, Riley hears about it. One, two and three months later, people who haven't joined yet get a short follow-up.",
+    "vi": "Hôm sau lúc 14:00 Jordan nhận một email cảm ơn: bản 'đã dự', 'vắng' hoặc bản chung. Nếu Riley giới thiệu Jordan và Jordan có dự, Riley sẽ được báo. Sau 1, 2 và 3 tháng, những người chưa gia nhập nhận thêm một email ngắn."
+   },
+   "emails": [
+    "tpl-lo-webinar-follow-up-attended",
+    "tpl-lo-webinar-follow-up-missed",
+    "tpl-lo-webinar-follow-up",
+    "tpl-lo-webinar-referrer-attended",
+    "tpl-lo-webinar-drip-1m",
+    "tpl-lo-webinar-drip-2m",
+    "tpl-lo-webinar-drip-3m"
+   ]
+  },
+  {
+   "title": {
+    "en": "4. The 1-1 onboarding call",
+    "vi": "4. Buổi gọi 1-1 onboarding"
+   },
+   "text": {
+    "en": "Sam books a 1-1 call with Jordan. Jordan gets reminders 2 days, 1 day and 2 hours before. After the call Sam clicks 'Mark done' and Jordan gets the welcome email with the three steps left.",
+    "vi": "Sam đặt lịch gọi 1-1 với Jordan. Jordan nhận email nhắc trước 2 ngày, 1 ngày và 2 giờ. Gọi xong, Sam bấm 'Mark done' và Jordan nhận email chào mừng với 3 bước còn lại."
+   },
+   "emails": [
+    "tpl-onb-1on1-reminder-2d",
+    "tpl-onb-1on1-reminder-1d",
+    "tpl-onb-1on1-reminder-2h",
+    "tpl-lo-welcome"
+   ]
+  },
+  {
+   "title": {
+    "en": "5. Agreement and payment",
+    "vi": "5. Hợp đồng và thanh toán"
+   },
+   "text": {
+    "en": "If staff change the agreement before Jordan signs, Jordan gets the new version to sign. When Jordan pays the $100 start-up fee, he gets a receipt and Sam and Alex are told. Once Jordan has signed and paid, the reminders stop and NMLS and HR come next (those are not emails).",
+    "vi": "Nếu nhân viên sửa hợp đồng khi Jordan chưa ký, Jordan nhận bản mới để ký. Khi Jordan trả phí khởi đầu $100, Jordan nhận email xác nhận, Sam và Alex được báo. Khi Jordan đã ký và trả phí, email nhắc dừng, bước tiếp là NMLS và HR (không phải email)."
+   },
+   "emails": [
+    "tpl-lo-agreement-updated",
+    "tpl-lo-fee-paid",
+    "tpl-lo-fee-paid-staff"
+   ]
+  },
+  {
+   "title": {
+    "en": "6. Not ready yet: keep in touch",
+    "vi": "6. Chưa sẵn sàng: giữ liên lạc"
+   },
+   "text": {
+    "en": "If Jordan isn't ready (Alex logs 'Neutral', or Jordan misses 5 calls), Recruit sends him 4 short emails, one every 4 weeks, until the call-back date. It stops for good as soon as Jordan replies or someone really contacts him. This is not ready to switch on yet.",
+    "vi": "Nếu Jordan chưa sẵn sàng (Alex ghi 'Neutral', hoặc Jordan không nghe máy 5 lần), Recruit gửi 4 email ngắn, cứ 4 tuần một email, cho tới ngày hẹn gọi lại. Dừng hẳn ngay khi Jordan trả lời hoặc có người liên hệ thật. Phần này chưa sẵn sàng để bật."
+   },
+   "emails": [
+    "tpl-nurture-1",
+    "tpl-nurture-2",
+    "tpl-nurture-3",
+    "tpl-nurture-4"
+   ]
+  },
+  {
+   "title": {
+    "en": "Sent by hand",
+    "vi": "Recruiter tự gửi"
+   },
+   "text": {
+    "en": "Alex can also send a ready-made email himself with 'Send info', now or on a date he picks.",
+    "vi": "Alex cũng có thể tự gửi một email soạn sẵn bằng 'Send info', gửi ngay hoặc hẹn ngày."
+   },
+   "emails": [
+    "698b9cc2-323d-434e-80e2-244f2c5363dc"
+   ]
+  }
+ ],
+ "tpl-lo-invite": {
+  "name": {
+   "en": "Invitation to join Loan Factory",
+   "vi": "Email mời gia nhập Loan Factory"
+  },
+  "one_line": {
+   "en": "Invites Jordan to sign up with Loan Factory once the recruiter's offer is sent.",
+   "vi": "Mời Jordan đăng ký vào Loan Factory ngay khi offer của recruiter được gửi đi."
+  },
+  "story": {
+   "en": "Monday 10:00 AM Alex calls Jordan and Jordan says yes. Alex creates Jordan's offer in Recruit (split and fee). At 10:20 AM the offer is approved and sent, and a few seconds later Jordan gets this email from Alex.",
+   "vi": "Thứ Hai 10:00 Alex gọi Jordan, Jordan đồng ý. Alex tạo offer cho Jordan trong Recruit (tỉ lệ chia và phí). 10:20 offer được duyệt và gửi đi, vài giây sau Jordan nhận email này, người gửi là Alex."
+  },
+  "who_gets": {
+   "en": "Jordan, the Loan Officer who got the offer",
+   "vi": "Jordan, Loan Officer vừa được gửi offer"
+  },
+  "from_name": {
+   "en": "The person who sent the offer (Alex)",
+   "vi": "Người gửi offer (Alex)"
+  },
+  "when": {
+   "en": "Right away, seconds after the offer is sent",
+   "vi": "Ngay lập tức, vài giây sau khi gửi offer"
+  },
+  "click": [
+   {
+    "button": {
+     "en": "Join Loan Factory",
+     "vi": "Join Loan Factory"
+    },
+    "opens": {
+     "en": "the Loan Factory sign-up page",
+     "vi": "trang đăng ký của Loan Factory"
+    },
+    "does_there": {
+     "en": "fills in his info, pays the $100 start-up fee (unless it is waived), gives NMLS access and signs the agreement",
+     "vi": "điền thông tin, trả phí khởi đầu $100 (trừ khi được miễn), cấp quyền NMLS và ký hợp đồng"
+    },
+    "next_email_id": "tpl-lo-fee-paid"
+   }
+  ],
+  "not_sent": [
+   {
+    "en": "Jordan is already handed to an onboarding specialist",
+    "vi": "Jordan đã được giao cho onboarding specialist"
+   },
+   {
+    "en": "The 'wait for a specialist' rule is on and nobody is assigned yet: the specialist contacts Jordan later instead",
+    "vi": "Đang bật quy tắc 'chờ specialist' mà chưa có ai được giao: specialist sẽ tự liên hệ Jordan sau"
+   },
+   {
+    "en": "No sign-up link could be made for Jordan",
+    "vi": "Không tạo được link đăng ký cho Jordan"
+   }
+  ],
+  "also_happens": {
+   "en": "The countdown for the reminder emails starts (day 2, 5 and 10). If Alex clicks 'Resend invite', Jordan gets a new email with a new link and the old link stops working.",
+   "vi": "Bắt đầu đếm ngày cho email nhắc (ngày 2, 5 và 10). Nếu Alex bấm 'Resend invite', Jordan nhận email mới với link mới, link cũ không dùng được nữa."
+  }
+ },
+ "tpl-lo-invite-reminder": {
+  "name": {
+   "en": "Reminder to finish joining",
+   "vi": "Email nhắc hoàn tất đăng ký"
+  },
+  "one_line": {
+   "en": "Nudges Jordan when he got the invite but hasn't signed or paid yet, and says which step is left.",
+   "vi": "Nhắc Jordan khi đã nhận lời mời mà chưa ký hoặc chưa trả phí, và nói rõ còn bước nào."
+  },
+  "story": {
+   "en": "Jordan got the invite on Monday at 10:20 AM and did nothing. On Wednesday (day 2) he gets this email from Alex saying two steps are left. Jordan pays on Thursday, so Saturday's email (day 5) only says 'sign your agreement'. Once he has signed and paid, the reminders stop.",
+   "vi": "Jordan nhận lời mời thứ Hai 10:20 nhưng chưa làm gì. Thứ Tư (ngày 2) Jordan nhận email này từ Alex: còn 2 bước. Thứ Năm Jordan trả phí, nên email thứ Bảy (ngày 5) chỉ còn nhắc 'ký hợp đồng'. Khi đã ký và trả phí xong thì hết nhắc."
+  },
+  "who_gets": {
+   "en": "Jordan, if he still hasn't finished",
+   "vi": "Jordan, nếu vẫn chưa đăng ký xong"
+  },
+  "from_name": {
+   "en": "The person who sent the invite (Alex)",
+   "vi": "Người đã gửi lời mời (Alex)"
+  },
+  "when": {
+   "en": "2, 5 and 10 days after the invite, if Jordan still hasn't finished",
+   "vi": "Sau lời mời 2, 5 và 10 ngày, nếu Jordan vẫn chưa xong"
+  },
+  "click": [
+   {
+    "button": {
+     "en": "Continue where you left off",
+     "vi": "Continue where you left off"
+    },
+    "opens": {
+     "en": "the Loan Factory sign-up page",
+     "vi": "trang đăng ký của Loan Factory"
+    },
+    "does_there": {
+     "en": "picks up where he stopped: pays the fee, signs the agreement, or both",
+     "vi": "làm tiếp chỗ đang dở: trả phí, ký hợp đồng, hoặc cả hai"
+    },
+    "next_email_id": "tpl-lo-fee-paid"
+   }
+  ],
+  "not_sent": [
+   {
+    "en": "Jordan already signed and paid (or his fee was waived)",
+    "vi": "Jordan đã ký và đã trả phí (hoặc được miễn phí)"
+   },
+   {
+    "en": "More than a day has passed since the reminder day: that reminder is skipped, never sent late",
+    "vi": "Đã quá 1 ngày so với ngày nhắc: lần nhắc đó bị bỏ, không gửi trễ"
+   }
+  ],
+  "also_happens": {
+   "en": "At most 3 reminders in total. Each reminder has a fresh link, and the link in the earlier email stops working.",
+   "vi": "Tối đa 3 email nhắc. Mỗi email nhắc có link mới, link trong email trước không dùng được nữa."
+  }
+ },
+ "tpl-lo-welcome": {
+  "name": {
+   "en": "Welcome email after the 1-1 call",
+   "vi": "Email chào mừng sau buổi gọi 1-1"
+  },
+  "one_line": {
+   "en": "After the onboarding call, tells Jordan the three steps left to finish his setup.",
+   "vi": "Sau buổi gọi onboarding, cho Jordan biết 3 bước còn lại để hoàn tất."
+  },
+  "story": {
+   "en": "Thursday 3:00 PM Sam has the 1-1 call with Jordan. At 3:25 PM, when the call ends, Sam opens Jordan's onboarding checklist in Recruit and clicks 'Mark done' on the 1-1. A few seconds later Jordan gets this email, sent from Sam.",
+   "vi": "Thứ Năm 15:00 Sam gọi 1-1 với Jordan. 15:25 gọi xong, Sam mở checklist onboarding của Jordan trong Recruit và bấm 'Mark done' ở mục 1-1. Vài giây sau Jordan nhận email này, người gửi là Sam."
+  },
+  "who_gets": {
+   "en": "Jordan, right after his 1-1 call",
+   "vi": "Jordan, ngay sau buổi gọi 1-1"
+  },
+  "from_name": {
+   "en": "The person who marked the call done (Sam)",
+   "vi": "Người bấm hoàn tất buổi gọi (Sam)"
+  },
+  "when": {
+   "en": "Right away, when Sam clicks 'Mark done'",
+   "vi": "Ngay lập tức, khi Sam bấm 'Mark done'"
+  },
+  "click": [
+   {
+    "button": {
+     "en": "Start your setup",
+     "vi": "Start your setup"
+    },
+    "opens": {
+     "en": "the Loan Factory sign-up page, on the agreement step",
+     "vi": "trang đăng ký của Loan Factory, ở bước hợp đồng"
+    },
+    "does_there": {
+     "en": "checks his info, pays the $100 start-up fee, signs the agreement",
+     "vi": "kiểm tra thông tin, trả phí khởi đầu $100, ký hợp đồng"
+    },
+    "next_email_id": "tpl-lo-fee-paid"
+   }
+  ],
+  "not_sent": [
+   {
+    "en": "MOSO is already sending its own welcome email to Jordan",
+    "vi": "MOSO đang tự gửi email chào mừng của nó cho Jordan"
+   },
+   {
+    "en": "No sign-up link could be made (for example, Jordan has no open offer)",
+    "vi": "Không tạo được link đăng ký (ví dụ Jordan không có offer nào đang mở)"
+   },
+   {
+    "en": "Sam reopens the 1-1 and marks it done again: only one welcome per call",
+    "vi": "Sam mở lại mục 1-1 rồi bấm hoàn tất lần nữa: mỗi buổi gọi chỉ một email chào mừng"
+   }
+  ],
+  "also_happens": {
+   "en": "A new sign-up link is made, so the link in the earlier invite stops working. The link in this email is the one that works.",
+   "vi": "Hệ thống tạo link đăng ký mới, nên link trong email mời trước đó không dùng được nữa. Link trong email này mới là link dùng được."
+  }
+ },
+ "tpl-lo-agreement-updated": {
+  "name": {
+   "en": "Your agreement was updated",
+   "vi": "Email báo hợp đồng đã được cập nhật"
+  },
+  "one_line": {
+   "en": "Tells Jordan the details on his agreement changed and asks him to review and sign the new version.",
+   "vi": "Báo Jordan rằng nội dung hợp đồng đã thay đổi và mời Jordan xem lại, ký bản mới."
+  },
+  "story": {
+   "en": "Friday 9:00 AM the manager changes Jordan's split from 80 to 85 in Recruit and saves, then saves again at 9:05. Recruit waits 15 minutes after the last save. At 9:20 AM Jordan gets one email with the new version.",
+   "vi": "Thứ Sáu 9:00 manager đổi tỉ lệ chia của Jordan từ 80 lên 85 trong Recruit và lưu, 9:05 lưu thêm lần nữa. Recruit chờ 15 phút sau lần lưu cuối. 9:20 Jordan nhận đúng một email có bản hợp đồng mới."
+  },
+  "who_gets": {
+   "en": "Jordan, while his agreement is not signed yet (or when staff send a new version)",
+   "vi": "Jordan, khi hợp đồng chưa ký (hoặc khi nhân viên gửi bản mới)"
+  },
+  "from_name": {
+   "en": "Sam (the onboarding specialist); if there is none, the person who sent the invite",
+   "vi": "Sam (onboarding specialist); nếu chưa có thì người đã gửi lời mời"
+  },
+  "when": {
+   "en": "15 minutes after the last change; each new save restarts the 15 minutes",
+   "vi": "15 phút sau lần sửa cuối; mỗi lần lưu mới lại đếm lại 15 phút"
+  },
+  "click": [
+   {
+    "button": {
+     "en": "Review and sign",
+     "vi": "Review and sign"
+    },
+    "opens": {
+     "en": "the Loan Factory sign-up page",
+     "vi": "trang đăng ký của Loan Factory"
+    },
+    "does_there": {
+     "en": "reads the new version and signs it",
+     "vi": "đọc bản mới và ký"
+    },
+    "next_email_id": null
+   }
+  ],
+  "not_sent": [
+   {
+    "en": "The change doesn't affect what the agreement says",
+    "vi": "Thay đổi không ảnh hưởng tới nội dung hợp đồng"
+   },
+   {
+    "en": "Jordan was already told about these same details",
+    "vi": "Jordan đã được báo đúng những thay đổi này rồi"
+   }
+  ],
+  "also_happens": {
+   "en": "Many saves within 15 minutes still make just one email. Staff can also click 'Send new version' on a signed agreement to send it.",
+   "vi": "Lưu nhiều lần trong 15 phút vẫn chỉ ra một email. Nhân viên cũng có thể bấm 'Send new version' ở hợp đồng đã ký để gửi email này."
+  }
+ },
+ "tpl-lo-fee-paid": {
+  "name": {
+   "en": "Payment received",
+   "vi": "Email xác nhận đã nhận phí"
+  },
+  "one_line": {
+   "en": "Thanks Jordan right after he pays the $100 start-up fee.",
+   "vi": "Cảm ơn Jordan ngay sau khi Jordan trả phí khởi đầu $100."
+  },
+  "story": {
+   "en": "Tuesday 8:10 PM Jordan opens the link from his invite, reaches the payment step on the Loan Factory sign-up page and pays $100 with PayPal. A few seconds later he gets this email. At the same moment Sam and Alex are told he paid.",
+   "vi": "Thứ Ba 20:10 Jordan mở link trong email mời, tới bước thanh toán trên trang đăng ký của Loan Factory và trả $100 bằng PayPal. Vài giây sau Jordan nhận email này. Cùng lúc đó Sam và Alex được báo là Jordan đã trả."
+  },
+  "who_gets": {
+   "en": "Jordan, after he pays",
+   "vi": "Jordan, sau khi trả phí"
+  },
+  "from_name": {
+   "en": "Sam (the onboarding specialist); if there is none, Alex",
+   "vi": "Sam (onboarding specialist); nếu chưa có thì Alex"
+  },
+  "when": {
+   "en": "Right away, seconds after paying",
+   "vi": "Ngay lập tức, vài giây sau khi trả"
+  },
+  "click": [],
+  "not_sent": [
+   {
+    "en": "Jordan's fee was waived, so there is nothing to pay",
+    "vi": "Jordan được miễn phí, không có gì để trả"
+   },
+   {
+    "en": "Jordan paid through MOSO: MOSO sends its own email",
+    "vi": "Jordan trả qua MOSO: MOSO tự gửi email của nó"
+   }
+  ],
+  "also_happens": {
+   "en": "Sam and Alex each get the staff payment alert. The reminder emails now only ask Jordan to sign, or stop if he already signed.",
+   "vi": "Sam và Alex mỗi người nhận một email báo đã trả phí. Email nhắc từ giờ chỉ nhắc ký, hoặc dừng nếu Jordan đã ký."
+  },
+  "also_ids": [
+   "tpl-lo-fee-paid-staff"
+  ]
+ },
+ "tpl-lo-fee-paid-staff": {
+  "name": {
+   "en": "Staff alert: the Loan Officer paid the fee",
+   "vi": "Email báo nhân viên: LO đã trả phí"
+  },
+  "one_line": {
+   "en": "Lets Sam and Alex know Jordan has paid, so they can move on to the agreement, NMLS and HR.",
+   "vi": "Báo Sam và Alex là Jordan đã trả phí, để làm tiếp hợp đồng, NMLS và HR."
+  },
+  "story": {
+   "en": "Tuesday 8:10 PM Jordan pays $100 on the sign-up page. At the same moment Sam and Alex each get this email: 'Jordan Example paid the start-up fee'. If Sam and Alex are the same person, it arrives once.",
+   "vi": "Thứ Ba 20:10 Jordan trả $100 trên trang đăng ký. Cùng lúc đó Sam và Alex mỗi người nhận email này: 'Jordan Example paid the start-up fee'. Nếu Sam và Alex là một người thì chỉ nhận một lần."
+  },
+  "who_gets": {
+   "en": "Sam (onboarding specialist) and Alex (recruiter), one email each",
+   "vi": "Sam (onboarding specialist) và Alex (recruiter), mỗi người một email"
+  },
+  "from_name": {
+   "en": "The same sender as Jordan's payment email",
+   "vi": "Cùng người gửi với email xác nhận phí của Jordan"
+  },
+  "when": {
+   "en": "Right away, together with Jordan's payment email",
+   "vi": "Ngay lập tức, cùng lúc với email xác nhận phí của Jordan"
+  },
+  "click": [
+   {
+    "button": {
+     "en": "Open the Loan Officer",
+     "vi": "Open the Loan Officer"
+    },
+    "opens": {
+     "en": "Jordan's profile in Recruit",
+     "vi": "hồ sơ của Jordan trong Recruit"
+    },
+    "does_there": {
+     "en": "sees Jordan's profile and the payment",
+     "vi": "xem hồ sơ và khoản thanh toán của Jordan"
+    },
+    "next_email_id": null
+   }
+  ],
+  "not_sent": [
+   {
+    "en": "Jordan's fee was waived",
+    "vi": "Jordan được miễn phí"
+   },
+   {
+    "en": "Jordan paid through MOSO: MOSO sends its own email",
+    "vi": "Jordan trả qua MOSO: MOSO tự gửi email của nó"
+   },
+   {
+    "en": "A staff member has no email address on file: that person is left out",
+    "vi": "Nhân viên không có địa chỉ email trong hồ sơ: người đó bị bỏ qua"
+   }
+  ]
+ },
+ "tpl-lo-webinar-registered": {
+  "name": {
+   "en": "Webinar sign-up confirmation (MOSO webinar)",
+   "vi": "Email xác nhận đăng ký webinar (buổi của MOSO)"
+  },
+  "one_line": {
+   "en": "Confirms Jordan's seat in the Friday 'Why Loan Factory' webinar when the session is one MOSO runs.",
+   "vi": "Xác nhận chỗ của Jordan trong webinar 'Why Loan Factory' thứ Sáu, khi buổi đó do MOSO tổ chức."
+  },
+  "story": {
+   "en": "Tuesday 11:00 AM Alex ticks Jordan in the Recruit list, clicks 'Register for webinar', picks Friday's session and clicks 'Register'. Recruit passes this on to MOSO. As soon as MOSO says Jordan is in, around 11:01 AM, Jordan gets this email from Alex.",
+   "vi": "Thứ Ba 11:00 Alex tick Jordan trong danh sách Recruit, bấm 'Register for webinar', chọn buổi thứ Sáu rồi bấm 'Register'. Recruit chuyển yêu cầu sang MOSO. Ngay khi MOSO báo đã đăng ký, khoảng 11:01, Jordan nhận email này từ Alex."
+  },
+  "who_gets": {
+   "en": "Jordan",
+   "vi": "Jordan"
+  },
+  "from_name": {
+   "en": "The recruiter who registered him (Alex)",
+   "vi": "Recruiter đã đăng ký cho Jordan (Alex)"
+  },
+  "when": {
+   "en": "Within a minute or so, once MOSO confirms",
+   "vi": "Khoảng một phút, khi MOSO xác nhận xong"
+  },
+  "click": [
+   {
+    "button": {
+     "en": "Join the webinar",
+     "vi": "Join the webinar"
+    },
+    "opens": {
+     "en": "the live webinar (Zoom or Google Meet)",
+     "vi": "buổi webinar trực tiếp (Zoom hoặc Google Meet)"
+    },
+    "does_there": {
+     "en": "joins the webinar",
+     "vi": "vào dự webinar"
+    },
+    "next_email_id": null
+   }
+  ],
+  "not_sent": [
+   {
+    "en": "The session has no time or join link yet",
+    "vi": "Buổi đó chưa có giờ hoặc chưa có link vào"
+   }
+  ],
+  "also_happens": {
+   "en": "MOSO, not Recruit, sends the reminders and after-webinar emails for this session.",
+   "vi": "Email nhắc và email sau webinar của buổi này do MOSO gửi, không phải Recruit."
+  }
+ },
+ "tpl-lo-webinar-session-confirmed": {
+  "name": {
+   "en": "Webinar sign-up confirmation (Recruit webinar)",
+   "vi": "Email xác nhận đăng ký webinar (buổi của Recruit)"
+  },
+  "one_line": {
+   "en": "Confirms Jordan's seat in a webinar session Recruit runs itself, with Join and Add to calendar buttons.",
+   "vi": "Xác nhận chỗ của Jordan trong buổi webinar do Recruit tự tổ chức, có nút Join và Add to calendar."
+  },
+  "story": {
+   "en": "Monday 9:00 AM Jordan signs up on the website for Friday's 1:00 PM PST session. A few seconds later he gets this email. If Alex or an admin registers him from Recruit instead, it is the same email.",
+   "vi": "Thứ Hai 9:00 Jordan tự đăng ký trên website cho buổi 13:00 PST thứ Sáu. Vài giây sau Jordan nhận email này. Nếu Alex hoặc admin đăng ký giúp trong Recruit thì cũng là email này."
+  },
+  "who_gets": {
+   "en": "Jordan",
+   "vi": "Jordan"
+  },
+  "from_name": {
+   "en": "Jordan's recruiter (Alex); if he has none, the recruiting team or the session host",
+   "vi": "Recruiter của Jordan (Alex); nếu chưa có thì nhóm tuyển dụng hoặc người chủ trì buổi"
+  },
+  "when": {
+   "en": "Right away, when he is registered",
+   "vi": "Ngay lập tức, khi được đăng ký"
+  },
+  "click": [
+   {
+    "button": {
+     "en": "Join the webinar",
+     "vi": "Join the webinar"
+    },
+    "opens": {
+     "en": "the Google Meet for the session",
+     "vi": "phòng Google Meet của buổi"
+    },
+    "does_there": {
+     "en": "joins live; the room opens 5 minutes early. If there is no link yet, the email says 'Join details will follow'",
+     "vi": "vào dự trực tiếp; phòng mở sớm 5 phút. Nếu chưa có link, email ghi 'Join details will follow'"
+    },
+    "next_email_id": "tpl-lo-webinar-session-link"
+   },
+   {
+    "button": {
+     "en": "Add to calendar",
+     "vi": "Add to calendar"
+    },
+    "opens": {
+     "en": "his calendar",
+     "vi": "lịch của Jordan"
+    },
+    "does_there": {
+     "en": "adds the session to it",
+     "vi": "thêm buổi webinar vào lịch"
+    },
+    "next_email_id": null
+   }
+  ],
+  "not_sent": [
+   {
+    "en": "Jordan is already registered for another upcoming session of the same webinar (sign-up is refused)",
+    "vi": "Jordan đã đăng ký một buổi sắp tới khác của cùng webinar (đăng ký bị từ chối)"
+   },
+   {
+    "en": "His sign-up was cancelled, or the session was skipped, before the email went out",
+    "vi": "Đăng ký bị huỷ, hoặc buổi bị bỏ, trước khi email kịp gửi"
+   },
+   {
+    "en": "He registers again for the same session",
+    "vi": "Jordan đăng ký lại đúng buổi đó"
+   }
+  ],
+  "also_happens": {
+   "en": "Lines up the reminders (2 days, 1 day and 2 hours before, plus text messages at 1 day and 2 hours) and the email the day after.",
+   "vi": "Lên lịch các lần nhắc (trước 2 ngày, 1 ngày, 2 giờ, kèm tin nhắn SMS lúc 1 ngày và 2 giờ) và email ngày hôm sau."
+  }
+ },
+ "tpl-lo-webinar-session-link": {
+  "name": {
+   "en": "Your webinar join link",
+   "vi": "Email gửi link vào webinar"
+  },
+  "one_line": {
+   "en": "Sends the Meet link to people who signed up before the link existed, or when the link changes.",
+   "vi": "Gửi link Meet cho người đã đăng ký trước khi có link, hoặc khi link thay đổi."
+  },
+  "story": {
+   "en": "Jordan signed up on Monday, before the Meet link was ready. Tuesday 10:00 AM the host creates the Meet. By 11:00 AM Jordan gets this email with the link.",
+   "vi": "Jordan đăng ký thứ Hai, lúc đó chưa có link Meet. Thứ Ba 10:00 người chủ trì tạo Meet. Trước 11:00 Jordan nhận email này kèm link."
+  },
+  "who_gets": {
+   "en": "Everyone who signed up before the link was made or changed",
+   "vi": "Mọi người đã đăng ký trước khi link được tạo hoặc thay đổi"
+  },
+  "from_name": {
+   "en": "Jordan's recruiter (Alex); if he has none, the recruiting team or the session host",
+   "vi": "Recruiter của Jordan (Alex); nếu chưa có thì nhóm tuyển dụng hoặc người chủ trì buổi"
+  },
+  "when": {
+   "en": "Within the hour after the link is created or changes",
+   "vi": "Trong vòng 1 giờ sau khi link được tạo hoặc thay đổi"
+  },
+  "click": [
+   {
+    "button": {
+     "en": "Join the webinar",
+     "vi": "Join the webinar"
+    },
+    "opens": {
+     "en": "the new Google Meet link",
+     "vi": "link Google Meet mới"
+    },
+    "does_there": {
+     "en": "joins the session",
+     "vi": "vào dự buổi webinar"
+    },
+    "next_email_id": null
+   },
+   {
+    "button": {
+     "en": "Add it to your calendar",
+     "vi": "Add it to your calendar"
+    },
+    "opens": {
+     "en": "his calendar",
+     "vi": "lịch của Jordan"
+    },
+    "does_there": {
+     "en": "adds the session to it",
+     "vi": "thêm buổi webinar vào lịch"
+    },
+    "next_email_id": null
+   }
+  ],
+  "not_sent": [
+   {
+    "en": "Jordan signed up after the link was ready: his confirmation already had it",
+    "vi": "Jordan đăng ký sau khi đã có link: email xác nhận đã kèm link rồi"
+   }
+  ]
+ },
+ "tpl-lo-webinar-session-moved": {
+  "name": {
+   "en": "Your webinar moved to a new date",
+   "vi": "Email báo webinar đổi ngày"
+  },
+  "one_line": {
+   "en": "Tells Jordan his session was skipped or cancelled and he has been moved to the next one.",
+   "vi": "Báo Jordan buổi webinar đã bị bỏ hoặc huỷ, và Jordan được chuyển sang buổi kế tiếp."
+  },
+  "story": {
+   "en": "Jordan is signed up for this Friday. Wednesday 4:00 PM an admin skips Friday's session in Recruit's webinar admin. Jordan is moved to next Friday's session and gets this email right away.",
+   "vi": "Jordan đăng ký buổi thứ Sáu tuần này. Thứ Tư 16:00 admin bỏ buổi thứ Sáu trong trang quản lý webinar của Recruit. Jordan được chuyển sang thứ Sáu tuần sau và nhận email này ngay."
+  },
+  "who_gets": {
+   "en": "Everyone who was signed up for the skipped or cancelled session",
+   "vi": "Mọi người đã đăng ký buổi bị bỏ hoặc bị huỷ"
+  },
+  "from_name": {
+   "en": "Jordan's recruiter (Alex); if he has none, the recruiting team or the session host",
+   "vi": "Recruiter của Jordan (Alex); nếu chưa có thì nhóm tuyển dụng hoặc người chủ trì buổi"
+  },
+  "when": {
+   "en": "Right away, when the admin skips or cancels the session",
+   "vi": "Ngay lập tức, khi admin bỏ hoặc huỷ buổi"
+  },
+  "click": [
+   {
+    "button": {
+     "en": "Join the webinar",
+     "vi": "Join the webinar"
+    },
+    "opens": {
+     "en": "the Google Meet for the new session",
+     "vi": "phòng Google Meet của buổi mới"
+    },
+    "does_there": {
+     "en": "joins on the new date",
+     "vi": "vào dự vào ngày mới"
+    },
+    "next_email_id": null
+   },
+   {
+    "button": {
+     "en": "Add the new date to your calendar",
+     "vi": "Add the new date to your calendar"
+    },
+    "opens": {
+     "en": "his calendar",
+     "vi": "lịch của Jordan"
+    },
+    "does_there": {
+     "en": "adds the new date",
+     "vi": "thêm ngày mới vào lịch"
+    },
+    "next_email_id": null
+   }
+  ],
+  "not_sent": [
+   {
+    "en": "There is no later session to move people to",
+    "vi": "Không còn buổi nào sau đó để chuyển sang"
+   },
+   {
+    "en": "Jordan was already signed up for a later session (his date didn't change)",
+    "vi": "Jordan đã đăng ký một buổi sau đó rồi (ngày của Jordan không đổi)"
+   }
+  ],
+  "also_happens": {
+   "en": "The reminders move to the new date.",
+   "vi": "Các lần nhắc chuyển theo ngày mới."
+  }
+ },
+ "tpl-lo-webinar-reminder-2d": {
+  "name": {
+   "en": "Webinar reminder, 2 days before",
+   "vi": "Email nhắc webinar, trước 2 ngày"
+  },
+  "one_line": {
+   "en": "Reminds Jordan about his webinar 2 days ahead.",
+   "vi": "Nhắc Jordan về buổi webinar trước 2 ngày."
+  },
+  "story": {
+   "en": "Jordan is signed up for Friday 1:00 PM PST. On Wednesday around 1:00 PM he gets this first reminder. The 1-day reminder follows on Thursday and the 2-hour one on Friday morning.",
+   "vi": "Jordan đăng ký buổi 13:00 PST thứ Sáu. Thứ Tư khoảng 13:00 Jordan nhận email nhắc đầu tiên này. Nhắc trước 1 ngày tới vào thứ Năm, nhắc trước 2 giờ vào sáng thứ Sáu."
+  },
+  "who_gets": {
+   "en": "Everyone signed up for a Recruit webinar session",
+   "vi": "Mọi người đã đăng ký buổi webinar của Recruit"
+  },
+  "from_name": {
+   "en": "Jordan's recruiter (Alex); if he has none, the session host",
+   "vi": "Recruiter của Jordan (Alex); nếu chưa có thì người chủ trì buổi"
+  },
+  "when": {
+   "en": "2 days before it starts (checked every hour)",
+   "vi": "Trước giờ bắt đầu 2 ngày (kiểm mỗi giờ)"
+  },
+  "click": [
+   {
+    "button": {
+     "en": "Join the webinar",
+     "vi": "Join the webinar"
+    },
+    "opens": {
+     "en": "the Google Meet for the session",
+     "vi": "phòng Google Meet của buổi"
+    },
+    "does_there": {
+     "en": "joins live",
+     "vi": "vào dự trực tiếp"
+    },
+    "next_email_id": null
+   }
+  ],
+  "not_sent": [],
+  "also_happens": {
+   "en": "No text message at 2 days; texts go at 1 day and 2 hours.",
+   "vi": "Mốc 2 ngày không có SMS; SMS gửi ở mốc 1 ngày và 2 giờ."
+  }
+ },
+ "tpl-lo-webinar-reminder-1d": {
+  "name": {
+   "en": "Webinar reminder, 1 day before",
+   "vi": "Email nhắc webinar, trước 1 ngày"
+  },
+  "one_line": {
+   "en": "Reminds Jordan about his webinar the day before.",
+   "vi": "Nhắc Jordan về buổi webinar trước 1 ngày."
+  },
+  "story": {
+   "en": "Jordan is signed up for Friday 1:00 PM PST. He already got the 2-day reminder on Wednesday. On Thursday around 1:00 PM he gets this email and a text message.",
+   "vi": "Jordan đăng ký buổi 13:00 PST thứ Sáu. Thứ Tư Jordan đã nhận email nhắc trước 2 ngày. Thứ Năm khoảng 13:00 Jordan nhận email này kèm một tin nhắn SMS."
+  },
+  "who_gets": {
+   "en": "Everyone signed up for a Recruit webinar session",
+   "vi": "Mọi người đã đăng ký buổi webinar của Recruit"
+  },
+  "from_name": {
+   "en": "Jordan's recruiter (Alex); if he has none, the session host",
+   "vi": "Recruiter của Jordan (Alex); nếu chưa có thì người chủ trì buổi"
+  },
+  "when": {
+   "en": "1 day before it starts (checked every hour)",
+   "vi": "Trước giờ bắt đầu 1 ngày (kiểm mỗi giờ)"
+  },
+  "click": [
+   {
+    "button": {
+     "en": "Join the webinar",
+     "vi": "Join the webinar"
+    },
+    "opens": {
+     "en": "the Google Meet for the session",
+     "vi": "phòng Google Meet của buổi"
+    },
+    "does_there": {
+     "en": "joins live",
+     "vi": "vào dự trực tiếp"
+    },
+    "next_email_id": null
+   }
+  ],
+  "not_sent": [],
+  "also_happens": {
+   "en": "A text message reminder goes at the same time.",
+   "vi": "Cùng lúc có thêm một tin nhắn SMS nhắc."
+  }
+ },
+ "tpl-lo-webinar-reminder-2h": {
+  "name": {
+   "en": "Webinar reminder, 2 hours before",
+   "vi": "Email nhắc webinar, trước 2 giờ"
+  },
+  "one_line": {
+   "en": "Last reminder, 2 hours before the webinar starts.",
+   "vi": "Lần nhắc cuối, 2 giờ trước khi webinar bắt đầu."
+  },
+  "story": {
+   "en": "Jordan is signed up for Friday 1:00 PM PST. On Friday around 11:00 AM he gets this email and a text message, so he has the join button in hand.",
+   "vi": "Jordan đăng ký buổi 13:00 PST thứ Sáu. Thứ Sáu khoảng 11:00 Jordan nhận email này kèm một tin nhắn SMS, để có sẵn nút vào buổi."
+  },
+  "who_gets": {
+   "en": "Everyone signed up for a Recruit webinar session",
+   "vi": "Mọi người đã đăng ký buổi webinar của Recruit"
+  },
+  "from_name": {
+   "en": "Jordan's recruiter (Alex); if he has none, the session host",
+   "vi": "Recruiter của Jordan (Alex); nếu chưa có thì người chủ trì buổi"
+  },
+  "when": {
+   "en": "2 hours before it starts (checked every hour)",
+   "vi": "Trước giờ bắt đầu 2 giờ (kiểm mỗi giờ)"
+  },
+  "click": [
+   {
+    "button": {
+     "en": "Join the webinar",
+     "vi": "Join the webinar"
+    },
+    "opens": {
+     "en": "the Google Meet for the session",
+     "vi": "phòng Google Meet của buổi"
+    },
+    "does_there": {
+     "en": "joins live",
+     "vi": "vào dự trực tiếp"
+    },
+    "next_email_id": "tpl-lo-webinar-follow-up-attended"
+   }
+  ],
+  "not_sent": [],
+  "also_happens": {
+   "en": "A text message reminder goes at the same time. 30 minutes after the session ends, Recruit checks in Google Meet who joined.",
+   "vi": "Cùng lúc có thêm một tin nhắn SMS nhắc. 30 phút sau khi buổi kết thúc, Recruit xem trong Google Meet ai đã vào dự."
+  }
+ },
+ "tpl-lo-webinar-follow-up": {
+  "name": {
+   "en": "Day-after webinar email (attendance unknown)",
+   "vi": "Email sau webinar (không rõ có dự không)"
+  },
+  "one_line": {
+   "en": "Thanks Jordan the day after the webinar when Recruit couldn't tell whether he joined.",
+   "vi": "Cảm ơn Jordan ngày hôm sau, khi Recruit không biết được Jordan có vào dự hay không."
+  },
+  "story": {
+   "en": "Jordan's session was on Friday. 30 minutes after it ended, Recruit tried to read from Google Meet who joined, but couldn't. Saturday 2:00 PM Jordan gets this general follow-up from Alex.",
+   "vi": "Buổi của Jordan là thứ Sáu. 30 phút sau khi kết thúc, Recruit thử đọc danh sách người vào từ Google Meet nhưng không đọc được. Thứ Bảy 14:00 Jordan nhận email chung này từ Alex."
+  },
+  "who_gets": {
+   "en": "People signed up for the session whose attendance is unknown",
+   "vi": "Người đã đăng ký buổi mà không rõ có dự hay không"
+  },
+  "from_name": {
+   "en": "Jordan's recruiter (Alex); if he has none, the session host",
+   "vi": "Recruiter của Jordan (Alex); nếu chưa có thì người chủ trì buổi"
+  },
+  "when": {
+   "en": "The day after the session, at 2:00 PM",
+   "vi": "Ngày hôm sau buổi webinar, lúc 14:00"
+  },
+  "click": [
+   {
+    "button": {
+     "en": "Watch the recording",
+     "vi": "Watch the recording"
+    },
+    "opens": {
+     "en": "the session recording",
+     "vi": "bản ghi hình của buổi"
+    },
+    "does_there": {
+     "en": "watches it (no button if there is no recording yet)",
+     "vi": "xem lại (nếu chưa có bản ghi thì không có nút)"
+    },
+    "next_email_id": null
+   }
+  ],
+  "not_sent": [
+   {
+    "en": "Recruit knows Jordan joined or missed it: he gets the 'attended' or 'missed' version instead",
+    "vi": "Recruit biết Jordan có dự hoặc vắng: Jordan nhận bản 'đã dự' hoặc 'vắng' thay vì bản này"
+   }
+  ],
+  "also_happens": {
+   "en": "Each person gets only one of the three day-after emails. Alex follows up by phone.",
+   "vi": "Mỗi người chỉ nhận một trong ba email ngày hôm sau. Alex gọi điện tiếp."
+  }
+ },
+ "tpl-lo-webinar-follow-up-attended": {
+  "name": {
+   "en": "Day-after webinar email (attended)",
+   "vi": "Email sau webinar (đã dự)"
+  },
+  "one_line": {
+   "en": "Thanks Jordan for coming, the day after the webinar.",
+   "vi": "Cảm ơn Jordan đã tới dự, vào ngày hôm sau."
+  },
+  "story": {
+   "en": "Jordan joined Friday's session. 30 minutes after it ended, Recruit read the Google Meet attendance and saw him there. Saturday 2:00 PM he gets 'Thanks for joining Why Loan Factory' from Alex.",
+   "vi": "Jordan dự buổi thứ Sáu. 30 phút sau khi kết thúc, Recruit đọc danh sách người vào từ Google Meet và thấy Jordan. Thứ Bảy 14:00 Jordan nhận email 'Thanks for joining Why Loan Factory' từ Alex."
+  },
+  "who_gets": {
+   "en": "People who joined the session",
+   "vi": "Người đã vào dự buổi"
+  },
+  "from_name": {
+   "en": "Jordan's recruiter (Alex); if he has none, the session host",
+   "vi": "Recruiter của Jordan (Alex); nếu chưa có thì người chủ trì buổi"
+  },
+  "when": {
+   "en": "The day after the session, at 2:00 PM",
+   "vi": "Ngày hôm sau buổi webinar, lúc 14:00"
+  },
+  "click": [
+   {
+    "button": {
+     "en": "Watch the recording",
+     "vi": "Watch the recording"
+    },
+    "opens": {
+     "en": "the session recording",
+     "vi": "bản ghi hình của buổi"
+    },
+    "does_there": {
+     "en": "watches the session again",
+     "vi": "xem lại buổi webinar"
+    },
+    "next_email_id": null
+   }
+  ],
+  "not_sent": [
+   {
+    "en": "Jordan missed it, or attendance is unknown: he gets the other version",
+    "vi": "Jordan vắng, hoặc không rõ có dự: Jordan nhận bản khác"
+   }
+  ],
+  "also_happens": {
+   "en": "If Riley referred Jordan, Riley is told that Jordan attended. Alex follows up by phone.",
+   "vi": "Nếu Riley giới thiệu Jordan, Riley được báo là Jordan đã dự. Alex gọi điện tiếp."
+  },
+  "also_ids": [
+   "tpl-lo-webinar-referrer-attended"
+  ]
+ },
+ "tpl-lo-webinar-follow-up-missed": {
+  "name": {
+   "en": "Day-after webinar email (missed)",
+   "vi": "Email sau webinar (vắng mặt)"
+  },
+  "one_line": {
+   "en": "Tells Jordan he was missed, with the recording and the next session.",
+   "vi": "Báo Jordan là đã vắng, kèm bản ghi hình và buổi kế tiếp."
+  },
+  "story": {
+   "en": "Jordan signed up for Friday but didn't join. 30 minutes after it ended, Recruit read the Google Meet attendance and didn't see him. Saturday 2:00 PM he gets 'We missed you at Why Loan Factory' from Alex.",
+   "vi": "Jordan đăng ký buổi thứ Sáu nhưng không vào. 30 phút sau khi kết thúc, Recruit đọc danh sách người vào từ Google Meet và không thấy Jordan. Thứ Bảy 14:00 Jordan nhận email 'We missed you at Why Loan Factory' từ Alex."
+  },
+  "who_gets": {
+   "en": "People who signed up but didn't join",
+   "vi": "Người đã đăng ký nhưng không vào dự"
+  },
+  "from_name": {
+   "en": "Jordan's recruiter (Alex); if he has none, the session host",
+   "vi": "Recruiter của Jordan (Alex); nếu chưa có thì người chủ trì buổi"
+  },
+  "when": {
+   "en": "The day after the session, at 2:00 PM",
+   "vi": "Ngày hôm sau buổi webinar, lúc 14:00"
+  },
+  "click": [
+   {
+    "button": {
+     "en": "Watch the recording",
+     "vi": "Watch the recording"
+    },
+    "opens": {
+     "en": "the session recording",
+     "vi": "bản ghi hình của buổi"
+    },
+    "does_there": {
+     "en": "watches what he missed",
+     "vi": "xem phần đã bỏ lỡ"
+    },
+    "next_email_id": null
+   },
+   {
+    "button": {
+     "en": "Join the next webinar",
+     "vi": "Join the next webinar"
+    },
+    "opens": {
+     "en": "the next session of the same webinar",
+     "vi": "buổi kế tiếp của cùng webinar"
+    },
+    "does_there": {
+     "en": "joins the next live session",
+     "vi": "vào dự buổi trực tiếp kế tiếp"
+    },
+    "next_email_id": null
+   }
+  ],
+  "not_sent": [
+   {
+    "en": "Jordan joined, or attendance is unknown: he gets the other version",
+    "vi": "Jordan có dự, hoặc không rõ có dự: Jordan nhận bản khác"
+   }
+  ],
+  "also_happens": {
+   "en": "Alex follows up by phone.",
+   "vi": "Alex gọi điện tiếp."
+  }
+ },
+ "tpl-lo-webinar-referrer-attended": {
+  "name": {
+   "en": "Your referral attended the webinar",
+   "vi": "Email báo người giới thiệu: LO đã dự webinar"
+  },
+  "one_line": {
+   "en": "Tells Riley that Jordan, whom Riley referred, joined the webinar.",
+   "vi": "Báo Riley rằng Jordan, người Riley giới thiệu, đã dự webinar."
+  },
+  "story": {
+   "en": "Riley referred Jordan to Loan Factory. Jordan joins Friday's 1:00–2:30 PM session. When Recruit reads the attendance, around 3:00 PM, Riley gets this email and can check in with Jordan.",
+   "vi": "Riley giới thiệu Jordan cho Loan Factory. Jordan dự buổi 13:00–14:30 thứ Sáu. Khi Recruit đọc xong danh sách người dự, khoảng 15:00, Riley nhận email này và có thể hỏi thăm Jordan."
+  },
+  "who_gets": {
+   "en": "Riley, the person who referred Jordan",
+   "vi": "Riley, người đã giới thiệu Jordan"
+  },
+  "from_name": {
+   "en": "Sam (the onboarding specialist); if there is none, Alex, else the session host",
+   "vi": "Sam (onboarding specialist); nếu chưa có thì Alex, rồi tới người chủ trì buổi"
+  },
+  "when": {
+   "en": "About 30 minutes after the session ends; never more than 3 days later",
+   "vi": "Khoảng 30 phút sau khi buổi kết thúc; không gửi nếu đã quá 3 ngày"
+  },
+  "click": [],
+  "not_sent": [
+   {
+    "en": "Nobody referred Jordan",
+    "vi": "Không ai giới thiệu Jordan"
+   },
+   {
+    "en": "Jordan didn't join the session",
+    "vi": "Jordan không vào dự buổi"
+   }
+  ],
+  "also_happens": {
+   "en": "Jordan gets his own thank-you email the next day.",
+   "vi": "Hôm sau Jordan nhận email cảm ơn của riêng mình."
+  },
+  "also_ids": [
+   "tpl-lo-webinar-follow-up-attended"
+  ]
+ },
+ "tpl-lo-webinar-drip-1m": {
+  "name": {
+   "en": "Webinar follow-up, 1 month later",
+   "vi": "Email sau webinar 1 tháng"
+  },
+  "one_line": {
+   "en": "Checks in a month later with people who are still interested after the webinar.",
+   "vi": "Hỏi thăm sau 1 tháng những người vẫn còn quan tâm sau webinar."
+  },
+  "story": {
+   "en": "Jordan attended the webinar on 6 Nov and is still marked 'interested'. On 6 Dec at 2:00 PM he would get this email from Alex. (On staging this step is on; on the live site it waits until Recruit sending is switched on, like every other email.)",
+   "vi": "Jordan dự webinar ngày 6/11 và vẫn đang ở trạng thái 'quan tâm'. Ngày 6/12 lúc 14:00 Jordan sẽ nhận email này từ Alex. (Trên staging bước này đang bật; trên site thật thì chờ bật phần Recruit tự gửi như mọi email khác.)"
+  },
+  "who_gets": {
+   "en": "People still 'interested' after a Recruit webinar",
+   "vi": "Người vẫn 'quan tâm' sau buổi webinar của Recruit"
+  },
+  "from_name": {
+   "en": "Jordan's recruiter (Alex), with his signature; if he has none or has left, the recruiting team",
+   "vi": "Recruiter của Jordan (Alex), kèm chữ ký; nếu chưa có hoặc đã nghỉ thì nhóm tuyển dụng"
+  },
+  "when": {
+   "en": "1 month after the webinar, at 2:00 PM",
+   "vi": "1 tháng sau webinar, lúc 14:00"
+  },
+  "click": [],
+  "not_sent": [
+   {
+    "en": "Jordan's webinar is on his MOSO record: MOSO already sends him its own follow-ups",
+    "vi": "Webinar của Jordan có trong hồ sơ MOSO: MOSO đã tự gửi email của nó"
+   }
+  ]
+ },
+ "tpl-lo-webinar-drip-2m": {
+  "name": {
+   "en": "Webinar follow-up, 2 months later",
+   "vi": "Email sau webinar 2 tháng"
+  },
+  "one_line": {
+   "en": "Reaches out two months later to people who went quiet or said no, with the next steps to join.",
+   "vi": "Liên hệ lại sau 2 tháng với người im lặng hoặc đã từ chối, kèm các bước để gia nhập."
+  },
+  "story": {
+   "en": "Jordan signed up for the 6 Nov webinar and then went quiet. On 6 Jan at 2:00 PM he gets this email from Alex.",
+   "vi": "Jordan đăng ký webinar ngày 6/11 rồi im lặng. Ngày 6/1 lúc 14:00 Jordan nhận email này từ Alex."
+  },
+  "who_gets": {
+   "en": "People invited to the webinar who went quiet, stopped answering, paused, or said no",
+   "vi": "Người được mời dự webinar mà im lặng, không phản hồi, tạm ngưng hoặc đã từ chối"
+  },
+  "from_name": {
+   "en": "Jordan's recruiter (Alex), with his signature; if he has none or has left, the recruiting team",
+   "vi": "Recruiter của Jordan (Alex), kèm chữ ký; nếu chưa có hoặc đã nghỉ thì nhóm tuyển dụng"
+  },
+  "when": {
+   "en": "2 months after the webinar, at 2:00 PM",
+   "vi": "2 tháng sau webinar, lúc 14:00"
+  },
+  "click": [],
+  "not_sent": [
+   {
+    "en": "Jordan's webinar is on his MOSO record: MOSO already sends him its own follow-ups",
+    "vi": "Webinar của Jordan có trong hồ sơ MOSO: MOSO đã tự gửi email của nó"
+   }
+  ],
+  "also_ids": [
+   "tpl-lo-webinar-drip-3m"
+  ],
+  "also_happens": {
+   "en": "One month later the same people get the 3-month email.",
+   "vi": "Một tháng sau, cùng những người này nhận email 3 tháng."
+  }
+ },
+ "tpl-lo-webinar-drip-3m": {
+  "name": {
+   "en": "Webinar follow-up, 3 months later",
+   "vi": "Email sau webinar 3 tháng"
+  },
+  "one_line": {
+   "en": "A last friendly note three months later: Loan Factory is still here when Jordan is ready.",
+   "vi": "Lời nhắn cuối sau 3 tháng: Loan Factory vẫn ở đây khi Jordan sẵn sàng."
+  },
+  "story": {
+   "en": "Jordan signed up for the 6 Nov webinar and went quiet. He got the 2-month email on 6 Jan. On 6 Feb at 2:00 PM he gets this one from Alex.",
+   "vi": "Jordan đăng ký webinar ngày 6/11 rồi im lặng. Ngày 6/1 Jordan đã nhận email 2 tháng. Ngày 6/2 lúc 14:00 Jordan nhận email này từ Alex."
+  },
+  "who_gets": {
+   "en": "The same people as the 2-month email",
+   "vi": "Cùng những người nhận email 2 tháng"
+  },
+  "from_name": {
+   "en": "Jordan's recruiter (Alex), with his signature; if he has none or has left, the recruiting team",
+   "vi": "Recruiter của Jordan (Alex), kèm chữ ký; nếu chưa có hoặc đã nghỉ thì nhóm tuyển dụng"
+  },
+  "when": {
+   "en": "3 months after the webinar, at 2:00 PM",
+   "vi": "3 tháng sau webinar, lúc 14:00"
+  },
+  "click": [],
+  "not_sent": [
+   {
+    "en": "Jordan's webinar is on his MOSO record: MOSO already sends him its own follow-ups",
+    "vi": "Webinar của Jordan có trong hồ sơ MOSO: MOSO đã tự gửi email của nó"
+   }
+  ]
+ },
+ "tpl-onb-1on1-reminder-2d": {
+  "name": {
+   "en": "1-1 call reminder, 2 days before",
+   "vi": "Email nhắc buổi gọi 1-1, trước 2 ngày"
+  },
+  "one_line": {
+   "en": "Reminds Jordan about his onboarding call with Sam 2 days ahead.",
+   "vi": "Nhắc Jordan về buổi gọi onboarding với Sam trước 2 ngày."
+  },
+  "story": {
+   "en": "Monday 10:00 AM Sam clicks 'Book 1-1' on Jordan's onboarding checklist and picks Thursday 3:00 PM. On Tuesday at 3:00 PM Jordan gets this first reminder. More follow on Wednesday 3:00 PM and Thursday 1:00 PM.",
+   "vi": "Thứ Hai 10:00 Sam bấm 'Book 1-1' trên checklist onboarding của Jordan và chọn 15:00 thứ Năm. Thứ Ba 15:00 Jordan nhận email nhắc đầu tiên này. Sau đó còn nhắc thứ Tư 15:00 và thứ Năm 13:00."
+  },
+  "who_gets": {
+   "en": "Jordan, once his 1-1 is booked",
+   "vi": "Jordan, khi đã được đặt lịch 1-1"
+  },
+  "from_name": {
+   "en": "Not confirmed yet (it is sent through MOSO)",
+   "vi": "Chưa xác định (email đi qua MOSO)"
+  },
+  "when": {
+   "en": "2 days before the call; at most 30 minutes late, never after the call starts",
+   "vi": "Trước buổi gọi 2 ngày; trễ tối đa 30 phút, không bao giờ sau giờ bắt đầu"
+  },
+  "click": [
+   {
+    "button": {
+     "en": "Join the call",
+     "vi": "Join the call"
+    },
+    "opens": {
+     "en": "the Google Meet for the 1-1",
+     "vi": "phòng Google Meet của buổi 1-1"
+    },
+    "does_there": {
+     "en": "joins the onboarding call with Sam (about 20 minutes)",
+     "vi": "vào buổi gọi onboarding với Sam (khoảng 20 phút)"
+    },
+    "next_email_id": "tpl-lo-welcome"
+   }
+  ],
+  "not_sent": [
+   {
+    "en": "The call was booked less than 2 days ahead: it is too late for this one",
+    "vi": "Lịch được đặt chưa tới 2 ngày trước buổi gọi: đã lỡ mốc này"
+   }
+  ],
+  "also_happens": {
+   "en": "If Sam moves the call, new reminders go for the new time.",
+   "vi": "Nếu Sam dời lịch, các email nhắc mới sẽ theo giờ mới."
+  }
+ },
+ "tpl-onb-1on1-reminder-1d": {
+  "name": {
+   "en": "1-1 call reminder, 1 day before",
+   "vi": "Email nhắc buổi gọi 1-1, trước 1 ngày"
+  },
+  "one_line": {
+   "en": "Reminds Jordan about his onboarding call the day before.",
+   "vi": "Nhắc Jordan về buổi gọi onboarding trước 1 ngày."
+  },
+  "story": {
+   "en": "On Monday Sam booked Jordan's 1-1 for Thursday 3:00 PM. On Wednesday at 3:00 PM Jordan gets this reminder: the call is tomorrow.",
+   "vi": "Thứ Hai Sam đã đặt lịch 1-1 cho Jordan lúc 15:00 thứ Năm. Thứ Tư 15:00 Jordan nhận email nhắc này: mai là buổi gọi."
+  },
+  "who_gets": {
+   "en": "Jordan, once his 1-1 is booked",
+   "vi": "Jordan, khi đã được đặt lịch 1-1"
+  },
+  "from_name": {
+   "en": "Not confirmed yet (it is sent through MOSO)",
+   "vi": "Chưa xác định (email đi qua MOSO)"
+  },
+  "when": {
+   "en": "1 day before the call; at most 30 minutes late, never after the call starts",
+   "vi": "Trước buổi gọi 1 ngày; trễ tối đa 30 phút, không bao giờ sau giờ bắt đầu"
+  },
+  "click": [
+   {
+    "button": {
+     "en": "Join the call",
+     "vi": "Join the call"
+    },
+    "opens": {
+     "en": "the Google Meet for the 1-1",
+     "vi": "phòng Google Meet của buổi 1-1"
+    },
+    "does_there": {
+     "en": "joins the onboarding call with Sam (about 20 minutes)",
+     "vi": "vào buổi gọi onboarding với Sam (khoảng 20 phút)"
+    },
+    "next_email_id": "tpl-lo-welcome"
+   }
+  ],
+  "not_sent": [
+   {
+    "en": "The call was booked less than 1 day ahead: it is too late for this one",
+    "vi": "Lịch được đặt chưa tới 1 ngày trước buổi gọi: đã lỡ mốc này"
+   }
+  ],
+  "also_happens": {
+   "en": "If Sam moves the call, new reminders go for the new time.",
+   "vi": "Nếu Sam dời lịch, các email nhắc mới sẽ theo giờ mới."
+  }
+ },
+ "tpl-onb-1on1-reminder-2h": {
+  "name": {
+   "en": "1-1 call reminder, 2 hours before",
+   "vi": "Email nhắc buổi gọi 1-1, trước 2 giờ"
+  },
+  "one_line": {
+   "en": "Last reminder, about 2 hours before the onboarding call.",
+   "vi": "Lần nhắc cuối, khoảng 2 giờ trước buổi gọi onboarding."
+  },
+  "story": {
+   "en": "Jordan's 1-1 with Sam is Thursday 3:00 PM. At 1:00 PM that day he gets this reminder with the Join button. After the call Sam clicks 'Mark done' and Jordan gets the welcome email.",
+   "vi": "Buổi 1-1 của Jordan với Sam là 15:00 thứ Năm. 13:00 hôm đó Jordan nhận email nhắc này có nút Join. Gọi xong, Sam bấm 'Mark done' và Jordan nhận email chào mừng."
+  },
+  "who_gets": {
+   "en": "Jordan, once his 1-1 is booked",
+   "vi": "Jordan, khi đã được đặt lịch 1-1"
+  },
+  "from_name": {
+   "en": "Not confirmed yet (it is sent through MOSO)",
+   "vi": "Chưa xác định (email đi qua MOSO)"
+  },
+  "when": {
+   "en": "2 hours before the call; at most 30 minutes late, never after the call starts",
+   "vi": "Trước buổi gọi 2 giờ; trễ tối đa 30 phút, không bao giờ sau giờ bắt đầu"
+  },
+  "click": [
+   {
+    "button": {
+     "en": "Join the call",
+     "vi": "Join the call"
+    },
+    "opens": {
+     "en": "the Google Meet for the 1-1",
+     "vi": "phòng Google Meet của buổi 1-1"
+    },
+    "does_there": {
+     "en": "joins the onboarding call with Sam (about 20 minutes)",
+     "vi": "vào buổi gọi onboarding với Sam (khoảng 20 phút)"
+    },
+    "next_email_id": "tpl-lo-welcome"
+   }
+  ],
+  "not_sent": [
+   {
+    "en": "The call was booked less than 2 hours ahead: it is too late for this one",
+    "vi": "Lịch được đặt chưa tới 2 giờ trước buổi gọi: đã lỡ mốc này"
+   }
+  ],
+  "also_happens": {
+   "en": "If Sam moves the call, new reminders go for the new time.",
+   "vi": "Nếu Sam dời lịch, các email nhắc mới sẽ theo giờ mới."
+  }
+ },
+ "tpl-nurture-1": {
+  "name": {
+   "en": "Keep-in-touch email 1: Quick check-in",
+   "vi": "Email giữ liên lạc 1: Hỏi thăm"
+  },
+  "one_line": {
+   "en": "When Jordan isn't ready yet, a short check-in keeps Loan Factory on his mind.",
+   "vi": "Khi Jordan chưa sẵn sàng, một email hỏi thăm ngắn để Jordan vẫn nhớ tới Loan Factory."
+  },
+  "story": {
+   "en": "On 1 Oct Alex calls Jordan, logs the result 'Neutral' and sets a call-back for 1 Apr. About 4 weeks later, around 29 Oct, Jordan gets this first keep-in-touch email from Alex. If Jordan replies, the emails stop.",
+   "vi": "Ngày 1/10 Alex gọi Jordan, ghi kết quả 'Neutral' và hẹn gọi lại ngày 1/4. Khoảng 4 tuần sau, tầm 29/10, Jordan nhận email giữ liên lạc đầu tiên này từ Alex. Nếu Jordan trả lời thì dừng gửi."
+  },
+  "who_gets": {
+   "en": "Loan Officers who aren't ready yet (a 'Neutral' call, or 5 unanswered calls)",
+   "vi": "Loan Officer chưa sẵn sàng (cuộc gọi 'Neutral', hoặc 5 lần không nghe máy)"
+  },
+  "from_name": {
+   "en": "Jordan's recruiter (Alex)",
+   "vi": "Recruiter của Jordan (Alex)"
+  },
+  "when": {
+   "en": "4 weeks after the call result, in business hours",
+   "vi": "4 tuần sau khi ghi kết quả cuộc gọi, trong giờ làm việc"
+  },
+  "click": [],
+  "not_sent": [
+   {
+    "en": "Jordan replied, or someone really called, texted or emailed him: the emails stop for good",
+    "vi": "Jordan đã trả lời, hoặc có người gọi, nhắn tin, email thật cho Jordan: dừng hẳn"
+   },
+   {
+    "en": "Jordan was archived",
+    "vi": "Jordan đã bị lưu trữ (archive)"
+   },
+   {
+    "en": "Alex has no email address on file: it waits until that is fixed",
+    "vi": "Alex chưa có địa chỉ email trong hồ sơ: chờ tới khi sửa xong"
+   }
+  ],
+  "also_happens": {
+   "en": "The next keep-in-touch email follows 4 weeks later. Nothing is sent on or after the call-back date.",
+   "vi": "Email giữ liên lạc kế tiếp tới sau 4 tuần. Từ ngày hẹn gọi lại trở đi thì không gửi nữa."
+  },
+  "also_ids": [
+   "tpl-nurture-2"
+  ]
+ },
+ "tpl-nurture-2": {
+  "name": {
+   "en": "Keep-in-touch email 2: How Loan Factory works",
+   "vi": "Email giữ liên lạc 2: Loan Factory làm việc thế nào"
+  },
+  "one_line": {
+   "en": "Explains how Loan Factory works for Loan Officers.",
+   "vi": "Giới thiệu cách Loan Factory làm việc với Loan Officer."
+  },
+  "story": {
+   "en": "Alex logged 'Neutral' for Jordan on 1 Oct. Jordan got the first keep-in-touch email around 29 Oct and didn't reply. Around 26 Nov he gets this second one from Alex.",
+   "vi": "Ngày 1/10 Alex ghi 'Neutral' cho Jordan. Khoảng 29/10 Jordan nhận email giữ liên lạc đầu tiên và không trả lời. Khoảng 26/11 Jordan nhận email thứ hai này từ Alex."
+  },
+  "who_gets": {
+   "en": "Loan Officers who aren't ready yet (a 'Neutral' call, or 5 unanswered calls)",
+   "vi": "Loan Officer chưa sẵn sàng (cuộc gọi 'Neutral', hoặc 5 lần không nghe máy)"
+  },
+  "from_name": {
+   "en": "Jordan's recruiter (Alex)",
+   "vi": "Recruiter của Jordan (Alex)"
+  },
+  "when": {
+   "en": "4 weeks after the previous one, in business hours",
+   "vi": "4 tuần sau email trước, trong giờ làm việc"
+  },
+  "click": [],
+  "not_sent": [
+   {
+    "en": "Jordan replied, or someone really called, texted or emailed him: the emails stop for good",
+    "vi": "Jordan đã trả lời, hoặc có người gọi, nhắn tin, email thật cho Jordan: dừng hẳn"
+   },
+   {
+    "en": "Jordan was archived",
+    "vi": "Jordan đã bị lưu trữ (archive)"
+   },
+   {
+    "en": "Alex has no email address on file: it waits until that is fixed",
+    "vi": "Alex chưa có địa chỉ email trong hồ sơ: chờ tới khi sửa xong"
+   }
+  ],
+  "also_ids": [
+   "tpl-nurture-3"
+  ],
+  "also_happens": {
+   "en": "The next keep-in-touch email follows 4 weeks later.",
+   "vi": "Email giữ liên lạc kế tiếp tới sau 4 tuần."
+  }
+ },
+ "tpl-nurture-3": {
+  "name": {
+   "en": "Keep-in-touch email 3: Upcoming webinar",
+   "vi": "Email giữ liên lạc 3: Webinar sắp tới"
+  },
+  "one_line": {
+   "en": "Invites Jordan to the next free webinar.",
+   "vi": "Mời Jordan dự buổi webinar miễn phí kế tiếp."
+  },
+  "story": {
+   "en": "Jordan has had the first two keep-in-touch emails (around 29 Oct and 26 Nov) and hasn't replied. Around 24 Dec he gets this third one from Alex, with the date of the next free webinar.",
+   "vi": "Jordan đã nhận 2 email giữ liên lạc đầu (khoảng 29/10 và 26/11) và chưa trả lời. Khoảng 24/12 Jordan nhận email thứ ba này từ Alex, kèm ngày của buổi webinar miễn phí kế tiếp."
+  },
+  "who_gets": {
+   "en": "Loan Officers who aren't ready yet (a 'Neutral' call, or 5 unanswered calls)",
+   "vi": "Loan Officer chưa sẵn sàng (cuộc gọi 'Neutral', hoặc 5 lần không nghe máy)"
+  },
+  "from_name": {
+   "en": "Jordan's recruiter (Alex)",
+   "vi": "Recruiter của Jordan (Alex)"
+  },
+  "when": {
+   "en": "4 weeks after the previous one, in business hours",
+   "vi": "4 tuần sau email trước, trong giờ làm việc"
+  },
+  "click": [],
+  "not_sent": [
+   {
+    "en": "Jordan replied, or someone really called, texted or emailed him: the emails stop for good",
+    "vi": "Jordan đã trả lời, hoặc có người gọi, nhắn tin, email thật cho Jordan: dừng hẳn"
+   },
+   {
+    "en": "Jordan was archived",
+    "vi": "Jordan đã bị lưu trữ (archive)"
+   },
+   {
+    "en": "Alex has no email address on file: it waits until that is fixed",
+    "vi": "Alex chưa có địa chỉ email trong hồ sơ: chờ tới khi sửa xong"
+   }
+  ],
+  "also_ids": [
+   "tpl-nurture-4"
+  ],
+  "also_happens": {
+   "en": "The next keep-in-touch email follows 4 weeks later.",
+   "vi": "Email giữ liên lạc kế tiếp tới sau 4 tuần."
+  }
+ },
+ "tpl-nurture-4": {
+  "name": {
+   "en": "Keep-in-touch email 4: Common questions",
+   "vi": "Email giữ liên lạc 4: Câu hỏi thường gặp"
+  },
+  "one_line": {
+   "en": "Answers the questions Loan Officers usually ask.",
+   "vi": "Trả lời những câu Loan Officer hay hỏi."
+  },
+  "story": {
+   "en": "Jordan has had three keep-in-touch emails and still hasn't replied. Around 21 Jan he gets this fourth one from Alex. Four weeks later the series starts again from email 1, until the call-back date on 1 Apr.",
+   "vi": "Jordan đã nhận 3 email giữ liên lạc và vẫn chưa trả lời. Khoảng 21/1 Jordan nhận email thứ tư này từ Alex. 4 tuần sau loạt email quay lại từ email 1, cho tới ngày hẹn gọi lại 1/4."
+  },
+  "who_gets": {
+   "en": "Loan Officers who aren't ready yet (a 'Neutral' call, or 5 unanswered calls)",
+   "vi": "Loan Officer chưa sẵn sàng (cuộc gọi 'Neutral', hoặc 5 lần không nghe máy)"
+  },
+  "from_name": {
+   "en": "Jordan's recruiter (Alex)",
+   "vi": "Recruiter của Jordan (Alex)"
+  },
+  "when": {
+   "en": "4 weeks after the previous one, in business hours",
+   "vi": "4 tuần sau email trước, trong giờ làm việc"
+  },
+  "click": [],
+  "not_sent": [
+   {
+    "en": "Jordan replied, or someone really called, texted or emailed him: the emails stop for good",
+    "vi": "Jordan đã trả lời, hoặc có người gọi, nhắn tin, email thật cho Jordan: dừng hẳn"
+   },
+   {
+    "en": "Jordan was archived",
+    "vi": "Jordan đã bị lưu trữ (archive)"
+   },
+   {
+    "en": "Alex has no email address on file: it waits until that is fixed",
+    "vi": "Alex chưa có địa chỉ email trong hồ sơ: chờ tới khi sửa xong"
+   }
+  ],
+  "also_ids": [
+   "tpl-nurture-1"
+  ],
+  "also_happens": {
+   "en": "After email 4 the series starts again from email 1.",
+   "vi": "Sau email 4, loạt email quay lại từ email 1."
+  }
+ },
+ "698b9cc2-323d-434e-80e2-244f2c5363dc": {
+  "name": {
+   "en": "Webinar follow-up (sent by hand)",
+   "vi": "Email sau webinar (recruiter tự gửi)"
+  },
+  "one_line": {
+   "en": "A ready-made follow-up a recruiter can send himself after a webinar.",
+   "vi": "Một email soạn sẵn để recruiter tự gửi sau webinar."
+  },
+  "story": {
+   "en": "Friday 4:00 PM, after the webinar, Alex opens Jordan in Recruit, picks the next step 'Send info', chooses 'Webinar follow-up (demo)', edits it and clicks send. He can also pick a date to send it later.",
+   "vi": "Thứ Sáu 16:00, sau webinar, Alex mở hồ sơ Jordan trong Recruit, chọn bước tiếp 'Send info', chọn mẫu 'Webinar follow-up (demo)', sửa rồi bấm gửi. Alex cũng có thể chọn ngày để gửi sau."
+  },
+  "who_gets": {
+   "en": "Any lead the recruiter picks",
+   "vi": "Bất kỳ lead nào recruiter chọn"
+  },
+  "from_name": {
+   "en": "The recruiter who sends it (Alex)",
+   "vi": "Recruiter bấm gửi (Alex)"
+  },
+  "when": {
+   "en": "When Alex clicks send, or on the date he picks",
+   "vi": "Khi Alex bấm gửi, hoặc vào ngày Alex chọn"
+  },
+  "click": [],
+  "not_sent": [
+   {
+    "en": "Never automatic: only when a recruiter sends it",
+    "vi": "Không bao giờ tự gửi: chỉ khi recruiter bấm gửi"
+   }
+  ],
+  "also_happens": {
+   "en": "For a date picked in advance: until automatic sending is switched on, Recruit reopens the draft on that day for Alex to send.",
+   "vi": "Nếu hẹn ngày trước: khi chưa bật tự gửi, tới ngày đó Recruit mở lại bản nháp để Alex tự gửi."
+  }
+ }
+}
