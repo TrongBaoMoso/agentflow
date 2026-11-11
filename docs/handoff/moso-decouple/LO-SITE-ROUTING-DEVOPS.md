@@ -215,15 +215,18 @@ options; please pick one (§e):
 
 ## (c) What the code side provides
 
-1. **moso-aid `GET /api/lo-site/resolve`**, being built in parallel by us (not on moso-aid staging as of this commit;
-   check moso-aid `origin/master`).
+1. **moso-aid `GET /api/lo-site/resolve`**: LIVE on moso-aid staging since 11/11 (moso-aid #233, #234, #235; staging
+   `LO_SITE_MOSO_OFF=true`). Answers from moso-aid's own LO profiles only (snapshots of every LO visited since
+   `LO_PROFILE_SNAPSHOT_FIRST`, plus LOs with no MOSO record built from central/HR via recruit-be D500), 404 unless
+   `LO_PROFILE_SNAPSHOT_FIRST` or `LO_SITE_MOSO_OFF` is on. An LO never visited has no profile yet: production needs a bulk
+   seed while MOSO is up (no seed script exists yet).
    - Query `?slug=<site-url>`, or `?host=<lo-domain>`.
    - Returns `{ "success": true, "data": { "key": "<LO key>", "base_path": "<site-url or empty>" } }`.
    - `key` is the LO's MOSO Admin key for existing LOs, or the central user id for LOs hired after MOSO is switched off.
    - Returns **404** (JSON) when there is no such LO.
    - Under the moso-aid flag `LO_SITE_MOSO_OFF=true` it never calls MOSO.
-2. **lo-homepage middleware fallback**, PR LoanFactory-Inc/lo-homepage#952. It is held open until the endpoint is on
-   moso-aid staging.
+2. **lo-homepage middleware fallback**, PR LoanFactory-Inc/lo-homepage#952, merged 11/11 (7aa4ffba2), staging
+   `LO_SITE_SELF_ROUTING=true`, production unset.
    - It runs only when env **`LO_SITE_SELF_ROUTING=true`** (absent in production) **and** no `x-lo-key` arrived.
    - If the host is not a company host, it asks `?host=<host>`. Otherwise it asks `?slug=<first path segment>`, skipping
      the app's own top-level pages, locales and dotted segments.
