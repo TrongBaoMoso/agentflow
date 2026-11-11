@@ -132,3 +132,11 @@ Afternoon (resumed 14:27): all on STAGING, prod flags absent (checked helm produ
   Fix recruit-be #1015 (skip ledger credit when empty, keep FK_CONFIRMED row) in CI, auto-merge. On resume: promote, re-pick on
   lead ba06ae6f-2f7c-4a59-9ade-68c4711286f1 ("Fix PortalBkehs"), check program row + My referrals; then follow-up: write a
   genesis REFERRED event when a portal pick is CONFIRMED on a lead with no ledger (lead decided yes).
+
+## ⛔ SCOPE CORRECTION (Bao 11/11 ~23:10), read before anything else
+"Recruit independent of MOSO" covers only Recruit's OWN calls to MOSO: recruit-be, recruit-fe, the onboarding portal, and the recruit funnel forms (/join and /recruit lead submit, RSVP, referral attribution).
+NOT in scope, so do not build, fix or count these as remaining items:
+- central login / auth calling MOSO (that is central login's business; Recruit users depend on central login, not on MOSO);
+- LO marketing sites (viet18.com/<slug>) routed or served through MOSO GAE: lo-homepage self-routing (H15), app-download QR (H16), LO profile feed and snapshot hardening (H10), recruiters list and lo-setting editor under moso-off (M4b).
+Wave2b LO-site code (recruit-be #1018, moso-aid #233-#235, lo-homepage #951/#952) is being reverted on staging. Any part the recruit funnel needs is kept and listed.
+Remaining items for Recruit itself: LO fee still collected via MOSO in production (waiting on Khải's Stripe), and the production flag flip.
