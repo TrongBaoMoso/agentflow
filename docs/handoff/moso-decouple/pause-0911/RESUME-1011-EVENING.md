@@ -97,3 +97,12 @@ Test accounts: onb-test + role-officer back to RECRUITER only (Bao 05/11 rule); 
   (b) add route to RbacCatalogCoverageTest public list, (c) BusinessClockGuardTest allow-list/inject Clock; then merge + promote.
   lf-homepage UNCOMMITTED in lf-homepage-worktrees/portal-off-moso branch feat/portal-lo-list (picker from list, value = central id);
   commit + PR after #1001 is on staging; rerun fix/portal-lf/{setup-lead,prefill,flow,sign}.js.
+- fix-referrer-identity: PROVEN — new LO Sierra NinePerfa (central 54a6acae, no MOSO key) refers "Fix Rid One" → REFERRAL,
+  FK_CONFIRMED, My referrals shows it with share link /join?referred_source=loan_officer&referred_by=<e-mail> (200), REFERRER
+  role sweep ASSIGNED 06:25Z. TODO: #1003 CI fails ReferrerCentralIdIT (worktree recruit-be-worktrees/referrer-central-id,
+  branch fix/referrer-claim-backfill-rules, run 42971440409) → fix, merge, promote, re-run DRY_RUN (2 fix-lo-join leads must go
+  REVIEW not_a_referral_source); check REFERRER grant in rbac_grants + auth-service; "your referral moved" mail not run on staging.
+- fix-w2-1099: portal AFTER proven (W-2 lead shows "Outside (W-2)" locked, 1099 lead "Independent (1099)" locked; shots in
+  fix/shots/fix-w2-1099). TODO: fee + sign both leads, check doc_set + HR contract_type log; portal opposite-type save ignored;
+  staff type change → "Send new version" / AGREEMENT_UPDATE; archive e6509db0-9a90-47fe-8208-a96403f05118 (W-2) and
+  4634f097-96ca-4737-83c6-0216d9b3c203 (1099). Scripts fix/w2/ (re-login first).
