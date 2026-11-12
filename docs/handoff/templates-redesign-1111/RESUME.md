@@ -132,3 +132,9 @@ Bao 12/11: (1+2) fix the step routing for ALL steps and email links on /register
 - DONE: preview 401 = recruit-fe #809 3ae44349, on staging, shots/preview-401-{before,after}-1440.png.
 - IN PROGRESS: agent signup-step-routing was told to pause. On resume: look for open PRs/branches in lf-homepage, lo-homepage and recruit-be, the worktrees, shots/step-routing-*, and the Gallery Step test leads on staging. Then brief a new agent with the same scope to finish it on staging, with before/after shots.
 - After that: one artifact with before/after shots of both fixes for Bao.
+
+## DONE 12/11 ~17:00 (session 0d517c34)
+- Step routing: lf-homepage #2761 (8bd3d8a50) + lo-homepage #969 (aa957b3ba) on staging; every entry link checked on staging (STEP-ROUTING-VERIFY.md). Not checkable on staging: fully signed / fee deferred / fee waived (unit tests only). Small UX gap: after Back from sign-only, the step menu cannot jump forward to 4 (Next works).
+- Preview 401: recruit-fe #809 on staging.
+- Before/after artifact: https://claude.ai/artifact/XNU2bgcrVgTunDfxQpHhZZ
+- ONLY THING LEFT: cancel the 'Gallery test (ignore)' webinar series (Bao OK) AFTER 21:30 VN 13/11.
