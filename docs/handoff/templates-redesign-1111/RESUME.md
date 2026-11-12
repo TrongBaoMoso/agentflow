@@ -126,3 +126,9 @@ Minor, not fixed: editor preview shows unrelated fallback content on 401 (expire
 Prod: rides Tài's next push; #1019 flag and webinar-team-sender flag stay absent in prod.
 Later cleanup: worktrees recruit-be-worktrees/{v398-no-md5,reminder-step-order,sendinfo-template-history,...}, recruit-fe-worktrees/sendinfo-template-history, scratchpad af-push2.
 Gallery: https://claude.ai/artifact/XPP1VKcmuLTucuaY2vSDpo (never commit CLICKS.json / gallery index.html).
+
+## PAUSE 12/11 afternoon (session 0d517c34)
+Bao 12/11: (1+2) fix the step routing for ALL steps and email links on /register-loan-officer AND /join (lf-homepage + lo-homepage); (3) Spam SKIP; (4) cancel the 'Gallery test (ignore)' webinar series AFTER 21:30 VN 13/11; (5) AI write = bead agentflow-3tjvv; preview 401 -> fix.
+- DONE: preview 401 = recruit-fe #809 3ae44349, on staging, shots/preview-401-{before,after}-1440.png.
+- IN PROGRESS: agent signup-step-routing was told to pause. On resume: look for open PRs/branches in lf-homepage, lo-homepage and recruit-be, the worktrees, shots/step-routing-*, and the Gallery Step test leads on staging. Then brief a new agent with the same scope to finish it on staging, with before/after shots.
+- After that: one artifact with before/after shots of both fixes for Bao.
