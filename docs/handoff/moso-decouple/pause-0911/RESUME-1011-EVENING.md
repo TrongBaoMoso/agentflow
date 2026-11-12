@@ -140,3 +140,54 @@ NOT in scope, so do not build, fix or count these as remaining items:
 - LO marketing sites (viet18.com/<slug>) routed or served through MOSO GAE: lo-homepage self-routing (H15), app-download QR (H16), LO profile feed and snapshot hardening (H10), recruiters list and lo-setting editor under moso-off (M4b).
 Wave2b LO-site code (recruit-be #1018, moso-aid #233-#235, lo-homepage #951/#952) is being reverted on staging. Any part the recruit funnel needs is kept and listed.
 Remaining items for Recruit itself: LO fee still collected via MOSO in production (waiting on Khải's Stripe), and the production flag flip.
+
+---
+
+## PAUSE 12/11 ~03:20 VN (session 460363a7): Bao is shutting the machine down
+
+**State:** no agent or cron is running. All teammates are idle and their worktrees are cleaned up. Every finished change is on STAGING. Production flags are still OFF.
+
+**Merged and on staging tonight (recruit-be):**
+- #1021: D502. Confirming the referrer writes a genesis REFERRED row.
+- #1022: reverts #1018. #1018 was the D500 LO profile feed, which is out of scope.
+- #1027: D505/V406. Adding a manual lead or creating via Modex writes a genesis COMPANY_LEAD row, and a missing ledger returns 409. V406 backfilled 90 staging leads.
+- #1028: an unknown id returns 404, a 409 is logged at WARN and a 404 at INFO. Verified: 0 ERROR lines in 10 minutes.
+
+**Reverts done per Bao's 11/11 scope rule:**
+- moso-aid #237 reverts #233–#235.
+- lo-homepage #957 reverts #951 and #952.
+- The LO_SITE_SELF_ROUTING and LO_SITE_MOSO_OFF env vars were removed.
+
+**Central IAM staging:** RECRUIT/MANAGER now has REFERRER_REVIEW_DECIDE. Before turning #1011 on in prod, make the same grant in prod (see P6-INVENTORY §0j).
+
+**Independent audit with 3 agents** (local, outside the repo): `~/.cache/claude-recruit/deps-1111/` holds a/, b/, c/ and CONSOLIDATED.md.
+- Recruit's own calls to MOSO from recruit-be: 0, which is 100%.
+- In-scope items cut on staging: about 38 of 51, roughly 75%.
+- Flows proven end to end: 12 of 57, about 21%.
+- Items still open, S1–S11:
+
+| Item | What is still open |
+|---|---|
+| S1 | /join writes to MOSO when the visitor is outside the canary |
+| S2 | HIGH bug: /join loses the lead when Recruit intake fails |
+| S3 | Webinar form and webinar list still use MOSO |
+| S4 | Portal opened without a link still calls getAdmins |
+| S5 | Recruiter info comes through moso-aid←MOSO |
+| S6 | Landing stats and the webinar_link token |
+| S7 | Ambassador roster is a 09/11 snapshot; applications import |
+| S8 | Frozen data: bonus on packs numbers (323), legacy keys (7,630) |
+| S9 | 4 MOSO-only features have no replacement |
+| S10 | 4 INVITE write-backs stuck since 04/11 |
+| S11 | recruit-be runs in MOSO's GCP projects |
+
+**WAITING FOR BAO** (do not start before he answers):
+1. /join on staging: send every visitor straight to Recruit with no MOSO write, continue on the Recruit ?invite= portal, and fix the S2 lead-loss bug. My recommendation is to do it.
+2. The 4 MOSO-only features. My recommendation: drop owner sync and the MOSO push ingest, and ask the team about CS tickets→Hot leads and cold import.
+
+**Other open items:**
+- Recheck why an admin override credit does not show in the referrer's My referrals. This was a PARTIAL result.
+- Draft a message to Khải, terminal only. It covers three things: how far Stripe is for the LO fee, staging Postgres md5 unsupported, and staging Postgres restarting twice on 11/11 (15:12 and 22:40 VN).
+- Write the final report and a before/after artifact with the corrected numbers above.
+- Clean up test data the agents could not undo: MOSO staging records for /join leads A/D/E, HR associate "DepsC Depscmanual", and Sierra's snapshot in moso-aid Mongo.
+
+**How to resume:** `claude --resume 460363a7-f761-459c-8a6f-1df51d1e90fb`, or read this section.
