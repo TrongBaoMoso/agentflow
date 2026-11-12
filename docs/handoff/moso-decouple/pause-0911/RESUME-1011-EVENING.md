@@ -191,3 +191,64 @@ Remaining items for Recruit itself: LO fee still collected via MOSO in productio
 - Clean up test data the agents could not undo: MOSO staging records for /join leads A/D/E, HR associate "DepsC Depscmanual", and Sierra's snapshot in moso-aid Mongo.
 
 **How to resume:** `claude --resume 460363a7-f761-459c-8a6f-1df51d1e90fb`, or read this section.
+
+---
+
+## PAUSE 12/11 ~15:45 VN (session 460363a7): Bao is shutting the machine down again
+
+### Bao's decisions on 12/11
+- **/join and EVERY funnel form submit goes to Recruit ONLY on staging.** Only the SUBMIT path counts; where a page loads its display data from is NOT our concern. No redirects.
+- **Dropped:** MOSO owner sync and the MOSO push ingest.
+- **Deferred:** CS tickets → Hot leads, and the email-to-lead intake (Rocket / recruiting@). Bead agentflow-pzdm0.
+- **LO fee in prod keeps using MOSO** until Stripe is ready. No message to Khải or Ben for now.
+- **Import leads:** build it (done).
+- **Referrer re-point on an already-decided lead:** the credit moves to the new person; locked if the bonus is already paid or approved.
+- **Add lead with a duplicate NMLS:** show a warning, open the existing lead, allow "Create anyway".
+- **Assistant:** give the MANAGER role the read tools (staging flag).
+- **Flow 15:** turn BOTH auto-assign and idle release on during the test window; it's staging.
+- **Purge PII on staging:** yes.
+- **Rule (memory + ~/.claude/rules/common/verify-before-asking.md):** verify permissions and existing state, and look for a LEGITIMATE path (company rules, no tricks), before asking anyone.
+
+### On staging now (all verified)
+| Area | PRs |
+|---|---|
+| Funnel forms Recruit-only | recruit-be #1030 #1044; lf-homepage #2751 #2757 #2758 #2759 #2760; lo-homepage #961 #964-#968 |
+| Portal fixes | lf-homepage #2754 (NMLS access), #2756 (waived fee) |
+| Referrals / genesis | #1027 #1028 #1029 |
+| Import leads | be #1037, fe #802 |
+| Ambassador apps without MOSO | moso-aid #239, be #1036 |
+| Applications import tick | be #1045 |
+| Stuck invites cancelled | be #1035 #1042 |
+| PII clean-up | moso-aid #238 #240, lf-homepage #2755 |
+| Assistant names the OB | be #1039 |
+| packs-import 409 + seen 204 | be #1046 |
+
+### Staging secrets and roles I set (documented process, Bao's own permissions)
+- SEQUENCE_INTERNAL_API_KEY and RECRUIT_PROGRAM_APPLICATION_IMPORT_INTERNAL_API_KEY: in Secret Manager (lenderrate-master) and merge-patched into recruit-svc-secret. Not in secret-keys.txt: the deploy SA lacks accessor.
+- Account IAM:
+  - Bao got Recruit "Onboarding Specialist".
+  - LEAD_IMPORT added to RECRUITER, MANAGER and ADMIN. Notes and undo: ~/.cache/claude-recruit/audit-1111/fix/shots/lead-import-iam-grant.txt
+  - ⚠️ bao.trinh+role-officer is TEMPORARILY MANAGER-only; it was RECRUITER. Restore it after the assistant-manager proof.
+
+### Still open
+- **PRs waiting on CI / merge / promote / proof:**
+  - be #1040 + fe #803 (duplicate-NMLS warning)
+  - be #1041 (referrer re-point)
+  - be #1048 (assistant for Manager)
+- **#1045:** prove that a fresh Ambassador application arrives via the natural tick.
+- **#1046:** measure the "after" calls.
+- **Import leads:**
+  - recheck as the Recruiter test account;
+  - test with a real .xlsx;
+  - small UI fixes: truncation, horizontal scroll, times shown in UTC;
+  - remove the "Rocket test" label.
+- **E2E run** (~/.cache/claude-recruit/e2e-1211/RESULTS.md): 44 PASS, 1 FAIL (#46, fixed by #1046, re-test), 9 BLOCKED (with reasons), and these timed checks still pending:
+  - 22a, scheduled Send info (Etoe Hotlead): due after 16:20Z;
+  - 15, auto-assign + idle release BOTH ON for 30 min in office hours (16:00–01:00Z), then OFF; save the before-lists;
+  - 26, webinar 1-day reminder (E2E Webinar), around 21:05Z on 12/11;
+  - the armed jobs were killed at pause, so re-arm them on resume.
+- **Open e2e test leads to archive at the end:** E2E Webinar, Etoe Hotlead, Etoe Meet, plus the rest listed in RESULTS.md.
+- **Final report and before/after artifact for Bao.**
+
+### How to resume
+`claude --resume 460363a7-f761-459c-8a6f-1df51d1e90fb`, then re-spawn agents from this list. The agents' briefs follow COMMON-RULES at ~/.cache/claude-recruit/audit-1111/fix/COMMON-RULES.md.
