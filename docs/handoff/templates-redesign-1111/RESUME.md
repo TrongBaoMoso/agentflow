@@ -112,3 +112,17 @@ Bugs found by the gallery agent (not fixed; tell Bao):
 - Agreement emails go to Gmail Spam.
 - The sign-only reminder opens step 3.
 - The Meet link needs a Google sign-in.
+
+## PAUSE 12/11 ~02:15 (session 0d517c34) — ALL WORK DONE, only waiting on Bao
+
+Everything Bao asked for is on STAGING and verified (#1012 #1013 #1014 #1016 #1019 #1020 #1023 #1024, fe #781 #782 #786).
+#1024 5e2c4ddb: new-template preview says Alex Sample in From / signature / footer. No agent is running.
+
+On resume, do NOT start new work. Just re-ask Bao (in Vietnamese, plain words) the open decisions:
+1. Fix the 3 bugs found while clicking the gallery? (a) agreement-updated "Review and sign" opens step 5 (NMLS) with step 4 shown done; (b) sign-only reminder opens step 3; (c) agreement mails land in Gmail Spam (SPF/DKIM — needs Khải).
+2. Cancel the "Gallery test (ignore)" webinar series on Bao's Google Calendar after 13/11 (live gallery links expire ~13/11 14:30 UTC)?
+3. AI write for templates still waits for a recruit-be → moso-router route (Khải or Đạt).
+Minor, not fixed: editor preview shows unrelated fallback content on 401 (expired session).
+Prod: rides Tài's next push; #1019 flag and webinar-team-sender flag stay absent in prod.
+Later cleanup: worktrees recruit-be-worktrees/{v398-no-md5,reminder-step-order,sendinfo-template-history,...}, recruit-fe-worktrees/sendinfo-template-history, scratchpad af-push2.
+Gallery: https://claude.ai/artifact/XPP1VKcmuLTucuaY2vSDpo (never commit CLICKS.json / gallery index.html).
