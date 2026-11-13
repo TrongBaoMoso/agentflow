@@ -44,3 +44,23 @@ Trang recruit.viet18.com/conversations (staging), acc Victoria (VP, Manager), ta
 - Staging, QA Test Recruiter: Today hiện "Needs reply"; Mine+Needs = 1 (QA Claudeboard, NMLS 9931984).
 - LỆCH HIỂN THỊ mới thấy: QA Claudeboard với recruiter ghi "QA Test Recruiter emailed · See you tomorrow…" (omni latest), nhưng facts = email TỰ ĐỘNG (nhắc webinar, last_automated=true) → vẫn Needs reply. Victoria thấy "Automated email · Nov 13" (đúng). Chưa sửa, chờ Bao.
 - Phần 2 (xem email đầy đủ) + phần 3 (cover reply) của ewc4e.20: chưa có PR, chờ Bao OK.
+
+## PAUSE 13/11 ~17:10 VN (session 1e475fb7, Bao tắt máy) — session này GIỮ TRỌN bead agentflow-ewc4e.20
+Đọc `bd show agentflow-ewc4e.20` (notes chi tiết từng PR). Mọi thứ STAGING, prod cờ TẮT/không có.
+
+### ĐÃ LÊN STAGING 13/11
+- Conversations polish: be #1052, fe #814; fe #817 (Team needs reply cho manager); fe #822 #823 ("Last real contact"); be #1056 (deadlock, D526).
+- Xem đầy đủ email: be #1053 #1055 #1061 #1062, fe #816 #818; tera-components #1217 (prop renderEmail, kênh staging); tera-docs #1141 (đã merge).
+- Trả lời thay (cover, D525): omni #730, be #1054 #1058 #1060, fe #815. Bao chốt: giữ luật auto-claim D43; LO_SUPPORT không cover.
+- Pipeline: fe #819 #821 (nút Message, People on it), fe #830 (Claim về cột cuối, "Loan Factory · Automated", avatar LF trong View e-mail).
+- Dòng thứ 2 tin gõ tay: omni #731, be #1059.
+- Email gõ tay: omni #732 (STATUS_MAIL → Delivered), omni #733 + be #1065 + fe #825 #826 (kit 2026 + chữ ký, header kiểu email client, sửa UTC). #734 revert bằng #735; be #1064 đóng.
+- Email theo merge / khi có chủ: be #1066 (D533), be #1068 (D535). Bao test QA Bwaivetwo OK.
+- OB follow-up (D527): be #1057 staging; fe #820 merged 10:02Z (kiểm đã promote staging).
+- Observer race: fe #824 staging.
+
+### DỞ (resume làm tiếp, tạo agent mới nếu cần)
+1. recruit-be #1063 (observer race, D529): auto-merge bật, có thể đã tự merge → kiểm, promote recruit-be staging, gửi Bao bước test (Victoria mở/đóng QA Claudeboard 5 lần liên tiếp).
+2. recruit-be #1067 (avatar chữ ký = logo LF `lf-logo-mark-192.png` ở recruit.viet18.com/images/email, icon điện thoại, V418): sau #1063 → update branch, kiểm số V, merge, KIỂM PR MERGED, promote; Bao test bằng 1 email gõ tay mới tới QA Claudeboard.
+3. moso-notifier #442 (Gmail opens bị lọc bot vì 74.125.x): wave-freeze; đã xin anh Khải ở notification-service#232 (issuecomment-6848813230). Khi Khải OK → thêm "Wave freeze approved: <url>", merge, promote staging, kiểm log. Prod mất Gmail opens mọi app — Khải quyết.
+4. fe #820: xác nhận đã lên staging; gửi Bao bước test OB follow-up (Miley: "+ Set" ở Pipeline Mine, Today hiện follow-up của chính mình).
