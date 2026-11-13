@@ -36,3 +36,11 @@ Trang recruit.viet18.com/conversations (staging), acc Victoria (VP, Manager), ta
 ## Liên quan
 - Plan đầy đủ 3 phần của .20 (lọc server-side, xem email đầy đủ, vai COVER cho recruiter trả lời thay) nằm trong NOTES của bead
   `agentflow-ewc4e.20` (viết 13:12 bởi session fa8844b5). Đề xuất ở trên = phần (1) + thêm "Awaiting reply". Đọc `bd show agentflow-ewc4e.20`.
+
+## ĐO LẠI 13/11 09:15 VN (session 1e475fb7)
+- be #1034 có ở master + staging, CHƯA có ở production (cờ RECRUIT_FEATURES_CONVERSATION_FACTS: staging true, prod không có → mặc định false).
+- fe #798 #800 đã có ở production (tự lùi về hành vi cũ khi route counts 404).
+- Staging, Victoria: All 267; Text 13; Email 96; Call 76; Text+Needs reply 1 (TRINH VU TRONG BAO, NMLS 121212); Awaiting 91; Mine+Needs 0 (Today không hiện nút).
+- Staging, QA Test Recruiter: Today hiện "Needs reply"; Mine+Needs = 1 (QA Claudeboard, NMLS 9931984).
+- LỆCH HIỂN THỊ mới thấy: QA Claudeboard với recruiter ghi "QA Test Recruiter emailed · See you tomorrow…" (omni latest), nhưng facts = email TỰ ĐỘNG (nhắc webinar, last_automated=true) → vẫn Needs reply. Victoria thấy "Automated email · Nov 13" (đúng). Chưa sửa, chờ Bao.
+- Phần 2 (xem email đầy đủ) + phần 3 (cover reply) của ewc4e.20: chưa có PR, chờ Bao OK.
